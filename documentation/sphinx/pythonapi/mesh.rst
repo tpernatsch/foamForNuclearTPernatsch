@@ -75,62 +75,80 @@ meshes.
 
     * - Cube:
 
-        :class:`BlockMesh.createCube`
+        :class:`BlockMesh.create_cube`
 
         .. code :: python
 
-            mesh.createCube(
+            mesh.create_cube(
                 name='block',
                 lowX=0, highX=1,
                 lowY=0, highY=1,
                 lowZ=0, highZ=1,
                 nx=2, ny=3, nz=4
             )
-      - .. image:: ../images/meshes/cube.png
+      - .. image:: ../images/meshes/fig_mesh_cube_0.png
             :width: 500
             :alt: Cube
 
     * - Cylinder along Z:
 
-        :class:`BlockMesh.createCylinderAlongZ`
+        :class:`BlockMesh.create_cylinder_along_z`
 
         .. code :: python
 
-            mesh.createCylinderAlongZ(
+            mesh.create_cylinder_along_z(
                 name='block',
                 radius=0.5,
                 lowZ=0, highZ=1,
                 nx=3, ny=3, nz=4,
                 x=1, y=-1
             )
-      - .. image:: ../images/meshes/cylz.png
+      - .. image:: ../images/meshes/fig_mesh_cylz_0.png
             :width: 500
             :alt: Cylinder
 
-    * - Hexagonal prism along Z:
+    * - Quarter Cylinder along Z:
 
-        :class:`BlockMesh.createHexagonPrismAlongZ`
+        :class:`BlockMesh.create_quarter_cylinder_along_z`
 
         .. code :: python
 
-            mesh.createHexagonPrismAlongZ(
+            mesh.create_quarter_cylinder_along_z(
+                name='block',
+                radius=1,
+                lowZ=0, highZ=1,
+                nx=3, ny=5, nz=3,
+                angleStart=0,
+                isAddAllBC=True
+            )
+      - .. image:: ../images/meshes/fig_mesh_quarter_cylinder_0.png
+            :width: 500
+            :alt: Quarter Cylinder
+
+    * - Hexagonal prism along Z:
+
+        :class:`BlockMesh.create_hexagon_prism_along_z`
+
+        .. code :: python
+
+            mesh.create_hexagon_prism_along_z(
                 "block",
                 zmin=0, zmax=0.5,
                 pitch=0.4,
                 nr=2, nt=1, nz=3,
-                isAddBoundaryConditions=True
+                isAddAllBC=True
             )
-      - .. image:: ../images/meshes/hexagon.png
+      - .. image:: ../images/meshes/fig_mesh_hexagon_0.png
             :width: 500
             :alt: Hexagonal prism
 
     * - Wedge along Z:
 
-        :class:`BlockMesh.createWedge`
+        :class:`BlockMesh.create_wedge`
 
         .. code :: python
 
-            mesh.createWedge(
+            mesh.create_wedge(
                 name='block',
                 innerRadius=0,
                 outerRadius=0.5,
@@ -139,57 +157,57 @@ meshes.
                 nr=4,
                 nz=5
             )
-      - .. image:: ../images/meshes/wedge.png
+      - .. image:: ../images/meshes/fig_mesh_wedge_0.png
             :width: 500
             :alt: Wedge
 
     * - Sphere:
 
-        :class:`BlockMesh.createSphere`
+        :class:`BlockMesh.create_sphere`
 
         .. code :: python
 
-            mesh.createSphere(
+            mesh.create_sphere(
                 name="sphere",
                 radius=1,
                 nCenter=10,
                 nBorder=2,
-                isAddBoundaryConditions=True
+                isAddAllBC=True
             )
-      - .. image:: ../images/meshes/sphere.png
+      - .. image:: ../images/meshes/fig_mesh_sphere_0.png
             :width: 500
             :alt: Sphere
 
     * - Half Sphere:
 
-        :class:`BlockMesh.createHalfSphere`
+        :class:`BlockMesh.create_half_sphere`
 
         .. code :: python
 
-            mesh.createHalfSphere(
+            mesh.create_half_sphere(
                 name="halfSphere",
                 radius=1,
                 z=-1,
                 nCenter=10,
                 nBorder=10,
-                isAddBoundaryConditions=True
+                isAddAllBC=True
             )
-      - .. image:: ../images/meshes/half_sphere.png
+      - .. image:: ../images/meshes/fig_mesh_half_sphere_0.png
             :width: 500
             :alt: Half Sphere
 
     * - Hollow Half Sphere:
 
-        :class:`BlockMesh.createHollowHalfSphere`
+        :class:`BlockMesh.create_hollow_half_sphere`
 
         .. code :: python
 
-            mesh.createHollowHalfSphere(
+            mesh.create_hollow_half_sphere(
                 name="sph1",
                 innerRadius=0.5, outerRadius=0.8,
                 nr=3,
                 nt=10,
-                isAddBoundaryConditions=True
+                isAddAllBC=True
             )
       - .. image:: ../images/meshes/hollow_half_sphere.png
             :width: 500
@@ -197,62 +215,100 @@ meshes.
 
     * - Sphere 1D:
 
-        :class:`BlockMesh.createSphere1D`
+        :class:`BlockMesh.create_sphere_1D`
 
         .. code :: python
 
-            mesh.createSphere1D(
+            mesh.create_sphere_1D(
                 name='sph1',
                 innerRadius=0, outerRadius=1,
                 opening=5,
                 nr=10,
-                isAddBoundaryConditions=True
+                isAddAllBC=True
             )
-      - .. image:: ../images/meshes/sphere_1D.png
+      - .. image:: ../images/meshes/fig_mesh_sphere_1D_0.png
             :width: 500
             :alt: Sphere 1D
 
     * - Triangular Channel:
 
-        :class:`BlockMesh.createTriangularChannel`
+        :class:`BlockMesh.create_triangular_channel`
 
         .. code :: python
 
-            mesh.createTriangularChannel(
+            mesh.create_triangular_channel(
                 name='block',
                 lowZ=0, highZ=1,
                 pitch=1,
                 radius=0.3,
                 nx=3, ny=3, nz=4
             )
-      - .. image:: ../images/meshes/hexagon_channel.png
+      - .. image:: ../images/meshes/fig_mesh_hexagon_channel_0.png
             :width: 500
             :alt: Triangular Channel
 
     * - Ring along Z:
 
-        :class:`BlockMesh.createRingAlongZ`
+        :class:`BlockMesh.create_ring_along_z`
 
         .. code :: python
 
-            mesh.createRingAlongZ(
+            mesh.create_ring_along_z(
                 name='block',
                 innerRadius=0.2, outerRadius=0.5,
                 lowZ=0, highZ=1,
                 nr=3, nt=10, nz=4,
                 x=1, y=-1
             )
-      - .. image:: ../images/meshes/ring.png
+      - .. image:: ../images/meshes/fig_mesh_ring_0.png
             :width: 500
             :alt: Ring
 
-    * - Cube with square hole:
+    * - Ring sector along Z:
 
-        :class:`BlockMesh.createCubeWithHoleAlongZ`
+        :class:`BlockMesh.create_ring_sector_along_z`
 
         .. code :: python
 
-            mesh.createCubeWithHoleAlongZ(
+            mesh.create_ring_sector_along_z(
+                name='block',
+                innerRadius=0.2, outerRadius=0.5,
+                angleStart=0, angleArc=60,
+                lowZ=0, highZ=1,
+                nr=3, nt=5, nz=4,
+                x=1, y=-1
+            )
+      - .. image:: ../images/meshes/fig_mesh_ring_sector_0.png
+            :width: 500
+            :alt: Ring sector
+
+    * - Cube with corner hole:
+
+        :class:`BlockMesh.create_cube_with_corner_hole_along_z`
+
+        .. code :: python
+
+            mesh.create_cube_with_corner_hole_along_z(
+                name="block",
+                lowX=0, highX=1,
+                lowY=0, highY=1,
+                lowZ=0, highZ=1,
+                radius=0.25,
+                nx=3, ny=3, nz=4, nt=3,
+                isHoleCylinder=True,
+                isAddAllBC=True
+            )
+      - .. image:: ../images/meshes/fig_mesh_cube_corner_hole_0.png
+            :width: 500
+            :alt: Cube with corner hole
+
+    * - Cube with square hole:
+
+        :class:`BlockMesh.create_cube_with_hole_along_z`
+
+        .. code :: python
+
+            mesh.create_cube_with_hole_along_z(
                 "block",
                 lowX=0, highX=0.01,
                 lowY=0, highY=0.01,
@@ -260,65 +316,65 @@ meshes.
                 radius=0.003,
                 nx=4, ny=4, nz=2, nt=4,
                 isHoleCylinder=False,
-                isAddBoundaryConditions=True
+                isAddAllBC=True
             )
-      - .. image:: ../images/meshes/square_hole_sqr.png
+      - .. image:: ../images/meshes/fig_mesh_square_hole_sqr_0.png
             :width: 500
             :alt: Cube with square hole
 
     * - Cube with cylindrical hole:
 
-        :class:`BlockMesh.createCubeWithHoleAlongZ`
+        :class:`BlockMesh.create_cube_with_hole_along_z`
 
         .. code :: python
 
-            mesh.createCubeWithHoleAlongZ(
+            mesh.create_cube_with_hole_along_z(
                 "block",
                 lowX=0, highX=0.01,
                 lowY=0, highY=0.01,
                 lowZ=0, highZ=0.01,
                 radius=0.003,
                 nx=4, ny=4, nz=2, nt=4,
-                isAddBoundaryConditions=True
+                isAddAllBC=True
             )
-      - .. image:: ../images/meshes/square_hole_cylz.png
+      - .. image:: ../images/meshes/fig_mesh_square_hole_cylz_0.png
             :width: 500
             :alt: Cube with cylindrical hole
 
     * - Hexagonal prism with hexagonal hole:
 
-        :class:`BlockMesh.createHexagonPrismWithHoleAlongZ`
+        :class:`BlockMesh.create_hexagon_prism_with_hole_along_z`
 
         .. code :: python
 
-            mesh.createHexagonPrismWithHoleAlongZ(
+            mesh.create_hexagon_prism_with_hole_along_z(
                 "hexHole",
                 zmin=0, zmax=0.01,
                 pitch=pitch,
                 radius=0.003,
                 nr=4, nt=4, nz=2,
                 isHoleCylinder=False,
-                isAddBoundaryConditions=True
+                isAddAllBC=True
             )
-      - .. image:: ../images/meshes/hexagon_hole_hex.png
+      - .. image:: ../images/meshes/fig_mesh_hexagon_hole_hex_0.png
             :width: 500
             :alt: Hexagonal prism with cylindrical hole
 
     * - Hexagonal prism with cylindrical hole:
 
-        :class:`BlockMesh.createHexagonPrismWithHoleAlongZ`
+        :class:`BlockMesh.create_hexagon_prism_with_hole_along_z`
 
         .. code :: python
 
-            mesh.createHexagonPrismWithHoleAlongZ(
+            mesh.create_hexagon_prism_with_hole_along_z(
                 "hexHole",
                 zmin=0, zmax=0.01,
                 pitch=pitch,
                 radius=0.003,
                 nr=4, nt=4, nz=2,
-                isAddBoundaryConditions=True
+                isAddAllBC=True
             )
-      - .. image:: ../images/meshes/hexagon_hole_cylz.png
+      - .. image:: ../images/meshes/fig_mesh_hexagon_hole_cylz_0.png
             :width: 500
             :alt: Hexagonal prism with cylindrical hole
 
@@ -357,8 +413,8 @@ translate from OpenMC or CASMO.
 
     nMesh = mesh.BlockMesh(region='neutroRegion')
 
-    nMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: nMesh.createHexagonPrismAlongZ(
+    nMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: nMesh.create_hexagon_prism_along_z(
             name="innerCore",
             zmin=-coreHeight/2,
             zmax=coreHeight/2,
@@ -367,7 +423,7 @@ translate from OpenMC or CASMO.
             nr=1,
             nt=1,
             nz=coreNodes,
-            isAddBoundaryConditions=True
+            isAddAllBC=True
         ),
         lattice=lattice,
         latticeType="hexagon",
@@ -385,7 +441,7 @@ Which generate the following mesh.
 
 
 One can also create a square lattice that fits in a cylindrical shape using the
-:class:`BlockMesh.fillLatticeRingGap` function.
+:class:`BlockMesh.fill_lattice_ring_gap` function.
 
 
 .. code-block:: python
@@ -403,15 +459,15 @@ One can also create a square lattice that fits in a cylindrical shape using the
     nXY = len(lattice.strip('\n').split('\n'))
 
     # Create the lattice
-    nMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: nMesh.createCubeWithHoleAlongZ(
+    nMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: nMesh.create_cube_with_hole_along_z(
             "squareHole",
             lowX=x-pitch/2, highX=x+pitch/2,
             lowY=y-pitch/2, highY=y+pitch/2,
             lowZ=0, highZ=0.01,
             radius=0.003,
             nx=4, ny=4, nz=2, nt=4,
-            isAddBoundaryConditions=True
+            isAddAllBC=True
         ),
         lattice=lattice,
         latticeType='square',
@@ -422,7 +478,7 @@ One can also create a square lattice that fits in a cylindrical shape using the
     )
 
     # Fill the gap
-    nMesh.fillLatticeRingGap(
+    nMesh.fill_lattice_ring_gap(
         name='gap',
         ringRadius=0.039,
         nxLat=nXY,
@@ -434,7 +490,7 @@ One can also create a square lattice that fits in a cylindrical shape using the
         nzBlock=2,
         zmin=0,
         zmax=0.01,
-        isAddBoundaryConditions=True
+        isAddAllBC=True
     )
 
 .. image:: ../images/meshes/lattice_square_ring_fill.png
@@ -478,7 +534,7 @@ follows an example of use for a 3-loop outlet with arbitrary dimensions:
     equivalentHydraulicDiameter = 0.3
 
     # Manifold
-    manifoldBlocks = thMesh.createPipeCylindricalManifoldAlongZ(
+    manifoldBlocks = thMesh.create_pipe_cylindrical_manifold_along_z(
         name='manifold',
         nEntries=3,
         innerRadius=1, outerRadius=2,
@@ -490,12 +546,12 @@ follows an example of use for a 3-loop outlet with arbitrary dimensions:
     pipeEntries = manifoldBlocks[::2]
 
     for i, pipeEntry in enumerate(pipeEntries):
-        pipe0 = thMesh.extrudeNormal(pipeEntry, 'front', f'hotLeg{i}_pipe0', 0.5, 2)
+        pipe0 = thMesh.extrude_normal(pipeEntry, 'front', f'hotLeg{i}_pipe0', 0.5, 2)
 
-        direction = pipe0.getFaceNormal('front')
+        direction = pipe0.get_face_normal('front')
         direction.rotateZ(45*np.pi/180)
 
-        pipe1 = thMesh.addPipe1DFromDirection(
+        pipe1 = thMesh.add_pipe_1D_from_direction(
             name=f'hotLeg{i}_pipe1',
             originPosition=pipe0,
             direction=direction,
@@ -503,7 +559,7 @@ follows an example of use for a 3-loop outlet with arbitrary dimensions:
             equivalentHydraulicDiameter=equivalentHydraulicDiameter,
             elbowRadius=0.5,
             n=4,
-            isAddBoundaryConditions=True,
+            isAddAllBC=True,
             originPositionOutletFaceName='front'
         )
 

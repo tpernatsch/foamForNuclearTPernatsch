@@ -4,8 +4,8 @@
 User's Guide
 ============
 
-Welcome to the foamForNuclear User's Guide! This tutorial will guide you
-through the essential aspects of using foamForNuclear to perform simulations.
+Welcome to the foamForNuclear User's Guide! This documentation will guide you
+through the essential aspects of using foamForNuclear.
 
 
 .. toctree::
@@ -25,3 +25,6 @@ through the essential aspects of using foamForNuclear to perform simulations.
    important_notes
    tips_and_tricks
    tutorials
+   fmu
+
+

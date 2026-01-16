@@ -278,59 +278,163 @@ def load_yaml_doc(yaml_path: Path) -> dict:
     return data
 
 
+# def render_rst_from_yaml(y: dict, class_name: str) -> str:
+#     """Build an RST page from the YAML dict using Sphinx object markup."""
+
+#     # ---- Description block -------------------------------------------------
+#     summary = y.get("description", "")
+#     summary = format_equation_for_rst(summary)
+#     summary = format_table_for_rst(summary)
+#     summary = format_code_for_rst(summary)
+#     summary = replaceInlineMath(replaceInlineReference(summary))
+
+#     # ---- Admonitions --------------------------------------------------------
+#     admonitions = y.get("admonitions") or []
+
+#     # ---- Options ------------------------------------------------------------
+#     options = y.get("options") or []
+
+#     # ---- Usage --------------------------------------------------------------
+#     usage = y.get("usage") or []
+
+#     # -----------------------------------------------------------------------
+#     # Anchor (safe to keep; does not affect TOC)
+#     # -----------------------------------------------------------------------
+#     out = []
+#     out.append(f".. _{class_name}:\n")
+
+#     # -----------------------------------------------------------------------
+#     # Class declaration (THIS replaces the ===== title)
+#     # -----------------------------------------------------------------------
+#     out.append(f".. cpp:class:: {class_name}\n")
+
+#     # Everything that follows must be indented to belong to the class
+#     indent = "   "
+
+#     # ---- Description -------------------------------------------------------
+#     if summary.strip():
+#         for line in summary.splitlines():
+#             out.append(indent + line)
+#         out.append("")
+
+#     # ---- Admonitions --------------------------------------------------------
+#     for adm in admonitions:
+#         rst = _rst_admonition(adm.get("kind", "note"), adm.get("body", ""))
+#         for line in rst.splitlines():
+#             out.append(indent + line)
+#         out.append("")
+
+#     # ---- Options ------------------------------------------------------------
+#     if options:
+#         out.append(indent + ".. rubric:: Options\n")
+#         table = _rst_options_list_table(options)
+#         for line in table.splitlines():
+#             out.append(indent + line)
+#         out.append("")
+
+#     # ---- Usage --------------------------------------------------------------
+#     if usage:
+#         out.append(indent + ".. rubric:: Usage\n")
+#         usage_rst = _rst_usage(usage)
+#         for line in usage_rst.splitlines():
+#             out.append(indent + line)
+#         out.append("")
+
+#     # ---- Links --------------------------------------------------------------
+#     out.append(indent + ".. rubric:: Links\n")
+#     out.append(indent + f"- `Doxygen doc <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H.html>`_")
+#     out.append(indent + f"- `{class_name}.H <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H_source.html>`_")
+#     out.append(indent + f"- `{class_name}.C <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8C_source.html>`_")
+#     out.append("")
+
+#     return "\n".join(out)
+
 def render_rst_from_yaml(y: dict, class_name: str) -> str:
-    """Build an RST page from the YAML dict."""
-    # Description block
-    summary = y.get("description","")
+    """
+    Build an RST page from the YAML dict using canonical Sphinx API style.
+
+    Key points:
+    - First lines: document title (used by :doc: and toctree)
+    - Internal headers replaced with rubrics
+    - API objects declared with .. cpp:class:: (or domain of choice)
+    - No hidden CSS or section headers above the title
+    """
+
+    # ---- Description block -------------------------------------------------
+    summary = y.get("description", "")
     summary = format_equation_for_rst(summary)
     summary = format_table_for_rst(summary)
     summary = format_code_for_rst(summary)
     summary = replaceInlineMath(replaceInlineReference(summary))
 
-    # Admonitions
+    # ---- Admonitions --------------------------------------------------------
     admonitions = y.get("admonitions") or []
 
-    # Options table
+    # ---- Options ------------------------------------------------------------
     options = y.get("options") or []
 
-    # Usage
+    # ---- Usage --------------------------------------------------------------
     usage = y.get("usage") or []
 
-    # Title
-    title = class_name
-    head = []
-    head.append(f".. _{class_name}:\n")
-    head.append(f"{'':=<{len(title)}}")
-    head.append(title)
-    head.append(f"{'':=<{len(title)}}\n")
+    out = []
 
-    # Description
-    body = []
-    body.append("Description")
-    body.append("===========\n")
+    # -----------------------------------------------------------------------
+    # 1️⃣ Anchor (optional)
+    # -----------------------------------------------------------------------
+    out.append(f".. _{class_name}:\n")
+
+    # -----------------------------------------------------------------------
+    # 2️⃣ Document title (first heading in page)
+    # -----------------------------------------------------------------------
+    out.append(class_name)
+    out.append("=" * len(class_name))
+    out.append("")
+
+    # -----------------------------------------------------------------------
+    # 3️⃣ API object declaration
+    # -----------------------------------------------------------------------
+    out.append(f".. cpp:class:: {class_name}\n")
+    indent = "   "
+
+    # ---- Description -------------------------------------------------------
     if summary.strip():
-        body.append(summary)
-        body.append("")
-    # Admonitions
-    for adm in admonitions:
-        body.append(_rst_admonition(adm.get("kind","note"), adm.get("body","")))
-    # Options
-    body.append("Options")
-    body.append("=======\n")
-    body.append(_rst_options_list_table(options))
-    # Usage
-    body.append("Usage")
-    body.append("=====\n")
-    body.append(_rst_usage(usage))
-    # Links (keep your original section)
-    body.append("Link to code")
-    body.append("============\n")
-    body.append(f"- `Doxygen doc <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H.html>`_")
-    body.append(f"- `{class_name}.H <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H_source.html>`_")
-    body.append(f"- `{class_name}.C <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8C_source.html>`_")
-    body.append("")
+        for line in summary.splitlines():
+            out.append(indent + line)
+        out.append("")
 
-    return "\n".join(head + body)
+    # ---- Admonitions -------------------------------------------------------
+    for adm in admonitions:
+        rst = _rst_admonition(adm.get("kind", "note"), adm.get("body", ""))
+        for line in rst.splitlines():
+            out.append(indent + line)
+        out.append("")
+
+    # ---- Options -----------------------------------------------------------
+    if options:
+        out.append(indent + ".. rubric:: Options\n")
+        table = _rst_options_list_table(options)
+        for line in table.splitlines():
+            out.append(indent + line)
+        out.append("")
+
+    # ---- Usage -------------------------------------------------------------
+    if usage:
+        out.append(indent + ".. rubric:: Usage\n")
+        usage_rst = _rst_usage(usage)
+        for line in usage_rst.splitlines():
+            out.append(indent + line)
+        out.append("")
+
+    # ---- Links -------------------------------------------------------------
+    out.append(indent + ".. rubric:: Links\n")
+    out.append(indent + f"- `Doxygen doc <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H.html>`_")
+    out.append(indent + f"- `{class_name}.H <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H_source.html>`_")
+    out.append(indent + f"- `{class_name}.C <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8C_source.html>`_")
+    out.append("")
+
+    return "\n".join(out)
+
+
 
 
 def render_rst_from_H(class_name: str, description: str, options: str, usage: str, vartable: str) -> str:
@@ -665,6 +769,94 @@ def generate_cppapi_index(
         f.write(cppapi_index)
 
 
+
+from pathlib import Path
+import os
+
+def append_toctree_for_folder_direct_subfolders(target_rst: str, folder: str, maxdepth: int = 1) -> None:
+    """
+    Append a Sphinx toctree block listing .rst files that are exactly one level
+    below `folder` (i.e., direct subfolders only; no nesting).
+    """
+    folder_path = Path(folder).resolve()
+
+    # Collect *.rst files in *direct* subfolders only (depth = 1)
+    rst_files = []
+    for f in folder_path.rglob("*.rst"):
+        try:
+            parts = f.relative_to(folder_path).parts
+        except ValueError:
+            # Shouldn't happen because f is under folder_path, but just in case
+            continue
+        # We want exactly 2 parts: ('subfolder', 'file.rst')
+        if len(parts) == 2 and f.is_file():
+            rst_files.append(f)
+
+    rst_files = sorted(rst_files)
+
+    if not rst_files:
+        print(f"No .rst files found in direct subfolders of {folder_path}")
+        return
+
+    # Build toctree block
+    toctree_block = [
+        "\n.. toctree::",
+        f"   :maxdepth: {maxdepth}",
+        "",
+    ]
+    for f in rst_files:
+        rel_path = os.path.relpath(f, start=Path(target_rst).parent)
+        toctree_block.append(f"   {rel_path}")
+
+    with open(target_rst, "a", encoding="utf-8") as out_file:
+        out_file.write("\n".join(toctree_block) + "\n")
+
+    print(f"Appended toctree (direct subfolders only) with {len(rst_files)} entries to {target_rst}")
+
+
+
+def append_toctree_for_folder_recursive(target_rst: str, folder: str, maxdepth: int = 1) -> None:
+    """
+    Append a Sphinx toctree block at the end of `target_rst` file,
+    listing all .rst files found in subfolders of `folder` (excluding root-level files).
+
+    Parameters
+    ----------
+    target_rst : str
+        Path to the RST file where the toctree will be appended.
+    folder : str
+        Path to the folder containing .rst files (e.g., dragModels).
+    maxdepth : int
+        Depth for the toctree (default = 1).
+    """
+    folder_path = Path(folder).resolve()
+    # Only include .rst files that are NOT directly under folder_path
+    rst_files = sorted([f for f in folder_path.rglob("*.rst") if f.parent != folder_path])
+
+    if not rst_files:
+        print(f"No .rst files found in subfolders of {folder_path}")
+        return
+
+    # Build toctree block
+    toctree_block = [
+        "\n.. toctree::",
+        f"   :maxdepth: {maxdepth}",
+        "",
+    ]
+    for f in rst_files:
+        rel_path = os.path.relpath(f, start=Path(target_rst).parent)
+        toctree_block.append(f"   {rel_path}")
+
+    # Append to target RST file
+    with open(target_rst, "a", encoding="utf-8") as out_file:
+        out_file.write("\n".join(toctree_block) + "\n")
+
+    print(f"Appended recursive toctree with {len(rst_files)} entries to {target_rst}")
+
+
+
+
+
 #==============================================================================*
 # Main function to generate both rst files and index.rst
 
@@ -744,6 +936,98 @@ def main():
             ("interpolationModels", "Interpolation models", 1, True),
             ("solutionControl", "Solution control", 1, True),
         ]
+    )
+
+    # Step 3: Append indexes in dynamic files
+    append_toctree_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/powerModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/phaseModels/structureModels/powerModels/",
+        maxdepth=1
+    )
+    append_toctree_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/FFdrag.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dragModels/FFDragCoefficientModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/FSdrag.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dragModels/FSDragCoefficientModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/multipliersDrag.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dragModels/twoPhaseDragMultiplierModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/contactPartitionModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/contactPartitionModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/dispersionModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dispersionModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/fluidDiameterModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/fluidDiameterModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/FFHeatTransferCoefficientModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FFHeatTransferCoefficientModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/FSHeatTransferCoefficientModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/interfacialAreaModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/interfacialAreaModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/regimeMapModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/regimeMapModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/virtualMassCoefficientModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/virtualMassModels/",
+        maxdepth=1
+    )
+    append_toctree_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/phaseChangeModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/phaseChangeModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/latentHeatModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/latentHeatModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/saturationModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/saturationModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/powerOffCriterionModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/phaseModels/structureModels/powerOffCriterionModels/",
+        maxdepth=1
+    )
+    append_toctree_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/thermalHydraulicsSolvers.rst",
+        folder="documentation/sphinx/cppapi/generated/modules/thermalHydraulics/",
+        maxdepth=1
+    )
+    append_toctree_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/usersguide/GeN-Foam/postProcessing.rst",
+        folder="documentation/sphinx/cppapi/generated/functionObjects/",
+        maxdepth=1
     )
 
     print("End")

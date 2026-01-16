@@ -4,10 +4,10 @@
 Installation
 ============
 
+We recommend building OpenFOAM and foamForNuclear on a Linux system or using Windows Subsystem for Linux (WSL). Among Linux distributions, Ubuntu is generally preferred as it tends to minimize installation issues. The instuctions below refer to the use of Ubuntu. For other operating systems, please refer to the `official OpenFOAM documentation <https://www.openfoam.com/>`_. Once OpenFOAM is installed, foamForNuclear should be compiled as a standard OpenFOAM application. 
 
------------------
-Building OpenFOAM
------------------
+Building OpenFOAM on Ubuntu
+===========================
 
 The foamForNuclear project is built on the `OpenFOAM <https://www.openfoam.com/>`_
 open-source CFD software.
@@ -28,18 +28,15 @@ the installer script with one of these commands:
    # Install preferred package. Eg,
    sudo apt-get install openfoam2506-default
 
-
-Add in your ``~/.bashrc`` the following command to access all the functionalities
-of OpenFOAM.
+Add in your ``~/.bashrc`` the following command to access all the functionalities of OpenFOAM.
 
 .. code-block:: bash
 
    source /usr/lib/openfoam/openfoam2506/etc/bashrc
 
 
-------------------------
-Building Source on Linux
-------------------------
+Building foamForNuclear on Ubuntu
+=================================
 
 All foamForNuclear source code is hosted on `GitLab
 <https://gitlab.com/foamForNuclear/foamForNuclear>`_. If you have `git
@@ -54,8 +51,10 @@ download and install foamForNuclear by entering the following commands in a term
    # Compile the project and build the foamForNuclear Python API
    ./Allwmake -j<N> --api
 
+Building the Python API
+=======================
 
-The :mod:`foamForNuclear <pythonapi>` Python package must be installed separately. The easiest way
+The :mod:`foamForNuclear <pythonapi>` Python API must be installed separately. The easiest way-+
 to install it is using `pip <https://pip.pypa.io/en/stable/>`_.
 From the root directory of the foamForNuclear repository, run:
 

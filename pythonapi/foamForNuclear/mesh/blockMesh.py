@@ -19,56 +19,19 @@ _SAMPLE_MODE_TYPES = {
 }
 _OFFSET_MODE_TYPES = {"uniform", "nonuniform", "normal"}
 
-idPoint = 0
 
-
-class Point:
+class Point(Vector):
     def __init__(self, x: float, y: float, z: float, isIndexed: bool=True):
-        self.x: float = x
-        self.y: float = y
-        self.z: float = z
-        self.id: int = -1
+        super().__init__(x=x, y=y, z=z)
+        self.id: int = None
         self.isIndexed = isIndexed
-        if (isIndexed):
-            self.setIndex()
 
     def __repr__(self):
-        return((f"/* {self.id:3} */ " if self.id >= 0 else "") + f"( {self.x} {self.y} {self.z} )")
-
-    def __eq__(self, value):
-        eps = 1e-6
-        return(
-            abs(self.x - value.x) <= eps and
-            abs(self.y - value.y) <= eps and
-            abs(self.z - value.z) <= eps
-        )
+        return((f"name {self.name} " if self.id >= 0 else "") + f"( {self.x} {self.y} {self.z} )")
 
     @property
-    def x(self):
-        return self._x
-
-    @x.setter
-    def x(self, x) -> None:
-        check_type("x", x, (float, int))
-        self._x = x
-
-    @property
-    def y(self):
-        return self._y
-
-    @y.setter
-    def y(self, y) -> None:
-        check_type("y", y, (float, int))
-        self._y = y
-
-    @property
-    def z(self):
-        return self._z
-
-    @z.setter
-    def z(self, z) -> None:
-        check_type("z", z, (float, int))
-        self._z = z
+    def name(self) -> str:
+        return(f"v{self.id}")
 
     @property
     def isIndexed(self):
@@ -78,33 +41,6 @@ class Point:
     def isIndexed(self, isIndexed) -> None:
         check_type("isIndexed", isIndexed, bool)
         self._isIndexed = isIndexed
-
-    def setIndex(self) -> None:
-        global idPoint
-        self.isIndexed = True
-        self.id = idPoint if self.isIndexed else -1
-        if (self.isIndexed):
-            idPoint += 1
-
-    def translate(self, dx: float=0, dy: float=0, dz: float=0) -> None:
-        self.x += dx
-        self.y += dy
-        self.z += dz
-
-    def rotateX(self, theta: float=0) -> None:
-        py = self.y
-        self.y =  py * np.cos(theta) - self.z * np.sin(theta)
-        self.z =  py * np.sin(theta) + self.z * np.cos(theta)
-
-    def rotateY(self, theta: float=0) -> None:
-        px = self.x
-        self.x =  px * np.cos(theta) - self.z * np.sin(theta)
-        self.z =  px * np.sin(theta) + self.z * np.cos(theta)
-
-    def rotateZ(self, theta: float=0) -> None:
-        px = self.x
-        self.x =  px * np.cos(theta) - self.y * np.sin(theta)
-        self.y =  px * np.sin(theta) + self.y * np.cos(theta)
 
 
 def isEqualSubFace(face1: list[Point], face2: list[Point]) -> bool:
@@ -122,12 +58,12 @@ class Edge:
     def __init__(
             self,
             edgeType: str,
-            pointId1: Point,
-            pointId2: Point,
+            point1: Point,
+            point2: Point,
         ):
         self.edgeType: str = edgeType
-        self.pointId1: Point = pointId1
-        self.pointId2: Point = pointId2
+        self.point1: Point = point1
+        self.point2: Point = point2
 
 
     @property
@@ -141,34 +77,34 @@ class Edge:
         self._edgeType = edgeType
 
     @property
-    def pointId1(self):
+    def point1(self):
         return self._pointId1
 
-    @pointId1.setter
-    def pointId1(self, pointId1: Point) -> None:
-        check_type("pointId1", pointId1, Point)
-        self._pointId1 = pointId1
+    @point1.setter
+    def point1(self, point1: Point) -> None:
+        check_type("point1", point1, Point)
+        self._pointId1 = point1
 
     @property
-    def pointId2(self):
+    def point2(self):
         return self._pointId2
 
-    @pointId2.setter
-    def pointId2(self, pointId2: Point) -> None:
-        check_type("pointId2", pointId2, Point)
-        self._pointId2 = pointId2
+    @point2.setter
+    def point2(self, point2: Point) -> None:
+        check_type("point2", point2, Point)
+        self._pointId2 = point2
 
 
 
 class EdgeArc(Edge):
-    def __init__(self, pointId1, pointId2, midPoint, isOrigin = False):
-        super().__init__("arc", pointId1, pointId2)
+    def __init__(self, point1: Point, point2: Point, midPoint: Vector, isOrigin: bool=False):
+        super().__init__("arc", point1, point2)
 
-        self.midPoint: Point = midPoint
+        self.midPoint: Vector = midPoint
         self.isOrigin: bool = isOrigin
 
     def __repr__(self):
-        return(f"{self.edgeType} {self.pointId1.id} {self.pointId2.id} {'origin' if self.isOrigin else ''} {self.midPoint}")
+        return(f"{self.edgeType} {self.point1.name} {self.point2.name} {'origin' if self.isOrigin else ''} {self.midPoint}")
 
     @property
     def midPoint(self):
@@ -176,7 +112,7 @@ class EdgeArc(Edge):
 
     @midPoint.setter
     def midPoint(self, midPoint) -> None:
-        check_type("midPoint", midPoint, Point)
+        check_type("midPoint", midPoint, Vector)
         self._midPoint = midPoint
 
     @property
@@ -190,13 +126,13 @@ class EdgeArc(Edge):
 
 
 class EdgePolyLine(Edge):
-    def __init__(self, pointId1, pointId2, points: list[Vector]):
-        super().__init__("polyLine", pointId1, pointId2)
+    def __init__(self, point1: Point, point2: Point, points: list[Vector]):
+        super().__init__("polyLine", point1, point2)
 
         self.points = points
 
     def __repr__(self):
-        text = f"{self.edgeType} {self.pointId1.id} {self.pointId2.id}\n"
+        text = f"{self.edgeType} {self.point1.name} {self.point2.name}\n"
         text += tab+"(\n"
         for point in self.points:
             text += f"{2*tab}{point}\n"
@@ -234,7 +170,7 @@ class Face:
         txt += f"{2*tab}faces\n"
         txt += f"{2*tab}(\n"
         for face in self.faces:
-            txt += f"{3*tab}( {' '.join([str(e.id) for e in face])} )\n"
+            txt += f"{3*tab}( {' '.join([e.name for e in face])} )\n"
         txt += f"{2*tab});\n"
         txt += tab + "}"
         return(txt)
@@ -243,10 +179,10 @@ class Face:
     def is_empty(self):
         return(len(self.faces) == 0)
 
-    def addSubFace(self, face: list[Point]) -> None:
+    def add_sub_face(self, face: list[Point]) -> None:
         self.faces.append(face)
 
-    def getCommonSubFaces(self, targetFace):
+    def get_common_sub_faces(self, targetFace):
         common = []
         for facei in self.faces:
             for facej in targetFace.faces:
@@ -477,9 +413,9 @@ class Block:
     edges : list[Edge]
         List of Edge objects.
     faceProjection : list
-        List of face projection. Updated using `addFaceProjection`
+        List of face projection. Updated using `add_face_projection`
     edgeProjection : list
-        List of edge projection. Updated using `addEdgeProjection`
+        List of edge projection. Updated using `add_edge_projection`
     """
     def __init__(
             self,
@@ -507,13 +443,12 @@ class Block:
         self.isPrint = isPrint
 
     def __repr__(self):
-        return(f"hex ({' '.join([str(p.id) for p in self.points])}) {self.name} ({self.nx} {self.ny} {self.nz}) simpleGrading ({self.gradx} {self.grady} {self.gradz})")
+        return(f"hex ({' '.join([p.name for p in self.points])}) {self.name} ({self.nx} {self.ny} {self.nz}) simpleGrading ({self.gradx} {self.grady} {self.gradz})")
 
-    def addEdgeArc(
+    def add_edge_arc(
             self,
             pointIdx1: int, pointIdx2: int,
             x: float=None, y: float=None, z: float=None,
-            isMidPointIndexed: bool=False,
             isOrigin: bool=False
         ):
         """
@@ -543,13 +478,13 @@ class Block:
             z = self.points[pointIdx1].z
 
         self.edges.append(EdgeArc(
-            pointId1=self.points[pointIdx1],
-            pointId2=self.points[pointIdx2],
-            midPoint=Point(x, y, z, isIndexed=isMidPointIndexed),
+            point1=self.points[pointIdx1],
+            point2=self.points[pointIdx2],
+            midPoint=Vector(x, y, z),
             isOrigin=isOrigin
         ))
 
-    def addEdgePolyLine(
+    def add_edge_polyline(
             self,
             pointIdx1: int,
             pointIdx2: int,
@@ -562,15 +497,19 @@ class Block:
         check_type("pointIdx2", pointIdx2, int)
 
         self.edges.append(EdgePolyLine(
-            pointId1=self.points[pointIdx1],
-            pointId2=self.points[pointIdx2],
+            point1=self.points[pointIdx1],
+            point2=self.points[pointIdx2],
             points=points
         ))
 
-    def addFaceProjection(self, faceName: int, geometryName: str) -> None:
+    def add_face_projection(self, faceName: str, geometryName: str) -> None:
         """
         Deform a face using a projection geometry.
         """
+        check_type("faceName", faceName, str)
+        check_value("faceName", faceName, _FACE_NAME_TYPES)
+        check_type("geometryName", geometryName, str)
+
         faceNameToId = {
             "left": 0, "right": 1, "front": 2, "back": 3, "bottom": 4, "top": 5
         }
@@ -578,7 +517,7 @@ class Block:
             "faceId": faceNameToId[faceName], "geometryName": geometryName
         })
 
-    def addEdgeProjection(
+    def add_edge_projection(
             self,
             verticeIdx1: int,
             verticeIdx2: int,
@@ -587,6 +526,8 @@ class Block:
         """
         Deform an edge using a projection geometry.
         """
+        check_type("verticeIdx1", verticeIdx1, int)
+        check_type("verticeIdx2", verticeIdx2, int)
         check_type("geometryNames", geometryNames, list)
 
         self.edgeProjection.append({
@@ -596,6 +537,10 @@ class Block:
         })
 
     def translate(self, dx: float=0, dy: float=0, dz: float=0) -> None:
+        check_type("dx", dx, (float, int))
+        check_type("dy", dy, (float, int))
+        check_type("dz", dz, (float, int))
+
         for point in self.points:
             point.translate(dx, dy, dz)
 
@@ -608,6 +553,8 @@ class Block:
         theta : float
             Rotation angle in rad (default `0`).
         """
+        check_type("theta", theta, (float, int))
+
         for point in self.points:
             point.rotateZ(theta)
 
@@ -648,14 +595,15 @@ class Block:
         """
         return([self.points[1], self.points[2], self.points[6], self.points[5]])
 
-    def getFace(self, faceName: str) -> list[Point]:
+    def get_face(self, faceName: str) -> list[Point]:
         """
         Return the face as a list of Point. Equivalent to :
 
-            block.getFace('top') == block.topFace()
+            block.get_face('top') == block.topFace()
         """
         check_type("faceName", faceName, str)
         check_value("faceName", faceName, _FACE_NAME_TYPES)
+
         if (faceName == "top"):
             return(self.topFace())
         elif (faceName == "bottom"):
@@ -670,7 +618,7 @@ class Block:
             return(self.backFace())
         raise ValueError(f"{faceName} does not exists")
 
-    def getOppositeFacename(self, faceName: str) -> str:
+    def get_opposite_facename(self, faceName: str) -> str:
         """
         Return the face name at the opposite of the block.
         - top -> bottom
@@ -682,10 +630,11 @@ class Block:
 
         Equivalent to :
 
-            block.getOppositeFace('top') == block.bottomFace()
+            block.get_opposite_face('top') == block.bottomFace()
         """
         check_type("faceName", faceName, str)
         check_value("faceName", faceName, _FACE_NAME_TYPES)
+
         if (faceName == "bottom"):
             return("top")
         elif (faceName == "top"):
@@ -700,7 +649,7 @@ class Block:
             return("back")
         raise ValueError(f"{faceName} does not exists")
 
-    def getOppositeFace(self, faceName: str) -> list[Point]:
+    def get_opposite_face(self, faceName: str) -> list[Point]:
         """
         Return the face at the opposite of the block as a list of Point.
         - top -> bottom
@@ -712,10 +661,11 @@ class Block:
 
         Equivalent to :
 
-            block.getOppositeFace('top') == block.bottomFace()
+            block.get_opposite_face('top') == block.bottomFace()
         """
         check_type("faceName", faceName, str)
         check_value("faceName", faceName, _FACE_NAME_TYPES)
+
         if (faceName == "bottom"):
             return(self.topFace())
         elif (faceName == "top"):
@@ -730,7 +680,7 @@ class Block:
             return(self.backFace())
         raise ValueError(f"{faceName} does not exists")
 
-    def getFaceBarycenter(self, face: list[Point]) -> Vector:
+    def get_face_barycenter(self, face: list[Point]) -> Vector:
         """
         Compute the barycenter position of the face
         """
@@ -741,17 +691,16 @@ class Block:
             sum([p.z for p in face]) / nPoints
         ))
 
-    def getFaceNormal(self, faceName: str) -> Vector:
+    def get_face_normal(self, faceName: str) -> Vector:
         check_type("faceName", faceName, str)
         check_value("faceName", faceName, _FACE_NAME_TYPES)
 
-        face = self.getFace(faceName)
+        face = self.get_face(faceName)
         p1, p2, p3 = face[0], face[1], face[2]
         vec1 = Vector(p1.x-p2.x, p1.y-p2.y, p1.z-p2.z)
         vec2 = Vector(p2.x-p3.x, p2.y-p3.y, p2.z-p3.z)
-        # if (faceName in ['front', 'top', 'bottom', 'left', 'right']):
+
         return(vec1.cross(vec2))
-        return(vec2.cross(vec1))
 
 
 
@@ -771,21 +720,32 @@ class BlockMesh(OpenFOAMFile, Mesh):
     ----------
     scale : float
         Scaling factor of the mesh.
+    isReducedCells : bool
+        Assign a single cells per directions for all blocks. Can be used for
+        quick visualization (default `False`).
+    isMergeCoincidentPoints : bool
+        Minimize the number of `Point` by removing duplicate points. The
+        removing operation is only performed during blockMeshDict writting.
+        Default `False`.
+    isSafeCoincidenceMode : bool
+        If set to `False`, use a faster but risky hashable approach to found all
+        coincident points.
+        Default `True`.
     blocks : list[Block]
-        List of blocks
+        List of blocks.
     faces : list[Face]
-        List of faces
+        List of faces.
     mergePatchPairs : list[tuple[Face]]
         List of merged patch pairs faces. Used to stitch `Block`.
     baffleFaces : list[tuple[Face]]
-        List of baffle patch pairs faces. Used to create baffle faces
+        List of baffle patch pairs faces. Used to create baffle faces.
     spheres : list[dict]
-        List of spheres geometries usually used for point/edge/face projections
+        List of spheres geometries usually used for point/edge/face projections.
     cylinders : list[dict]
         List of cylinders geometries usually used for point/edge/face
-        projections
+        projections.
     cones : list[dict]
-        List of cones geometries usually used for point/edge/face projections
+        List of cones geometries usually used for point/edge/face projections.
     pipeWallBC : Face
         Pipe wall boundary condition face named `pipeWall`.
     """
@@ -799,17 +759,49 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
         self.scale = scale
         self.isReducedCells: bool = False
+        self.isMergeCoincidentPoints: bool = False
+        self.isSafeCoincidenceMode: bool = True
+
         self.blocks: list[Block] = []
         self.faces: list[Face] = []
         self.mergePatchPairs: list[tuple[Face]] = []
         self.baffleFaces: list[tuple[Face]] = []
+
         # List of basic geometry for face projection
         self.spheres: list[dict] = []
         self.cylinders: list[dict] = []
         self.cones: list[dict] = []
 
         self.pipeWallBC = Face("pipeWall", boundaryType="wall")
-        self.addBoundary(self.pipeWallBC)
+        self.add_boundary(self.pipeWallBC)
+
+
+    @property
+    def scale(self):
+        return self._scale
+
+    @scale.setter
+    def scale(self, scale) -> None:
+        check_type("scale", scale, (float, int))
+        self._scale = scale
+
+    @property
+    def isReducedCells(self):
+        return self._isReducedCells
+
+    @isReducedCells.setter
+    def isReducedCells(self, isReducedCells) -> None:
+        check_type("isReducedCells", isReducedCells, bool)
+        self._isReducedCells = isReducedCells
+
+    @property
+    def isMergeCoincidentPoints(self):
+        return self._isMergeCoincidentPoints
+
+    @isMergeCoincidentPoints.setter
+    def isMergeCoincidentPoints(self, isMergeCoincidentPoints) -> None:
+        check_type("isMergeCoincidentPoints", isMergeCoincidentPoints, bool)
+        self._isMergeCoincidentPoints = isMergeCoincidentPoints
 
 
     @property
@@ -824,7 +816,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         return(zones)
 
 
-    def addSphere(
+    def add_sphere(
             self,
             name: str,
             radius: float,
@@ -841,11 +833,12 @@ class BlockMesh(OpenFOAMFile, Mesh):
         })
 
 
-    def addCylinder(
+    def add_cylinder(
             self,
             name: str,
             radius: float,
-            point1: tuple=(0, 0, 0), point2: tuple=(0, 0, 0)
+            point1: tuple=(0, 0, 0),
+            point2: tuple=(0, 0, 0)
         ) -> None:
         """
         Create a cylinder geometry shape that can be used for point, edge and
@@ -859,7 +852,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         })
 
 
-    def addCone(
+    def add_cone(
             self,
             name: str,
             radius1: float,
@@ -879,7 +872,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         })
 
 
-    def createBlock(
+    def create_block(
             self,
             name: str,
             points: list[Point],
@@ -906,31 +899,38 @@ class BlockMesh(OpenFOAMFile, Mesh):
         return(newBlock)
 
 
-    def createWedge(
+    def create_wedge(
             self,
             name: str,
-            innerRadius: float, outerRadius: float, lowZ: float, highZ: float,
+            innerRadius: float, outerRadius: float,
+            lowZ: float, highZ: float,
             wedgeAngle: float,
             nr: int, nz: int,
             gradr: float=1, gradz: float=1
         ) -> Block:
         """
+        Create a wedge along the Z-axis using 1 block.
+
         Parameters
         ----------
         wedgeAngle : float
-            Total wedge aperture angle in degree
+            Total wedge aperture angle in degree.
 
         Return
         ------
             (newBlock)
         """
+        if (innerRadius > outerRadius):
+            msg = "innerRadius must be smaller than outerRadius"
+            raise ValueError(msg)
+
         deg = np.pi/180
         irX = innerRadius * np.cos(wedgeAngle/2 * deg)
         irY = innerRadius * np.sin(wedgeAngle/2 * deg)
         orX = outerRadius * np.cos(wedgeAngle/2 * deg)
         orY = outerRadius * np.sin(wedgeAngle/2 * deg)
 
-        newBlock = self.createBlock(name, [
+        newBlock = self.create_block(name, [
             Point(irX, -irY, lowZ),
             Point(orX, -orY, lowZ),
             Point(orX, orY, lowZ),
@@ -944,7 +944,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         return(newBlock)
 
 
-    def createWedgeConical(
+    def create_wedge_conical(
             self,
             name: str,
             innerRadiusBottom: float,
@@ -958,7 +958,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             gradr: float=1, gradz: float=1
         ) -> Block:
         """
-        Create a conical wedge along the Z-axis.
+        Create a conical wedge along the Z-axis using 1 block.
 
         Parameters
         ----------
@@ -979,7 +979,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         orTopX = outerRadiusTop * np.cos(wedgeAngle/2 * deg)
         orTopY = outerRadiusTop * np.sin(wedgeAngle/2 * deg)
 
-        newBlock = self.createBlock(name, [
+        newBlock = self.create_block(name, [
             Point(irBotX, -irBotY, lowZ),
             Point(orBotX, -orBotY, lowZ),
             Point(orBotX, orBotY, lowZ),
@@ -993,20 +993,22 @@ class BlockMesh(OpenFOAMFile, Mesh):
         return(newBlock)
 
 
-    def createCube(
+    def create_cube(
             self, name: str,
             lowX: float, lowY: float, lowZ: float,
             highX: float, highY: float, highZ: float,
             nx: int=1, ny: int=1, nz: int=1,
             gradx: float=1, grady: float=1, gradz: float=1,
-            isAddBoundaryConditions: bool=False
+            isAddAllBC: bool=False
         ) -> Block:
         """
+        Create a cube sub-mesh using 1 block.
+
         Return
         ------
             (newBlock)
         """
-        newBlock = self.createBlock(name, [
+        newBlock = self.create_block(name, [
             Point(lowX, lowY, lowZ),
             Point(highX, lowY, lowZ),
             Point(highX, highY, lowZ),
@@ -1017,34 +1019,34 @@ class BlockMesh(OpenFOAMFile, Mesh):
             Point(lowX, highY, highZ),
         ], nx, ny, nz, gradx=gradx, grady=grady, gradz=gradz)
 
-        if (isAddBoundaryConditions):
+        if (isAddAllBC):
             idxFace = len(self.faces)
 
             topFace = Face(f"{name}Top_{idxFace}")
-            topFace.addSubFace(newBlock.topFace())
+            topFace.add_sub_face(newBlock.topFace())
             botFace = Face(f"{name}Bottom_{idxFace}")
-            botFace.addSubFace(newBlock.bottomFace())
+            botFace.add_sub_face(newBlock.bottomFace())
 
             wallFront = Face(f"{name}WallFront_{idxFace}", boundaryType='wall')
-            wallFront.addSubFace(newBlock.frontFace())
+            wallFront.add_sub_face(newBlock.frontFace())
             wallLeft = Face(f"{name}WallLeft_{idxFace}", boundaryType='wall')
-            wallLeft.addSubFace(newBlock.leftFace())
+            wallLeft.add_sub_face(newBlock.leftFace())
             wallRight = Face(f"{name}WallRight_{idxFace}", boundaryType='wall')
-            wallRight.addSubFace(newBlock.rightFace())
+            wallRight.add_sub_face(newBlock.rightFace())
             wallBack = Face(f"{name}WallBack_{idxFace}", boundaryType='wall')
-            wallBack.addSubFace(newBlock.backFace())
+            wallBack.add_sub_face(newBlock.backFace())
 
-            self.addBoundary(topFace)
-            self.addBoundary(botFace)
-            self.addBoundary(wallFront)
-            self.addBoundary(wallLeft)
-            self.addBoundary(wallRight)
-            self.addBoundary(wallBack)
+            self.add_boundary(topFace)
+            self.add_boundary(botFace)
+            self.add_boundary(wallFront)
+            self.add_boundary(wallLeft)
+            self.add_boundary(wallRight)
+            self.add_boundary(wallBack)
 
         return(newBlock)
 
 
-    def createSphere(
+    def create_sphere(
             self,
             name: str,
             radius: float,
@@ -1055,18 +1057,20 @@ class BlockMesh(OpenFOAMFile, Mesh):
             nBorder: int=1,
             gradCenter: float=1,
             gradBorder: float=1,
-            isAddBoundaryConditions: bool=False
+            isAddAllBC: bool=False
         ):
         """
+        Create a sphere sub mesh using 7 blocks.
+
         Return
         ------
             (ballCenter, ballTop, ballRight, ballBack, ballLeft, ballFront, ballBottom)
         """
         sqrt3 = np.sqrt(3)
 
-        self.addSphere(name, radius, (x, y, z))
+        self.add_sphere(name, radius, (x, y, z))
 
-        ballCenter = self.createCube(
+        ballCenter = self.create_cube(
             name,
             x-radius/3, y-radius/3, z-radius/3,
             x+radius/3, y+radius/3, z+radius/3,
@@ -1074,104 +1078,104 @@ class BlockMesh(OpenFOAMFile, Mesh):
             gradx=gradCenter, grady=gradCenter, gradz=gradCenter
         )
 
-        ballRight = self.addRight(ballCenter, name, [
+        ballRight = self.add_right(ballCenter, name, [
             Point(x+radius/sqrt3, y-radius/sqrt3, z-radius/sqrt3),
             Point(x+radius/sqrt3, y+radius/sqrt3, z-radius/sqrt3),
             Point(x+radius/sqrt3, y-radius/sqrt3, z+radius/sqrt3),
             Point(x+radius/sqrt3, y+radius/sqrt3, z+radius/sqrt3),
         ], nx=nBorder, gradx=gradBorder)
 
-        ballRight.addEdgeArc(1, 5, x=x, y=y, z=z, isOrigin=True)
-        ballRight.addEdgeArc(5, 6, x=x, y=y, z=z, isOrigin=True)
-        ballRight.addEdgeArc(6, 2, x=x, y=y, z=z, isOrigin=True)
-        ballRight.addEdgeArc(1, 2, x=x, y=y, z=z, isOrigin=True)
+        ballRight.add_edge_arc(1, 5, x=x, y=y, z=z, isOrigin=True)
+        ballRight.add_edge_arc(5, 6, x=x, y=y, z=z, isOrigin=True)
+        ballRight.add_edge_arc(6, 2, x=x, y=y, z=z, isOrigin=True)
+        ballRight.add_edge_arc(1, 2, x=x, y=y, z=z, isOrigin=True)
 
-        ballRight.addFaceProjection("right", name)
+        ballRight.add_face_projection("right", name)
 
-        ballLeft = self.addLeft(ballCenter, name, [
+        ballLeft = self.add_left(ballCenter, name, [
             Point(x-radius/sqrt3, y-radius/sqrt3, z-radius/sqrt3),
             Point(x-radius/sqrt3, y+radius/sqrt3, z-radius/sqrt3),
             Point(x-radius/sqrt3, y-radius/sqrt3, z+radius/sqrt3),
             Point(x-radius/sqrt3, y+radius/sqrt3, z+radius/sqrt3),
         ], ballRight.nx, gradx=1/gradBorder)
 
-        ballLeft.addEdgeArc(0, 4, x=x, y=y, z=z, isOrigin=True)
-        ballLeft.addEdgeArc(4, 7, x=x, y=y, z=z, isOrigin=True)
-        ballLeft.addEdgeArc(7, 3, x=x, y=y, z=z, isOrigin=True)
-        ballLeft.addEdgeArc(0, 3, x=x, y=y, z=z, isOrigin=True)
+        ballLeft.add_edge_arc(0, 4, x=x, y=y, z=z, isOrigin=True)
+        ballLeft.add_edge_arc(4, 7, x=x, y=y, z=z, isOrigin=True)
+        ballLeft.add_edge_arc(7, 3, x=x, y=y, z=z, isOrigin=True)
+        ballLeft.add_edge_arc(0, 3, x=x, y=y, z=z, isOrigin=True)
 
-        ballLeft.addFaceProjection("left", name)
+        ballLeft.add_face_projection("left", name)
 
-        ballFront = self.addFront(ballCenter, name, [
+        ballFront = self.add_front(ballCenter, name, [
             ballLeft.points[0],
             ballRight.points[1],
             ballLeft.points[4],
             ballRight.points[5],
         ], ballRight.nx, grady=1/gradBorder)
 
-        ballFront.addEdgeArc(4, 5, x=x, y=y, z=z, isOrigin=True)
-        ballFront.addEdgeArc(0, 1, x=x, y=y, z=z, isOrigin=True)
+        ballFront.add_edge_arc(4, 5, x=x, y=y, z=z, isOrigin=True)
+        ballFront.add_edge_arc(0, 1, x=x, y=y, z=z, isOrigin=True)
 
-        ballFront.addFaceProjection("front", name)
+        ballFront.add_face_projection("front", name)
 
-        ballBack = self.addBack(ballCenter, name, [
+        ballBack = self.add_back(ballCenter, name, [
             ballRight.points[2],
             ballLeft.points[3],
             ballRight.points[6],
             ballLeft.points[7],
         ], ballRight.nx, grady=gradBorder)
 
-        ballBack.addEdgeArc(6, 7, x=x, y=y, z=z, isOrigin=True)
-        ballBack.addEdgeArc(3, 2, x=x, y=y, z=z, isOrigin=True)
+        ballBack.add_edge_arc(6, 7, x=x, y=y, z=z, isOrigin=True)
+        ballBack.add_edge_arc(3, 2, x=x, y=y, z=z, isOrigin=True)
 
-        ballBack.addFaceProjection("back", name)
+        ballBack.add_face_projection("back", name)
 
-        ballTop = self.addTop(ballCenter, name, [
+        ballTop = self.add_top(ballCenter, name, [
             ballLeft.points[4],
             ballRight.points[5],
             ballRight.points[6],
             ballLeft.points[7],
         ], ballRight.nx, gradz=gradBorder)
 
-        ballTop.addFaceProjection("top", name)
+        ballTop.add_face_projection("top", name)
 
-        ballBottom = self.addBottom(ballCenter, name, [
+        ballBottom = self.add_bottom(ballCenter, name, [
             ballLeft.points[0],
             ballRight.points[1],
             ballRight.points[2],
             ballLeft.points[3],
         ], ballRight.nx, gradz=1/gradBorder)
 
-        ballBottom.addFaceProjection("bottom", name)
+        ballBottom.add_face_projection("bottom", name)
 
 
-        if (isAddBoundaryConditions):
+        if (isAddAllBC):
             idxFace = len(self.faces)
 
             wallFaceFront = Face(f"{name}WallFront_{idxFace}", boundaryType='wall')
-            wallFaceFront.addSubFace(ballFront.frontFace())
+            wallFaceFront.add_sub_face(ballFront.frontFace())
             wallFaceBack = Face(f"{name}WallBack_{idxFace}", boundaryType='wall')
-            wallFaceBack.addSubFace(ballBack.backFace())
+            wallFaceBack.add_sub_face(ballBack.backFace())
             wallFaceRight = Face(f"{name}WallRight_{idxFace}", boundaryType='wall')
-            wallFaceRight.addSubFace(ballRight.rightFace())
+            wallFaceRight.add_sub_face(ballRight.rightFace())
             wallFaceLeft = Face(f"{name}WallLeft_{idxFace}", boundaryType='wall')
-            wallFaceLeft.addSubFace(ballLeft.leftFace())
+            wallFaceLeft.add_sub_face(ballLeft.leftFace())
             wallFaceTop = Face(f"{name}WallTop_{idxFace}", boundaryType='wall')
-            wallFaceTop.addSubFace(ballTop.topFace())
+            wallFaceTop.add_sub_face(ballTop.topFace())
             wallFaceBottom = Face(f"{name}WallBottom_{idxFace}", boundaryType='wall')
-            wallFaceBottom.addSubFace(ballBottom.bottomFace())
+            wallFaceBottom.add_sub_face(ballBottom.bottomFace())
 
-            self.addBoundary(wallFaceFront)
-            self.addBoundary(wallFaceBack)
-            self.addBoundary(wallFaceRight)
-            self.addBoundary(wallFaceLeft)
-            self.addBoundary(wallFaceTop)
-            self.addBoundary(wallFaceBottom)
+            self.add_boundary(wallFaceFront)
+            self.add_boundary(wallFaceBack)
+            self.add_boundary(wallFaceRight)
+            self.add_boundary(wallFaceLeft)
+            self.add_boundary(wallFaceTop)
+            self.add_boundary(wallFaceBottom)
 
         return(ballCenter, ballTop, ballRight, ballBack, ballLeft, ballFront, ballBottom)
 
 
-    def createHalfSphere(
+    def create_half_sphere(
             self,
             name: str,
             radius: float,
@@ -1182,7 +1186,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             nBorder: int=1,
             gradCenter: float=1,
             gradBorder: float=1,
-            isAddBoundaryConditions: bool=False
+            isAddAllBC: bool=False
         ):
         """
         Return
@@ -1192,9 +1196,9 @@ class BlockMesh(OpenFOAMFile, Mesh):
         sqrt2 = np.sqrt(2)
         sqrt3 = np.sqrt(3)
 
-        self.addSphere(name, radius, (x, y, z))
+        self.add_sphere(name, radius, (x, y, z))
 
-        ballCenter = self.createCube(
+        ballCenter = self.create_cube(
             name,
             x-radius/3, y-radius/3, z-radius/3,
             x+radius/3, y+radius/3, z,
@@ -1202,99 +1206,99 @@ class BlockMesh(OpenFOAMFile, Mesh):
             gradx=gradCenter, grady=gradCenter, gradz=gradCenter
         )
 
-        ballRight = self.addRight(ballCenter, name, [
+        ballRight = self.add_right(ballCenter, name, [
             Point(x+radius/sqrt3, y-radius/sqrt3, z-radius/sqrt3),
             Point(x+radius/sqrt3, y+radius/sqrt3, z-radius/sqrt3),
             Point(x+radius/sqrt2, y-radius/sqrt2, z),
             Point(x+radius/sqrt2, y+radius/sqrt2, z),
         ], nx=nBorder, gradx=gradBorder)
 
-        ballRight.addEdgeArc(1, 5, x=x, y=y, z=z, isOrigin=True)
-        ballRight.addEdgeArc(5, 6, x=x, y=y, z=z, isOrigin=True)
-        ballRight.addEdgeArc(6, 2, x=x, y=y, z=z, isOrigin=True)
-        ballRight.addEdgeArc(1, 2, x=x, y=y, z=z, isOrigin=True)
+        ballRight.add_edge_arc(1, 5, x=x, y=y, z=z, isOrigin=True)
+        ballRight.add_edge_arc(5, 6, x=x, y=y, z=z, isOrigin=True)
+        ballRight.add_edge_arc(6, 2, x=x, y=y, z=z, isOrigin=True)
+        ballRight.add_edge_arc(1, 2, x=x, y=y, z=z, isOrigin=True)
 
-        ballRight.addFaceProjection("right", name)
+        ballRight.add_face_projection("right", name)
 
-        ballLeft = self.addLeft(ballCenter, name, [
+        ballLeft = self.add_left(ballCenter, name, [
             Point(x-radius/sqrt3, y-radius/sqrt3, z-radius/sqrt3),
             Point(x-radius/sqrt3, y+radius/sqrt3, z-radius/sqrt3),
             Point(x-radius/sqrt2, y-radius/sqrt2, z),
             Point(x-radius/sqrt2, y+radius/sqrt2, z),
         ], ballRight.nx, gradx=1/gradBorder)
 
-        ballLeft.addEdgeArc(0, 4, x=x, y=y, z=z, isOrigin=True)
-        ballLeft.addEdgeArc(4, 7, x=x, y=y, z=z, isOrigin=True)
-        ballLeft.addEdgeArc(7, 3, x=x, y=y, z=z, isOrigin=True)
-        ballLeft.addEdgeArc(0, 3, x=x, y=y, z=z, isOrigin=True)
+        ballLeft.add_edge_arc(0, 4, x=x, y=y, z=z, isOrigin=True)
+        ballLeft.add_edge_arc(4, 7, x=x, y=y, z=z, isOrigin=True)
+        ballLeft.add_edge_arc(7, 3, x=x, y=y, z=z, isOrigin=True)
+        ballLeft.add_edge_arc(0, 3, x=x, y=y, z=z, isOrigin=True)
 
-        ballLeft.addFaceProjection("left", name)
+        ballLeft.add_face_projection("left", name)
 
-        ballFront = self.addFront(ballCenter, name, [
+        ballFront = self.add_front(ballCenter, name, [
             ballLeft.points[0],
             ballRight.points[1],
             ballLeft.points[4],
             ballRight.points[5],
         ], ballRight.nx, grady=1/gradBorder)
 
-        ballFront.addEdgeArc(4, 5, x=x, y=y, z=z, isOrigin=True)
-        ballFront.addEdgeArc(0, 1, x=x, y=y, z=z, isOrigin=True)
+        ballFront.add_edge_arc(4, 5, x=x, y=y, z=z, isOrigin=True)
+        ballFront.add_edge_arc(0, 1, x=x, y=y, z=z, isOrigin=True)
 
-        ballFront.addFaceProjection("front", name)
+        ballFront.add_face_projection("front", name)
 
-        ballBack = self.addBack(ballCenter, name, [
+        ballBack = self.add_back(ballCenter, name, [
             ballRight.points[2],
             ballLeft.points[3],
             ballRight.points[6],
             ballLeft.points[7],
         ], ballRight.nx, grady=gradBorder)
 
-        ballBack.addEdgeArc(6, 7, x=x, y=y, z=z, isOrigin=True)
-        ballBack.addEdgeArc(3, 2, x=x, y=y, z=z, isOrigin=True)
+        ballBack.add_edge_arc(6, 7, x=x, y=y, z=z, isOrigin=True)
+        ballBack.add_edge_arc(3, 2, x=x, y=y, z=z, isOrigin=True)
 
-        ballBack.addFaceProjection("back", name)
+        ballBack.add_face_projection("back", name)
 
-        ballBottom = self.addBottom(ballCenter, name, [
+        ballBottom = self.add_bottom(ballCenter, name, [
             ballLeft.points[0],
             ballRight.points[1],
             ballRight.points[2],
             ballLeft.points[3],
         ], ballRight.nx, gradz=1/gradBorder)
 
-        ballBottom.addFaceProjection("bottom", name)
+        ballBottom.add_face_projection("bottom", name)
 
 
-        if (isAddBoundaryConditions):
+        if (isAddAllBC):
             idxFace = len(self.faces)
 
             wallFaceTop = Face(f"{name}WallTop_{idxFace}", boundaryType='wall')
-            wallFaceTop.addSubFace(ballCenter.topFace())
-            wallFaceTop.addSubFace(ballBack.topFace())
-            wallFaceTop.addSubFace(ballFront.topFace())
-            wallFaceTop.addSubFace(ballRight.topFace())
-            wallFaceTop.addSubFace(ballLeft.topFace())
+            wallFaceTop.add_sub_face(ballCenter.topFace())
+            wallFaceTop.add_sub_face(ballBack.topFace())
+            wallFaceTop.add_sub_face(ballFront.topFace())
+            wallFaceTop.add_sub_face(ballRight.topFace())
+            wallFaceTop.add_sub_face(ballLeft.topFace())
             wallFaceBottom = Face(f"{name}WallBottom_{idxFace}", boundaryType='wall')
-            wallFaceBottom.addSubFace(ballBottom.bottomFace())
+            wallFaceBottom.add_sub_face(ballBottom.bottomFace())
             wallFaceFront = Face(f"{name}WallFront_{idxFace}", boundaryType='wall')
-            wallFaceFront.addSubFace(ballFront.frontFace())
+            wallFaceFront.add_sub_face(ballFront.frontFace())
             wallFaceBack = Face(f"{name}WallBack_{idxFace}", boundaryType='wall')
-            wallFaceBack.addSubFace(ballBack.backFace())
+            wallFaceBack.add_sub_face(ballBack.backFace())
             wallFaceRight = Face(f"{name}WallRight_{idxFace}", boundaryType='wall')
-            wallFaceRight.addSubFace(ballRight.rightFace())
+            wallFaceRight.add_sub_face(ballRight.rightFace())
             wallFaceLeft = Face(f"{name}WallLeft_{idxFace}", boundaryType='wall')
-            wallFaceLeft.addSubFace(ballLeft.leftFace())
+            wallFaceLeft.add_sub_face(ballLeft.leftFace())
 
-            self.addBoundary(wallFaceTop)
-            self.addBoundary(wallFaceBottom)
-            self.addBoundary(wallFaceFront)
-            self.addBoundary(wallFaceBack)
-            self.addBoundary(wallFaceRight)
-            self.addBoundary(wallFaceLeft)
+            self.add_boundary(wallFaceTop)
+            self.add_boundary(wallFaceBottom)
+            self.add_boundary(wallFaceFront)
+            self.add_boundary(wallFaceBack)
+            self.add_boundary(wallFaceRight)
+            self.add_boundary(wallFaceLeft)
 
         return(ballCenter, ballRight, ballBack, ballLeft, ballFront, ballBottom)
 
 
-    def createHollowHalfSphere(
+    def create_hollow_half_sphere(
             self,
             name: str,
             innerRadius: float,
@@ -1304,7 +1308,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             z: float=0,
             nr: int=1,
             nt: int=1,
-            isAddBoundaryConditions: bool=False
+            isAddAllBC: bool=False
         ):
         """
         Return
@@ -1314,10 +1318,10 @@ class BlockMesh(OpenFOAMFile, Mesh):
         sqrt2 = np.sqrt(2)
         sqrt3 = np.sqrt(3)
 
-        self.addSphere(name+"_inner", innerRadius, (x, y, z))
-        self.addSphere(name+"_outer", outerRadius, (x, y, z))
+        self.add_sphere(name+"_inner", innerRadius, (x, y, z))
+        self.add_sphere(name+"_outer", outerRadius, (x, y, z))
 
-        ballFront = self.createBlock(name, [
+        ballFront = self.create_block(name, [
             Point(x-outerRadius/sqrt3, y-outerRadius/sqrt3, z-outerRadius/sqrt3),
             Point(x+outerRadius/sqrt3, y-outerRadius/sqrt3, z-outerRadius/sqrt3),
             Point(x+innerRadius/sqrt3, y-innerRadius/sqrt3, z-innerRadius/sqrt3),
@@ -1328,20 +1332,20 @@ class BlockMesh(OpenFOAMFile, Mesh):
             Point(x-innerRadius/sqrt2, y-innerRadius/sqrt2, z),
         ], nx=nt, ny=nr, nz=nt)
 
-        ballFront.addEdgeArc(0, 1, x=x, y=y, z=z, isOrigin=True)
-        ballFront.addEdgeArc(2, 3, x=x, y=y, z=z, isOrigin=True)
-        ballFront.addEdgeArc(4, 5, x=x, y=y, z=z, isOrigin=True)
-        ballFront.addEdgeArc(6, 7, x=x, y=y, z=z, isOrigin=True)
-        ballFront.addEdgeArc(0, 4, x=x, y=y, z=z, isOrigin=True)
-        ballFront.addEdgeArc(1, 5, x=x, y=y, z=z, isOrigin=True)
-        ballFront.addEdgeArc(2, 6, x=x, y=y, z=z, isOrigin=True)
-        ballFront.addEdgeArc(3, 7, x=x, y=y, z=z, isOrigin=True)
+        ballFront.add_edge_arc(0, 1, x=x, y=y, z=z, isOrigin=True)
+        ballFront.add_edge_arc(2, 3, x=x, y=y, z=z, isOrigin=True)
+        ballFront.add_edge_arc(4, 5, x=x, y=y, z=z, isOrigin=True)
+        ballFront.add_edge_arc(6, 7, x=x, y=y, z=z, isOrigin=True)
+        ballFront.add_edge_arc(0, 4, x=x, y=y, z=z, isOrigin=True)
+        ballFront.add_edge_arc(1, 5, x=x, y=y, z=z, isOrigin=True)
+        ballFront.add_edge_arc(2, 6, x=x, y=y, z=z, isOrigin=True)
+        ballFront.add_edge_arc(3, 7, x=x, y=y, z=z, isOrigin=True)
 
-        ballFront.addFaceProjection("back", name+"_inner")
-        ballFront.addFaceProjection("front", name+"_outer")
+        ballFront.add_face_projection("back", name+"_inner")
+        ballFront.add_face_projection("front", name+"_outer")
 
 
-        ballBack = self.createBlock(name, [
+        ballBack = self.create_block(name, [
             Point(x-innerRadius/sqrt3, y+innerRadius/sqrt3, z-innerRadius/sqrt3),
             Point(x+innerRadius/sqrt3, y+innerRadius/sqrt3, z-innerRadius/sqrt3),
             Point(x+outerRadius/sqrt3, y+outerRadius/sqrt3, z-outerRadius/sqrt3),
@@ -1352,20 +1356,20 @@ class BlockMesh(OpenFOAMFile, Mesh):
             Point(x-outerRadius/sqrt2, y+outerRadius/sqrt2, z),
         ], nx=nt, ny=nr, nz=nt)
 
-        ballBack.addEdgeArc(0, 1, x=x, y=y, z=z, isOrigin=True)
-        ballBack.addEdgeArc(2, 3, x=x, y=y, z=z, isOrigin=True)
-        ballBack.addEdgeArc(4, 5, x=x, y=y, z=z, isOrigin=True)
-        ballBack.addEdgeArc(6, 7, x=x, y=y, z=z, isOrigin=True)
-        ballBack.addEdgeArc(0, 4, x=x, y=y, z=z, isOrigin=True)
-        ballBack.addEdgeArc(1, 5, x=x, y=y, z=z, isOrigin=True)
-        ballBack.addEdgeArc(2, 6, x=x, y=y, z=z, isOrigin=True)
-        ballBack.addEdgeArc(3, 7, x=x, y=y, z=z, isOrigin=True)
+        ballBack.add_edge_arc(0, 1, x=x, y=y, z=z, isOrigin=True)
+        ballBack.add_edge_arc(2, 3, x=x, y=y, z=z, isOrigin=True)
+        ballBack.add_edge_arc(4, 5, x=x, y=y, z=z, isOrigin=True)
+        ballBack.add_edge_arc(6, 7, x=x, y=y, z=z, isOrigin=True)
+        ballBack.add_edge_arc(0, 4, x=x, y=y, z=z, isOrigin=True)
+        ballBack.add_edge_arc(1, 5, x=x, y=y, z=z, isOrigin=True)
+        ballBack.add_edge_arc(2, 6, x=x, y=y, z=z, isOrigin=True)
+        ballBack.add_edge_arc(3, 7, x=x, y=y, z=z, isOrigin=True)
 
-        ballBack.addFaceProjection("front", name+"_inner")
-        ballBack.addFaceProjection("back", name+"_outer")
+        ballBack.add_face_projection("front", name+"_inner")
+        ballBack.add_face_projection("back", name+"_outer")
 
 
-        ballRight = self.createBlock(name, [
+        ballRight = self.create_block(name, [
             ballFront.points[2],
             ballFront.points[1],
             ballBack.points[2],
@@ -1376,15 +1380,15 @@ class BlockMesh(OpenFOAMFile, Mesh):
             ballBack.points[5],
         ], nx=nr, ny=nt, nz=nt)
 
-        ballRight.addEdgeArc(0, 3, x=x, y=y, z=z, isOrigin=True)
-        ballRight.addEdgeArc(1, 2, x=x, y=y, z=z, isOrigin=True)
-        ballRight.addEdgeArc(4, 7, x=x, y=y, z=z, isOrigin=True)
-        ballRight.addEdgeArc(5, 6, x=x, y=y, z=z, isOrigin=True)
+        ballRight.add_edge_arc(0, 3, x=x, y=y, z=z, isOrigin=True)
+        ballRight.add_edge_arc(1, 2, x=x, y=y, z=z, isOrigin=True)
+        ballRight.add_edge_arc(4, 7, x=x, y=y, z=z, isOrigin=True)
+        ballRight.add_edge_arc(5, 6, x=x, y=y, z=z, isOrigin=True)
 
-        ballRight.addFaceProjection("left", name+"_inner")
-        ballRight.addFaceProjection("right", name+"_outer")
+        ballRight.add_face_projection("left", name+"_inner")
+        ballRight.add_face_projection("right", name+"_outer")
 
-        ballLeft = self.createBlock(name, [
+        ballLeft = self.create_block(name, [
             ballFront.points[0],
             ballFront.points[3],
             ballBack.points[0],
@@ -1395,15 +1399,15 @@ class BlockMesh(OpenFOAMFile, Mesh):
             ballBack.points[7],
         ], nx=nr, ny=nt, nz=nt)
 
-        ballLeft.addEdgeArc(0, 3, x=x, y=y, z=z, isOrigin=True)
-        ballLeft.addEdgeArc(1, 2, x=x, y=y, z=z, isOrigin=True)
-        ballLeft.addEdgeArc(4, 7, x=x, y=y, z=z, isOrigin=True)
-        ballLeft.addEdgeArc(5, 6, x=x, y=y, z=z, isOrigin=True)
+        ballLeft.add_edge_arc(0, 3, x=x, y=y, z=z, isOrigin=True)
+        ballLeft.add_edge_arc(1, 2, x=x, y=y, z=z, isOrigin=True)
+        ballLeft.add_edge_arc(4, 7, x=x, y=y, z=z, isOrigin=True)
+        ballLeft.add_edge_arc(5, 6, x=x, y=y, z=z, isOrigin=True)
 
-        ballLeft.addFaceProjection("right", name+"_inner")
-        ballLeft.addFaceProjection("left", name+"_outer")
+        ballLeft.add_face_projection("right", name+"_inner")
+        ballLeft.add_face_projection("left", name+"_outer")
 
-        ballBottom = self.createBlock(name, [
+        ballBottom = self.create_block(name, [
             ballFront.points[0],
             ballFront.points[1],
             ballBack.points[2],
@@ -1414,55 +1418,55 @@ class BlockMesh(OpenFOAMFile, Mesh):
             ballBack.points[0],
         ], nx=nt, ny=nt, nz=nr)
 
-        ballBottom.addFaceProjection("top", name+"_inner")
-        ballBottom.addFaceProjection("bottom", name+"_outer")
+        ballBottom.add_face_projection("top", name+"_inner")
+        ballBottom.add_face_projection("bottom", name+"_outer")
 
 
-        if (isAddBoundaryConditions):
+        if (isAddAllBC):
             idxFace = len(self.faces)
 
             wallFaceTop = Face(f"{name}WallTop_{idxFace}", boundaryType='wall')
-            wallFaceTop.addSubFace(ballBack.topFace())
-            wallFaceTop.addSubFace(ballFront.topFace())
-            wallFaceTop.addSubFace(ballRight.topFace())
-            wallFaceTop.addSubFace(ballLeft.topFace())
+            wallFaceTop.add_sub_face(ballBack.topFace())
+            wallFaceTop.add_sub_face(ballFront.topFace())
+            wallFaceTop.add_sub_face(ballRight.topFace())
+            wallFaceTop.add_sub_face(ballLeft.topFace())
             outerWallBack = Face(f"{name}OuterWallBack_{idxFace}", boundaryType='wall')
-            outerWallBack.addSubFace(ballBack.backFace())
+            outerWallBack.add_sub_face(ballBack.backFace())
             outerWallFront = Face(f"{name}OuterWallFront_{idxFace}", boundaryType='wall')
-            outerWallFront.addSubFace(ballFront.frontFace())
+            outerWallFront.add_sub_face(ballFront.frontFace())
             outerWallLeft = Face(f"{name}OuterWallLeft_{idxFace}", boundaryType='wall')
-            outerWallLeft.addSubFace(ballLeft.leftFace())
+            outerWallLeft.add_sub_face(ballLeft.leftFace())
             outerWallRight = Face(f"{name}OuterWallRight_{idxFace}", boundaryType='wall')
-            outerWallRight.addSubFace(ballRight.rightFace())
+            outerWallRight.add_sub_face(ballRight.rightFace())
             outerWallBottom = Face(f"{name}OuterWallBottom_{idxFace}", boundaryType='wall')
-            outerWallBottom.addSubFace(ballBottom.bottomFace())
+            outerWallBottom.add_sub_face(ballBottom.bottomFace())
             innerWallBack = Face(f"{name}InnerWallBack_{idxFace}", boundaryType='wall')
-            innerWallBack.addSubFace(ballFront.backFace())
+            innerWallBack.add_sub_face(ballFront.backFace())
             innerWallFront = Face(f"{name}InnerWallFront_{idxFace}", boundaryType='wall')
-            innerWallFront.addSubFace(ballBack.frontFace())
+            innerWallFront.add_sub_face(ballBack.frontFace())
             innerWallLeft = Face(f"{name}InnerWallLeft_{idxFace}", boundaryType='wall')
-            innerWallLeft.addSubFace(ballRight.leftFace())
+            innerWallLeft.add_sub_face(ballRight.leftFace())
             innerWallRight = Face(f"{name}InnerWallRight_{idxFace}", boundaryType='wall')
-            innerWallRight.addSubFace(ballLeft.rightFace())
+            innerWallRight.add_sub_face(ballLeft.rightFace())
             innerWallBottom = Face(f"{name}InnerWallBottom_{idxFace}", boundaryType='wall')
-            innerWallBottom.addSubFace(ballBottom.topFace())
+            innerWallBottom.add_sub_face(ballBottom.topFace())
 
-            self.addBoundary(wallFaceTop)
-            self.addBoundary(outerWallBack)
-            self.addBoundary(outerWallFront)
-            self.addBoundary(outerWallLeft)
-            self.addBoundary(outerWallRight)
-            self.addBoundary(outerWallBottom)
-            self.addBoundary(innerWallBack)
-            self.addBoundary(innerWallFront)
-            self.addBoundary(innerWallLeft)
-            self.addBoundary(innerWallRight)
-            self.addBoundary(innerWallBottom)
+            self.add_boundary(wallFaceTop)
+            self.add_boundary(outerWallBack)
+            self.add_boundary(outerWallFront)
+            self.add_boundary(outerWallLeft)
+            self.add_boundary(outerWallRight)
+            self.add_boundary(outerWallBottom)
+            self.add_boundary(innerWallBack)
+            self.add_boundary(innerWallFront)
+            self.add_boundary(innerWallLeft)
+            self.add_boundary(innerWallRight)
+            self.add_boundary(innerWallBottom)
 
         return(ballRight, ballBack, ballLeft, ballFront, ballBottom)
 
 
-    def createSphere1D(
+    def create_sphere_1D(
             self,
             name: str,
             innerRadius: float,
@@ -1473,10 +1477,13 @@ class BlockMesh(OpenFOAMFile, Mesh):
             z: float=0,
             nr: int=1,
             gradr: float=1,
-            isAddBoundaryConditions: bool=False
+            isAddAllBC: bool=False,
+            isAddWedgeBC: bool=False,
+            isAddInnerBC: bool=False,
+            isAddOuterBC: bool=False,
         ):
         """
-        Create a 1D sphere along the X-axis.
+        Create a 1D sphere along the X-axis using 1 block.
 
         Parameters
         ----------
@@ -1498,13 +1505,23 @@ class BlockMesh(OpenFOAMFile, Mesh):
             Number of radial cells (default `1`).
         gradr : float
             Cells radial grading (default `1`).
-        isAddBoundaryConditions : bool
-            If True, create new boundary conditions (default `False`).
+        isAddWedgeBC : bool
+            If True, create new wedge boundary conditions (default `False`).
+        isAddInnerBC : bool
+            If True, create new inner radius boundary condition (default `False`).
+        isAddOuterBC : bool
+            If True, create new outer radius boundary condition (default `False`).
 
         Return
         ------
             block
         """
+        if (innerRadius > outerRadius):
+            msg = "innerRadius must be smaller than outerRadius"
+            raise ValueError(msg)
+
+        # isHollowSphere = innerRadius > 0
+
         deg = np.pi/180
 
         tant = np.tan(opening/2 * deg)
@@ -1514,7 +1531,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         riYZ = riX * tant
         roYZ = roX * tant
 
-        block = self.createBlock(
+        block = self.create_block(
             name=name,
             points=[
                 Point(x + riX, y - riYZ, z - riYZ),
@@ -1530,48 +1547,64 @@ class BlockMesh(OpenFOAMFile, Mesh):
             gradx=gradr, grady=1, gradz=1
         )
 
-        if (isAddBoundaryConditions):
-            idxFace = len(self.faces)
+        idxFace = len(self.faces)
 
+        if (isAddAllBC or isAddWedgeBC):
             wedgeFaceFront = Face(f"{name}WedgeFront_{idxFace}", boundaryType='wedge')
-            wedgeFaceFront.addSubFace(block.frontFace())
+            wedgeFaceFront.add_sub_face(block.frontFace())
             wedgeFaceBack = Face(f"{name}WedgeBack_{idxFace}", boundaryType='wedge')
-            wedgeFaceBack.addSubFace(block.backFace())
+            wedgeFaceBack.add_sub_face(block.backFace())
             wedgeFaceTop = Face(f"{name}WedgeTop_{idxFace}", boundaryType='wedge')
-            wedgeFaceTop.addSubFace(block.topFace())
+            wedgeFaceTop.add_sub_face(block.topFace())
             wedgeFaceBottom = Face(f"{name}WedgeBottom_{idxFace}", boundaryType='wedge')
-            wedgeFaceBottom.addSubFace(block.bottomFace())
-            wallFaceOuter = Face(f"{name}WallOuter_{idxFace}", boundaryType='patch')
-            wallFaceOuter.addSubFace(block.rightFace())
-            wallFaceInner = Face(f"{name}WallInner_{idxFace}", boundaryType='patch')
-            wallFaceInner.addSubFace(block.leftFace())
+            wedgeFaceBottom.add_sub_face(block.bottomFace())
 
-            self.addBoundary(wedgeFaceFront)
-            self.addBoundary(wedgeFaceBack)
-            self.addBoundary(wedgeFaceTop)
-            self.addBoundary(wedgeFaceBottom)
-            self.addBoundary(wallFaceOuter)
-            self.addBoundary(wallFaceInner)
+            self.add_boundary(wedgeFaceFront)
+            self.add_boundary(wedgeFaceBack)
+            self.add_boundary(wedgeFaceTop)
+            self.add_boundary(wedgeFaceBottom)
+
+        if (isAddAllBC or isAddInnerBC):
+            wallFaceInner = Face(f"{name}WallInner_{idxFace}", boundaryType='patch')
+            wallFaceInner.add_sub_face(block.leftFace())
+            self.add_boundary(wallFaceInner)
+
+        if (isAddAllBC or isAddOuterBC):
+            wallFaceOuter = Face(f"{name}WallOuter_{idxFace}", boundaryType='patch')
+            wallFaceOuter.add_sub_face(block.rightFace())
+            self.add_boundary(wallFaceOuter)
 
         return(block)
 
 
-    def createRingAlongZ(
+    def create_ring_along_z(
             self,
             name: str,
             innerRadius: float, outerRadius: float, lowZ: float, highZ: float,
             nr: int, nt: int, nz: int,
             x: float=0, y: float=0,
-            isAddBoundaryConditions: bool=False
+            isAddAllBC: bool=False,
+            isAddTopBC: bool=False,
+            isAddBottomBC: bool=False,
+            isAddInnerBC: bool=False,
+            isAddOuterBC: bool=False,
         ):
         """
+        Create a ring sub-mesh using 4 blocks.
+
         Return
         ------
             (frontBlock, rightBlock, backBlock, leftBlock)
         """
+        if (innerRadius > outerRadius):
+            msg = "innerRadius must be smaller than outerRadius"
+            raise ValueError(msg)
+
+        isHollow = innerRadius > 0
+
         sqrt2 = np.sqrt(2)
 
-        frontBlock = self.createBlock(name, [
+        frontBlock = self.create_block(name, [
             Point(x-outerRadius/sqrt2, y-outerRadius/sqrt2, lowZ),
             Point(x+outerRadius/sqrt2, y-outerRadius/sqrt2, lowZ),
             Point(x+innerRadius/sqrt2, y-innerRadius/sqrt2, lowZ),
@@ -1582,7 +1615,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             Point(x-innerRadius/sqrt2, y-innerRadius/sqrt2, highZ)
         ], nt, nr, nz)
 
-        rightBlock = self.createBlock(name, [
+        rightBlock = self.create_block(name, [
             frontBlock.points[2],
             frontBlock.points[1],
             Point(x+outerRadius/sqrt2, y+outerRadius/sqrt2, lowZ),
@@ -1593,7 +1626,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             Point(x+innerRadius/sqrt2, y+innerRadius/sqrt2, highZ)
         ], nr, nt, nz)
 
-        leftBlock = self.createBlock(name, [
+        leftBlock = self.create_block(name, [
             frontBlock.points[0],
             frontBlock.points[3],
             Point(x-innerRadius/sqrt2, y+innerRadius/sqrt2, lowZ),
@@ -1604,7 +1637,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             Point(x-outerRadius/sqrt2, y+outerRadius/sqrt2, highZ)
         ], nr, nt, nz)
 
-        backBlock = self.createBlock(name, [
+        backBlock = self.create_block(name, [
             leftBlock.points[2],
             rightBlock.points[3],
             rightBlock.points[2],
@@ -1615,66 +1648,75 @@ class BlockMesh(OpenFOAMFile, Mesh):
             leftBlock.points[7],
         ], nt, nr, nz)
 
-        frontBlock.addEdgeArc(0, 1, x=x, y=y, isOrigin=True)
-        frontBlock.addEdgeArc(2, 3, x=x, y=y, isOrigin=True)
-        frontBlock.addEdgeArc(4, 5, x=x, y=y, isOrigin=True)
-        frontBlock.addEdgeArc(6, 7, x=x, y=y, isOrigin=True)
-        rightBlock.addEdgeArc(1, 2, x=x, y=y, isOrigin=True)
-        rightBlock.addEdgeArc(0, 3, x=x, y=y, isOrigin=True)
-        rightBlock.addEdgeArc(5, 6, x=x, y=y, isOrigin=True)
-        rightBlock.addEdgeArc(4, 7, x=x, y=y, isOrigin=True)
-        leftBlock.addEdgeArc(1, 2, x=x, y=y, isOrigin=True)
-        leftBlock.addEdgeArc(3, 0, x=x, y=y, isOrigin=True)
-        leftBlock.addEdgeArc(5, 6, x=x, y=y, isOrigin=True)
-        leftBlock.addEdgeArc(7, 4, x=x, y=y, isOrigin=True)
-        backBlock.addEdgeArc(0, 1, x=x, y=y, isOrigin=True)
-        backBlock.addEdgeArc(2, 3, x=x, y=y, isOrigin=True)
-        backBlock.addEdgeArc(4, 5, x=x, y=y, isOrigin=True)
-        backBlock.addEdgeArc(6, 7, x=x, y=y, isOrigin=True)
+        if (isHollow):
+            frontBlock.add_edge_arc(2, 3, x=x, y=y, isOrigin=True)
+            frontBlock.add_edge_arc(6, 7, x=x, y=y, isOrigin=True)
+            rightBlock.add_edge_arc(0, 3, x=x, y=y, isOrigin=True)
+            rightBlock.add_edge_arc(4, 7, x=x, y=y, isOrigin=True)
+            leftBlock.add_edge_arc(1, 2, x=x, y=y, isOrigin=True)
+            leftBlock.add_edge_arc(5, 6, x=x, y=y, isOrigin=True)
+            backBlock.add_edge_arc(0, 1, x=x, y=y, isOrigin=True)
+            backBlock.add_edge_arc(4, 5, x=x, y=y, isOrigin=True)
 
-        if (isAddBoundaryConditions):
-            idxFace = len(self.faces)
+        frontBlock.add_edge_arc(0, 1, x=x, y=y, isOrigin=True)
+        frontBlock.add_edge_arc(4, 5, x=x, y=y, isOrigin=True)
+        rightBlock.add_edge_arc(1, 2, x=x, y=y, isOrigin=True)
+        rightBlock.add_edge_arc(5, 6, x=x, y=y, isOrigin=True)
+        leftBlock.add_edge_arc(3, 0, x=x, y=y, isOrigin=True)
+        leftBlock.add_edge_arc(7, 4, x=x, y=y, isOrigin=True)
+        backBlock.add_edge_arc(2, 3, x=x, y=y, isOrigin=True)
+        backBlock.add_edge_arc(6, 7, x=x, y=y, isOrigin=True)
 
+        idxFace = len(self.faces)
+
+        if (isAddAllBC or isAddTopBC):
             topFace = Face(f"{name}Top_{idxFace}")
-            botFace = Face(f"{name}Bottom_{idxFace}")
-
             for block in [frontBlock, rightBlock, backBlock, leftBlock]:
-                topFace.addSubFace(block.topFace())
-                botFace.addSubFace(block.bottomFace())
+                topFace.add_sub_face(block.topFace())
 
+            self.add_boundary(topFace)
+
+        if (isAddAllBC or isAddBottomBC):
+            botFace = Face(f"{name}Bottom_{idxFace}")
+            for block in [frontBlock, rightBlock, backBlock, leftBlock]:
+                botFace.add_sub_face(block.bottomFace())
+
+            self.add_boundary(botFace)
+
+        if ((isAddAllBC or isAddInnerBC) and isHollow):
             innerWallFaceFront = Face(f"{name}InnerWallFront_{idxFace}", boundaryType='wall')
-            innerWallFaceFront.addSubFace(frontBlock.backFace())
+            innerWallFaceFront.add_sub_face(frontBlock.backFace())
             innerWallFaceLeft = Face(f"{name}InnerWallLeft_{idxFace}", boundaryType='wall')
-            innerWallFaceLeft.addSubFace(leftBlock.rightFace())
+            innerWallFaceLeft.add_sub_face(leftBlock.rightFace())
             innerWallFaceRight = Face(f"{name}InnerWallRight_{idxFace}", boundaryType='wall')
-            innerWallFaceRight.addSubFace(rightBlock.leftFace())
+            innerWallFaceRight.add_sub_face(rightBlock.leftFace())
             innerWallFaceBack = Face(f"{name}InnerWallBack_{idxFace}", boundaryType='wall')
-            innerWallFaceBack.addSubFace(backBlock.frontFace())
+            innerWallFaceBack.add_sub_face(backBlock.frontFace())
 
+            self.add_boundary(innerWallFaceFront)
+            self.add_boundary(innerWallFaceLeft)
+            self.add_boundary(innerWallFaceRight)
+            self.add_boundary(innerWallFaceBack)
+
+        if (isAddAllBC or isAddOuterBC):
             outerWallFaceFront = Face(f"{name}OuterWallFront_{idxFace}", boundaryType='wall')
-            outerWallFaceFront.addSubFace(frontBlock.frontFace())
+            outerWallFaceFront.add_sub_face(frontBlock.frontFace())
             outerWallFaceLeft = Face(f"{name}OuterWallLeft_{idxFace}", boundaryType='wall')
-            outerWallFaceLeft.addSubFace(leftBlock.leftFace())
+            outerWallFaceLeft.add_sub_face(leftBlock.leftFace())
             outerWallFaceRight = Face(f"{name}OuterWallRight_{idxFace}", boundaryType='wall')
-            outerWallFaceRight.addSubFace(rightBlock.rightFace())
+            outerWallFaceRight.add_sub_face(rightBlock.rightFace())
             outerWallFaceBack = Face(f"{name}OuterWallBack_{idxFace}", boundaryType='wall')
-            outerWallFaceBack.addSubFace(backBlock.backFace())
+            outerWallFaceBack.add_sub_face(backBlock.backFace())
 
-            self.addBoundary(topFace)
-            self.addBoundary(botFace)
-            self.addBoundary(innerWallFaceFront)
-            self.addBoundary(innerWallFaceLeft)
-            self.addBoundary(innerWallFaceRight)
-            self.addBoundary(innerWallFaceBack)
-            self.addBoundary(outerWallFaceFront)
-            self.addBoundary(outerWallFaceLeft)
-            self.addBoundary(outerWallFaceRight)
-            self.addBoundary(outerWallFaceBack)
+            self.add_boundary(outerWallFaceFront)
+            self.add_boundary(outerWallFaceLeft)
+            self.add_boundary(outerWallFaceRight)
+            self.add_boundary(outerWallFaceBack)
 
         return(frontBlock, rightBlock, backBlock, leftBlock)
 
 
-    def createRingSectorAlongZ(
+    def create_ring_sector_along_z(
             self,
             name: str,
             innerRadius: float,
@@ -1687,9 +1729,17 @@ class BlockMesh(OpenFOAMFile, Mesh):
             nr: int=1,
             nt: int=1,
             nz: int=1,
-            isAddBoundaryConditions: bool=False
+            isAddAllBC: bool=False,
+            isAddTopBC: bool=False,
+            isAddBottomBC: bool=False,
+            isAddInnerBC: bool=False,
+            isAddOuterBC: bool=False,
+            isAddLeftBC: bool=False,
+            isAddRightBC: bool=False,
         ) -> Block:
         """
+        Create a ring sector along the Z axis using 1 block.
+
         Face orientation:
         - `front`: large arc face
         - `back`: short arc face
@@ -1725,6 +1775,12 @@ class BlockMesh(OpenFOAMFile, Mesh):
         ------
             (newBlock)
         """
+        if (innerRadius > outerRadius):
+            msg = "innerRadius must be smaller than outerRadius"
+            raise ValueError(msg)
+
+        isHollow = innerRadius > 0
+
         # Convert from deg to rad
         deg = np.pi/180
         angleStart = angleStart * deg
@@ -1733,46 +1789,60 @@ class BlockMesh(OpenFOAMFile, Mesh):
         cost, sint = np.cos(angleStart), np.sin(angleStart)
         costt, sintt = np.cos(angleStart+angleArc), np.sin(angleStart+angleArc)
 
-        newBlock = self.createBlock(name, [
-            Point(x+outerRadius*cost, y+outerRadius*sint, lowZ),
+        newBlock = self.create_block(name, [
+            Point(x+innerRadius*cost,  y+innerRadius*sint,  lowZ),
+            Point(x+outerRadius*cost,  y+outerRadius*sint,  lowZ),
             Point(x+outerRadius*costt, y+outerRadius*sintt, lowZ),
             Point(x+innerRadius*costt, y+innerRadius*sintt, lowZ),
-            Point(x+innerRadius*cost, y+innerRadius*sint, lowZ),
-            Point(x+outerRadius*cost, y+outerRadius*sint, highZ),
+            Point(x+innerRadius*cost,  y+innerRadius*sint,  highZ),
+            Point(x+outerRadius*cost,  y+outerRadius*sint,  highZ),
             Point(x+outerRadius*costt, y+outerRadius*sintt, highZ),
             Point(x+innerRadius*costt, y+innerRadius*sintt, highZ),
-            Point(x+innerRadius*cost, y+innerRadius*sint, highZ),
-        ], nx=nt, ny=nr, nz=nz)
+        ], nx=nr, ny=nt, nz=nz)
 
-        newBlock.addEdgeArc(0, 1, x, y, lowZ, isOrigin=True)
-        newBlock.addEdgeArc(2, 3, x, y, lowZ, isOrigin=True)
-        newBlock.addEdgeArc(4, 5, x, y, highZ, isOrigin=True)
-        newBlock.addEdgeArc(6, 7, x, y, highZ, isOrigin=True)
+        if (isHollow):
+            newBlock.add_edge_arc(0, 3, x, y, lowZ, isOrigin=True)
+            newBlock.add_edge_arc(4, 7, x, y, highZ, isOrigin=True)
 
-        if (isAddBoundaryConditions):
-            idxFace = len(self.faces)
+        newBlock.add_edge_arc(1, 2, x, y, lowZ, isOrigin=True)
+        newBlock.add_edge_arc(5, 6, x, y, highZ, isOrigin=True)
 
-            topFace = Face(f"{name}Top_{idxFace}")
-            botFace = Face(f"{name}Bottom_{idxFace}")
+        idxFace = len(self.faces)
 
-            topFace.addSubFace(newBlock.topFace())
-            botFace.addSubFace(newBlock.bottomFace())
+        if (isAddAllBC or isAddTopBC):
+            newFace = Face(f"{name}Top_{idxFace}")
+            newFace.add_sub_face(newBlock.topFace())
+            self.add_boundary(newFace)
 
-            innerWallFace = Face(f"{name}InnerWall_{idxFace}", boundaryType='wall')
-            innerWallFace.addSubFace(newBlock.backFace())
+        if (isAddAllBC or isAddBottomBC):
+            newFace = Face(f"{name}Bottom_{idxFace}")
+            newFace.add_sub_face(newBlock.bottomFace())
+            self.add_boundary(newFace)
 
-            outerWallFace = Face(f"{name}OuterWall_{idxFace}", boundaryType='wall')
-            outerWallFace.addSubFace(newBlock.frontFace())
+        if ((isAddAllBC or isAddInnerBC) and isHollow):
+            newFace = Face(f"{name}InnerWall_{idxFace}", boundaryType='wall')
+            newFace.add_sub_face(newBlock.leftFace())
+            self.add_boundary(newFace)
 
-            self.addBoundary(topFace)
-            self.addBoundary(botFace)
-            self.addBoundary(innerWallFace)
-            self.addBoundary(outerWallFace)
+        if (isAddAllBC or isAddOuterBC):
+            newFace = Face(f"{name}OuterWall_{idxFace}", boundaryType='wall')
+            newFace.add_sub_face(newBlock.rightFace())
+            self.add_boundary(newFace)
+
+        if (isAddAllBC or isAddLeftBC):
+            newFace = Face(f"{name}LeftWall_{idxFace}", boundaryType='wall')
+            newFace.add_sub_face(newBlock.frontFace())
+            self.add_boundary(newFace)
+
+        if (isAddAllBC or isAddRightBC):
+            newFace = Face(f"{name}RightWall_{idxFace}", boundaryType='wall')
+            newFace.add_sub_face(newBlock.backFace())
+            self.add_boundary(newFace)
 
         return(newBlock)
 
 
-    def createCylinderAlongZ(
+    def create_quarter_cylinder_along_z(
             self,
             name: str,
             radius: float,
@@ -1780,16 +1850,127 @@ class BlockMesh(OpenFOAMFile, Mesh):
             highZ: float,
             nx: int, ny: int, nz: int,
             x: float=0, y: float=0,
-            isAddBoundaryConditions: bool=False
-        ) -> Block:
+            angleStart: float=0,
+            isAddAllBC: bool=False,
+            isAddTopBC: bool=False,
+            isAddBottomBC: bool=False,
+            isAddCylinderBC: bool=False,
+            isAddFrontBC: bool=False,
+            isAddLeftBC: bool=False,
+        ):
         """
+        Create a cylinder along the Z-axis using 3 blocks. The edge faces are
+        oriented normal to -X and -Y if angleStart = 0. The central block has a
+        length half the radius.
+
+        Parameters
+        ----------
+        angleStart : float
+            Starting angle in degree
+
+        Return
+        ------
+            (centerBlock, rightBlock, backBlock)
+        """
+        sqrt2 = np.sqrt(2)
+        # Convert from deg to rad
+        deg = np.pi/180
+        angleStart = angleStart * deg
+
+        cost, sint = np.cos(angleStart), np.sin(angleStart)
+        cost2, sint2 = np.cos(angleStart+np.pi/4), np.sin(angleStart+np.pi/4)
+
+        rcost, rsint = radius * cost, radius * sint
+        rcost2, rsint2 = radius * cost2, radius * sint2
+        rsqrtcost2, rsqrtsint2 = radius/sqrt2 * cost2, radius/sqrt2 * sint2
+        r2cost, r2sint = radius/2 * cost, radius/2 * sint
+
+        centerBlock = self.create_block(name, [
+            Point(x,            y,              lowZ),
+            Point(x+r2cost,     y+r2sint,       lowZ),
+            Point(x+rsqrtcost2, y+rsqrtsint2,   lowZ),
+            Point(x-r2sint,     y+r2cost,       lowZ),
+            Point(x,            y,              highZ),
+            Point(x+r2cost,     y+r2sint,       highZ),
+            Point(x+rsqrtcost2, y+rsqrtsint2,   highZ),
+            Point(x-r2sint,     y+r2cost,       highZ)
+        ], nx, ny, nz)
+
+        rightBlock = self.add_right(centerBlock, name, [
+            Point(x+rcost,  y+rsint,    lowZ),
+            Point(x+rcost2, y+rsint2,   lowZ),
+            Point(x+rcost,  y+rsint,    highZ),
+            Point(x+rcost2, y+rsint2,   highZ),
+        ], nx=nx)
+
+        backBlock = self.add_back(centerBlock, name, [
+            rightBlock.points[2],
+            Point(x-rsint, y+rcost, lowZ),
+            rightBlock.points[6],
+            Point(x-rsint, y+rcost, highZ),
+        ], ny=rightBlock.nx)
+
+        rightBlock.add_edge_arc(1, 2, x=x, y=y, isOrigin=True)
+        rightBlock.add_edge_arc(5, 6, x=x, y=y, isOrigin=True)
+        backBlock.add_edge_arc(2, 3, x=x, y=y, isOrigin=True)
+        backBlock.add_edge_arc(6, 7, x=x, y=y, isOrigin=True)
+
+
+        idxFace = len(self.faces)
+
+        if (isAddAllBC or isAddTopBC):
+            topFace = Face(f"{name}Top_{idxFace}")
+            for block in [centerBlock, rightBlock, backBlock]:
+                topFace.add_sub_face(block.topFace())
+            self.add_boundary(topFace)
+
+        if (isAddAllBC or isAddBottomBC):
+            botFace = Face(f"{name}Bottom_{idxFace}")
+            for block in [centerBlock, rightBlock, backBlock]:
+                botFace.add_sub_face(block.bottomFace())
+            self.add_boundary(botFace)
+
+        if (isAddAllBC or isAddFrontBC):
+            wallFaceFront = Face(f"{name}WallFront_{idxFace}", boundaryType='wall')
+            wallFaceFront.add_sub_face(centerBlock.frontFace())
+            wallFaceFront.add_sub_face(rightBlock.frontFace())
+            self.add_boundary(wallFaceFront)
+
+        if (isAddAllBC or isAddLeftBC):
+            wallFaceLeft = Face(f"{name}WallLeft_{idxFace}", boundaryType='wall')
+            wallFaceLeft.add_sub_face(centerBlock.leftFace())
+            wallFaceLeft.add_sub_face(backBlock.leftFace())
+            self.add_boundary(wallFaceLeft)
+
+        if (isAddAllBC or isAddCylinderBC):
+            wallFaceCylinder = Face(f"{name}WallCylinder_{idxFace}", boundaryType='wall')
+            wallFaceCylinder.add_sub_face(rightBlock.rightFace())
+            wallFaceCylinder.add_sub_face(backBlock.backFace())
+            self.add_boundary(wallFaceCylinder)
+
+        return(centerBlock, rightBlock, backBlock)
+
+
+    def create_cylinder_along_z(
+            self,
+            name: str,
+            radius: float,
+            lowZ: float,
+            highZ: float,
+            nx: int, ny: int, nz: int,
+            x: float=0, y: float=0,
+            isAddAllBC: bool=False
+        ):
+        """
+        Create a cylinder along the Z-axis using 5 blocks.
+
         Return
         ------
             (centerBlock, frontBlock, rightBlock, backBlock, leftBlock)
         """
         sqrt2 = np.sqrt(2)
 
-        centerBlock = self.createBlock(name, [
+        centerBlock = self.create_block(name, [
             Point(x-radius/3, y-radius/3, lowZ),
             Point(x+radius/3, y-radius/3, lowZ),
             Point(x+radius/3, y+radius/3, lowZ),
@@ -1800,74 +1981,74 @@ class BlockMesh(OpenFOAMFile, Mesh):
             Point(x-radius/3, y+radius/3, highZ)
         ], nx, ny, nz)
 
-        frontBlock = self.addFront(centerBlock, name, [
+        frontBlock = self.add_front(centerBlock, name, [
             Point(x-radius/sqrt2, y-radius/sqrt2, lowZ),
             Point(x+radius/sqrt2, y-radius/sqrt2, lowZ),
             Point(x-radius/sqrt2, y-radius/sqrt2, highZ),
             Point(x+radius/sqrt2, y-radius/sqrt2, highZ),
         ], ny=ny)
 
-        rightBlock = self.addRight(centerBlock, name, [
+        rightBlock = self.add_right(centerBlock, name, [
             frontBlock.points[1],
             Point(x+radius/sqrt2, y+radius/sqrt2, lowZ),
             frontBlock.points[5],
             Point(x+radius/sqrt2, y+radius/sqrt2, highZ),
         ], nx=frontBlock.ny)
 
-        backBlock = self.addBack(centerBlock, name, [
+        backBlock = self.add_back(centerBlock, name, [
             rightBlock.points[2],
             Point(x-radius/sqrt2, y+radius/sqrt2, lowZ),
             rightBlock.points[6],
             Point(x-radius/sqrt2, y+radius/sqrt2, highZ),
         ], ny=frontBlock.ny)
 
-        leftBlock = self.addLeft(centerBlock, name, [
+        leftBlock = self.add_left(centerBlock, name, [
             frontBlock.points[0],
             backBlock.points[3],
             frontBlock.points[4],
             backBlock.points[7],
         ], nx=frontBlock.ny)
 
-        frontBlock.addEdgeArc(0, 1, x=x, y=y, isOrigin=True)
-        frontBlock.addEdgeArc(4, 5, x=x, y=y, isOrigin=True)
-        rightBlock.addEdgeArc(1, 2, x=x, y=y, isOrigin=True)
-        rightBlock.addEdgeArc(5, 6, x=x, y=y, isOrigin=True)
-        backBlock.addEdgeArc(2, 3, x=x, y=y, isOrigin=True)
-        backBlock.addEdgeArc(6, 7, x=x, y=y, isOrigin=True)
-        leftBlock.addEdgeArc(3, 0, x=x, y=y, isOrigin=True)
-        leftBlock.addEdgeArc(7, 4, x=x, y=y, isOrigin=True)
+        frontBlock.add_edge_arc(0, 1, x=x, y=y, isOrigin=True)
+        frontBlock.add_edge_arc(4, 5, x=x, y=y, isOrigin=True)
+        rightBlock.add_edge_arc(1, 2, x=x, y=y, isOrigin=True)
+        rightBlock.add_edge_arc(5, 6, x=x, y=y, isOrigin=True)
+        backBlock.add_edge_arc(2, 3, x=x, y=y, isOrigin=True)
+        backBlock.add_edge_arc(6, 7, x=x, y=y, isOrigin=True)
+        leftBlock.add_edge_arc(3, 0, x=x, y=y, isOrigin=True)
+        leftBlock.add_edge_arc(7, 4, x=x, y=y, isOrigin=True)
 
 
-        if (isAddBoundaryConditions):
+        if (isAddAllBC):
             idxFace = len(self.faces)
 
             topFace = Face(f"{name}Top_{idxFace}")
             botFace = Face(f"{name}Bottom_{idxFace}")
 
             for block in [centerBlock, frontBlock, rightBlock, backBlock, leftBlock]:
-                topFace.addSubFace(block.topFace())
-                botFace.addSubFace(block.bottomFace())
+                topFace.add_sub_face(block.topFace())
+                botFace.add_sub_face(block.bottomFace())
 
             wallFaceFront = Face(f"{name}WallFront_{idxFace}", boundaryType='wall')
-            wallFaceFront.addSubFace(frontBlock.frontFace())
+            wallFaceFront.add_sub_face(frontBlock.frontFace())
             wallFaceLeft = Face(f"{name}WallLeft_{idxFace}", boundaryType='wall')
-            wallFaceLeft.addSubFace(leftBlock.leftFace())
+            wallFaceLeft.add_sub_face(leftBlock.leftFace())
             wallFaceRight = Face(f"{name}WallRight_{idxFace}", boundaryType='wall')
-            wallFaceRight.addSubFace(rightBlock.rightFace())
+            wallFaceRight.add_sub_face(rightBlock.rightFace())
             wallFaceBack = Face(f"{name}WallBack_{idxFace}", boundaryType='wall')
-            wallFaceBack.addSubFace(backBlock.backFace())
+            wallFaceBack.add_sub_face(backBlock.backFace())
 
-            self.addBoundary(topFace)
-            self.addBoundary(botFace)
-            self.addBoundary(wallFaceFront)
-            self.addBoundary(wallFaceLeft)
-            self.addBoundary(wallFaceRight)
-            self.addBoundary(wallFaceBack)
+            self.add_boundary(topFace)
+            self.add_boundary(botFace)
+            self.add_boundary(wallFaceFront)
+            self.add_boundary(wallFaceLeft)
+            self.add_boundary(wallFaceRight)
+            self.add_boundary(wallFaceBack)
 
         return(centerBlock, frontBlock, rightBlock, backBlock, leftBlock)
 
 
-    def createCubeWithHoleAlongZ(
+    def create_cube_with_hole_along_z(
             self,
             name: str,
             lowX: float, lowY: float, lowZ: float,
@@ -1876,7 +2057,11 @@ class BlockMesh(OpenFOAMFile, Mesh):
             nx: int=1, ny: int=1, nz: int=1, nt: int=1,
             isHoleCylinder: bool=True,
             squareEdgeToHoleCenter=None,
-            isAddBoundaryConditions: bool=False
+            isAddAllBC: bool=False,
+            isAddTopBC: bool=False,
+            isAddBottomBC: bool=False,
+            isAddLateralBC: bool=False,
+            isAddHoleBC: bool=False,
         ):
         """
         Parameters
@@ -1898,7 +2083,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         if (sqrEdge is None):
             sqrEdge = radius/sqrt2
 
-        frontLeftBlock = self.createBlock(name, [
+        frontLeftBlock = self.create_block(name, [
             Point(lowX,            lowY,            lowZ),
             Point(centerX-sqrEdge, lowY,            lowZ),
             Point(centerX-sqrEdge, centerY-sqrEdge, lowZ),
@@ -1909,19 +2094,19 @@ class BlockMesh(OpenFOAMFile, Mesh):
             Point(lowX,            centerY-sqrEdge, highZ),
         ], nx, ny, nz)
 
-        frontBlock = self.extrudeRight([frontLeftBlock], name, dx=2*sqrEdge, nx=nt)
+        frontBlock = self.extrude_right([frontLeftBlock], name, dx=2*sqrEdge, nx=nt)
 
-        frontRightBlock = self.extrudeRight([frontBlock], name, dx=highX-centerX-sqrEdge, nx=nx)
+        frontRightBlock = self.extrude_right([frontBlock], name, dx=highX-centerX-sqrEdge, nx=nx)
 
-        (leftBlock, rightBlock) = self.extrudeBack(
+        (leftBlock, rightBlock) = self.extrude_back(
             [frontLeftBlock, frontRightBlock], name, dy=2*sqrEdge, ny=nt
         )
 
-        (backLeftBlock, backRightBlock) = self.extrudeBack(
+        (backLeftBlock, backRightBlock) = self.extrude_back(
             [leftBlock, rightBlock], name, dy=highY-centerY-sqrEdge, ny=ny
         )
 
-        backBlock = self.addRight(backLeftBlock, name, [
+        backBlock = self.add_right(backLeftBlock, name, [
             backRightBlock.points[0],
             backRightBlock.points[3],
             backRightBlock.points[4],
@@ -1946,63 +2131,75 @@ class BlockMesh(OpenFOAMFile, Mesh):
         backLeftBlock.points[5].y = centerY+radius/sqrt2
 
         if (isHoleCylinder):
-            frontBlock.addEdgeArc(2, 3, x=centerX, y=centerY, isOrigin=True)
-            frontBlock.addEdgeArc(6, 7, x=centerX, y=centerY, isOrigin=True)
-            leftBlock.addEdgeArc(1, 2, x=centerX, y=centerY, isOrigin=True)
-            leftBlock.addEdgeArc(5, 6, x=centerX, y=centerY, isOrigin=True)
-            rightBlock.addEdgeArc(0, 3, x=centerX, y=centerY, isOrigin=True)
-            rightBlock.addEdgeArc(4, 7, x=centerX, y=centerY, isOrigin=True)
-            backBlock.addEdgeArc(0, 1, x=centerX, y=centerY, isOrigin=True)
-            backBlock.addEdgeArc(4, 5, x=centerX, y=centerY, isOrigin=True)
+            frontBlock.add_edge_arc(2, 3, x=centerX, y=centerY, isOrigin=True)
+            frontBlock.add_edge_arc(6, 7, x=centerX, y=centerY, isOrigin=True)
+            leftBlock.add_edge_arc(1, 2, x=centerX, y=centerY, isOrigin=True)
+            leftBlock.add_edge_arc(5, 6, x=centerX, y=centerY, isOrigin=True)
+            rightBlock.add_edge_arc(0, 3, x=centerX, y=centerY, isOrigin=True)
+            rightBlock.add_edge_arc(4, 7, x=centerX, y=centerY, isOrigin=True)
+            backBlock.add_edge_arc(0, 1, x=centerX, y=centerY, isOrigin=True)
+            backBlock.add_edge_arc(4, 5, x=centerX, y=centerY, isOrigin=True)
 
-        if (isAddBoundaryConditions):
-            idxFace = len(self.faces)
+        idxFace = len(self.faces)
 
+        if (isAddAllBC or isAddTopBC):
             topFace = Face(f"{name}Top_{idxFace}")
+            for block in [
+                frontBlock, backRightBlock, frontRightBlock, backBlock,
+                backLeftBlock, frontLeftBlock, leftBlock, rightBlock
+            ]:
+                topFace.add_sub_face(block.topFace())
+
+            self.add_boundary(topFace)
+
+        if (isAddAllBC or isAddBottomBC):
             botFace = Face(f"{name}Bottom_{idxFace}")
 
             for block in [
                 frontBlock, backRightBlock, frontRightBlock, backBlock,
                 backLeftBlock, frontLeftBlock, leftBlock, rightBlock
             ]:
-                topFace.addSubFace(block.topFace())
-                botFace.addSubFace(block.bottomFace())
+                botFace.add_sub_face(block.bottomFace())
 
+            self.add_boundary(botFace)
+
+        if (isAddAllBC or isAddLateralBC):
             wallFaceFront = Face(f"{name}WallFront_{idxFace}", boundaryType='wall')
-            wallFaceFront.addSubFace(frontBlock.frontFace())
-            wallFaceFront.addSubFace(frontLeftBlock.frontFace())
-            wallFaceFront.addSubFace(frontRightBlock.frontFace())
+            wallFaceFront.add_sub_face(frontBlock.frontFace())
+            wallFaceFront.add_sub_face(frontLeftBlock.frontFace())
+            wallFaceFront.add_sub_face(frontRightBlock.frontFace())
             wallFaceBack = Face(f"{name}WallBack_{idxFace}", boundaryType='wall')
-            wallFaceBack.addSubFace(backBlock.backFace())
-            wallFaceBack.addSubFace(backRightBlock.backFace())
-            wallFaceBack.addSubFace(backLeftBlock.backFace())
+            wallFaceBack.add_sub_face(backBlock.backFace())
+            wallFaceBack.add_sub_face(backRightBlock.backFace())
+            wallFaceBack.add_sub_face(backLeftBlock.backFace())
             wallFaceLeft = Face(f"{name}WallLeft_{idxFace}", boundaryType='wall')
-            wallFaceLeft.addSubFace(frontLeftBlock.leftFace())
-            wallFaceLeft.addSubFace(leftBlock.leftFace())
-            wallFaceLeft.addSubFace(backLeftBlock.leftFace())
+            wallFaceLeft.add_sub_face(frontLeftBlock.leftFace())
+            wallFaceLeft.add_sub_face(leftBlock.leftFace())
+            wallFaceLeft.add_sub_face(backLeftBlock.leftFace())
             wallFaceRight = Face(f"{name}WallRight_{idxFace}", boundaryType='wall')
-            wallFaceRight.addSubFace(frontRightBlock.rightFace())
-            wallFaceRight.addSubFace(rightBlock.rightFace())
-            wallFaceRight.addSubFace(backRightBlock.rightFace())
-            wallFaceHoleFront = Face(f"{name}WallHoleFront_{idxFace}", boundaryType='wall')
-            wallFaceHoleFront.addSubFace(frontBlock.backFace())
-            wallFaceHoleBack = Face(f"{name}WallHoleBack_{idxFace}", boundaryType='wall')
-            wallFaceHoleBack.addSubFace(backBlock.frontFace())
-            wallFaceHoleLeft = Face(f"{name}WallHoleLeft_{idxFace}", boundaryType='wall')
-            wallFaceHoleLeft.addSubFace(rightBlock.leftFace())
-            wallFaceHoleRight = Face(f"{name}WallHoleRight_{idxFace}", boundaryType='wall')
-            wallFaceHoleRight.addSubFace(leftBlock.rightFace())
+            wallFaceRight.add_sub_face(frontRightBlock.rightFace())
+            wallFaceRight.add_sub_face(rightBlock.rightFace())
+            wallFaceRight.add_sub_face(backRightBlock.rightFace())
 
-            self.addBoundary(topFace)
-            self.addBoundary(botFace)
-            self.addBoundary(wallFaceFront)
-            self.addBoundary(wallFaceBack)
-            self.addBoundary(wallFaceLeft)
-            self.addBoundary(wallFaceRight)
-            self.addBoundary(wallFaceHoleFront)
-            self.addBoundary(wallFaceHoleBack)
-            self.addBoundary(wallFaceHoleLeft)
-            self.addBoundary(wallFaceHoleRight)
+            self.add_boundary(wallFaceFront)
+            self.add_boundary(wallFaceBack)
+            self.add_boundary(wallFaceLeft)
+            self.add_boundary(wallFaceRight)
+
+        if (isAddAllBC or isAddHoleBC):
+            wallFaceHoleFront = Face(f"{name}WallHoleFront_{idxFace}", boundaryType='wall')
+            wallFaceHoleFront.add_sub_face(frontBlock.backFace())
+            wallFaceHoleBack = Face(f"{name}WallHoleBack_{idxFace}", boundaryType='wall')
+            wallFaceHoleBack.add_sub_face(backBlock.frontFace())
+            wallFaceHoleLeft = Face(f"{name}WallHoleLeft_{idxFace}", boundaryType='wall')
+            wallFaceHoleLeft.add_sub_face(rightBlock.leftFace())
+            wallFaceHoleRight = Face(f"{name}WallHoleRight_{idxFace}", boundaryType='wall')
+            wallFaceHoleRight.add_sub_face(leftBlock.rightFace())
+
+            self.add_boundary(wallFaceHoleFront)
+            self.add_boundary(wallFaceHoleBack)
+            self.add_boundary(wallFaceHoleLeft)
+            self.add_boundary(wallFaceHoleRight)
 
         return(
             frontBlock, backRightBlock, frontRightBlock, backBlock,
@@ -2010,7 +2207,129 @@ class BlockMesh(OpenFOAMFile, Mesh):
         )
 
 
-    def createHexagonPrismAlongZ(
+    def create_cube_with_corner_hole_along_z(
+            self,
+            name: str,
+            lowX: float, lowY: float, lowZ: float,
+            highX: float, highY: float, highZ: float,
+            radius: float,
+            nx: int=1, ny: int=1, nz: int=1, nt: int=1,
+            isHoleCylinder: bool=True,
+            squareEdgeToHoleCenter=None,
+            edgeFaceOrientation: float=0,
+            isAddAllBC: bool=False,
+            isAddTopBC: bool=False,
+            isAddBottomBC: bool=False,
+            isAddLateralBC: bool=False,
+            isAddHoleBC: bool=False,
+        ):
+        """
+        Create a cube block with a hole at back right corner.
+
+        Parameters
+        ----------
+        squareEdgeToHoleCenter : float
+            Distance from the corner cube edge to the hole center along one axis.
+            (default `radius/sqrt(2)`)
+        edgeFaceOrientation : float
+            Edge face orientation in deg
+
+        Return
+        ------
+            rightBlock, mainBlock, backBlock
+        """
+        sqrt2 = np.sqrt(2)
+
+        sqrEdge = squareEdgeToHoleCenter
+        if (sqrEdge is None):
+            sqrEdge = radius/sqrt2
+
+        mainBlock = self.create_block(name, [
+            Point(lowX,          lowY,          lowZ),
+            Point(highX-sqrEdge, lowY,          lowZ),
+            Point(highX-sqrEdge, highY-sqrEdge, lowZ),
+            Point(lowX,          highY-sqrEdge, lowZ),
+            Point(lowX,          lowY,          highZ),
+            Point(highX-sqrEdge, lowY,          highZ),
+            Point(highX-sqrEdge, highY-sqrEdge, highZ),
+            Point(lowX,          highY-sqrEdge, highZ),
+        ], nx, ny, nz)
+
+        rightBlock = self.extrude_right(mainBlock, name, dx=sqrEdge, nx=nt)
+
+        backBlock = self.extrude_back(mainBlock, name, dy=sqrEdge, ny=nt)
+
+        rightBlock.points[2].y = highY - radius
+        rightBlock.points[6].y = highY - radius
+        backBlock.points[2].x = highX - radius
+        backBlock.points[6].x = highX - radius
+
+        x = (lowX+highX)/2
+        y = (lowY+highY)/2
+
+        for point in mainBlock.points + rightBlock.get_face('right') + backBlock.get_face('back'):
+            point.translate(dx=-x, dy=-y)
+            point.rotateZ(theta=edgeFaceOrientation * np.pi/180)
+            point.translate(dx=x, dy=y)
+
+        if (isHoleCylinder):
+            corner = Vector(highX, highY, 0)
+            corner.translate(dx=-x, dy=-y)
+            corner.rotateZ(theta=edgeFaceOrientation * np.pi/180)
+            corner.translate(dx=x, dy=y)
+
+            rightBlock.add_edge_arc(2, 3, x=corner.x, y=corner.y, isOrigin=True)
+            rightBlock.add_edge_arc(6, 7, x=corner.x, y=corner.y, isOrigin=True)
+            backBlock.add_edge_arc(1, 2, x=corner.x, y=corner.y, isOrigin=True)
+            backBlock.add_edge_arc(5, 6, x=corner.x, y=corner.y, isOrigin=True)
+
+        idxFace = len(self.faces)
+
+        if (isAddAllBC or isAddTopBC):
+            topFace = Face(f"{name}Top_{idxFace}")
+            for block in [rightBlock, mainBlock, backBlock]:
+                topFace.add_sub_face(block.topFace())
+
+            self.add_boundary(topFace)
+
+        if (isAddAllBC or isAddBottomBC):
+            botFace = Face(f"{name}Bottom_{idxFace}")
+
+            for block in [rightBlock, mainBlock, backBlock]:
+                botFace.add_sub_face(block.bottomFace())
+
+            self.add_boundary(botFace)
+
+        if (isAddAllBC or isAddLateralBC):
+            wallFaceFront = Face(f"{name}WallFront_{idxFace}", boundaryType='wall')
+            wallFaceFront.add_sub_face(rightBlock.frontFace())
+            wallFaceFront.add_sub_face(mainBlock.frontFace())
+            wallFaceBack = Face(f"{name}WallBack_{idxFace}", boundaryType='wall')
+            wallFaceBack.add_sub_face(backBlock.backFace())
+            wallFaceLeft = Face(f"{name}WallLeft_{idxFace}", boundaryType='wall')
+            wallFaceLeft.add_sub_face(mainBlock.leftFace())
+            wallFaceLeft.add_sub_face(backBlock.leftFace())
+            wallFaceRight = Face(f"{name}WallRight_{idxFace}", boundaryType='wall')
+            wallFaceRight.add_sub_face(rightBlock.rightFace())
+
+            self.add_boundary(wallFaceFront)
+            self.add_boundary(wallFaceBack)
+            self.add_boundary(wallFaceLeft)
+            self.add_boundary(wallFaceRight)
+
+        if (isAddAllBC or isAddHoleBC):
+            wallFaceHoleFront = Face(f"{name}WallHoleFront_{idxFace}", boundaryType='wall')
+            wallFaceHoleFront.add_sub_face(rightBlock.backFace())
+            wallFaceHoleRight = Face(f"{name}WallHoleRight_{idxFace}", boundaryType='wall')
+            wallFaceHoleRight.add_sub_face(backBlock.rightFace())
+
+            self.add_boundary(wallFaceHoleFront)
+            self.add_boundary(wallFaceHoleRight)
+
+        return(rightBlock, mainBlock, backBlock)
+
+
+    def create_hexagon_prism_along_z(
             self,
             name: str,
             zmin: float, zmax: float,
@@ -2019,7 +2338,10 @@ class BlockMesh(OpenFOAMFile, Mesh):
             nr: int=1,
             nt: int=1,
             nz: int=1,
-            isAddBoundaryConditions: bool=False
+            isAddAllBC: bool=False,
+            isAddTopBC: bool=False,
+            isAddBottomBC: bool=False,
+            isAddLateralBC: bool=False
         ) -> Block:
         """
         Block mesh instruction to create an hexagonal prism along the Z-axis.
@@ -2045,7 +2367,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             Number of cell per triangle in the azimutal direction (default 1)
         nz : int
             Number of cell along the Z direction (default 1)
-        isAddBoundaryConditions : bool
+        isAddAllBC : bool
             Flag to add automatically boundary faces on the prism (default False).
             If use lattice placement, it is recommended to set to 'true' if the
             internal faces need to be merged.
@@ -2057,7 +2379,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
         side = pitch/np.sqrt(3)
 
-        frontBlock = self.createBlock(name, [
+        frontBlock = self.create_block(name, [
             Point(x-side/2, y-pitch/2, zmin),
             Point(x+side/2, y-pitch/2, zmin),
             Point(x, y, zmin),
@@ -2068,77 +2390,84 @@ class BlockMesh(OpenFOAMFile, Mesh):
             Point(x, y, zmax)
         ], nt, nr, nz)
 
-        frontRightBlock = self.addRight(frontBlock, name, [
+        frontRightBlock = self.add_right(frontBlock, name, [
             Point(x+side, y, zmin),
             Point(x, y, zmin),
             Point(x+side, y, zmax),
             Point(x, y, zmax),
         ], nx=nt)
 
-        frontLeftBlock = self.addLeft(frontBlock, name, [
+        frontLeftBlock = self.add_left(frontBlock, name, [
             Point(x-side, y, zmin),
             Point(x, y, zmin),
             Point(x-side, y, zmax),
             Point(x, y, zmax),
         ], nx=nt)
 
-        backBlock = self.addBack(frontBlock, name, [
+        backBlock = self.add_back(frontBlock, name, [
             Point(x+side/2, y+pitch/2, zmin),
             Point(x-side/2, y+pitch/2, zmin),
             Point(x+side/2, y+pitch/2, zmax),
             Point(x-side/2, y+pitch/2, zmax),
         ], ny=nr)
 
-        backLeftBlock = self.addLeft(backBlock, name, [
+        backLeftBlock = self.add_left(backBlock, name, [
             frontLeftBlock.points[3],
             frontLeftBlock.points[0],
             frontLeftBlock.points[7],
             frontLeftBlock.points[4],
         ], nx=nt)
 
-        backRightBlock = self.addRight(backBlock, name, [
+        backRightBlock = self.add_right(backBlock, name, [
             frontRightBlock.points[2],
             frontRightBlock.points[1],
             frontRightBlock.points[6],
             frontRightBlock.points[5],
         ], nx=nt)
 
-        if (isAddBoundaryConditions):
-            idxFace = len(self.faces)
+        idxFace = len(self.faces)
 
+        if (isAddAllBC or isAddTopBC):
             topFace = Face(f"{name}Top_{idxFace}")
+
+            for block in [frontBlock, backRightBlock, frontRightBlock, backBlock, backLeftBlock, frontLeftBlock]:
+                topFace.add_sub_face(block.topFace())
+
+            self.add_boundary(topFace)
+
+        if (isAddAllBC or isAddBottomBC):
             botFace = Face(f"{name}Bottom_{idxFace}")
 
             for block in [frontBlock, backRightBlock, frontRightBlock, backBlock, backLeftBlock, frontLeftBlock]:
-                topFace.addSubFace(block.topFace())
-                botFace.addSubFace(block.bottomFace())
+                botFace.add_sub_face(block.bottomFace())
 
+            self.add_boundary(botFace)
+
+        if (isAddAllBC or isAddLateralBC):
             wallFaceFront = Face(f"{name}WallFront_{idxFace}", boundaryType='wall')
-            wallFaceFront.addSubFace(frontBlock.frontFace())
+            wallFaceFront.add_sub_face(frontBlock.frontFace())
             wallFaceFrontLeft = Face(f"{name}WallFrontLeft_{idxFace}", boundaryType='wall')
-            wallFaceFrontLeft.addSubFace(frontLeftBlock.frontFace())
+            wallFaceFrontLeft.add_sub_face(frontLeftBlock.frontFace())
             wallFaceFrontRight = Face(f"{name}WallFrontRight_{idxFace}", boundaryType='wall')
-            wallFaceFrontRight.addSubFace(frontRightBlock.frontFace())
+            wallFaceFrontRight.add_sub_face(frontRightBlock.frontFace())
             wallFaceBack = Face(f"{name}WallBack_{idxFace}", boundaryType='wall')
-            wallFaceBack.addSubFace(backBlock.backFace())
+            wallFaceBack.add_sub_face(backBlock.backFace())
             wallFaceBackLeft = Face(f"{name}WallBackLeft_{idxFace}", boundaryType='wall')
-            wallFaceBackLeft.addSubFace(backLeftBlock.backFace())
+            wallFaceBackLeft.add_sub_face(backLeftBlock.backFace())
             wallFaceBackRight = Face(f"{name}WallBackRight_{idxFace}", boundaryType='wall')
-            wallFaceBackRight.addSubFace(backRightBlock.backFace())
+            wallFaceBackRight.add_sub_face(backRightBlock.backFace())
 
-            self.addBoundary(topFace)
-            self.addBoundary(botFace)
-            self.addBoundary(wallFaceFront)
-            self.addBoundary(wallFaceFrontLeft)
-            self.addBoundary(wallFaceFrontRight)
-            self.addBoundary(wallFaceBack)
-            self.addBoundary(wallFaceBackLeft)
-            self.addBoundary(wallFaceBackRight)
+            self.add_boundary(wallFaceFront)
+            self.add_boundary(wallFaceFrontLeft)
+            self.add_boundary(wallFaceFrontRight)
+            self.add_boundary(wallFaceBack)
+            self.add_boundary(wallFaceBackLeft)
+            self.add_boundary(wallFaceBackRight)
 
         return(frontBlock, frontLeftBlock, frontRightBlock, backBlock, backRightBlock, backLeftBlock)
 
 
-    def createHexagonPrismWithHoleAlongZ(
+    def create_hexagon_prism_with_hole_along_z(
             self,
             name: str,
             zmin: float, zmax: float,
@@ -2149,7 +2478,11 @@ class BlockMesh(OpenFOAMFile, Mesh):
             nt: int=1,
             nz: int=1,
             isHoleCylinder: bool=True,
-            isAddBoundaryConditions: bool=False
+            isAddAllBC: bool=False,
+            isAddTopBC: bool=False,
+            isAddBottomBC: bool=False,
+            isAddLateralBC: bool=False,
+            isAddHoleBC: bool=False
         ):
         """
         Block mesh instruction to create an hexagonal prism along the Z-axis.
@@ -2180,7 +2513,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         isHoleCylinder : bool
             Create a cylindrical hole if True. If False, create an hexagonal
             hole. (default `True`)
-        isAddBoundaryConditions : bool
+        isAddAllBC : bool
             Flag to add automatically boundary faces on the prism (default False).
             If use lattice placement, it is recommended to set to 'true' if the
             internal faces need to be merged.
@@ -2193,7 +2526,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         side = pitch/np.sqrt(3)
         halfSqrt3 = np.sqrt(3)/2
 
-        frontBlock = self.createBlock(name, [
+        frontBlock = self.create_block(name, [
             Point(x-side/2, y-pitch/2, zmin),
             Point(x+side/2, y-pitch/2, zmin),
             Point(x+radius/2, y-radius*halfSqrt3, zmin),
@@ -2204,21 +2537,21 @@ class BlockMesh(OpenFOAMFile, Mesh):
             Point(x-radius/2, y-radius*halfSqrt3, zmax)
         ], nt, nr, nz)
 
-        frontRightBlock = self.addRight(frontBlock, name, [
+        frontRightBlock = self.add_right(frontBlock, name, [
             Point(x+side, y, zmin),
             Point(x+radius, y, zmin),
             Point(x+side, y, zmax),
             Point(x+radius, y, zmax),
         ], nx=nt)
 
-        frontLeftBlock = self.addLeft(frontBlock, name, [
+        frontLeftBlock = self.add_left(frontBlock, name, [
             Point(x-side, y, zmin),
             Point(x-radius, y, zmin),
             Point(x-side, y, zmax),
             Point(x-radius, y, zmax),
         ], nx=nt)
 
-        backBlock = self.createBlock(name, [
+        backBlock = self.create_block(name, [
             Point(x-radius/2, y+radius*halfSqrt3, zmin),
             Point(x+radius/2, y+radius*halfSqrt3, zmin),
             Point(x+side/2, y+pitch/2, zmin),
@@ -2229,14 +2562,14 @@ class BlockMesh(OpenFOAMFile, Mesh):
             Point(x-side/2, y+pitch/2, zmax),
         ], nt, nr, nz)
 
-        backLeftBlock = self.addLeft(backBlock, name, [
+        backLeftBlock = self.add_left(backBlock, name, [
             frontLeftBlock.points[3],
             frontLeftBlock.points[0],
             frontLeftBlock.points[7],
             frontLeftBlock.points[4],
         ], nx=nt)
 
-        backRightBlock = self.addRight(backBlock, name, [
+        backRightBlock = self.add_right(backBlock, name, [
             frontRightBlock.points[2],
             frontRightBlock.points[1],
             frontRightBlock.points[6],
@@ -2244,63 +2577,74 @@ class BlockMesh(OpenFOAMFile, Mesh):
         ], nx=nt)
 
         if (isHoleCylinder):
-            frontBlock.addEdgeArc(2, 3, x=x, y=y, isOrigin=True)
-            frontBlock.addEdgeArc(6, 7, x=x, y=y, isOrigin=True)
-            backBlock.addEdgeArc(0, 1, x=x, y=y, isOrigin=True)
-            backBlock.addEdgeArc(4, 5, x=x, y=y, isOrigin=True)
-            frontRightBlock.addEdgeArc(2, 3, x=x, y=y, isOrigin=True)
-            frontRightBlock.addEdgeArc(6, 7, x=x, y=y, isOrigin=True)
-            frontLeftBlock.addEdgeArc(2, 3, x=x, y=y, isOrigin=True)
-            frontLeftBlock.addEdgeArc(6, 7, x=x, y=y, isOrigin=True)
-            backLeftBlock.addEdgeArc(0, 1, x=x, y=y, isOrigin=True)
-            backLeftBlock.addEdgeArc(4, 5, x=x, y=y, isOrigin=True)
-            backRightBlock.addEdgeArc(0, 1, x=x, y=y, isOrigin=True)
-            backRightBlock.addEdgeArc(4, 5, x=x, y=y, isOrigin=True)
+            frontBlock.add_edge_arc(2, 3, x=x, y=y, isOrigin=True)
+            frontBlock.add_edge_arc(6, 7, x=x, y=y, isOrigin=True)
+            backBlock.add_edge_arc(0, 1, x=x, y=y, isOrigin=True)
+            backBlock.add_edge_arc(4, 5, x=x, y=y, isOrigin=True)
+            frontRightBlock.add_edge_arc(2, 3, x=x, y=y, isOrigin=True)
+            frontRightBlock.add_edge_arc(6, 7, x=x, y=y, isOrigin=True)
+            frontLeftBlock.add_edge_arc(2, 3, x=x, y=y, isOrigin=True)
+            frontLeftBlock.add_edge_arc(6, 7, x=x, y=y, isOrigin=True)
+            backLeftBlock.add_edge_arc(0, 1, x=x, y=y, isOrigin=True)
+            backLeftBlock.add_edge_arc(4, 5, x=x, y=y, isOrigin=True)
+            backRightBlock.add_edge_arc(0, 1, x=x, y=y, isOrigin=True)
+            backRightBlock.add_edge_arc(4, 5, x=x, y=y, isOrigin=True)
 
-        if (isAddBoundaryConditions):
-            idxFace = len(self.faces)
 
+        idxFace = len(self.faces)
+
+        if (isAddAllBC or isAddTopBC):
             topFace = Face(f"{name}Top_{idxFace}")
+
+            for block in [frontBlock, backRightBlock, frontRightBlock, backBlock, backLeftBlock, frontLeftBlock]:
+                topFace.add_sub_face(block.topFace())
+
+            self.add_boundary(topFace)
+
+        if (isAddAllBC or isAddBottomBC):
             botFace = Face(f"{name}Bottom_{idxFace}")
 
             for block in [frontBlock, backRightBlock, frontRightBlock, backBlock, backLeftBlock, frontLeftBlock]:
-                topFace.addSubFace(block.topFace())
-                botFace.addSubFace(block.bottomFace())
+                botFace.add_sub_face(block.bottomFace())
 
+            self.add_boundary(botFace)
+
+        if (isAddAllBC or isAddLateralBC):
             wallFaceFront = Face(f"{name}WallFront_{idxFace}", boundaryType='wall')
-            wallFaceFront.addSubFace(frontBlock.frontFace())
+            wallFaceFront.add_sub_face(frontBlock.frontFace())
             wallFaceFrontLeft = Face(f"{name}WallFrontLeft_{idxFace}", boundaryType='wall')
-            wallFaceFrontLeft.addSubFace(frontLeftBlock.frontFace())
+            wallFaceFrontLeft.add_sub_face(frontLeftBlock.frontFace())
             wallFaceFrontRight = Face(f"{name}WallFrontRight_{idxFace}", boundaryType='wall')
-            wallFaceFrontRight.addSubFace(frontRightBlock.frontFace())
+            wallFaceFrontRight.add_sub_face(frontRightBlock.frontFace())
             wallFaceBack = Face(f"{name}WallBack_{idxFace}", boundaryType='wall')
-            wallFaceBack.addSubFace(backBlock.backFace())
+            wallFaceBack.add_sub_face(backBlock.backFace())
             wallFaceBackLeft = Face(f"{name}WallBackLeft_{idxFace}", boundaryType='wall')
-            wallFaceBackLeft.addSubFace(backLeftBlock.backFace())
+            wallFaceBackLeft.add_sub_face(backLeftBlock.backFace())
             wallFaceBackRight = Face(f"{name}WallBackRight_{idxFace}", boundaryType='wall')
-            wallFaceBackRight.addSubFace(backRightBlock.backFace())
-            wallFaceHole = Face(f"{name}WallHole_{idxFace}", boundaryType='wall')
-            wallFaceHole.addSubFace(frontBlock.backFace())
-            wallFaceHole.addSubFace(frontRightBlock.backFace())
-            wallFaceHole.addSubFace(frontLeftBlock.backFace())
-            wallFaceHole.addSubFace(backBlock.frontFace())
-            wallFaceHole.addSubFace(backRightBlock.frontFace())
-            wallFaceHole.addSubFace(backLeftBlock.frontFace())
+            wallFaceBackRight.add_sub_face(backRightBlock.backFace())
 
-            self.addBoundary(topFace)
-            self.addBoundary(botFace)
-            self.addBoundary(wallFaceFront)
-            self.addBoundary(wallFaceFrontLeft)
-            self.addBoundary(wallFaceFrontRight)
-            self.addBoundary(wallFaceBack)
-            self.addBoundary(wallFaceBackLeft)
-            self.addBoundary(wallFaceBackRight)
-            self.addBoundary(wallFaceHole)
+            self.add_boundary(wallFaceFront)
+            self.add_boundary(wallFaceFrontLeft)
+            self.add_boundary(wallFaceFrontRight)
+            self.add_boundary(wallFaceBack)
+            self.add_boundary(wallFaceBackLeft)
+            self.add_boundary(wallFaceBackRight)
+
+        if (isAddAllBC or isAddHoleBC):
+            wallFaceHole = Face(f"{name}WallHole_{idxFace}", boundaryType='wall')
+            wallFaceHole.add_sub_face(frontBlock.backFace())
+            wallFaceHole.add_sub_face(frontRightBlock.backFace())
+            wallFaceHole.add_sub_face(frontLeftBlock.backFace())
+            wallFaceHole.add_sub_face(backBlock.frontFace())
+            wallFaceHole.add_sub_face(backRightBlock.frontFace())
+            wallFaceHole.add_sub_face(backLeftBlock.frontFace())
+
+            self.add_boundary(wallFaceHole)
 
         return(frontBlock, frontLeftBlock, frontRightBlock, backBlock, backRightBlock, backLeftBlock)
 
 
-    def createEdgeHexagonPrismAlongZ(
+    def create_edge_hexagon_prism_along_z(
             self,
             name: str,
             zmin: float, zmax: float,
@@ -2311,7 +2655,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             nr: int=1,
             nt: int=1,
             nz: int=1,
-            isAddBoundaryConditions: bool=False
+            isAddAllBC: bool=False
         ):
         """
         Block mesh instruction to create an hexagonal prism along the Z-axis.
@@ -2342,7 +2686,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             Number of cell per triangle in the azimutal direction (default 1)
         nz : int
             Number of cell along the Z direction (default 1)
-        isAddBoundaryConditions : bool
+        isAddAllBC : bool
             Flag to add automatically boundary faces on the prism (default False).
             If use lattice placement, it is recommended to set to 'true' if the
             internal faces need to be merged.
@@ -2358,7 +2702,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         cost = np.cos(edgeFaceOrientation)
         sint = np.sin(edgeFaceOrientation)
 
-        frontBlock = self.createBlock(name, [
+        frontBlock = self.create_block(name, [
             Point(x-side/2, y-pitch/2, zmin),
             Point(x+distanceCenterToEdge, y-pitch/2, zmin),
             Point(x+distanceCenterToEdge, y, zmin),
@@ -2377,7 +2721,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         y2 = y + pitch/2*cost + distanceCenterToEdge*sint
         x3 = x - side/2*cost - pitch/2*sint
         y3 = y + pitch/2*cost - side/2*sint
-        backBlock = self.addBack(frontBlock, name, [
+        backBlock = self.add_back(frontBlock, name, [
             Point(x2, y2, zmin),
             Point(x3, y3, zmin),
             Point(x2, y2, zmax),
@@ -2385,40 +2729,40 @@ class BlockMesh(OpenFOAMFile, Mesh):
         ], ny=nt)
 
 
-        if (isAddBoundaryConditions):
+        if (isAddAllBC):
             idxFace = len(self.faces)
 
             topFace = Face(f"{name}Top_{idxFace}")
             botFace = Face(f"{name}Bottom_{idxFace}")
 
             for block in [frontBlock, backBlock]:
-                topFace.addSubFace(block.topFace())
-                botFace.addSubFace(block.bottomFace())
+                topFace.add_sub_face(block.topFace())
+                botFace.add_sub_face(block.bottomFace())
 
             wallFaceFront = Face(f"{name}WallFront_{idxFace}", boundaryType='wall')
-            wallFaceFront.addSubFace(frontBlock.frontFace())
+            wallFaceFront.add_sub_face(frontBlock.frontFace())
             wallFaceFrontLeft = Face(f"{name}WallFrontLeft_{idxFace}", boundaryType='wall')
-            wallFaceFrontLeft.addSubFace(frontBlock.leftFace())
+            wallFaceFrontLeft.add_sub_face(frontBlock.leftFace())
             wallFaceBack = Face(f"{name}WallBack_{idxFace}", boundaryType='wall')
-            wallFaceBack.addSubFace(backBlock.backFace())
+            wallFaceBack.add_sub_face(backBlock.backFace())
             wallFaceBackLeft = Face(f"{name}WallBackLeft_{idxFace}", boundaryType='wall')
-            wallFaceBackLeft.addSubFace(backBlock.leftFace())
+            wallFaceBackLeft.add_sub_face(backBlock.leftFace())
             wallFaceEdge = Face(f"{name}WallEdge_{idxFace}", boundaryType='wall')
-            wallFaceEdge.addSubFace(backBlock.rightFace())
-            wallFaceEdge.addSubFace(frontBlock.rightFace())
+            wallFaceEdge.add_sub_face(backBlock.rightFace())
+            wallFaceEdge.add_sub_face(frontBlock.rightFace())
 
-            self.addBoundary(topFace)
-            self.addBoundary(botFace)
-            self.addBoundary(wallFaceFront)
-            self.addBoundary(wallFaceFrontLeft)
-            self.addBoundary(wallFaceBack)
-            self.addBoundary(wallFaceBackLeft)
-            self.addBoundary(wallFaceEdge)
+            self.add_boundary(topFace)
+            self.add_boundary(botFace)
+            self.add_boundary(wallFaceFront)
+            self.add_boundary(wallFaceFrontLeft)
+            self.add_boundary(wallFaceBack)
+            self.add_boundary(wallFaceBackLeft)
+            self.add_boundary(wallFaceEdge)
 
         return(frontBlock, backBlock)
 
 
-    def createCornerHexagonPrismAlongZ(
+    def create_corner_hexagon_prism_along_z(
             self,
             name: str,
             zmin: float, zmax: float,
@@ -2429,7 +2773,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             nr: int=1,
             nt: int=1,
             nz: int=1,
-            isAddBoundaryConditions: bool=False
+            isAddAllBC: bool=False
         ):
         """
         Block mesh instruction to create an hexagonal prism along the Z-axis.
@@ -2460,7 +2804,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             Number of cell per triangle in the azimutal direction (default 1)
         nz : int
             Number of cell along the Z direction (default 1)
-        isAddBoundaryConditions : bool
+        isAddAllBC : bool
             Flag to add automatically boundary faces on the prism (default False).
             If use lattice placement, it is recommended to set to 'true' if the
             internal faces need to be merged.
@@ -2479,7 +2823,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         xc = x -side/2
         yc = y -side * (1 - 1/np.sqrt(2))
 
-        frontBlock = self.createBlock(name, [
+        frontBlock = self.create_block(name, [
             Point(x-side/2, y-pitch/2, zmin),
             Point(x+distanceCenterToEdge, y-pitch/2, zmin),
             Point(x+distanceCenterToEdge, y + 2*distanceCenterToEdge * (1 - 1/np.sqrt(2)), zmin),
@@ -2494,7 +2838,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         frontBlock.rotateZ(theta=edgeFaceOrientation)
         frontBlock.translate(dx=x, dy=y)
 
-        wedgeBlock = self.addLeft(frontBlock, name, [
+        wedgeBlock = self.add_left(frontBlock, name, [
             Point(x - side*cost, y -side*sint, zmin),
             Point(frontBlock.points[3].x, frontBlock.points[3].y, zmin),
             Point(x - side*cost, y -side*sint, zmax),
@@ -2505,7 +2849,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         dy = (side/2 + distanceCenterToEdge) * halfSqrt3
         x2 = x + dx*cost - dy*sint
         y2 = y + dx*sint + dy*cost
-        backBlock = self.addLeft(wedgeBlock, name, [
+        backBlock = self.add_left(wedgeBlock, name, [
             Point(x2, y2, zmin),
             frontBlock.points[2],
             Point(x2, y2, zmax),
@@ -2513,48 +2857,48 @@ class BlockMesh(OpenFOAMFile, Mesh):
         ], nx=nr)
 
 
-        if (isAddBoundaryConditions):
+        if (isAddAllBC):
             idxFace = len(self.faces)
 
             topFace = Face(f"{name}Top_{idxFace}")
             botFace = Face(f"{name}Bottom_{idxFace}")
 
             for block in [frontBlock, backBlock, wedgeBlock]:
-                topFace.addSubFace(block.topFace())
-                botFace.addSubFace(block.bottomFace())
+                topFace.add_sub_face(block.topFace())
+                botFace.add_sub_face(block.bottomFace())
 
             wallFaceFront = Face(f"{name}WallFront_{idxFace}", boundaryType='wall')
-            wallFaceFront.addSubFace(frontBlock.frontFace())
+            wallFaceFront.add_sub_face(frontBlock.frontFace())
             wallFaceRight = Face(f"{name}WallRight_{idxFace}", boundaryType='wall')
-            wallFaceRight.addSubFace(frontBlock.rightFace())
+            wallFaceRight.add_sub_face(frontBlock.rightFace())
             wallFaceBack = Face(f"{name}WallBack_{idxFace}", boundaryType='wall')
-            wallFaceBack.addSubFace(backBlock.leftFace())
+            wallFaceBack.add_sub_face(backBlock.leftFace())
             wallFaceLeft = Face(f"{name}WallLeft_{idxFace}", boundaryType='wall')
-            wallFaceLeft.addSubFace(backBlock.frontFace())
+            wallFaceLeft.add_sub_face(backBlock.frontFace())
             wallFaceEdge = Face(f"{name}WallEdge_{idxFace}", boundaryType='wall')
-            wallFaceEdge.addSubFace(wedgeBlock.frontFace())
+            wallFaceEdge.add_sub_face(wedgeBlock.frontFace())
 
             internalFace1 = Face(f"{name}Internal1_{idxFace}", boundaryType='int')
-            internalFace1.addSubFace(frontBlock.backFace())
+            internalFace1.add_sub_face(frontBlock.backFace())
             internalFace2 = Face(f"{name}Internal2_{idxFace}", boundaryType='int')
-            internalFace2.addSubFace(backBlock.backFace())
+            internalFace2.add_sub_face(backBlock.backFace())
 
             self.mergePatchPairs.append((internalFace1, internalFace2))
 
-            self.addBoundary(topFace)
-            self.addBoundary(botFace)
-            self.addBoundary(wallFaceFront)
-            self.addBoundary(wallFaceRight)
-            self.addBoundary(wallFaceBack)
-            self.addBoundary(wallFaceLeft)
-            self.addBoundary(wallFaceEdge)
-            self.addBoundary(internalFace1)
-            self.addBoundary(internalFace2)
+            self.add_boundary(topFace)
+            self.add_boundary(botFace)
+            self.add_boundary(wallFaceFront)
+            self.add_boundary(wallFaceRight)
+            self.add_boundary(wallFaceBack)
+            self.add_boundary(wallFaceLeft)
+            self.add_boundary(wallFaceEdge)
+            self.add_boundary(internalFace1)
+            self.add_boundary(internalFace2)
 
         return(frontBlock, backBlock, wedgeBlock)
 
 
-    def createTriangularChannel(
+    def create_triangular_channel(
             self,
             name: str,
             lowZ: float, highZ: float,
@@ -2565,7 +2909,9 @@ class BlockMesh(OpenFOAMFile, Mesh):
             nx: int=1,
             ny: int=1,
             nz: int=1,
-            isAddBoundaryConditions: bool=False
+            isAddAllBC: bool=False,
+            isAddTopBC: bool=False,
+            isAddBottomBC: bool=False,
         ):
         """
         Parameters
@@ -2584,7 +2930,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         d = sqrt3*pitch/2
 
         # Block 1
-        frontRightBlock = self.createBlock(name, [
+        frontRightBlock = self.create_block(name, [
             Point(x, y - h, lowZ),
             Point(x + pitch/2 - radius, y - h, lowZ),
             Point(x + pitch/2 - radius*sqrt3/2, y - h + radius/2, lowZ),
@@ -2596,7 +2942,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         ], nx=nx, ny=ny, nz=nz)
 
         # Block 2
-        frontLeftBlock = self.addLeft(frontRightBlock, name, [
+        frontLeftBlock = self.add_left(frontRightBlock, name, [
             Point(x - pitch/2 + radius, y - h, lowZ),
             Point(x - pitch/2 + radius*sqrt3/2, y - h + radius/2, lowZ),
             Point(x - pitch/2 + radius, y - h, highZ),
@@ -2604,7 +2950,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         ], nx=nx)
 
         # Block 3
-        leftBlock = self.addBack(frontLeftBlock, name, [
+        leftBlock = self.add_back(frontLeftBlock, name, [
             Point(x - pitch/2 + pitch/2/2, y - h + pitch/2 * sqrt3/2, lowZ),
             Point(x - pitch/2 + radius/2, y - h + radius*sqrt3/2, lowZ),
             Point(x - pitch/2 + pitch/2/2, y - h + pitch/2 * sqrt3/2, highZ),
@@ -2612,7 +2958,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         ], ny=ny)
 
         # Block 4
-        rightBlock = self.addBack(frontRightBlock, name, [
+        rightBlock = self.add_back(frontRightBlock, name, [
             Point(x + pitch/2 - radius/2, y - h + radius*sqrt3/2, lowZ),
             Point(x + pitch/2 - pitch/2/2, y - h + pitch/2 * sqrt3/2, lowZ),
             Point(x + pitch/2 - radius/2, y - h + radius*sqrt3/2, highZ),
@@ -2620,7 +2966,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         ], ny=ny)
 
         # Block 5
-        backLeftBlock = self.addRight(leftBlock, name, [
+        backLeftBlock = self.add_right(leftBlock, name, [
             Point(x, y + d-h-radius, lowZ),
             Point(x - radius/2, y + d-h-radius*sqrt3/2, lowZ),
             Point(x, y + d-h-radius, highZ),
@@ -2628,28 +2974,28 @@ class BlockMesh(OpenFOAMFile, Mesh):
         ], nx=nx)
 
         # Block 6
-        backRightBlock = self.addLeft(rightBlock, name, [
+        backRightBlock = self.add_left(rightBlock, name, [
             Point(x , y + d-h-radius, lowZ),
             Point(x + radius/2, y + d-h-radius*sqrt3/2, lowZ),
             Point(x , y + d-h-radius, highZ),
             Point(x + radius/2, y + d-h-radius*sqrt3/2, highZ),
         ], nx=nx)
 
-        frontRightBlock.addEdgeArc(1, 2, x=x + pitch/2, y=y - h, isOrigin=True)
-        frontRightBlock.addEdgeArc(5, 6, x=x + pitch/2, y=y - h, isOrigin=True)
-        frontLeftBlock.addEdgeArc(0, 3, x=x - pitch/2, y=y - h, isOrigin=True)
-        frontLeftBlock.addEdgeArc(4, 7, x=x - pitch/2, y=y - h, isOrigin=True)
-        leftBlock.addEdgeArc(0, 3, x=x - pitch/2, y=y - h, isOrigin=True)
-        leftBlock.addEdgeArc(4, 7, x=x - pitch/2, y=y - h, isOrigin=True)
-        rightBlock.addEdgeArc(1, 2, x=x + pitch/2, y=y - h, isOrigin=True)
-        rightBlock.addEdgeArc(5, 6, x=x + pitch/2, y=y - h, isOrigin=True)
-        backLeftBlock.addEdgeArc(1, 2, x=x, y=y+d-h, isOrigin=True)
-        backLeftBlock.addEdgeArc(5, 6, x=x, y=y+d-h, isOrigin=True)
-        backRightBlock.addEdgeArc(0, 3, x=x, y=y+d-h, isOrigin=True)
-        backRightBlock.addEdgeArc(4, 7, x=x, y=y+d-h, isOrigin=True)
+        frontRightBlock.add_edge_arc(1, 2, x=x + pitch/2, y=y - h, isOrigin=True)
+        frontRightBlock.add_edge_arc(5, 6, x=x + pitch/2, y=y - h, isOrigin=True)
+        frontLeftBlock.add_edge_arc(0, 3, x=x - pitch/2, y=y - h, isOrigin=True)
+        frontLeftBlock.add_edge_arc(4, 7, x=x - pitch/2, y=y - h, isOrigin=True)
+        leftBlock.add_edge_arc(0, 3, x=x - pitch/2, y=y - h, isOrigin=True)
+        leftBlock.add_edge_arc(4, 7, x=x - pitch/2, y=y - h, isOrigin=True)
+        rightBlock.add_edge_arc(1, 2, x=x + pitch/2, y=y - h, isOrigin=True)
+        rightBlock.add_edge_arc(5, 6, x=x + pitch/2, y=y - h, isOrigin=True)
+        backLeftBlock.add_edge_arc(1, 2, x=x, y=y+d-h, isOrigin=True)
+        backLeftBlock.add_edge_arc(5, 6, x=x, y=y+d-h, isOrigin=True)
+        backRightBlock.add_edge_arc(0, 3, x=x, y=y+d-h, isOrigin=True)
+        backRightBlock.add_edge_arc(4, 7, x=x, y=y+d-h, isOrigin=True)
 
         # Rotate all points
-        points = self.getUniquePoints([
+        points = self.get_unique_points([
             frontRightBlock, frontLeftBlock, leftBlock, rightBlock,
             backLeftBlock, backRightBlock
         ], withEdge=True)
@@ -2659,56 +3005,65 @@ class BlockMesh(OpenFOAMFile, Mesh):
             point.translate(dx=x, dy=y)
 
 
-        if (isAddBoundaryConditions):
-            idxFace = len(self.faces)
+        idxFace = len(self.faces)
 
+        if (isAddAllBC or isAddTopBC):
             topFace = Face(f"{name}Top_{idxFace}")
+
+            for block in [
+                frontRightBlock, frontLeftBlock, leftBlock, rightBlock,
+                backLeftBlock, backRightBlock
+            ]:
+                topFace.add_sub_face(block.topFace())
+
+            self.add_boundary(topFace)
+
+        if (isAddAllBC or isAddBottomBC):
             botFace = Face(f"{name}Bottom_{idxFace}")
 
             for block in [
                 frontRightBlock, frontLeftBlock, leftBlock, rightBlock,
                 backLeftBlock, backRightBlock
             ]:
-                topFace.addSubFace(block.topFace())
-                botFace.addSubFace(block.bottomFace())
+                botFace.add_sub_face(block.bottomFace())
 
+            self.add_boundary(botFace)
 
+        if (isAddAllBC):
             wallFaceFront = Face(f"{name}WallFluidFront_{idxFace}", boundaryType='wall')
-            wallFaceFront.addSubFace(frontLeftBlock.frontFace())
-            wallFaceFront.addSubFace(frontRightBlock.frontFace())
+            wallFaceFront.add_sub_face(frontLeftBlock.frontFace())
+            wallFaceFront.add_sub_face(frontRightBlock.frontFace())
             wallFaceRight = Face(f"{name}WallFluidRight_{idxFace}", boundaryType='wall')
-            wallFaceRight.addSubFace(rightBlock.backFace())
-            wallFaceRight.addSubFace(backRightBlock.backFace())
+            wallFaceRight.add_sub_face(rightBlock.backFace())
+            wallFaceRight.add_sub_face(backRightBlock.backFace())
             wallFaceLeft = Face(f"{name}WallFluidLeft_{idxFace}", boundaryType='wall')
-            wallFaceLeft.addSubFace(leftBlock.backFace())
-            wallFaceLeft.addSubFace(backLeftBlock.backFace())
+            wallFaceLeft.add_sub_face(leftBlock.backFace())
+            wallFaceLeft.add_sub_face(backLeftBlock.backFace())
             wallFaceHoleLeft = Face(f"{name}WallHoleLeft_{idxFace}", boundaryType='wall')
-            wallFaceHoleLeft.addSubFace(leftBlock.leftFace())
-            wallFaceHoleLeft.addSubFace(frontLeftBlock.leftFace())
+            wallFaceHoleLeft.add_sub_face(leftBlock.leftFace())
+            wallFaceHoleLeft.add_sub_face(frontLeftBlock.leftFace())
             wallFaceHoleRight = Face(f"{name}WallHoleRight_{idxFace}", boundaryType='wall')
-            wallFaceHoleRight.addSubFace(rightBlock.rightFace())
-            wallFaceHoleRight.addSubFace(frontRightBlock.rightFace())
+            wallFaceHoleRight.add_sub_face(rightBlock.rightFace())
+            wallFaceHoleRight.add_sub_face(frontRightBlock.rightFace())
             wallFaceHoleBack = Face(f"{name}WallHoleBack_{idxFace}", boundaryType='wall')
-            wallFaceHoleBack.addSubFace(backLeftBlock.rightFace())
-            wallFaceHoleBack.addSubFace(backRightBlock.leftFace())
+            wallFaceHoleBack.add_sub_face(backLeftBlock.rightFace())
+            wallFaceHoleBack.add_sub_face(backRightBlock.leftFace())
 
             internalFace1 = Face(f"{name}Internal1_{idxFace}", boundaryType='int')
-            internalFace1.addSubFace(backRightBlock.frontFace())
+            internalFace1.add_sub_face(backRightBlock.frontFace())
             internalFace2 = Face(f"{name}Internal2_{idxFace}", boundaryType='int')
-            internalFace2.addSubFace(backLeftBlock.frontFace())
+            internalFace2.add_sub_face(backLeftBlock.frontFace())
 
             # self.mergePatchPairs.append((internalFace1, internalFace2))
 
-            self.addBoundary(topFace)
-            self.addBoundary(botFace)
-            self.addBoundary(wallFaceFront)
-            self.addBoundary(wallFaceRight)
-            self.addBoundary(wallFaceLeft)
-            self.addBoundary(wallFaceHoleLeft)
-            self.addBoundary(wallFaceHoleRight)
-            self.addBoundary(wallFaceHoleBack)
-            self.addBoundary(internalFace1)
-            self.addBoundary(internalFace2)
+            self.add_boundary(wallFaceFront)
+            self.add_boundary(wallFaceRight)
+            self.add_boundary(wallFaceLeft)
+            self.add_boundary(wallFaceHoleLeft)
+            self.add_boundary(wallFaceHoleRight)
+            self.add_boundary(wallFaceHoleBack)
+            self.add_boundary(internalFace1)
+            self.add_boundary(internalFace2)
 
         return(
             frontRightBlock, frontLeftBlock, leftBlock, rightBlock,
@@ -2716,7 +3071,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         )
 
 
-    def addPipe1DFromDirection(
+    def add_pipe_1D_from_direction(
             self,
             name: str,
             originPosition: Vector | Block,
@@ -2725,7 +3080,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             equivalentHydraulicDiameter: float,
             n: int=1,
             elbowRadius: float=0,
-            isAddBoundaryConditions: bool=False,
+            isAddLateralBC: bool=False,
             originPositionOutletFaceName: str='top'
         ) -> Block:
         """
@@ -2754,10 +3109,10 @@ class BlockMesh(OpenFOAMFile, Mesh):
         elbowRadius : float
             Offset the pipe knowing the elbow curvature radius and if
             `originPosition` is a `Block` (default `0`).
-        isAddBoundaryConditions : bool
+        isAddLateralBC : bool
             If `True`, set left, right, front and back faces to `empty` BC
             (default `False`). If `originPosition` is a `Block`, connect the
-            target block to the new pipe via the `connectPipes` method.
+            target block to the new pipe via the `connect_pipes` method.
         originPositionOutletFaceName : str
             Facename of the origin block to attach the BC (default `top`).
 
@@ -2781,13 +3136,13 @@ class BlockMesh(OpenFOAMFile, Mesh):
         offset = 0
         # Recompute origin position and offset knowing the elbow radius
         if (isinstance(connectingBlock, Block)):
-            pipe1outletFace = connectingBlock.getFace(originPositionOutletFaceName)
-            # pipe1inletFace = connectingBlock.getOppositeFace(originPositionOutletFaceName)
+            pipe1outletFace = connectingBlock.get_face(originPositionOutletFaceName)
+            # pipe1inletFace = connectingBlock.get_opposite_face(originPositionOutletFaceName)
 
-            originPosition = connectingBlock.getFaceBarycenter(pipe1outletFace)
-            # pipeInlet = connectingBlock.getFaceBarycenter(pipe1inletFace)
+            originPosition = connectingBlock.get_face_barycenter(pipe1outletFace)
+            # pipeInlet = connectingBlock.get_face_barycenter(pipe1inletFace)
             # connectingBlockDir = originPosition - pipeInlet
-            connectingBlockDir = connectingBlock.getFaceNormal(originPositionOutletFaceName)
+            connectingBlockDir = connectingBlock.get_face_normal(originPositionOutletFaceName)
 
             theta = np.arccos(connectingBlockDir.dot(direction) / (connectingBlockDir.norm() * direction.norm()))
             offset = elbowRadius * np.tan(theta/2)
@@ -2814,7 +3169,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         phi = np.arctan2(direction.y, direction.x)
 
         # Create the block at the origin
-        block = self.createBlock(name, [
+        block = self.create_block(name, [
             Point(-halfDh, -halfDh, -length/2),
             Point(+halfDh, -halfDh, -length/2),
             Point(+halfDh, +halfDh, -length/2),
@@ -2826,21 +3181,21 @@ class BlockMesh(OpenFOAMFile, Mesh):
         ], nx=1, ny=1, nz=n)
 
         # Rotate all points and place to final position
-        points = self.getUniquePoints([block], withEdge=True)
+        points = self.get_unique_points([block], withEdge=True)
         for point in points:
             point.rotateY(theta=-theta)
             point.rotateZ(theta=phi)
             point.translate(dx=x+dx/2, dy=y+dy/2, dz=z+dz/2)
 
-        if (isAddBoundaryConditions):
+        if (isAddLateralBC):
             # 'block' is always from bottom to top
-            self.pipeWallBC.addSubFace(block.leftFace())
-            self.pipeWallBC.addSubFace(block.rightFace())
-            self.pipeWallBC.addSubFace(block.frontFace())
-            self.pipeWallBC.addSubFace(block.backFace())
+            self.pipeWallBC.add_sub_face(block.leftFace())
+            self.pipeWallBC.add_sub_face(block.rightFace())
+            self.pipeWallBC.add_sub_face(block.frontFace())
+            self.pipeWallBC.add_sub_face(block.backFace())
 
             if (isinstance(connectingBlock, Block)):
-                self.connectPipes(
+                self.connect_pipes(
                     pipe1=connectingBlock,
                     pipe2=block,
                     elbowRadius=elbowRadius,
@@ -2850,7 +3205,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         return(block)
 
 
-    def addPipe1DFrom2Points(
+    def add_pipe_1D_from_2points(
             self,
             name: str,
             originPosition: Vector | Block,
@@ -2858,7 +3213,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             equivalentHydraulicDiameter: float,
             n: int=1,
             elbowRadius: float=0,
-            isAddBoundaryConditions: bool=False,
+            isAddLateralBC: bool=False,
             originPositionOutletFaceName: str='top',
             finalPositionInletFaceName: str='bottom'
         ) -> Block:
@@ -2884,7 +3239,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             Number cells along the pipe (default `1`)
         elbowRadius : float
             Offset the pipe knowing the elbow curvature radius (default `0`).
-        isAddBoundaryConditions : bool
+        isAddLateralBC : bool
             If `True`, set left, right, front and back face to `empty` BC.
             If `True` and `finalPosition` is a `Block`, connect the new pipe to
             `finalPosition` block. Can be used to close loop.
@@ -2909,30 +3264,30 @@ class BlockMesh(OpenFOAMFile, Mesh):
         if (isinstance(originPosition, Vector)):
             originPositionVec = originPosition
         elif (isinstance(originPosition, Block)):
-            pipe1outletFace = originPosition.getFace(originPositionOutletFaceName)
-            originPositionVec = originPosition.getFaceBarycenter(pipe1outletFace)
+            pipe1outletFace = originPosition.get_face(originPositionOutletFaceName)
+            originPositionVec = originPosition.get_face_barycenter(pipe1outletFace)
 
         # Extract final position as a vector
         if (isinstance(finalPosition, Vector)):
             finalPositionVec = finalPosition
         elif (isinstance(finalPosition, Block)):
-            pipe2inletFace = finalPosition.getFace(finalPositionInletFaceName)
-            finalPositionVec = finalPosition.getFaceBarycenter(pipe2inletFace)
+            pipe2inletFace = finalPosition.get_face(finalPositionInletFaceName)
+            finalPositionVec = finalPosition.get_face_barycenter(pipe2inletFace)
 
         direction: Vector = finalPositionVec - originPositionVec
 
         # Recompute direction if both origin and final position come from Block
         # Suppose the same elbow radius
         if (isinstance(originPosition, Block) and isinstance(finalPosition, Block)):
-            # pipe1inletFace = originPosition.getOppositeFace(originPositionOutletFaceName)
-            # pipe2outletFace = finalPosition.getOppositeFace(finalPositionInletFaceName)
-            # pipe1Inlet = originPosition.getFaceBarycenter(pipe1inletFace)
-            # pipe2Outlet = finalPosition.getFaceBarycenter(pipe2outletFace)
+            # pipe1inletFace = originPosition.get_opposite_face(originPositionOutletFaceName)
+            # pipe2outletFace = finalPosition.get_opposite_face(finalPositionInletFaceName)
+            # pipe1Inlet = originPosition.get_face_barycenter(pipe1inletFace)
+            # pipe2Outlet = finalPosition.get_face_barycenter(pipe2outletFace)
 
             # originDir = originPositionVec - pipe1Inlet
             # finalDir = pipe2Outlet - finalPositionVec
-            originDir = originPosition.getFaceNormal(originPositionOutletFaceName)
-            finalDir = finalPosition.getFaceNormal(finalPositionInletFaceName)
+            originDir = originPosition.get_face_normal(originPositionOutletFaceName)
+            finalDir = finalPosition.get_face_normal(finalPositionInletFaceName)
 
             rotationAxisOrigin = direction.cross(originDir)
             rotationAxisFinal = direction.cross(finalDir)
@@ -2946,7 +3301,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
         length = direction.norm()
 
-        block = self.addPipe1DFromDirection(
+        block = self.add_pipe_1D_from_direction(
             name=name,
             originPosition=originPosition,
             direction=direction,
@@ -2954,12 +3309,12 @@ class BlockMesh(OpenFOAMFile, Mesh):
             equivalentHydraulicDiameter=equivalentHydraulicDiameter,
             n=n,
             elbowRadius=elbowRadius,
-            isAddBoundaryConditions=isAddBoundaryConditions,
+            isAddLateralBC=isAddLateralBC,
             originPositionOutletFaceName=originPositionOutletFaceName
         )
 
-        if (isAddBoundaryConditions and isinstance(finalPosition, Block)):
-            self.connectPipes(
+        if (isAddLateralBC and isinstance(finalPosition, Block)):
+            self.connect_pipes(
                 pipe1=block,
                 pipe2=finalPosition,
                 elbowRadius=elbowRadius,
@@ -2970,7 +3325,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         return(block)
 
 
-    def connectPipes(
+    def connect_pipes(
             self,
             pipe1: Block,
             pipe2: Block,
@@ -3006,22 +3361,22 @@ class BlockMesh(OpenFOAMFile, Mesh):
         check_value("pipe2inletFaceName", pipe2inletFaceName, _FACE_NAME_TYPES)
 
         # Extract faces
-        # pipe1inletFace = pipe1.getOppositeFace(pipe1outletFaceName)
-        pipe1outletFace = pipe1.getFace(pipe1outletFaceName)
-        pipe2inletFace = pipe2.getFace(pipe2inletFaceName)
-        # pipe2outletFace = pipe2.getOppositeFace(pipe2inletFaceName)
+        # pipe1inletFace = pipe1.get_opposite_face(pipe1outletFaceName)
+        pipe1outletFace = pipe1.get_face(pipe1outletFaceName)
+        pipe2inletFace = pipe2.get_face(pipe2inletFaceName)
+        # pipe2outletFace = pipe2.get_opposite_face(pipe2inletFaceName)
 
         # Compute barycenters
-        # pipe1Inlet = pipe1.getFaceBarycenter(pipe1inletFace)
-        pipe1Outlet = pipe1.getFaceBarycenter(pipe1outletFace)
-        # pipe2Inlet = pipe2.getFaceBarycenter(pipe2inletFace)
-        # pipe2Outlet = pipe2.getFaceBarycenter(pipe2outletFace)
+        # pipe1Inlet = pipe1.get_face_barycenter(pipe1inletFace)
+        pipe1Outlet = pipe1.get_face_barycenter(pipe1outletFace)
+        # pipe2Inlet = pipe2.get_face_barycenter(pipe2inletFace)
+        # pipe2Outlet = pipe2.get_face_barycenter(pipe2outletFace)
 
         # Compute directions
         # dir1 = pipe1Outlet - pipe1Inlet
         # dir2 = pipe2Outlet - pipe2Inlet
-        dir1 = pipe1.getFaceNormal(pipe1outletFaceName)
-        dir2 = -pipe2.getFaceNormal(pipe2inletFaceName)
+        dir1 = pipe1.get_face_normal(pipe1outletFaceName)
+        dir2 = -pipe2.get_face_normal(pipe2inletFaceName)
 
         # Compute rotation axes
         rotationAxis1 = dir2.cross(dir1)
@@ -3046,7 +3401,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             rotationAxis=rotationAxis1,
             rotationCentre=rotationCentre
         )
-        inlet.addSubFace(pipe1outletFace)
+        inlet.add_sub_face(pipe1outletFace)
 
         outlet = FaceCyclic(
             f"{pipe2.name}_inlet",
@@ -3055,13 +3410,13 @@ class BlockMesh(OpenFOAMFile, Mesh):
             rotationAxis=rotationAxis2,
             rotationCentre=rotationCentre
         )
-        outlet.addSubFace(pipe2inletFace)
+        outlet.add_sub_face(pipe2inletFace)
 
-        self.addBoundary(inlet)
-        self.addBoundary(outlet)
+        self.add_boundary(inlet)
+        self.add_boundary(outlet)
 
 
-    def createPipeCylindricalManifoldAlongZ(
+    def create_pipe_cylindrical_manifold_along_z(
             self,
             name: str,
             nEntries: int,
@@ -3136,7 +3491,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         if (isAddGap):
             blocks = []
             for i in range(nEntries):
-                arc = self.createRingSectorAlongZ(
+                arc = self.create_ring_sector_along_z(
                     name=f"{name}_pipe{i}",
                     innerRadius=innerRadius, outerRadius=outerRadius,
                     angleStart=angleStart - anglePipe/2 + i*360/nEntries, angleArc=anglePipe,
@@ -3150,10 +3505,10 @@ class BlockMesh(OpenFOAMFile, Mesh):
             angleSection = (360/nEntries - anglePipe - angleInnerPipe)/2
 
             for arc in blocks[:nEntries]:
-                arc1 = self.extrudeNormalArc(
+                arc1 = self.extrude_normal_arc(
                     arc, 'right', name, angleSection, arcCenter=Vector(x, y, 0), nt=nt
                 )
-                arc2 = self.extrudeNormalArc(
+                arc2 = self.extrude_normal_arc(
                     arc, 'left', name, -angleSection, arcCenter=Vector(x, y, 0), nt=nt
                 )
                 blocks.append(arc1)
@@ -3162,7 +3517,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             return(blocks)
 
         # No gaps
-        firstArc = self.createRingSectorAlongZ(
+        firstArc = self.create_ring_sector_along_z(
             name=f"{name}_pipe0",
             innerRadius=innerRadius, outerRadius=outerRadius,
             angleStart=angleStart - anglePipe/2, angleArc=anglePipe,
@@ -3172,30 +3527,30 @@ class BlockMesh(OpenFOAMFile, Mesh):
         )
         blocks = [firstArc]
         for i in range(nEntries-1):
-            arc1 = self.extrudeNormalArc(
+            arc1 = self.extrude_normal_arc(
                 blocks[-1], 'right', name, angleSection, arcCenter=Vector(x, y, 0), nt=nt
             )
-            arc2 = self.extrudeNormalArc(
+            arc2 = self.extrude_normal_arc(
                 arc1, 'right', f"{name}_pipe{i+1}", anglePipe, arcCenter=Vector(x, y, 0), nt=1
             )
             blocks.append(arc1)
             blocks.append(arc2)
 
         # Last section to close the loop
-        lastArc = self.addRight(blocks[-1], name, [
+        lastArc = self.add_right(blocks[-1], name, [
             firstArc.points[0], firstArc.points[3],
             firstArc.points[4], firstArc.points[7]
         ], nx=nt)
-        lastArc.addEdgeArc(0, 1, x, y, isOrigin=True)
-        lastArc.addEdgeArc(2, 3, x, y, isOrigin=True)
-        lastArc.addEdgeArc(4, 5, x, y, isOrigin=True)
-        lastArc.addEdgeArc(6, 7, x, y, isOrigin=True)
+        lastArc.add_edge_arc(0, 1, x, y, isOrigin=True)
+        lastArc.add_edge_arc(2, 3, x, y, isOrigin=True)
+        lastArc.add_edge_arc(4, 5, x, y, isOrigin=True)
+        lastArc.add_edge_arc(6, 7, x, y, isOrigin=True)
         blocks.append(lastArc)
 
         return(blocks)
 
 
-    def hexagonalLatticeAssembly(
+    def hexagonal_lattice_assembly(
             self,
             pitch: float,
             lattice: str, latticeNXY: int,
@@ -3214,7 +3569,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             Dictionnary of generator functions
         """
         for pinKey, funcGen in funcElementGeneratorPin.items():
-            self.latticePlacement(
+            self.lattice_placement(
                 funcElementGenerator=funcGen,
                 lattice=lattice,
                 latticeType='hexagon',
@@ -3236,8 +3591,8 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
         distanceCenterToEdge = 0.5 * (wrapperFlatToFlat - (latticeNXY + (latticeNXY-2-1)/2)*pitch/np.sqrt(3))
 
-        self.latticePlacement(
-            funcElementGenerator=lambda name, x, y: self.createEdgeHexagonPrismAlongZ(
+        self.lattice_placement(
+            funcElementGenerator=lambda name, x, y: self.create_edge_hexagon_prism_along_z(
                 "edge",
                 zmin=zmin, zmax=zmax,
                 pitch=pitch,
@@ -3245,7 +3600,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 edgeFaceOrientation=angle(x-xAssembly, y-yAssembly),
                 x=x, y=y,
                 nr=nrEdge, nt=ntEdge, nz=nzEdge,
-                isAddBoundaryConditions=True
+                isAddAllBC=True
             ),
             lattice=lattice,
             latticeType='hexagon',
@@ -3256,8 +3611,8 @@ class BlockMesh(OpenFOAMFile, Mesh):
             elementsToPlace='E'
         )
 
-        self.latticePlacement(
-            funcElementGenerator=lambda name, x, y: self.createCornerHexagonPrismAlongZ(
+        self.lattice_placement(
+            funcElementGenerator=lambda name, x, y: self.create_corner_hexagon_prism_along_z(
                 "corner",
                 zmin=zmin, zmax=zmax,
                 pitch=pitch,
@@ -3265,7 +3620,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 edgeFaceOrientation=np.arctan2(y-yAssembly, x-xAssembly)-np.pi/6,
                 x=x, y=y,
                 nr=nrEdge, nt=ntEdge, nz=nzEdge,
-                isAddBoundaryConditions=True
+                isAddAllBC=True
             ),
             lattice=lattice,
             latticeType='hexagon',
@@ -3277,7 +3632,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         )
 
 
-    def getNeiboursByIndex(
+    def get_neibours_by_index(
             self,
             lattice: str,
             idx: int,
@@ -3307,7 +3662,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         return(res)
 
 
-    def latticePlacement(
+    def lattice_placement(
             self,
             funcElementGenerator,
             lattice: str,
@@ -3341,8 +3696,8 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
             mesh = ffn.BlockMesh()
 
-            mesh.latticePlacement(
-                funcElementGenerator=lambda name, x, y: mesh.createHexagonPrismAlongZ(
+            mesh.lattice_placement(
+                funcElementGenerator=lambda name, x, y: mesh.create_hexagon_prism_along_z(
                     name=name,
                     zmin=0,
                     zmax=0.5,
@@ -3351,7 +3706,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                     nr=1,
                     nt=1,
                     nz=3,
-                    isAddBoundaryConditions=True
+                    isAddAllBC=True
                 ),
                 lattice=lattice,
                 latticeType="hexagon",
@@ -3401,10 +3756,10 @@ class BlockMesh(OpenFOAMFile, Mesh):
             funcElementGenerator(f"{elementName}", coord0, coord1)
 
         if (isMergePatches):
-            self.addMergePatchPairs()
+            self.add_merge_patch_pairs()
 
 
-    def fillLatticeRingGap(
+    def fill_lattice_ring_gap(
             self,
             name: str,
             ringRadius: float,
@@ -3420,7 +3775,10 @@ class BlockMesh(OpenFOAMFile, Mesh):
             flatToFlatDirection: str='y',
             x: float=0,
             y: float=0,
-            isAddBoundaryConditions: bool=False
+            isAddAllBC: bool=False,
+            isAddTopBC: bool=False,
+            isAddBottomBC: bool=False,
+            isAddOuterBC: bool=False
         ):
         """
         Create cutted blocks that cross an infinite cylinder along the Z-axis.
@@ -3465,16 +3823,19 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
         isInside = lambda x, y: np.sqrt(x**2 + y**2) <= ringRadius
 
-        if (isAddBoundaryConditions):
-            idxFace = len(self.faces)
+        idxFace = len(self.faces)
 
+        if (isAddAllBC or isAddTopBC):
             topFace = Face(f"{name}Top_{idxFace}")
-            botFace = Face(f"{name}Bottom_{idxFace}")
-            wallFace = Face(f"{name}Wall_{idxFace}")
+            self.add_boundary(topFace)
 
-            self.addBoundary(topFace)
-            self.addBoundary(botFace)
-            self.addBoundary(wallFace)
+        if (isAddAllBC or isAddBottomBC):
+            botFace = Face(f"{name}Bottom_{idxFace}")
+            self.add_boundary(botFace)
+
+        if (isAddAllBC or isAddOuterBC):
+            wallFace = Face(f"{name}WallOuter_{idxFace}")
+            self.add_boundary(wallFace)
 
         if (latticeType == 'square'):
             blockCorners = []
@@ -3522,7 +3883,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                     if (test == (True, False, False, False)):
                         xmin, xmax, ymin, ymax = block
 
-                        newBlock = self.createBlock(name, [
+                        newBlock = self.create_block(name, [
                             Point(xmin, ymin, zmin),
                             Point(x + np.sqrt(ringRadius**2 - (ymin-x)**2), ymin, zmin),
                             Point(xmin, y + np.sqrt(ringRadius**2 - (xmin-x)**2), zmin),
@@ -3533,27 +3894,28 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             Point(xmin, ymin, zmax),
                         ], nx=nxBlock, ny=nyBlock, nz=nzBlock)
 
-                        newBlock.addEdgeArc(1, 2, x, y, isOrigin=True)
-                        newBlock.addEdgeArc(5, 6, x, y, isOrigin=True)
+                        newBlock.add_edge_arc(1, 2, x, y, isOrigin=True)
+                        newBlock.add_edge_arc(5, 6, x, y, isOrigin=True)
 
-                        if (isAddBoundaryConditions):
+                        if (isAddAllBC or isAddOuterBC):
+                            wallFace.add_sub_face(newBlock.rightFace())
+
+                        if (isAddAllBC):
                             idxFace = len(self.faces)
 
-                            wallFace.addSubFace(newBlock.rightFace())
-
                             wall1 = Face(f"{name}WallCorner1_{idxFace}")
-                            wall1.addSubFace(newBlock.frontFace())
+                            wall1.add_sub_face(newBlock.frontFace())
                             wall2 = Face(f"{name}WallCorner2_{idxFace}")
-                            wall2.addSubFace(newBlock.backFace())
+                            wall2.add_sub_face(newBlock.backFace())
 
-                            self.addBoundary(wall1)
-                            self.addBoundary(wall2)
+                            self.add_boundary(wall1)
+                            self.add_boundary(wall2)
 
                     # Front left
                     elif (test == (False, False, True, False)):
                         xmin, xmax, ymin, ymax = block
 
-                        newBlock = self.createBlock(name, [
+                        newBlock = self.create_block(name, [
                             Point(x - np.sqrt(ringRadius**2 - (ymax-x)**2), ymax, zmin),
                             Point(xmax, y - np.sqrt(ringRadius**2 - (xmax-x)**2), zmin),
                             Point(xmax, ymax, zmin),
@@ -3564,27 +3926,28 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             Point(xmax, ymax, zmax),
                         ], nx=nxBlock, ny=nyBlock, nz=nzBlock)
 
-                        newBlock.addEdgeArc(0, 1, x, y, isOrigin=True)
-                        newBlock.addEdgeArc(4, 5, x, y, isOrigin=True)
+                        newBlock.add_edge_arc(0, 1, x, y, isOrigin=True)
+                        newBlock.add_edge_arc(4, 5, x, y, isOrigin=True)
 
-                        if (isAddBoundaryConditions):
+                        if (isAddAllBC or isAddOuterBC):
+                            wallFace.add_sub_face(newBlock.frontFace())
+
+                        if (isAddAllBC):
                             idxFace = len(self.faces)
 
-                            wallFace.addSubFace(newBlock.frontFace())
-
                             wall1 = Face(f"{name}WallCorner1_{idxFace}")
-                            wall1.addSubFace(newBlock.leftFace())
+                            wall1.add_sub_face(newBlock.leftFace())
                             wall2 = Face(f"{name}WallCorner2_{idxFace}")
-                            wall2.addSubFace(newBlock.rightFace())
+                            wall2.add_sub_face(newBlock.rightFace())
 
-                            self.addBoundary(wall1)
-                            self.addBoundary(wall2)
+                            self.add_boundary(wall1)
+                            self.add_boundary(wall2)
 
                     # Front right
                     elif (test == (False, False, False, True)):
                         xmin, xmax, ymin, ymax = block
 
-                        newBlock = self.createBlock(name, [
+                        newBlock = self.create_block(name, [
                             Point(xmin, y - np.sqrt(ringRadius**2 - (xmin-x)**2), zmin),
                             Point(x + np.sqrt(ringRadius**2 - (ymax-x)**2), ymax, zmin),
                             Point(xmin, ymax, zmin),
@@ -3595,27 +3958,28 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             Point(xmin, ymax, zmax),
                         ], nx=nxBlock, ny=nyBlock, nz=nzBlock)
 
-                        newBlock.addEdgeArc(0, 1, x, y, isOrigin=True)
-                        newBlock.addEdgeArc(4, 5, x, y, isOrigin=True)
+                        newBlock.add_edge_arc(0, 1, x, y, isOrigin=True)
+                        newBlock.add_edge_arc(4, 5, x, y, isOrigin=True)
 
-                        if (isAddBoundaryConditions):
+                        if (isAddAllBC or isAddOuterBC):
+                            wallFace.add_sub_face(newBlock.frontFace())
+
+                        if (isAddAllBC):
                             idxFace = len(self.faces)
 
-                            wallFace.addSubFace(newBlock.frontFace())
-
                             wall1 = Face(f"{name}WallCorner1_{idxFace}")
-                            wall1.addSubFace(newBlock.leftFace())
+                            wall1.add_sub_face(newBlock.leftFace())
                             wall2 = Face(f"{name}WallCorner2_{idxFace}")
-                            wall2.addSubFace(newBlock.rightFace())
+                            wall2.add_sub_face(newBlock.rightFace())
 
-                            self.addBoundary(wall1)
-                            self.addBoundary(wall2)
+                            self.add_boundary(wall1)
+                            self.add_boundary(wall2)
 
                     # Back left
                     elif (test == (False, True, False, False)):
                         xmin, xmax, ymin, ymax = block
 
-                        newBlock = self.createBlock(name, [
+                        newBlock = self.create_block(name, [
                             Point(x - np.sqrt(ringRadius**2 - (ymin-x)**2), ymin, zmin),
                             Point(xmax, ymin, zmin),
                             Point(xmax, ymin, zmin),
@@ -3626,25 +3990,28 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             Point(xmax, y + np.sqrt(ringRadius**2 - (xmax-x)**2), zmax),
                         ], nx=nxBlock, ny=nyBlock, nz=nzBlock)
 
-                        newBlock.addEdgeArc(0, 3, x, y, isOrigin=True)
-                        newBlock.addEdgeArc(4, 7, x, y, isOrigin=True)
+                        newBlock.add_edge_arc(0, 3, x, y, isOrigin=True)
+                        newBlock.add_edge_arc(4, 7, x, y, isOrigin=True)
 
-                        if (isAddBoundaryConditions):
+                        if (isAddAllBC or isAddOuterBC):
+                            wallFace.add_sub_face(newBlock.leftFace())
+
+                        if (isAddAllBC):
                             idxFace = len(self.faces)
 
-                            wallFace.addSubFace(newBlock.leftFace())
-
                             wall1 = Face(f"{name}WallCorner1_{idxFace}")
-                            wall1.addSubFace(newBlock.frontFace())
+                            wall1.add_sub_face(newBlock.frontFace())
                             wall2 = Face(f"{name}WallCorner2_{idxFace}")
-                            wall2.addSubFace(newBlock.backFace())
+                            wall2.add_sub_face(newBlock.backFace())
 
-                            self.addBoundary(wall1)
-                            self.addBoundary(wall2)
+                            self.add_boundary(wall1)
+                            self.add_boundary(wall2)
 
-                    if (isAddBoundaryConditions):
-                        topFace.addSubFace(newBlock.topFace())
-                        botFace.addSubFace(newBlock.bottomFace())
+                    if (isAddAllBC or isAddTopBC):
+                        topFace.add_sub_face(newBlock.topFace())
+
+                    if (isAddAllBC or isAddBottomBC):
+                        botFace.add_sub_face(newBlock.bottomFace())
 
                 # Deform a cube
                 elif (nCornerInside == 2):
@@ -3652,7 +4019,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                     if (test == (True, True, False, False)):
                         xmin, xmax, ymin, ymax = block
 
-                        newBlock = self.createBlock(name, [
+                        newBlock = self.create_block(name, [
                             Point(xmin, ymin, zmin),
                             Point(xmax, ymin, zmin),
                             Point(xmax, y + np.sqrt(ringRadius**2 - (xmax-x)**2), zmin),
@@ -3663,30 +4030,31 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             Point(xmin, y + np.sqrt(ringRadius**2 - (xmin-x)**2), zmax),
                         ], nx=nxBlock, ny=nyBlock, nz=nzBlock)
 
-                        newBlock.addEdgeArc(2, 3, x, y, isOrigin=True)
-                        newBlock.addEdgeArc(6, 7, x, y, isOrigin=True)
+                        newBlock.add_edge_arc(2, 3, x, y, isOrigin=True)
+                        newBlock.add_edge_arc(6, 7, x, y, isOrigin=True)
 
-                        if (isAddBoundaryConditions):
+                        if (isAddAllBC or isAddOuterBC):
+                            wallFace.add_sub_face(newBlock.backFace())
+
+                        if (isAddAllBC):
                             idxFace = len(self.faces)
 
-                            wallFace.addSubFace(newBlock.backFace())
-
                             wall1 = Face(f"{name}WallFront_{idxFace}")
-                            wall1.addSubFace(newBlock.frontFace())
+                            wall1.add_sub_face(newBlock.frontFace())
                             wall2 = Face(f"{name}WallRight_{idxFace}")
-                            wall2.addSubFace(newBlock.rightFace())
+                            wall2.add_sub_face(newBlock.rightFace())
                             wall3 = Face(f"{name}WallLeft_{idxFace}")
-                            wall3.addSubFace(newBlock.leftFace())
+                            wall3.add_sub_face(newBlock.leftFace())
 
-                            self.addBoundary(wall1)
-                            self.addBoundary(wall2)
-                            self.addBoundary(wall3)
+                            self.add_boundary(wall1)
+                            self.add_boundary(wall2)
+                            self.add_boundary(wall3)
 
                     # Front
                     elif (test == (False, False, True, True)):
                         xmin, xmax, ymin, ymax = block
 
-                        newBlock = self.createBlock(name, [
+                        newBlock = self.create_block(name, [
                             Point(xmin, y - np.sqrt(ringRadius**2 - (xmin-x)**2), zmin),
                             Point(xmax, y - np.sqrt(ringRadius**2 - (xmax-x)**2), zmin),
                             Point(xmax, ymax, zmin),
@@ -3697,30 +4065,31 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             Point(xmin, ymax, zmax),
                         ], nx=nxBlock, ny=nyBlock, nz=nzBlock)
 
-                        newBlock.addEdgeArc(0, 1, x, y, isOrigin=True)
-                        newBlock.addEdgeArc(4, 5, x, y, isOrigin=True)
+                        newBlock.add_edge_arc(0, 1, x, y, isOrigin=True)
+                        newBlock.add_edge_arc(4, 5, x, y, isOrigin=True)
 
-                        if (isAddBoundaryConditions):
+                        if (isAddAllBC or isAddOuterBC):
+                            wallFace.add_sub_face(newBlock.frontFace())
+
+                        if (isAddAllBC):
                             idxFace = len(self.faces)
 
-                            wallFace.addSubFace(newBlock.frontFace())
-
                             wall1 = Face(f"{name}WallBack_{idxFace}")
-                            wall1.addSubFace(newBlock.backFace())
+                            wall1.add_sub_face(newBlock.backFace())
                             wall2 = Face(f"{name}WallLeft_{idxFace}")
-                            wall2.addSubFace(newBlock.leftFace())
+                            wall2.add_sub_face(newBlock.leftFace())
                             wall3 = Face(f"{name}WallRight_{idxFace}")
-                            wall3.addSubFace(newBlock.rightFace())
+                            wall3.add_sub_face(newBlock.rightFace())
 
-                            self.addBoundary(wall1)
-                            self.addBoundary(wall2)
-                            self.addBoundary(wall3)
+                            self.add_boundary(wall1)
+                            self.add_boundary(wall2)
+                            self.add_boundary(wall3)
 
                     # Right
                     elif (test == (True, False, False, True)):
                         xmin, xmax, ymin, ymax = block
 
-                        newBlock = self.createBlock(name, [
+                        newBlock = self.create_block(name, [
                             Point(xmin, ymin, zmin),
                             Point(x + np.sqrt(ringRadius**2 - (ymin-y)**2), ymin, zmin),
                             Point(x + np.sqrt(ringRadius**2 - (ymax-y)**2), ymax, zmin),
@@ -3731,30 +4100,31 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             Point(xmin, ymax, zmax),
                         ], nx=nxBlock, ny=nyBlock, nz=nzBlock)
 
-                        newBlock.addEdgeArc(1, 2, x, y, isOrigin=True)
-                        newBlock.addEdgeArc(5, 6, x, y, isOrigin=True)
+                        newBlock.add_edge_arc(1, 2, x, y, isOrigin=True)
+                        newBlock.add_edge_arc(5, 6, x, y, isOrigin=True)
 
-                        if (isAddBoundaryConditions):
+                        if (isAddAllBC or isAddOuterBC):
+                            wallFace.add_sub_face(newBlock.rightFace())
+
+                        if (isAddAllBC):
                             idxFace = len(self.faces)
 
-                            wallFace.addSubFace(newBlock.rightFace())
-
                             wall1 = Face(f"{name}WallFront_{idxFace}")
-                            wall1.addSubFace(newBlock.frontFace())
+                            wall1.add_sub_face(newBlock.frontFace())
                             wall2 = Face(f"{name}WallLeft_{idxFace}")
-                            wall2.addSubFace(newBlock.leftFace())
+                            wall2.add_sub_face(newBlock.leftFace())
                             wall3 = Face(f"{name}WallBack_{idxFace}")
-                            wall3.addSubFace(newBlock.backFace())
+                            wall3.add_sub_face(newBlock.backFace())
 
-                            self.addBoundary(wall1)
-                            self.addBoundary(wall2)
-                            self.addBoundary(wall3)
+                            self.add_boundary(wall1)
+                            self.add_boundary(wall2)
+                            self.add_boundary(wall3)
 
                     # Left
                     elif (test == (False, True, True, False)):
                         xmin, xmax, ymin, ymax = block
 
-                        newBlock = self.createBlock(name, [
+                        newBlock = self.create_block(name, [
                             Point(x - np.sqrt(ringRadius**2 - (ymin-y)**2), ymin, zmin),
                             Point(xmax, ymin, zmin),
                             Point(xmax, ymax, zmin),
@@ -3765,28 +4135,31 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             Point(x - np.sqrt(ringRadius**2 - (ymax-y)**2), ymax, zmax),
                         ], nx=nxBlock, ny=nyBlock, nz=nzBlock)
 
-                        newBlock.addEdgeArc(0, 3, x, y, isOrigin=True)
-                        newBlock.addEdgeArc(4, 7, x, y, isOrigin=True)
+                        newBlock.add_edge_arc(0, 3, x, y, isOrigin=True)
+                        newBlock.add_edge_arc(4, 7, x, y, isOrigin=True)
 
-                        if (isAddBoundaryConditions):
+                        if (isAddAllBC or isAddOuterBC):
+                            wallFace.add_sub_face(newBlock.leftFace())
+
+                        if (isAddAllBC):
                             idxFace = len(self.faces)
 
-                            wallFace.addSubFace(newBlock.leftFace())
-
                             wall1 = Face(f"{name}WallFront_{idxFace}")
-                            wall1.addSubFace(newBlock.frontFace())
+                            wall1.add_sub_face(newBlock.frontFace())
                             wall2 = Face(f"{name}WallRight_{idxFace}")
-                            wall2.addSubFace(newBlock.rightFace())
+                            wall2.add_sub_face(newBlock.rightFace())
                             wall3 = Face(f"{name}WallBack_{idxFace}")
-                            wall3.addSubFace(newBlock.backFace())
+                            wall3.add_sub_face(newBlock.backFace())
 
-                            self.addBoundary(wall1)
-                            self.addBoundary(wall2)
-                            self.addBoundary(wall3)
+                            self.add_boundary(wall1)
+                            self.add_boundary(wall2)
+                            self.add_boundary(wall3)
 
-                    if (isAddBoundaryConditions):
-                        topFace.addSubFace(newBlock.topFace())
-                        botFace.addSubFace(newBlock.bottomFace())
+                    if (isAddAllBC or isAddTopBC):
+                        topFace.add_sub_face(newBlock.topFace())
+
+                    if (isAddAllBC or isAddBottomBC):
+                        botFace.add_sub_face(newBlock.bottomFace())
 
                 # Double hex
                 elif (nCornerInside == 3):
@@ -3801,7 +4174,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                         xMid = (x1+x2)/2
                         yMid = y + np.sqrt(ringRadius**2 - (xMid-x)**2)
 
-                        newBlock1 = self.createBlock(name, [
+                        newBlock1 = self.create_block(name, [
                             Point(xmin, ymin, zmin),
                             Point(xmax, ymin, zmin),
                             Point(x1, y1, zmin),
@@ -3812,7 +4185,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             Point(xMid, yMid, zmax),
                         ], nx=nxBlock, ny=nyBlock, nz=nzBlock)
 
-                        newBlock2 = self.createBlock(name, [
+                        newBlock2 = self.create_block(name, [
                             newBlock1.points[0],
                             newBlock1.points[3],
                             Point(x2, y2, zmin),
@@ -3823,29 +4196,31 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             Point(xmin, ymax, zmax),
                         ], nx=nxBlock, ny=nyBlock, nz=nzBlock)
 
-                        newBlock1.addEdgeArc(2, 3, x, y, isOrigin=True)
-                        newBlock1.addEdgeArc(6, 7, x, y, isOrigin=True)
-                        newBlock2.addEdgeArc(1, 2, x, y, isOrigin=True)
-                        newBlock2.addEdgeArc(5, 6, x, y, isOrigin=True)
+                        newBlock1.add_edge_arc(2, 3, x, y, isOrigin=True)
+                        newBlock1.add_edge_arc(6, 7, x, y, isOrigin=True)
+                        newBlock2.add_edge_arc(1, 2, x, y, isOrigin=True)
+                        newBlock2.add_edge_arc(5, 6, x, y, isOrigin=True)
 
-                        if (isAddBoundaryConditions):
+                        if (isAddAllBC or isAddOuterBC):
+                            wallFace.add_sub_face(newBlock1.backFace())
+                            wallFace.add_sub_face(newBlock2.rightFace())
+
+                        if (isAddAllBC):
                             idxFace = len(self.faces)
 
-                            wallFace.addSubFace(newBlock1.backFace())
-                            wallFace.addSubFace(newBlock2.rightFace())
+                            wall1 = Face(f"{name}WallFront1_{idxFace}")
+                            wall1.add_sub_face(newBlock1.frontFace())
+                            wall2 = Face(f"{name}WallRight1_{idxFace}")
+                            wall2.add_sub_face(newBlock1.rightFace())
+                            wall3 = Face(f"{name}WallBack2_{idxFace}")
+                            wall3.add_sub_face(newBlock2.backFace())
+                            wall4 = Face(f"{name}WallLeft2_{idxFace}")
+                            wall4.add_sub_face(newBlock2.leftFace())
 
-                            # wall1 = Face(f"{name}WallFront_{idxFace}")
-                            # wall1.addSubFace(newBlock.frontFace())
-                            # wall2 = Face(f"{name}WallRight_{idxFace}")
-                            # wall2.addSubFace(newBlock.rightFace())
-                            # wall3 = Face(f"{name}WallBack_{idxFace}")
-                            # wall3.addSubFace(newBlock.backFace())
-                            # wall3 = Face(f"{name}WallBack_{idxFace}")
-                            # wall3.addSubFace(newBlock.backFace())
-
-                            # self.addBoundary(wall1)
-                            # self.addBoundary(wall2)
-                            # self.addBoundary(wall3)
+                            self.add_boundary(wall1)
+                            self.add_boundary(wall2)
+                            self.add_boundary(wall3)
+                            self.add_boundary(wall4)
 
                     # Front left
                     if (test == (False, True, True, True)):
@@ -3858,7 +4233,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                         xMid = (x1+x2)/2
                         yMid = y - np.sqrt(ringRadius**2 - (xMid-x)**2)
 
-                        newBlock1 = self.createBlock(name, [
+                        newBlock1 = self.create_block(name, [
                             Point(x2, y2, zmin),
                             Point(xmax, ymin, zmin),
                             Point(xmax, ymax, zmin),
@@ -3869,7 +4244,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             Point(xMid, yMid, zmax),
                         ], nx=nxBlock, ny=nyBlock, nz=nzBlock)
 
-                        newBlock2 = self.createBlock(name, [
+                        newBlock2 = self.create_block(name, [
                             Point(x1, y1, zmin),
                             newBlock1.points[3],
                             newBlock1.points[2],
@@ -3880,16 +4255,32 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             Point(xmin, ymax, zmax),
                         ], nx=nxBlock, ny=nyBlock, nz=nzBlock)
 
-                        newBlock1.addEdgeArc(0, 3, x, y, isOrigin=True)
-                        newBlock1.addEdgeArc(4, 7, x, y, isOrigin=True)
-                        newBlock2.addEdgeArc(0, 1, x, y, isOrigin=True)
-                        newBlock2.addEdgeArc(4, 5, x, y, isOrigin=True)
+                        newBlock1.add_edge_arc(0, 3, x, y, isOrigin=True)
+                        newBlock1.add_edge_arc(4, 7, x, y, isOrigin=True)
+                        newBlock2.add_edge_arc(0, 1, x, y, isOrigin=True)
+                        newBlock2.add_edge_arc(4, 5, x, y, isOrigin=True)
 
-                        if (isAddBoundaryConditions):
+                        if (isAddAllBC or isAddOuterBC):
+                            wallFace.add_sub_face(newBlock1.leftFace())
+                            wallFace.add_sub_face(newBlock2.frontFace())
+
+                        if (isAddAllBC):
                             idxFace = len(self.faces)
 
-                            wallFace.addSubFace(newBlock1.leftFace())
-                            wallFace.addSubFace(newBlock2.frontFace())
+                            wall1 = Face(f"{name}WallFront1_{idxFace}")
+                            wall1.add_sub_face(newBlock1.frontFace())
+                            wall2 = Face(f"{name}WallRight1_{idxFace}")
+                            wall2.add_sub_face(newBlock1.rightFace())
+                            wall3 = Face(f"{name}WallBack2_{idxFace}")
+                            wall3.add_sub_face(newBlock2.backFace())
+                            wall4 = Face(f"{name}WallLeft2_{idxFace}")
+                            wall4.add_sub_face(newBlock2.leftFace())
+
+                            self.add_boundary(wall1)
+                            self.add_boundary(wall2)
+                            self.add_boundary(wall3)
+                            self.add_boundary(wall4)
+
 
                     # Front right
                     if (test == (True, False, True, True)):
@@ -3902,7 +4293,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                         xMid = (x1+x2)/2
                         yMid = y - np.sqrt(ringRadius**2 - (xMid-x)**2)
 
-                        newBlock1 = self.createBlock(name, [
+                        newBlock1 = self.create_block(name, [
                             Point(xmin, ymin, zmin),
                             Point(x2, y2, zmin),
                             Point(xMid, yMid, zmin),
@@ -3913,7 +4304,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             Point(xmin, ymax, zmax),
                         ], nx=nxBlock, ny=nyBlock, nz=nzBlock)
 
-                        newBlock2 = self.createBlock(name, [
+                        newBlock2 = self.create_block(name, [
                             newBlock1.points[2],
                             Point(x1, y1, zmin),
                             Point(xmax, ymax, zmin),
@@ -3924,16 +4315,31 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             newBlock1.points[7],
                         ], nx=nxBlock, ny=nyBlock, nz=nzBlock)
 
-                        newBlock1.addEdgeArc(1, 2, x, y, isOrigin=True)
-                        newBlock1.addEdgeArc(5, 6, x, y, isOrigin=True)
-                        newBlock2.addEdgeArc(0, 1, x, y, isOrigin=True)
-                        newBlock2.addEdgeArc(4, 5, x, y, isOrigin=True)
+                        newBlock1.add_edge_arc(1, 2, x, y, isOrigin=True)
+                        newBlock1.add_edge_arc(5, 6, x, y, isOrigin=True)
+                        newBlock2.add_edge_arc(0, 1, x, y, isOrigin=True)
+                        newBlock2.add_edge_arc(4, 5, x, y, isOrigin=True)
 
-                        if (isAddBoundaryConditions):
+                        if (isAddAllBC or isAddOuterBC):
+                            wallFace.add_sub_face(newBlock1.rightFace())
+                            wallFace.add_sub_face(newBlock2.frontFace())
+
+                        if (isAddAllBC):
                             idxFace = len(self.faces)
 
-                            wallFace.addSubFace(newBlock1.rightFace())
-                            wallFace.addSubFace(newBlock2.frontFace())
+                            wall1 = Face(f"{name}WallFront1_{idxFace}")
+                            wall1.add_sub_face(newBlock1.frontFace())
+                            wall2 = Face(f"{name}WallLeft1_{idxFace}")
+                            wall2.add_sub_face(newBlock1.leftFace())
+                            wall3 = Face(f"{name}WallBack2_{idxFace}")
+                            wall3.add_sub_face(newBlock2.backFace())
+                            wall4 = Face(f"{name}WallRight2_{idxFace}")
+                            wall4.add_sub_face(newBlock2.rightFace())
+
+                            self.add_boundary(wall1)
+                            self.add_boundary(wall2)
+                            self.add_boundary(wall3)
+                            self.add_boundary(wall4)
 
                     # Back left
                     if (test == (True, True, True, False)):
@@ -3946,7 +4352,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                         xMid = (x1+x2)/2
                         yMid = y + np.sqrt(ringRadius**2 - (xMid-x)**2)
 
-                        newBlock1 = self.createBlock(name, [
+                        newBlock1 = self.create_block(name, [
                             Point(xmin, ymin, zmin),
                             Point(xmax, ymin, zmin),
                             Point(xMid, yMid, zmin),
@@ -3957,7 +4363,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             Point(x1, y1, zmax),
                         ], nx=nxBlock, ny=nyBlock, nz=nzBlock)
 
-                        newBlock2 = self.createBlock(name, [
+                        newBlock2 = self.create_block(name, [
                             newBlock1.points[2],
                             newBlock1.points[1],
                             Point(xmax, ymax, zmin),
@@ -3968,28 +4374,47 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             Point(x2, y2, zmax),
                         ], nx=nxBlock, ny=nyBlock, nz=nzBlock)
 
-                        newBlock1.addEdgeArc(2, 3, x, y, isOrigin=True)
-                        newBlock1.addEdgeArc(6, 7, x, y, isOrigin=True)
-                        newBlock2.addEdgeArc(0, 3, x, y, isOrigin=True)
-                        newBlock2.addEdgeArc(4, 7, x, y, isOrigin=True)
+                        newBlock1.add_edge_arc(2, 3, x, y, isOrigin=True)
+                        newBlock1.add_edge_arc(6, 7, x, y, isOrigin=True)
+                        newBlock2.add_edge_arc(0, 3, x, y, isOrigin=True)
+                        newBlock2.add_edge_arc(4, 7, x, y, isOrigin=True)
 
-                        if (isAddBoundaryConditions):
+                        if (isAddAllBC or isAddOuterBC):
+                            wallFace.add_sub_face(newBlock1.backFace())
+                            wallFace.add_sub_face(newBlock2.leftFace())
+
+                        if (isAddAllBC):
                             idxFace = len(self.faces)
 
-                            wallFace.addSubFace(newBlock1.backFace())
-                            wallFace.addSubFace(newBlock2.leftFace())
+                            wall1 = Face(f"{name}WallFront1_{idxFace}")
+                            wall1.add_sub_face(newBlock1.frontFace())
+                            wall2 = Face(f"{name}WallLeft1_{idxFace}")
+                            wall2.add_sub_face(newBlock1.leftFace())
+                            wall3 = Face(f"{name}WallBack2_{idxFace}")
+                            wall3.add_sub_face(newBlock2.backFace())
+                            wall4 = Face(f"{name}WallRight2_{idxFace}")
+                            wall4.add_sub_face(newBlock2.rightFace())
 
-                    if (isAddBoundaryConditions):
-                        topFace.addSubFace(newBlock1.topFace())
-                        topFace.addSubFace(newBlock2.topFace())
-                        botFace.addSubFace(newBlock1.bottomFace())
-                        botFace.addSubFace(newBlock2.bottomFace())
+                            self.add_boundary(wall1)
+                            self.add_boundary(wall2)
+                            self.add_boundary(wall3)
+                            self.add_boundary(wall4)
+
+
+                    if (isAddAllBC or isAddTopBC):
+                        topFace.add_sub_face(newBlock1.topFace())
+                        topFace.add_sub_face(newBlock2.topFace())
+
+                    if (isAddAllBC or isAddBottomBC):
+                        botFace.add_sub_face(newBlock1.bottomFace())
+                        botFace.add_sub_face(newBlock2.bottomFace())
 
         elif (latticeType == 'hexagon'):
-            msg = "Lattice type 'hexagon' not yet implemented in 'fillLatticeRingGap'"
+            msg = "Lattice type 'hexagon' not yet implemented in 'fill_lattice_ring_gap'"
             raise NotImplementedError(msg)
 
-    def getOverlappingFaces(
+
+    def get_overlapping_faces(
             self,
             overlappingFaces: list[Face]=[],
             includeFacename: list[str]=[],
@@ -4090,13 +4515,13 @@ class BlockMesh(OpenFOAMFile, Mesh):
         return(coupledFaces)
 
 
-    def getStandaloneFaces(
+    def get_standalone_faces(
             self,
             includeFacename: list[str]=[],
             excludeFacename: list[str]=[]
         ) -> list[Face]:
         """
-        Extract all standalone faces.
+        Extract all standalone faces based on patch names.
 
         Parameters
         ----------
@@ -4118,7 +4543,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
         mergedFaces  = [f1 for f1, f2 in self.mergePatchPairs] + [f2 for f1, f2 in self.mergePatchPairs]
         mergedFaces += [f1 for f1, f2 in self.baffleFaces] + [f2 for f1, f2 in self.baffleFaces]
-        coupledFaces = self.getOverlappingFaces(
+        coupledFaces = self.get_overlapping_faces(
             overlappingFaces=mergedFaces,
             description='standaloneFaces'
         )
@@ -4129,15 +4554,56 @@ class BlockMesh(OpenFOAMFile, Mesh):
         standaloneFaces = [face for face in self.faces if face.name not in coupledFaces]
 
         if (len(includeFacename) != 0):
-            standaloneFaces = [face for face in standaloneFaces if any([regex in face.name for regex in includeFacename])]
+            standaloneFaces = [
+                face
+                for face in standaloneFaces
+                if any([regex in face.name for regex in includeFacename])
+            ]
 
         if (len(excludeFacename) != 0):
-            standaloneFaces = [face for face in standaloneFaces if all([regex not in face.name for regex in excludeFacename])]
+            standaloneFaces = [
+                face
+                for face in standaloneFaces
+                if all([regex not in face.name for regex in excludeFacename])
+            ]
 
         return(standaloneFaces)
 
 
-    def addBaffles(
+    def get_standalone_faces_as_list_blocks(self):
+        """
+        Extract all standalone faces based on face vertices coincidence. If two
+        faces from two blocks share the same unique barycenter, and assuming
+        that the mesh is strictly conformal, the two faces are assumed to be
+        overlapping. Otherwise, if no matching barycenter is found, the face is
+        assumed to be standalone.
+
+        Return
+        ------
+        List of standalone faces as [(block1, facename1, barycenter1), ...]
+        """
+
+        allBarycenters = set()
+        overlapBarycenters = set()
+        allFaceList = []
+        for block in self.blocks:
+            for facename in _FACE_NAME_TYPES:
+                barycenter = block.get_face_barycenter(block.get_face(faceName=facename))
+
+                allFaceList.append((block, facename, barycenter))
+
+                if (barycenter in allBarycenters):
+                    overlapBarycenters.add(barycenter)
+
+                allBarycenters.add(barycenter)
+
+        faceList = [(b, f, c) for b, f, c in allFaceList if c not in overlapBarycenters]
+
+        return(faceList)
+
+
+
+    def add_baffles(
             self,
             baffleName: str='baffle',
             includeFacename: list[str]=[],
@@ -4162,12 +4628,13 @@ class BlockMesh(OpenFOAMFile, Mesh):
         -------
         List of baffle faces
         """
+        check_type("baffleName", baffleName, str)
         check_type("includeFacename", includeFacename, list)
         check_type("excludeFacename", excludeFacename, list)
 
         mergedFaces  = [f1 for f1, f2 in self.mergePatchPairs] + [f2 for f1, f2 in self.mergePatchPairs]
 
-        baffleFaces = self.getOverlappingFaces(
+        baffleFaces = self.get_overlapping_faces(
             overlappingFaces=mergedFaces,
             includeFacename=includeFacename,
             excludeFacename=excludeFacename,
@@ -4198,23 +4665,23 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
         for face in leftFaces:
             for face_i in face.faces:
-                baffle0.addSubFace(face_i)
+                baffle0.add_sub_face(face_i)
         for face in rightFaces:
             for face_i in face.faces:
-                baffle1.addSubFace(face_i)
+                baffle1.add_sub_face(face_i)
 
         leftNames = [face.name for face in leftFaces]
         rightNames = [face.name for face in rightFaces]
 
         self.faces = [face for face in self.faces if (face.name not in leftNames and face.name not in rightNames)]
 
-        self.addBoundary(baffle0)
-        self.addBoundary(baffle1)
+        self.add_boundary(baffle0)
+        self.add_boundary(baffle1)
 
         return(leftFaces + rightFaces)
 
 
-    def addMergePatchPairs(
+    def add_merge_patch_pairs(
             self,
             includeFacename: list[str]=[],
             excludeFacename: list[str]=[],
@@ -4227,17 +4694,17 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
             # List of faces: `faces = ['wall1', 'wall2', 'top']`
 
-            newMesh.addMergePatchPairs(
+            newMesh.add_merge_patch_pairs(
                 includeFacename=['wall']
             )
             # >>> ['wall1', 'wall2']
 
-            newMesh.addMergePatchPairs(
+            newMesh.add_merge_patch_pairs(
                 excludeFacename=['wall']
             )
             # >>> ['top']
 
-        If more than 2 faces need to be merged, please use `mergeBoundaryFaces`.
+        If more than 2 faces need to be merged, please use `merge_boundary_faces`.
 
         Be very careful with this method, it is extremely computational heavy
         both for Python and `blockMesh`.
@@ -4257,7 +4724,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         mergedFaces  = [f1 for f1, f2 in self.mergePatchPairs] + [f2 for f1, f2 in self.mergePatchPairs]
         mergedFaces += [f1 for f1, f2 in self.baffleFaces] + [f2 for f1, f2 in self.baffleFaces]
 
-        mergeableFaces = self.getOverlappingFaces(
+        mergeableFaces = self.get_overlapping_faces(
             mergedFaces,
             includeFacename=includeFacename,
             excludeFacename=excludeFacename,
@@ -4266,7 +4733,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         self.mergePatchPairs += mergeableFaces
 
 
-    def mergePatchesWithName(
+    def merge_patches_with_name(
             self,
             name: str,
             includeFacename: list[str]=[],
@@ -4274,7 +4741,8 @@ class BlockMesh(OpenFOAMFile, Mesh):
             patchType: str='patch',
             inGroups: list[str]=[],
             sampleMode: str=None,
-            samplePatch: str=None
+            samplePatch: str=None,
+            isStrict: bool=False
         ) -> Face:
         """
         Merge patches with name and create a new patch using `name`. Doesn't
@@ -4286,6 +4754,8 @@ class BlockMesh(OpenFOAMFile, Mesh):
             Name of the new patch
         patchType : str
             Patch type (e.g `patch`, `wall`, ...)
+        isStrict : bool
+            If true, use the exact name in the `includeFacename`.
         """
         check_type("includeFacename", includeFacename, list)
         check_type("excludeFacename", excludeFacename, list)
@@ -4315,7 +4785,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         facesToInclude = [
             face for face in self.faces
             if
-                any([faceName in face.name for faceName in includeFacename])
+                any([faceName == face.name if isStrict else faceName in face.name for faceName in includeFacename])
                 and
                 all([faceName not in face.name for faceName in excludeFacename])
                 and
@@ -4324,17 +4794,17 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
         for face in facesToInclude:
             for face_i in face.faces:
-                newFace.addSubFace(face_i)
+                newFace.add_sub_face(face_i)
 
         faceNameToInclude = [face.name for face in facesToInclude]
         self.faces = [face for face in self.faces if (face.name not in faceNameToInclude)]
 
-        self.addBoundary(newFace)
+        self.add_boundary(newFace)
 
         return(newFace)
 
 
-    def mergeBoundaryFaces(
+    def merge_boundary_faces(
             self,
             includeFacename: list[str],
             newBoundaryName: str,
@@ -4342,9 +4812,9 @@ class BlockMesh(OpenFOAMFile, Mesh):
         ) -> Face:
         """
         Merge/aggregate multiple boundary face already defined in `boundary`
-        dict of `blockMeshDict`. To be used before `addMergePatchPairs`. This
+        dict of `blockMeshDict`. To be used before `add_merge_patch_pairs`. This
         method is directly modifying the `blockMeshDict` and doesn't require to
-        use `mergePatchesWithName`.
+        use `merge_patches_with_name`.
 
         Parameters
         ----------
@@ -4380,14 +4850,14 @@ class BlockMesh(OpenFOAMFile, Mesh):
         )
         for face in facesToInclude:
             for facei in face.faces:
-                newFace.addSubFace(facei)
+                newFace.add_sub_face(facei)
 
-        self.addBoundary(newFace)
+        self.add_boundary(newFace)
 
         return(newFace)
 
 
-    def mergePatchPairsByName(
+    def merge_patch_pairs_by_name(
             self,
             facename1: str,
             facename2: str
@@ -4406,7 +4876,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         ))
 
 
-    def duplicateBlock(
+    def duplicate_block(
             self,
             targetBlock: Block,
             newName: str,
@@ -4455,7 +4925,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 newBlock.points[i].setIndex()
         # print([p.id for p in newPoints])
 
-        # newBlock = self.createBlock(
+        # newBlock = self.create_block(
         #     newName,
         #     newPoints,
         #     nx=targetBlock.nx,
@@ -4468,7 +4938,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         return(newBlock)
 
 
-    def getUniquePoints(self, blocks: list[Block], withEdge: bool=False) -> list[Point]:
+    def get_unique_points(self, blocks: list[Block], withEdge: bool=False) -> list[Point]:
         points = []
         for block in blocks:
             for point in block.points:
@@ -4481,7 +4951,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         return(points)
 
 
-    def addBoundary(self, face: Face) -> None:
+    def add_boundary(self, face: Face) -> None:
         """
         Add a boundary to the face collection, can be used later for boundary
         condition definition.
@@ -4490,7 +4960,12 @@ class BlockMesh(OpenFOAMFile, Mesh):
         self.faces.append(face)
 
 
-    def addTop(self, targetBlock: Block, name: str, points: list[Point], nz: int=1, gradz: float=1) -> Block:
+    def add_top(self, targetBlock: Block, name: str, points: list[Point], nz: int=1, gradz: float=1) -> Block:
+        """
+        Add a block on top of the targetBlock using 4 explicit points.
+        """
+        check_type("targetBlock", targetBlock, Block)
+
         for block in self.blocks:
             if (block == targetBlock):
                 newBlock = Block(
@@ -4500,7 +4975,15 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 self.blocks.append(newBlock)
                 return(newBlock)
 
-    def addBottom(self, targetBlock: Block, name: str, points: list[Point], nz: int=1, gradz: float=1) -> Block:
+        msg = f"Could not find a block name {targetBlock.name}"
+        raise ValueError(msg)
+
+    def add_bottom(self, targetBlock: Block, name: str, points: list[Point], nz: int=1, gradz: float=1) -> Block:
+        """
+        Add a block on bottom of the targetBlock using 4 explicit points.
+        """
+        check_type("targetBlock", targetBlock, Block)
+
         for block in self.blocks:
             if (block == targetBlock):
                 newBlock = Block(
@@ -4510,7 +4993,15 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 self.blocks.append(newBlock)
                 return(newBlock)
 
-    def addFront(self, targetBlock: Block, name: str, points: list[Point], ny: int=1, grady: float=1) -> Block:
+        msg = f"Could not find a block name {targetBlock.name}"
+        raise ValueError(msg)
+
+    def add_front(self, targetBlock: Block, name: str, points: list[Point], ny: int=1, grady: float=1) -> Block:
+        """
+        Add a block on the front of the targetBlock using 4 explicit points.
+        """
+        check_type("targetBlock", targetBlock, Block)
+
         for block in self.blocks:
             if (block == targetBlock):
                 newBlock = Block(
@@ -4524,7 +5015,15 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 self.blocks.append(newBlock)
                 return(newBlock)
 
-    def addBack(self, targetBlock: Block, name: str, points: list[Point], ny: int=1, grady: float=1) -> Block:
+        msg = f"Could not find a block name {targetBlock.name}"
+        raise ValueError(msg)
+
+    def add_back(self, targetBlock: Block, name: str, points: list[Point], ny: int=1, grady: float=1) -> Block:
+        """
+        Add a block on the back of the targetBlock using 4 explicit points.
+        """
+        check_type("targetBlock", targetBlock, Block)
+
         for block in self.blocks:
             if (block == targetBlock):
                 newBlock = Block(
@@ -4538,7 +5037,15 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 self.blocks.append(newBlock)
                 return(newBlock)
 
-    def addLeft(self, targetBlock: Block, name: str, points: list[Point], nx: int=1, gradx: float=1) -> Block:
+        msg = f"Could not find a block name {targetBlock.name}"
+        raise ValueError(msg)
+
+    def add_left(self, targetBlock: Block, name: str, points: list[Point], nx: int=1, gradx: float=1) -> Block:
+        """
+        Add a block on the left of the targetBlock using 4 explicit points.
+        """
+        check_type("targetBlock", targetBlock, Block)
+
         for block in self.blocks:
             if (block == targetBlock):
                 newBlock = Block(
@@ -4552,7 +5059,15 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 self.blocks.append(newBlock)
                 return(newBlock)
 
-    def addRight(self, targetBlock: Block, name: str, points: list[Point], nx: int=1, gradx: float=1) -> Block:
+        msg = f"Could not find a block name {targetBlock.name}"
+        raise ValueError(msg)
+
+    def add_right(self, targetBlock: Block, name: str, points: list[Point], nx: int=1, gradx: float=1) -> Block:
+        """
+        Add a block on the right of the targetBlock using 4 explicit points.
+        """
+        check_type("targetBlock", targetBlock, Block)
+
         for block in self.blocks:
             if (block == targetBlock):
                 newBlock = Block(
@@ -4566,7 +5081,11 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 self.blocks.append(newBlock)
                 return(newBlock)
 
-    def getPointsForBlock(
+        msg = f"Could not find a block name {targetBlock.name}"
+        raise ValueError(msg)
+
+
+    def get_points_for_block(
             self,
             originalPoints: list[Point],
             existingPoints: dict[Point],
@@ -4602,22 +5121,26 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 newPointsForCurrBlock.append(existingPoints[newPointCoord])
         return(newPointsForCurrBlock)
 
-    def extrudeTop(self, targetBlocks: list[Block], name: str, dz: float, nz: int=1, gradz: float=1) -> tuple[Block] | Block:
+
+    def extrude_top(self, targetBlocks: list[Block] | Block, name: str, dz: float, nz: int=1, gradz: float=1) -> tuple[Block] | Block:
         """
         Extrude a block using the top faces of the targetBlocks. The face of the
         new blocks is the same as the targetBlocks top faces. nx and ny are also
         preserved.
         """
+        if (isinstance(targetBlocks, Block)):
+            targetBlocks = [targetBlocks]
+
         newBlocks = []
         newPoints: dict[Point] = {}
         for targetBlock in targetBlocks:
-            newPointsForCurrBlock = self.getPointsForBlock(
+            newPointsForCurrBlock = self.get_points_for_block(
                 targetBlock.points[4:],
                 newPoints,
                 fz=lambda z: z + dz
             )
 
-            newBlocks.append(self.addTop(
+            newBlocks.append(self.add_top(
                 targetBlock, name, newPointsForCurrBlock, nz=nz, gradz=gradz
             ))
 
@@ -4625,22 +5148,25 @@ class BlockMesh(OpenFOAMFile, Mesh):
             return tuple(newBlocks)
         return(newBlocks[0])
 
-    def extrudeBottom(self, targetBlocks: list[Block], name: str, dz: float, nz: int=1, gradz: float=1) -> tuple[Block] | Block:
+    def extrude_bottom(self, targetBlocks: list[Block] | Block, name: str, dz: float, nz: int=1, gradz: float=1) -> tuple[Block] | Block:
         """
         Extrude a block using the bottom faces of the targetBlocks. The face of the
         new blocks is the same as the targetBlocks bottom faces. nx and ny are also
         preserved.
         """
+        if (isinstance(targetBlocks, Block)):
+            targetBlocks = [targetBlocks]
+
         newBlocks = []
         newPoints: dict[Point] = {}
         for targetBlock in targetBlocks:
-            newPointsForCurrBlock = self.getPointsForBlock(
+            newPointsForCurrBlock = self.get_points_for_block(
                 targetBlock.points[:4],
                 newPoints,
                 fz=lambda z: z - dz
             )
 
-            newBlocks.append(self.addBottom(
+            newBlocks.append(self.add_bottom(
                 targetBlock, name, newPointsForCurrBlock, nz=nz, gradz=gradz
             ))
 
@@ -4648,22 +5174,25 @@ class BlockMesh(OpenFOAMFile, Mesh):
             return tuple(newBlocks)
         return(newBlocks[0])
 
-    def extrudeFront(self, targetBlocks: list[Block], name: str, dy: float, ny: int=1, grady: float=1) -> tuple[Block] | Block:
+    def extrude_front(self, targetBlocks: list[Block] | Block, name: str, dy: float, ny: int=1, grady: float=1) -> tuple[Block] | Block:
         """
         Extrude a block using the front faces of the targetBlocks. The face of the
         new blocks is the same as the targetBlocks front faces. nx and nz are also
         preserved.
         """
+        if (isinstance(targetBlocks, Block)):
+            targetBlocks = [targetBlocks]
+
         newBlocks = []
         newPoints: dict[Point] = {}
         for targetBlock in targetBlocks:
-            newPointsForCurrBlock = self.getPointsForBlock(
+            newPointsForCurrBlock = self.get_points_for_block(
                 [targetBlock.points[0], targetBlock.points[1], targetBlock.points[4], targetBlock.points[5]],
                 newPoints,
                 fy=lambda y: y - dy
             )
 
-            newBlocks.append(self.addFront(
+            newBlocks.append(self.add_front(
                 targetBlock, name, newPointsForCurrBlock, ny=ny, grady=grady
             ))
 
@@ -4671,22 +5200,25 @@ class BlockMesh(OpenFOAMFile, Mesh):
             return tuple(newBlocks)
         return(newBlocks[0])
 
-    def extrudeBack(self, targetBlocks: list[Block], name: str, dy: float, ny: int=1, grady: float=1) -> tuple[Block] | Block:
+    def extrude_back(self, targetBlocks: list[Block] | Block, name: str, dy: float, ny: int=1, grady: float=1) -> tuple[Block] | Block:
         """
         Extrude a block using the back faces of the targetBlocks. The face of the
         new blocks is the same as the targetBlocks back faces. nx and nz are also
         preserved.
         """
+        if (isinstance(targetBlocks, Block)):
+            targetBlocks = [targetBlocks]
+
         newBlocks = []
         newPoints: dict[Point] = {}
         for targetBlock in targetBlocks:
-            newPointsForCurrBlock = self.getPointsForBlock(
+            newPointsForCurrBlock = self.get_points_for_block(
                 [targetBlock.points[2], targetBlock.points[3], targetBlock.points[6], targetBlock.points[7]],
                 newPoints,
                 fy=lambda y: y + dy
             )
 
-            newBlocks.append(self.addBack(
+            newBlocks.append(self.add_back(
                 targetBlock, name, newPointsForCurrBlock, ny=ny, grady=grady
             ))
 
@@ -4694,22 +5226,25 @@ class BlockMesh(OpenFOAMFile, Mesh):
             return tuple(newBlocks)
         return(newBlocks[0])
 
-    def extrudeLeft(self, targetBlocks: list[Block], name: str, dx: float, nx: int=1, gradx: float=1) -> tuple[Block] | Block:
+    def extrude_left(self, targetBlocks: list[Block] | Block, name: str, dx: float, nx: int=1, gradx: float=1) -> tuple[Block] | Block:
         """
         Extrude a block using the back left of the targetBlocks. The face of the
         new blocks is the same as the targetBlocks back left. ny and nz are also
         preserved.
         """
+        if (isinstance(targetBlocks, Block)):
+            targetBlocks = [targetBlocks]
+
         newBlocks = []
         newPoints: dict[Point] = {}
         for targetBlock in targetBlocks:
-            newPointsForCurrBlock = self.getPointsForBlock(
+            newPointsForCurrBlock = self.get_points_for_block(
                 [targetBlock.points[0], targetBlock.points[3], targetBlock.points[4], targetBlock.points[7]],
                 newPoints,
                 fx=lambda x: x - dx
             )
 
-            newBlocks.append(self.addLeft(
+            newBlocks.append(self.add_left(
                 targetBlock, name, newPointsForCurrBlock, nx=nx, gradx=gradx
             ))
 
@@ -4717,22 +5252,25 @@ class BlockMesh(OpenFOAMFile, Mesh):
             return tuple(newBlocks)
         return(newBlocks[0])
 
-    def extrudeRight(self, targetBlocks: list[Block], name: str, dx: float, nx: int=1, gradx: float=1) -> tuple[Block] | Block:
+    def extrude_right(self, targetBlocks: list[Block] | Block, name: str, dx: float, nx: int=1, gradx: float=1) -> tuple[Block] | Block:
         """
         Extrude a block using the back right of the targetBlocks. The face of the
         new blocks is the same as the targetBlocks back right. ny and nz are also
         preserved.
         """
+        if (isinstance(targetBlocks, Block)):
+            targetBlocks = [targetBlocks]
+
         newBlocks = []
         newPoints: dict[Point] = {}
         for targetBlock in targetBlocks:
-            newPointsForCurrBlock = self.getPointsForBlock(
+            newPointsForCurrBlock = self.get_points_for_block(
                 [targetBlock.points[1], targetBlock.points[2], targetBlock.points[5], targetBlock.points[6]],
                 newPoints,
                 fx=lambda x: x + dx
             )
 
-            newBlocks.append(self.addRight(
+            newBlocks.append(self.add_right(
                 targetBlock, name, newPointsForCurrBlock, nx=nx, gradx=gradx
             ))
 
@@ -4740,7 +5278,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             return tuple(newBlocks)
         return(newBlocks[0])
 
-    def extrudeNormal(
+    def extrude_normal(
             self,
             targetBlock: Block,
             facename: str,
@@ -4753,12 +5291,12 @@ class BlockMesh(OpenFOAMFile, Mesh):
         Extrude a block from the normal face of the target block.
 
         Equivalence between `facename` and new block generation function:
-        - `top`: `addTop(...)`
-        - `bottom`: `addBottom(...)`
-        - `left`: `addLeft(...)`
-        - `right`: `addRight(...)`
-        - `front`: `addFront(...)`
-        - `back`: `addBack(...)`
+        - `top`: `add_top(...)`
+        - `bottom`: `add_bottom(...)`
+        - `left`: `add_left(...)`
+        - `right`: `add_right(...)`
+        - `front`: `add_front(...)`
+        - `back`: `add_back(...)`
 
         Parameters
         ----------
@@ -4784,35 +5322,34 @@ class BlockMesh(OpenFOAMFile, Mesh):
         check_type("n", n, int)
         check_type("grad", grad, (float, int))
 
-        normalVector: Vector = targetBlock.getFaceNormal(facename)
+        normalVector: Vector = targetBlock.get_face_normal(facename)
         normalVector.normalize(length)
 
-        facePoints = targetBlock.getFace(facename)
+        facePoints = targetBlock.get_face(facename)
         newPoints = []
         for point in facePoints:
             newPos = Vector(point.x, point.y, point.z) + normalVector
             newPoints.append(Point(newPos.x, newPos.y, newPos.z))
 
         if (facename == 'top'):
-            return(self.addTop(targetBlock=targetBlock, name=name, points=newPoints, nz=n, gradz=grad))
+            return(self.add_top(targetBlock=targetBlock, name=name, points=newPoints, nz=n, gradz=grad))
         if (facename == 'bottom'):
             newPoints[1], newPoints[3] = newPoints[3], newPoints[1]
-            return(self.addBottom(targetBlock=targetBlock, name=name, points=newPoints, nz=n, gradz=grad))
+            return(self.add_bottom(targetBlock=targetBlock, name=name, points=newPoints, nz=n, gradz=grad))
         if (facename == 'left'):
             newPoints[1], newPoints[2], newPoints[3] = newPoints[3], newPoints[1], newPoints[2]
-            return(self.addLeft(targetBlock=targetBlock, name=name, points=newPoints, nx=n, gradx=grad))
+            return(self.add_left(targetBlock=targetBlock, name=name, points=newPoints, nx=n, gradx=grad))
         if (facename == 'right'):
             newPoints[2], newPoints[3] = newPoints[3], newPoints[2]
-            return(self.addRight(targetBlock=targetBlock, name=name, points=newPoints, nx=n, gradx=grad))
+            return(self.add_right(targetBlock=targetBlock, name=name, points=newPoints, nx=n, gradx=grad))
         if (facename == 'front'):
             newPoints[2], newPoints[3] = newPoints[3], newPoints[2]
-            return(self.addFront(targetBlock=targetBlock, name=name, points=newPoints, ny=n, grady=grad))
+            return(self.add_front(targetBlock=targetBlock, name=name, points=newPoints, ny=n, grady=grad))
         if (facename == 'back'):
             newPoints[0], newPoints[1], newPoints[3] = newPoints[3], newPoints[0], newPoints[1]
-            return(self.addBack(targetBlock=targetBlock, name=name, points=newPoints, ny=n, grady=grad))
+            return(self.add_back(targetBlock=targetBlock, name=name, points=newPoints, ny=n, grady=grad))
 
-
-    def extrudeNormalArc(
+    def extrude_normal_arc(
             self,
             targetBlock: Block,
             facename: str,
@@ -4825,7 +5362,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         ) -> Block:
         """
         Extrude arc block, curved along the `rotationAxis`, from the normal face
-        of the target block. Fully rely on `self.extrudeNormal(...)`
+        of the target block. Fully rely on `self.extrude_normal(...)`
 
         Parameters
         ----------
@@ -4858,7 +5395,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         check_type("rotationAxis", rotationAxis, str)
         check_value("rotationAxis", rotationAxis, {'x', 'y', 'z'})
 
-        newBlock = self.extrudeNormal(targetBlock, facename, name, length=0, n=nt, grad=grad)
+        newBlock = self.extrude_normal(targetBlock, facename, name, length=0, n=nt, grad=grad)
 
         if (facename == "right"):
             points = newBlock.rightFace()
@@ -4884,7 +5421,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         centerY = arcCenter.y if rotationAxis != 'y' else None
         centerZ = arcCenter.z if rotationAxis != 'z' else None
         for pointA, pointB in arcPoints:
-            newBlock.addEdgeArc(pointA, pointB, centerX, centerY, centerZ, isOrigin=True)
+            newBlock.add_edge_arc(pointA, pointB, centerX, centerY, centerZ, isOrigin=True)
 
         # Compute displacement
         dx = arcCenter.x if rotationAxis != 'x' else 0
@@ -4910,14 +5447,131 @@ class BlockMesh(OpenFOAMFile, Mesh):
         return(newBlock)
 
 
-    def addBySymmetryX(
+    def extrude_normal_ring_section(
+            self,
+            targetBlock: Block,
+            facename: str,
+            name: str,
+            r: float,
+            xCenter: float,
+            yCenter: float,
+            nr: int=1,
+            grad: float=1
+        ) -> Block:
+        """
+        Extrude a block from the normal face of the target block preserving the
+        new radius from a specified arc center. The ring section axis is along
+        the Z-direction.
+
+        Equivalence between `facename` and new block generation function:
+        - `left`: `add_left(...)`
+        - `right`: `add_right(...)`
+        - `front`: `add_front(...)`
+        - `back`: `add_back(...)`
+
+        Parameters
+        ----------
+        targetBlock : Block
+            Target block to extrude.
+        facename : str
+            Name of the face to extrude from the `targetBlock`. Options (
+            `left`, `right`, `front`, `back`).
+        name : str
+            Name of the extruded block.
+        r : float
+            New radius traced by the extrusion.
+        xCenter : float
+            X-coordinate of the axis center.
+        yCenter : float
+            Y-coordinate of the axis center.
+        nr : int
+            Number of cells along the extrusion (default `1`).
+        grad : float
+            Grading along the extrusion (default `1`).
+        """
+        check_type("targetBlock", targetBlock, Block)
+        check_type("facename", facename, str)
+        check_value("facename", facename, _FACE_NAME_TYPES)
+        check_type("name", name, str)
+        check_type("r", r, (float, int))
+        check_positive("r", r, is_strict=True)
+        check_type("xCenter", xCenter, (float, int))
+        check_type("yCenter", yCenter, (float, int))
+        check_type("nr", nr, int)
+        check_positive("nr", nr, is_strict=True)
+        check_type("grad", grad, (float, int))
+
+        facePoints = targetBlock.get_face(facename)
+
+        newPoints = []
+        for point in facePoints:
+            centerPoint = Vector(xCenter, yCenter, point.z)
+            normalVector = point - centerPoint
+            normalVector.normalize(r)
+            newPos = normalVector + centerPoint
+            newPoints.append(Point(newPos.x, newPos.y, point.z))
+
+        newBlock = None
+
+        if (facename == 'left'):
+            newPoints[1], newPoints[2], newPoints[3] = newPoints[3], newPoints[1], newPoints[2]
+            newBlock = self.add_left(
+                targetBlock=targetBlock, name=name, points=newPoints,
+                nx=nr, gradx=grad
+            )
+
+            lowZ  = 0.5 * (newPoints[0].z + newPoints[1].z)
+            highZ = 0.5 * (newPoints[2].z + newPoints[3].z)
+            newBlock.add_edge_arc(0, 3, x=xCenter, y=yCenter, z=lowZ, isOrigin=True)
+            newBlock.add_edge_arc(4, 7, x=xCenter, y=yCenter, z=highZ, isOrigin=True)
+
+        if (facename == 'right'):
+            newPoints[2], newPoints[3] = newPoints[3], newPoints[2]
+            newBlock = self.add_right(
+                targetBlock=targetBlock, name=name, points=newPoints,
+                nx=nr, gradx=grad
+            )
+
+            lowZ  = 0.5 * (newPoints[0].z + newPoints[1].z)
+            highZ = 0.5 * (newPoints[2].z + newPoints[3].z)
+            newBlock.add_edge_arc(1, 2, x=xCenter, y=yCenter, z=lowZ, isOrigin=True)
+            newBlock.add_edge_arc(5, 6, x=xCenter, y=yCenter, z=highZ, isOrigin=True)
+
+        if (facename == 'front'):
+            newPoints[2], newPoints[3] = newPoints[3], newPoints[2]
+            newBlock = self.add_front(
+                targetBlock=targetBlock, name=name, points=newPoints,
+                ny=nr, grady=grad
+            )
+
+            lowZ  = 0.5 * (newPoints[0].z + newPoints[1].z)
+            highZ = 0.5 * (newPoints[2].z + newPoints[3].z)
+            newBlock.add_edge_arc(0, 1, x=xCenter, y=yCenter, z=lowZ, isOrigin=True)
+            newBlock.add_edge_arc(4, 5, x=xCenter, y=yCenter, z=highZ, isOrigin=True)
+
+        if (facename == 'back'):
+            newPoints[0], newPoints[1], newPoints[3] = newPoints[3], newPoints[0], newPoints[1]
+            newBlock = self.add_back(
+                targetBlock=targetBlock, name=name, points=newPoints,
+                ny=nr, grady=grad
+            )
+
+            lowZ  = 0.5 * (newPoints[0].z + newPoints[1].z)
+            highZ = 0.5 * (newPoints[2].z + newPoints[3].z)
+            newBlock.add_edge_arc(2, 3, x=xCenter, y=yCenter, z=lowZ, isOrigin=True)
+            newBlock.add_edge_arc(6, 7, x=xCenter, y=yCenter, z=highZ, isOrigin=True)
+
+        return(newBlock)
+
+
+    def add_by_symmetry_x(
             self,
             name: str,
             faceToClone: list[Point],
             targetFaceToAttach: list[Point],
             nx: int=1
         ) -> None:
-        self.createBlock(name, [
+        self.create_block(name, [
             Point(-targetFaceToAttach[0].x, targetFaceToAttach[0].y, targetFaceToAttach[0].z),
             faceToClone[0],
             faceToClone[1],
@@ -4929,60 +5583,112 @@ class BlockMesh(OpenFOAMFile, Mesh):
         ], nx=nx)
 
 
-    def printBlocks(self) -> str:
+    def print_blocks(self) -> str:
         text = "blocks\n"
         text += "(\n"
         for block in self.blocks:
             if (self.isReducedCells):
-                block.nx = 3
-                block.ny = 3
-                block.nz = 3
+                block.nx = 1
+                block.ny = 1
+                block.nz = 1
             if (block.isPrint):
                 text += f"{tab}{block}\n"
+
         text += ");\n"
         return(text)
 
-    def printPoints(self) -> str:
-        minId = 1e32
-        allPoints = []
-        # Find min point id
-        for block in self.blocks:
-            for point in block.points:
-                if (point.id not in [p.id for p in allPoints]):
-                    allPoints.append(point)
-                if (point.id < minId):
-                    minId = point.id
+    def print_points(self) -> str:
+        self.allPoints = [
+            point
+            for block in self.blocks
+            for point in block.points
+            if point.isIndexed
+        ]
 
-        # Reset point id if necessary
-        for point in allPoints:
-            point.id = point.id - minId
+        # Find duplicate points
+        if (self.isMergeCoincidentPoints and self.isSafeCoincidenceMode):
+            self.pointsPlaced = []
+            alreadyPlaced = []
+            for point in tqdm.tqdm(self.allPoints, desc=f'{self.region} points duplicate'):
+                if (point in self.pointsPlaced):
+                    alreadyPlaced.append(point)
+                else:
+                    self.pointsPlaced.append(point)
 
-        pointsPlaced = []
-        for block in self.blocks:
-            for point in block.points:
-                if (point.id not in [point.id for point in pointsPlaced]):
-                    pointsPlaced.append(point)
+        elif (self.isMergeCoincidentPoints and not self.isSafeCoincidenceMode):
+            self.pointsPlaced = []
+            alreadyPlaced = []
+            seen = set()
 
+            for point in tqdm.tqdm(self.allPoints, desc=f"{self.region} points duplicate"):
+                if (point in seen):
+                    alreadyPlaced.append(point)
+                else:
+                    seen.add(point)
+                    self.pointsPlaced.append(point)
+
+        else:
+            self.pointsPlaced = self.allPoints
+
+
+        # Set unique id to each point
+        for i, point in enumerate(self.pointsPlaced):
+            self.pointsPlaced[i].id = i
+
+        # Get unique list of id
+        pointsIds = list(set([p.id for p in self.pointsPlaced]))
+
+        # Filter unique list of points
+        self.pointsPlaced = [self.pointsPlaced[pointId] for pointId in pointsIds]
+
+        # Change id of duplicated points
+        if (self.isMergeCoincidentPoints and self.isSafeCoincidenceMode):
+            for point in tqdm.tqdm(alreadyPlaced, desc=f'{self.region} points change id'):
+                for pointUnique in self.pointsPlaced:
+                    if (point == pointUnique):
+                        point.id = pointUnique.id
+                        break
+
+        elif (self.isMergeCoincidentPoints and not self.isSafeCoincidenceMode):
+            point_to_id = {
+                p: pid for p, pid in zip(self.pointsPlaced, pointsIds)
+            }
+
+            for point in tqdm.tqdm(alreadyPlaced, desc=f'{self.region} points change id'):
+                pid = point_to_id.get(point)
+                if (pid is not None):
+                    point.id = pid
+
+
+        # Sort list of points by id
+        pointsSorted = sorted(self.pointsPlaced, key=lambda p: p.id)
+
+        # Generate text
         text = "vertices\n"
         text += "(\n"
-        for point in sorted(pointsPlaced, key=lambda p: p.id):
+        for point in pointsSorted:
             text += f"{tab}{point}\n"
         text += ");\n"
         return(text)
 
-    def printEdges(self) -> str:
+    def print_edges(self) -> str:
         text = "edges\n"
         text += "(\n"
+        pointIdEdges = []
         for block in self.blocks:
             for edge in block.edges:
-                text += f"{tab}{edge}\n"
+                edgePoints = (edge.point1.id, edge.point2.id)
+                if (edgePoints not in pointIdEdges and edgePoints[::-1] not in pointIdEdges):
+                    text += f"{tab}{edge}\n"
+                    pointIdEdges.append(edgePoints)
 
             for edgeProjection in block.edgeProjection:
                 text += f"{tab}projectCurve {edgeProjection['verticeIdx1']} {edgeProjection['verticeIdx2']} ({edgeProjection['geometryNames']})\n"
+
         text += ");\n"
         return(text)
 
-    def printFaces(self) -> str:
+    def print_faces(self) -> str:
         text = "faces\n(\n"
         for i, block in enumerate(self.blocks):
             for faceProjection in block.faceProjection:
@@ -4990,7 +5696,20 @@ class BlockMesh(OpenFOAMFile, Mesh):
         text += ");\n"
         return(text)
 
-    def printBoundaries(self) -> str:
+    def print_boundaries(self) -> str:
+        if (self.isMergeCoincidentPoints):
+            mergedFaces  = [f1 for f1, f2 in self.mergePatchPairs] + [f2 for f1, f2 in self.mergePatchPairs]
+            mergedFaces += [f1 for f1, f2 in self.baffleFaces] + [f2 for f1, f2 in self.baffleFaces]
+
+            coupledFaces = self.get_overlapping_faces(overlappingFaces=mergedFaces)
+
+            for face_i, face_j in coupledFaces:
+                if (face_i.boundaryType == "mappedWall"):
+                    continue
+
+                face_i.isPrint = False
+                face_j.isPrint = False
+
         text = "boundary\n"
         text += "(\n"
         for face in self.faces:
@@ -4999,7 +5718,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         text += ");\n"
         return(text)
 
-    def printMergePatchPairs(self) -> str:
+    def print_merge_patch_pairs(self) -> str:
         text = "mergePatchPairs\n(\n"
         for facei, facej in self.mergePatchPairs:
             if (isinstance(facei, str) and isinstance(facej, str)):
@@ -5011,7 +5730,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         text += ");\n"
         return(text)
 
-    def printGeometries(self) -> str:
+    def print_geometries(self) -> str:
         """
         Print `geometry` section in the blockMeshDict. This section usually
         groups the geometries shape used for projection of edge and faces.
@@ -5051,6 +5770,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         text += "}\n"
         return(text)
 
+
     @OpenFOAMFile._write_to_file
     def export_to_openfoam(self):
         """
@@ -5062,19 +5782,19 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
         text += addParameter("scale", self.scale, isAddExtraLine=True)
 
-        text += self.printGeometries()+"\n"
+        text += self.print_geometries()+"\n"
 
-        text += self.printPoints()+"\n"
+        text += self.print_points()+"\n"
 
-        text += self.printBlocks()+"\n"
+        text += self.print_blocks()+"\n"
 
-        text += self.printEdges()+"\n"
+        text += self.print_edges()+"\n"
 
-        text += self.printFaces()+"\n"
+        text += self.print_faces()+"\n"
 
-        text += self.printBoundaries()+"\n"
+        text += self.print_boundaries()+"\n"
 
-        text += self.printMergePatchPairs()+"\n"
+        text += self.print_merge_patch_pairs()+"\n"
 
         return(text)
 
@@ -5109,8 +5829,8 @@ class BlockMeshWedge(BlockMesh):
         self.faceFrontWedge = Face("front", boundaryType='wedge')
         self.faceBackWedge  = Face("back", boundaryType='wedge')
 
-        self.addBoundary(self.faceFrontWedge)
-        self.addBoundary(self.faceBackWedge)
+        self.add_boundary(self.faceFrontWedge)
+        self.add_boundary(self.faceBackWedge)
 
 
     @property
@@ -5123,7 +5843,7 @@ class BlockMeshWedge(BlockMesh):
         self._appertureAngle = appertureAngle * np.pi/180
 
 
-    def createWedge(
+    def create_wedge(
             self,
             name: str,
             innerRadius: float,
@@ -5133,19 +5853,19 @@ class BlockMeshWedge(BlockMesh):
             nr: int, nz: int
         ) -> Block:
         """
-        Redefined `BlockMesh.createWedge` by adding wedge patches
+        Redefined `BlockMesh.create_wedge` by adding wedge patches
         """
-        block = super().createWedge(
+        block = super().create_wedge(
             name, innerRadius, outerRadius, lowZ, highZ, self.appertureAngle*180/np.pi, nr, nz
         )
 
-        self.faceFrontWedge.addSubFace(block.frontFace())
-        self.faceBackWedge.addSubFace(block.backFace())
+        self.faceFrontWedge.add_sub_face(block.frontFace())
+        self.faceBackWedge.add_sub_face(block.backFace())
 
         return(block)
 
 
-    def createWedgeConical(
+    def create_wedge_conical(
             self,
             name: str,
             innerRadiusBottom: float,
@@ -5158,9 +5878,9 @@ class BlockMeshWedge(BlockMesh):
             nz: int
         ) -> Block:
         """
-        Redefined `BlockMesh.createWedgeConical` by adding wedge patches
+        Redefined `BlockMesh.create_wedge_conical` by adding wedge patches
         """
-        block = super().createWedgeConical(
+        block = super().create_wedge_conical(
             name,
             innerRadiusBottom, outerRadiusBottom,
             innerRadiusTop, outerRadiusTop,
@@ -5169,103 +5889,103 @@ class BlockMeshWedge(BlockMesh):
             nr, nz
         )
 
-        self.faceFrontWedge.addSubFace(block.frontFace())
-        self.faceBackWedge.addSubFace(block.backFace())
+        self.faceFrontWedge.add_sub_face(block.frontFace())
+        self.faceBackWedge.add_sub_face(block.backFace())
 
         return(block)
 
 
-    def extrudeTop(self, targetBlocks: list[Block], name: str, dz: float, nz: int=1) -> tuple[Block]:
+    def extrude_top(self, targetBlocks: list[Block], name: str, dz: float, nz: int=1) -> tuple[Block]:
         """
-        Redefined `BlockMesh.extrudeTop` by adding wedge patches
+        Redefined `BlockMesh.extrude_top` by adding wedge patches
         """
-        blocks = super().extrudeTop(targetBlocks, name, dz, nz)
+        blocks = super().extrude_top(targetBlocks, name, dz, nz)
 
         if (isinstance(blocks, Block)):
-            self.faceFrontWedge.addSubFace(blocks.frontFace())
-            self.faceBackWedge.addSubFace(blocks.backFace())
+            self.faceFrontWedge.add_sub_face(blocks.frontFace())
+            self.faceBackWedge.add_sub_face(blocks.backFace())
         else:
             for block in blocks:
-                self.faceFrontWedge.addSubFace(block.frontFace())
-                self.faceBackWedge.addSubFace(block.backFace())
+                self.faceFrontWedge.add_sub_face(block.frontFace())
+                self.faceBackWedge.add_sub_face(block.backFace())
 
         return blocks
 
 
-    def extrudeBottom(self, targetBlocks: list[Block], name: str, dz: float, nz: int=1) -> tuple[Block]:
+    def extrude_bottom(self, targetBlocks: list[Block], name: str, dz: float, nz: int=1) -> tuple[Block]:
         """
-        Redefined `BlockMesh.extrudeBottom` by adding wedge patches
+        Redefined `BlockMesh.extrude_bottom` by adding wedge patches
         """
-        blocks = super().extrudeBottom(targetBlocks, name, dz, nz)
+        blocks = super().extrude_bottom(targetBlocks, name, dz, nz)
 
         if (isinstance(blocks, Block)):
-            self.faceFrontWedge.addSubFace(blocks.frontFace())
-            self.faceBackWedge.addSubFace(blocks.backFace())
+            self.faceFrontWedge.add_sub_face(blocks.frontFace())
+            self.faceBackWedge.add_sub_face(blocks.backFace())
         else:
             for block in blocks:
-                self.faceFrontWedge.addSubFace(block.frontFace())
-                self.faceBackWedge.addSubFace(block.backFace())
+                self.faceFrontWedge.add_sub_face(block.frontFace())
+                self.faceBackWedge.add_sub_face(block.backFace())
 
         return blocks
 
 
-    def extrudeLeft(self, targetBlocks: list[Block], name: str, dr: float, nr: int=1) -> tuple[Block]:
+    def extrude_left(self, targetBlocks: list[Block], name: str, dr: float, nr: int=1) -> tuple[Block]:
         """
-        Redefined `BlockMesh.extrudeLeft` by adding wedge patches and keeping
+        Redefined `BlockMesh.extrude_left` by adding wedge patches and keeping
         the wedge angle hwile extruding
         """
         newBlocks = []
         newPoints: dict[Point] = {}
         for targetBlock in targetBlocks:
-            newPointsForCurrBlock = self.getPointsForBlock(
+            newPointsForCurrBlock = self.get_points_for_block(
                 [targetBlock.points[0], targetBlock.points[3], targetBlock.points[4], targetBlock.points[7]],
                 newPoints,
                 fx=lambda x: x - dr*np.cos(self.appertureAngle/2),
                 fy=lambda y: y - dr*np.sin(self.appertureAngle/2) if y > 0 else y + dr*np.sin(self.appertureAngle/2),
             )
 
-            newBlock = self.addLeft(
+            newBlock = self.add_left(
                 targetBlock, name, newPointsForCurrBlock, nx=nr
             )
 
             newBlocks.append(newBlock)
-            self.faceFrontWedge.addSubFace(newBlock.frontFace())
-            self.faceBackWedge.addSubFace(newBlock.backFace())
+            self.faceFrontWedge.add_sub_face(newBlock.frontFace())
+            self.faceBackWedge.add_sub_face(newBlock.backFace())
 
         if (len(newBlocks) > 1):
             return tuple(newBlocks)
         return(newBlocks[0])
 
 
-    def extrudeRight(self, targetBlocks: list[Block], name: str, dr: float, nr: int=1) -> tuple[Block]:
+    def extrude_right(self, targetBlocks: list[Block], name: str, dr: float, nr: int=1) -> tuple[Block]:
         """
-        Redefined `BlockMesh.extrudeRight` by adding wedge patches and keeping
+        Redefined `BlockMesh.extrude_right` by adding wedge patches and keeping
         the wedge angle hwile extruding
         """
         newBlocks = []
         newPoints: dict[Point] = {}
         for targetBlock in targetBlocks:
-            newPointsForCurrBlock = self.getPointsForBlock(
+            newPointsForCurrBlock = self.get_points_for_block(
                 [targetBlock.points[1], targetBlock.points[2], targetBlock.points[5], targetBlock.points[6]],
                 newPoints,
                 fx=lambda x: x + dr*np.cos(self.appertureAngle/2),
                 fy=lambda y: y - dr*np.sin(self.appertureAngle/2) if y < 0 else y + dr*np.sin(self.appertureAngle/2),
             )
 
-            newBlock = self.addRight(
+            newBlock = self.add_right(
                 targetBlock, name, newPointsForCurrBlock, nx=nr
             )
 
             newBlocks.append(newBlock)
-            self.faceFrontWedge.addSubFace(newBlock.frontFace())
-            self.faceBackWedge.addSubFace(newBlock.backFace())
+            self.faceFrontWedge.add_sub_face(newBlock.frontFace())
+            self.faceBackWedge.add_sub_face(newBlock.backFace())
 
         if (len(newBlocks) > 1):
             return tuple(newBlocks)
         return(newBlocks[0])
 
 
-    def addRightFaceEdgePolyLine(self, block: Block, rzCoords: list[tuple]) -> None:
+    def add_right_face_edge_polyline(self, block: Block, rzCoords: list[tuple]) -> None:
         """
         Deforme the right face of the mesh following the rzCoords list in (r, z).
 
@@ -5289,12 +6009,12 @@ class BlockMeshWedge(BlockMesh):
                 z
             ))
 
-        block.addEdgePolyLine(
+        block.add_edge_polyline(
             pointIdx1=1,
             pointIdx2=5,
             points=pointsFront
         )
-        block.addEdgePolyLine(
+        block.add_edge_polyline(
             pointIdx1=2,
             pointIdx2=6,
             points=pointsBack

@@ -18,29 +18,29 @@ fuelRadius = 4.5
 
 fuelMesh = mesh.BlockMesh(scale=0.001)
 
-fuelBlock = fuelMesh.createWedge(
+fuelBlock = fuelMesh.create_wedge(
     'fuel', 0.0, fuelRadius, 0, fuelLength, wedgeAngle=wedgeAngle, nr=30, nz=10
 )
 
-cladBlock = fuelMesh.createWedge(
+cladBlock = fuelMesh.create_wedge(
     'cladding', 4.565, 5.315, 0, fuelLength, wedgeAngle=wedgeAngle, nr=10, nz=10
 )
-cladBlockTop = fuelMesh.extrudeTop([cladBlock], 'cladding', dz=200, nz=1)
+cladBlockTop = fuelMesh.extrude_top([cladBlock], 'cladding', dz=200, nz=1)
 
 
 bcFuelFront = mesh.Face(name="fuelFront", boundaryType="wedge")
-bcFuelFront.addSubFace(fuelBlock.frontFace())
+bcFuelFront.add_sub_face(fuelBlock.frontFace())
 
 bcFuelBack = mesh.Face(name="fuelBack", boundaryType="wedge")
-bcFuelBack.addSubFace(fuelBlock.backFace())
+bcFuelBack.add_sub_face(fuelBlock.backFace())
 
 bcCladFront = mesh.Face(name="cladFront", boundaryType="wedge")
-bcCladFront.addSubFace(cladBlock.frontFace())
-bcCladFront.addSubFace(cladBlockTop.frontFace())
+bcCladFront.add_sub_face(cladBlock.frontFace())
+bcCladFront.add_sub_face(cladBlockTop.frontFace())
 
 bcCladBack = mesh.Face(name="cladBack", boundaryType="wedge")
-bcCladBack.addSubFace(cladBlock.backFace())
-bcCladBack.addSubFace(cladBlockTop.backFace())
+bcCladBack.add_sub_face(cladBlock.backFace())
+bcCladBack.add_sub_face(cladBlockTop.backFace())
 
 
 bcFuelOuter = mesh.Face(
@@ -53,7 +53,7 @@ bcFuelOuter = mesh.Face(
         'updateAMI': 'true'
     }
 )
-bcFuelOuter.addSubFace(fuelBlock.rightFace())
+bcFuelOuter.add_sub_face(fuelBlock.rightFace())
 
 bcCladInner = mesh.Face(
     name="cladInner",
@@ -65,12 +65,12 @@ bcCladInner = mesh.Face(
         'updateAMI': 'true'
     }
 )
-bcCladInner.addSubFace(cladBlock.leftFace())
-bcCladInner.addSubFace(cladBlockTop.leftFace())
+bcCladInner.add_sub_face(cladBlock.leftFace())
+bcCladInner.add_sub_face(cladBlockTop.leftFace())
 
 bcCladOuter = mesh.Face(name="cladOuter")
-bcCladOuter.addSubFace(cladBlock.rightFace())
-bcCladOuter.addSubFace(cladBlockTop.rightFace())
+bcCladOuter.add_sub_face(cladBlock.rightFace())
+bcCladOuter.add_sub_face(cladBlockTop.rightFace())
 
 for bcName, subface in [
     ("fuelBottom", fuelBlock.bottomFace()),
@@ -79,16 +79,16 @@ for bcName, subface in [
     ("cladTop", cladBlockTop.topFace()),
 ]:
     bcEmpty = mesh.Face(name=bcName, boundaryType="empty")
-    bcEmpty.addSubFace(subface)
-    fuelMesh.addBoundary(bcEmpty)
+    bcEmpty.add_sub_face(subface)
+    fuelMesh.add_boundary(bcEmpty)
 
-fuelMesh.addBoundary(bcFuelOuter)
-fuelMesh.addBoundary(bcCladInner)
-fuelMesh.addBoundary(bcCladOuter)
-fuelMesh.addBoundary(bcFuelFront)
-fuelMesh.addBoundary(bcFuelBack)
-fuelMesh.addBoundary(bcCladFront)
-fuelMesh.addBoundary(bcCladBack)
+fuelMesh.add_boundary(bcFuelOuter)
+fuelMesh.add_boundary(bcCladInner)
+fuelMesh.add_boundary(bcCladOuter)
+fuelMesh.add_boundary(bcFuelFront)
+fuelMesh.add_boundary(bcFuelBack)
+fuelMesh.add_boundary(bcCladFront)
+fuelMesh.add_boundary(bcCladBack)
 
 
 #==============================================================================*

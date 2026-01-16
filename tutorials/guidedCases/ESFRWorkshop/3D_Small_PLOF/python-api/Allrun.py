@@ -76,8 +76,8 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
 
     blockMesh = mesh.BlockMesh(region=region)
 
-    blockMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+    blockMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
             name="innerCore",
             zmin=-coreHeight/2,
             zmax=coreHeight/2,
@@ -86,7 +86,7 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
             nr=nr,
             nt=nt,
             nz=coreNodes,
-            isAddBoundaryConditions=True
+            isAddAllBC=True
         ),
         lattice=lattice,
         latticeType="hexagon",
@@ -94,8 +94,8 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
         elementsToPlace=['I'],
         # isMergePatches=isMergePatches
     )
-    blockMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+    blockMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
             name="outerCore",
             zmin=-coreHeight/2,
             zmax=coreHeight/2,
@@ -104,7 +104,7 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
             nr=nr,
             nt=nt,
             nz=coreNodes,
-            isAddBoundaryConditions=True
+            isAddAllBC=True
         ),
         lattice=lattice,
         latticeType="hexagon",
@@ -112,8 +112,8 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
         elementsToPlace=['O'],
         # isMergePatches=isMergePatches
     )
-    blockMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+    blockMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
             name="upperGasPlenum",
             zmin=coreHeight/2,
             zmax=coreHeight/2+upperFGPHeight,
@@ -122,7 +122,7 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
             nr=nr,
             nt=nt,
             nz=upperFGPNodes,
-            isAddBoundaryConditions=True
+            isAddAllBC=True
         ),
         lattice=lattice,
         latticeType="hexagon",
@@ -132,8 +132,8 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
     )
 
     # """
-    blockMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+    blockMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
             name="upperReflector",
             zmin=coreHeight/2+upperFGPHeight,
             zmax=coreHeight/2+upperFGPHeight+upperReflHeight,
@@ -142,7 +142,7 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
             nr=nr,
             nt=nt,
             nz=upperReflNodes,
-            isAddBoundaryConditions=True
+            isAddAllBC=True
         ),
         lattice=lattice,
         latticeType="hexagon",
@@ -150,8 +150,8 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
         elementsToPlace=['I', 'O'],
         # isMergePatches=isMergePatches
     )
-    blockMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+    blockMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
             name="lowerGasPlenum",
             zmin=-coreHeight/2-lowFGPHeight,
             zmax=-coreHeight/2,
@@ -160,7 +160,7 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
             nr=nr,
             nt=nt,
             nz=lowFGPNodes,
-            isAddBoundaryConditions=True
+            isAddAllBC=True
         ),
         lattice=lattice,
         latticeType="hexagon",
@@ -169,8 +169,8 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
         # isMergePatches=isMergePatches
     )
 
-    blockMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+    blockMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
             name="lowerReflector",
             zmin=-coreHeight/2-lowFGPHeight-lowReflHeight,
             zmax=-coreHeight/2-lowFGPHeight,
@@ -179,7 +179,7 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
             nr=nr,
             nt=nt,
             nz=lowReflNodes,
-            isAddBoundaryConditions=True
+            isAddAllBC=True
         ),
         lattice=lattice,
         latticeType="hexagon",
@@ -189,8 +189,8 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
     )
 
     # Radial reflector
-    blockMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+    blockMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
             name="radialReflector",
             zmin=-coreHeight/2,
             zmax=coreHeight/2,
@@ -199,7 +199,7 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
             nr=nr,
             nt=nt,
             nz=coreNodes,
-            isAddBoundaryConditions=True
+            isAddAllBC=True
         ),
         lattice=lattice,
         latticeType="hexagon",
@@ -207,8 +207,8 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
         elementsToPlace=['R'],
         # isMergePatches=isMergePatches
     )
-    blockMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+    blockMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
             name="radialReflector",
             zmin=coreHeight/2,
             zmax=coreHeight/2+upperFGPHeight,
@@ -217,7 +217,7 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
             nr=nr,
             nt=nt,
             nz=upperFGPNodes,
-            isAddBoundaryConditions=True
+            isAddAllBC=True
         ),
         lattice=lattice,
         latticeType="hexagon",
@@ -225,8 +225,8 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
         elementsToPlace=['R'],
         # isMergePatches=isMergePatches
     )
-    blockMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+    blockMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
             name="radialReflector",
             zmin=coreHeight/2+upperFGPHeight,
             zmax=coreHeight/2+upperFGPHeight+upperReflHeight,
@@ -235,7 +235,7 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
             nr=nr,
             nt=nt,
             nz=upperReflNodes,
-            isAddBoundaryConditions=True
+            isAddAllBC=True
         ),
         lattice=lattice,
         latticeType="hexagon",
@@ -243,8 +243,8 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
         elementsToPlace=['R'],
         # isMergePatches=isMergePatches
     )
-    blockMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+    blockMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
             name="radialReflector",
             zmin=-coreHeight/2-lowFGPHeight,
             zmax=-coreHeight/2,
@@ -253,7 +253,7 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
             nr=nr,
             nt=nt,
             nz=lowFGPNodes,
-            isAddBoundaryConditions=True
+            isAddAllBC=True
         ),
         lattice=lattice,
         latticeType="hexagon",
@@ -261,8 +261,8 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
         elementsToPlace=['R'],
         # isMergePatches=isMergePatches
     )
-    blockMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+    blockMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
             name="radialReflector",
             zmin=-coreHeight/2-lowFGPHeight-lowReflHeight,
             zmax=-coreHeight/2-lowFGPHeight,
@@ -271,7 +271,7 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
             nr=nr,
             nt=nt,
             nz=lowReflNodes,
-            isAddBoundaryConditions=True
+            isAddAllBC=True
         ),
         lattice=lattice,
         latticeType="hexagon",
@@ -280,8 +280,8 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
         # isMergePatches=isMergePatches
     )
 
-    blockMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+    blockMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
             name="diagrid",
             zmin=-coreHeight/2-lowFGPHeight-lowReflHeight-diagridHeight,
             zmax=-coreHeight/2-lowFGPHeight-lowReflHeight,
@@ -290,7 +290,7 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
             nr=nr,
             nt=nt,
             nz=diagridNodes,
-            isAddBoundaryConditions=True
+            isAddAllBC=True
         ),
         lattice=lattice,
         latticeType="hexagon",
@@ -301,8 +301,8 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
 
 
     # Follower
-    blockMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+    blockMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
             name="follower",
             zmin=-coreHeight/2-lowFGPHeight-lowReflHeight,
             zmax=-coreHeight/2-lowFGPHeight,
@@ -311,7 +311,7 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
             nr=nr,
             nt=nt,
             nz=lowReflNodes,
-            isAddBoundaryConditions=True
+            isAddAllBC=True
         ),
         lattice=lattice,
         latticeType="hexagon",
@@ -319,8 +319,8 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
         elementsToPlace=['C'],
         # isMergePatches=isMergePatches
     )
-    blockMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+    blockMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
             name="follower",
             zmin=-coreHeight/2-lowFGPHeight,
             zmax=-coreHeight/2,
@@ -329,7 +329,7 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
             nr=nr,
             nt=nt,
             nz=lowFGPNodes,
-            isAddBoundaryConditions=True
+            isAddAllBC=True
         ),
         lattice=lattice,
         latticeType="hexagon",
@@ -337,8 +337,8 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
         elementsToPlace=['C'],
         # isMergePatches=isMergePatches
     )
-    blockMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+    blockMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
             name="follower",
             zmin=-coreHeight/2,
             zmax=coreHeight/2,
@@ -347,7 +347,7 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
             nr=nr,
             nt=nt,
             nz=coreNodes,
-            isAddBoundaryConditions=True
+            isAddAllBC=True
         ),
         lattice=lattice,
         latticeType="hexagon",
@@ -357,8 +357,8 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
     )
 
     # Control rod
-    blockMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+    blockMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
             name="controlRod",
             zmin=coreHeight/2,
             zmax=coreHeight/2+upperFGPHeight,
@@ -367,7 +367,7 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
             nr=nr,
             nt=nt,
             nz=upperFGPNodes,
-            isAddBoundaryConditions=True
+            isAddAllBC=True
         ),
         lattice=lattice,
         latticeType="hexagon",
@@ -375,8 +375,8 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
         elementsToPlace=['C'],
         # isMergePatches=isMergePatches
     )
-    blockMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+    blockMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
             name="controlRod",
             zmin=coreHeight/2+upperFGPHeight,
             zmax=coreHeight/2+upperFGPHeight+upperReflHeight,
@@ -385,7 +385,7 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
             nr=nr,
             nt=nt,
             nz=upperReflNodes,
-            isAddBoundaryConditions=True
+            isAddAllBC=True
         ),
         lattice=lattice,
         latticeType="hexagon",
@@ -395,29 +395,29 @@ def createMesh(region: str, isFluidMesh: bool, gap: float=0):
     )
     # """
 
-    blockMesh.addMergePatchPairs(
+    blockMesh.add_merge_patch_pairs(
         includeFacename=['Top', 'Bottom'],
         excludeFacename=['Wall']
     )
     if (isFluidMesh):
-        bafflesFaces = blockMesh.addBaffles(
+        bafflesFaces = blockMesh.add_baffles(
             includeFacename=['Wall'],
             excludeFacename=['Top', 'Bottom']
         )
     else:
-        blockMesh.addMergePatchPairs(
+        blockMesh.add_merge_patch_pairs(
             includeFacename=['Wall'],
             excludeFacename=['Top', 'Bottom'],
         )
 
 
-    externalWalls = blockMesh.getStandaloneFaces(includeFacename=['Wall'])
+    externalWalls = blockMesh.get_standalone_faces(includeFacename=['Wall'])
 
-    blockMesh.mergePatchesWithName(name="wall", regex='|'.join([face.name for face in externalWalls]), patchType="wall")
-    blockMesh.mergePatchesWithName(name="bottom", regex="diagridBottom_.*")
-    blockMesh.mergePatchesWithName(name="top", regex="upperReflectorTop_.*")
-    blockMesh.mergePatchesWithName(name="top", regex="controlRodTop_.*")
-    blockMesh.mergePatchesWithName(name="top", regex="radialReflectorTop_.*")
+    blockMesh.merge_patches_with_name(name="wall", regex='|'.join([face.name for face in externalWalls]), patchType="wall")
+    blockMesh.merge_patches_with_name(name="bottom", regex="diagridBottom_.*")
+    blockMesh.merge_patches_with_name(name="top", regex="upperReflectorTop_.*")
+    blockMesh.merge_patches_with_name(name="top", regex="controlRodTop_.*")
+    blockMesh.merge_patches_with_name(name="top", regex="radialReflectorTop_.*")
 
     return(blockMesh)
 

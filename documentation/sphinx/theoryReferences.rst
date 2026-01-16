@@ -62,7 +62,7 @@ Thermal-hydraulics / heat and mass transfer
   - Relevance - **GeN-Foam**. Main reference for one- and two-phase Euler-Euler
     solvers: governing equations, solution algorithms.
 
-.. _RADMAN2021111422:
+.. _RADMAN2021111422-2:
 
 - S. Radman, C. Fiorina, and A. Pautz, "`Development of a novel two-phase flow
   solver for nuclear reactor analysis: Validation against sodium boiling experiments

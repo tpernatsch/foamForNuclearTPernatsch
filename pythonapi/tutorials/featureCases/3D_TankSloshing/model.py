@@ -18,21 +18,21 @@ tankLength = 3
 
 thMesh = mesh.BlockMesh(region="")
 
-(centerBlock, frontBlock, rightBlock, backBlock, leftBlock) = thMesh.createCylinderAlongZ(
+(centerBlock, frontBlock, rightBlock, backBlock, leftBlock) = thMesh.create_cylinder_along_z(
     'tank', 1, -tankLength/2, tankLength/2, 10, 10, 30
 )
 
 wall = ffn.Face("wall", boundaryType="wall")
 for block in [centerBlock, frontBlock, rightBlock, backBlock, leftBlock]:
-    wall.addSubFace(block.topFace())
-    wall.addSubFace(block.bottomFace())
+    wall.add_sub_face(block.topFace())
+    wall.add_sub_face(block.bottomFace())
 
-wall.addSubFace(frontBlock.frontFace())
-wall.addSubFace(rightBlock.rightFace())
-wall.addSubFace(backBlock.backFace())
-wall.addSubFace(leftBlock.leftFace())
+wall.add_sub_face(frontBlock.frontFace())
+wall.add_sub_face(rightBlock.rightFace())
+wall.add_sub_face(backBlock.backFace())
+wall.add_sub_face(leftBlock.leftFace())
 
-thMesh.addBoundary(wall)
+thMesh.add_boundary(wall)
 
 
 #==============================================================================*

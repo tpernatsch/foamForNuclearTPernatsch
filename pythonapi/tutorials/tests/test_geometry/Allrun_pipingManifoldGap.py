@@ -22,29 +22,29 @@ legLength = 3
 elbowRadius = 0.5
 equivalentHydraulicDiameter = 0.6
 
-core = thMesh.createCylinderAlongZ(
+core = thMesh.create_cylinder_along_z(
     name='core',
     radius=coreRadius,
     lowZ=0, highZ=coreLength,
     nx=3, ny=3, nz=10,
-    isAddBoundaryConditions=False
+    isAddAllBC=False
 )
-bottomPlenum = thMesh.createHalfSphere(
+bottomPlenum = thMesh.create_half_sphere(
     name='bottomPlenum',
     radius=vesselRadius,
     nCenter=7, nBorder=3,
-    isAddBoundaryConditions=False
+    isAddAllBC=False
 )
-ring = thMesh.createRingAlongZ(
+ring = thMesh.create_ring_along_z(
     name='ring',
     innerRadius=coreRadius+gap,
     outerRadius=vesselRadius,
     lowZ=0, highZ=coreLength,
     nr=2, nt=7, nz=4,
-    isAddBoundaryConditions=False
+    isAddAllBC=False
 )
 
-inletManifold = thMesh.createPipeCylindricalManifoldAlongZ(
+inletManifold = thMesh.create_pipe_cylindrical_manifold_along_z(
     'inletManifold',
     nEntries=nLoops,
     innerRadius=coreRadius+gap,
@@ -54,7 +54,7 @@ inletManifold = thMesh.createPipeCylindricalManifoldAlongZ(
     nr=2, nt=3,
     isAddGap=True
 )
-outletManifold = thMesh.createPipeCylindricalManifoldAlongZ(
+outletManifold = thMesh.create_pipe_cylindrical_manifold_along_z(
     'outletManifold',
     nEntries=nLoops,
     innerRadius=0.001,
@@ -68,50 +68,50 @@ outletManifold = thMesh.createPipeCylindricalManifoldAlongZ(
 
 # Add pipes
 for i, inletPipe in enumerate(inletManifold[:nLoops]):
-    thMesh.extrudeNormal(inletPipe, 'front', f'inletPipe{i}', length=legLength, n=3)
+    thMesh.extrude_normal(inletPipe, 'front', f'inletPipe{i}', length=legLength, n=3)
 
 for i, outletPipe in enumerate(outletManifold[::2]):
-    thMesh.extrudeNormal(outletPipe, 'front', f'outletPipe{i}', length=legLength + vesselRadius-coreRadius, n=3)
+    thMesh.extrude_normal(outletPipe, 'front', f'outletPipe{i}', length=legLength + vesselRadius-coreRadius, n=3)
 
 
 # Add inlet and outlet of manifold
 inletManifoldOutlet = ffn.Face("inletManifoldOutlet")
 for block in inletManifold:
-    inletManifoldOutlet.addSubFace(block.bottomFace())
+    inletManifoldOutlet.add_sub_face(block.bottomFace())
 
 outletManifoldInlet = ffn.Face("outletManifoldInlet")
 for block in outletManifold:
-    outletManifoldInlet.addSubFace(block.bottomFace())
+    outletManifoldInlet.add_sub_face(block.bottomFace())
 
 ringTop = ffn.Face("ringTop")
 for block in ring:
-    ringTop.addSubFace(block.topFace())
+    ringTop.add_sub_face(block.topFace())
 
 coreTop = ffn.Face("coreTop")
 for block in core:
-    coreTop.addSubFace(block.topFace())
+    coreTop.add_sub_face(block.topFace())
 
 coreBottom = ffn.Face("coreBottom")
 for block in core:
-    coreBottom.addSubFace(block.bottomFace())
+    coreBottom.add_sub_face(block.bottomFace())
 for block in ring:
-    coreBottom.addSubFace(block.bottomFace())
+    coreBottom.add_sub_face(block.bottomFace())
 
 bottomPlenumTop = ffn.Face("bottomPlenumTop")
 for block in bottomPlenum[:-1]:
-    bottomPlenumTop.addSubFace(block.topFace())
+    bottomPlenumTop.add_sub_face(block.topFace())
 
-thMesh.addBoundary(inletManifoldOutlet)
-thMesh.addBoundary(outletManifoldInlet)
-thMesh.addBoundary(ringTop)
-thMesh.addBoundary(coreTop)
-thMesh.addBoundary(coreBottom)
-thMesh.addBoundary(bottomPlenumTop)
+thMesh.add_boundary(inletManifoldOutlet)
+thMesh.add_boundary(outletManifoldInlet)
+thMesh.add_boundary(ringTop)
+thMesh.add_boundary(coreTop)
+thMesh.add_boundary(coreBottom)
+thMesh.add_boundary(bottomPlenumTop)
 
 # Stich blocks
-thMesh.mergePatchPairsByName(coreTop.name, outletManifoldInlet.name)
-thMesh.mergePatchPairsByName(ringTop.name, inletManifoldOutlet.name)
-thMesh.mergePatchPairsByName(coreBottom.name, bottomPlenumTop.name)
+thMesh.merge_patch_pairs_by_name(coreTop.name, outletManifoldInlet.name)
+thMesh.merge_patch_pairs_by_name(ringTop.name, inletManifoldOutlet.name)
+thMesh.merge_patch_pairs_by_name(coreBottom.name, bottomPlenumTop.name)
 
 
 #==============================================================================*

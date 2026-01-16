@@ -150,6 +150,17 @@ class Vector:
             abs(self.z - value.z) <= eps
         )
 
+    def __hash__(self):
+        """
+        To be used with care
+        """
+        eps = 1e-8
+        return hash((
+            round(self.x / eps),
+            round(self.y / eps),
+            round(self.z / eps),
+        ))
+
     def __add__(self, rhs):
         return(Vector(
             x=self.x + rhs.x,
@@ -206,6 +217,11 @@ class Vector:
         self.x = -self.x
         self.y = -self.y
         self.z = -self.z
+
+    def translate(self, dx: float=0, dy: float=0, dz: float=0) -> None:
+        self.x += dx
+        self.y += dy
+        self.z += dz
 
     def rotateX(self, theta: float=0) -> None:
         py = self.y

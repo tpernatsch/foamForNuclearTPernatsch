@@ -20,26 +20,26 @@ ffn.allclean()
 
 nMesh = mesh.BlockMesh(region="neutroRegion")
 
-zone0 = nMesh.createCube("zone0", 0, 0, 0, 1, 0.1, 1, nx=25, nz=25)
+zone0 = nMesh.create_cube("zone0", 0, 0, 0, 1, 0.1, 1, nx=25, nz=25)
 
 inlet = mesh.Face("inlet")
-inlet.addSubFace(zone0.bottomFace())
+inlet.add_sub_face(zone0.bottomFace())
 
 outlet = mesh.Face("outlet")
-outlet.addSubFace(zone0.topFace())
+outlet.add_sub_face(zone0.topFace())
 
 fixedWalls = mesh.Face("fixedWalls", boundaryType="wall")
-fixedWalls.addSubFace(zone0.leftFace())
-fixedWalls.addSubFace(zone0.rightFace())
+fixedWalls.add_sub_face(zone0.leftFace())
+fixedWalls.add_sub_face(zone0.rightFace())
 
 frontAndBack = mesh.Face("frontAndBack", boundaryType="empty")
-frontAndBack.addSubFace(zone0.frontFace())
-frontAndBack.addSubFace(zone0.backFace())
+frontAndBack.add_sub_face(zone0.frontFace())
+frontAndBack.add_sub_face(zone0.backFace())
 
-nMesh.addBoundary(inlet)
-nMesh.addBoundary(outlet)
-nMesh.addBoundary(fixedWalls)
-nMesh.addBoundary(frontAndBack)
+nMesh.add_boundary(inlet)
+nMesh.add_boundary(outlet)
+nMesh.add_boundary(fixedWalls)
+nMesh.add_boundary(frontAndBack)
 
 
 thMesh = copy(nMesh)

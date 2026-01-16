@@ -704,7 +704,7 @@ class Model:
             internalMesh = mesh['internalMesh']
             internalMesh = internalMesh.scale(scalingVector)
             if (isSlice):
-                slice_mesh = internalMesh.slice(normal=normal)
+                slice_mesh = internalMesh.slice(normal=normal, origin=offset)
                 internalMesh = slice_mesh.translate(offset, inplace=True)
 
             # Recompute limits
@@ -737,7 +737,7 @@ class Model:
         )
         if (isSlice):
             plotter.add_text(
-                f"Offset = {offset} m",
+                "Offset = (" + ', '.join([f'{coord:g}' for coord in offset]) + ") m",
                 position='upper_right',
             )
         plotter.show_bounds(location='outer')
@@ -761,11 +761,17 @@ class Model:
         figType = 'mesh'
         if (isSlice):
             figType = 'slice'
-        if (normal is not None):
-            ext += "_" + camera_position
         if (fieldName is not None):
-            ext = "_" + fieldName + ext
-            figType = 'results'
+            ext = f"{ext}_{fieldName}"
+            figType = f"results_{figType}"
+        if (normal is not None):
+            ext = f"{ext}_{camera_position}"
+        if (offset[0] != 0):
+            ext = f"{ext}_x{offset[0]:g}"
+        if (offset[1] != 0):
+            ext = f"{ext}_y{offset[1]:g}"
+        if (offset[2] != 0):
+            ext = f"{ext}_z{offset[2]:g}"
 
         plotter.screenshot(f"fig_{figType}_{'_'.join(regionNames)}_{time}{ext}.png")
 

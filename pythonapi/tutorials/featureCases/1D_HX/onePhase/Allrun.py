@@ -19,40 +19,40 @@ ffn.allclean()
 
 thMesh = mesh.BlockMesh(region="fluidRegion")
 
-pPipe1 = thMesh.createCube("pPipe", 0, 0, 0, 0.1, 0.1, 0.5, nz=10)
-heater = thMesh.extrudeTop([pPipe1], "heater", dz=1, nz=20)
-pHX = thMesh.extrudeTop([heater], "pHX", dz=1, nz=20)
-pPipe2 = thMesh.extrudeTop([pHX], "pPipe", dz=0.5, nz=10)
+pPipe1 = thMesh.create_cube("pPipe", 0, 0, 0, 0.1, 0.1, 0.5, nz=10)
+heater = thMesh.extrude_top(pPipe1, "heater", dz=1, nz=20)
+pHX = thMesh.extrude_top(heater, "pHX", dz=1, nz=20)
+pPipe2 = thMesh.extrude_top(pHX, "pPipe", dz=0.5, nz=10)
 
-sPipe1 = thMesh.createCube("sPipe", 0.2, 0, 0, 0.3, 0.1, 0.5, nz=10)
-sPipe2 = thMesh.extrudeTop([sPipe1], "sPipe", dz=1, nz=20)
-sHX = thMesh.extrudeTop([sPipe2], "sHX", dz=1, nz=20)
-sPipe3 = thMesh.extrudeTop([sHX], "sPipe", dz=0.5, nz=10)
+sPipe1 = thMesh.create_cube("sPipe", 0.2, 0, 0, 0.3, 0.1, 0.5, nz=10)
+sPipe2 = thMesh.extrude_top(sPipe1, "sPipe", dz=1, nz=20)
+sHX = thMesh.extrude_top(sPipe2, "sHX", dz=1, nz=20)
+sPipe3 = thMesh.extrude_top(sHX, "sPipe", dz=0.5, nz=10)
 
 outletP = ffn.Face("outletP")
-outletP.addSubFace(pPipe2.topFace())
+outletP.add_sub_face(pPipe2.topFace())
 
 outletS = ffn.Face("outletS")
-outletS.addSubFace(sPipe3.topFace())
+outletS.add_sub_face(sPipe3.topFace())
 
 inletP = ffn.Face("inletP")
-inletP.addSubFace(pPipe1.bottomFace())
+inletP.add_sub_face(pPipe1.bottomFace())
 
 inletS = ffn.Face("inletS")
-inletS.addSubFace(sPipe1.bottomFace())
+inletS.add_sub_face(sPipe1.bottomFace())
 
 walls = ffn.Face("walls", boundaryType="wall")
 for face in [pPipe1, heater, pHX, pPipe2, sPipe1, sPipe2, sHX, sPipe3]:
-    walls.addSubFace(face.leftFace())
-    walls.addSubFace(face.rightFace())
-    walls.addSubFace(face.frontFace())
-    walls.addSubFace(face.backFace())
+    walls.add_sub_face(face.leftFace())
+    walls.add_sub_face(face.rightFace())
+    walls.add_sub_face(face.frontFace())
+    walls.add_sub_face(face.backFace())
 
-thMesh.addBoundary(outletP)
-thMesh.addBoundary(outletS)
-thMesh.addBoundary(inletP)
-thMesh.addBoundary(inletS)
-thMesh.addBoundary(walls)
+thMesh.add_boundary(outletP)
+thMesh.add_boundary(outletS)
+thMesh.add_boundary(inletP)
+thMesh.add_boundary(inletS)
+thMesh.add_boundary(walls)
 
 
 #==============================================================================*

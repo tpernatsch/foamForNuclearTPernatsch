@@ -54,7 +54,7 @@ def createTJunctionOnRing(
     cost45, sint45 = np.cos(theta45), np.sin(theta45)
     costt, sintt = np.cos(theta+thetaOpening), np.sin(theta+thetaOpening)
 
-    blockA1 = nMesh.createBlock(name, [
+    blockA1 = nMesh.create_block(name, [
         mesh.Point(x+outerRadius*cost, y+outerRadius*sint, lowZ),
         mesh.Point(x+outerRadius*cost15, y+outerRadius*sint15, lowZ),
         mesh.Point(x+innerRadius*cost15, y+innerRadius*sint15, lowZ),
@@ -65,7 +65,7 @@ def createTJunctionOnRing(
         mesh.Point(x+innerRadius*cost, y+innerRadius*sint, z15),
     ], nx=nt, ny=nr, nz=nz)
 
-    blockA2 = nMesh.createBlock(name, [
+    blockA2 = nMesh.create_block(name, [
         blockA1.points[1],
         mesh.Point(x+outerRadius*cost45, y+outerRadius*sint45, lowZ),
         mesh.Point(x+innerRadius*cost45, y+innerRadius*sint45, lowZ),
@@ -76,7 +76,7 @@ def createTJunctionOnRing(
         blockA1.points[6],
     ], nx=nt, ny=nr, nz=nz)
 
-    blockA3 = nMesh.createBlock(name, [
+    blockA3 = nMesh.create_block(name, [
         blockA2.points[1],
         mesh.Point(x+outerRadius*costt, y+outerRadius*sintt, lowZ),
         mesh.Point(x+innerRadius*costt, y+innerRadius*sintt, lowZ),
@@ -87,7 +87,7 @@ def createTJunctionOnRing(
         blockA2.points[6],
     ], nx=nt, ny=nr, nz=nz)
 
-    # blockA4 = nMesh.createBlock(name, [
+    # blockA4 = nMesh.create_block(name, [
     #     blockA3.points[1],
     #     mesh.Point(x+outerRadius*cost45, y+outerRadius*sint45, lowZ),
     #     mesh.Point(x+innerRadius*cost45, y+innerRadius*sint45, lowZ),
@@ -98,7 +98,7 @@ def createTJunctionOnRing(
     #     blockA3.points[6],
     # ], nx=nt, ny=nr, nz=nz)
 
-    # blockA5 = nMesh.createBlock(name, [
+    # blockA5 = nMesh.create_block(name, [
     #     blockA4.points[1],
     #     mesh.Point(x+outerRadius*costt, y+outerRadius*sintt, lowZ),
     #     mesh.Point(x+innerRadius*costt, y+innerRadius*sintt, lowZ),
@@ -109,21 +109,21 @@ def createTJunctionOnRing(
     #     blockA4.points[6],
     # ], nx=nt, ny=nr, nz=nz)
 
-    (blockB1, blockB3) = nMesh.extrudeTop(
+    (blockB1, blockB3) = nMesh.extrude_top(
         [blockA1, blockA3],
         name,
         dz=z45-z15,
         nz=nz
     )
 
-    (blockC1, blockC3) = nMesh.extrudeTop(
+    (blockC1, blockC3) = nMesh.extrude_top(
         [blockB1, blockB3],
         name,
         dz=highZ-z45,
         nz=nz
     )
 
-    blockC2 = nMesh.createBlock(name, [
+    blockC2 = nMesh.create_block(name, [
         blockC1.points[1],
         blockC3.points[0],
         blockC3.points[3],
@@ -134,21 +134,21 @@ def createTJunctionOnRing(
         blockC1.points[6],
     ], nx=blockA1.nx, ny=blockA1.ny, nz=nz)
 
-    # (blockD1, blockD2, blockD3, blockD4, blockD5) = nMesh.extrudeTop(
+    # (blockD1, blockD2, blockD3, blockD4, blockD5) = nMesh.extrude_top(
     #     [blockC1, blockC2, blockC3, blockC4, blockC5],
     #     name,
     #     dz=z45-z35,
     #     nz=nz
     # )
 
-    # (blockE1, blockE2, blockE3, blockE4, blockE5) = nMesh.extrudeTop(
+    # (blockE1, blockE2, blockE3, blockE4, blockE5) = nMesh.extrude_top(
     #     [blockD1, blockD2, blockD3, blockD4, blockD5],
     #     name,
     #     dz=highZ-z45,
     #     nz=nz
     # )
 
-    blockPC = nMesh.createBlock(name, [
+    blockPC = nMesh.create_block(name, [
         mesh.Point(x+outerRadius*cost25, y+outerRadius*sint25, z25),
         mesh.Point(x+outerRadius*cost35, y+outerRadius*sint35, z25),
         mesh.Point(x+innerRadius*cost35, y+innerRadius*sint35, z25),
@@ -159,21 +159,21 @@ def createTJunctionOnRing(
         mesh.Point(x+innerRadius*cost25, y+innerRadius*sint25, z35),
     ], nx=blockA1.nx, ny=blockA1.ny, nz=nz)
 
-    blockPBottom = nMesh.addTop(blockA2, name, [
+    blockPBottom = nMesh.add_top(blockA2, name, [
         blockPC.points[0],
         blockPC.points[1],
         blockPC.points[2],
         blockPC.points[3],
     ], nz=5)
 
-    blockPTop = nMesh.addBottom(blockC2, name, blockPC.topFace(), nz=blockPBottom.nz)
-    blockPLeft = nMesh.addRight(blockB1, name, [
+    blockPTop = nMesh.add_bottom(blockC2, name, blockPC.topFace(), nz=blockPBottom.nz)
+    blockPLeft = nMesh.add_right(blockB1, name, [
         blockPC.points[0],
         blockPC.points[3],
         blockPC.points[4],
         blockPC.points[7],
     ], nx=blockPBottom.nz)
-    blockPRight = nMesh.addLeft(blockB3, name, [
+    blockPRight = nMesh.add_left(blockB3, name, [
         blockPC.points[1],
         blockPC.points[2],
         blockPC.points[5],
@@ -201,35 +201,35 @@ def createTJunctionOnRing(
 
     # Pipe
     xPipe, yPipe = x + dPipeEnd*costhalf, y + dPipeEnd*sinthalf
-    pipeCenter = nMesh.addFront(blockPC, name, [
+    pipeCenter = nMesh.add_front(blockPC, name, [
         mesh.Point(xPipe + pipeDiameter3/2*sinthalf, yPipe - pipeDiameter3/2*costhalf, z25),
         mesh.Point(xPipe - pipeDiameter3/2*sinthalf, yPipe + pipeDiameter3/2*costhalf, z25),
         mesh.Point(xPipe + pipeDiameter3/2*sinthalf, yPipe - pipeDiameter3/2*costhalf, z35),
         mesh.Point(xPipe - pipeDiameter3/2*sinthalf, yPipe + pipeDiameter3/2*costhalf, z35),
     ], 5)
 
-    pipeBottom = nMesh.addFront(blockPBottom, name, [
+    pipeBottom = nMesh.add_front(blockPBottom, name, [
         mesh.Point(xPipe + pipeRadius/sqrt2*sinthalf, yPipe - pipeRadius/sqrt2*costhalf, z15),
         mesh.Point(xPipe - pipeRadius/sqrt2*sinthalf, yPipe + pipeRadius/sqrt2*costhalf, z15),
         pipeCenter.points[0],
         pipeCenter.points[1],
     ], ny=pipeCenter.ny)
 
-    pipeTop = nMesh.addFront(blockPTop, name, [
+    pipeTop = nMesh.add_front(blockPTop, name, [
         pipeCenter.points[4],
         pipeCenter.points[5],
         mesh.Point(xPipe + pipeRadius/sqrt2*sinthalf, yPipe - pipeRadius/sqrt2*costhalf, z45),
         mesh.Point(xPipe - pipeRadius/sqrt2*sinthalf, yPipe + pipeRadius/sqrt2*costhalf, z45),
     ], ny=pipeCenter.ny)
 
-    pipeLeft = nMesh.addFront(blockPLeft, name, [
+    pipeLeft = nMesh.add_front(blockPLeft, name, [
         pipeBottom.points[0],
         pipeBottom.points[4],
         pipeTop.points[4],
         pipeTop.points[0],
     ], ny=pipeCenter.ny)
 
-    pipeRight = nMesh.addFront(blockPRight, name, [
+    pipeRight = nMesh.add_front(blockPRight, name, [
         pipeBottom.points[5],
         pipeBottom.points[1],
         pipeTop.points[1],
@@ -242,32 +242,32 @@ def createTJunctionOnRing(
     pipeLeft.addEdge('arc', 0, 4, xPipe, yPipe, zPipe, isOrigin=True)
     pipeRight.addEdge('arc', 5, 1, xPipe, yPipe, zPipe, isOrigin=True)
 
-    nMesh.addCylinder(
+    nMesh.add_cylinder(
         name=name+"_outerRadius",
         point1=(x, y, lowZ-1),
         point2=(x, y, highZ+1),
         radius=outerRadius
     )
-    nMesh.addCylinder(
+    nMesh.add_cylinder(
         name=name+"_cylinderPipe",
         point1=(x, y, zPipe),
         point2=(xPipe, yPipe, zPipe),
         radius=pipeRadius
     )
-    pipeBottom.addFaceProjection("bottom", name+"_cylinderPipe")
-    pipeTop.addFaceProjection("top", name+"_cylinderPipe")
-    pipeLeft.addFaceProjection("left", name+"_cylinderPipe")
-    pipeRight.addFaceProjection("right", name+"_cylinderPipe")
+    pipeBottom.add_face_projection("bottom", name+"_cylinderPipe")
+    pipeTop.add_face_projection("top", name+"_cylinderPipe")
+    pipeLeft.add_face_projection("left", name+"_cylinderPipe")
+    pipeRight.add_face_projection("right", name+"_cylinderPipe")
 
-    # blockA1.addEdgeProjection(4, 5, ["outerRadius"])
-    # blockA3.addEdgeProjection(4, 5, ["outerRadius"])
-    # blockB1.addEdgeProjection(4, 5, ["outerRadius"])
-    # blockB3.addEdgeProjection(4, 5, ["outerRadius"])
+    # blockA1.add_edge_projection(4, 5, ["outerRadius"])
+    # blockA3.add_edge_projection(4, 5, ["outerRadius"])
+    # blockB1.add_edge_projection(4, 5, ["outerRadius"])
+    # blockB3.add_edge_projection(4, 5, ["outerRadius"])
 
-    pipeBottom.addEdgeProjection(2, 3, [name+"_cylinderPipe", name+"_outerRadius"])
-    pipeTop.addEdgeProjection(6, 7, [name+"_cylinderPipe", name+"_outerRadius"])
-    pipeLeft.addEdgeProjection(3, 7, [name+"_cylinderPipe", name+"_outerRadius"])
-    pipeRight.addEdgeProjection(2, 6, [name+"_cylinderPipe", name+"_outerRadius"])
+    pipeBottom.add_edge_projection(2, 3, [name+"_cylinderPipe", name+"_outerRadius"])
+    pipeTop.add_edge_projection(6, 7, [name+"_cylinderPipe", name+"_outerRadius"])
+    pipeLeft.add_edge_projection(3, 7, [name+"_cylinderPipe", name+"_outerRadius"])
+    pipeRight.add_edge_projection(2, 6, [name+"_cylinderPipe", name+"_outerRadius"])
 
 
     return()

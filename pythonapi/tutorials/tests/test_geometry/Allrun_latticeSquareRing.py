@@ -33,15 +33,15 @@ K K F F F F F F F F F F K K
 
 nXY = len(lattice.strip('\n').split('\n'))
 
-nMesh.latticePlacement(
-    funcElementGenerator=lambda name, x, y: nMesh.createCubeWithHoleAlongZ(
+nMesh.lattice_placement(
+    funcElementGenerator=lambda name, x, y: nMesh.create_cube_with_hole_along_z(
         "squareHole",
         lowX=x-pitch/2, highX=x+pitch/2,
         lowY=y-pitch/2, highY=y+pitch/2,
         lowZ=0, highZ=0.01,
         radius=0.003,
         nx=4, ny=4, nz=2, nt=4,
-        isAddBoundaryConditions=True
+        isAddAllBC=True,
     ),
     lattice=lattice,
     latticeType='square',
@@ -50,7 +50,7 @@ nMesh.latticePlacement(
     ny=nXY,
     elementsToPlace='F'
 )
-nMesh.fillLatticeRingGap(
+nMesh.fill_lattice_ring_gap(
     name='gap',
     # ringRadius=0.039,
     ringRadius=0.065,
@@ -63,15 +63,16 @@ nMesh.fillLatticeRingGap(
     nzBlock=2,
     zmin=0,
     zmax=0.01,
-    isAddBoundaryConditions=True
+    isAddAllBC=True
 )
 
-nMesh.addMergePatchPairs()
-# # nMesh.mergePatchesWithName(name='outerClad', includeFacename=['OuterWall'])
-nMesh.mergePatchesWithName(name='top', includeFacename=['Top'])
-nMesh.mergePatchesWithName(name='bottom', includeFacename=['Bottom'])
-nMesh.mergePatchesWithName(name='channelWall', includeFacename=['squareHoleWall'])
-nMesh.mergePatchesWithName(name='ringWall', includeFacename=['gapWall'])
+# nMesh.add_merge_patch_pairs()
+nMesh.merge_patches_with_name(name='top', includeFacename=['Top'])
+nMesh.merge_patches_with_name(name='bottom', includeFacename=['Bottom'])
+nMesh.merge_patches_with_name(name='channelWall', includeFacename=['squareHoleWallHole'])
+nMesh.merge_patches_with_name(name='ringWall', includeFacename=['gapWallOuter'])
+
+nMesh.isMergeCoincidentPoints = True
 
 solver = ffn.NeutronicsSolver(region=nMesh.region, mesh=nMesh, solver='diffusionNeutronics')
 
