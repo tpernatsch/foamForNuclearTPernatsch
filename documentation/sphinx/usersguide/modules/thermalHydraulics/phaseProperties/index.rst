@@ -28,24 +28,13 @@ Run-time selectable models
    multipliersDrag
    contactPartiotionModels
    dispersionModels
-   fluidDimaterModels
+   fluidDiameterModels
    FFHeatTransferCoefficientModels
+   FSHeatTransferCoefficientModels
    interfacialAreaModels
    regimeMapModels
    virtualMassCoefficientModels
    phaseChangeModels
-
-
-.. contactPartiotionModels
-   dispersionModels
-   fluidDimaterModels
-   FFHeatTransferCoefficientModels
-   FSHeatTransferCoefficientModels
-   interfacialAreaModels
-   phaseChangeModels ()
-   regimeMapModels
-   virtualMassCoefficientModels
-
 
 
 

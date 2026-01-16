@@ -893,8 +893,8 @@ def main():
 
     # Step 3: Append indexes in dynamic files
     append_toctree_for_folder_recursive(
-        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/structureModels.rst",
-        folder="documentation/sphinx/cppapi/generated/porousMediaModels/phaseModels/powerModels/",
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/powerModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/phaseModels/structureModels/powerModels/",
         maxdepth=1
     )
     append_toctree_for_folder_recursive(
@@ -923,18 +923,18 @@ def main():
         maxdepth=1
     )
     append_toctree_for_folder_recursive(
-        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/fluidDimaterModels.rst",
-        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/fluidDimaterModels",
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/fluidDiameterModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/fluidDiameterModels",
         maxdepth=1
     )
     append_toctree_for_folder_recursive(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/FFHeatTransferCoefficientModels.rst",
-        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/FFHeatTransferCoefficientModels",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FFHeatTransferCoefficientModels",
         maxdepth=1
     )
     append_toctree_for_folder_recursive(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/FSHeatTransferCoefficientModels.rst",
-        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/FSHeatTransferCoefficientModels",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels",
         maxdepth=1
     )
     append_toctree_for_folder_recursive(
@@ -949,7 +949,8 @@ def main():
     )
     append_toctree_for_folder_recursive(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/virtualMassCoefficientModels.rst",
-        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/virtualMassCoefficientModels",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/virtual
+        MassModels/virtualMassCoefficientModels",
         maxdepth=1
     )
     append_toctree_for_folder_recursive(
