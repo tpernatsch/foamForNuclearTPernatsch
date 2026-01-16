@@ -1014,6 +1014,11 @@ def main():
         maxdepth=1
     )
     append_toctree_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/powerOffCriterionModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/phaseModels/structureModels/powerOffCriterionModels/",
+        maxdepth=1
+    )
+    append_toctree_for_folder_direct_subfolders(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/thermalHydraulicsSolvers.rst",
         folder="documentation/sphinx/cppapi/generated/modules/thermalHydraulics/",
         maxdepth=1

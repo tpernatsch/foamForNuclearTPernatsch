@@ -23,18 +23,20 @@ Run-time selectable models
    :maxdepth: 2
 
    powerModels
+   regimeMapModels
+   FFHeatTransferCoefficientModels
+   FSHeatTransferCoefficientModels
    FFdrag
    FSdrag
    multipliersDrag
+   phaseChangeModels
    contactPartiotionModels
    dispersionModels
    fluidDiameterModels
-   FFHeatTransferCoefficientModels
-   FSHeatTransferCoefficientModels
    interfacialAreaModels
-   regimeMapModels
    virtualMassCoefficientModels
-   phaseChangeModels
+   latentHeatModels
+   saturationModels
 
 
 
@@ -43,12 +45,23 @@ Other models
 
 Pump
 ^^^^
+.. toctree::
+   :maxdepth: 1
+   ../../../../cppapi/generated/porousMediaModels/phaseModels/structureModels/pump/pump.rst 
+
 
 Heat exchanger
+.. toctree::
+   :maxdepth: 1
 ^^^^^^^^^^^^^^
+   ../../../../cppapi/generated/porousMediaModels/phaseModels/structureModels/heatExchanger/heatExchanger.rst 
 
 Power-off criterion
+.. toctree::
+   :maxdepth: 1
 ^^^^^^^^^^^^^^^^^^^^
+   powerOffCriterionModels 
+
 
 .. The simplest structures in GeN-Foam are the passive structures. These passive
 .. structures are simply modeled as a heat capacity and they can be used for
