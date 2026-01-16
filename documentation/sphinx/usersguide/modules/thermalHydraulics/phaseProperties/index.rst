@@ -38,7 +38,7 @@ Run-time selectable models
    FSdrag
    multipliersDrag
    phaseChangeModels
-   contactPartiotionModels
+   contactPartitionModels
    dispersionModels
    fluidDiameterModels
    interfacialAreaModels
