@@ -116,15 +116,15 @@ EXE_INC = \
     -I./physicsModels/dispersionModels/constant \
     -I./physicsModels/phaseChangeModels \
     -I./physicsModels/phaseChangeModels/heatDriven \
-    -I./physicsModels/phaseChangeModels/latentHeatModels \
-    -I./physicsModels/phaseChangeModels/latentHeatModels/FinkLeibotwitz \
-    -I./physicsModels/phaseChangeModels/latentHeatModels/fromThermophysicalProperties \
-    -I./physicsModels/phaseChangeModels/latentHeatModels/water \
-    -I./physicsModels/phaseChangeModels/saturationModels \
-    -I./physicsModels/phaseChangeModels/saturationModels/BrowningPotter \
-    -I./physicsModels/phaseChangeModels/saturationModels/constantTemperature \
-    -I./physicsModels/phaseChangeModels/saturationModels/water \
-    -I./physicsModels/phaseChangeModels/saturationModels/waterTRACE \
+    -I./physicsModels/latentHeatModels \
+    -I./physicsModels/latentHeatModels/FinkLeibotwitz \
+    -I./physicsModels/latentHeatModels/fromThermophysicalProperties \
+    -I./physicsModels/latentHeatModels/water \
+    -I./physicsModels/saturationModels \
+    -I./physicsModels/saturationModels/BrowningPotter \
+    -I./physicsModels/saturationModels/constantTemperature \
+    -I./physicsModels/saturationModels/water \
+    -I./physicsModels/saturationModels/waterTRACE \
     -I./physicsModels/templatedModels/constant \
     -I./physicsModels/templatedModels/byRegime \
     -I./physicsModels/templatedModels/BasePairModels \

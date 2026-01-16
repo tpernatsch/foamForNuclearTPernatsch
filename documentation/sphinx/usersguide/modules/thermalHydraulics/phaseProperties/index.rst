@@ -26,6 +26,15 @@ Run-time selectable models
    FFdrag
    FSdrag
    multipliersDrag
+   contactPartiotionModels
+   dispersionModels
+   fluidDimaterModels
+   FFHeatTransferCoefficientModels
+   interfacialAreaModels
+   regimeMapModels
+   virtualMassCoefficientModels
+   phaseChangeModels
+
 
 .. contactPartiotionModels
    dispersionModels

@@ -903,6 +903,71 @@ def main():
         maxdepth=1
     )
     append_toctree_for_folder_recursive(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/FSdrag.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dragModels/FSDragCoefficientModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_recursive(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/multipliersDrag.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dragModels/twoPhaseDragMultiplierModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_recursive(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/contactPartitionModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/contactPartitionModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_recursive(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/dispersionModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dispersionModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_recursive(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/fluidDimaterModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/fluidDimaterModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_recursive(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/FFHeatTransferCoefficientModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/FFHeatTransferCoefficientModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_recursive(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/FSHeatTransferCoefficientModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/FSHeatTransferCoefficientModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_recursive(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/interfacialAreaModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/interfacialAreaModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_recursive(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/regimeMapModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/regimeMapModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_recursive(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/virtualMassCoefficientModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/virtualMassCoefficientModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_recursive(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/phaseChangeModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/phaseChangeModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_recursive(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/latentHeatModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/latentHeatModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_recursive(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/saturationModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/saturationModels",
+        maxdepth=1
+    )
+    append_toctree_for_folder_recursive(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/thermalHydraulicsSolvers.rst",
         folder="documentation/sphinx/cppapi/generated/modules/thermalHydraulics/",
         maxdepth=1
