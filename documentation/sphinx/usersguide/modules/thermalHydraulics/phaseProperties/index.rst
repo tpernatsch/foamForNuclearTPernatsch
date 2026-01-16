@@ -4,7 +4,7 @@
 The *phaseProperties* dictionary
 --------------------------------
 
-The *phaseProperties* dictionary is a specialized dictionary that must be used in solvers that feature one- or two-phase porous-medium capabilities: :ref:`onePhase <onePhase>`, :ref:`onePhaseLegacy <onePhaseLegacy>`, :ref:`twoPhase <twoPhase>`. As a reminder, porous-medium solvers can be seen as a 3-D generalization of system codes, where the fluid-structure interaction must be modeled through dedicated correlations for pressure drops and heat transfer, and where the behavior of the non-resolved structures require sub-scale models such as a 1-D model for nuclear fuel pins. In foamForNuclear, the basic assumption is that porous-medium correlations involve three "phases": two fluids (e.g., water and vapour) and one solid structure (e.g., the nuclear fuel). In one-phase simulations, only one fluid and one structure are modeled. When there is no structure, the model reverts back to standard free-flow CFD modeling. 
+The *phaseProperties* dictionary is a specialized dictionary that must be used in solvers that feature one- or two-phase porous-medium capabilities: :ref:`onePhase <onePhase>`, :ref:`onePhaseLegacy <onePhaseLegacy>`, :ref:`twoPhase <twoPhase>`. As a reminder, porous-medium solvers can be seen as a 3-D generalization of system codes, where the fluid-structure interaction must be modeled through dedicated correlations for pressure drops and heat transfer, and where the behavior of the non-resolved structures require sub-scale models such as a 1-D model for nuclear fuel pins. In foamForNuclear, the basic assumption is that porous-medium simulations involve up to three "phases": two fluids (e.g., water and vapour) and one solid structure (e.g., the nuclear fuel). In one-phase simulations, only one fluid and one structure are modeled. In cell zones where there is no structure, the model reverts back to standard OpenFOAM free-flow CFD modeling, neabling hybrid simulations where certain components (e.g., a core) are modeled based on a porous-medium approximation, and others (e.g., the plena) are modeled using standard CFD.
 
 The *phaseProperties* dictionary is a complex dictionary that handles:
    - Properties of a homegenized structure in a porous-medium approximation (volume fraction, hydraulic diameter, thermal properties), including the possibility of power models, i.e., models that can be used to simulate the thermal behavior of power-producing structures such as nuclear fuel pins, electrically heated rods, pebbles, or more generic structtures that can be modeled through equivalent electric circuits.
@@ -47,11 +47,8 @@ Run-time selectable models
    saturationModels
 
 
-Other models
-~~~~~~~~~~~~
-
 Pump
-^^^^
+~~~~
 .. toctree::
    :maxdepth: 1
 
@@ -59,7 +56,7 @@ Pump
 
 
 Heat exchanger
-^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~
 .. toctree::
    :maxdepth: 1
 
