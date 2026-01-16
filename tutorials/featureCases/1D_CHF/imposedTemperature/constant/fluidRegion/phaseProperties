@@ -187,13 +187,6 @@ physicsModels
         {
             "heated"
             {
-                /*
-		type    NusseltReynoldsPrandtlPower;
-                	const   0.0;
-                	coeff   0.023;//0.023;
-                	expRe   0.8;
-                	expPr   0.4;
-                */
                 type    multiRegimeBoilingTRACECHF;
                 forcedConvectionModel
                 {
@@ -259,12 +252,6 @@ physicsModels
             {
                 type    constant;
                 value   1e3;
-                //type    NusseltReynoldsPrandtlPower;
-                //const   2.0;
-                //coeff   0.6;
-                //expRe   0.5;
-                //expPr   0.33;
-
             }
         }
         "vapour.structure"
@@ -322,14 +309,5 @@ physicsModels
         }
     }
 }
-
-// ------------------------------------------------------------------------- //
-// --- MISCELLANEA --------------------------------------------------------- //
-// ------------------------------------------------------------------------- //
-
-pMin                    10000;
-pRefCell                0;
-pRefValue               100000;
-residualKd              1;
 
 // ************************************************************************* //

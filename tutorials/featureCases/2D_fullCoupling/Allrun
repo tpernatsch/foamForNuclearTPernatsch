@@ -37,7 +37,7 @@ setSteadyState()
     foamDictionary $2/system/controlDict -entry deltaT -set 1
     foamDictionary $2/system/controlDict -entry writeControl -set adjustableRunTime
     foamDictionary $2/system/controlDict -entry writeInterval -set 100
-    cp $2/constant/regionsDict_steadyState $2/constant/regionsDict
+    cp dictionaries/steadyState/regionsDict $2/system/regionsDict
     GeN-Foam -initializeMappedFields -case $2
 }
 
@@ -53,7 +53,7 @@ setTransientNoDriveline()
     foamDictionary $2/system/controlDict -entry writeControl -set timeStep
     foamDictionary $2/system/controlDict -entry writeInterval -set 10
     foamDictionary $2/constant/neutroRegion/nuclearData -entry absoluteDrivelineExpansionCoeff -set 0.0
-    cp $2/constant/regionsDict_transient $2/constant/regionsDict
+    cp dictionaries/transient/regionsDict $2/system/regionsDict
     GeN-Foam -initializeMappedFields -case $2
 }
 

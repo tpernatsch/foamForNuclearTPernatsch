@@ -279,7 +279,7 @@ void Foam::solvers::neutronics::correctBaffleLessFields()
                 IOobject
                 (
                     "regionsDict",
-                    runTime.time().constant(),
+                    runTime.time().system(),
                     runTime.db(),
                     IOobject::MUST_READ,
                     IOobject::NO_WRITE
@@ -356,7 +356,7 @@ void Foam::solvers::neutronics::deformMesh()
         IOobject
         (
             "regionsDict",
-            runTime.time().constant(),
+            runTime.time().system(),
             runTime.db(),
             IOobject::READ_IF_PRESENT,
             IOobject::NO_WRITE

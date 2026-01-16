@@ -64,6 +64,10 @@ PIMPLE
     solveEnergy     true;
     solveFluidMechanics true;
     nOuterCorrectors 6;
+    pMin                    10000;
+    pRefCell                0;
+    pRefValue               100000;
+
 }
 
 relaxationFactors

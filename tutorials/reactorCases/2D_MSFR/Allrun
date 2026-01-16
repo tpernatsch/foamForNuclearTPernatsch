@@ -63,10 +63,8 @@ setSteadyStateTH()
     foamDictionary $1/system/controlDict -entry deltaT -set 1e-03
     foamDictionary $1/system/controlDict -entry adjustTimeStep -set true
     foamDictionary $1/system/controlDict -entry writeInterval -set 1
-    foamDictionary $1/system/controlDict -entry regionSolvers/fluidRegion -set onePhase
     foamDictionary $1/system/controlDict -entry removeBaffles/fluidRegion -set false
-    cp $1/constant/regionsDict_steadyStateTH $1/constant/regionsDict
-    rm $1/constant/regionsDict_*
+    cp dictionaries/steadyState/regionsDict_steadyStateTH $1/system/regionsDict
     printf "Case set!\n\n"
 }
 
@@ -87,8 +85,7 @@ setSteadyStateEN()
     foamDictionary $1/system/controlDict -entry removeBaffles/neutroRegion -set false
     foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE/solveFluidMechanics -set false
     foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE/solveEnergy -set true
-    cp $1/constant/regionsDict_steadyStateEN $1/constant/regionsDict
-    rm $1/constant/regionsDict_*
+    cp dictionaries/steadyState/regionsDict_steadyStateEN $1/system/regionsDict
     printf "Case set!\n\n"
 }
 
@@ -106,10 +103,9 @@ setTransient()
     foamDictionary $1/system/controlDict -entry writeInterval -set 10
     foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE/solveFluidMechanics -set false
     foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE/solveEnergy -set true
-    cp $1/constant/regionsDict_transient $1/constant/regionsDict
+    cp dictionaries/transient/regionsDict $1/system/regionsDict
     foamDictionary $1/system/controlDict -entry removeBaffles/fluidRegion -set false
     foamDictionary $1/system/controlDict -entry removeBaffles/neutroRegion -set false
-    rm $1/constant/regionsDict_*
     printf "Case set!\n\n"
 }
 

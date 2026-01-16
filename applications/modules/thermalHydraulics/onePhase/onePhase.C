@@ -94,7 +94,8 @@ Foam::solvers::onePhase::onePhase
                     // onePhase, it is tied to the structure phaseFraction
     ),
     FSPair_(fluid_, structure_, *this),
-    residual_(0)
+    residual_(0),
+    energyResidual_(0)
 {
 
     // Create turbulence model
@@ -146,6 +147,7 @@ Foam::solvers::onePhase::onePhase
 void Foam::solvers::onePhase::correctPhysics()
 {
     residual_ = 0;
+    energyResidual_ = 0;
 
     bool solveEnergy(mesh_.solutionDict().subDict("PIMPLE").get<bool>("solveEnergy"));
     bool solveFluidMechanics(mesh_.solutionDict().subDict("PIMPLE").get<bool>("solveFluidMechanics"));
@@ -171,6 +173,7 @@ void Foam::solvers::onePhase::correctPhysics()
 
 void Foam::solvers::onePhase::correctTightlyCoupledPhysics()
 {
+    energyResidual_ = 0;
     Info<< nl;
     bool solveEnergy(mesh_.solutionDict().subDict("PIMPLE").get<bool>("solveEnergy"));
     correctModels(true,true);

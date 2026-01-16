@@ -3,41 +3,32 @@
 # --- Run from this directory
 cd ${0%/*} || exit 1
 
-# --- Initialize the output file
+# --- Initialize output file
 resFile=test.out
-rm -rf $resFile
+rm -f $resFile
 touch $resFile
 
-# --- Run the simulation
-echo -e "Run tutorial 2D_flowOverHeatedPlate ...\n" | tee -a $resFile
-./Allrun >> log.simulation
-echo -e "Done running tutorial 2D_flowOverHeatedPlate ...\n" | tee -a $resFile
+# ==========================
+# Helper functions
+# ==========================
 
-# --- Check it ran
-endString=$(tail -3 ./log.GeN-Foam | grep End)
-if [ "$endString" = "End" ]; then
-    echo -e "2D_flowOverHeatedPlate has converged \n" | tee -a $resFile
-else
-    echo -e "2D_flowOverHeatedPlate has NOT converged \n" | tee -a $resFile
-    exit 1
-fi
-
-# --- Recover T avg, min, max from log
-extract_T()
+checkConvergence()
 {
-    line=$(
-        grep -e "T (avg min max)" ./$1/log.GeN-Foam |
-        tail -1
-    )
-    echo $line
+    caseDir=$1
+    endString=$(tail -3 ./$caseDir/log.GeN-Foam | grep End)
+    if [ "$endString" = "End" ]; then
+        echo 0
+    else
+        echo 1
+    fi
 }
 
-Tline=$(extract_T)
+extract_Tmax()
+{
+    caseDir=$1
+    grep -e "T (avg min max)" ./$caseDir/log.GeN-Foam | tail -1 | awk '{print $8}'
+}
 
-Tmax=$(echo "$Tline" | awk '{print $8}')
-expectedTMax=309.143
-
-# --- Check results are correct
 isInRange()
 {
     ref=$1
@@ -45,32 +36,74 @@ isInRange()
     error=$3
     valueMin=$(bc -l <<<"$value*(1-$error)")
     valueMax=$(bc -l <<<"$value*(1+$error)")
+
     if (( $(echo "$valueMin <= $ref && $ref <= $valueMax" | bc -l) )); then
-        echo 0
-    elif (( $(echo "$valueMax <= $ref && $ref <= $valueMin" | bc -l) )); then
         echo 0
     else
         echo 1
     fi
 }
 
+# ==========================
+# Run simulations
+# ==========================
+
+echo "Running tutorials..." | tee -a $resFile
+./Allrun >> log.simulation
+echo "Done running tutorials." | tee -a $resFile
+
+# ==========================
+# Case definitions
+# ==========================
+
+cases=("CHTLoop" "boundaryCoupling")
+
+expectedTMax_CHTLoop=309.287
+expectedTMax_boundaryCoupling=309.287   
+
 error=0.001
 
-if  [ $(isInRange $Tmax $expectedTMax $error) -eq 0 ]
-then
-    echo "Perfect match:" | tee -a $resFile
-    echo "|           | Simulated | Expected |" | tee -a $resFile
-    echo "|:----------|:---------:|:--------:|" | tee -a $resFile
-    echo "| TMax      |  $Tmax  |  $expectedTMax |" | tee -a $resFile
-else
-    echo "Divergent results:" | tee -a $resFile
-    echo "|           | Simulated | Expected |" | tee -a $resFile
-    echo "|:----------|:---------:|:--------:|" | tee -a $resFile
-    echo "| Tfmax avg |  $Tmax  |  $expectedTMax |" | tee -a $resFile
+# ==========================
+# Table header
+# ==========================
+
+echo "" | tee -a $resFile
+echo "Results comparison:" | tee -a $resFile
+echo "| Case              | Tmax (sim) | Tmax (exp) | Converged | Status |" | tee -a $resFile
+echo "|:------------------|:----------:|:----------:|:---------:|:------:|" | tee -a $resFile
+
+overallStatus=0
+
+# ==========================
+# Loop over cases
+# ==========================
+
+for case in "${cases[@]}"; do
+
+    if [ $(checkConvergence $case) -eq 0 ]; then
+        converged="YES"
+    else
+        converged="NO"
+        overallStatus=1
     fi
 
+    Tmax=$(extract_Tmax $case)
+    expectedVar="expectedTMax_${case}"
+    expectedTMax=${!expectedVar}
 
-# --- Exit successfully
-exit 0
-# ----------------------------------------------------------------- end-of-file
+    if [ $(isInRange $Tmax $expectedTMax $error) -eq 0 ]; then
+        status="OK"
+    else
+        status="FAIL"
+        overallStatus=1
+    fi
 
+    printf "| %-17s | %10.6f | %10.6f | %9s | %6s |\n" \
+        "$case" "$Tmax" "$expectedTMax" "$converged" "$status" | tee -a $resFile
+done
+
+# ==========================
+# Exit
+# ==========================
+
+exit $overallStatus

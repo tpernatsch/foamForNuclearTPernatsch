@@ -1,0 +1,64 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      multiRegionCouplingDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+
+regionSolvers
+{
+	Level_0
+	{
+		Level_1 FSILoop;
+	}
+	
+
+	Level_1
+	{
+		subSolvers
+		{
+			fluid rhoPimpleFoam;
+			solid extendedThermoMechanics;
+		}
+		
+				
+		maxIterations 100;
+		maxResidual 1e-5;
+		
+		FSILoopCoeffs
+		{
+			FSIInterface true;
+			fluidRegionName fluid;
+			solidRegionName solid;
+			solidSidePatchName plate;
+			fluidSidePatchName plate;
+			underRelaxationFactor 0.05;
+			couplingStartTime 2;
+		}
+
+	}
+}
+		
+mappings
+{
+    fluid
+    {
+    }
+    solid
+    {
+    }
+}
+
+// ************************************************************************* //

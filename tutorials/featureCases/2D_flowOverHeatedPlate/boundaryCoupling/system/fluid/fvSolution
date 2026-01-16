@@ -1,0 +1,85 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    "p_rgh|p_rghFinal"
+    {
+        solver          GAMG;
+        smoother        GaussSeidel;
+        tolerance       1e-8;
+        relTol          1e-3;
+    }
+
+    "U|UFinal"
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-08;
+        relTol          1e-3;
+        minIter         1;
+    }
+
+    "h|hFinal"
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-12;
+        relTol          1e-3;
+        minIter         1;
+    }
+}
+
+PIMPLE
+{
+    nOuterCorrectors 1;
+    nCorrectors 3;
+    nNonOrthogonalCorrectors 1;
+
+    residualControl
+    {
+        p_rgh
+        {
+            relTol 1e-6;
+            tolerance 1e-6;
+        }
+    }
+
+    solveEnergy true;
+    solveFluidMechanics true;
+    momentumMode faceCentered;
+
+    pMin -1e6;
+    pRefCell 0;
+    pRefValue 0;
+}
+
+
+relaxationFactors
+{
+    equations
+    {
+        "U|UFinal" 0.7;
+    }
+    fields
+    {
+        "p_rgh|p_rghFinal" 0.3;
+    }
+}
+
+// ************************************************************************* //

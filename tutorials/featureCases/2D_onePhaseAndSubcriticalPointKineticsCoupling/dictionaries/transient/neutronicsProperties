@@ -1,0 +1,90 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      neutronicsProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+eigenvalueNeutronics        true;
+externalSourceNeutronics    false;
+
+
+fastNeutrons              true;
+//- Parameters relevant only for Diffusion Neutronics
+precGroups                1; // 6; // from FWD_ANA_BETA_ZERO
+
+
+nuclearData
+{
+
+    promptGenerationTime      0.0015; // 3.73425E-07; // [s], from ADJ_IFP_GEN_TIME
+
+    nuFission                 2.45; // [neutron/fission], arbitrary
+
+    energyPerFission          32e-12; // [J], 200 MeV
+
+    Beta ( // from ADJ_IFP_IMP_BETA_EFF
+        // 1.733850e-04
+        // 1.065800e-03
+        // 1.049100e-03
+        // 3.256490e-03
+        // 1.258760e-03
+        // 3.447030e-04
+        0.000075
+    );
+
+    lambda ( // from FWD_ANA_LAMBDA
+        // 8.899790e-03
+        // 3.148540e-02
+        // 1.108340e-01
+        // 3.239250e-01
+        // 1.337710e+00
+        // 8.365870e+00
+        1e-5
+    );
+
+    feedbackCoeffDoppler      0;
+
+    feedbackCoeffTFuel        0; // [1/K], -3e-06
+
+    feedbackCoeffTClad        0; // [1/K]
+
+    feedbackCoeffTCool        0; // [1/K]
+
+    feedbackCoeffRhoCool      0; // [1/K]
+
+    feedbackCoeffTStruct      0; // [1/K]
+
+    feedbackCoeffTStructMech  0;
+
+    absoluteDrivelineExpansionCoeff 0;
+
+    //- Represents the reactivity instertion ramp in this case
+    externalReactivityTimeProfile
+    {
+        type        table;
+
+        startTime   1500000;
+
+        table       table
+        (
+            (   0       0                       )
+            (   0.01    1020.408163265307e-5    )
+        );
+    }
+
+}
+
+
+
+// ************************************************************************* //

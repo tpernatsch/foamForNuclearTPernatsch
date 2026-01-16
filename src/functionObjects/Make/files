@@ -6,4 +6,4 @@ stopIfMaxFieldDiff/stopIfMaxFieldDiff.C
 patchScalarFieldValue/patchScalarFieldValue.C
 
 
-LIB = $(FOAM_USER_LIBBIN)/libFunctionObjects
+LIB = $(FOAM_USER_LIBBIN)/libFFNFunctionObjects

@@ -19,7 +19,7 @@ FoamFile
 keff            0.995254;
 
 //- Total model power, i.e. 200MW / (360/wedgeAngle) = 2e8W / 180
-pTarget         1.111111e6; //1106667;
+power         1.111111e6; //1106667;
 
 //- Evolution of decay power in time
 decayPowerTimeProfile

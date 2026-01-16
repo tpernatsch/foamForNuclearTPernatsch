@@ -24,9 +24,6 @@ thermoType
     transport       polynomial;
     thermo          hPolynomial;
     equationOfState icoPolynomial;
-    //transport       const;
-    //thermo          hConst;
-    //equationOfState perfectGas;
     specie          specie;
     energy          sensibleEnthalpy;
 }
@@ -57,24 +54,6 @@ mixture
         muCoeffs<8>         (1.8e-5 0 0 0 0 0 0 0);
         kappaCoeffs<8>      (5 0 0 0 0 0 0 0);
     }
-    
-    /*
-    specie
-    {
-        molWeight           28.9;
-    }
-    thermodynamics
-    {
-        Cp                  904.141;
-        Hf                  4217528;
-        Sf                  0;
-    }
-    transport
-    {
-        mu                  1.8e-5;
-        Pr                  0.001;
-    }
-    */
 }
 
 // ************************************************************************* //

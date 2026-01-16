@@ -51,7 +51,7 @@ snGradSchemes
 
 interpolationSchemes
 {
-    default            none;
+    default            linear;
     interpolate(impK)  linear;
     interpolate(grad(D)) linear;
     interpolate(grad(DD)) linear;    

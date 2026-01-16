@@ -142,7 +142,9 @@ void Foam::solvers::picardLoop::correctPhysics()
     const Time& runTime(meshHandler_->returnMesh(singlePhysicsSolverNames_[0]).time());
 
     do
-    {
+    {    
+
+        residual = 0;
         meshHandler_->mapTheseFields(runTime, singlePhysicsSolverNames_ );
         forAll(solvers_, solvI)
         {

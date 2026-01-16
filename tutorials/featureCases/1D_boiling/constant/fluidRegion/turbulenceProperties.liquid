@@ -15,9 +15,13 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-simulationType  laminar;//RAS;
+simulationType  laminar;
 
-RAS
+// If simulationType is set to "RAS", the RAS subDictionary
+// is read to assign turbulence modeling properties.
+// kEpsilon, porousMediaKEpsilon, LaheyKEpsilon are available
+
+RAS // k-kEpsilon example
 {
     RASModel        kEpsilon;
 

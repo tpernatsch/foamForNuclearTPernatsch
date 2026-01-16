@@ -26,30 +26,20 @@ mechanicsSolver         fromLatestTime;
 //- Same as OFFBEAT 
 
 materialProperties      byZone;
-rheology                byMaterial;
-
 heatSource              fromLatestTime;
-sliceMapper             autoAxialSlices;
 
 globalOptions
 {
     pinDirection            (0 0 1);
     reactorType             "LWR";
-    angularFraction 1;
     linkedFuel false;
 }
 
-thermalSolverOptions
-{
-    heatFluxSummary     on;
-    averageFieldsForMappings true;
-    patchForAverage "fuelOuter";
-}
 
 couplingOptions
 {
-    correctTFromTH off;
-    correctDispForNeutro off;
+    correctTFromTH          off;
+    correctDispForNeutro    off;
 }
 
 

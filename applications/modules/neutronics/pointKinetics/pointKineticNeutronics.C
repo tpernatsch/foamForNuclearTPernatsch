@@ -272,7 +272,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
     precPKStar_(delayedGroups_),
     fastNeutrons_
     (
-        nuclearData_.get<bool>("fastNeutrons")
+        this->get<bool>("fastNeutrons")
     ),
     coeffDoppler_
     (
@@ -1065,7 +1065,7 @@ Foam::solvers::pointKineticNeutronics::calcGEMLevelAndReactivity()
 
         if(phiOrig_ == nullptr)
         {
-            word regionName(this->get<word>("fluidRegionName"));
+            word regionName(this->getOrDefault<word>("fluidRegionName", "fluidRegion"));
 
             //For now hard-coding the fluid mesh to be named fluidRegion
             const fvMesh& THMesh(mesh_.time().lookupObjectRef<fvMesh>(regionName));

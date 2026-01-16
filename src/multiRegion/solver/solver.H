@@ -207,6 +207,10 @@ public:
         virtual void correctTightlyCoupledPhysics() = 0;
 
         virtual scalar getResidual()=0;
+        virtual scalar getThermalResidual()
+        {
+            return (getResidual());
+        }
 
         //-BaffleLess mesh handling
         virtual void correctBaffleLessFields()=0;

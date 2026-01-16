@@ -16,7 +16,7 @@ FoamFile
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 keff        1;
-spTarget         ${{0.7*1.0e9/12}}; // 1000 MW, 1/12 slice times 0.7 to prevent overheating
-//pTarget         ${{0.6*1.0e9/12}}; // 1000 MW, 1/12 slice times 0.7 to prevent overheating
+spower         ${{0.7*1.0e9/12}}; // 1000 MW, 1/12 slice times 0.7 to prevent overheating
+//power         ${{0.6*1.0e9/12}}; // 1000 MW, 1/12 slice times 0.7 to prevent overheating
 
 // ************************************************************************* //

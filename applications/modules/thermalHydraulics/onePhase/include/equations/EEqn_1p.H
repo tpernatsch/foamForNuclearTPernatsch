@@ -91,7 +91,9 @@
     // residual=max(residual, initRes);
     
     fvOptions_.constrain(EEqn);
-    residual_  = max(residual_, EEqn.solve().max().initialResidual());
+    scalar EEqnRes  = EEqn.solve().max().initialResidual();
+    energyResidual_ = max(energyResidual_, EEqnRes);
+    residual_ = max(residual_, EEqnRes);
     fvOptions_.correct(he);
     he.relax();
     fluid_.thermo().correct();

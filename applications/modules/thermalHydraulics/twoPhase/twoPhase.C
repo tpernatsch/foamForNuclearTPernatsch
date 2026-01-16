@@ -228,6 +228,7 @@ Foam::solvers::twoPhase::twoPhase
         dimensionedScalar("", dimDensity, 0.0)
     ),
     residual_(0),
+    energyResidual_(0),
     bothPhasesArePresent_(false),
     withinMarginToPhaseChange_(false),
     alphaEqnsSolver_
@@ -304,7 +305,7 @@ Foam::solvers::twoPhase::twoPhase
     (
         p_,
         p_rgh_,
-        *this,
+        pimple_.dict(),
         pRefCell_,
         pRefValue_,
         forcePRef_
@@ -437,6 +438,7 @@ void Foam::solvers::twoPhase::correctPhysics()
 {
 
     residual_=0;
+    energyResidual_=0;
 
     bool solveEnergy(mesh_.solutionDict().subDict("PIMPLE").get<bool>("solveEnergy"));
     bool solveFluidMechanics(mesh_.solutionDict().subDict("PIMPLE").get<bool>("solveFluidMechanics"));
@@ -457,6 +459,7 @@ void Foam::solvers::twoPhase::correctPhysics()
 
 void Foam::solvers::twoPhase::correctTightlyCoupledPhysics()
 {
+    energyResidual_=0;
     bool solveEnergy(mesh_.solutionDict().subDict("PIMPLE").get<bool>("solveEnergy"));
     correctModels(true,true);
 

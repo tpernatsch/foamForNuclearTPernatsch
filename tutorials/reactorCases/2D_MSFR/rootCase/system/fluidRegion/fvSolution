@@ -68,6 +68,9 @@ PIMPLE
     correctUntilConvergence     true;
     partialEliminationMode      implicit;
     momentumMode                cellCentered;
+    pMin                    10000;
+    pRefCell                0;
+    pRefValue               100000;
 }
 
 relaxationFactors

@@ -318,7 +318,7 @@ void Foam::solvers::thermoMechanics::correctBaffleLessFields()
                 IOobject
                 (
                     "regionsDict",
-                    runTime.time().constant(),
+                    runTime.time().system(),
                     runTime.db(),
                     IOobject::MUST_READ,
                     IOobject::NO_WRITE
@@ -383,7 +383,7 @@ void Foam::solvers::thermoMechanics::deformMesh()
         IOobject
         (
             "regionsDict",
-            runTime.time().constant(),
+            runTime.time().system(),
             runTime.db(),
             IOobject::READ_IF_PRESENT,
             IOobject::NO_WRITE

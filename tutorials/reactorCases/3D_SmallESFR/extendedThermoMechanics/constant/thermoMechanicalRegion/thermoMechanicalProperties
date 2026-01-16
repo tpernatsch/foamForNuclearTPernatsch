@@ -27,7 +27,6 @@ mechanicsSolver         smallStrain;
 
 materialProperties      byZone;
 rheology                byMaterial;
-
 heatSource              fromLatestTime;
 sliceMapper             autoAxialSlices;
 
@@ -35,7 +34,6 @@ globalOptions
 {
     pinDirection            (0 0 1);
     reactorType             "LWR";
-    angularFraction 1;
     linkedFuel false;
 }
 

@@ -88,6 +88,9 @@ PIMPLE
     oscillationLimiterFraction  0;
     massTransferSafetyFactor    0.40;
     enthalpyStabilizationMode   cutoff;
+    pMin                    10000;
+    pRefCell                0;
+    pRefValue               100000;
 
     residualControl
     {

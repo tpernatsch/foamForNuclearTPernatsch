@@ -33,14 +33,6 @@ solvers
         tolerance       1e-06;
         relTol          0;
     }
-    "e.*"
-    {
-        solver          smoothSolver;
-        smoother        symGaussSeidel;
-        tolerance       1e-06;
-        relTol          0;
-        minIter         1;
-    }
     "h.*"
     {
         solver          smoothSolver;
@@ -62,8 +54,12 @@ PIMPLE
 {
     solveEnergy				true;
     solveFluidMechanics     true;
+
     nCorrectors                         6;
     correctUntilConvergence             true;
+    pMin            10000;
+    pRefCell        0;
+    pRefValue       100000;
     nNonOrthogonalCorrectors            0;
     momentumMode                        faceCentered;
     continuityErrorCompensationMode     Su;

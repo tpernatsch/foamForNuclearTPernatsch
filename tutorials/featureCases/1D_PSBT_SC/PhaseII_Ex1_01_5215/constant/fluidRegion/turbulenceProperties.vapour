@@ -15,11 +15,11 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-simulationType  RAS;//laminar;
+simulationType  RAS;
 
 RAS
 {
-    RASModel        porousKEpsilon2PhaseCorrected;//porousKEpsilon;//LaheyKEpsilon;
+    RASModel        porousKEpsilon2PhaseCorrected;
 
     turbulence      on;
 
@@ -29,7 +29,7 @@ RAS
     gasName         "vapour";
 }
 
-porousKEpsilon2PhaseCorrectedProperties//porousKEpsilonProperties
+porousKEpsilon2PhaseCorrectedProperties
 {
     "leftdownregioninletcorner:leftdownregioninletside1:leftdownregioninletside2:leftdownregioninletcenter1:leftdownregioninletcenter2:leftdownregionheatedcorner:leftdownregionheatedside1:leftdownregionheatedside2:leftdownregionheatedcenter1:leftdownregionheatedcenter2:leftdownregionoutletcorner:leftdownregionoutletside1:leftdownregionoutletside2:leftdownregionoutletcenter1:leftdownregionoutletcenter2:rightdownregioninletcorner:rightdownregioninletside:rightdownregioninletcenter1:rightdownregioninletcenter2:rightdownregionheatedcorner:rightdownregionheatedside:rightdownregionheatedcenter1:rightdownregionheatedcenter2:rightdownregionoutletcorner:rightdownregionoutletside:rightdownregionoutletcenter1:rightdownregionoutletcenter2"
     {

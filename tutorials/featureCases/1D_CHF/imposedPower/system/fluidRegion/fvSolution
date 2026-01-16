@@ -33,14 +33,6 @@ solvers
         tolerance       1e-08;
         relTol          0;
     }
-    "e.*"
-    {
-        solver          smoothSolver;
-        smoother        symGaussSeidel;
-        tolerance       1e-08;
-        relTol          0;
-        minIter         0;
-    }
     "h.*"
     {
         solver          smoothSolver;
@@ -49,7 +41,7 @@ solvers
         relTol          0;
         minIter         0;
     }
-    ".*"
+    ".*" // default solver for other variables
     {
         solver          PBiCGStab;
         preconditioner  diagonal;
@@ -61,7 +53,7 @@ solvers
         solver          implicitUpwind;
         solvePhase      vapour;
     }
-    "(k|epsilon|Theta).*"
+    "(k|epsilon).*"
     {
         solver          smoothSolver;
         smoother        symGaussSeidel;
@@ -75,6 +67,9 @@ PIMPLE
 {
     minNOuterCorrectors 3;
     nCorrectors     12;
+    pMin                    10000;
+    pRefCell                0;
+    pRefValue               100000;
     correctUntilConvergence true;
     nNonOrthogonalCorrectors 0;
     partialEliminationMode implicit;
