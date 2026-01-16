@@ -768,6 +768,52 @@ def generate_cppapi_index(
         f.write(cppapi_index)
 
 
+
+from pathlib import Path
+import os
+
+def append_toctree_for_folder_direct_subfolders(target_rst: str, folder: str, maxdepth: int = 1) -> None:
+    """
+    Append a Sphinx toctree block listing .rst files that are exactly one level
+    below `folder` (i.e., direct subfolders only; no nesting).
+    """
+    folder_path = Path(folder).resolve()
+
+    # Collect *.rst files in *direct* subfolders only (depth = 1)
+    rst_files = []
+    for f in folder_path.rglob("*.rst"):
+        try:
+            parts = f.relative_to(folder_path).parts
+        except ValueError:
+            # Shouldn't happen because f is under folder_path, but just in case
+            continue
+        # We want exactly 2 parts: ('subfolder', 'file.rst')
+        if len(parts) == 2 and f.is_file():
+            rst_files.append(f)
+
+    rst_files = sorted(rst_files)
+
+    if not rst_files:
+        print(f"No .rst files found in direct subfolders of {folder_path}")
+        return
+
+    # Build toctree block
+    toctree_block = [
+        "\n.. toctree::",
+        f"   :maxdepth: {maxdepth}",
+        "",
+    ]
+    for f in rst_files:
+        rel_path = os.path.relpath(f, start=Path(target_rst).parent)
+        toctree_block.append(f"   {rel_path}")
+
+    with open(target_rst, "a", encoding="utf-8") as out_file:
+        out_file.write("\n".join(toctree_block) + "\n")
+
+    print(f"Appended toctree (direct subfolders only) with {len(rst_files)} entries to {target_rst}")
+
+
+
 def append_toctree_for_folder_recursive(target_rst: str, folder: str, maxdepth: int = 1) -> None:
     """
     Append a Sphinx toctree block at the end of `target_rst` file,
@@ -892,87 +938,87 @@ def main():
     )
 
     # Step 3: Append indexes in dynamic files
-    append_toctree_for_folder_recursive(
+    append_toctree_for_folder_direct_subfolders(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/powerModels.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/phaseModels/structureModels/powerModels/",
         maxdepth=1
     )
-    append_toctree_for_folder_recursive(
+    append_toctree_for_folder_direct_subfolders(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/FFdrag.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dragModels/FFDragCoefficientModels",
         maxdepth=1
     )
-    append_toctree_for_folder_recursive(
+    append_toctree_for_folder_direct_subfolders(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/FSdrag.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dragModels/FSDragCoefficientModels",
         maxdepth=1
     )
-    append_toctree_for_folder_recursive(
+    append_toctree_for_folder_direct_subfolders(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/multipliersDrag.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dragModels/twoPhaseDragMultiplierModels",
         maxdepth=1
     )
-    append_toctree_for_folder_recursive(
+    append_toctree_for_folder_direct_subfolders(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/contactPartitionModels.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/contactPartitionModels",
         maxdepth=1
     )
-    append_toctree_for_folder_recursive(
+    append_toctree_for_folder_direct_subfolders(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/dispersionModels.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dispersionModels",
         maxdepth=1
     )
-    append_toctree_for_folder_recursive(
+    append_toctree_for_folder_direct_subfolders(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/fluidDiameterModels.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/fluidDiameterModels",
         maxdepth=1
     )
-    append_toctree_for_folder_recursive(
+    append_toctree_for_folder_direct_subfolders(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/FFHeatTransferCoefficientModels.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FFHeatTransferCoefficientModels",
         maxdepth=1
     )
-    append_toctree_for_folder_recursive(
+    append_toctree_for_folder_direct_subfolders(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/FSHeatTransferCoefficientModels.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels",
         maxdepth=1
     )
-    append_toctree_for_folder_recursive(
+    append_toctree_for_folder_direct_subfolders(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/interfacialAreaModels.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/interfacialAreaModels",
         maxdepth=1
     )
-    append_toctree_for_folder_recursive(
+    append_toctree_for_folder_direct_subfolders(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/regimeMapModels.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/regimeMapModels",
         maxdepth=1
     )
-    append_toctree_for_folder_recursive(
+    append_toctree_for_folder_direct_subfolders(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/virtualMassCoefficientModels.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/virtualMassModels/virtualMassCoefficientModels",
         maxdepth=1
     )
-    append_toctree_for_folder_recursive(
+    append_toctree_for_folder_direct_subfolders(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/phaseChangeModels.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/phaseChangeModels",
         maxdepth=1
     )
-    append_toctree_for_folder_recursive(
+    append_toctree_for_folder_direct_subfolders(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/latentHeatModels.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/latentHeatModels",
         maxdepth=1
     )
-    append_toctree_for_folder_recursive(
+    append_toctree_for_folder_direct_subfolders(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/saturationModels.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/saturationModels",
         maxdepth=1
     )
-    append_toctree_for_folder_recursive(
+    append_toctree_for_folder_direct_subfolders(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/thermalHydraulicsSolvers.rst",
         folder="documentation/sphinx/cppapi/generated/modules/thermalHydraulics/",
         maxdepth=1
     )
-    append_toctree_for_folder_recursive(
+    append_toctree_for_folder_direct_subfolders(
         target_rst="documentation/sphinx/usersguide/GeN-Foam/postProcessing.rst",
         folder="documentation/sphinx/cppapi/generated/functionObjects/",
         maxdepth=1
