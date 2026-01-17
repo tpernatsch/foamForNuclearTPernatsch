@@ -20,7 +20,20 @@ temperature at the surface of the cladding. The fluid will then be capable of
 calculating the heat transfer with the fuel based on the cladding surface
 temperature and the Nusselt number. 
 
-An example of *structureProperties* dictionary is reported below. *diagrid*, *axialReflector*, etc. are name of cell zones.
+The  *structureProperties* dictionary consists of a series of sub-dictionaries
+whose properties are applied to the cellZones that have their name
+in the subDict keys. The presence of any of these
+sub-dictionaries is not mandatory, and the structure defaults, globally, to
+having a null volumeFraction and infinite (1e6m) hydraulic diameter.
+For convenience, if multiple cellZones share the
+same exact properties, these names can be grouped by using a colon as
+separator. Two examples of *structureProperties* dictionaries are reported below. *diagrid*, *axialReflector*, etc. are name of cell zones. The main run-time selectable models are:
+
+.. toctree::
+   :maxdepth: 1
+
+   powerModels
+   powerOffCriterionModels
 
 
 .. code :: cpp
@@ -75,15 +88,47 @@ An example of *structureProperties* dictionary is reported below. *diagrid*, *ax
                 rhoCp           4.8e6;
                 T               668;
             }
+
         }
     }
 
 
+.. code :: cpp
 
-.. toctree::
-   :maxdepth: 1
+    structureProperties
+    {
+        "lowIn:topIn"
+        {
+            volumeFraction  0.523128;
+            Dh              0.005469;
+            localTortuosity (0.6366197724 0.6366197724 1.0);
+            localDhAnisotropy     (1 1 1);
+            localX       (1 0 0);
+            localZ       (0 0 1);
 
-   powerModels
-   powerOffCriterionModels
+            powerModel
+            {
+                type            heatedPin;
+                innerRadius     0;
+                outerRadius     0.003;
+                k               20;
+                meshSize        6;
+                T               653.15;
+                Cp              500;
+                rho             7700;
+
+                powerOffCriterionModel
+                {
+                    type            timeThreshold;
+                    time            12.475;
+                }
+            }
+        }
+
+    }
+
+
+
+
 
 
