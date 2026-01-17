@@ -1,7 +1,7 @@
 .. _modules_thermalHydraulics_porousMedium_physicsModels:
 
 The *physicsModels* sub-dictionary
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 
