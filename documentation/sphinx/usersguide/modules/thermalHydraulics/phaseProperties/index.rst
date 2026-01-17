@@ -23,56 +23,15 @@ flow-regime map can be found in
 `1D_PSBT_SC <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/1D_PSBT_SC/Phase_Ex1_12223/constant/fluidRegion/phaseProperties>`_.
 
 
-Run-time selectable models
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 .. toctree::
-   :maxdepth: 1
-
-   powerModels
-   powerOffCriterionModels
-   regimeMapModels
-   FFHeatTransferCoefficientModels
-   FSHeatTransferCoefficientModels
-   FFdrag
-   FSdrag
-   multipliersDrag
-   phaseChangeModels
-   contactPartitionModels
-   dispersionModels
-   fluidDiameterModels
-   interfacialAreaModels
-   virtualMassCoefficientModels
-   latentHeatModels
-   saturationModels
-
-
-
-.. raw:: html
-
-   <div style="margin-top: 2em;"></div>
-
-
-Pump
-~~~~
-.. toctree::
-   :maxdepth: 1
-
+   :maxdepth: 2
+   
+   structureProperties/index
+   regimeMapModels/index
+   physicsModels/index
+   twoPhaseSpecific/index
    ../../../../cppapi/generated/porousMediaModels/phaseModels/structureModels/pump/pump.rst 
-
-
-.. raw:: html
-
-   <div style="margin-top: 2em;"></div>
-
-
-Heat exchanger
-~~~~~~~~~~~~~~
-.. toctree::
-   :maxdepth: 1
-
    ../../../../cppapi/generated/porousMediaModels/phaseModels/structureModels/heatExchanger/heatExchanger.rst 
-
 
 
 
