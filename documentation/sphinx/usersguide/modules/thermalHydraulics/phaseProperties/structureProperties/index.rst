@@ -56,9 +56,6 @@ Possible keys include:
    * - ``powerModel``
      - N
      - See :ref:`powerModels <modules_thermalHydraulics_porousMdeium_powerModels>`
-   * - ``powerOffCriterionModel``
-     - N
-     - See :ref:`powerOffCriterionModel <modules_thermalHydraulics_porousMdeium_powerOffCriterionModel>`
    * - ``passiveProperties``
      - N
      - Properties of the passive structure, including ``volumetricArea``, wither ``rho`` (density) and ``Cp`` or ``rhoCp``, ``volumeFraction`` (if different than that of the entire sub-structure), ``T`` (initial temperature). 
