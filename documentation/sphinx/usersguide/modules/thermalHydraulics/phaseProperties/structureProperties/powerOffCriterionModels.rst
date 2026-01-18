@@ -1,4 +1,4 @@
-.. _modules_thermalHydraulics_porousMdeium_powerOffCriterionModels:
+.. _modules_thermalHydraulics_porousMedium_powerOffCriterionModels:
 
 Power-off criterion models
 ^^^^^^^^^^^^^^^^^^^^^^^^^^

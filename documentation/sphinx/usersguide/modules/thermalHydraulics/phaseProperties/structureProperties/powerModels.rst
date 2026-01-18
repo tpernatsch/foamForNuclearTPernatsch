@@ -23,7 +23,7 @@ Power models are  models used to simulate the behavior  of sub-scale structures 
      - Structure surface area per unit volume. Normally needed. Not needed e.g., for nuclearFuelPin and heatedPin power models  since it can be derived by the volumeFraction
    * - ``powerOffCriterionModel``
      - N
-     - See :ref:`powerOffCriterionModel <modules_thermalHydraulics_porousMdeium_powerOffCriterionModel>`
+     - See :ref:`powerOffCriterionModel <modules_thermalHydraulics_porousMedium_powerOffCriterionModels>`
 
 Other entries depends on the chosen power model. 
 
