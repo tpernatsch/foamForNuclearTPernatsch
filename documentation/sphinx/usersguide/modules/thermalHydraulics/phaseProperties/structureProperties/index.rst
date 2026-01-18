@@ -33,7 +33,7 @@ Possible keys include:
 
 .. list-table::
    :header-rows: 1
-   :widths: 25 75
+   :widths: 20 10 30
 
    * - Entry
      - Mandatory
