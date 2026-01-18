@@ -1,26 +1,68 @@
 .. _modules_thermalHydraulics_porousMedium_physicsModels:
 
 The *physicsModels* sub-dictionary
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The *physicsModels* sub-dictionary is used in one-phase simulations to define the models that describe the effect of the structure on the fluid flow.  Two types of models can be defined: drag models via the ``dragModels`` sub-dictionary and heat transfer models via the ``heatTransferModels`` sub-dictionary. Each of these two sub-dictionaries consists of a series of other sub-dictionaries whose properties are applied to the cell zones that have their name in the sub-dictionary keys. For both the drag models and the heat transfer models, two options exist:
+
+- Use as type a single model chosen among those available (:ref:`drag models <modules_thermalHydraulics_porousMdeium_FSdrag>`, :ref:`heat transfer models <modules_thermalHydraulics_porousMedium_FSHeatTransferCoefficientModels>`)
+- Use ``byRegime`` as  type, and then chose one of the available models (:ref:`drag models <modules_thermalHydraulics_porousMdeium_FSdrag>`, :ref:`heat transfer models <modules_thermalHydraulics_porousMedium_FSHeatTransferCoefficientModels>`) for every regime. This requires having set a :ref:`regime map <modules_thermalHydraulics_porousMedium_regimeMapModels>`.
 
 
 
-.. toctree::
-   :maxdepth: 1
+An example of dictionary is reported below. 
 
-   FFHeatTransferCoefficientModels
-   FSHeatTransferCoefficientModels
-   FFdrag
-   FSdrag
-   multipliersDrag
-   phaseChangeModels
-   contactPartitionModels
-   dispersionModels
-   fluidDiameterModels
-   interfacialAreaModels
-   virtualMassCoefficientModels
-   latentHeatModels
-   saturationModels
+.. code :: cpp
+   physicsModels
+   {
+      dragModels
+      {
+         "diagrid:axialReflector:radialReflector:follower:controlRod:innerCore:outerCore"
+         {
+               type    ReynoldsPower;
+               coeff   0.687;
+               exp     -0.25;
+         }
+      }
+
+      heatTransferModels
+      {
+         "diagrid:axialReflector:radialReflector:follower:controlRod:innerCore:outerCore"
+         {
+               type        byRegime;
+               regimeMap   "lamTurb";
+
+               //- List of subdicts specifying a heatTransferModel for each regime
+               //  in the lamTurb regimeMap
+               "laminar"
+               {
+                  // Nu = const + coeff * Re^expRe * Pr^expPr
+                  type    NusseltReynoldsPrandtlPower;
+                  const   4;
+                  coeff   0;
+                  expRe   0;
+                  expPr   0;
+               }
+               "turbulent"
+               {
+                  type    NusseltReynoldsPrandtlPower;
+                  const   4.82;
+                  coeff   0.0185;
+                  expRe   0.827;
+                  expPr   0.827;
+               }
+         }
+      }
+   }
+
+
+
+.. .. toctree::
+..    :maxdepth: 1
+
+..    FSHeatTransferCoefficientModels
+..    FSdrag
+
 
 
 

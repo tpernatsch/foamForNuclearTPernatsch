@@ -1,4 +1,4 @@
-.. _modules_thermalHydraulics_porousMedium_*regimeMapModels:
+.. _modules_thermalHydraulics_porousMedium_regimeMapModels:
 
 The *regimeMapModels* sub-dictionary
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

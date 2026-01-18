@@ -37,6 +37,7 @@ Sub-dictionaries
    structureProperties/index
    regimeMapModels/index
    physicsModels/index
+   physicsModels/indexTwoPhase
    twoPhaseSpecific/index
    ../../../../cppapi/generated/porousMediaModels/phaseModels/structureModels/pump/pump.rst 
    ../../../../cppapi/generated/porousMediaModels/phaseModels/structureModels/heatExchanger/heatExchanger.rst 
