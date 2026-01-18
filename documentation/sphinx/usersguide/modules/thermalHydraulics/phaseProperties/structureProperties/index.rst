@@ -27,13 +27,52 @@ sub-dictionaries is not mandatory, and the structure defaults, globally, to
 having a null volumeFraction and infinite (1e6m) hydraulic diameter.
 For convenience, if multiple cellZones share the
 same exact properties, these names can be grouped by using a colon as
-separator. Two examples of *structureProperties* dictionaries are reported below. *diagrid*, *axialReflector*, etc. are name of cell zones. The main run-time selectable models are:
+separator. 
 
-.. toctree::
-   :maxdepth: 1
+Possible keys include:
 
-   powerModels
-   powerOffCriterionModels
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Entry
+     - Mandatory
+     - Description
+   * - ``volumeFraction``
+     - Y
+     - Volume fraction occupied by the structure
+   * - ``Dh``
+     - Y
+     - Hydraulic diameter for a fluid flowing through the sub-structure
+   * - ``localX`` and ``localZ``
+     - N
+     - X and Y axes for a local coordinate system. Default to (1 0 0), (0 0 1) if not provided. ``localY`` is computed based on the right-hand rule. 
+   * - ``localDhAnisotropy``
+     - N
+     - The i-th directional Reynolds will "see" a hydraulic diameter of  Dh*localDhAnisotropy[i]. localDhAnisotropy is rotated to the local reference frame.
+   * - ``localTortuosity``
+     - N
+     - Tortuosity of the porous structure (in this cellZone) expressed in the local reference frame. This vector quantifies the deformation of diffusion lines (i.e. the path along which a quantity diffues) for each of the tree local reference frame axes. This only impacts the diffusion of heat and momentum, not their advection.  For example, for a fluid in a bundle of pins, the tortuosity will be 1 along the bundle axis and less than 1 for directions transversal to the bundle axis. Defaults to (1 1 1).
+   * - ``powerModel``
+     - N
+     - See :ref:`powerModels <modules_thermalHydraulics_porousMdeium_powerModels>`
+   * - ``powerOffCriterionModel``
+     - N
+     - See :ref:`powerOffCriterionModel <modules_thermalHydraulics_porousMdeium_powerOffCriterionModel>`
+   * - ``passiveProperties``
+     - N
+     - Properties of the passive structure, including ``volumetricArea``, wither ``rho`` (density) and ``Cp`` or ``rhoCp``, ``volumeFraction`` (if different than that of the entire sub-structure), ``T`` (initial temperature). 
+     
+
+Two examples of *structureProperties* dictionaries are reported below. *diagrid*, *axialReflector*, etc. are name of cell zones. 
+
+.. The main run-time selectable models are:
+
+.. .. toctree::
+..    :maxdepth: 1
+
+..    powerModels
+..    powerOffCriterionModels
 
 
 .. code :: cpp
