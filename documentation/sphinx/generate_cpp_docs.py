@@ -974,7 +974,7 @@ def main():
         maxdepth=1
     )
     append_toctree_for_folder_direct_subfolders(
-        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/physicsModels/fluidDiameterModels.rst",
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/twoPhaseSpecific/fluidDiameterModels.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/fluidDiameterModels",
         maxdepth=1
     )

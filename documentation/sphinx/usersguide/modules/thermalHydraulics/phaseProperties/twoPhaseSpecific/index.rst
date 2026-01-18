@@ -16,7 +16,7 @@ Each of the two subdictionaries should contain the following keywords
    * - Entry
      - Mandatory
      - Description
-   * - stateOfMatter
+   * - ``stateOfMatter``
      - Y/N
      - Supported entries are either "gas" or "liquid". This entry is used by some drag, heat or mass              transfer models as knowledge of which phase is gaseous(/vapourous) and which phase is liquid is necessary sometimes. This entry is not mandatory per se, but might be required by specific choices of models.
    * - ``residualAlpha``

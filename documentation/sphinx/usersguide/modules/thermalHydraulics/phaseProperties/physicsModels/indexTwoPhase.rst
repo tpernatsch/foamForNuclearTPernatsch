@@ -16,8 +16,7 @@ The *physicsModels* sub-dictionary is used in two-phase simulations to define th
    - :ref:`saturation models <modules_thermalHydraulics_porousMedium_saturationModels>` for fluid-structure pairs via the ``saturationModel`` sub-dictionary
 
 
-
-. Each of these two sub-dictionaries consists of a series of other sub-dictionaries whose properties are applied to the cell zones that have their name in the sub-dictionary keys.  Three options exist :
+Each of these two sub-dictionaries consists of a series of other sub-dictionaries whose properties are applied to the cell zones that have their name in the sub-dictionary keys.  Three options exist :
 - Use ``constant`` as  type and give a constant value using the keyword ``value``.
 - Use as type a single model chosen among those available;
 - Use ``byRegime`` as  type, and then chose one of the available models for each regime. This requires having set a :ref:`regime map <modules_thermalHydraulics_porousMedium_regimeMapModels>`.
