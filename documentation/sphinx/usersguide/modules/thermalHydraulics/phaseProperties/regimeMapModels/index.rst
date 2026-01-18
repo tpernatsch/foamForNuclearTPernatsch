@@ -26,6 +26,7 @@ is specified via a regimeMap keyword. Then, the model for each regime is
 specfied in subDicts named like each corresponding regime in the regimeMap. See :ref:`physics models <modules_thermalHydraulics_porousMedium_physicsModels>` for additional details.
 
 .. code :: cpp
+   
    regimeMapModels
    {
       "lamTurb"
