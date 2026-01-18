@@ -30,6 +30,7 @@ Other entries depends on the chosen power model.
 An example of powerModel sub-dictionary is reported below:
 
 .. code :: cpp
+
     powerModel
     {
         type            heatedPin;
