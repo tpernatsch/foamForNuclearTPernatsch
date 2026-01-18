@@ -32,8 +32,6 @@ An example of dictionary is reported below.
                type        byRegime;
                regimeMap   "lamTurb";
 
-               //- List of subdicts specifying a heatTransferModel for each regime
-               //  in the lamTurb regimeMap
                "laminar"
                {
                   // Nu = const + coeff * Re^expRe * Pr^expPr
