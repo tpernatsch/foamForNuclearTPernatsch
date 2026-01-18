@@ -147,7 +147,6 @@ structureProperties
             powerOffCriterionModel
             {
                 /*
-                //- Only type currently available is fieldValue
                 type            fieldValueThreshold;
 
                 //- Name of the volScalarField used for the criterion evaluation.
@@ -230,13 +229,10 @@ structureProperties
         //  contributing to the fluids energy equation in any way
         powerModel
         {
-            //--Needless to say, entries within this subDict that are marked
+            //- Entries within this subDict that are marked
             //  as MANDATORY are such only if the powerModel dict exists
 
-            //- This entry IS MANDATORY and currently supports three models:
-            //  -   fixedTemperature
-            //  -   fixedPower
-            //  -   nuclearFuelPin
+            //- This entry IS MANDATORY 
             type    model;
 
             //- The dict entries that are common to all of these models
