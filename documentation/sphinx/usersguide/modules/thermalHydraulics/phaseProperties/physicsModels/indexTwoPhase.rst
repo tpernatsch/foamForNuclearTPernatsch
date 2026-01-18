@@ -4,6 +4,7 @@ The *physicsModels* sub-dictionary for two-phase flows
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The *physicsModels* sub-dictionary is used in two-phase simulations to define the models that describe the interaction between fluid1 and structure, fluid2 and structure, as well as between fluid1 and fluid 2. Several types of models can be defined:
+
 - :ref:`fluid-fluid drag models <modules_thermalHydraulics_porousMdeium_FFdrag>`  and :ref:`fluid-structure drag models <modules_thermalHydraulics_porousMdeium_FSdrag>`  via the ``dragModels`` sub-dictionary;
 - :ref:`two-phase drag multiplier models <modules_thermalHydraulics_porousMdeium_multipliers>`  via the ``twoPhaseDragMultiplierModel`` sub-dictionary;
 - :ref:`virtual mass coefficient models <modules_thermalHydraulics_porousMedium_virtualMassCoefficientModels>` via the ``virtualMassCoefficientModel`` sub-dictionary;
@@ -11,7 +12,7 @@ The *physicsModels* sub-dictionary is used in two-phase simulations to define th
    - :ref:`dispersion models <modules_thermalHydraulics_porousMedium_dispersionModels>` for fluid-fluid pairs via the ``dispersionModel`` sub-dictionary;
    - :ref:`interfacial area density models <modules_thermalHydraulics_porousMedium_interfacialAreaModels>` for fluid-fluid pairs via the ``interfacialAreaDensityModel`` sub-dictionary;
    - :ref:`contact partition model <modules_thermalHydraulics_porousMedium_contactPartitionModels>`s for fluid-structure pairs via the ``contactPartitionModel`` sub-dictionary
-- :ref:`phase change models <modules_thermalHydraulics_porousMedium_phaseChangeModels>` via the ``phaseChangeModel`` sub-dictionary, which in turn includes;
+- :ref:`phase change models <modules_thermalHydraulics_porousMedium_phaseChangeModels>` via the ``phaseChangeModel`` sub-dictionary, which in turn includes:
    - :ref:`latent heat models <modules_thermalHydraulics_porousMedium_latentHeatModels>` for fluid-fluid pairs via the ``latentHeatModel`` sub-dictionary;
    - :ref:`saturation models <modules_thermalHydraulics_porousMedium_saturationModels>` for fluid-structure pairs via the ``saturationModel`` sub-dictionary
 
