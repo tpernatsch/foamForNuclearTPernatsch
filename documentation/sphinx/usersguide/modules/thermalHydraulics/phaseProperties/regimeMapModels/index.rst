@@ -1,12 +1,9 @@
 .. _modules_thermalHydraulics_porousMedium_*regimeMapModels:
 
 The *regimeMapModels* sub-dictionary
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Regime maps
------------
-
-In foamForNuclear, it is possible to employ 1- and 2-dimensional regime maps to use
+It is possible to employ 1- and 2-dimensional regime maps to use
 different models for different flow conditions. This can be used for instance
 in one-phase simulation to provide different correlations for turbulent and
 laminar flow (see `3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/fluidRegion/phaseProperties>`_
@@ -23,30 +20,32 @@ dispersion, interfacial area and bubble diameter, while a single multi-regime
 model is employed to describe heat transfer between liquid and structure
 throughout the various regimes.
 
-Examples of
-
-
-
-The oneParameter type is a 1-D regime map.
-Here, the map name is lamTurb and it depends on the fluid Reynolds number.
-Mismatches in the regime bounds of adjacent regimes automatically create
-an interpolation region, wherein the interpolation type can be changed via
-the interpolationMode keyword, which currently offers either linear or
-quadratic interpolation. In the oneParameter map, the lowest bound of the
-"lowest" regime is extended to -inf and the upper bound of the "upmost"
-regime is extended to +inf
-
-The twoParameter type is a 2-D regime map.
-
-To use a regimeMap in a model, select the "byRegime" type for said model.
-All physicsModels support it. The name of the regime map to be used
+An example of 1-D model is reported below.
+Here, the map name is *lamTurb* (an arbitray name) and the type *oneParameter*. To use a regimeMap in a model, the user should select the "byRegime" type for said model. All :ref:`physics models <modules_thermalHydraulics_porousMedium_physicsModels>` support it. The name of the regime map to be used
 is specified via a regimeMap keyword. Then, the model for each regime is
-specfied in subDicts named like each corresponding regime in the regimeMap.
-To see an example of this, have a look at the heatTransferModel used for
-this case.
-
+specfied in subDicts named like each corresponding regime in the regimeMap. See :ref:`physics models <modules_thermalHydraulics_porousMedium_physicsModels>` for additional details.
 
 .. code :: cpp
+   regimeMapModels
+   {
+      "lamTurb"
+      {
+         type                oneParameter;
+         ...
+      }
+   }
+
+Avilable regime maps types include:
+
+
+
+
+
+
+
+
+
+
 
 
 

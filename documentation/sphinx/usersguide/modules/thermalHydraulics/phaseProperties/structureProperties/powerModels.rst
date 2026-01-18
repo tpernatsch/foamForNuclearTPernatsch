@@ -7,7 +7,7 @@ Power models are  models used to simulate the behavior  of sub-scale structures 
 
 .. list-table::
    :header-rows: 1
-   :widths: 30 20 50
+   :widths: 25 15 60
 
    * - Entry
      - Mandatory
