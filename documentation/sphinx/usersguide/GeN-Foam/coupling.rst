@@ -9,7 +9,7 @@ Coupling logic
 
 The coupling between physics is achieved by projecting coupling variables from
 the mesh they are calculated, to the mesh they need to be used. The details of
-the coupling can be specified in *constant/regionsDict*. In the
+the coupling can be specified in *system/regionsDict*. In the
 sub-dictionary ``mappings``, for each region one can select the fields to map
 *onto* it. This is done by creating a *subDict* named after the region *from*
 which the fields are mapped. For instance, if a field needs to mapped into the

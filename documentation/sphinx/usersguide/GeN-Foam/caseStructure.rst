@@ -57,6 +57,7 @@ The folder structure of GeN-Foam case is similar to that of typical multi-region
     │       ├── fvSchemes
     │       ├── fvSolution
     │   ├── decomposeParDict            # For parallel runs
+    │   ├── regionsDict                 # Coupling control
     │   ├── controlDict                 # Solution control
     │
     ├── postProcessing/
@@ -67,7 +68,7 @@ The folder structure of GeN-Foam case is similar to that of typical multi-region
 
 .. note ::
 
-    The name of the regions is arbitrary. The ``controlDict`` dictionary is used to define which physics is solved within each region (see :ref:`Coupled Solutions <couplingGF>`).
+    The name of the regions is arbitrary. The ``regionsDict`` dictionary is used to define which physics is solved within each region (see :ref:`Coupled Solutions <couplingGF>`).
  
 .. note ::
 
@@ -95,7 +96,7 @@ At the start of the simulation, a GeN-Foam case must contain the following three
    Contains mesh information (within ``polyMesh/`` ), material properties, behavioral models and correlations,  and module-specific settings.
 
 3. **system/**  
-   Contains control and numerical settings for the simulation, including discretization schemes (``fvSchemes``), linear solvers (``fvSolution``), and the main simulation controls (``controlDict``). Other files that can be found in this solver include ``blockMeshDict`` (input dictionary for the ``blockMesh`` utility for mesh generation) and ``changeDictionaryDict`` (instructions to modify patch boundaries or other dictionaries via the ``changeDictionary`` utility).
+   Contains control and numerical settings for the simulation, including discretization schemes (``fvSchemes``), linear solvers (``fvSolution``), and the main simulation controls (``regionsDict`` and ``controlDict``). Other files that can be found in this solver include ``blockMeshDict`` (input dictionary for the ``blockMesh`` utility for mesh generation) and ``changeDictionaryDict`` (instructions to modify patch boundaries or other dictionaries via the ``changeDictionary`` utility).
 
 After the simulation is performed, additional folders and files may appear based on the settings configured by the user:
 

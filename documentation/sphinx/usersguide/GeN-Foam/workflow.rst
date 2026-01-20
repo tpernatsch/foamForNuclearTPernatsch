@@ -60,7 +60,7 @@ After meshing, configure:
   - Solid: ``T``, ``D``.
   - Neutronics: ``flux``.
 - **System settings**:
-  - ``system/<regionName>/controlDict`` for solution control and multiphysics coupling.
+  - ``system/controlDict`` and ``system/regionsDict`` for solution control and multiphysics coupling.
   - ``fvSchemes`` and ``fvSolution`` for discretization and solvers.
 
 

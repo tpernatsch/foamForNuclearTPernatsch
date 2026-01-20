@@ -4,7 +4,7 @@
 Solution Control
 ================
 
-Solution control is mostly achived using ``controlDict``, which is in GeN-Foam a slightly extended version of the one that is normally used in other OpenFOAM solvers. 
+Solution control is mostly achived using the ``controlDict``, which is in GeN-Foam an extended version of the one that is normally used in other OpenFOAM solvers. 
 
 The *controlDict* dictionary
 ----------------------------
@@ -59,7 +59,7 @@ The *controlDict* extensions
 ----------------------------
 
 Compared to a standard OpenFOAM controlDict, it includes
-a few  specialized keywords including:
+several  specialized keywords including:
 
 .. list-table::
    :header-rows: 1

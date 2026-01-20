@@ -15,8 +15,8 @@ through the essential aspects of using GeN-Foam to perform simulations.
    workflow
    meshing
    caseStructure
-   coupling
    solutionControl
+   coupling
    runningGeN-Foam
    postProcessing
    tips_and_tricks
