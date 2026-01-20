@@ -52,8 +52,7 @@ Setting Up the Simulation
 
 After meshing, configure:
 
-- **``constant/regionProperties``**: Lists all regions.
-- **``constant/regionsDict``**: Set the coupling among regions.
+- **constant/regionProperties**: Lists all regions.
 - **Region-specific dictionaries**:
   - ``constant/<regionName>/dictionaryName``: set properties, behavioral models, etc., for each region.
 - **Initial and boundary conditions**: Defined in ``0/<regionName>/`` for fields like:
@@ -61,7 +60,7 @@ After meshing, configure:
   - Solid: ``T``, ``D``.
   - Neutronics: ``flux``.
 - **System settings**:
-  - ``system/<regionName>/controlDict`` for time control.
+  - ``system/<regionName>/controlDict`` for solution control and multiphysics coupling.
   - ``fvSchemes`` and ``fvSolution`` for discretization and solvers.
 
 
@@ -85,9 +84,9 @@ Post-Processing
 
 Visualization and data extraction options:
 
-- **``paraFoam``**: Launches ParaView for visualization of written time steps (requires ParaView).
-- **``touch para.foam``** followed by **``paraview para.foam``**: Launches ParaView for visualization of written time steps in case paraFoam was not installed (requires ParaView).
-- **``postProcess -func sampleDict``**: Samples fields based on ``system/sampleDict``; results stored in ``postProcessing/``.
+- `paraFoam``: Launches ParaView for visualization of written time steps (requires ParaView).
+- ``touch para.foam`` followed by ``paraview para.foam``: Launches ParaView for visualization of written time steps in case paraFoam was not installed (requires ParaView).
+- ``postProcess -func sampleDict``: Samples fields based on ``system/sampleDict``; results stored in ``postProcessing/``.
 - **Python scripts**: Automate plotting of quantities like temperature profiles or power distribution.
 
 .. note::

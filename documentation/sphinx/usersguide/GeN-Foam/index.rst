@@ -9,11 +9,11 @@ through the essential aspects of using GeN-Foam to perform simulations.
 
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
 
    installation
-   meshing
    workflow
+   meshing
    caseStructure
    coupling
    solutionControl

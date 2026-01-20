@@ -14,6 +14,7 @@ General Concepts
 OpenFOAM uses **polyhedral meshes**, which are stored in the ``constant/polyMesh`` folder of each region. A mesh consists of points, faces, and cells, organized in a way that supports finite-volume discretization.
 
 Meshes can be generated using:
+
 - **OpenFOAM utilities** such as ``blockMesh`` (structured meshes) or ``snappyHexMesh`` (unstructured meshes).
 - **External tools** like Salome, Gmsh, Cubit, various ANSYS tools, etc.
 - **Conversion utilities**: OpenFOAM ships with many mesh converters (e.g., ``fluentMeshToFoam``, ``gmshToFoam``, ``cubitToFoam``) to import meshes from other platforms.
@@ -40,6 +41,7 @@ External Meshing Tools
 foamForNuclear supports meshes from both proprietary and open-source tools. Below are exemplary workflows:
 
 **1. Salome Workflow**
+
 - Create geometry and partition it into volumes.
 - Assign **groups** for each physical region (fuel, cladding, coolant).
 - Generate the mesh and export in UNV format.
@@ -47,6 +49,7 @@ foamForNuclear supports meshes from both proprietary and open-source tools. Belo
 - Verify that cellZones are correctly imported.
 
 **2. Gmsh Workflow**
+
 - Build geometry and define **Physical Groups** for volumes.
 - Generate the mesh and export in Gmsh format (.msh).
 - Convert using ``gmshToFoam``.
