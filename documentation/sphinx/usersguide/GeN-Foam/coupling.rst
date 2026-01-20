@@ -152,10 +152,9 @@ their logic.
     Heterogeneous / Homogeneous meshes overlaps.
 
 
-While this is the standard coupling approach, the new structure of GeN-Foam can
+While this is a standard coupling approach, GeN-Foam can
 be used to map *any* scalar or vectorial field to *any* scalar of vectorial
-fields on a different mesh. Although this renders the input structure more
-complex, it enables the simulation of any arbitrarily coupled multi-physics
+fields on a different mesh, enabling the simulation of any arbitrarily coupled multi-physics
 simulation that leverages the currently existing libraries.
 
 .. note ::
@@ -233,12 +232,11 @@ their names
       - N/A
 
 
-* In the thermomechanics, the heat diffusion equation is solved only in the
-non-porous zones, while temperature from the thermal-hydraulics is expected in
+\* In thermo-mechanics, the heat diffusion equation is solved only in the non-porous zones, while temperature from the thermal-hydraulics is expected in
 the porous structures. Hence, the structures temperatures need to be mapped onto
 the ``TStructFromTH`` field.
 
-** The thermomechanics solver computes the displacement using the linear elastic
+** The thermo-mechanics solver computes the displacement using the linear elastic
 formulation. This result in the field named ``disp``. In order to compute the
 neutronics deformation, the radial component of disp is combined to an axial
 component computed as the thermal deformation of fuel/control rods (if
