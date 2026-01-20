@@ -51,7 +51,7 @@ The log file
 ------------
 
 Useful information is also stored in the log file. It includes details of the numerical solution (time steps, residuals, number of interations, etc), as well as some quantities of interest such as min/max temperatures in fluid solvers and multiplication factor in k-eigenvalue solvers. 
- The log file can be created
+The log file can be created
 by adding the ``| tee log.GeN-Foam`` command to the launch command, i.e.:
 
 .. code :: bash

@@ -88,7 +88,7 @@ Example of tight coupling:
 The standard routine to solve for multi-physics problems is here described.
 Given an input volumetric power density :math:`Q`, the thermal-hydraulics
 sub-solver is tasked with predicting the resulting fluid temperature :math:`T`,
-density :math:`\rho` and velocity $u$ fields, as well as relevant structure
+density :math:`\rho` and velocity :math:`U` fields, as well as relevant structure
 temperature fields :math:`T_s`. For a two-phase treatment, the fields
 :math:`\rho`, :math:`T`, :math:`u` consist of mass-weighed mixture values.
 The velocity field :math:`u` is used for coupling only when simulating MSRs to
@@ -145,7 +145,7 @@ Tutorial `2D_fullCoupling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tr
 has been created to allow users to play around with the couplings and understand
 their logic.
 
-.. figure:: ../images/HetHom.png
+.. figure:: ../../images/HetHom.png
     :width: 500
     :alt: Heterogeneous / Homogeneous meshes overlaps
 

@@ -2,7 +2,7 @@
 Running GeN-Foam
 ================
 
-GeN-Foam is launched like any OpenFOAM solver, by executing the following
+GeN-Foam is launched like any other OpenFOAM solver, by executing the following
 commands in a terminal (after sourcing the OpenFOAM environment):
 
 .. code :: bash
@@ -12,7 +12,7 @@ commands in a terminal (after sourcing the OpenFOAM environment):
     mpirun -np <nProcessors> GeN-Foam -parallel
 
 
-In case of parallel calculations, one should decompose each one of regions using the command
+In case of parallel calculations, one should first decompose each one of regions using the command
 
 .. code :: bash
 
