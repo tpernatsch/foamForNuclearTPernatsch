@@ -1,8 +1,10 @@
 description: |-
   Power models are used to simulate the behavior  of sub-scale structures that produce power. Main entries are repoted below.
   In the code, this is a run-time selectable class to handle the thermal description (i.e. energy   source/sinks) of a structure.
-  It returns a heat source term to the main solver be used in the energy
-  equations.
+  It returns a heat source term to the main solver be used in the energy   equations.
+  Available power models include:
+
+  toctreeHere
 
 
 options:
@@ -59,7 +61,3 @@ usage:
           }
         }
       }
-    comment: |-
-      Available power models include:
-
-      toctreeHere
