@@ -814,6 +814,93 @@ def append_toctree_for_folder_direct_subfolders(target_rst: str, folder: str, ma
 
 
 
+import os
+from pathlib import Path
+
+def insert_toctree_at_placeholder_for_folder_direct_subfolders(
+    target_rst: str,
+    folder: str,
+    maxdepth: int = 1,
+    placeholder: str = "toctreeHere",
+    append_if_missing: bool = True,
+) -> None:
+    """
+    Insert a Sphinx toctree block listing .rst files that are exactly one level
+    below `folder` (i.e., direct subfolders only; no nesting) at the first
+    occurrence of `placeholder` within `target_rst`.
+
+    If the placeholder is not found and `append_if_missing` is True, the block
+    will be appended to the end of the file; otherwise, the function will warn
+    and exit without modifying the file.
+    """
+    target_path = Path(target_rst).resolve()
+    folder_path = Path(folder).resolve()
+
+    # Collect *.rst files in *direct* subfolders only (depth = 1)
+    rst_files = []
+    for f in folder_path.rglob("*.rst"):
+        try:
+            parts = f.relative_to(folder_path).parts
+        except ValueError:
+            # Shouldn't happen because f is under folder_path, but just in case
+            continue
+        # We want exactly 2 parts: ('subfolder', 'file.rst')
+        if len(parts) == 2 and f.is_file():
+            rst_files.append(f)
+
+    rst_files = sorted(rst_files)
+
+    if not rst_files:
+        print(f"[info] No .rst files found in direct subfolders of {folder_path}")
+        return
+
+    # Build toctree block
+    toctree_lines = [
+        ".. toctree::",
+        f"   :maxdepth: {maxdepth}",
+        "",
+    ]
+    for f in rst_files:
+        rel_path = os.path.relpath(f, start=target_path.parent)
+        # Sphinx tolerates OS-dependent separators, but forward slashes are safe.
+        rel_path = rel_path.replace(os.sep, "/")
+        toctree_lines.append(f"   {rel_path}")
+
+    toctree_block = "\n".join(toctree_lines) + "\n"
+
+    # Read the target file
+    try:
+        with open(target_path, "r", encoding="utf-8") as fh:
+            content = fh.read()
+    except FileNotFoundError:
+        print(f"[error] Target RST not found: {target_path}")
+        return
+
+    if placeholder in content:
+        # Replace first occurrence of placeholder with the toctree block
+        new_content = content.replace(placeholder, toctree_block, 1)
+        with open(target_path, "w", encoding="utf-8") as fh:
+            fh.write(new_content)
+        print(
+            f"[ok] Inserted toctree (direct subfolders only, {len(rst_files)} entries) "
+            f"at placeholder '{placeholder}' in {target_path}"
+        )
+    else:
+        msg = (
+            f"[warn] Placeholder '{placeholder}' not found in {target_path}."
+        )
+        if append_if_missing:
+            with open(target_path, "a", encoding="utf-8") as fh:
+                # Start with a blank line for separation if appending
+                if not content.endswith("\n"):
+                    fh.write("\n")
+                fh.write("\n" + toctree_block)
+            print(msg + " Appended toctree at end of file instead.")
+        else:
+            print(msg + " No changes made.")
+
+
+
 def append_toctree_for_folder_recursive(target_rst: str, folder: str, maxdepth: int = 1) -> None:
     """
     Append a Sphinx toctree block at the end of `target_rst` file,
@@ -938,12 +1025,12 @@ def main():
     )
 
     # Step 3: Append indexes in dynamic files
-    append_toctree_for_folder_direct_subfolders(
+    insert_toctree_at_placeholder_for_folder_direct_subfolders(
         target_rst="documentation/sphinx/cppapi/generated/porousMediaModels/phaseModels/structureModels/powerModels/powerModel.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/phaseModels/structureModels/powerModels/",
         maxdepth=1
     )
-    append_toctree_for_folder_direct_subfolders(
+    insert_toctree_at_placeholder_for_folder_direct_subfolders(
         target_rst="documentation/sphinx/cppapi/generated/porousMediaModels/phaseModels/structureModels/powerOffCriterionModels/powerOffCriterionModel.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/phaseModels/structureModels/powerOffCriterionModels/",
         maxdepth=1
