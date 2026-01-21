@@ -939,12 +939,12 @@ def main():
 
     # Step 3: Append indexes in dynamic files
     append_toctree_for_folder_direct_subfolders(
-        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/structureProperties/powerModels.rst",
+        target_rst="documentation/sphinx/cppapi/generated/porousMediaModels/phaseModels/structureModels/powerModels/powerModel.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/phaseModels/structureModels/powerModels/",
         maxdepth=1
     )
     append_toctree_for_folder_direct_subfolders(
-        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/structureProperties/powerOffCriterionModels.rst",
+        target_rst="documentation/sphinx/cppapi/generated/porousMediaModels/phaseModels/structureModels/powerOffCriterionModels/powerOffCriterionModel.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/phaseModels/structureModels/powerOffCriterionModels/",
         maxdepth=1
     )
