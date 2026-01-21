@@ -11,7 +11,7 @@ The *physicsModels* sub-dictionary is used in two-phase simulations to define th
 - pair geometry models via the ``pairGeometryModels`` sub-dictionary, which in turn includes;
    - :ref:`dispersion models <modules_thermalHydraulics_porousMedium_dispersionModels>` for fluid-fluid pairs via the ``dispersionModel`` sub-dictionary;
    - :ref:`interfacial area density models <modules_thermalHydraulics_porousMedium_interfacialAreaModels>` for fluid-fluid pairs via the ``interfacialAreaDensityModel`` sub-dictionary;
-   - :ref:`contact partition model <modules_thermalHydraulics_porousMedium_contactPartitionModels>`s for fluid-structure pairs via the ``contactPartitionModel`` sub-dictionary
+   - :ref:`contact partition models <modules_thermalHydraulics_porousMedium_contactPartitionModels>` for fluid-structure pairs via the ``contactPartitionModel`` sub-dictionary
 - :ref:`phase change models <modules_thermalHydraulics_porousMedium_phaseChangeModels>` via the ``phaseChangeModel`` sub-dictionary, which in turn includes:
    - :ref:`latent heat models <modules_thermalHydraulics_porousMedium_latentHeatModels>` for fluid-fluid pairs via the ``latentHeatModel`` sub-dictionary;
    - :ref:`saturation models <modules_thermalHydraulics_porousMedium_saturationModels>` for fluid-structure pairs via the ``saturationModel`` sub-dictionary

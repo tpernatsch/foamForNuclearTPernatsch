@@ -19,7 +19,6 @@ The *phaseProperties* dictionary is a complex dictionary that handles:
    - For two-phase flow simulations:
       - The name of the phases 
       - The propoerties of each phase (e.g., state of matter, dispersed diameter model, etc)
-   - Some miscellaneous parameters such as ``residualKd``
 
 Detailed, commented examples are provided in the tutorials
 `3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/fluidRegion/phaseProperties>`_ (single phase) and
