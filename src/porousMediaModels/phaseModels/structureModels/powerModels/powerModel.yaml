@@ -27,7 +27,8 @@ options:
     type: word
     required: false
     default:
-    description: See :doc:`<../powerOffCriterionModels/powerOffCriterionModel>`
+    description: See :doc:`../powerOffCriterionModels/powerOffCriterionModel`
+
 
 usage:
   - comment: |-
