@@ -55,7 +55,7 @@ Possible keys include:
      - Tortuosity of the porous structure (in this cellZone) expressed in the local reference frame. This vector quantifies the deformation of diffusion lines (i.e. the path along which a quantity diffues) for each of the tree local reference frame axes. This only impacts the diffusion of heat and momentum, not their advection.  For example, for a fluid in a bundle of pins, the tortuosity will be 1 along the bundle axis and less than 1 for directions transversal to the bundle axis. Defaults to (1 1 1).
    * - ``powerModel``
      - N
-     - See :ref:`powerModel <powerModel>`
+     - See :doc:`<../../../../../cppapi/generated/porousMediaModels/phaseModels/structureModels/powerModels/powerModel.rst>`
    * - ``passiveProperties``
      - N
      - Properties of the passive structure, including ``volumetricArea``, wither ``rho`` (density) and ``Cp`` or ``rhoCp``, ``volumeFraction`` (if different than that of the entire sub-structure), ``T`` (initial temperature). 
