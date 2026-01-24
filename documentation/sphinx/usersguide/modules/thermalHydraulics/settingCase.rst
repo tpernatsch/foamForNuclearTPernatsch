@@ -1,3 +1,4 @@
+.. _userguide_thermalhydraulics_settingcase:
 
 Setting a case
 --------------

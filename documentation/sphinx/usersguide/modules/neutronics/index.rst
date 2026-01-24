@@ -11,6 +11,7 @@ The neutronics module  (see :ref:`neutronics.H <neutronics>`)  can be used to so
 .. toctree::
     :maxdepth: 3
 
+    neutronicsSolvers
     neutronicsProperties
     nuclearData
     reactorState

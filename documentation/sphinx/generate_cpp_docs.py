@@ -1163,6 +1163,11 @@ def main():
         maxdepth=1
     )
     append_toctree_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/usersguide/modules/neutronics/neutronicsSolvers.rst",
+        folder="documentation/sphinx/cppapi/generated/modules/neutronics/",
+        maxdepth=1
+    )
+    append_toctree_for_folder_direct_subfolders(
         target_rst="documentation/sphinx/usersguide/GeN-Foam/postProcessing.rst",
         folder="documentation/sphinx/cppapi/generated/functionObjects/",
         maxdepth=1
