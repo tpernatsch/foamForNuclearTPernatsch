@@ -15,37 +15,7 @@ Information on the use of each boundary condition can be found in the header
 files (.H).
 
 
-.. _userguide_thermalhydraulics_settingcase_setpower:
 
-Setting the initial power
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-There are several ways to set the power in GeN-Foam. For the power generated in
-subscale structures:
-
-- The thermal-hydraulics solver will normally use the *powerDensity.* fields (for instance, *powerDensity.nuclearFuelPin* for pin-based reactors) that it finds in the 0 (or *startTime*) folder.
-- As an alternative, one can provide cellZone-by-cellZone values via the keyword *powerDensity* in the various power models in the *phase* properties (see for instance `1D_boiling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/1D_boiling/constant/fluidRegion/phaseProperties>`_). However, if GeN-Foam finds the corresponding field in the 0 (or *startTime*) folder, this will take priority.
-
-For the power generated in the fluid itself:
-
-- The thermal-hydraulics solver will normally use the *powerDensity* field that it finds in the 0 (or *startTime*) folder.
-- One can override this behavior by using the *initialPowerDensity* keyword in the *phaseProperties* (see `1D_MSR_pointKinetics <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/1D_MSR_pointKinetics/rootCase/constant/fluidRegion/phaseProperties>`_) for an example. Also in this case the field in the 0 (or *startTime*) folder will take priority.
-
-If neutronics is activated, the power density can be mapped from the neutronics
-sub-solver. For eigenvalue calculations, the power is set in the *pTarget*
-keyword in the *reactorState* dictionary. For transients, the power is a result
-of calculations. There is one important exception to this behavior: the point
-kinetics solver will only rescale the power densities (see below about why
-plural) that it finds in *neutroRegion*. Alternatively, the powerDensity field
-can be constructed by the thermal-hydraulics solver and mapped once from
-*fluidRegion* to *neutroRegion*. It is possible to achieve this either using the
-*mapFields* utility of OpenFOAM or by running
-``GeN-Foam -initializeMappedFields``, which will construct the solvers and
-mappings based on the *multiRegionCouplingDict* and map the fields without
-running the simulation. For point kinetics, the *pTarget* keyword in
-*reactorState* is not used by the solver itself. However, to correctly plot
-point kinetics results, pTarget must be consistent with the mentioned power
-densities.
 
 .. note::
 

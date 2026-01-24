@@ -8,6 +8,7 @@ Thermal-hydraulics
    :maxdepth: 2
 
    thermalHydraulicsSolvers
+   settingCase
    g
    thermophysicalProperties
    turbulenceProperties
