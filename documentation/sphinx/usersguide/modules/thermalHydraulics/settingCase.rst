@@ -1,3 +1,4 @@
+.. _userguide_thermalhydraulics_settingcase:
 
 Setting a case
 --------------
@@ -5,19 +6,7 @@ Setting a case
 Initial and boundary conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Initial and boundary conditions adopt the usual OpenFOAM logic for one- and
-two-phase solvers. A couple of things to be kept in mind:
-
-- The pressure field we solve for is *p_rgh* (pressure minus the gravitational head)
-- When performing turbulent analyses, one needs to add the fields *k*, *epsilon*, nut and *alphat*
-
-One thing that instead specific to GeN-Foam (except for the one-phase legacy
-sub-solver) and that one needs to keep in mind is that U (or u.(name of fluid))
-are the real velocities, not the Darcy velocities. In a porous structure, they
-represent the actual velocity of the fluid, and not the velocity multiplied by
-the fluid fraction. For instance, U will increase when transiting from a high-
-to a low-porosity region.
-
+Initial and boundary conditions adopt the usual OpenFOAM logic for one- and two-phase solvers. 
 OpenFOAM provides most of the boundary conditions one may need for
 thermal-hydraulics models. In addition, a few boundary conditions have been
 included in GeN-Foam and can be found in

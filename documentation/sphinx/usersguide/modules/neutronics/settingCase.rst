@@ -1,3 +1,4 @@
+.. _userguide_neutronics_settingcase:
 
 Setting a case
 --------------
