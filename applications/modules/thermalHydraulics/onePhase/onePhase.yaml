@@ -1,6 +1,43 @@
 description: |-
-  This class encapsulates a single fluid + 1 stationary structure
-  Eulerian solver with a user-definable regime-map based physics modelling.
+  This class encapsulates a single fluid + 1 stationary structure.   Eulerian solver.
+  Note that the usual ``PIMPLE`` sub-dictionary in system has been extended with a few keywords:
+
+table:
+  headers:
+    - Entry
+    - Mandatory
+    - Description
+  widths: [25, 15, 60]
+  rows:
+    - Entry: momentumMode
+      Mandatory: N
+      Description: >
+        Influences how pressure-equation fluxes from momentum terms are computed and affects all partialEliminationModes.
+        Modes: cellCentered (traditional OpenFOAM approach; known to induce velocity oscillations across porous interfaces with sharp porosity changes);
+        faceCentered (experimental, adapted from some multiphase solvers with improvements; evaluates pressure-equation terms at faces and reconstructs velocity from fluxes;
+        time derivative hard-coded to Euler forward; slightly more diffusive than cellCentered but reduces oscillations—completely in onePhase and partially/completely in twoPhase
+        depending on oscillationLimiterFraction; currently recommended for most applications);
+        cellCenteredFaceReconstruction (blend of cellCentered equation construction and face-centered velocity reconstruction; for testing only; use discouraged and not yet verified).
+
+    - Entry: solveEnergy
+      Mandatory: Y
+      Description: >
+        Solve energy equation
+
+    - Entry: solveFluidMechanics
+      Mandatory: Y
+      Description: >
+        Solve for fluid mechanics (pressure and velocity)
+
+    - Entry: correctUntilConvergence
+      Mandatory: N
+      Description: >
+        See :doc:`../../../../../cppapi/generated/solutionControl/customPimpleControl/customPimpleControl`. Default to false.
+
+    - Entry: oscillationLimiterFraction
+      Mandatory: N
+      Description: >
+        Feature that removes velocity oscillations and/or smearing in the main flow direction. However, if dealing with structures that have  large porosity gradiens (i.e. > 0.5 between consecutive cells) or  large gradients in the structure drag tensor, this feature may actually induce velocity oscillations in the directions  perpendicular to the main flow direction (nedless to say, not in  1D). Only applicable to the face-momentum based algorithm. This factor weights the "traditional" faceMomentum velocity reconstruction (the one which always causes smearing/oscillations) in the main flow direction) with a moving phase fraction-adjusted velocity reconstruction (which may induced the aforementioned  transversal oscillations). If set to 0, it is a pure "traditional" faceMomentum.
 
 
 admonitions:
