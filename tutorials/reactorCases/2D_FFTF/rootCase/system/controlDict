@@ -79,7 +79,7 @@ functions
     mFlowPrimary
     {
         type            massFlow;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         log             true;
         writeFields     false;
         region          "fluidRegion";
@@ -91,7 +91,7 @@ functions
     mFlowSecondary
     {
         type            massFlow;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         log             true;
         writeFields     false;
         region          "fluidRegion";
@@ -103,7 +103,7 @@ functions
     mFlowCore
     {
         type            massFlow;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         log             true;
         writeFields     false;
         region          "fluidRegion";
@@ -115,7 +115,7 @@ functions
     mFlowInnerCore
     {
         type            massFlow;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         log             true;
         writeFields     false;
         region          "fluidRegion";
@@ -127,7 +127,7 @@ functions
     mFlowOuterCore
     {
         type            massFlow;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         log             true;
         writeFields     false;
         region          "fluidRegion";
@@ -139,7 +139,7 @@ functions
     mFlowBypass
     {
         type            massFlow;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         log             true;
         writeFields     false;
         region          "fluidRegion";
@@ -152,7 +152,7 @@ functions
     TCoreInlet
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         log             true;
         writeFields     false;
         region          "fluidRegion";
@@ -164,7 +164,7 @@ functions
     TCoreOutlet
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         log             true;
         writeFields     false;
         region          "fluidRegion";
@@ -176,7 +176,7 @@ functions
     TInnerCoreOutlet
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         log             true;
         writeFields     false;
         region          "fluidRegion";
@@ -188,7 +188,7 @@ functions
     TOuterCoreOutlet
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         log             true;
         writeFields     false;
         region          "fluidRegion";
@@ -200,7 +200,7 @@ functions
     TVesselInlet
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         log             true;
         writeFields     false;
         region          "fluidRegion";
@@ -212,7 +212,7 @@ functions
     TVesselOutlet
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         log             true;
         writeFields     false;
         region          "fluidRegion";
@@ -224,7 +224,7 @@ functions
     THotLegPrimary
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         log             true;
         writeFields     false;
         region          "fluidRegion";
@@ -236,7 +236,7 @@ functions
     TColdLegPrimary
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         log             true;
         writeFields     false;
         region          "fluidRegion";
@@ -248,7 +248,7 @@ functions
     TColdLegSecondary
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         log             true;
         writeFields     false;
         region          "fluidRegion";
@@ -260,7 +260,7 @@ functions
     TIHXInletPrimary
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         log             true;
         writeFields     false;
         region          "fluidRegion";
@@ -272,7 +272,7 @@ functions
     TIHXOutletPrimary
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         log             true;
         writeFields     false;
         region          "fluidRegion";
@@ -284,7 +284,7 @@ functions
     TIHXInletSecondary
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         log             true;
         writeFields     false;
         region          "fluidRegion";
@@ -296,7 +296,7 @@ functions
     TIHXOutletSecondary
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         log             true;
         writeFields     false;
         region          "fluidRegion";
@@ -308,7 +308,7 @@ functions
     TDHXOutlet
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         log             true;
         writeFields     false;
         region          "fluidRegion";
@@ -320,7 +320,7 @@ functions
     TDHXInlet
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         log             true;
         writeFields     false;
         region          "fluidRegion";

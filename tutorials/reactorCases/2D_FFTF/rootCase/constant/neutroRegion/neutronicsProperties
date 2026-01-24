@@ -19,10 +19,10 @@ eigenvalueNeutronics    false;
 
 // For the GEM modeling, the fluid region name needs to be specified.
 // It is defaulted to "fluidRegion"
-fluidRegionName         fluidRegion; 
+fluidRegionName         fluidRegion;
 fastNeutrons    true;
 energyGroups    24; // for the diffusion calculation!
-precGroups      6; 
+precGroups      6;
 
 // Nuclear Data for both PK and diffusion
 nuclearData
@@ -68,7 +68,7 @@ nuclearData
     feedbackCoeffRhoCool        1.5E-05;
 
     //-
-    feedbackCoeffDoppler    5.0E-03;
+    feedbackCoeffDoppler        5.0E-03;
 
     //- Representative of structure radial expansion
     feedbackCoeffTStruct        -1.0E-05;

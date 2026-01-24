@@ -15,7 +15,6 @@ import FMU4FOAM
 import fmpy
 import os
 import pandas as pd
-import numpy as np
 import psutil
 
 #=============================================================================*

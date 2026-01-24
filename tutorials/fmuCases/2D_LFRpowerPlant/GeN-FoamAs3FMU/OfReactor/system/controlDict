@@ -105,7 +105,7 @@ functions
     avgCoolantTemperature
     {
         type            volFieldValue;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         operation       volAverage;
         region          fluidRegion;
         writeControl    adjustableRunTime;
@@ -160,7 +160,7 @@ functions
     mFlowInnerCore
     {
         type            massFlow; // [kg/s]
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         region          fluidRegion;
         regionType      faceZone;
         regionName      Edge_14_rotated;
@@ -175,7 +175,7 @@ functions
     mFlowOuterCore
     {
         type            massFlow; // [kg/s]
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         region          fluidRegion;
         regionType      faceZone;
         regionName      Edge_35_rotated;
@@ -191,7 +191,7 @@ functions
     mFlowSG
     {
         type            massFlow; // [kg/s]
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         region          fluidRegion;
         regionType      faceZone;
         regionName      Edge_102_rotated; // Edge_122_rotated;
@@ -206,7 +206,7 @@ functions
     mFlowPrimaryPumpInlet
     {
         type            massFlow; // [kg/s]
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         region          fluidRegion;
         regionType      faceZone;
         regionName      Edge_81_rotated; // Edge_102_rotated;
@@ -221,7 +221,7 @@ functions
     mFlowPrimaryPumpOutlet
     {
         type            massFlow; // [kg/s]
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         region          fluidRegion;
         regionType      faceZone;
         regionName      Edge_82_rotated; // Edge_103_rotated;
@@ -237,7 +237,7 @@ functions
     avgSGInletTemperature
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         region          fluidRegion;
         regionType      faceZone;
         regionName      Edge_94_rotated; // Edge_115_rotated;
@@ -252,7 +252,7 @@ functions
     avgSGOutletTemperature
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         region          fluidRegion;
         regionType      faceZone;
         regionName      Edge_98_rotated; // Edge_119_rotated;
@@ -268,7 +268,7 @@ functions
     avgLowerPlenumInnerCoreInletTemperature
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         region          fluidRegion;
         regionType      faceZone;
         regionName      Edge_13_rotated;
@@ -283,7 +283,7 @@ functions
     avgLowerPlenumOuterCoreInletTemperature
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         region          fluidRegion;
         regionType      faceZone;
         regionName      Edge_34_rotated;
@@ -299,7 +299,7 @@ functions
     avgInnerCoreInletTemperature
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         region          fluidRegion;
         regionType      faceZone;
         regionName      Edge_14_rotated;
@@ -314,7 +314,7 @@ functions
     avgInnerCoreOutletTemperature
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         region          fluidRegion;
         regionType      faceZone;
         regionName      Edge_15_rotated;
@@ -329,7 +329,7 @@ functions
     avgOuterCoreInletTemperature
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         region          fluidRegion;
         regionType      faceZone;
         regionName      Edge_35_rotated;
@@ -344,7 +344,7 @@ functions
     avgOuterCoreOutletTemperature
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFFNFunctionObjects.so" );
         region          fluidRegion;
         regionType      faceZone;
         regionName      Edge_36_rotated;
@@ -356,7 +356,7 @@ functions
         timeStart       $timeStartFunctions;
         log             true;
     }
-    
+
     corePower
     {
         type            volFieldValue;
@@ -373,7 +373,7 @@ functions
         scaleFactor     ${{72.0 * 0.363516}}; // 0.300239}}; // 0.382179}}; // 360/5 (wedge) * fuelFractionInCore // power.py
     }
 
-    
+
     subtract1
     {
         // Mandatory entries (unmodifiable)
@@ -420,7 +420,7 @@ functions
         timeStart       $timeStartFunctions;
         log             true;
     }
-    
+
 
     avg1
     {

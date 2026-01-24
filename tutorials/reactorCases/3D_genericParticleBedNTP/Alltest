@@ -10,7 +10,7 @@ touch "$resFile"
 
 # --- Run the simulation
 echo -e "Run tutorial 3D_genericParticleBedNTP ...\n" | tee -a $resFile
-# ./Allrun_shorter >> log.simulation
+./Allrun_shorter >> log.simulation
 echo -e "Done running tutorial 3D_genericParticleBedNTP ...\n" | tee -a $resFile
 
 

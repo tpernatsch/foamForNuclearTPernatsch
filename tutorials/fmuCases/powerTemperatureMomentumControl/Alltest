@@ -109,7 +109,7 @@ testAndPrintLine()
             "$name" "$value" "$ref" "$relErr" >> $resFile
 
         isTestFail=1
-    fi    
+    fi
 }
 
 

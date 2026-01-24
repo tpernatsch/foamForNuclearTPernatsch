@@ -15,9 +15,9 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-// This dict is the set of functions to evaluate interesting values with the 
-// -postProcess utility. Problems with running these functions while the 
-// simulation runs in parallel have been encountered. Using these functions on 
+// This dict is the set of functions to evaluate interesting values with the
+// -postProcess utility. Problems with running these functions while the
+// simulation runs in parallel have been encountered. Using these functions on
 // a reconstructed case works as excpected.
 
 functions
@@ -95,7 +95,7 @@ functions
         writeInterval   $writeInterval;
         scaleFactor     ${{0.58*2}}; // 0.58 is fuel structure packing fraction. 2 is bc half assemlby
     }
-    totalPower18 // 18 is the 1/12 assembly 
+    totalPower18 // 18 is the 1/12 assembly
     {
         type            volFieldValue;
         libs            (fieldFunctionObjects);
@@ -145,7 +145,7 @@ functions
     mFlowInlet15
     {
         type            massFlow;
-        libs            ("libfieldFunctionObjects.so");
+        libs            ("libFFNFunctionObjects.so");
         log             true;
         writeFields     true;
         writeControl    adjustableRunTime;
@@ -159,7 +159,7 @@ functions
     mFlowOutlet15
     {
         type            massFlow;
-        libs            ("libfieldFunctionObjects.so");
+        libs            ("libFFNFunctionObjects.so");
         log             true;
         writeFields     true;
         writeControl    adjustableRunTime;
@@ -174,7 +174,7 @@ functions
     mFlowInlet16
     {
         type            massFlow;
-        libs            ("libfieldFunctionObjects.so");
+        libs            ("libFFNFunctionObjects.so");
         log             true;
         writeFields     true;
         writeControl    adjustableRunTime;
@@ -188,7 +188,7 @@ functions
     mFlowOutlet16
     {
         type            massFlow;
-        libs            ("libfieldFunctionObjects.so");
+        libs            ("libFFNFunctionObjects.so");
         log             true;
         writeFields     true;
         writeControl    adjustableRunTime;
@@ -203,7 +203,7 @@ functions
     mFlowInlet17
     {
         type            massFlow;
-        libs            ("libfieldFunctionObjects.so");
+        libs            ("libFFNFunctionObjects.so");
         log             true;
         writeFields     true;
         writeControl    adjustableRunTime;
@@ -217,7 +217,7 @@ functions
     mFlowOutlet17
     {
         type            massFlow;
-        libs            ("libfieldFunctionObjects.so");
+        libs            ("libFFNFunctionObjects.so");
         log             true;
         writeFields     true;
         writeControl    adjustableRunTime;
@@ -232,7 +232,7 @@ functions
     mFlowInlet18
     {
         type            massFlow;
-        libs            ("libfieldFunctionObjects.so");
+        libs            ("libFFNFunctionObjects.so");
         log             true;
         writeFields     true;
         writeControl    adjustableRunTime;
@@ -246,7 +246,7 @@ functions
     mFlowOutlet18
     {
         type            massFlow;
-        libs            ("libfieldFunctionObjects.so");
+        libs            ("libFFNFunctionObjects.so");
         log             true;
         writeFields     true;
         writeControl    adjustableRunTime;
@@ -261,7 +261,7 @@ functions
     mFlowInlet22
     {
         type            massFlow;
-        libs            ("libfieldFunctionObjects.so");
+        libs            ("libFFNFunctionObjects.so");
         log             true;
         writeFields     true;
         writeControl    adjustableRunTime;
@@ -274,7 +274,7 @@ functions
     mFlowOutlet22
     {
         type            massFlow;
-        libs            ("libfieldFunctionObjects.so");
+        libs            ("libFFNFunctionObjects.so");
         log             true;
         writeFields     true;
         writeControl    adjustableRunTime;
@@ -288,7 +288,7 @@ functions
     mFlowInlet23
     {
         type            massFlow;
-        libs            ("libfieldFunctionObjects.so");
+        libs            ("libFFNFunctionObjects.so");
         log             true;
         writeFields     true;
         writeControl    adjustableRunTime;
@@ -302,7 +302,7 @@ functions
     mFlowOutlet23
     {
         type            massFlow;
-        libs            ("libfieldFunctionObjects.so");
+        libs            ("libFFNFunctionObjects.so");
         log             true;
         writeFields     true;
         writeControl    adjustableRunTime;
@@ -320,7 +320,7 @@ functions
     TOutlet15
     {
         type            TBulk;
-        libs            ("libfieldFunctionObjects.so");
+        libs            ("libFFNFunctionObjects.so");
         log             true;
         writeFields     false;
         writeControl    adjustableRunTime;
@@ -335,7 +335,7 @@ functions
     TOutlet16
     {
         type            TBulk;
-        libs            ("libfieldFunctionObjects.so");
+        libs            ("libFFNFunctionObjects.so");
         log             true;
         writeFields     false;
         writeControl    adjustableRunTime;
@@ -350,7 +350,7 @@ functions
     TOutlet17
     {
         type            TBulk;
-        libs            ("libfieldFunctionObjects.so");
+        libs            ("libFFNFunctionObjects.so");
         log             true;
         writeFields     false;
         writeControl    adjustableRunTime;
@@ -365,7 +365,7 @@ functions
     TOutlet18
     {
         type            TBulk;
-        libs            ("libfieldFunctionObjects.so");
+        libs            ("libFFNFunctionObjects.so");
         log             true;
         writeFields     false;
         writeControl    adjustableRunTime;
@@ -380,7 +380,7 @@ functions
     TOutlet22
     {
         type            TBulk;
-        libs            ("libfieldFunctionObjects.so");
+        libs            ("libFFNFunctionObjects.so");
         log             true;
         writeFields     false;
         writeControl    adjustableRunTime;
@@ -395,7 +395,7 @@ functions
     TOutlet23
     {
         type            TBulk;
-        libs            ("libfieldFunctionObjects.so");
+        libs            ("libFFNFunctionObjects.so");
         log             true;
         writeFields     false;
         writeControl    adjustableRunTime;
@@ -621,9 +621,9 @@ functions
 	    region          fluidRegion;
         fields
         (
-            T 
-            Tsurface.lumpedNuclearStructure 
-            T.lumpedNuclearStructure 
+            T
+            Tsurface.lumpedNuclearStructure
+            T.lumpedNuclearStructure
             Tmax.lumpedNuclearStructure
         );
         enabled         true;

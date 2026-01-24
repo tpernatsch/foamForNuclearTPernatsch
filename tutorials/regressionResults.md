@@ -1,42 +1,80 @@
 # GeN-Foam regression test suite
 
-Regression test of 29-sept.-2025 - 10:13:14
-OpenFOAM Version: v2506
-Tutorials successfully completed: 29/29  [![regressionTest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]()
+Regression test of 23-janv.-2026 - 17:54:12
+OpenFOAM Version: v2512
+Tutorials successfully completed: 31/33  [![regressionTest](https://img.shields.io/badge/Alltest-failed-red.svg?style=flat-square)]()
 
 ## Summary
 
 | Tutorial | Status | Time | GeN-Foam memory usage [Gb] |
 |:---------|:------:|:-:|:-:|
-| guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:01 | .027 < 0.2 |
+| ../tests | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:01 | 0 < 0.2 |
+| guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:01 | .029 < 0.2 |
 | guidedCases/2_reactorSlabReflected_1D_1Gr_neutronicDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:01 | .027 < 0.2 |
-| featureCases/1D_boiling | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:01:44 | .081 < 0.2 |
-| featureCases/1D_CHF/imposedPower | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:21:59 | .080 < 0.2 |
-| featureCases/1D_CHF/imposedTemperature | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:02:51 | .080 < 0.2 |
-| featureCases/1D_HX/onePhase | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:07 | .087 < 0.2 |
-| featureCases/1D_HX/twoPhase | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:01:12 | .089 < 0.2 |
-| featureCases/1D_PSBT_SC/Phase_Ex1_12223 | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:11 | .082 < 0.2 |
-| featureCases/1D_PSBT_SC/PhaseII_Ex1_01_5215 | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:01:23 | .089 < 0.2 |
-| featureCases/1D_PSBT_SC/PhaseII_Ex2_04_6770 | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 02:06:30 | .087 < 0.2 |
-| featureCases/2D_cavityBoussinesq | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:36 | .083 < 0.2 |
-| featureCases/2D_externalSourceDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:03 | .084 < 0.2 |
-| featureCases/2D_fullCoupling | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:09 | .085 < 0.2 |
-| featureCases/2D_KNS37-L22 | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:35:18 | .092 < 0.3 |
-| featureCases/2D_onePhaseAndPointKineticsCoupling | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:33 | .085 < 0.2 |
-| featureCases/2D_onePhaseAndSubcriticalPointKineticsCoupling | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:56 | .085 < 0.2 |
-| featureCases/2D_voidMotionNoPhaseChange | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:36 | .085 < 0.2 |
-| reactorCases/1D_MSR_pointKinetics | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:01:43 | .087 < 0.2 |
-| reactorCases/1D_thermalMSR_pointKinetics | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:53 | .087 < 0.2 |
-| reactorCases/2D_FFTF | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 03:12:19 | .156 < 0.3 |
-| reactorCases/2D_MSFR | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:18:32 | .182 < 0.3 |
-| reactorCases/3D_gFHR | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:25:43 | .796 < 1.5 |
-| reactorCases/3D_HTR-10 | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 02:53:26 | .772 < 1.0 |
-| reactorCases/3D_NTPfuelAssembly | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 02:09:00 | .129 < 0.2 |
-| reactorCases/3D_SmallESFR_NewSolverVerification | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:09:34 | .177 < 1.0 |
-| reactorCases/Godiva_SN | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 01:41:39 | 1.075 < 1.5 |
-| fmuCases/powerTemperatureMomentumControl | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:10 | .104 < 0.2 |
-| fmuCases/2D_PKCoupleFMI/comparisonFMU | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:01:33 | .214 < 0.3 |
-| fmuCases/2D_PKCoupleFMI/PIDcontrol | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:02:16 | .215 < 0.3 |
+| featureCases/1D_boiling | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:08:10 | .086 < 0.2 |
+| featureCases/1D_CHF/imposedPower | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:17:58 | .085 < 0.2 |
+| featureCases/1D_CHF/imposedTemperature | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:02:48 | .085 < 0.2 |
+| featureCases/1D_HX/onePhase | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:07 | .092 < 0.2 |
+| featureCases/1D_HX/twoPhase | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:01:14 | .095 < 0.2 |
+| featureCases/1D_PSBT_SC/Phase_Ex1_12223 | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:11 | .086 < 0.2 |
+| featureCases/1D_PSBT_SC/PhaseII_Ex1_01_5215 | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:01:23 | .095 < 0.2 |
+| featureCases/1D_PSBT_SC/PhaseII_Ex2_04_6770 | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 02:19:09 | .091 < 0.2 |
+| featureCases/2D_cavityBoussinesq | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:35 | .089 < 0.2 |
+| featureCases/2D_externalSourceDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:03 | .088 < 0.2 |
+| featureCases/2D_flowOverHeatedPlate | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:05:41 | .130 < 0.2 |
+| featureCases/2D_fullCoupling | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:09 | .091 < 0.2 |
+| featureCases/2D_KNS37-L22 | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 07:56:07 | .099 < 0.3 |
+| featureCases/2D_onePhaseAndPointKineticsCoupling | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:32 | .090 < 0.2 |
+| featureCases/2D_onePhaseAndSubcriticalPointKineticsCoupling | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:56 | .091 < 0.2 |
+| featureCases/2D_voidMotionNoPhaseChange | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:36 | .091 < 0.2 |
+| reactorCases/1D_MSR_pointKinetics | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:02:11 | .092 < 0.2 |
+| reactorCases/1D_thermalMSR_pointKinetics | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:50 | .092 < 0.2 |
+| reactorCases/2D_FFTF | [![Alltest](https://img.shields.io/badge/Alltest-failed-red.svg?style=flat-square)]() | 07:11:17 | .161 < 0.3 |
+| reactorCases/2D_MSFR | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:21:12 | .197 < 0.3 |
+| reactorCases/3D_genericParticleBedNTP | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:53:01 | .185 < 1.5 |
+| reactorCases/3D_gFHR | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:30:16 | .953 < 1.5 |
+| reactorCases/3D_HTR-10 | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 03:33:34 | .901 < 1.0 |
+| reactorCases/3D_KIWI-B-4E | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 04:03:55 | .725 < 1.5 |
+| reactorCases/3D_NTPfuelAssembly | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 02:48:49 | .138 < 0.2 |
+| reactorCases/3D_SmallESFR | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:16:54 | .189 < 1.0 |
+| reactorCases/Godiva_SN | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 02:03:05 | 1.343 < 1.5 |
+| fmuCases/powerTemperatureMomentumControl | [![Alltest](https://img.shields.io/badge/Alltest-failed-red.svg?style=flat-square)]() | 00:00:03 | .049 < 0.2 |
+| fmuCases/2D_PKCoupleFMI/comparisonFMU | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:01:32 | .165 < 0.3 |
+| fmuCases/2D_PKCoupleFMI/PIDcontrol | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:03:30 | .165 < 0.3 |
+
+--------------------------------------------------------------------------------
+
+## ../tests
+
+Test mole fraction x_H with 5% threshold ... passed with 5 points
+
+Test rho (density) with 15% threshold ... passed with 112 points
+
+Test cp (isobaric specific heat capacity) with 10% threshold ... passed with 40 points
+
+Test cv (isochoric specific heat capacity) with 15% threshold ... passed with 28 points
+
+Test mu (dynamic viscosity) with 25% threshold ...
+     WARNING: mu(1.03421e+07 Pa, 83.3333 K) = 6.65438e-06 Pa.s (exp: 5.1228e-06) -> rel error = 0.260092
+     WARNING: mu(3.10264e+07 Pa, 83.3333 K) = 1.17613e-05 Pa.s (exp: 8.70808e-06) -> rel error = 0.298321
+passed with 112 points
+
+Test Ha (specific enthalpy) with 50% threshold ... passed with 112 points
+
+Test D (diffusion) with 5% threshold ... passed with 6 points
+
+Test S (specific entropy) with 15% threshold ... passed with 112 points
+
+Test 1D polyharmonic spline RBF with 0.01% threshold ... passed with 4 points
+
+Test 2D polyharmonic spline RBF with 0.01% threshold ... passed with 5 points
+
+Test 2D polyharmonic spline RBF for small values with 0.02% threshold ... passed with 2 points
+
+
+Time = 00:00:01
+
+Memory = 0 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -48,16 +86,11 @@ Done running tutorial 1_reactorSlab_1D_1Gr_neutronicDiffusion ...
 
 1_reactorSlab_1D_1Gr_neutronicDiffusion has converged
 
-keff with 1e-05 relative error
-|      | Simulated | Expected |
-|:-----|:---------:|:--------:|
-| keff | 1.0000037 |      1.0 |
-
 All tests passed
 
 Time = 00:00:01
 
-Memory = .027 Gb (Passed, expected: 0.2 Gb)
+Memory = .029 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -91,9 +124,9 @@ Done running tutorial 1D_boiling ...
 1D_boiling has converged
 
 
-Time = 00:01:44
+Time = 00:08:10
 
-Memory = .081 Gb (Passed, expected: 0.2 Gb)
+Memory = .086 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -109,11 +142,11 @@ Structure temperature at the top of the channel at 90 seconds with 0.01 relative
 Perfect match:
 |          | Simulated | Expected |
 |:---------|:---------:|:--------:|
-| TwallTop | 2610.24 | 2617.31 |
+| TwallTop | 2611.15 | 2617.31 |
 
-Time = 00:21:59
+Time = 00:17:58
 
-Memory = .080 Gb (Passed, expected: 0.2 Gb)
+Memory = .085 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -129,26 +162,14 @@ Heat flux of the structure at the top of the channel at 40 seconds with 0.01 rel
 Perfect match:
 |           | Simulated | Expected |
 |:----------|:---------:|:--------:|
-| Qwall Top | 32947.6 | 32947.6 |
+| Qwall Top | 32984.2 | 32947.6 |
 
-Time = 00:02:51
+Time = 00:02:48
 
-Memory = .080 Gb (Passed, expected: 0.2 Gb)
+Memory = .085 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
-## featureCases/1D_HX/onePhase
-
-Run tutorial 1D_HX onePhase ...
-
-Done running tutorial 1D_HX onePhase ...
-
-1D_HX onePhase has converged
-
-
-Time = 00:00:07
-
-Memory = .087 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -161,9 +182,9 @@ Done running tutorial 1D_HX twoPhase ...
 1D_HX twoPhase has converged
 
 
-Time = 00:01:12
+Time = 00:01:14
 
-Memory = .089 Gb (Passed, expected: 0.2 Gb)
+Memory = .095 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -183,7 +204,7 @@ Perfect match:
 
 Time = 00:00:11
 
-Memory = .082 Gb (Passed, expected: 0.2 Gb)
+Memory = .086 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -204,7 +225,7 @@ Perfect match:
 
 Time = 00:01:23
 
-Memory = .089 Gb (Passed, expected: 0.2 Gb)
+Memory = .095 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -220,12 +241,12 @@ alpha.vapour at the end of the channel with 0.05 relative error
 Perfect match:
 |                       | Simulated | Expected |
 |:----------------------|:---------:|:--------:|
-| Max alpha vapour      | 0.322952 | 0.319074 |
+| Max alpha vapour      | 0.322955 | 0.319074 |
 | T at max alpha vapour | 625.839 | 625.826 |
 
-Time = 02:06:30
+Time = 02:19:09
 
-Memory = .087 Gb (Passed, expected: 0.2 Gb)
+Memory = .091 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -238,9 +259,9 @@ Done running tutorial 2D_cavityBoussinesq ...
 2D_cavityBoussinesq has converged
 
 
-Time = 00:00:36
+Time = 00:00:35
 
-Memory = .083 Gb (Passed, expected: 0.2 Gb)
+Memory = .089 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -266,7 +287,24 @@ Perfect match:
 
 Time = 00:00:03
 
-Memory = .084 Gb (Passed, expected: 0.2 Gb)
+Memory = .088 Gb (Passed, expected: 0.2 Gb)
+
+--------------------------------------------------------------------------------
+
+## featureCases/2D_flowOverHeatedPlate
+
+Running tutorials...
+Done running tutorials.
+
+Results comparison:
+| Case              | Tmax (sim) | Tmax (exp) | Converged | Status |
+|:------------------|:----------:|:----------:|:---------:|:------:|
+| CHTLoop           | 309.278000 | 309.287000 |       YES |     OK |
+| boundaryCoupling  | 309.278000 | 309.287000 |       YES |     OK |
+
+Time = 00:05:41
+
+Memory = .130 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -283,7 +321,7 @@ Transient (no driveline) has converged
 
 Time = 00:00:09
 
-Memory = .085 Gb (Passed, expected: 0.2 Gb)
+Memory = .091 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -299,13 +337,13 @@ Test with 0.2 relative error
 Perfect match:
 |                   | Simulated | Expected |
 |:------------------|:---------:|:--------:|
-| Time              | 12.410400262564377 | 12.514 |
-| alpha.vapour      | 0.166910 | 0.178709 |
-| T.activeStructure | 828.177800 | 830.2673 |
+| Time              | 12.484178273178323 | 12.514 |
+| alpha.vapour      | 0.169341 | 0.178709 |
+| T.activeStructure | 828.801800 | 830.2673 |
 
-Time = 00:35:18
+Time = 07:56:07
 
-Memory = .092 Gb (Passed, expected: 0.3 Gb)
+Memory = .099 Gb (Passed, expected: 0.3 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -324,9 +362,9 @@ Transient (with driveline) has converged
 Transient (with boron) has converged
 
 
-Time = 00:00:33
+Time = 00:00:32
 
-Memory = .085 Gb (Passed, expected: 0.2 Gb)
+Memory = .090 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -354,7 +392,7 @@ Perfect match:
 
 Time = 00:00:56
 
-Memory = .085 Gb (Passed, expected: 0.2 Gb)
+Memory = .091 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -369,7 +407,7 @@ Done running tutorial 2D_voidMotionNoPhaseChange ...
 
 Time = 00:00:36
 
-Memory = .085 Gb (Passed, expected: 0.2 Gb)
+Memory = .091 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -391,9 +429,9 @@ Perfect match:
 |:------|:---------:|:--------:|
 | Power | 613807000 | 613794000 |
 
-Time = 00:01:43
+Time = 00:02:11
 
-Memory = .087 Gb (Passed, expected: 0.2 Gb)
+Memory = .092 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -415,9 +453,9 @@ Perfect match:
 |:------|:---------:|:--------:|
 | Power | 415251000 | 415258000 |
 
-Time = 00:00:53
+Time = 00:00:50
 
-Memory = .087 Gb (Passed, expected: 0.2 Gb)
+Memory = .092 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -432,20 +470,20 @@ Energy steady state has converged
 Transient has converged
 
 Reactivity contributions with 0.01 relative error
-Perfect match:
+Divergent results:
 |             | Simulated | Expected |
 |:------------|:---------:|:--------:|
-| Doppler     | 238.1439 | 238.1535 |
-| Cladding    | 0.8702606 | 0.8706593 |
-| Density     | -2.52507 | -2.523688 |
-| Structures  | -5.563018 | -5.55205 |
-| Driveline   | -7.261415 | -7.249654 |
-| GEM         | -464.8491 | -464.8492 |
-| Total power | 28766.23 | 28761.75 |
+| Doppler     | 255.5716 | 238.1535 |
+| Cladding    | 2.144452 | 0.8706593 |
+| Density     | 0.8104777 | -2.523688 |
+| Structures  | 17.35133 | -5.55205 |
+| Driveline   | 13.0196 | -7.249654 |
+| GEM         | -464.8537 | -464.8492 |
+| Total power | 492922.8 | 28761.75 |
 
-Time = 03:12:19
+Time = 07:11:17
 
-Memory = .156 Gb (Passed, expected: 0.3 Gb)
+Memory = .161 Gb (Passed, expected: 0.3 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -468,9 +506,34 @@ Perfect match:
 | keff        | 0.96031 | 0.960283 |
 | Total power | 20001600 | 20000000 |
 
-Time = 00:18:32
+Time = 00:21:12
 
-Memory = .182 Gb (Passed, expected: 0.3 Gb)
+Memory = .197 Gb (Passed, expected: 0.3 Gb)
+
+--------------------------------------------------------------------------------
+
+## reactorCases/3D_genericParticleBedNTP
+
+Run tutorial 3D_genericParticleBedNTP ...
+
+Done running tutorial 3D_genericParticleBedNTP ...
+
+3D_genericParticleBedNTP has converged
+
+|                 Quantity                |   Simulated  | Expected  |
+|:----------------------------------------|:------------:|:---------:|
+| innerPropellantOutlet15                 | 804.86569    | 804.86569 |
+| innerPropellantOutlet16                 | 1361.7657    | 1361.7657 |
+| innerPropellantOutlet17                 | 1579.3129    | 1579.3129 |
+| innerPropellantOutlet18                 | 1577.1483    | 1577.1483 |
+| innerPropellantOutlet22                 | 1151.2722    | 1151.2722 |
+| innerPropellantOutlet23                 | 1435.1303    | 1435.1303 |
+
+Perfect match
+
+Time = 00:53:01
+
+Memory = .185 Gb (Passed, expected: 1.5 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -492,9 +555,9 @@ Perfect match:
 | Tfmax min | 900.664 | 900.664 |
 | Tfmax max | 1062.96 | 1062.87 |
 
-Time = 00:25:43
+Time = 00:30:16
 
-Memory = .796 Gb (Passed, expected: 1.5 Gb)
+Memory = .953 Gb (Passed, expected: 1.5 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -514,9 +577,41 @@ Perfect match:
 | Tfmax min | 523.15 | 523.15 |
 | Tfmax max | 1441.38 | 1441.35 |
 
-Time = 02:53:26
+Time = 03:33:34
 
-Memory = .772 Gb (Passed, expected: 1.0 Gb)
+Memory = .901 Gb (Passed, expected: 1.0 Gb)
+
+--------------------------------------------------------------------------------
+
+## reactorCases/3D_KIWI-B-4E
+
+Run tutorial 3D_KIWI-B-4E ...
+
+Done running tutorial 3D_KIWI-B-4E ...
+
+Neutronics steady state has converged
+
+Fluid-Mechanics steady state has converged
+
+Thermal-hydraulic steady state has converged
+
+Simulation & reference comparison
+  -> 0.001 % maximum relative error for (keff, power neutro & fluid)
+  -> 0.05 % maximum relative error for (Tout)
+
+|                         | Simulated | Expected  | Error [%] |
+|:------------------------|:---------:|:---------:|:---------:|
+| keff                    | 1.0940776 | 1.0940776 |         0 | # Passed
+| Total power neutro [MW] |     905.0 |       905 |         0 | # Passed
+| Total power fluid  [MW] | 905.00011 |       905 |   -.00001 | # Passed
+| Outlet temperature  [K] |  1762.667 |  1762.667 |         0 | # Passed
+
+All test passed
+
+
+Time = 04:03:55
+
+Memory = .725 Gb (Passed, expected: 1.5 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -543,13 +638,13 @@ Simulation & reference comparison
 All test passed
 
 
-Time = 02:09:00
+Time = 02:48:49
 
-Memory = .129 Gb (Passed, expected: 0.2 Gb)
+Memory = .138 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
-## reactorCases/3D_SmallESFR_NewSolverVerification
+## reactorCases/3D_SmallESFR
 
 Run tutorial 3D_SmallESFR ...
 
@@ -557,18 +652,18 @@ Done running tutorial 3D_SmallESFR ...
 
 Steady state - Legacy has converged
 
-Steady state - New has converged
+Steady state - Extended has converged
 
 keff test with 0.001 relative error
 Perfect match:
-|                | Simulated | Expected |
-|:---------------|:---------:|:--------:|
-| keff - Legacy  | 0.936873  | 0.936827 |
-| keff - New     | 0.936872  | 0.936827 |
+|                 | Simulated | Expected |
+|:--------------- |:---------:|:--------:|
+| keff - Legacy   | 0.936873  | 0.936827 |
+| keff - Extended | 0.936872  | 0.936827 |
 
-Time = 00:09:34
+Time = 00:16:54
 
-Memory = .177 Gb (Passed, expected: 1.0 Gb)
+Memory = .189 Gb (Passed, expected: 1.0 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -586,9 +681,9 @@ Perfect match:
 |:-----|:---------:|:--------:|
 | keff | 0.980106 | 0.980106 |
 
-Time = 01:41:39
+Time = 02:03:05
 
-Memory = 1.075 Gb (Passed, expected: 1.5 Gb)
+Memory = 1.343 Gb (Passed, expected: 1.5 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -598,22 +693,12 @@ Run tutorial powerTemperatureMomentumControl ...
 
 Done running tutorial powerTemperatureMomentumControl ...
 
-GeN-Foam + Modelica FMU has converged
-
-Simulation & reference comparison
-  -> 0.1 % maximum relative error for (Tout)
-
-|                         | Simulated | Expected  | Error [%] |
-|:------------------------|:---------:|:---------:|:---------:|
-| Outlet temp 1 [K]       |   392.659 |     392.6 |      -.01 | # Passed
-| Outlet temp 2 [K]       |    392.64 |     392.6 |      -.01 | # Passed
-
-All test passed
+GeN-Foam + Modelica FMU has NOT converged
 
 
-Time = 00:00:10
+Time = 00:00:03
 
-Memory = .104 Gb (Passed, expected: 0.2 Gb)
+Memory = .049 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -631,10 +716,20 @@ Steady State uncoupled has converged
 
 Transient uncoupled has converged
 
+Simulation & reference comparison
+  -> 0.1 % maximum relative error for (Tout)
 
-Time = 00:01:33
+|                         | Simulated | Expected  | Error [%] |
+|:------------------------|:---------:|:---------:|:---------:|
+| Total power [a.u]       |  1.531497 |  1.531511 |         0 | # Passed
+| Total reactivity [pcm]  |   3.08637 |  3.084798 |      -.05 | # Passed
 
-Memory = .214 Gb (Passed, expected: 0.3 Gb)
+All test passed
+
+
+Time = 00:01:32
+
+Memory = .165 Gb (Passed, expected: 0.3 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -648,7 +743,17 @@ Steady State has converged
 
 Transient has converged
 
+Simulation & reference comparison
+  -> 0.1 % maximum relative error for (Tout)
 
-Time = 00:02:16
+|                         | Simulated | Expected  | Error [%] |
+|:------------------------|:---------:|:---------:|:---------:|
+| Total power [a.u]       |  1.100187 |       1.1 |      -.01 | # Passed
+| Total reactivity [pcm]  | 0.009295827 |    0.0093 |       .04 | # Passed
 
-Memory = .215 Gb (Passed, expected: 0.3 Gb)
+All test passed
+
+
+Time = 00:03:30
+
+Memory = .165 Gb (Passed, expected: 0.3 Gb)

@@ -55,7 +55,6 @@ PIMPLE
     correctUntilConvergence     true;
     momentumMode                cellCenteredFaceReconstruction;
     porousInterfaceSharpness    0.5;
-    minMagU                     0.01;
     solveFluidMechanics         true;
     solveEnergy                 true;
 

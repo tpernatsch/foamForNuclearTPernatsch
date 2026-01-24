@@ -66,56 +66,6 @@ maxCo               1;
 
 maxPowerVariation   0.025;
 
-functions
-{
-    outlet1
-    {
-        type            TBulk;
-        libs            ( "libFunctionObjects.so" );
-        log             true;
-        region          fluidRegion;
-        regionType      patch;
-        regionName      outlet1;
-        thermoName      "thermophysicalProperties";
-        alphaRhoPhiName "alphaRhoPhi";
-    }
-
-    outlet2
-    {
-        type            TBulk;
-        libs            ( "libFunctionObjects.so" );
-        log             true;
-        region          fluidRegion;
-        regionType      patch;
-        regionName      outlet2;
-        thermoName      "thermophysicalProperties";
-        alphaRhoPhiName "alphaRhoPhi";
-    }
-
-    massFlow1
-    {
-        type            massFlow;
-        libs            ( "libFunctionObjects.so" );
-        log             true;
-        region          fluidRegion;
-        regionType      patch;
-        regionName      outlet1;
-        alphaRhoPhiName "alphaRhoPhi";
-        scaleFactor     1;
-    }
-
-    massFlow2
-    {
-        type            massFlow;
-        libs            ( "libFunctionObjects.so" );
-        log             true;
-        region          fluidRegion;
-        regionType      patch;
-        regionName      outlet2;
-        alphaRhoPhiName "alphaRhoPhi";
-        scaleFactor     1;
-    }
-}
 
 libs
 (
@@ -128,9 +78,61 @@ functions
     {
         type            FMUSimulator;
         libs            (pyFMUSim);
-        pyClassName     momentumSourceTest;
-        pyFileName      momentumSourceTest;
+        // pyClassName     momentumSourceTest;
+        // pyFileName      momentumSourceTest;
+        pyClassName     ExternalReactivityController;
+        pyFileName      ExternalReactivityController;
     }
+
+    // /*
+    outlet1
+    {
+        type            TBulk;
+        libs            ( "libFFNFunctionObjects.so" );
+        log             true;
+        region          fluidRegion;
+        regionType      patch;
+        regionName      outlet1;
+        thermoName      "thermophysicalProperties";
+        alphaRhoPhiName "alphaRhoPhi";
+    }
+
+    outlet2
+    {
+        type            TBulk;
+        libs            ( "libFFNFunctionObjects.so" );
+        log             true;
+        region          fluidRegion;
+        regionType      patch;
+        regionName      outlet2;
+        thermoName      "thermophysicalProperties";
+        alphaRhoPhiName "alphaRhoPhi";
+    }
+
+    massFlow1
+    {
+        type            massFlow;
+        libs            ( "libFFNFunctionObjects.so" );
+        log             true;
+        region          fluidRegion;
+        regionType      patch;
+        regionName      outlet1;
+        alphaRhoPhiName "alphaRhoPhi";
+        scaleFactor     1;
+    }
+
+    massFlow2
+    {
+        type            massFlow;
+        libs            ( "libFFNFunctionObjects.so" );
+        log             true;
+        region          fluidRegion;
+        regionType      patch;
+        regionName      outlet2;
+        alphaRhoPhiName "alphaRhoPhi";
+        scaleFactor     1;
+    }
+    // */
 }
 
 // ************************************************************************* //

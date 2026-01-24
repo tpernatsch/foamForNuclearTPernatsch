@@ -27,7 +27,7 @@ then
     cd steadyState
 
     foamDictionary system/controlDict -entry endTime -set $steadyStateDuration
-    cp constant/regionsDict_steadyState constant/regionsDict
+    cp ../dictionaries/steadyState/regionsDict system/regionsDict
     GeN-Foam -initializeMappedFields > log.GeN-Foam.initializeMappedFields
 
     GeN-Foam |
@@ -54,7 +54,7 @@ foamDictionary system/controlDict -entry endTime -set $(($steadyStateDuration+$t
 foamDictionary system/controlDict -entry deltaT -set 1e-3
 foamDictionary system/controlDict -entry writeControl -set timeStep
 foamDictionary system/controlDict -entry writeInterval -set 10
-cp constant/regionsDict_transient constant/regionsDict
+cp ../dictionaries/transient/regionsDict system/regionsDict
 GeN-Foam -initializeMappedFields > log.GeN-Foam.initializeMappedFields
 
 GeN-Foam |

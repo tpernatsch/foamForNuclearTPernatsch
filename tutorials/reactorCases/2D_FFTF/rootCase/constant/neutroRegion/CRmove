@@ -27,7 +27,7 @@ zones
         endTime     201.7;
         speed       0.0; //- Positive is entering the core (neg Z)
         initialDistanceFromMeshCR 0.0;  //- Distance from the position defined
-                                        //  in the mesh (postive towards the
+                                        //  in the mesh (positive towards the
                                         //  core)
         followerName    followerCellZoneName;
     }

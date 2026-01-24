@@ -15,7 +15,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-convertToMeters 1;
+scale 1;
 
 vertices
 (
@@ -50,7 +50,7 @@ vertices
     (2 0.07 0.01)
     (1.5 0.07 0.01)
     */
-    
+
 );
 
 blocks

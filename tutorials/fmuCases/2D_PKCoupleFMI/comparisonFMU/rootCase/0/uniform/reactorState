@@ -23,8 +23,8 @@ FoamFile
     The intial precursor concentrations can be specified via the
     precursorPowers keyword. If not found, precursor concentration are
     initialized so to be in equilibrium with the starting conditions (i.e.
-    a steady state is assumed). 
-    
+    a steady state is assumed).
+
     NB: pTarget MUST be the same as the one used for reaching the steady-state.
     As power, GeN-Foam uses what it finds under powerDensity, or under the
     powerDensity of the fluidRegion if it does not find a powerDensity in the
@@ -36,6 +36,6 @@ FoamFile
 keff            1.003457;
 
 //-
-pTarget         10000000;
+power           10000000;
 
 // ************************************************************************* //
