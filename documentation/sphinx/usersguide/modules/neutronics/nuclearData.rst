@@ -7,9 +7,9 @@ The *nuclearData* dictionary
 In GeN-Foam, cross-sections and several other neutronics properties are handled
 by the :ref:`XS.H <XS>` class. Detailed explanations on the file format are provided in
 :ref:`XS.H <XS>` and in the tutorials (e.g `3D_SmallESFR
-<https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/neutroRegion/nuclearData>`_).
+<https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/neutroRegion/neutronicsProperties>`_).
 
-The *nuclearData* dictionary can be found under *constant/neutroRegion/*. It
+The *nuclearData* dictionary can be found under *constant/(neutronicsRegionName)/neutronicsProperties*. It
 contains all basic nuclear properties for the reference and perturbed reactor
 states. For instance, including ``TFuel`` in the ``reference`` state and a perturbed state
 represents the temperatures at which the reference and perturbed cross-sections
@@ -21,7 +21,7 @@ are used.
 
 Special field for axial and radial expansions are provided as ``axExp`` and
 ``radExp`` (see `3D_SmallESFR
-<https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/neutroRegion/nuclearData>`_).
+<https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/neutroRegion/neutronicsProperties>`_).
 
 Nuclear data can be generated using any nuclear code.
 
@@ -37,7 +37,6 @@ The entry ``discFactor`` is used only if discontinuity factors have to be used.
 The term ``integralFlux``, is used only if the automatic adjustment of
 discontinuity factors is performed (see :ref:`FIORINA2016212 <FIORINA2016212>`). Nonetheless, these entries
 should always be present.
-
 
 
 XS parametrization
@@ -57,7 +56,7 @@ default mode is ``1``, which guarantee a linear interpolation:
 :`3`: :math:`\phi(r) = |r^3|`
 :`4`: :math:`\phi(r) = r^4 \ln(r)`
 
-.. figure:: ../images/fig_RBF_interpolationOrders.png
+.. figure:: ../../../images/fig_RBF_interpolationOrders.png
     :width: 500
     :alt: Effects of Polyharmonic Spline Radial Basis Function order on arbitrary set of XS points.
 
@@ -78,48 +77,51 @@ coupling with other solvers (see the :ref:`coupling page <userguide_coupling>`).
 
 .. code :: cpp
 
-    xsVariables
+    nuclearData
     {
-        TFuel       log;
-        rhoCool     lin;
-    }
-
-    states
-    (
-        reference // Mandatory name not to be modified
+        xsVariables
         {
-            TFuel   900;
-            rhoCool 4125;
+            TFuel       log;
+            rhoCool     lin;
+        }
 
-            zones
-            (
-                zone1
-                {
+        states
+        (
+            reference // Mandatory name not to be modified
+            {
+                TFuel   900;
+                rhoCool 4125;
+
+                zones
+                (
+                    zone1
+                    {
+                        ...
+                    }
                     ...
-                }
-                ...
-            );
-        }
+                );
+            }
 
-        Tfuel1200K // Arbitrary name
-        {
-            TFuel   1200;
-            #include "XSTfuel1200K" // OpenFOAM shortcut to attach file content at this location
-        }
+            Tfuel1200K // Arbitrary name
+            {
+                TFuel   1200;
+                #include "XSTfuel1200K" // OpenFOAM shortcut to attach file content at this location
+            }
 
-        rhoCool3500kgm3
-        {
-            rhoCool 3500;
-            #include "XSrhoCool3500kgm3"
-        }
+            rhoCool3500kgm3
+            {
+                rhoCool 3500;
+                #include "XSrhoCool3500kgm3"
+            }
 
-        Tfuel1200KandRhoCool3500kgm3
-        {
-            TFuel   1200;
-            rhoCool 3500;
-            #include "XSTfuel1200KandRhoCool3500kgm3"
-        }
-    );
+            Tfuel1200KandRhoCool3500kgm3
+            {
+                TFuel   1200;
+                rhoCool 3500;
+                #include "XSTfuel1200KandRhoCool3500kgm3"
+            }
+        );
+    }
 
 
 .. note ::
@@ -140,22 +142,24 @@ coupling with other solvers (see the :ref:`coupling page <userguide_coupling>`).
 
 .. code :: cpp
 
-    xsVariables
-    {}
+    nuclearData
+    {
+        xsVariables
+        {}
 
-    states
-    (
-        reference
-        {
-            zones
-            ();
-        }
-    );
-
+        states
+        (
+            reference
+            {
+                zones
+                ();
+            }
+        );
+    }
 
 One can find more details on all the parameters in the :ref:`XS.H <XS>` file and commented
 examples of *nuclearData* in the tutorials
-`3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/neutroRegion/nuclearData>`_ (for diffusion or SP3),
-`Godiva_SN <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/Godiva_SN/constant/neutroRegion/nuclearData>`_ (for discrete ordinates) and
-`2D_onePhaseAndPointKineticsCoupling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/2D_onePhaseAndPointKineticsCoupling/rootCase/constant/neutroRegion/nuclearData>`_ (for point kinetics).
+`3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/neutroRegion/neutronicsProperties>`_ (for diffusion or SP3),
+`Godiva_SN <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/Godiva_SN/constant/neutroRegion/neutronicsProperties>`_ (for discrete ordinates) and
+`2D_onePhaseAndPointKineticsCoupling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/2D_onePhaseAndPointKineticsCoupling/rootCase/constant/neutroRegion/neutronicsProperties>`_ (for point kinetics).
 `2D_onePhaseAndSubcriticalPointKineticsCoupling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/2D_onePhaseAndSubcriticalPointKineticsCoupling/rootCase/constant/neutroRegion/externalSource>`_ (for subcritical point kinetics).

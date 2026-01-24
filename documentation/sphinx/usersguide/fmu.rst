@@ -34,6 +34,17 @@ Then execute:
     ./Allwmake --fmi -j<N>
 
 
+.. warning::
+
+  Make sure install the Python development package with the appropriate version
+  of Python (``XX``) and update the following file the correct Python version
+  ``thirdParty/FMU4FOAM/ECI4FOAM/src/embeddingPython/Make/options``:
+
+    .. code :: bash
+
+        sudo apt-get install python3.XX-dev
+
+
 Alternative installation from the original FMU4FOAM repository
 --------------------------------------------------------------
 

@@ -45,14 +45,14 @@ usage:
       }
 
   - comment: |-
-      This is a detailed example of use of this specific function object. 
+      This is a detailed example of use of this specific function object.
     snippet: |-
       functions
       {
         yourPressureDropName
         {
             type           pressureDrop;
-            libs            ("libfieldFunctionObjects.so");
+            libs            ("libFFNFunctionObjects.so");
             ...
             writeToFile    yes;
             log            yes;

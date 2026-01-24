@@ -40,14 +40,14 @@ usage:
       }
 
   - comment: |-
-      This is a detailed example of use of this specific function object. 
+      This is a detailed example of use of this specific function object.
     snippet: |-
       functions
       {
         yourTBulkName
         {
             type            TBulk;
-            libs            ( "libfieldFunctionObjects.so" );
+            libs            ( "libFFNFunctionObjects.so" );
             log             true;
             writeFields     false;
             region          "fluidRegion";

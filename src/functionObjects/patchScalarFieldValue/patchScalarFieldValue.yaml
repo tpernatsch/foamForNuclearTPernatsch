@@ -15,7 +15,7 @@ options:
     type: bool
     required: false
     default: true
-    description: write data to file 
+    description: write data to file
   - key: log
     type: bool
     required: false
@@ -25,12 +25,12 @@ options:
     type: word
     required: true
     default:
-    description: patch name 
+    description: patch name
   - key: field
     type: word
     required: true
     default:
-    description: field name 
+    description: field name
 
 
 usage:
@@ -45,14 +45,14 @@ usage:
           }
       }
   - comment: |-
-      This is a detailed example of use of this specific function object. 
+      This is a detailed example of use of this specific function object.
     snippet: |-
       functions
       {
         patchScalarFieldValue1
         {
             type        patchScalarFieldValue;
-            libs        ("libFunctionObjects.so");
+            libs        ("libFFNFunctionObjects.so");
             ...
             writeToFile   true;
             log           false;

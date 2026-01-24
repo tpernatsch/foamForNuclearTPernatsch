@@ -39,11 +39,11 @@ options:
     type: bool
     required: false
     default: true
-    description: Process the internal field 
+    description: Process the internal field
   - key: threshold
     type: scalar
     required: true
-    default: 
+    default:
     description: Field value to identify extents boundary
   - key: referencePosition
     type: vector
@@ -53,13 +53,13 @@ options:
   - key: fields
     type: wordList
     required: true
-    default: 
+    default:
     description: List of fields to process
   - key: maskFields
     type: wordList
     required: true
-    default: 
-    description: List of mask fields 
+    default:
+    description: List of mask fields
   - key: patches
     type: wordList
     required: false
@@ -80,14 +80,14 @@ usage:
       }
 
   - comment: |-
-      This is a detailed example of use of this specific function object. 
+      This is a detailed example of use of this specific function object.
     snippet: |-
       functions
       {
         fieldDiffExtents1
         {
             type        fieldDiffExtents;
-            libs        ("libFunctionObjects.so");
+            libs        ("libFFNFunctionObjects.so");
             ...
             writeToFile yes;
             log         yes;
@@ -96,5 +96,3 @@ usage:
             patches     ();
         }
       }
-
-

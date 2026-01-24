@@ -247,6 +247,10 @@ except ModuleNotFoundError:
     # Error handling
     pass
 
+except ImportError:
+    # Error handling
+    pass
+
 
 try:
     import FMU4FOAM

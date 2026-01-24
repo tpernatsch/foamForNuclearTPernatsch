@@ -17,8 +17,8 @@ The *phaseProperties* dictionary is a complex dictionary that handles:
    - Regime maps.
    - Physics models for drag (these can be traditional pressure drops correlations) and heat transfer (these can be traditional Nusselt number correlations). For two-phase flow simulations, drag and heat transfer models should also be specified for the different phase pairs (fluid 1 to to structure, fluid 2 to structure, fluid 1 to fluid 2). In addition, two-phase flow simulation require models for virtual mass coefficient, pair geometry models, phase change models
    - For two-phase flow simulations:
-      - The name of the phases 
-      - The propoerties of each phase (e.g., state of matter, dispersed diameter model, etc)
+      - The name of the phases
+      - The properties of each phase (e.g., state of matter, dispersed diameter model, etc)
 
 Detailed, commented examples are provided in the tutorials
 `3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/fluidRegion/phaseProperties>`_ (single phase) and
@@ -27,19 +27,20 @@ Detailed, commented examples are provided in the tutorials
 flow-regime map can be found in
 `1D_PSBT_SC <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/1D_PSBT_SC/Phase_Ex1_12223/constant/fluidRegion/phaseProperties>`_.
 
+
 Sub-dictionaries
 ~~~~~~~~~~~~~~~~
 
 .. toctree::
    :maxdepth: 1
-   
+
    structureProperties/index
    regimeMapModels/index
    physicsModels/index
    physicsModels/indexTwoPhase
    twoPhaseSpecific/index
-   ../../../../cppapi/generated/porousMediaModels/phaseModels/structureModels/pump/pump.rst 
-   ../../../../cppapi/generated/porousMediaModels/phaseModels/structureModels/heatExchanger/heatExchanger.rst 
+   ../../../../cppapi/generated/porousMediaModels/phaseModels/structureModels/pump/pump.rst
+   ../../../../cppapi/generated/porousMediaModels/phaseModels/structureModels/heatExchanger/heatExchanger.rst
 
 
 
@@ -59,7 +60,3 @@ Sub-dictionaries
 .. coupling of porous-medium (sub-channel-like in 2D and 3D, or system-code-like)
 .. treatment of complex structures (e.g., core and heat exchangers) with a standard
 .. CFD treatment of clear-fluid regions (e.g., plena and pools).
-
-
-
-

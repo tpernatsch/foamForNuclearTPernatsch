@@ -31,14 +31,14 @@ usage:
       }
 
   - comment: |-
-      This is a detailed example of use of this specific function object. 
+      This is a detailed example of use of this specific function object.
     snippet: |-
       functions
       {
         stopIfMaxFieldDiff1
         {
             type          stopIfMaxFieldDiff;
-            libs          ("libfieldFunctionObjects.so");
+            libs          ("libFFNFunctionObjects.so");
             ...
             writeToFile   yes;
             log           yes;
@@ -46,4 +46,3 @@ usage:
             field2        fieldName;
         }
       }
-

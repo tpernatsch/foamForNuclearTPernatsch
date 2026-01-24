@@ -43,7 +43,7 @@ usage:
         yourMassFlowName
         {
             type              massFlow;
-            libs              ("libfieldFunctionObjects.so");
+            libs              ("libFFNFunctionObjects.so");
             ...
             writeToFile       yes;
             log               yes;

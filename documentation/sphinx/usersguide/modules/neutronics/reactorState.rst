@@ -16,14 +16,14 @@ sub-folder. It includes essentially 3 keywords:
        resulting *keff* will be the one that makes the reactor critical in a
        subsequent transient simulation. *keff* is disregarded by the point
        kinetics sub-solver.
-:pTarget: is used in the spatial kinetics solvers as target power when doing an
-          eigenvalue calculation. It is also used by the point kinetics
-          sub-solver, but only to correctly plot results. As power, GeN-Foam
-          uses what it finds under powerDensity of the neutroRegion, or under
-          the powerDensity of the fluidRegion if it does not find a
-          powerDensity in the neutroRegion. To correctly plot point kinetics
-          results, pTarget must be consistent with the mentioned power
-          densities.
+:power: is used in the spatial kinetics solvers as target power when doing an
+        eigenvalue calculation. It is also used by the point kinetics
+        sub-solver, but only to correctly plot results. As power, GeN-Foam
+        uses what it finds under powerDensity of the neutroRegion, or under
+        the powerDensity of the fluidRegion if it does not find a
+        powerDensity in the neutroRegion. To correctly plot point kinetics
+        results, pTarget must be consistent with the mentioned power
+        densities.
 :precursorPowers: can be read by the point kinetics sub-solver in case the user
                   wishes to set initial concentrations of precursors. If not
                   found, precursor concentrations are initialized to be in
@@ -50,5 +50,5 @@ you have an assembly with its own one-group cross-section set and you specify
 that the fuel fraction is 0.3, powerDensity will be equal to:
 
 .. math::
-    q''' = \frac{\kappa \Sigma_f \phi}{\alpha_{fuel}} = \frac{\text{sigmaPower} \times \text{flux}}{\text{fuelFraction}}
 
+    q''' = \frac{\kappa \Sigma_f \phi}{\alpha_{fuel}} = \frac{\text{sigmaPower} \times \text{flux}}{\text{fuelFraction}}
