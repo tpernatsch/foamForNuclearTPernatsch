@@ -103,6 +103,8 @@ coupling with other solvers (see the :ref:`coupling page <userguide_coupling>`).
                 (
                     zone1
                     {
+                        fuelFraction 0.5;
+                        IV nonuniform List<scalar> 2 (<value1> <value2>);
                         ...
                     }
                     ...
@@ -171,6 +173,40 @@ examples of *nuclearData* in the tutorials
 `2D_onePhaseAndPointKineticsCoupling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/2D_onePhaseAndPointKineticsCoupling/rootCase/constant/neutroRegion/neutronicsProperties>`_ (for point kinetics).
 `2D_onePhaseAndSubcriticalPointKineticsCoupling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/2D_onePhaseAndSubcriticalPointKineticsCoupling/rootCase/constant/neutroRegion/externalSource>`_ (for subcritical point kinetics).
 
+
+XS data
+~~~~~~~
+
+The nuclear data are composed of predined XS and spatial kinetics related 
+parameters. For each cellZone, the sub-dict must contains the following 
+keywords as scalar:
+
+:fuelFraction: Volume of fuel per lattice volume
+:secondaryPowerVolumeFraction: (Optional) Volume fraction of secondary 
+                               power-producing structure e.g., graphite in 
+                               MSRs
+:fractionToSecondaryPower: (Optional) Fraction of total power that goes 
+                           to secondary power-producing structure
+
+And as a ``nonuniform List<scalar> ng`` with ``ng`` the number of energy 
+groups, which must be equal to ``energyGroups``:
+
+:IV: Inverse velocity (constant)
+:D: Diffusion coefficient (variable with XS parametrization)
+:nuSigmaEff: Fission neutrons cross-section (variable with XS parametrization)
+:sigmaPow: Fission energy release cross-section (variable with XS parametrization)
+:sigmaRemoval: Removal cross-section (variable with XS parametrization)
+:scatteringMatrixP0: Scattering cross-section matrix (variable with XS parametrization)
+:chiPrompt: Prompt fission emission spectrum
+:chiDelayed: Delayed fission spectrum
+:discFactor: Discontinuity factors
+:integralFlux: Integral flux for adapting disc factors
+
+And as a ``nonuniform List<scalar> nd`` with ``nd`` the number of delayed 
+neutron groups, which must be equal to ``precGroups``:
+
+:Beta: Delayed neutron fraction
+:lambda: Precursor decay constant
 
 
 XS extraction and parametrization using the Python API
