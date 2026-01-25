@@ -36,7 +36,7 @@ two external tools for Serpent and OpenMC.
     Python package provided with GeN-Foam automatically converts OpenMC output
     into nuclear data files.
 
-These tools have also been implemented in the `Python API <https://foamfornuclear.gitlab.io/foamForNuclear/pythonapi/base.html#nuclear-data-and-neutronics-dictionaries>_`
+These tools have also been implemented in the `Python API <https://foamfornuclear.gitlab.io/foamForNuclear/pythonapi/base.html#nuclear-data-and-neutronics-dictionaries>`_
 A tutorial is provided to show the usage of the data extraction with the API (see 
 `test_fuelPin_monteCarlo <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/docs/pythonapi/tutorials/tests/test_fuelPin_monteCarlo?ref_type=heads>`_).
 
