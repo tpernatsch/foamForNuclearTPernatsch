@@ -41,51 +41,6 @@ provided for different precursor groups.
     discontinuity factors are employed (see :ref:`FIORINA2016212 <FIORINA2016212>`).
 
 
-Setting the weighting in point-kinetics calculations
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-A correct evaluation of the reactivity worth of delayed neutron precursors in
-MSRs, as well as of the impact of temperatures on reactivities, normally
-requires the knowledge of the adjoint flux. In GeN-Foam, the field
-*oneGroupFlux* is used by the point kinetic solver for weighting temperatures,
-densities and precursors. When fluxes are not calculated via a spatial
-neutronics calculation, one has to manually provide the *oneGroupFlux* in
-*0/neutroRegion*. As an alternative, one can use the *initialOneGroupFluxByZone*
-keyword in *nuclearData* (see `1D_MSR_pointKinetics
-<https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/1D_MSR_pointKinetics/rootCase/constant/neutroRegion/nuclearData>`_). Please notice that:
-
-- If calculated fluxes are available in *neutroRegion*, these will be user to recalculate and overwrite *oneGroupFlux*.
-- If no fluxes are available, the neutronics sub-solver will use the provided *oneGroupFlux*
-- If the *initialOneGroupFluxByZone* keyword is used in *nuclearData*, this will be used to overwrite *oneGroupFlux*
 
 
-Power densities and secondary power densities
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The spatial neutronics solvers always create a *powerDensity* and
-*secondaryPowerDensity* fields. By default, *secondaryPowerDensity* is set to
-zero and the *fuelFraction* keyword in *nuclearData* is used to translate the
-volume-average power density that is normally calculated by multiplying
-cross-sections and fluxes into the fuel-averaged power density that is needed by
-the thermal-hydraulic sub-solver
-
-However, a *secondaryPowerDensity* might sometimes be needed. It might be used
-to provide some power to the coolant in a solid-fuel reactor and, more
-importantly, to provide some power to the graphite in a liquid-fuel reactor. To
-calculate a *secondaryPowerDensity*, GeN-Foam needs to know how much of the
-total power goes into the *secondaryPowerDensity*, and what is the volume
-fraction of the secondary power-producing structure or liquid. This can be done
-by using the *fractionToSecondaryPower* and *secondaryPowerVolumeFraction*
-keywords in each cellZone in the *nuclearData* sub-dictionaty (the same place as *fuelFraction*).
-If these keywords are present, GeN-Foam will calculate power densities as
-follows:
-
-- :math:`\text{secondaryPowerDensity} = \frac{\text{powerDensity}}{\max(\text{secondaryPowerVolumeFraction}, \text{SMALL})} \times \text{fractionToSecondaryPower}`
-- :math:`\text{powerDensity} = \frac{\text{powerDensity}}{\max(\text{fuelFraction}, SMALL)} \times (1.0 - \text{fractionToSecondaryPower})`
-
-
-When point kinetics is used, the solver will simply rescale the *powerDensity*
-and *secondaryPowerDensity* it finds in the initial time folder. The only exception
-is when *liquidFuel* is true and the *initialPowerDensity* keyword is used. In
-this case, *initialPowerDensity* will take priority and this is the value that
-GeN-Foam will rescale and print.

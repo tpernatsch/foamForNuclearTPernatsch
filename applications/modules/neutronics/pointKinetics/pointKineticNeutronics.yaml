@@ -60,6 +60,20 @@ description: |-
       $\rho_{ext}^{FMU}$     | External reactivity contribution from an FMU
   \endtable
 
+  A correct evaluation of the reactivity worth of delayed neutron precursors in
+  MSRs, as well as of the impact of temperatures on reactivities, normally
+  requires the knowledge of the adjoint flux. In GeN-Foam, the field
+  *oneGroupFlux* is used by the point kinetic solver for weighting temperatures,
+  densities and precursors. When fluxes are not calculated via a spatial
+  neutronics calculation, one has to manually provide the *oneGroupFlux* in
+  *0/neutroRegion*. As an alternative, one can use the *initialOneGroupFluxByZone*
+  keyword in *nuclearData* (see `1D_MSR_pointKinetics
+  <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/1D_MSR_pointKinetics/rootCase/constant/neutroRegion/nuclearData>`_). Please notice that:
+
+  - If calculated fluxes are available in *neutroRegion*, these will be user to recalculate and overwrite *oneGroupFlux*.
+  - If no fluxes are available, the neutronics sub-solver will use the provided *oneGroupFlux*
+  - If the *initialOneGroupFluxByZone* keyword is used in *nuclearData*, this will be used to overwrite *oneGroupFlux*
+
 admonitions:
   - kind: warning
     body: |-

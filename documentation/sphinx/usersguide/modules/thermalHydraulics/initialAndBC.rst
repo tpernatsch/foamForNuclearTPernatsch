@@ -14,7 +14,7 @@ toctreeHere
 Power densities can be provided to the :ref:`onePhase <onePhase>`, :ref:`onePhaseLegacy <onePhaseLegacy>` and :ref:`twoPhase <twoPhase>` solvers direclty as fields in the initial time folder. There two types of power densities:
 
    - ``powerDensity`` is given to the liquid
-   - ``powerDensityStructure`` is given to the structure and used by the :doc:`../../../../../cppapi/generated/porousMediaModels/phaseModels/structureModels/powerModels/powerModel` (see :ref:`structureProperties  <modules_thermalHydraulics_porousMedium_structureProperties>`. 
+   - ``powerDensityStructure`` is given to the structure and used by the :doc:`../../../../../cppapi/generated/porousMediaModels/phaseModels/structureModels/powerModels/powerModel` (see :ref:`structureProperties  <modules_thermalHydraulics_porousMedium_structureProperties>`). 
 
 .. note::
 
