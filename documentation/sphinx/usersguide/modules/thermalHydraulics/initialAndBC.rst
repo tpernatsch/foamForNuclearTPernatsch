@@ -1,10 +1,8 @@
-.. _userguide_thermalhydraulics_settingcase:
+.. _userguide_thermalhydraulics_initialAndBC:
 
-Setting a case
---------------
 
 Initial and boundary conditions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------------
 
 Initial and boundary conditions adopt the usual OpenFOAM logic for one- and two-phase solvers. 
 OpenFOAM provides most of the boundary conditions one may need for
@@ -13,10 +11,10 @@ included in the thermal-hydraulics module of foamForNuclear:
 
 toctreeHere
 
-powerDensities can be provided to the :ref:`onePhase <onePhase>`, :ref:`onePhaseLegacy <onePhaseLegacy>` and :ref:`twoPhase <twoPhase>` solvers direclty as fields in the initial time folder. There two types of power densities:
+Power densities can be provided to the :ref:`onePhase <onePhase>`, :ref:`onePhaseLegacy <onePhaseLegacy>` and :ref:`twoPhase <twoPhase>` solvers direclty as fields in the initial time folder. There two types of power densities:
 
    - ``powerDensity`` is given to the liquid
-   - ``powerDensityStructure`` is given to the structure and used by the :doc:`../../../../../cppapi/generated/porousMediaModels/phaseModels/structureModels/powerModels/powerModel` (see :ref: `structureProperties  <modules_thermalHydraulics_porousMedium_structureProperties>`. 
+   - ``powerDensityStructure`` is given to the structure and used by the :doc:`../../../../../cppapi/generated/porousMediaModels/phaseModels/structureModels/powerModels/powerModel` (see :ref:`structureProperties  <modules_thermalHydraulics_porousMedium_structureProperties>`. 
 
 .. note::
 
@@ -38,11 +36,4 @@ powerDensities can be provided to the :ref:`onePhase <onePhase>`, :ref:`onePhase
     the fuel fraction before feeding it to GeN-Foam (see
     :ref:`Neutronics <neutronics_the-reactorstate-dictionary>`)
 
-
-Discretization and solution
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Details for discretization and solution of equations are handled in a standard
-OpenFOAM way, i.e., through the *fvSolution* and *fvSchemes* dictionaries in
-*system/[nameOfTheFluidRegion]*.
 

@@ -15,7 +15,8 @@ approximations. The behavior of the neutronics module is dictated by the
     :maxdepth: 2
 
     neutronicsSolvers
-    settingCase
+    initialAndBC
+    discretizationSolution
     neutronicsProperties
     nuclearData
     reactorState

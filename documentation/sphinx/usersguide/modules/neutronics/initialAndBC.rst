@@ -1,14 +1,18 @@
-.. _userguide_neutronics_settingcase:
+.. _userguide_thermalhydraulics_initialAndBC:
 
-Setting a case
---------------
 
 Initial and boundary conditions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------------
 
-As in all standard OpenFOAM solvers, initial conditions (IC) and boundary conditions
-(BC) should be provided in the "0" folder, or the folder corresponding to the
-``startTime`` of the simulation, if different than 0. In the case of neutronics,
+Initial and boundary conditions adopt the usual OpenFOAM logic for one- and two-phase solvers. 
+OpenFOAM provides most of the boundary conditions one may need for
+thermal-hydraulics models. In addition, a few boundary conditions have been
+included in the thermal-hydraulics module of foamForNuclear:
+
+toctreeHere
+
+
+For the initial conditions of fluxes, 
 the user can either specify different IC and BC for each one of the energy
 groups (with fluxes that must be named *fluxStar0*, *fluxStar1*, etc…) or
 provide the same IC and BC to all fluxes by using the *defaultFlux* field. In
@@ -18,26 +22,9 @@ or to all energies by using the *defaultFlux2* field. When both *defaultFlux*
 and *fluxStar...* are present, the solver gives priority to *fluxStar...*. In
 the case of SN calculations, it is suggested not to modify the boundary
 conditions and to use the *defaultFlux* file (an example is provided in the
-Godiva_SN tutorial). When employing the adjoint solver, you will have to add the
-fields *adjointDefaultPrec* and *adjointDefaultFlux* in your initial time.
+Godiva_SN tutorial). When employing the adjoint solver, the user will have to add the
+fields *adjointDefaultPrec* and *adjointDefaultFlux* in the  initial time.
 
-In addition to the standard OpenFOAM BC, an albedo boundary condition (see
-:ref:`albedoSP3FvPatchField.H <albedoSP3FvPatchField>`) is available in GeN-Foam
-for diffusion and SP3 calculations and can be used according to the following
-syntax:
-
-.. code :: cpp
-
-    type            albedoSP3;
-    gamma           0.5;            // defined as (1-alpha)/(1+alpha)/2, alpha being the albedo coefficient
-    diffCoeffName   Dalbedo;        // not to be changed
-    fluxStarAlbedo  fluxStarAlbedo; // not to be changed
-    forSecondMoment false;          // true in case it is a condition for a second moment flux (for SP3 calculations)
-    value           uniform 1;
-
-
-Please note that the boundary condition needs to be set both for the first and
-second moments in SP3.
 
 IC and BC for precursors do not have to be specified for standard reactors. On
 the other hand, they should be specified in the case of liquid fuel reactors
@@ -93,19 +80,12 @@ keywords in each cellZone in the *nuclearData* sub-dictionaty (the same place as
 If these keywords are present, GeN-Foam will calculate power densities as
 follows:
 
-- :math:`\text{secondaryPowerDensity} = \frac{\text{powerDensity}}{\max(\text{secondaryPowerVolumeFraction}, \text{SMALL}) \times \text{fractionToSecondaryPower}}`
-- :math:`\text{powerDensity} = \frac{\text{powerDensity}}{\max(\text{fuelFraction}, SMALL) \times (1.0 - \text{fractionToSecondaryPower})}`
+- :math:`\text{secondaryPowerDensity} = \frac{\text{powerDensity}}{\max(\text{secondaryPowerVolumeFraction}, \text{SMALL})} \times \text{fractionToSecondaryPower}`
+- :math:`\text{powerDensity} = \frac{\text{powerDensity}}{\max(\text{fuelFraction}, SMALL)} \times (1.0 - \text{fractionToSecondaryPower})`
+
 
 When point kinetics is used, the solver will simply rescale the *powerDensity*
 and *secondaryPowerDensity* it finds in the initial time folder. The only exception
 is when *liquidFuel* is true and the *initialPowerDensity* keyword is used. In
 this case, *initialPowerDensity* will take priority and this is the value that
 GeN-Foam will rescale and print.
-
-
-Discretization and solution
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Details for discretization and solution of equations are handled in a standard
-OpenFOAM way, i.e., through the *fvSolution* and *fvSchemes* dictionaries in
-*system/neutroRegion*.

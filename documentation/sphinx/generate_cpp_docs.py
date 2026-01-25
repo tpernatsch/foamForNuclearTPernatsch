@@ -1078,8 +1078,13 @@ def main():
 
     # Step 3: Append indexes in dynamic files
     insert_toctree_at_placeholder_for_folder_direct_subfolders(
-        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/settingCase.rst",
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/initialAndBC.rst",
         folder="documentation/sphinx/cppapi/generated/fvPatchFields/thermalHydraulics/",
+        maxdepth=1
+    )
+    insert_toctree_at_placeholder_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/usersguide/modules/neutronics/initialAndBC.rst",
+        folder="documentation/sphinx/cppapi/generated/fvPatchFields/neutronics/",
         maxdepth=1
     )
     insert_toctree_at_placeholder_for_folder_direct_subfolders(

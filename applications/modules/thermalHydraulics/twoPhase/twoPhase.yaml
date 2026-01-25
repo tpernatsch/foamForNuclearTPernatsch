@@ -3,7 +3,7 @@
 description: |-
   This class encapsulates a two‑fluid + 1 stationary‑structure Eulerian solver.
 
-  Note that the usual ``PIMPLE`` sub-dictionary in ``system`` has been extended with a few keywords:
+  Note that the usual ``PIMPLE`` sub-dictionary in ``system`` has been extended with a several keywords:
 
   .. list-table::
      :header-rows: 1
@@ -88,24 +88,6 @@ description: |-
 
          - ``source``: adds relaxation sources driving ``he → he_interface`` during the solve (smooth; recommended for coupled or steady convergence).
          - ``cutoff``: clamps ``he`` to ``he_interface`` after the solve in under‑resolved cells (simple, robust, non‑smooth).
-
-     * - ``oscillationLimiterFraction``  (duplicate entry in original table)
-       - N
-       - Feature that removes velocity oscillations and/or smearing in the main flow direction.
-
-         For structures with large porosity gradients (e.g., >0.5 between neighboring cells) or large gradients in drag tensor components,
-         the feature may induce oscillations perpendicular to the main flow (not an issue in 1D).
-
-         Only applicable to the face‑momentum‑based algorithm.
-
-         This factor blends:
-
-         - traditional faceMomentum velocity reconstruction (smearing/oscillations in main flow direction), and
-         - moving‑phase‑fraction‑adjusted reconstruction (may induce transversal oscillations).
-
-         ``0`` → pure traditional faceMomentum.
-
-
 
 
 admonitions:
