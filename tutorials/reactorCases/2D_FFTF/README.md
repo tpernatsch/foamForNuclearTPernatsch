@@ -50,7 +50,7 @@ The simulation consists of:
 1. **Steady‑state**: 900 s model time  
 2. **Transient**: governed by the `pointKinetics` model  
 
-Steady‑state power is set via `powerDensity.nuclearFuelPin` in `0/fluidRegion`.  
+Steady‑state power is set via `powerDensityStructure` in `0/fluidRegion`.  
 Alternatively, `Allrun_powerFromDiffusion` performs an initial diffusion solve and uses its power distribution.
 
 ### Performance
@@ -108,13 +108,13 @@ Defines gap conductance as a function of linear power.
 Configured in `constant/fluidRegion/phaseProperties`.
 
 ### **3. GEM Model (partial implementation)**
-- Reactivity map specified in `constant/neutroRegion/nuclearData`
+- Reactivity map specified in the `nuclearData` sub-dictionary within `constant/neutroRegion/nuclearPropeties/`
 - Flow measured over a specified `faceZone`
 - Height–flow correlation currently hard‑coded based on FFTF data
 
 ### **4. Point‑Kinetics with Decay Heat**
 Decay power specified via table or OpenFOAM `Function1` in  
-`constant/neutroRegion/reactorState`.
+`0/uniform/reactorState`.
 
 ### **5. Heat Exchanger Coupling**
 Handles heat transfer between two separate mesh regions (primary/secondary).
@@ -149,21 +149,24 @@ The model is preliminary; many parameters that strongly influence transient evol
 
 ## Results
 
-images/2D_FFTF_steadyState.png
+<img src="images/2D_FFTF_steadyState.png" alt="FFTF_steadyState" width="600"/>
 
-*Fig. 4 – Temperature field during steady‑state.*
+*Fig 4: Temperature field during a steady-state.*
 
-images/2D_FFTF_steadyState_oneGroupFlux.png
 
-*Fig. 5 – One‑group neutron flux during steady‑state.*
+<img src="images/2D_FFTF_steadyState_oneGroupFlux.png" alt="FFTF_steadyState_oneGroupFlux" width="600"/>
 
-images/2D_FFTF_transient.png
+*Fig 5: One group neutron flux in the core during a steady-state.*
 
-*Fig. 6 – Evolution of temperature, power, mass flow rate, and reactivity during the LOFWOS‑13 test.*
 
-images/2D_FFTF_transient.gif
+<img src="images/2D_FFTF_transient.png" alt="FFTF_transient" width="900"/>
 
-*Fig. 7 – Temperature field evolution during the LOFWOS‑13 test.*
+*Fig 6: Evolution of temperature, power, mass flow rate and reactivity during the LOFWOS 13 Test.*
+
+
+<img src="images/2D_FFTF_transient.gif" alt="FFTF transient animation" width="900"/>
+
+*Fig 7: Evolution of temperature field during the LOFWOS 13 Test.*
 
 ---
 
