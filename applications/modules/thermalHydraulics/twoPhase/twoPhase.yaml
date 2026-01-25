@@ -1,79 +1,111 @@
 
+
 description: |-
-  This class encapsulates a two fluid + 1 stationary structure
-  Eulerian solver.
-  Note that the usual ``PIMPLE`` sub-dictionary in system has been extended with a few keywords:
+  This class encapsulates a two‑fluid + 1 stationary‑structure Eulerian solver.
 
-table:
-  headers:
-    - Entry
-    - Mandatory
-    - Description
-  widths: [25, 15, 60]
-  rows:
-    - Entry: partialEliminationMode
-      Mandatory: N
-      Description: >
-        Compatible with all momentumModes.
-        Partial elimination can improve convergence when the inter-phase drag is high and is safe to enable.
-        Modes: none (no partial elimination); explicit (explicit adjustment based on partial elimination, as in many current multiphase solvers in OpenFOAM);
-        implicit ("true" partial elimination implemented by the authors) which typically yields faster convergence with fewer pressure linear-solver iterations than the explicit variant.
+  Note that the usual ``PIMPLE`` sub-dictionary in ``system`` has been extended with a few keywords:
 
-    - Entry: momentumMode
-      Mandatory: N
-      Description: >
-        Influences how pressure-equation fluxes from momentum terms are computed and affects all partialEliminationModes.
-        Modes: cellCentered (traditional OpenFOAM approach; known to induce velocity oscillations across porous interfaces with sharp porosity changes);
-        faceCentered (experimental, adapted from some multiphase solvers with improvements; evaluates pressure-equation terms at faces and reconstructs velocity from fluxes;
-        time derivative hard-coded to Euler forward; slightly more diffusive than cellCentered but reduces oscillations—completely in onePhase and partially/completely in twoPhase
-        depending on oscillationLimiterFraction; currently recommended for most applications);
-        cellCenteredFaceReconstruction (blend of cellCentered equation construction and face-centered velocity reconstruction; for testing only; use discouraged and not yet verified).
+  .. list-table::
+     :header-rows: 1
+     :widths: 25 15 60
 
-    - Entry: oscillationLimiterFraction
-      Mandatory: Y
-      Description: >
-        Effective only when momentumMode=faceCentered.
-        Experimental coefficient blending two velocity-reconstruction approaches after the pressure solve:
-        1 → fully accounts for cell-center vs face porosity differences, eliminating oscillations/smearing at porous interfaces (caveat: may trigger oscillations perpendicular to the main flow
-        in some conditions, e.g., varying drag coefficients);
-        0 → no effect; values in (0,1) blend the two to reduce (not necessarily eliminate) oscillations/smearing. User experimentation advised.
+     * - Entry
+       - Mandatory
+       - Description
 
-    - Entry: solveEnergy
-      Mandatory: Y
-      Description: >
-        Solve energy equation
+     * - ``partialEliminationMode``
+       - N
+       - Compatible with all ``momentumMode`` values.
 
-    - Entry: solveFluidMechanics
-      Mandatory: Y
-      Description: >
-        Solve for fluid mechanics (pressure and velocity)
+         Partial elimination can improve convergence when inter‑phase drag is high and is generally safe to enable.
 
-    - Entry: correctUntilConvergence
-      Mandatory: N
-      Description: >
-        See :doc:`../../../../../cppapi/generated/solutionControl/customPimpleControl/customPimpleControl`. Default to false.
+         Modes:
 
-    - Entry: massTransferSafetyFactor
-      Mandatory: N
-      Description: >
-        Limits the allowable explicit mass-transfer rate to keep phase fractions bounded. Use 1.0 for standard limiting, <1.0 for more  conservative/stable behavior, and >1.0 only if the transfer model is well-behaved.
+         - ``none``: no partial elimination.
+         - ``explicit``: explicit adjustment based on partial elimination (as in many existing multiphase solvers in OpenFOAM).
+         - ``implicit``: “true” partial elimination implemented by the authors, typically yielding faster convergence and fewer
+           pressure linear-solver iterations than the explicit variant.
 
-    - Entry: maxTInterfaceDdt
-      Mandatory: N
-      Description: >
-        Caps |dT/dt| for the interfacial temperature (T.interface).   Units: K/s. Limits the per-step temperature change to ±maxTInterfaceDdt  to avoid abrupt/unstable jumps during phase-change coupling.
+     * - ``momentumMode``
+       - N
+       - Influences how pressure‑equation fluxes from momentum terms are computed and affects all ``partialEliminationMode`` settings.
 
-    - Entry: enthalpyStabilizationMode
-      Mandatory: N
-      Description: >
-        Stabilization of enthalpy (he) in cells with alpha below thermoResidualAlpha. Modes:
-          - source: adds relaxation sources driving he → he_interface during the solve (smooth, uses fast relaxation; recommended for coupled/steady convergence).
-          - cutoff: clamps he to he_interface after the solve in under-resolved cells (simple and robust, but non-smooth).
+         Modes:
 
-    - Entry: oscillationLimiterFraction
-      Mandatory: N
-      Description: >
-        Feature that removes velocity oscillations and/or smearing in the main flow direction. However, if dealing with structures that have  large porosity gradiens (i.e. > 0.5 between consecutive cells) or  large gradients in the structure drag tensor, this feature may actually induce velocity oscillations in the directions  perpendicular to the main flow direction (nedless to say, not in  1D). Only applicable to the face-momentum based algorithm. This factor weights the "traditional" faceMomentum velocity reconstruction (the one which always causes smearing/oscillations) in the main flow direction) with a moving phase fraction-adjusted velocity reconstruction (which may induced the aforementioned  transversal oscillations). If set to 0, it is a pure "traditional" faceMomentum.
+         - ``cellCentered``:
+           traditional OpenFOAM approach; known to induce velocity oscillations across porous interfaces with sharp porosity jumps.
+         - ``faceCentered`` (recommended):
+           adapted from multiphase solvers; evaluates pressure‑equation terms at faces and reconstructs velocity from fluxes.
+           Time derivative is Euler forward. Slightly more diffusive but reduces oscillations—completely in onePhase and
+           partially/completely in twoPhase depending on ``oscillationLimiterFraction``.
+         - ``cellCenteredFaceReconstruction``:
+           mix of cell‑centered assembly and face‑centered velocity reconstruction; experimental; use discouraged.
+
+     * - ``oscillationLimiterFraction``
+       - Y
+       - Effective only when ``momentumMode = faceCentered``.
+
+         Experimental coefficient blending two velocity‑reconstruction strategies after the pressure solve:
+
+         - ``1`` → fully accounts for cell‑center vs face porosity differences, eliminating oscillations/smearing at porous interfaces  
+           (caveat: may trigger oscillations perpendicular to the flow if drag coefficients vary strongly).
+         - ``0`` → disabled.
+         - ``0 < value < 1`` → blended behavior; may reduce—but not necessarily eliminate—oscillations/smearing.  
+           User experimentation is recommended.
+
+     * - ``solveEnergy``
+       - Y
+       - Solve energy equation.
+
+     * - ``solveFluidMechanics``
+       - Y
+       - Solve for fluid mechanics (pressure and velocity).
+
+     * - ``correctUntilConvergence``
+       - N
+       - See :doc:`../../../../../cppapi/generated/solutionControl/customPimpleControl/customPimpleControl`.
+         Defaults to ``false``.
+
+     * - ``massTransferSafetyFactor``
+       - N
+       - Limits the allowable explicit mass‑transfer rate to keep phase fractions bounded.
+
+         - ``1.0`` → standard limiting  
+         - ``<1.0`` → more conservative/stable  
+         - ``>1.0`` → only if transfer model is known to be well behaved
+
+     * - ``maxTInterfaceDdt``
+       - N
+       - Caps ``|dT/dt|`` for interfacial temperature ``T.interface`` (units: K/s).
+
+         Limits per‑step interface temperature change to ± ``maxTInterfaceDdt`` to avoid unstable jumps during phase‑change coupling.
+
+     * - ``enthalpyStabilizationMode``
+       - N
+       - Stabilization of enthalpy ``he`` in cells with ``alpha < thermoResidualAlpha``.
+
+         Modes:
+
+         - ``source``: adds relaxation sources driving ``he → he_interface`` during the solve (smooth; recommended for coupled or steady convergence).
+         - ``cutoff``: clamps ``he`` to ``he_interface`` after the solve in under‑resolved cells (simple, robust, non‑smooth).
+
+     * - ``oscillationLimiterFraction``  (duplicate entry in original table)
+       - N
+       - Feature that removes velocity oscillations and/or smearing in the main flow direction.
+
+         For structures with large porosity gradients (e.g., >0.5 between neighboring cells) or large gradients in drag tensor components,
+         the feature may induce oscillations perpendicular to the main flow (not an issue in 1D).
+
+         Only applicable to the face‑momentum‑based algorithm.
+
+         This factor blends:
+
+         - traditional faceMomentum velocity reconstruction (smearing/oscillations in main flow direction), and
+         - moving‑phase‑fraction‑adjusted reconstruction (may induce transversal oscillations).
+
+         ``0`` → pure traditional faceMomentum.
+
+
 
 
 admonitions:
