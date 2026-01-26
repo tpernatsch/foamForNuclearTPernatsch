@@ -13,12 +13,12 @@ the coupling can be specified in *system/regionsDict*. In the
 sub-dictionary ``mappings``, for each region one can select the fields to map
 *onto* it. This is done by creating a *subDict* named after the region *from*
 which the fields are mapped. For instance, if a field needs to mapped into the
-fluidRegion from the neutroRegion, the specifics of the mapping are found under
+*fluidRegion* from the *neutroRegion*, the specifics of the mapping are found under
 *regionsDict/mappings/fluidRegion/neutroRegion*. In this *subDict*, one can
 specify the name of the field of the original mesh in the *sourceFields* entry
 (e.g., ``powerDensity`` in the neutroRegion) and the name of the field onto which
 the original field is mapped in the *targetFields* entry (e.g.
-``powerDensityNeutronics`` in the fluidRegion). This routine is templated, hence
+``powerDensityStructure`` in the fluidRegion). This routine is templated, hence
 the user doesn't need to specify the field type (i.e. scalar or vector). A
 detailed usage of this new coupling routine can be found in any multi-physics
 tutorial, such as
@@ -59,81 +59,15 @@ Example of loose coupling:
         }
     }
 
+Heterogeneous (boundary) vs Homogeneous (domain overlap) coupling
+---------------------------------------------------------------
 
-Example of tight coupling:
-
-.. code :: cpp
-
-    // In constant/regionsDict
-
-    regionSolvers
-    {
-        Level_0
-        {
-            Level_1 picardLoop;
-        }
-        Level_1
-        {
-            subSolvers
-            {
-                fluidRegion     onePhase;
-                neutroRegion    diffusionNeutronics;
-            }
-            minResidual     0.00005;
-            maxIterations   3;
-        }
-    }
-
-
-The standard routine to solve for multi-physics problems is here described.
-Given an input volumetric power density :math:`Q`, the thermal-hydraulics
-sub-solver is tasked with predicting the resulting fluid temperature :math:`T`,
-density :math:`\rho` and velocity :math:`U` fields, as well as relevant structure
-temperature fields :math:`T_s`. For a two-phase treatment, the fields
-:math:`\rho`, :math:`T`, :math:`u` consist of mass-weighed mixture values.
-The velocity field :math:`u` is used for coupling only when simulating MSRs to
-advect the precursors. The field :math:`Q` is the volumetric fuel power density
-and it can pertain either to a sub-scale structure (typically, the fuel rods) or
-the fluid itself (i.e. the liquid fuel in MSRs), depending on the system under
-investigation. The symbol :math:`T_s` collectively denotes the temperature fields of
-the structures, which can range from the fuel and cladding of a nuclear fuel pin
-to control rod drivelines, wrappers, the diagrid, etc. This entirely depends on
-what the structure thermal models are supposed to represent in the cell zones
-where they have been defined.
-
-The neutronics sub-solver is tasked with predicting the volumetric fuel power
-density :math:`Q` for varying coupling fields. Not all of these fields are
-always used, depending on the selected type of neutronics treatment. In general
-terms, the diffusion, :math:`S_N`, :math:`SP_3` treatments are capable of
-modeling reactivity feedbacks from: coolant temperature :math:`T` and density
-:math:`\rho`, average fuel and cladding temperatures collectively denoted with
-:math:`T_s`, fuel axial displacement and core radial displacement collectively
-denoted as :math:`d`, as well as the temperature predicted by the
-thermal-mechanics sub-solver (this is useful for heterogeneous or mixed
-treatments, see below). As long as a parametrization of the macroscopic
-cross-sections against these quantities is provided, these feedbacks can be
-resolved. The feedback reactivities of the point-kinetics solver are described
-by standard feedback coefficients.
-
-The thermal-mechanics sub-solver is tasked with predicting temperatures in solid
-regions and an overall displacement field that can be used to deform the
-neutronics mesh. The displacement field is decomposed into fuel axial
-displacement and core radial displacement fields collectively denoted as
-:math:`d`, which are passed to the neutronics to model expansion-related
-feedbacks. With regards to temperature, it is forced to the temperature of the
-sub-scale structures of the thermal-hydraulics domain whenever there is an area
-of overlap between thermal-mechanics and thermal-hydraulics mesh. If there is no
-overlap, the temperature is calculated based on a simple heat diffusion equation
-with parameters specified in the *thermoMechanicalProperties* dictionary. If the
-area is overlapped with neutronics mesh, it will take from there a volumetric
-power source.
-
-Based on the above, one may guess that GeN-Foam can operate in two different
-modes, depending on how the temperature of structures is calculated and as
+GeN-Foam can operate in two different
+modes, depending on how the temperature of the structures is calculated and as
 shown in the figure below:
 
 - Homogeneous / domain overlap: the thermal-hydraulics solver is responsible for calculating temperatures throughout the physical domain. This is the most typical case, where structures are assumed to be treated as sub-scale structures in a porous-medium treatment.
-- Heterogeneous: the thermal-hydraulics solver and the thermal-mechanics solver are responsible for calculating temperatures in different parts of the domain. This could be used for instance when simulating a core with a porous-medium approach, and a large solid reflector using the thermo-mechanics solver. Or it could be used to simulate a fuel pin in a heterogeneous manner.
+- Heterogeneous / boundary coupling: the thermal-hydraulics solver and the thermal-mechanics solver are responsible for calculating temperatures in different parts of the domain. This could be used for instance when simulating a core with a porous-medium approach, and a large solid reflector using the thermo-mechanics solver. Or it could be used to simulate a fuel pin, assembly or entire code in a heterogeneous manner.
 
 Of course, it is also possible to have hybrid approaches, where the temperature
 in one structure is calculated in part based on the temperatures predicted in
@@ -151,25 +85,38 @@ their logic.
 
     Heterogeneous / Homogeneous meshes overlaps.
 
-
-While this is a standard coupling approach, GeN-Foam can
-be used to map *any* scalar or vectorial field to *any* scalar of vectorial
-fields on a different mesh, enabling the simulation of any arbitrarily coupled multi-physics
-simulation that leverages the currently existing libraries.
+.. note ::
+    GeN-Foam can
+    be used to map *any* scalar or vectorial field to *any* scalar of vectorial
+    fields on a different mesh, enabling the simulation of any arbitrarily coupled multi-physics
+    simulation that leverages the currently existing libraries.
 
 .. note ::
 
     There is no need for the thermal-hydraulics, thermal-mechanics, and
-    neutronics domains to be the same. GeN-Foam will project fields in a clever way
+    neutronics domains to be the same. GeN-Foam will project fields in a "clever" way
     whenever there is no overlap between 2 domains.
 
 
 .. note ::
 
     It is possible not to solve for displacements in the thermo-mechanics
-    sub-solver setting to *false* the keyword *solveDisplacement* in
+    sub-solver by setting to *false* the keyword *solveDisplacement* in
     *thermoMechanicalProperties*.
 
+.. Note that temperature handling depends on mesh overlap:
+
+.. - **Overlap with thermal-hydraulics mesh:**  
+..   The solid temperature is forced to match the sub-scale structure temperature
+..   predicted by thermal-hydraulics.
+
+.. - **No overlap:**  
+..   Temperature is obtained by solving a heat diffusion equation, using material
+..   properties specified in ``thermoMechanicalProperties``.
+
+.. - **Overlap with the neutronics mesh:**  
+..   The region receives a volumetric heat source from the neutronics-calculated
+..   power field.
 
 Here is a list of the fields which are most commonly coupled across physics and
 their names
@@ -316,12 +263,11 @@ Many multi-physics simulations might require large flexibility on the
 time-loops. For instance, while some physics might be tightly coupled, others
 are only loosely coupled. This is, for instance, often the case for multi-scale
 simulations, where physics are tightly coupled within a scale and loosely across
-scales. In order to create this additional flexibility, a new solver type is
-introduced, named the ``picardLoop``. The ``picardLoop`` consists of
+scales. In order to create this additional flexibility, dedicated "loops" are created. For example, the ``picardLoop`` consists of
 a list of tightly coupled physics. During run-time, when the physics are
 corrected, if they are part of a ``picardLoop``, the physics will be
 corrected iteratively, until a user-input convergence criterion is met.
-*picardLoops* are also defined in *constant/regionsDict* in
+*picardLoops* are also defined in *system/regionsDict* in
 the ``regionSolvers`` sub-dictionary. Each entry of the subDict corresponds
 to a different ``picardLoop``, characterized by a list of subSolvers (i.e.
 the solvers that are tightly coupled), a minimum residual to reach before the
@@ -340,7 +286,7 @@ tree-like structure as shown below.
         E --> G[Solver 4]
 
 
-Which can be translated in *constant/regionsDict*:
+Which can be translated in *system/regionsDict*:
 
 .. code :: cpp
 
@@ -397,33 +343,62 @@ The previous example would correspond to a time loop as shown below.
         G -- Yes --> A
         G --> End@{ shape: framed-circle, label: "Stop" }
 
+Current loops available in *GeN-Foam* are:
 
-Setting the initial power
--------------------------
+toctreeHere
 
-There are several ways to set the power in GeN-Foam. For the power generated in
-subscale structures:
 
-- The thermal-hydraulics solver will normally use the *powerDensity.* fields (for instance, *powerDensity.nuclearFuelPin* for pin-based reactors) that it finds in the 0 (or *startTime*) folder.
-- As an alternative, one can provide cellZone-by-cellZone values via the keyword *powerDensity* in the various power models in the *phase* properties (see for instance `1D_boiling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/1D_boiling/constant/fluidRegion/phaseProperties>`_). However, if GeN-Foam finds the corresponding field in the 0 (or *startTime*) folder, this will take priority.
 
-For the power generated in the fluid itself:
 
-- The thermal-hydraulics solver will normally use the *powerDensity* field that it finds in the 0 (or *startTime*) folder.
-- One can override this behavior by using the *initialPowerDensity* keyword in the *phaseProperties* (see `1D_MSR_pointKinetics <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/1D_MSR_pointKinetics/rootCase/constant/fluidRegion/phaseProperties>`_) for an example. Also in this case the field in the 0 (or *startTime*) folder will take priority.
+Typical coupling logic for a nuclear reactor
+--------------------------------------------
 
-If neutronics is activated, the power density can be mapped from the neutronics
-sub-solver. For eigenvalue calculations, the power is set in the *pTarget*
-keyword in the *reactorState* dictionary. For transients, the power is a result
-of calculations. There is one important exception to this behavior: the point
-kinetics solver will only rescale the power densities (see below about why
-plural) that it finds in *neutroRegion*. Alternatively, the powerDensity field
-can be constructed by the thermal-hydraulics solver and mapped once from
-*fluidRegion* to *neutroRegion*. It is possible to achieve this either using the
-*mapFields* utility of OpenFOAM or by running
-``GeN-Foam -initializeMappedFields``, which will construct the solvers and
-mappings based on the *multiRegionCouplingDict* and map the fields without
-running the simulation. For point kinetics, the *pTarget* keyword in
-*reactorState* is not used by the solver itself. However, to correctly plot
-point kinetics results, pTarget must be consistent with the mentioned power
-densities.
+The standard sequence used to solve multi-physics nuclear reactor problems is
+summarized with reference to the figure below.
+
+.. figure:: ../../images/couplingFields.png
+    :width: 500
+    :alt: Typical coupling for logic porous-medium  reactor calculations
+
+    Typical coupling for logic porous-medium  reactor calculations.
+
+Given an input volumetric power density :math:`q`, the thermal-hydraulics
+sub-solver computes the resulting fields:
+
+- fluid temperature :math:`T`,
+- fluid density :math:`\rho`,
+- fluid velocity :math:`U`,
+- and structural temperatures :math:`T_s`.
+
+For two-phase treatments, the fields :math:`T`, :math:`\rho`, and :math:`U`
+represent mass-weighted mixture values. The velocity field :math:`U` is only
+used for solver coupling in molten salt reactors (MSRs), where it is required to
+advect delayed neutron precursors.
+
+The power density :math:`q` may refer either to a sub‑scale structure
+(e.g. a fuel rod) or to the fluid itself in liquid-fuel systems, depending on the
+reactor type. The symbol :math:`T_s` collectively denotes temperatures of solid
+structures—fuel, cladding, control rod drivelines, wrapper tubes, the diagrid,
+and others—depending on which structural models are assigned to each cell zone.
+
+The neutronics sub-solver computes the updated fuel volumetric power density
+:math:`q` based on the coupling fields. Depending on the neutronics model
+(diffusion, :math:`S_N`, or :math:`SP_3`), the solver may incorporate feedbacks
+from:
+
+- coolant temperature :math:`T` and density :math:`\rho`,
+- average fuel and cladding temperatures :math:`T_s`,
+- fuel axial expansion and core radial expansion, collectively :math:`d`,
+- temperatures predicted by the thermal-mechanics sub-solver.
+
+Whenever macroscopic cross-sections are parameterized against these fields, the
+solver can account for the associated reactivity feedbacks. For point-kinetics,
+feedbacks follow standard coefficient-based models.
+
+The thermal-mechanics sub-solver computes temperatures in solid regions and an
+overall displacement field used to deform the neutronics mesh. The displacement
+is decomposed into axial and radial components, collectively denoted
+:math:`d`, and passed to the neutronics module to model expansion-related
+feedback.
+
+

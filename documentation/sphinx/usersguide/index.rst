@@ -10,7 +10,7 @@ through the essential aspects of using foamForNuclear.
 
 .. toctree::
    :numbered:
-   :maxdepth: 3
+   :maxdepth: 2
 
    installation
    GeN-Foam/index
