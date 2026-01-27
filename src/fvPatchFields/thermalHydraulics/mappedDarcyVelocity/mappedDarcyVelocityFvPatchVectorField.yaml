@@ -39,7 +39,7 @@ fields-read:
 
 usage:
   - comment: |-
-      Typical porous ↔ free‑flow interface between two regions. The mapping
+      The mapping
       must be defined in constant/polyMesh/boundary for both regions using a
       ``mappedPatch`` or ``mappedWall`` patch type.
     snippet: |-
