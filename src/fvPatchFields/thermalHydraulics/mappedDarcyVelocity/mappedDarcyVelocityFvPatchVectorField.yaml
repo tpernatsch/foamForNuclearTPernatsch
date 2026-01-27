@@ -43,7 +43,7 @@ usage:
       must be defined in constant/polyMesh/boundary for both regions using a
       ``mappedPatch`` or ``mappedWall`` patch type.
     snippet: |-
-      // In 0/fluidRegion/U
+      // If in 0/fluidRegion/U
       inletInterface
       {
           type            mappedDarcyVelocity;
@@ -51,7 +51,7 @@ usage:
           value           uniform (0 0 0);
       }
 
-      // In 0/porousRegion/U
+      // If in 0/porousRegion/U
       outletInterface
       {
           type            mappedDarcyVelocity;
