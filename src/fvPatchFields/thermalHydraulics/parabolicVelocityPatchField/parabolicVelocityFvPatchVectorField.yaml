@@ -27,15 +27,11 @@ options:
     type: scalar
     required: true
     description: |-
-      Target maximum velocity magnitude at the patch centre, reached after the
-      ``transitionPeriod``. During ramp-up, the instantaneous maximum value is
+      Target maximum velocity magnitude at the patch centre, reached after the       ``transitionPeriod``. During ramp-up, the instantaneous maximum value is
       given by
-
       .. math::
-
           U_\text{max}(t) =
-            U_\text{max} \, \tfrac{1}{2}\bigl(1 - \cos(\pi t / T)\bigr),
-      
+            U_\text{max} \, \tfrac{1}{2}\bigl(1 - \cos(\pi t / T)\bigr),  
       for :math:`t < T` and :math:`U_\text{max}(t) = U_\text{max}` for
       :math:`t \ge T`, where :math:`T =` ``transitionPeriod``.
   - key: n

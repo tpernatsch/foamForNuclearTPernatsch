@@ -25,8 +25,7 @@ options:
     type: vectorField
     required: true
     description: |-
-      Initial velocity field on the patch, read using the standard ``value`` entry. Interpreted as :math:`\mathbf{U}(t)` at the
-      current simulation time. The underlying field :math:`\mathbf{U}_0`
+      Initial velocity field on the patch, read using the standard ``value`` entry. Interpreted as :math:`\mathbf{U}(t)` at the       current simulation time. The underlying field :math:`\mathbf{U}_0`
       is reconstructed from this using the rundown function if ``time > startTime`` at construction.
   - key: const
     type: scalar
