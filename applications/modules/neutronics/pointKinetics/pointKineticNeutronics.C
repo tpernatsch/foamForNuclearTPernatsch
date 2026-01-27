@@ -1091,11 +1091,8 @@ Foam::solvers::pointKineticNeutronics::calcGEMLevelAndReactivity()
             const label& facei(phiFaces_[i]);
             intPhiFrac += (*phiOrig_)[facei]*phiMagSf_[i];
         }
-        Info <<"Bla bla " << intPhiRef_<<endl;
-        Info <<"The other "<< intPhiFrac<<endl;
         reduce(intPhiFrac, sumOp<scalar>());
         intPhiFrac /= intPhiRef_;
-        Info <<"Fractions though is " << intPhiFrac<<endl;
 
         //  Specific FFTF relationship between flow fraction and GEM sodium
         //  level
