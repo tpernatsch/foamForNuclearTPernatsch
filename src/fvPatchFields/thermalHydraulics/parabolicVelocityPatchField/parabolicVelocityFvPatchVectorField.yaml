@@ -26,7 +26,6 @@ options:
   - key: maxValue
     type: scalar
     required: true
-    default:
     description: |-
       Target maximum velocity magnitude at the patch centre, reached after the
       ``transitionPeriod``. During ramp-up, the instantaneous maximum value is
@@ -42,14 +41,12 @@ options:
   - key: n
     type: vector
     required: true
-    default:
     description: |-
       Direction of the imposed velocity (will be normalised internally).
       The final velocity is aligned with this vector.
   - key: y
     type: vector
     required: true
-    default:
     description: |-
       Direction used to construct the local 1-D coordinate for the parabolic
       profile (will be normalised internally). The coordinate is measured
@@ -58,7 +55,6 @@ options:
   - key: transitionPeriod
     type: scalar
     required: true
-    default:
     description: |-
       Time interval over which the maximum velocity is ramped smoothly from
       0 to ``maxValue`` using a half-cosine function. If a non-positive value
@@ -66,7 +62,6 @@ options:
   - key: boundBoxMin
     type: vector
     required: true
-    default:
     description: |-
       Minimum corner of the axis-aligned bounding box used to define the
       spatial extent of the parabolic profile in combination with
@@ -74,7 +69,6 @@ options:
   - key: boundBoxMax
     type: vector
     required: true
-    default:
     description: |-
       Maximum corner of the axis-aligned bounding box used to define the
       spatial extent of the parabolic profile. Together with ``boundBoxMin``,

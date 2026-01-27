@@ -20,25 +20,12 @@ description: |-
   boundary, including transient temperature, pressure, or other scalar
   profiles.
 
-class:
-  name: timeFieldTableFvPatchScalarField
-  namespace: Foam
-  inherits:
-    - fixedValueFvPatchScalarField
-
-runtime:
-  typename: timeFieldTableFvPatchScalarField
-  selection:
-    - fvPatchScalarField
-
 options:
   - key: table
     type: List<Tuple2<scalar, scalarField>>
     required: true
-    default:
     description: |-
-      A list of ``(time, scalarField)`` entries defining the value of the
-      scalar patch field at discrete times. The structure is:
+      A list of ``(time, scalarField)`` entries defining the value of the scalar patch field at discrete times. The structure is:
 
         * ``first`` → time (scalar)
         * ``second`` → full patch-sized ``scalarField`` to apply at that time

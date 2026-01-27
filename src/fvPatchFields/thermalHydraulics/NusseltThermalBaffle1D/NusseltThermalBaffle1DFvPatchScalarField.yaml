@@ -22,32 +22,26 @@ options:
   - key: coeff
     type: scalar
     required: true
-    default:
     description: coeff in $Nu = const + coeff \times Re^{expRe} Pr^{expPr}$
   - key: const
     type: scalar
     required: true
-    default:
     description: scalar in $Nu = const + coeff \times Re^{expRe} Pr^{expPr}$
   - key: expPr
     type: scalar
     required: true
-    default:
     description: expPr in $Nu = const + coeff \times Re^{expRe} Pr^{expPr}$
   - key: expRe
     type: scalar
     required: true
-    default:
     description: expRe in $Nu = const + coeff \times Re^{expRe} Pr^{expPr}$
   - key: kappa
     type: scalar
     required: true
-    default:
     description: Baffle thermal conductivity
   - key: thickness
     type: scalar
     required: true
-    default:
     description: Baffle thickness
 
 usage:

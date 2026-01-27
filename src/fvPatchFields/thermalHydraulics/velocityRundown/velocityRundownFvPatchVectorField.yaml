@@ -24,38 +24,31 @@ options:
   - key: value
     type: vectorField
     required: true
-    default:
     description: |-
-      Initial velocity field on the patch, read using the standard
-      ``value`` entry. Interpreted as :math:`\mathbf{U}(t)` at the
+      Initial velocity field on the patch, read using the standard ``value`` entry. Interpreted as :math:`\mathbf{U}(t)` at the
       current simulation time. The underlying field :math:`\mathbf{U}_0`
-      is reconstructed from this using the rundown function if
-      ``time > startTime`` at construction.
+      is reconstructed from this using the rundown function if ``time > startTime`` at construction.
   - key: const
     type: scalar
     required: true
-    default:
     description: |-
       Parameter :math:`A` in the rundown expression
       ``(A + B (t - startTime))^exp``.
   - key: coeff
     type: scalar
     required: true
-    default:
     description: |-
       Parameter :math:`B` in the rundown expression
       ``(A + B (t - startTime))^exp``.
   - key: exp
     type: scalar
     required: true
-    default:
     description: |-
       Exponent :math:`C` in the rundown expression
       ``(A + B (t - startTime))^exp``.
   - key: startTime
     type: scalar
     required: true
-    default:
     description: |-
       Reference time :math:`t_0` at which the rundown function begins.
       For ``t <= startTime``, the patch field remains equal to the
