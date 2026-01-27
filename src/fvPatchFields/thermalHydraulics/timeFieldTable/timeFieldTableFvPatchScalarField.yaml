@@ -25,11 +25,7 @@ options:
     type: List<Tuple2<scalar, scalarField>>
     required: true
     description: |-
-      A list of ``(time, scalarField)`` entries defining the value of the scalar patch field at discrete times. The structure is:
-        * ``first`` → time (scalar)
-        * ``second`` → full patch-sized ``scalarField`` to apply at that time
-      The list must be ordered in increasing time. The first entry determines
-      the starting time ``tStart``.
+      A list of ``(time, scalarField)`` entries defining the value of the scalar patch field at discrete times. Each entry contains ``first`` → time (scalar) and ``second`` → a full patch-sized ``scalarField``. The list must be ordered in increasing time, and the first entry determines the starting time ``tStart``.
 
 
 usage:

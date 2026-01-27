@@ -25,8 +25,7 @@ options:
     type: vectorField
     required: true
     description: |-
-      Initial velocity field on the patch, read using the standard ``value`` entry. Interpreted as :math:`\mathbf{U}(t)` at the       current simulation time. The underlying field :math:`\mathbf{U}_0`
-      is reconstructed from this using the rundown function if ``time > startTime`` at construction.
+      Initial velocity field on the patch, read using the standard ``value`` entry. Interpreted as :math:`\mathbf{U}(t)` at the       current simulation time. The underlying field :math:`\mathbf{U}_0`      is reconstructed from this using the rundown function if ``time > startTime`` at construction.
   - key: const
     type: scalar
     required: true
@@ -49,14 +48,11 @@ options:
     type: scalar
     required: true
     description: |-
-      Reference time :math:`t_0` at which the rundown function begins.
-      For ``t <= startTime``, the patch field remains equal to the
-      initial value; for later times it evolves with the power law.
+      Reference time :math:`t_0` at which the rundown function begins.       For ``t <= startTime``, the patch field remains equal to the       initial value; for later times it evolves with the power law.
 
 usage:
   - comment: |-
-      Example: velocity rundown starting from a uniform inlet velocity,
-      decaying in time with a power-law from ``startTime`` onward.
+      Example: velocity rundown starting from a uniform inlet velocity,      decaying in time with a power-law from ``startTime`` onward.
     snippet: |-
       inlet
       {

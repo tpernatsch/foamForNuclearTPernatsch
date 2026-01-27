@@ -27,48 +27,34 @@ options:
     type: scalar
     required: true
     description: |-
-      Target maximum velocity magnitude at the patch centre, reached after the       ``transitionPeriod``. During ramp-up, the instantaneous maximum value is      given by
-      .. math::
-          U_\text{max}(t) =
-            U_\text{max} \, \tfrac{1}{2}\bigl(1 - \cos(\pi t / T)\bigr),  
-      for :math:`t < T` and :math:`U_\text{max}(t) = U_\text{max}` for
-      :math:`t \ge T`, where :math:`T =` ``transitionPeriod``.
+      Target maximum velocity magnitude at the patch centre, reached after the ``transitionPeriod``. During ramp-up, the instantaneous maximum value is given by ``U_max(t) = U_max * 0.5*(1 - cos(pi*t/T))`` for t < T and ``U_max(t) = U_max`` for t >= T, where T is ``transitionPeriod``.
   - key: n
     type: vector
     required: true
     description: |-
-      Direction of the imposed velocity (will be normalised internally).
-      The final velocity is aligned with this vector.
+      Direction of the imposed velocity (will be normalised internally).       The final velocity is aligned with this vector.
   - key: y
     type: vector
     required: true
     description: |-
-      Direction used to construct the local 1-D coordinate for the parabolic
-      profile (will be normalised internally). The coordinate is measured
-      along this direction across the patch, based on the bounding box
-      defined by ``boundBoxMin`` and ``boundBoxMax``.
+      Direction used to construct the local 1-D coordinate for the parabolic      profile (will be normalised internally). The coordinate is measured      along this direction across the patch, based on the bounding box      defined by ``boundBoxMin`` and ``boundBoxMax``.
   - key: transitionPeriod
     type: scalar
     required: true
     description: |-
-      Time interval over which the maximum velocity is ramped smoothly from
-      0 to ``maxValue`` using a half-cosine function. If a non-positive value
+      Time interval over which the maximum velocity is ramped smoothly from      0 to ``maxValue`` using a half-cosine function. If a non-positive value
       is provided, it is internally reset to a small positive value (``SMALL``).
   - key: boundBoxMin
     type: vector
     required: true
     description: |-
-      Minimum corner of the axis-aligned bounding box used to define the
-      spatial extent of the parabolic profile in combination with
+      Minimum corner of the axis-aligned bounding box used to define the      spatial extent of the parabolic profile in combination with
       ``boundBoxMax``. Typically chosen to encompass the inlet cross-section.
   - key: boundBoxMax
     type: vector
     required: true
     description: |-
-      Maximum corner of the axis-aligned bounding box used to define the
-      spatial extent of the parabolic profile. Together with ``boundBoxMin``,
-      defines the centre and span in the ``y`` direction.
-
+      Maximum corner of the axis-aligned bounding box used to define the      spatial extent of the parabolic profile. Together with ``boundBoxMin``,      defines the centre and span in the ``y`` direction.
 
 usage:
   - comment: |-
