@@ -30,20 +30,17 @@ options:
     type: scalar
     required: true
     description: |-
-      Parameter :math:`A` in the rundown expression
-      ``(A + B (t - startTime))^exp``.
+      Parameter :math:`A` in the rundown expression ``(A + B (t - startTime))^exp``.
   - key: coeff
     type: scalar
     required: true
     description: |-
-      Parameter :math:`B` in the rundown expression
-      ``(A + B (t - startTime))^exp``.
+      Parameter :math:`B` in the rundown expression ``(A + B (t - startTime))^exp``.
   - key: exp
     type: scalar
     required: true
     description: |-
-      Exponent :math:`C` in the rundown expression
-      ``(A + B (t - startTime))^exp``.
+      Exponent :math:`C` in the rundown expression ``(A + B (t - startTime))^exp``.
   - key: startTime
     type: scalar
     required: true

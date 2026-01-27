@@ -37,19 +37,17 @@ options:
     type: vector
     required: true
     description: |-
-      Direction used to construct the local 1-D coordinate for the parabolic      profile (will be normalised internally). The coordinate is measured      along this direction across the patch, based on the bounding box      defined by ``boundBoxMin`` and ``boundBoxMax``.
+      Direction used to construct the local 1-D coordinate for the parabolic      profile (will be normalised internally). The coordinate is measured      along this direction across the patch, based on the bounding box      defined by ``boundBoxMin`` and `boundBoxMax``.
   - key: transitionPeriod
     type: scalar
     required: true
     description: |-
-      Time interval over which the maximum velocity is ramped smoothly from      0 to ``maxValue`` using a half-cosine function. If a non-positive value
-      is provided, it is internally reset to a small positive value (``SMALL``).
+      Time interval over which the maximum velocity is ramped smoothly from      0 to ``maxValue`` using a half-cosine function. If a non-positive value      is provided, it is internally reset to a small positive value (``SMALL``).
   - key: boundBoxMin
     type: vector
     required: true
     description: |-
-      Minimum corner of the axis-aligned bounding box used to define the      spatial extent of the parabolic profile in combination with
-      ``boundBoxMax``. Typically chosen to encompass the inlet cross-section.
+      Minimum corner of the axis-aligned bounding box used to define the      spatial extent of the parabolic profile in combination with   ``boundBoxMax``. Typically chosen to encompass the inlet cross-section.
   - key: boundBoxMax
     type: vector
     required: true
