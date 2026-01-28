@@ -1102,7 +1102,7 @@ def main():
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/phaseModels/structureModels/powerOffCriterionModels/",
         maxdepth=1
     )
-    append_toctree_for_folder_direct_subfolders(
+    insert_toctree_at_placeholder_for_folder_direct_subfolders(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/turbulenceProperties.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/turbulenceModels/",
         maxdepth=1

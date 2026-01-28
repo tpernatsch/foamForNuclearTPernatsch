@@ -10,32 +10,27 @@ options:
     type: scalar
     required: true
     default:
-    description: |
+    description: Hydraulic diameter of the whole porous structure. Used to rescale the turbulent viscosity and improve numerical stability.
   - key: convergenceLength
     type: scalar
     required: true
     default:
-    description: |
-  - key: turbulenceIntensityAlphaCoeff
-    type: scalar
-    required: true
-    default:
-    description: |
+    description: k and epsilon will exponentially converge to equilibrium according  to this exponent
   - key: turbulenceIntensityCoeff
     type: scalar
     required: true
     default:
-    description: |
+    description: :math:`turbulenceIntensityCoeff` in :math:`turbulenceIntensityCoeff*Reynolds^{turbulenceIntensityExp}`
   - key: turbulenceIntensityExp
     type: scalar
     required: true
     default:
-    description: |
+    description:  :math:`turbulenceIntensityExp` in :math:`turbulenceIntensityCoeff*Reynolds^{turbulenceIntensityExp}`
   - key: turbulenceLengthScaleCoeff
     type: scalar
     required: true
     default:
-    description: |
+    description:  :math:`turbulenceLengthScaleCoeff` in :math:`turbulenceIntensityCoeff*Reynolds^{turbulenceIntensityExp}`
 
 usage:
   - comment: |-
