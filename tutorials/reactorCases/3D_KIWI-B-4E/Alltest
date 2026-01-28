@@ -297,13 +297,13 @@ mpirun -np 8 postProcess -parallel \
     -case $caseName -region fluidRegion -time ":$endTimeSSTH" -dict system/functionsFluidDict \
     -fields '(U magU p T htc alphaPhi alphaRhoPhi T.passiveStructure
         Tsurface.lumpedNuclearStructure Tmatrix.lumpedNuclearStructure
-        Tmax.lumpedNuclearStructure totalPowerAhdeltaTcentral powerDensityNeutronics)' \
+        Tmax.lumpedNuclearStructure totalPowerAhdeltaTcentral powerDensityStructure)' \
     > $caseName/log.postProcess.functions
 
 
 keff=$(extract "keff_ =" "steadyStateTH/log.GeN-Foam")
 totalPowerNeutro=$(extract "Target power =" "steadyStateTH/log.GeN-Foam")
-totalPowerFluid=$(extract "volIntegrate(fluidRegion) of powerDensityNeutronics" "steadyStateTH/log.postProcess.functions")
+totalPowerFluid=$(extract "volIntegrate(fluidRegion) of powerDensityStructure" "steadyStateTH/log.postProcess.functions")
 Tout=$(extract "areaAverage(outlet) of T" "steadyStateTH/log.postProcess.functions")
 
 scaledPowerNeutro=$(python -c "print(float($totalPowerNeutro) * 1e-6)")

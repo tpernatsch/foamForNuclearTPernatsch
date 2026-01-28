@@ -85,7 +85,7 @@ regionSolvers
 	// T.cladAvForNeutronics --> TClad
 
 // neutro--> fluid 
-	// powerDensity --> powerDensityNeutronics
+	// powerDensity --> powerDensityStructure
 
 // fluid --> channel
 	// T --> T
@@ -100,7 +100,7 @@ mappings
 	{
 		neutroRegion
 		{
-			targetFields (powerDensityNeutronics);
+			targetFields (powerDensityStructure);
 			sourceFields (powerDensity);
 		};
 	};

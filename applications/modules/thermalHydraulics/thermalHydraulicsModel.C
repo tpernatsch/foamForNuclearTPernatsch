@@ -237,7 +237,7 @@ Foam::solvers::thermalHydraulicsModel::thermalHydraulicsModel
     (
         IOobject
         (
-            "powerDensityNeutronics",
+            "powerDensityStructure",
             mesh_.time().timeName(),
             mesh_,
             IOobject::READ_IF_PRESENT,
@@ -251,7 +251,7 @@ Foam::solvers::thermalHydraulicsModel::thermalHydraulicsModel
     (
         IOobject
         (
-            "powerDensityNeutronicsToLiquid",
+            "powerDensityLiquid",
             mesh_.time().timeName(),
             mesh_,
             IOobject::READ_IF_PRESENT,

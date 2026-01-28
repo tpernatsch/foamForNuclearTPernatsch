@@ -35,7 +35,7 @@ structureProperties
            // a volume of any shape, the interfacialArea and volumeFraction
            // of the resulting porous pebble structure are not independent, yet
            // are tied by volumetricAre a = 3*volumeFraction/outerPinRadius
-           powerDensityNeutronics           1480541.224578661;
+           powerDensityStructure           1480541.224578661;
            pebbleSurfaceTemperatureGuess 523.15;
            pebbleCoreRadius        0;
            pebbleMatrixRadius      2.5e-2;

@@ -145,7 +145,7 @@ inletCentral, outletCentral = SuperDict(), SuperDict()
 
 # Read the file in reverse
 for line in logfile.readlines()[::-1]:
-    powers.findInLine(line, "volIntegrate(fluidRegion) of powerDensityNeutronics", "fluid")
+    powers.findInLine(line, "volIntegrate(fluidRegion) of powerDensityStructure", "fluid")
     powers.findInLine(line, "volIntegrate(neutroRegion) of powerDensity", "neutro")
     powers.findInLine(line, "volIntegrate(fluidRegion) of hdeltaT", "AhdeltaT")
 

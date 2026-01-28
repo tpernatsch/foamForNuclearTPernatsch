@@ -31,8 +31,8 @@ regionSolvers
 // Mappings structure will be
 
 //Neutronics --> Fluid : 
-    // powerDensity --> powerDensityNeutronics  
-    // secondaryPowerDensity --> powerDensityNeutronicsToLiquid
+    // powerDensity --> powerDensityStructure  
+    // secondaryPowerDensity --> powerDensityLiquid
 
 //Fluid --> Neutronics : 
     // T --> TCool
@@ -49,7 +49,7 @@ regionSolvers
     // T.fuelAvForNeutronics --> TFuel
 
 //Neutronics --> ThermoMech
-    // powerDensity --> powerDensityNeutronics
+    // powerDensity --> powerDensityStructure
 
 // For field names use
 // https://foam-for-nuclear.gitlab.io/GeN-Foam/user_guide/coupling/
@@ -60,7 +60,7 @@ mappings
     {
         neutroRegion //source region 
         {
-            targetFields (powerDensityNeutronics powerDensityNeutronicsToLiquid); // this is the name of the field in the target region 
+            targetFields (powerDensityStructure powerDensityLiquid); // this is the name of the field in the target region 
             sourceFields (powerDensity  secondaryPowerDensity); // this is the name of the field in the source region 
         }
     }

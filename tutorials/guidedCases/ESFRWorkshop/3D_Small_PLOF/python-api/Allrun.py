@@ -801,8 +801,8 @@ for solver in solvers:
 
 coupling = ffn.Coupling(solvers=solvers)
 
-coupling.add_field_transfer(neutronicsSolver, thSolver, "powerDensity", "powerDensityNeutronics")
-coupling.add_field_transfer(neutronicsSolver, thSolver, "secondaryPowerDensity", "powerDensityNeutronicsToLiquid")
+coupling.add_field_transfer(neutronicsSolver, thSolver, "powerDensity", "powerDensityStructure")
+coupling.add_field_transfer(neutronicsSolver, thSolver, "secondaryPowerDensity", "powerDensityLiquid")
 
 coupling.add_field_transfer(thSolver, neutronicsSolver, "T", "TCool")
 coupling.add_field_transfer(thSolver, neutronicsSolver, "thermo:rho", "rhoCool")

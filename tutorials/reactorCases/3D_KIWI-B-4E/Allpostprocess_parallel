@@ -44,7 +44,7 @@ mpirun -np 8 postProcess -parallel \
     -case $caseName -region fluidRegion -time "$timeStep:" -dict system/functionsFluidDict \
     -fields '(U magU p T htc alphaPhi alphaRhoPhi T.passiveStructure
         Tsurface.lumpedNuclearStructure Tmatrix.lumpedNuclearStructure
-        Tmax.lumpedNuclearStructure totalPowerAhdeltaTcentral powerDensityNeutronics)' \
+        Tmax.lumpedNuclearStructure totalPowerAhdeltaTcentral powerDensityStructure)' \
     > $caseName/log.postProcess.functions
 
 mpirun -np 8 postProcess -parallel \
@@ -109,14 +109,14 @@ then
         -case $caseName -region fluidRegion -time "20823:$timeStep" -dict system/functions \
         -fields '(U magU p T htc alphaPhi alphaRhoPhi T.passiveStructure
             Tsurface.lumpedNuclearStructure Tmatrix.lumpedNuclearStructure
-            Tmax.lumpedNuclearStructure totalPowerAhdeltaTcentral powerDensityNeutronics)' \
+            Tmax.lumpedNuclearStructure totalPowerAhdeltaTcentral powerDensityStructure)' \
         > $caseName/log.functions_transient
 
     mpirun -np 8 postProcess -parallel \
         -case $caseName -region fluidRegion -func sampleFluidDict \
         -fields '(U magU p T htc alphaPhi alphaRhoPhi T.passiveStructure
             Tsurface.lumpedNuclearStructure Tmatrix.lumpedNuclearStructure
-            Tmax.lumpedNuclearStructure totalPowerAhdeltaTcentral powerDensityNeutronics)' \
+            Tmax.lumpedNuclearStructure totalPowerAhdeltaTcentral powerDensityStructure)' \
         >> $caseName/log.postProcess.fluidRegion.sampleFluidDict
 
     # Plot transient
