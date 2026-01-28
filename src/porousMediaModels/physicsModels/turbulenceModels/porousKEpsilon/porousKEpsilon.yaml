@@ -46,7 +46,28 @@ options:
 
 usage:
   - comment: |-
-      A sub-dictionary similar to the following should be included in the turbulenceProperties dictionary:
+      The model is selected in the RAS section of the ``turbulenceProperties`` dictionary. A minimal example for a phase using ``mixtureKEpsilon`` is:
+    snippet: |-
+      RAS
+      {
+          RASModel            porousKEpsilon;
+          turbulence          on;
+          printCoeffs         on;
+
+          porousKEpsilonCoeffs
+          {
+              Cmu       0.09;
+              C1        1.44;
+              C2        1.92;
+              C3        1.92;
+              Cp        0.25;
+              sigmak    1.0;
+              sigmaEps  1.3;
+              Prt       1.0;
+          }
+      }
+  - comment: |-
+      An additional sub-dictionary similar to the following should be then included in the ``turbulenceProperties``  dictionary:
     snippet: |-
       porousKEpsilonProperties
       {
@@ -60,94 +81,7 @@ usage:
       }
 
 
-
-
-options:
-  # --------------------------------------------------------------------------
-  # RAS model coefficient dictionary (porousKEpsilonCoeffs)
-  # --------------------------------------------------------------------------
-
-
-  # --------------------------------------------------------------------------
-  # Porous-region configuration dictionary
-  # --------------------------------------------------------------------------
-  - key: porousKEpsilonProperties
-    type: dictionary
-    required: true
-    default:
-    description: |-
-      Subdictionary containing porous-region definitions. Each entry name may
-      represent a single region or a colon-separated list of regions, e.g.,
-      ``regionA:regionB``. For every porous region where the structure field has
-      non-zero volume fraction, a corresponding entry must be present.
-
-      Required entries per region:
-        - convergenceLength:            characteristic turbulence convergence length [m]
-        - turbulenceIntensityCoeff:     coefficient for inlet turbulence intensity correlation
-        - turbulenceIntensityExp:       exponent for Reynolds-number-based turbulence intensity
-        - turbulenceLengthScaleCoeff:   coefficient for porous length-scale estimation
-
-      Optional entries (trigger nut stabilization):
-        - DhStruct:         hydraulic diameter of porous channels [m]
-        - laminarReStruct:  laminar Reynolds number threshold (default: 500)
-
-usage:
-  - comment: |-
-      Minimal RAS setup enabling porousKEpsilon. The RAS coefficients are placed
-      in the standard turbulence model coefficient dictionary (often
-      ``turbulenceProperties`` or ``RASProperties``).
-    snippet: |-
-      RAS
-      {
-          RASModel        porousKEpsilon;
-          turbulence      on;
-          printCoeffs     on;
-
-          porousKEpsilonCoeffs
-          {
-              Cmu       0.09;
-              C1        1.44;
-              C2        1.92;
-              C3        0;
-              sigmak    1.0;
-              sigmaEps  1.3;
-              Prt       1.0;
-          }
-      }
-
-  - comment: |-
-      Example porous region configuration. If the mesh contains porous regions
-      named ``matrix`` and ``support`` in the ``structure`` object, the following
-      dictionary must be provided.
-    snippet: |-
-      porousKEpsilonProperties
-      {
-          matrix
-          {
-              convergenceLength           0.05;
-              turbulenceIntensityCoeff    0.10;
-              turbulenceIntensityExp      0.25;
-              turbulenceLengthScaleCoeff  0.50;
-
-              // Optional stabilization terms
-              DhStruct        0.003;
-              laminarReStruct 600;
-          }
-
-          support
-          {
-              convergenceLength           0.03;
-              turbulenceIntensityCoeff    0.05;
-              turbulenceIntensityExp      0.20;
-              turbulenceLengthScaleCoeff  0.40;
-          }
-      }
-
 notes:
   - This model requires that each porous region in ``structure.regions()`` with
     non-zero volume fraction appears in ``porousKEpsilonProperties``.
-  - When ``DhStruct`` is provided for a region, nut stabilization is activated
-    and the fields ``DhStructure.porousKEpsilon`` and
-    ``laminarReStructure.porousKEpsilon`` are created automatically.
-  - Fields such as ``equilibriumK`` and ``equilibriumEpsilon`` are managed
-    internally by the model and should not be supplied by the user.
+
