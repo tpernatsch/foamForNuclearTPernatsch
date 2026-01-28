@@ -4,13 +4,43 @@
 Achieving coupled solutions 
 ===========================
 
+In GeN-Foam, the number of selected regions, each with their own mesh and solver, 
+is completely arbitrary and specified by the user in the *system/regionsDict* dictionary. 
+An example is shown below:
+
+.. code :: cpp
+
+    // In constant/regionsDict
+
+    regionSolvers
+    {
+        Level_0
+        {
+            fluidRegion     onePhase;
+            neutroRegion    diffusionNeutronics;
+        }
+    }
+
+If no additional coupling-specific settings are defined, the solutions for the
+selected regions will be achieved independently, without exchange of information 
+across them. In the following sections, the methods to achieve coupling between 
+physics are detailed.
+
+.. note ::
+    Physics selected in *regionSolvers/Level_0* are solved only once per time-step. 
+    Refer to the subsection about loops to see how multiple iterations per time-step 
+    can be performed to achieve tight coupling.
+
+
 Coupling logic
 --------------
 
 Different physics can be coupled in GeN-Foam through two main mechanisms:
-volumetric coupling and boundary coupling. The choice between the two depends on
+volumetric coupling, which relies on volumetric field mappings between overlapping
+domains, and boundary coupling, which enforces information exchange across a
+shared interface via boundary conditions. The choice between the two depends on
 the geometrical relationship between the regions involved and on how information
-is exchanged between the corresponding solvers. Both approaches rely on
+needs to be exchanged between the corresponding solvers. Both approaches rely on
 OpenFOAM-native mapping capabilities and are fully configurable by the user.
 
 .. figure:: ../../images/HetHom.png
@@ -67,7 +97,7 @@ An example of the volumetric coupling setup:
             neutroRegion // to fluidRegion
             {
                 sourceFields    ( powerDensity );
-                targetFields    ( powerDensityNeutronics );
+                targetFields    ( powerDensityStructure );
             }
         }
         neutroRegion
@@ -85,6 +115,9 @@ This coupling routine is templated; therefore, the user does not need to specify
 the field type (i.e., scalar or vector). A detailed example of the usage of this
 coupling approach can be found in any multi-physics tutorial, such as
 `3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/>`_.
+Moreover, tutorial `2D_fullCoupling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/2D_fullCoupling>`_
+has been created to allow users to play around with the volumetric couplings and understand
+their logic.
 
 .. note ::
     GeN-Foam can
@@ -107,30 +140,6 @@ coupling approach can be found in any multi-physics tutorial, such as
     case of a partial overlap, the thermo-mechanics solver computes the temperature
     only in the regions where no overlap with the thermal-hydraulics mesh exists.
 
-
-.. note ::
-    GeN-Foam can
-    be used to map *any* scalar or vectorial field to *any* scalar of vectorial
-    fields on a different mesh, enabling the simulation of any arbitrarily coupled multi-physics
-    simulation that leverages the currently existing libraries.
-
-.. note ::
-
-    There is no need for the thermal-hydraulics, thermal-mechanics, and
-    neutronics domains to be the same. GeN-Foam will project fields in a "clever" way
-    whenever there is no overlap between 2 domains.
-
-
-.. note ::
-
-    It is possible not to solve for displacements in the thermo-mechanics
-    sub-solver by setting to *false* the keyword *solveDisplacement* in
-    *thermoMechanicalProperties*.
-
-
-Tutorial `2D_fullCoupling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/2D_fullCoupling>`_
-has been created to allow users to play around with the couplings and understand
-their logic.
 
 Here is a list of the fields which are most commonly coupled across physics and
 their names:
@@ -168,11 +177,11 @@ their names:
       - TStruct
       - TStructFromTH/T\*
     * - Power density (structures)
-      - powerDensityNeutronics
+      - powerDensityStructure
       - powerDensity
       - powerDensityNeutronics
     * - Power density (liquid)
-      - powerDensityNeutronicsToLiquid
+      - powerDensityLiquid
       - secondaryPowerDensity
       - N/A
     * - Displacement
@@ -282,8 +291,8 @@ When boundary coupling is employed, the user must explicitly define the coupled
 boundaries in the *polyMesh/boundary* file. In addition, for each coupled field,
 the coupling specifications must be provided in the corresponding field files
 located in the *0* directory. These specifications can involve simple mappings or
-more advanced coupling strategies, such as conjugate heat transfer (CHT), where
-both temperature and heat flux are conserved at the interface. Many of these
+more advanced coupling strategies, such as conjugate heat transfer, where
+both temperature and heat flux are continuous at the interface. Many of these
 boundary condition types are readily available in OpenFOAM.
 
 Tutorial `2D_flowOverPlate <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/2D_flowOverPlate/boundaryCoupling>`_
@@ -294,19 +303,27 @@ The *loops*
 
 Many multi-physics simulations might require large flexibility on the
 time-loops. For instance, while some physics might be tightly coupled, others
-are only loosely coupled. This is, for instance, often the case for multi-scale
+are only loosely coupled. This is often the case for multi-scale
 simulations, where physics are tightly coupled within a scale and loosely across
-scales. In order to create this additional flexibility, dedicated "loops" are created. For example, the ``picardLoop`` consists of
+scales. In order to create this additional flexibility, dedicated "loops" are
+created. For example, the ``picardLoop`` consists of
 a list of tightly coupled physics. During run-time, when the physics are
 corrected, if they are part of a ``picardLoop``, the physics will be
-corrected iteratively, until a user-input convergence criterion is met.
-*picardLoops* are also defined in *system/regionsDict* in
+corrected iteratively, until a user-input convergence criterion is met. At each
+iteration of the loop, volumetric and boundary field exchanges are performed to
+update the coupling variables between the involved regions. In addition to the
+standard ``picardLoop``, other loop types exist that are designed for specific
+coupling strategies and may involve additional field manipulations or residual
+evaluations tailored to the physics being coupled. *loops* are
+also defined in *system/regionsDict* in
 the ``regionSolvers`` sub-dictionary. Each entry of the subDict corresponds
-to a different ``picardLoop``, characterized by a list of subSolvers (i.e.
-the solvers that are tightly coupled), a minimum residual to reach before the
-Picard iterations are interrupted and a maximum number of iterations. Note that
-*picardLoops* can be nested within one other, possibly leading to
+to a different ``loop``, characterized by a list of subSolvers (i.e.
+the solvers that are tightly coupled), a minimum residual to reach before the iterations
+are interrupted and a maximum number of iterations and possibly additional keywords
+depending on the type of *loop* selected. Note that
+*loops* can be nested within one other, possibly leading to
 tree-like structure as shown below.
+
 
 .. mermaid::
 
@@ -355,7 +372,7 @@ Which can be translated in *system/regionsDict*:
     }
 
 
-Note that all the physics that are specified in the ``regionSolvers`` dict are
+Note that all the physics that are specified in the ``Level_0`` of the ``regionSolvers`` dict are
 loosely coupled, whereas only those specified within a ``picardLoop`` are
 tightly coupled.
 
