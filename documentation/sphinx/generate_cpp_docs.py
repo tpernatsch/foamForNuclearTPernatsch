@@ -1103,6 +1103,11 @@ def main():
         maxdepth=1
     )
     append_toctree_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/turbulenceProperties.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/turbulenceModels/",
+        maxdepth=1
+    )
+    append_toctree_for_folder_direct_subfolders(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/physicsModels/FFdrag.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dragModels/FFDragCoefficientModels",
         maxdepth=1

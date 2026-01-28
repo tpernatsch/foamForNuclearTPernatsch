@@ -4,12 +4,8 @@ The *turbulenceProperties* dictionary
 -------------------------------------
 
 
-The *turbulenceProperties* dictionary can be found under
-*constant/fluidRegion/*. It is a standard OpenFOAM dictionary that allows
-defining the turbulence model to be used.
+*turbulenceProperties*  is a standard OpenFOAM dictionary that allows defining the turbulence model to be used. In addition to the several models already available in OpenFOAM, foamForNuclear provides some specialized models.
 
-When clear-fluid simulations (i.e., without porous zones) are performed, one can
-use the standard kEpsilon model of OpenFOAM.
 
 When porous zones are present in the simulation, it is recommended to use
 *porousKEpsilon* (see :ref:`porousKEpsilon.H <porousKEpsilon>`). The only difference w.r.t. the
