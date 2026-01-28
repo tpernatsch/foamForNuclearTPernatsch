@@ -7,24 +7,45 @@ Achieving coupled solutions
 Coupling logic
 --------------
 
-The coupling between physics is achieved by projecting coupling variables from
-the mesh they are calculated, to the mesh they need to be used. The details of
-the coupling can be specified in *system/regionsDict*. In the
-sub-dictionary ``mappings``, for each region one can select the fields to map
-*onto* it. This is done by creating a *subDict* named after the region *from*
-which the fields are mapped. For instance, if a field needs to mapped into the
-*fluidRegion* from the *neutroRegion*, the specifics of the mapping are found under
-*regionsDict/mappings/fluidRegion/neutroRegion*. In this *subDict*, one can
-specify the name of the field of the original mesh in the *sourceFields* entry
-(e.g., ``powerDensity`` in the neutroRegion) and the name of the field onto which
-the original field is mapped in the *targetFields* entry (e.g.
-``powerDensityStructure`` in the fluidRegion). This routine is templated, hence
-the user doesn't need to specify the field type (i.e. scalar or vector). A
-detailed usage of this new coupling routine can be found in any multi-physics
-tutorial, such as
-`3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/>`_.
+Different physics can be coupled in GeN-Foam through two main mechanisms:
+volumetric coupling and boundary coupling. The choice between the two depends on
+the geometrical relationship between the regions involved and on how information
+is exchanged between the corresponding solvers. Both approaches rely on
+OpenFOAM-native mapping capabilities and are fully configurable by the user.
 
-Example of loose coupling:
+.. figure:: ../../images/HetHom.png
+    :width: 500
+    :alt: Coupled meshes with overlapping and interface-based regions
+
+    Example of coupled meshes with volumetric overlap and interface-based coupling.
+
+.. note ::
+    Hybrid approaches are also possible, where both volumetric and boundary
+    coupling are employed within the same simulation to exchange information
+    between different subsets of regions.
+
+Volumetric coupling
+-------------------
+
+Volumetric coupling is best suited for geometrically overlapping domains and is
+achieved by volumetrically mapping fields from one mesh to another, making use of
+OpenFOAM mapping algorithms. In this approach, coupling variables are projected
+from the mesh on which they are computed to the mesh on which they are required.
+
+The details of the coupling are specified in *system/regionsDict*. Within the
+sub-dictionary ``mappings``, each region defines the fields that are mapped
+*onto* it. This is done by creating a *subDict* named after the region *from*
+which the fields are mapped.
+
+For example, if a field needs to be mapped into the *fluidRegion* from the
+*neutroRegion*, the corresponding mapping configuration is defined under
+*regionsDict/mappings/fluidRegion/neutroRegion*. Within this *subDict*, the name
+of the field on the source mesh is specified in the *sourceFields* entry (e.g.,
+``powerDensity`` in the neutroRegion), while the name of the field on the target
+mesh is provided in the *targetFields* entry (e.g.,
+``powerDensityStructure`` in the fluidRegion).
+
+An example of the volumetric coupling setup:
 
 .. code :: cpp
 
@@ -59,31 +80,33 @@ Example of loose coupling:
         }
     }
 
-Heterogeneous (boundary) vs Homogeneous (domain overlap) coupling
----------------------------------------------------------------
 
-GeN-Foam can operate in two different
-modes, depending on how the temperature of the structures is calculated and as
-shown in the figure below:
+This coupling routine is templated; therefore, the user does not need to specify
+the field type (i.e., scalar or vector). A detailed example of the usage of this
+coupling approach can be found in any multi-physics tutorial, such as
+`3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/>`_.
 
-- Homogeneous / domain overlap: the thermal-hydraulics solver is responsible for calculating temperatures throughout the physical domain. This is the most typical case, where structures are assumed to be treated as sub-scale structures in a porous-medium treatment.
-- Heterogeneous / boundary coupling: the thermal-hydraulics solver and the thermal-mechanics solver are responsible for calculating temperatures in different parts of the domain. This could be used for instance when simulating a core with a porous-medium approach, and a large solid reflector using the thermo-mechanics solver. Or it could be used to simulate a fuel pin, assembly or entire code in a heterogeneous manner.
+.. note ::
+    GeN-Foam can
+    be used to map *any* scalar or vectorial field to *any* scalar of vectorial
+    fields on a different mesh, enabling the simulation of any arbitrarily coupled
+    multi-physics simulation that leverages the currently existing libraries.
 
-Of course, it is also possible to have hybrid approaches, where the temperature
-in one structure is calculated in part based on the temperatures predicted in
-the sub-scale structure by the thermal-hydraulics sub-solver, and partly by the
-thermo-mechanical solver itself (where there is not overlap with the
-thermo-hydraulics domain).
+.. note ::
+    There is no need for the all domains to be the same. GeN-Foam will project 
+    fields in a "clever" way whenever there is no overlap between 2 domains.
 
-Tutorial `2D_fullCoupling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/2D_fullCoupling>`_
-has been created to allow users to play around with the couplings and understand
-their logic.
+.. note ::
+    When using the *legacyThermoMechanics* solver, the treatment of structural
+    temperatures depends on the geometrical overlap between the thermo-mechanics and
+    thermal-hydraulics regions. If an overlap with the fluid region is detected, the
+    structural temperature is taken directly from the porous-medium structure
+    calculation performed by the thermal-hydraulics solver, and no heat diffusion
+    equation is solved in the solid. If no overlap is present, the temperature field
+    is computed by solving the heat diffusion equation in the solid domain. In the
+    case of a partial overlap, the thermo-mechanics solver computes the temperature
+    only in the regions where no overlap with the thermal-hydraulics mesh exists.
 
-.. figure:: ../../images/HetHom.png
-    :width: 500
-    :alt: Heterogeneous / Homogeneous meshes overlaps
-
-    Heterogeneous / Homogeneous meshes overlaps.
 
 .. note ::
     GeN-Foam can
@@ -104,22 +127,13 @@ their logic.
     sub-solver by setting to *false* the keyword *solveDisplacement* in
     *thermoMechanicalProperties*.
 
-.. Note that temperature handling depends on mesh overlap:
 
-.. - **Overlap with thermal-hydraulics mesh:**  
-..   The solid temperature is forced to match the sub-scale structure temperature
-..   predicted by thermal-hydraulics.
-
-.. - **No overlap:**  
-..   Temperature is obtained by solving a heat diffusion equation, using material
-..   properties specified in ``thermoMechanicalProperties``.
-
-.. - **Overlap with the neutronics mesh:**  
-..   The region receives a volumetric heat source from the neutronics-calculated
-..   power field.
+Tutorial `2D_fullCoupling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/2D_fullCoupling>`_
+has been created to allow users to play around with the couplings and understand
+their logic.
 
 Here is a list of the fields which are most commonly coupled across physics and
-their names
+their names:
 
 .. list-table:: Common field correspondence table
     :widths: 50 50 50 50
@@ -256,6 +270,25 @@ In the *controlDict* add:
     }
 
 
+Boundary coupling
+-----------------
+
+Boundary coupling is used when different physics are solved on distinct,
+non-overlapping regions that share a common interface. In this case, information
+is exchanged exclusively across the interface, and the coupling is enforced by
+means of mapped boundary conditions provided by OpenFOAM.
+
+When boundary coupling is employed, the user must explicitly define the coupled
+boundaries in the *polyMesh/boundary* file. In addition, for each coupled field,
+the coupling specifications must be provided in the corresponding field files
+located in the *0* directory. These specifications can involve simple mappings or
+more advanced coupling strategies, such as conjugate heat transfer (CHT), where
+both temperature and heat flux are conserved at the interface. Many of these
+boundary condition types are readily available in OpenFOAM.
+
+Tutorial `2D_flowOverPlate <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/2D_flowOverPlate/boundaryCoupling>`_
+shows an example of boundary coupling.
+
 The *loops*
 -----------
 
@@ -306,7 +339,7 @@ Which can be translated in *system/regionsDict*:
                 Solver2                 physicsD;
                 MultiPhysicsSolver2     picardLoop;
             }
-            minResidual     0.00005;
+            maxResidual     0.00005;
             maxIterations   3;
         }
         MultiPhysicsSolver2
@@ -316,7 +349,7 @@ Which can be translated in *system/regionsDict*:
                 Solver3     physicsF;
                 Solver4     physicsG;
             }
-            minResidual     0.00005;
+            maxResidual     0.00005;
             maxIterations   3;
         }
     }
@@ -346,9 +379,6 @@ The previous example would correspond to a time loop as shown below.
 Current loops available in *GeN-Foam* are:
 
 toctreeHere
-
-
-
 
 Typical coupling logic for a nuclear reactor
 --------------------------------------------
