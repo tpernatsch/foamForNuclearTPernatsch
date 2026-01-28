@@ -43,24 +43,19 @@ options:
   - key: mixtureKEpsilonCoeffs
     type: dictionary
     required: false
-    default: |
-      Cmu       0.09;
-      C1        1.44;
-      C2        1.92;
-      C3        C2;
-      Cp        0.25;
-      sigmak    1.0;
-      sigmaEps  1.3;
-    description: |-
-      Coefficient sub-dictionary for the mixture k–ε model. Entries are:
-        - Cmu:      turbulence viscosity coefficient (μ_t = Cmu k² / ε)
-        - C1:       coefficient of production in the ε-equation
-        - C2:       coefficient of dissipation in the ε-equation
-        - C3:       coefficient for bubble-induced turbulence in ε (default = C2)
-        - Cp:       scaling coefficient for bubble-generated turbulence source
-        - sigmak:   turbulent diffusivity coefficient for k
-        - sigmaEps: turbulent diffusivity coefficient for ε
+    default: "Cmu 0.09; C1 1.44; C2 1.92; C3 C2; Cp 0.25; sigmak 1.0; sigmaEps 1.3;"
+    description: |
+      Coefficient sub-dictionary for the mixture k–ε model.
 
+      Entries:
+      - Cmu: turbulence viscosity coefficient (μ_t = Cmu k² / ε)
+      - C1: coefficient of production in the ε-equation
+      - C2: coefficient of dissipation in the ε-equation
+      - C3: bubble-induced turbulence coefficient (default = C2)
+      - Cp: scaling coefficient for bubble-generated turbulence
+      - sigmak: turbulent diffusivity coefficient for k
+      - sigmaEps: turbulent diffusivity coefficient for ε
+      
 usage:
   - comment: |-
       The model is selected in the RAS section of the turbulence properties

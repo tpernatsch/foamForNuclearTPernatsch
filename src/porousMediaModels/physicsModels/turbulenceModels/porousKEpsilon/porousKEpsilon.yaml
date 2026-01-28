@@ -5,7 +5,7 @@ description: |-
   porousKepsionProperties sub-dictionary. k and epsilon are
   determined based on correlations for tubulent intensity (I) and lengh
   scale (L). Turbulent intensity correlations are in the form
-  :math:`turbulenceIntensityCoeff*Reynolds^turbulenceIntensityExp`,
+  :math:`turbulenceIntensityCoeff*{Reynolds^turbulenceIntensityExp}`,
   with Reynolds number calculated by the structure class, according
   to the input data in phaseProperties.
   Please note that a porous medium simulation using the porousKEpsilon
