@@ -17,33 +17,60 @@ description: |-
   results in a  laminar Reynolds number (defaulted to 500).
 
 
+options:
+  - key: DhStruct
+    type: scalar
+    required: true
+    default:
+    description: Hydraulic diameter of the whole porous structure. Used to rescale the turbulent viscosity and improve numerical stability.
+  - key: convergenceLength
+    type: scalar
+    required: true
+    default:
+    description: k and epsilon will exponentially converge to equilibrium according  to this exponent
+  - key: turbulenceIntensityCoeff
+    type: scalar
+    required: true
+    default:
+    description: :math:`turbulenceIntensityCoeff` in :math:`turbulenceIntensityCoeff*Reynolds^turbulenceIntensityExp`
+  - key: turbulenceIntensityExp
+    type: scalar
+    required: true
+    default:
+    description:  :math:`turbulenceIntensityExp` in :math:`turbulenceIntensityCoeff*Reynolds^turbulenceIntensityExp`
+  - key: turbulenceLengthScaleCoeff
+    type: scalar
+    required: true
+    default:
+    description:  :math:`turbulenceLengthScaleCoeff` in :math:`turbulenceIntensityCoeff*Reynolds^turbulenceIntensityExp`
+
+usage:
+  - comment: |-
+      A sub-dictionary similar to the following should be included in the turbulenceProperties dictionary:
+    snippet: |-
+      porousKEpsilonProperties
+      {
+          "zones of application"
+          {
+              convergenceLength           0.5; 
+              turbulenceIntensityCoeff    0.16;
+              turbulenceIntensityExp      -0.125;
+              turbulenceLengthScaleCoeff  0.07;
+          }
+      }
+
+
+
 
 options:
   # --------------------------------------------------------------------------
   # RAS model coefficient dictionary (porousKEpsilonCoeffs)
   # --------------------------------------------------------------------------
-  - key: porousKEpsilonCoeffs
-    type: dictionary
-    required: false
-    default: |
-      Cmu       0.09;
-      C1        1.44;
-      C2        1.92;
-      C3        0;
-      sigmak    1.0;
-      sigmaEps  1.3;
-      Prt       1.0;
-    description: |-
-      Coefficients for the porous k–ε turbulence model:
-        - Cmu:       coefficient for turbulent viscosity (ν_t = Cmu k²/ε)
-        - C1:        production coefficient in the ε-equation
-        - C2:        destruction coefficient in the ε-equation
-        - C3:        porous-region ε production modifier (default 0)
-        - sigmak:    turbulent diffusivity coefficient for k
-        - sigmaEps:  turbulent diffusivity coefficient for ε
-        - Prt:       turbulent Prandtl number (used for alphat), default 1.0
 
 
+  # --------------------------------------------------------------------------
+  # Porous-region configuration dictionary
+  # --------------------------------------------------------------------------
   - key: porousKEpsilonProperties
     type: dictionary
     required: true
@@ -53,11 +80,13 @@ options:
       represent a single region or a colon-separated list of regions, e.g.,
       ``regionA:regionB``. For every porous region where the structure field has
       non-zero volume fraction, a corresponding entry must be present.
+
       Required entries per region:
         - convergenceLength:            characteristic turbulence convergence length [m]
         - turbulenceIntensityCoeff:     coefficient for inlet turbulence intensity correlation
         - turbulenceIntensityExp:       exponent for Reynolds-number-based turbulence intensity
         - turbulenceLengthScaleCoeff:   coefficient for porous length-scale estimation
+
       Optional entries (trigger nut stabilization):
         - DhStruct:         hydraulic diameter of porous channels [m]
         - laminarReStruct:  laminar Reynolds number threshold (default: 500)
@@ -122,7 +151,3 @@ notes:
     ``laminarReStructure.porousKEpsilon`` are created automatically.
   - Fields such as ``equilibriumK`` and ``equilibriumEpsilon`` are managed
     internally by the model and should not be supplied by the user.
-
-
-
-

@@ -38,21 +38,19 @@ description: |-
   ``Cmu``, ``C1``, ``C2``, ``C3``, ``sigmak`` and ``sigmaEps`` retain their
   standard k–ε roles in production, dissipation and diffusion.
 
-  Last modified by Stefan Radman for compatibility with FFSEulerFoam
-  (stefan.radman@epfl.ch, stefanradman92@gmail.com).
 
 options:
   - key: mixtureKEpsilonCoeffs
     type: dictionary
     required: false
     default: |
-        Cmu       0.09;
-        C1        1.44;
-        C2        1.92;
-        C3        C2;
-        Cp        0.25;
-        sigmak    1.0;
-        sigmaEps  1.3;
+      Cmu       0.09;
+      C1        1.44;
+      C2        1.92;
+      C3        C2;
+      Cp        0.25;
+      sigmak    1.0;
+      sigmaEps  1.3;
     description: |-
       Coefficient sub-dictionary for the mixture k–ε model. Entries are:
         - Cmu:      turbulence viscosity coefficient (μ_t = Cmu k² / ε)
