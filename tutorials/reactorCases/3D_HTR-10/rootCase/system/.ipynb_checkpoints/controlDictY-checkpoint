@@ -51,8 +51,6 @@ solveNeutronics false;
 
 solveThermalMechanics false;
 
-liquidFuel      false;
-
 adjustTimeStep  true;
 
 maxDeltaT       1;

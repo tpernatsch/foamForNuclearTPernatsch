@@ -46,8 +46,6 @@ removeBaffles
     fluidRegion     false;
 }
 
-liquidFuel      false;
-
 adjustTimeStep  true;
 
 maxDeltaT       1;

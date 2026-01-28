@@ -16,8 +16,7 @@ FoamFile
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 eigenvalueNeutronics    true;
-
-
+liquidFuel              true;
 fastNeutrons            true; // if true interpolates cross section with logarithmic temp for fuel (otherwise, square root)
 
 adjustDiscFactors       false;

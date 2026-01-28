@@ -235,7 +235,7 @@ Foam::solvers::neutronics::neutronics
     ),
     liquidFuel_
     (
-        mesh.time().controlDict().lookupOrDefault("liquidFuel", false)
+        IOdictionary::lookupOrDefault("liquidFuel", false)
     ),
     originalPoints_(mesh_.points()),
     externalSource_

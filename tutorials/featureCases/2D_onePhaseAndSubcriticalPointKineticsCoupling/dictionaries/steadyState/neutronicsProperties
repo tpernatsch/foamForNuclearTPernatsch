@@ -19,10 +19,7 @@ eigenvalueNeutronics        true;
 //- If true, add the external source to the point-kinetics equations
 externalSourceNeutronics    false;
 
-
-
-//- Effective delayed neutron fraction, prompt neutron spectrum
-
+liquidFuel          false; // defaulted to false
 fastNeutrons              true;
 
 //- Parameters relevant only for Diffusion Neutronics

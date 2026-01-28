@@ -34,7 +34,7 @@ A standard ``controlDict`` includes the following keys:
    * - Entry
      - Description
    * - ``application``
-     - Name of the solver to run (e.g., ``genFoam``).
+     - Name of the solver to run (e.g., ``Gen-Foam``).
    * - ``startFrom``
      - How the simulation starts: ``startTime``, ``latestTime``, or ``firstTime``.
    * - ``startTime``
@@ -67,8 +67,6 @@ several  specialized keywords including:
 
    * - Entry
      - Description
-   * - ``liquidFuel``
-     - Whether or not the user is simulating a ``liquidFuel`` reactor.
    * - ``adjustTimeStep``
      - Whether or not to adjust the time step based on the conditions below.
    * - ``maxDeltaT``

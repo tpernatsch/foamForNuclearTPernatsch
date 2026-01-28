@@ -44,8 +44,6 @@ timePrecision   8;
 
 runTimeModifiable true;
 
-liquidFuel      false;
-
 removeBaffles
 {
     fluidRegion false;

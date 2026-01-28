@@ -47,8 +47,6 @@ timePrecision   8;
 
 runTimeModifiable true;
 
-liquidFuel      false;
-
 adjustTimeStep  ...;
 
 maxDeltaT       1;

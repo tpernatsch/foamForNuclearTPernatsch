@@ -16,7 +16,7 @@ FoamFile
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 eigenvalueNeutronics    false;
-
+liquidFuel              true;
 fastNeutrons            true; 
 
 nuclearData

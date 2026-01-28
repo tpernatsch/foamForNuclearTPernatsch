@@ -9,6 +9,8 @@ and is used to set the type of neutronics simulation by using the following keyw
 :externalSourceNeutronics: should be set to ``true`` for external neutron source
                            calculations. The ``eigenvalueNeutronics`` variable
                            should be put to ``false`` and the ``keff = 1``.
+:liquidFuel: should be set to ``true`` for liquid fuel reactors calculations (e.g., MSRs),
+             false for solid fuel.
 :fastNeutrons: should be set to ``true`` for fast spectrum reactors when using
                the ``pointKinetics`` solver.
 :energyGroups: is an integer representing the number of energy groups used for

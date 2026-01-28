@@ -45,10 +45,6 @@ timePrecision   6;
 
 runTimeModifiable true;
 
-//- Global options
-
-liquidFuel true;
-
 //- Time step control options
 
 adjustTimeStep      true;

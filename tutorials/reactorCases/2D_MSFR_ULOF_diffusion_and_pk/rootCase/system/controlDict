@@ -67,8 +67,6 @@ solveThermalMechanics   false;
 // delayed neutron precursors will be moved according to the collant velocity;
 // the fuel temperature will be set equal to the coolant temperature.
 
-liquidFuel  			true; 
-
 // Time step control
 
 adjustTimeStep 		true;

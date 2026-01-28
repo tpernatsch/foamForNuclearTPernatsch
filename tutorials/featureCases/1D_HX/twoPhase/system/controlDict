@@ -53,8 +53,6 @@ removeBaffles
 
 includeKineticEnergy false;
 
-liquidFuel      false;
-
 adjustTimeStep  true;
 
 maxDeltaT       0.01;

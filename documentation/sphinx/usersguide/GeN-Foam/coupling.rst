@@ -10,7 +10,7 @@ An example is shown below:
 
 .. code :: cpp
 
-    // In constant/regionsDict
+    // In system/regionsDict
 
     regionSolvers
     {
@@ -79,7 +79,7 @@ An example of the volumetric coupling setup:
 
 .. code :: cpp
 
-    // In constant/regionsDict
+    // In system/regionsDict
 
     regionSolvers
     {
@@ -340,7 +340,7 @@ Which can be translated in *system/regionsDict*:
 
 .. code :: cpp
 
-    // In constant/regionsDict
+    // In system/regionsDict
 
     regionSolvers
     {
