@@ -5,7 +5,7 @@ description: |-
   porousKepsionProperties sub-dictionary. k and epsilon are
   determined based on correlations for tubulent intensity (I) and lengh
   scale (L). Turbulent intensity correlations are in the form
-  :math:`turbulenceIntensityCoeff*{Reynolds^turbulenceIntensityExp}`,
+  :math:`turbulenceIntensityCoeff*Reynolds^{turbulenceIntensityExp}`,
   with Reynolds number calculated by the structure class, according
   to the input data in phaseProperties.
   Please note that a porous medium simulation using the porousKEpsilon
@@ -32,21 +32,21 @@ options:
     type: scalar
     required: true
     default:
-    description: :math:`turbulenceIntensityCoeff` in :math:`turbulenceIntensityCoeff*Reynolds^turbulenceIntensityExp`
+    description: :math:`turbulenceIntensityCoeff` in :math:`turbulenceIntensityCoeff*Reynolds^{turbulenceIntensityExp}`
   - key: turbulenceIntensityExp
     type: scalar
     required: true
     default:
-    description:  :math:`turbulenceIntensityExp` in :math:`turbulenceIntensityCoeff*Reynolds^turbulenceIntensityExp`
+    description:  :math:`turbulenceIntensityExp` in :math:`turbulenceIntensityCoeff*Reynolds^{turbulenceIntensityExp}`
   - key: turbulenceLengthScaleCoeff
     type: scalar
     required: true
     default:
-    description:  :math:`turbulenceLengthScaleCoeff` in :math:`turbulenceIntensityCoeff*Reynolds^turbulenceIntensityExp`
+    description:  :math:`turbulenceLengthScaleCoeff` in :math:`turbulenceIntensityCoeff*Reynolds^{turbulenceIntensityExp}`
 
 usage:
   - comment: |-
-      The model is selected in the RAS section of the ``turbulenceProperties`` dictionary. A minimal example for a phase using ``mixtureKEpsilon`` is:
+      This is an example of ``turbulenceProperties`` dictionary
     snippet: |-
       RAS
       {
@@ -66,9 +66,6 @@ usage:
               Prt       1.0;
           }
       }
-  - comment: |-
-      An additional sub-dictionary similar to the following should be then included in the ``turbulenceProperties``  dictionary:
-    snippet: |-
       porousKEpsilonProperties
       {
           "zones of application"

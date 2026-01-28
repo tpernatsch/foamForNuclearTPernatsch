@@ -35,9 +35,6 @@ description: |-
   while ``Cmu``, ``C1``, ``C2``, ``C3``, ``sigmak`` and ``sigmaEps`` retain
   their standard k–ε roles in production, dissipation and diffusion.
 
-
-
-
 options:
 
   - key: mixtureKEpsilonCoeffs
@@ -48,8 +45,7 @@ options:
 
 usage:
   - comment: |-
-      The model is selected in the RAS section of the turbulence properties
-      (e.g. ``turbulenceProperties`` or ``RASProperties``) for the gas and
+      The model is selected in the RAS section of the``turbulenceProperties`` dictionary for the gas and
       liquid phases. A minimal example for a phase using ``mixtureKEpsilon`` is:
     snippet: |-
       RAS
