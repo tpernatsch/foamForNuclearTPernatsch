@@ -12,7 +12,7 @@ EXE_INC = \
     -I./loop/loopModels/picardLoop \
     -I./loop/loopModels/picardLoopNoFluid \
     -I./../interpolationModels/lnInclude \
-    -I../offbeat/src/offbeatLib/lnInclude \
+    -I../offbeatLib/lnInclude \
     -I$(LIB_SRC)/meshTools/lnInclude \
     -I$(LIB_SRC)/sampling/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
