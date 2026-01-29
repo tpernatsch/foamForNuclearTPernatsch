@@ -1,0 +1,102 @@
+@phdthesis{ScolaroThesis,
+      title = {Development of a Novel Finite Volume Methodology for  Multi-Dimensional Fuel Performance Applications},
+      author = {Scolaro, Alessandro},
+      school  = {EPFL - École Polytechnique  Fédérale de Lausanne},
+      address = {Lausanne, Switzerland},
+      month = jul,
+      year = {2021},
+      url = {http://infoscience.epfl.ch/record/287071},
+      doi = {10.5075/epfl-thesis-8822},
+}
+
+@article{ScolaroOffbeatNED,
+    title = {The OFFBEAT multi-dimensional fuel behavior solver},
+    journal = {Nuclear Engineering and Design},
+    volume = {358},
+    pages = {110416},
+    year = {2020},
+    issn = {0029-5493},
+    doi = {https://doi.org/10.1016/j.nucengdes.2019.110416},
+    url = {https://www.sciencedirect.com/science/article/pii/S0029549319304479},
+    author = {Alessandro Scolaro and Ivor Clifford and Carlo Fiorina and Andreas Pautz},
+    keywords = {Fuel performance code, Verification, Validation, OpenFOAM, Finite volume method, Thermo-mechanics},
+    abstract = {The OpenFOAM Fuel BEhavior Analysis Tool, or OFFBEAT, is a multi-dimensional fuel performance code under collaborative development at the Laboratory for Reactor Physics and Systems Behaviour (LRS) of the EPFL and at the PSI. The code can be used both for studying complex 2D or 3D local effects and for more traditional 1.5D base irradiation analyses. OFFBEAT is based on the open-source C++ library OpenFOAM®, thus the governing equations are discretized with modern finite volume techniques using unstructured meshes, and the solver is fully parallelized via geometrical domain decomposition. This paper presents the numerical framework, governing equations and solution strategy behind OFFBEAT and it gives a brief overview of the material properties and behavioral models already implemented. Finally, a set of experimental rods is chosen to provide the first validation results for the thermal behavior of low burnup axisymmetric rods, by comparing the fuel centerline temperatures with experimental data.}
+}
+
+@article{JasakWellerLinearElasticity,
+    author = {Jasak, H. and Weller, H. G.},
+    title = {Application of the finite volume method and unstructured meshes to linear elasticity},
+    journal = {International Journal for Numerical Methods in Engineering},
+    volume = {48},
+    number = {2},
+    pages = {267-287},
+    keywords = {finite volume, unstructured meshes, linear elasticity, steady state, transient, parallelism},
+    doi = {https://doi.org/10.1002/(SICI)1097-0207(20000520)48:2<267::AID-NME884>3.0.CO;2-Q},
+    url = {https://onlinelibrary.wiley.com/doi/abs/10.1002/%28SICI%291097-0207%2820000520%2948%3A2%3C267%3A%3AAID-NME884%3E3.0.CO%3B2-Q},
+    eprint = {https://onlinelibrary.wiley.com/doi/pdf/10.1002/%28SICI%291097-0207%2820000520%2948%3A2%3C267%3A%3AAID-NME884%3E3.0.CO%3B2-Q},
+    year = {2000}
+}
+
+@article{TukovicFluidSolid,
+    author = {Tukovic, Zeljko and Karač, Aleksandar and Cardiff, Philip and Jasak, Hrvoje and Ivankovic, Alojz},
+    year = {2018},
+    month = {10},
+    pages = {1-31},
+    title = {OpenFOAM Finite Volume Solver for Fluid-Solid Interaction},
+    volume = {42},
+    journal = {Transactions of FAMENA},
+    doi = {10.21278/TOF.42301}
+}
+
+@article{Cardiff30,
+    author = {Cardiff, Philip and Demirdzic, Ismet},
+    year = {2021},
+    month = {02},
+    pages = {},
+    title = {Thirty Years of the Finite Volume Method for Solid Mechanics},
+    volume = {28},
+    journal = {Archives of Computational Methods in Engineering},
+    doi = {10.1007/s11831-020-09523-0}
+}
+
+@article{CliffordLocalPeakingBWR,
+    author = {Clifford, Ivor and Pecchia, Marco and Mukin, Roman and Cozzo, Cedric and Ferroukhi, Hakim and Gorzel, Andreas},
+    year = {2019},
+    month = {08},
+    pages = {440},
+    title = {Studies on the effects of local power peaking on heat transfer under dryout conditions in BWRs},
+    volume = {130},
+    journal = {Annals of Nuclear Energy},
+    doi = {10.1016/j.anucene.2019.03.017}
+}
+
+@article{ScolaroImplicitContact,
+author = {Scolaro, Alessandro and Fiorina, Carlo and Clifford, Ivor and Pautz, Andreas},
+title = {Development of a semi-implicit contact methodology for finite volume stress solvers},
+journal = {International Journal for Numerical Methods in Engineering},
+volume = {123},
+number = {2},
+pages = {309-338},
+keywords = {contact, finite volume methods, solid mechanics},
+doi = {https://doi.org/10.1002/nme.6857},
+url = {https://onlinelibrary.wiley.com/doi/abs/10.1002/nme.6857},
+eprint = {https://onlinelibrary.wiley.com/doi/pdf/10.1002/nme.6857},
+abstract = {Abstract The past decades have seen numerous efforts to apply the finite volume methodology to solid mechanics problems. However, only limited work has been done by the finite volume community toward the simulation of mechanical contact. In this article, we present a novel semi-implicit methodology for the solution of static force-loading contact problems with cell-centered finite volume codes. Starting from the similarities with multi-material problems, we derive an implicit discretization scheme for the normal contact stress with a straightforward inclusion of frictional forces and correction vectors for non-orthogonal boundaries. With the introduction of a sigmoid blending function interpolating between contact stresses and gap pressure, the proposed approach is extended to cases with partially closed gap. The contact procedure is designed around an arbitrary mesh mapping algorithm to allow for non-conformal meshes at the contact interface between the two bodies. Finally, we verify the contact methodology against five benchmarks cases.},
+year = {2022}
+}
+
+@article{TukovicMultiMaterial,
+author = {Tuković, Ž. and Ivanković, A. and Karač, A.},
+title = {Finite-volume stress analysis in multi-material linear elastic body},
+journal = {International Journal for Numerical Methods in Engineering},
+volume = {93},
+number = {4},
+pages = {400-419},
+keywords = {linear elasticity, multi-material interface, collocated finite-volume method, segregated solution procedure, finite area method, OPENFOAM},
+doi = {https://doi.org/10.1002/nme.4390},
+url = {https://onlinelibrary.wiley.com/doi/abs/10.1002/nme.4390},
+eprint = {https://onlinelibrary.wiley.com/doi/pdf/10.1002/nme.4390},
+abstract = {SUMMARY Correct calculation of stresses at the interface of bonded or otherwise joined materials plays a significant role in many applications. It is therefore important that traction at the material interface is calculated as accurately as possible. This paper describes procedures that can be employed to achieve this goal by using centre-based finite-volume method. Total traction at the interface is calculated by decomposing it into normal and tangential components, both being calculated at each side of the interface, and applying the continuity assumption. The way in which the traction approximation is achieved depends on calculation of tangential gradient of displacement at the interface. To this end, three different methods are proposed and validated against problems with known solutions. It was shown that all methods can be successfully used to simulate problems with multi-material domains, with the procedure based on finite area method being most accurate. Copyright © 2012 John Wiley \& Sons, Ltd.},
+year = {2013}
+}
+
