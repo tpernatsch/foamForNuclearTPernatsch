@@ -8,7 +8,7 @@ description: |-
   represent the actual velocity of the fluid, and not the velocity multiplied by
   the fluid fraction. For instance, U will increase when transiting from a high-
   to a low-porosity region.
-  Note that the solver makes use of the :doc:`customPimpleControl <customPimpleControl>`, and is further with the options below.
+  Note that the solver makes use of the :doc:`customPimpleControl <../../../solutionControl/customPimpleControl/customPimpleControl>`, and is further with the options below.
 
 
 options:

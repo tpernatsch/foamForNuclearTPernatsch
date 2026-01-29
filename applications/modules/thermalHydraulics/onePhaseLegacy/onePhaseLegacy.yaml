@@ -1,6 +1,6 @@
 description: |-
   This class is based on onePhase.H and implements the legacy porous medium
-  Navier Stokes solver with upgrades from the current formulations in :ref:`customPimponePhaseleControl <onePhase>`. The main difference is that the solver solves for (and print) the Darcy velocity instead of the real velocity. 
+  Navier Stokes solver with upgrades from the current formulations in :ref:`onePhase <onePhase>`. The main difference is that the solver solves for (and print) the Darcy velocity instead of the real velocity. 
   
 
 admonitions:
