@@ -15,16 +15,10 @@ options:
     required: false
     default:
     description: |-
-      Influences computation of pressure-equation momentum fluxes; affects all partialEliminationModes.
+      Influences computation of pressure-equation momentum fluxes; affects all partialEliminationModes. Modes: cellCentered (traditional, may cause oscillations with sharp porosity gradients); faceCentered       (recommended; face-based evaluation with Euler-forward derivative, slightly more diffusive but reduces
+      oscillations depending on oscillationLimiterFraction); cellCenteredFaceReconstruction (hybrid,
+      experimental, not recommended).
 
-      Modes:
-        - cellCentered: traditional, may cause oscillations with sharp porosity gradients
-        - faceCentered: recommended, face-based evaluation with Euler-forward derivative,
-          slightly more diffusive but reduces oscillations depending on oscillationLimiterFraction
-        - cellCenteredFaceReconstruction: hybrid, experimental, not recommended.
-
-    
-    # description: Influences computation of pressure-equation momentum fluxes; affects all partialEliminationModes. Modes: cellCentered (traditional, may cause oscillations with sharp porosity gradients); faceCentered (recommended, face-based evaluation with Euler-forward derivative, slightly more diffusive but reduces oscillations depending on oscillationLimiterFraction); cellCenteredFaceReconstruction (hybrid, experimental, not recommended).
 
   - key: solveEnergy
     type: word
