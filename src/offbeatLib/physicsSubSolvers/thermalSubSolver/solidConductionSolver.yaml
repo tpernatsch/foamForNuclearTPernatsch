@@ -1,0 +1,56 @@
+description: |
+  Thermal solver class where the temperature distribution is obtained from
+  the solution of the heat diffusion (energy conservation) equation.
+
+
+formulation: |
+  For an arbitrary body with volume $V$, bounded by a surface $S$ with outward
+  normal $\vec{n}$, the equation reads:
+
+  $$
+  \int_V \rho c_p \frac{dT}{dt} \, dV
+  =
+  \int_S \vec{q''} \cdot \vec{n} \, dS
+  +
+  \int_V Q \, dV
+  $$
+
+  where:
+
+  - $\rho$ is the density [$kg/m^3$]
+  - $c_p$ is the specific heat capacity [$J/kg/K$]
+  - $Q$ is the volumetric heat source [$W/m^3$]
+  - $\vec{q''}$ is the surface heat flux [$W/m^2$]
+
+  Using Fourier’s law:
+
+  $$
+  \vec{q''} = k \nabla T
+  $$
+
+  the final governing equation becomes:
+
+  $$
+  \int_V \rho c_p \frac{dT}{dt} \, dV
+  =
+  \int_V \nabla (k \nabla T) \, dV
+  +
+  \int_V Q \, dV
+  $$
+
+options: []
+
+usage:
+  - comment: |
+      Example of the `solverDict` configuration to activate the
+      `solidConduction` thermal solver.
+    snippet: |
+      thermalSolver
+      {
+        type solidConduction;
+        // Print summary of boundary-heat fluxes at each iteration
+        heatFluxSummary false;
+
+        // Activate calculation of enthalpy - false by default
+        calculateEnthalpy false;
+      }

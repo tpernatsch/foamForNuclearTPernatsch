@@ -1,0 +1,142 @@
+description: |
+  Burnup model that is inspired by Lassmann et al., *“The radial distribution
+  of plutonium in high burnup UO2 fuels”* (Journal of Nuclear Materials).
+
+  This model extends the `fromPower` burnup approach by acting as a simplified
+  depletion module: it tracks a limited set of relevant nuclides and solves a
+  simplified form of the Bateman equations for their time evolution.
+
+  The main purpose is to provide a more accurate radial power distribution in the
+  fuel by accounting for spatial variations of nuclide concentrations and neutron
+  flux across the radius (per axial slice).
+  
+formulation: |	
+  First, at each time step, the updated average burnup for each fuel slice is 
+  calculated as:
+	
+  $$
+  \begin{aligned}
+  Bu = Bu^0 + \frac{Q \cdot \Delta t}{1000 \cdot \rho}
+  \end{aligned}
+  $$
+
+  where:
+
+  - \f$Bu^0\f$ is the old local burnup value, i.e. at the end of the previous time
+  step, in MWd/MT\f$_{oxide}\f$
+  - \f$Q\f$ is the power density in W/m\f$^3\f$
+  - \f$\rho\f$ is density in kg/m\f$^3\f$
+  - \f$\Delta t\f$ is time step in seconds
+
+  Then, a simplified version of the Bateman equations is solved for a small set of
+  relevant nuclides. At the moment: U235, U236, U238, Np237, Pu238, Pu239, Pu240,
+  Pu241, Pu242, Am241, Am243, Cm242, Cm243, Cm244.
+  These nuclides are chosen based on their significance for the power profile.
+
+  The updated values of the fissile nuclide distribution in each cell are combined
+  with the flux distribution obtained from the `neutronicsSolver` model to obtain
+  the power profile in a given slice:
+
+  $$
+  \begin{aligned}
+  Q(r) = \sum_f \left( {N_f(r) \sigma_f(r)} \phi(r) \right)
+  \end{aligned}
+  $$
+
+  where \f$\phi\f$ is the flux, N\f$_f\f$ is the nuclide concentration of a
+  fissile isotope and \f$\sigma_f\f$ is the fissile cross section,
+
+  The local power density is then used to calculate the local burnup increment,
+  which quantifies the amount of fuel burnup that occurs in a given region during
+  a specific time step.
+
+  This increment is used to update the nuclide distribution for the next iteration
+  of the Lassman model.
+
+  For a detailed explanation of the Bateman equation and its application in burnup
+  calculations, it is recommended to refer to relevant nuclear engineering
+  literature or online resources.
+
+admonitions:
+  - kind: note
+    body: |
+      The `Lassmann` burnup model is designed to be used with axially symmetric models
+      or 3D models where there is no significant change in power/nuclide along the
+      azimuthal angle. For each slice, the form factor in the fuel will only be 
+      calculated along the radius, with no variation alon the azimuthal angle.
+
+  - kind: warning
+    body: |
+      This model requires subdividing the fuel rod into axial slices. Activate the
+      `sliceMapper` model.
+
+      A `neutronicsSolver` must also be enabled to provide the neutron flux
+      distribution used by the depletion module.
+
+
+options:
+  - key: convergencePrecision
+    type: float
+    required: false
+    default: 1e-2
+    description: |
+      Convergence precision for the depletion iterations in the Lassmann burnup
+      calculations. The suggested default is `1e-2`.
+
+
+
+externalOptions:
+  - key: densityFraction
+    path: solverDict.materials.<fuelMaterialName>
+    type: float
+    required: true
+    description: |
+      Fraction of theoretical density.
+
+  - key: enrichment
+    path: solverDict.materials.<fuelMaterialName>
+    type: float
+    required: true
+    description: |
+      Fuel enrichment (as a fraction).
+
+
+usage:
+  - comment: |
+      Example `solverDict` snippet enabling the `Lassmann` burnup model. The model
+      requires a `neutronicsSolver`, depletion convergence settings in
+      `burnupOptions`, and additional parameters for fuel materials in the
+      `materials` dictionary.
+    snippet: |
+      neutronicsSolver
+      {
+        type diffusion;
+      }
+
+      burnup
+      {
+        type Lassmann;
+
+        // Name of the heat source field (set to "Q" by default)
+        heatSourceName  "Q";
+
+        // Convergence criterion for depletion iterations. By default set to 1e-2.
+        convergePrecision 1e-2;
+      }
+
+      // ... Rest of solverDict
+
+      materials
+      {
+        fuel
+        {
+          type UO2;
+
+          enrichment 0.025;
+          densityFraction 0.95;
+
+          // ... Rest of `fuel` dictionary
+        }
+
+        // ... Rest of materials
+      }

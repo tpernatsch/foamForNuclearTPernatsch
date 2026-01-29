@@ -1,0 +1,35 @@
+description: |
+  Class caculating the swelling with a provided constant swelling rate.
+
+options:
+  - key: swellingRate
+    type: scalar
+    required: true
+    description: |
+      Constant swelling rate coefficient.
+
+  - key: fastFluenceName
+    type: word
+    required: false
+    default: fastFluence
+    description: |
+      Name of the fast fluence field.
+
+usage:
+  - comment: |
+      Example selection of `constantRate`.
+    snippet: |
+        materials
+        {
+            fuel
+            {
+                type UO2;
+                                            
+                swelling
+                {
+                    type constantRate;
+                    swellingRate 1e-6;
+                    // fastFluenceName fastFluence;
+                }
+            }
+        }

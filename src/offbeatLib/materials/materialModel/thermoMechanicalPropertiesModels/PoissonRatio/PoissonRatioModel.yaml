@@ -1,0 +1,11 @@
+description: |
+  Mother class for PoissonRatio models.
+
+admonitions:
+  - kind: warning
+    body: |
+      The keyword `PoissonRatioModel` is deprecated. Prefer an `PoissonRatio` dictionary with a `type` entry.
+
+options: []
+
+usage: []

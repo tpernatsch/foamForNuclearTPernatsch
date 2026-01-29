@@ -1,0 +1,76 @@
+description: |
+  Heat Capacity model for (U,Pu)O2 derived from Matprov11.
+
+options:
+  - key: ED
+    type: scalar
+    required: false
+    default: 1.967e5
+    description: |
+      Model parameter.
+  - key: K1
+    type: scalar
+    required: false
+    default: 347.4
+    description: |
+      Model parameter.
+  - key: K2
+    type: scalar
+    required: false
+    default: 3.95e4
+    description: |
+      Model parameter.
+  - key: K3
+    type: scalar
+    required: false
+    default: 3.86e7
+    description: |
+      Model parameter.
+  - key: OM
+    type: scalar
+    required: false
+    default: 2.0
+    description: |
+      Model parameter.
+  - key: oxygenMetalRatio
+    type: scalar
+    required: false
+    description: |
+      Optional override. Unless strictly necessary it is suggested to define the 
+      oxygenMetalRatio in the base/composition dict.
+  - key: ratioOverMetal
+    type: unknown
+    required: true
+    description: |
+      Model parameter.
+  - key: theta
+    type: scalar
+    required: false
+    default: 571
+    description: |
+      Model parameter.
+
+usage:
+  - comment: |
+      Example selection of the `UPuO2Matpro` heat capacity model.
+    snippet: |
+      materials
+      {
+          fuel
+          {
+              material UPuO2;
+      
+              heatCapacity
+              {
+                  type UPuO2Matpro;
+                  // ED 1.967e5;
+                  // K1 347.4;
+                  // K2 3.95e4;
+                  // K3 3.86e7;
+                  // OM 2.0;
+                  // oxygenMetalRatio baseDict.lookupOrDefault<scalar>("oxygenMetalRatio", 2.0;
+                  ratioOverMetal <unknown>;
+                  // theta 571;
+              }
+          }
+      }

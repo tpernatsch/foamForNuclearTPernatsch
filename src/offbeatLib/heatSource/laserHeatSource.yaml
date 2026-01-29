@@ -1,0 +1,80 @@
+description: |
+  Heat source model class used to simulate the heating due to energy
+  deposition from an impinging laser on one of the surfaces of the domain. The
+  model initializes a `volScalarField` for the laser intensity, called I.
+
+
+formulation: |
+  To compute the energy deposition in the domain, the model solves the
+  following radiation attenuation equation:
+
+  $$
+  \begin{aligned}
+  \nabla \cdot (I \vec{n}) + \alpha I = 0
+  \end{aligned}
+  $$
+
+  where:
+
+  - $I$ is the radiation intensity $(m^{-2}s^{-1})$;
+  - $\vec{n}$ is the beam's direction unit vector;
+  - $\alpha$ is the material absorption coefficient $(m^{-1})$.
+
+  Once the model computes the spatial distribution of $I$, the resulting
+  power density distribution $Q$ as:
+
+  $$
+  \begin{aligned}
+  Q = I \cdot \alpha
+  \end{aligned}
+  $$
+
+  $\alpha$ is the absorption coefficient of the fully-dense material.
+  However, the code allows to take into account variation in local porosity
+  of the material that can affect its absorption capabilities. This is done
+  through an effective absorption coefficient $\alpha_{eff}$ that is
+  computed as:
+
+  $$
+  \begin{aligned}
+  \alpha_{eff} = \alpha \cdot \frac{1-p}{1+0.5p}
+  \end{aligned}
+  $$
+
+  where:
+
+  - $p$ is the fractional local porosity of the material.
+
+options:
+  - key: alphaAbsorption
+    type: scalar
+    required: true
+    description: The absorption coefficient of the material in $m^{-1}$.
+  - key: beamDirection
+    type: vector
+    required: true
+    description: A vector that specifies the direction of the laser beam.
+  - key: useEffectiveAlpha
+    type: bool
+    required: true
+    description: Whether to use the effective absorption coefficient.
+  - key: materials
+    type: list[word]
+    required: true
+    description: A list of material (or cellZones names) where the heat source model applies.
+
+usage:
+  - comment: |
+      Here is a code snippet of the `solverDict` to be used for the `laserHeatSource`
+      heat source model:
+    snippet: |
+      heatSource laserHeatSource;
+
+      heatSourceOptions
+      {
+          useEffectiveAlpha   on;
+          alphaAbsorption     1e4;
+          beamDirection       (0 0 -1);
+
+          materials   (fuel);
+      }

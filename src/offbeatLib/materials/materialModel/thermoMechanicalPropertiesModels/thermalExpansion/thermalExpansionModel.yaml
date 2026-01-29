@@ -1,0 +1,18 @@
+description: |
+  Mother class for thermalExpansion models.
+
+admonitions:
+  - kind: warning
+    body: |
+      The keyword `thermalExpansionModel` is deprecated. Prefer an `thermalExpansion` dictionary with a `type` entry.
+
+
+options:
+  - key: Tref
+    type: scalar
+    required: false
+    default: 293.0
+    description: |
+      Reference temperature for thermal strain.
+
+usage: []

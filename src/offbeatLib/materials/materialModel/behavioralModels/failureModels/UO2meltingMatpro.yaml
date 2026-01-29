@@ -1,0 +1,32 @@
+# UO2meltingMatpro.yaml
+description: |
+  Model to check failure of UO2 based on a limit melting temperature from
+  Matpro v11.
+
+options:
+  - key: Tmelt
+    type: scalar
+    required: false
+    default: 3113.0
+    description: |
+      Melting temperature threshold [K]. If the local fuel temperature exceeds
+      this value, the material is considered failed.
+
+usage:
+  - comment: |
+      Example selection of the UO2 melting-temperature failure model.
+    snippet: |
+        materials
+        {
+            fuel
+            {
+                ...
+
+                failureModel 
+                {
+                    type UO2Matpro;
+                    
+                    Tmelt 3113;
+                }
+            }
+        }

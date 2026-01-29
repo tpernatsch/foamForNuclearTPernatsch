@@ -1,0 +1,37 @@
+description: |
+  Mechanics solver class that solves for total displacement `D` in a total 
+  Lagrangian framework (i.e. the mesh is NOT updated), and employs the 
+  small-strain approximation.
+
+
+formulation: |
+  This solver considers the strain tensor to be linear:
+
+  $$
+  \epsilon = \frac{1}{2} (\nabla D + \nabla^T D)
+  $$
+
+  and neglects geometric non-linearity, i.e. reference and updated
+  configurations are considered identical.
+
+options: []
+
+usage:
+  - comment: |
+      Code snippet of the `solverDict` to activate the `smallStrain`
+      mechanics solver.
+    snippet: |
+      mechanicsSolver smallStrain;
+
+      mechanicsOptions
+      {
+          forceSummary false;
+          cylindricalStress false;
+          sphericalStress false;
+          RhieChowCorrection true;
+
+          multiMaterialCorrection
+          {
+              type none;
+          }
+      }

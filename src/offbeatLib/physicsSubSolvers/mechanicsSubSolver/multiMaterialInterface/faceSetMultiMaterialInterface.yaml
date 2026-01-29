@@ -1,0 +1,40 @@
+description: |
+  Multi-material correction class that uses a user-defined `faceSet`
+  to identify interface faces.
+
+options:
+  - key: defaultWeights
+    type: scalar
+    required: true
+    description: Fraction of the correction applied on internal faces.
+  - key: defaultWeightsGrad
+    type: scalar
+    required: false
+    description: Fraction of the gradient correction.
+  - key: interfaceWeights
+    type: scalar
+    required: true
+    description: Fraction of the correction applied at interface faces.
+  - key: faceSetName
+    type: word
+    required: true
+    description: Name of the faceSet identifying interface faces.
+
+usage:
+  - comment: |
+      Example of the `solverDict` configuration using a faceSet-defined
+      multi-material interface.
+    snippet: |
+      mechanicsSolver
+      {
+        type smallStrain;
+        RhieChowCorrection false;
+
+        multiMaterialCorrection
+        {
+            type faceSet;
+            defaultWeights 1.0;
+            interfaceWeights 1.0;
+            faceSetName "interfaceFaceSet";
+        }
+      }

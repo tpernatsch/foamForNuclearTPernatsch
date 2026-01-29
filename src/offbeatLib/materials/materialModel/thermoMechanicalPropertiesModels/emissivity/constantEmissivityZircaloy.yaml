@@ -1,0 +1,30 @@
+description: |
+  Class to set Zircaloy emissivity to a constant input value.
+
+options:
+  - key: emissivityValue
+    type: scalar
+    required: false
+    default: 0.808642
+    description: |
+      Constant emissivity value.
+
+usage:
+  - comment: |
+      Example selection of the constant emissivity model for Zircaloy.
+    snippet: |
+      materials
+      {
+          <zoneName>
+          {
+              type Zircaloy;
+              
+              emissivity
+              {
+                  type ZircaloyConstant;
+              
+                  // Optional override
+                  // emissivityValue 0.808642;
+              }
+          }
+      }

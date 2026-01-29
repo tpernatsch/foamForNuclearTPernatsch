@@ -1,0 +1,190 @@
+description: |
+  Fission gas release (FGR) model that couples OFFBEAT with the 0-D 
+  SCIANTIX code developed at Politecnico di Milano.
+
+formulation: |
+  SCIANTIX is executed locally in each fuel cell and evolves fission gas
+  production, diffusion, trapping, bubble evolution, and release using
+  physics-based models. OFFBEAT provides the local thermo-mechanical history
+  (temperature, stress, burnup, fission rate), while SCIANTIX returns updated
+  fission gas release and gaseous swelling quantities.
+
+  The coupling proceeds iteratively:
+  
+  1. At each outer iteration, OFFBEAT transfers local state variables and
+     previous SCIANTIX variables to the SCIANTIX solver.
+  2. SCIANTIX advances its internal state using these values as initial
+     conditions.
+  3. Updated quantities (e.g. FGR fraction, gaseous swelling) are passed back
+     to OFFBEAT.
+  4. At the end of the time step, updated SCIANTIX variables are stored and
+     synchronized with OFFBEAT fields.
+
+admonitions:
+  - kind: note
+    body: |
+      SCIANTIX input parameters can be provided in two ways, either
+      via an external `input_settings.txt` file located in the case directory, or
+      provided directly as input to this class via a `SCIANTIX` sub-dictionary.
+      The latter, if present, **takes priority** over the external input file.
+
+  - kind: warning
+    body: |
+      When using an external `input_settings.txt` file, SCIANTIX assumes the file
+      is located in the execution directory. If OFFBEAT is launched with the
+      `-case` option from another directory, the file may not be found.
+
+      To avoid ambiguity, it is recommended to define SCIANTIX inputs directly
+      in the `fgrOptions` dictionary.
+
+  - kind: note
+    body: |
+      By default, SCIANTIX internal variables are stored as standard fields
+      (`scalarField`, `vectorField`) to minimize memory usage. These fields are
+      written to a dedicated `SCIANTIXfields` dictionary at each write time stored 
+      in the `uniform` folder.
+
+      Optional registration of volumetric fields can be enabled for visualization
+      or post-processing such as mapping.
+
+optionsLocations:
+  - name: fgrOptions
+    in: solverDict
+
+options:
+  - key: relax
+    type: scalar
+    required: false
+    default: 1
+    description: |
+      Relaxation factor applied to fission gas release and gaseous swelling
+      quantities when coupling SCIANTIX with OFFBEAT.
+
+  - key: nFrequency
+    type: int
+    required: false
+    default: 1
+    description: |
+      Number of outer iterations to skip between successive SCIANTIX executions.
+      Increasing this value reduces computational cost but may affect convergence.
+
+  - key: addToRegistry
+    type: bool
+    required: false
+    default: false
+    description: |
+      If enabled, SCIANTIX variables are registered as volumetric OpenFOAM fields
+      (e.g. `volScalarField`) and written to disk, allowing visualization and
+      probing in ParaView.
+
+  - key: SCIANTIX
+    type: dictionary
+    required: false
+    py:
+      type: SciantixDict
+      factory: SciantixDict
+      imports:
+        - "from foamForNuclear.common import SciantixDict"
+    description: |
+      Sub-dictionary defining SCIANTIX input parameters.
+
+      If present, this dictionary overrides the external `input_settings.txt`
+      file. Parameters correspond directly to SCIANTIX model switches and
+      numerical options (e.g. grain growth, diffusion models, bubble evolution,
+      solver selection).
+
+usage:
+  - comment: |
+      Here is a snippet of the `solverDict`that can be used to activate the SCIANTIX fgr model.
+    snippet: |
+      fgr     SCIANTIX;
+
+      fgrOptions
+      {
+        //- relax is 1 by default
+        relax  1;
+
+        //- nFrequency is 1 by default
+        nFrequency  1;
+
+        //- addToRegistry is off by default
+        addToRegistry  off;
+      }
+
+      //... other physics subdictionaries
+
+      materials
+      {
+        fuel
+        {
+          type UO2;
+
+          //... other material specific options
+
+          rGrain 5e-6;
+
+        }
+        //... remaining material subdictionaries
+      }
+
+  - comment: |
+      Example defining SCIANTIX input parameters directly inside `solverDict`.
+      This approach takes priority over an external `input_settings.txt` file.
+    snippet: |
+      fgr SCIANTIX;
+
+      fgrOptions
+      {
+          relax       1;
+          nFrequency  1;
+
+          SCIANTIX
+          {
+              iverification                             0;
+              igrain_growth                             1;
+              iinert_gas_behavior                       1;
+              igas_diffusion_coefficient                1;
+              iintra_bubble_evolution                   1;
+              ibubble_radius                            1;
+              iresolution_rate                          1;
+              itrapping_rate                            1;
+              inucleation_rate                          1;
+              isolver                                   1;
+              iformat_output                            1;
+              igrain_boundary_vacancy_diffusion_coefficient 1;
+              igrain_boundary_behaviour                 1;
+              igrain_boundary_micro_cracking            0;
+              igrain_recrystallization                  0;
+              ifuel_reactor_type                        0;
+              igas_effective_coefficient                1;
+              igas_sweeping                             0;
+          }
+      }
+
+  - comment: |
+      Alternatively, the SCIANTIX parameters can be set in the `input_settings.txt` file 
+      to be placed in the main case fodler (see SCIANTIX documentation for more details):
+    snippet: |
+      0 #  verification (0 = no verification)
+      1 #  grain growth (0 = none; 1 = ainscough)
+      1 #  inert gas behavior (0 = none; 1 = do IGB)
+      1 #  gas diff coeff (0 = 0 coeff (trial); 1 = Turnbull, 2 = Matzke (with small
+      OFFBEAT custom addition) )
+      1 #  intra bbl evo (1 = Pizzocri et al., 2018; 2 = White, Tucker 1983)
+      1 #  intra bubble_radius (1 = Olander&Wongy, 2006, 2= Ronchi 1972; 3 = Dollings
+      1977; 4 = Losonen 2002; 5 = Spino 2005; )
+      1 #  re-solution (1 = Turnbull 1971; 2 = Oldanter 1976)
+      1 #  trapping (1 = Ham 1958)
+      1 #  nucleation (1 = Baker 1971)
+      1 #  DiffSolver (1 = SDA, Pizzocri, 2 = FORMAS)
+      1 #  format_out (1 = output.txt, values separated by tabs)
+      1 #  gb vac diff coeff (1 = Reynolds and Burton, 1979; 2 = Pastore 2015)
+      1 #  gb behavior (1 = Pastore et al., 2013; Barani et al., 2017)
+      0 #  gb micro-cracking (0 = none; 1 = Barani et al., 2017)
+      0 #  hbs formation (0 = non active)
+      0 #  fuel/reactor couple for burnup calculations (0 = UO2/PWR)
+      1 #  gas effective (=0) or single atom (=1) diffusion coefficient - OFFBEAT
+      custom addition
+      0 #  add boundary gas sweeping (1=on) - OFFBEAT custom addition
+      0 #  micro cracking model span parameter (0 = default value of 10; 1 = original
+      value SCIANTIX of 10; 2 = Value from MOOSE of 5)

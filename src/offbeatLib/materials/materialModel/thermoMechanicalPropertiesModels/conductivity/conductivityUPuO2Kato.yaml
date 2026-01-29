@@ -1,0 +1,26 @@
+description: |
+  Thermal conductivity correlation for MOX fuel (U-Pu-O₂) based on the
+  formulation by Kato.
+
+options:
+  - key: densityFraction
+    type: scalar
+    required: false
+    default: 0.95
+    description: |
+      Fraction of theoretical density used by the correlation.
+
+      Optional override: if not provided here, it is expected in the material
+      base/composition dictionary.
+
+usage:
+  - comment: |
+      Example selection of the Kato conductivity correlation for MOX fuel.
+    snippet: |
+      conductivity
+      {
+          type UPuO2Kato;
+
+          // Optional override
+          // densityFraction 0.95;
+      }

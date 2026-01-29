@@ -1,0 +1,27 @@
+description: |
+  Class to set Mo Poisson's Ratio to a constant input value.
+
+options:
+  - key: PoissonRatioValue
+    type: scalar
+    required: false
+    default: 0.316
+    description: |
+      Option read by the model.
+
+usage:
+  - comment: |
+      Example selection of the `MolybdenumConstant` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        structure
+        {
+          type Molybdenum;
+          thermalExpansion
+          {
+            type MolybdenumConstant;
+            // PoissonRatioValue 0.316;
+          }
+        }
+      }

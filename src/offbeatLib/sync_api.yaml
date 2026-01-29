@@ -1,0 +1,37 @@
+source_dir: solvers/offbeat/offbeatLib/ffn_api_out/offbeat_lib
+dest_root: solvers/offbeat/pythonapi/foamForNuclear/offbeat_lib
+
+folder_map:
+  burnup: burnup
+  fastFlux: fast_flux
+  fissionGasRelease: fgr
+  gapGasModel: gap_gas
+  heatSource: heat_source
+  physicsSubSolvers/mechanicsSubSolver: mechanics_solver
+  physicsSubSolvers/mechanicsSubSolver/multiMaterialInterface: mechanics_solver/multi_material
+  physicsSubSolvers/neutronicsSubSolver: neutronics_solver
+  physicsSubSolvers/thermalSubSolver: thermal_solver
+  sliceMapper: slice_mapper
+
+  materials/materialModel/behavioralModels/densification: materials/behaviour/densification
+  materials/materialModel/behavioralModels/failureModels: materials/behaviour/failure
+  materials/materialModel/behavioralModels/phaseTransition: materials/behaviour/phase_transition
+  materials/materialModel/behavioralModels/relocation: materials/behaviour/relocation
+  materials/materialModel/behavioralModels/swelling: materials/behaviour/swelling
+  
+  materials/materialModel/damageModel: materials/damage
+  
+  materials/materialModel/thermoMechanicalPropertiesModels/conductivity: materials/properties/conductivity
+  materials/materialModel/thermoMechanicalPropertiesModels/density: materials/properties/density
+  materials/materialModel/thermoMechanicalPropertiesModels/emissivity: materials/properties/emissivity
+  materials/materialModel/thermoMechanicalPropertiesModels/heatCapacity: materials/properties/heat_capacity
+  materials/materialModel/thermoMechanicalPropertiesModels/PoissonRatio: materials/properties/poisson_ratio
+  materials/materialModel/thermoMechanicalPropertiesModels/thermalExpansion: materials/properties/thermal_expansion
+  materials/materialModel/thermoMechanicalPropertiesModels/YoungModulus: materials/properties/young_modulus
+
+  rheology/constitutiveLaws: materials/laws
+
+
+target_filename: models.py
+init_mode: explicit   # star or explicit
+default_folder: misc

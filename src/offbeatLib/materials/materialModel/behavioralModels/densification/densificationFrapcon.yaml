@@ -1,0 +1,106 @@
+# densificationFrapcon.yaml
+description: |
+  Densification model derived from FRAPCON correlations for UO$_2$ fuel.
+
+options:
+  - key: burnupName
+    type: word
+    required: false
+    default: Bu
+    description: |
+      Name of the burnup field to read from the mesh registry.
+
+  - key: densityFraction
+    type: scalar
+    required: false
+    default: 0.95
+    description: |
+      Initial density fraction (relative density) used by the model.
+
+  - key: Tsintering
+    type: scalar
+    required: false
+    default: 1800
+    description: |
+      Sintering temperature used by the correlation [K].
+
+  - key: resinteringDensityChange
+    type: scalar
+    required: true
+    description: |
+      Density change associated with re-sintering (model parameter).
+
+  - key: par1
+    type: scalar
+    required: false
+    default: 22.2
+    description: |
+      Correlation parameter.
+
+  - key: par2
+    type: scalar
+    required: false
+    default: 1453
+    description: |
+      Correlation parameter.
+
+  - key: par3
+    type: scalar
+    required: false
+    default: 66.6
+    description: |
+      Correlation parameter.
+
+  - key: par4
+    type: scalar
+    required: false
+    default: 2.0
+    description: |
+      Correlation parameter.
+
+  - key: par5
+    type: scalar
+    required: false
+    default: 35.0
+    description: |
+      Correlation parameter.
+
+  - key: par6
+    type: scalar
+    required: false
+    default: 3.0
+    description: |
+      Correlation parameter.
+
+usage:
+  - comment: |
+      Example selection of the FRAPCON-based densification model for UO2.
+    snippet: |
+      materials
+      {
+          fuel
+          {
+              material UO2;
+
+              densification
+              {
+                  type UO2Frapcon;
+
+                  // optional
+                  burnupName Bu;
+                  densityFraction 0.95;
+                  Tsintering 1800;
+
+                  // required
+                  resinteringDensityChange 0.01;
+
+                  // optional correlation parameters
+                  par1 22.2;
+                  par2 1453;
+                  par3 66.6;
+                  par4 2.0;
+                  par5 35.0;
+                  par6 3.0;
+              }
+          }
+      }

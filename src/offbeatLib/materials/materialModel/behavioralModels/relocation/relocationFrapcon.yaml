@@ -1,0 +1,95 @@
+description: |
+  Fuel relocation model based on the FRAPCON formulation.
+
+  The model computes fuel relocation as a function of burnup and thermal state,
+  and can include an optional recovery term.
+
+options:
+  - key: burnupName
+    type: word
+    required: false
+    default: Bu
+    description: |
+      Name of the burnup field used by the relocation model.
+
+  - key: heatSourceName
+    type: word
+    required: false
+    default: Q
+    description: |
+      Name of the volumetric heat source field used by the model.
+
+  - key: gapWidthName
+    type: word
+    required: false
+    default: gapWidth
+    description: |
+      Name of the gap-width field used by the model.
+
+  - key: recoveryFraction
+    type: scalar
+    required: false
+    default: 0.0
+    description: |
+      Fraction controlling recovery of relocation (model parameter).
+
+  - key: relaxRecovery
+    type: scalar
+    required: false
+    default: 1.0
+    description: |
+      Relaxation factor applied to the recovery contribution.
+
+  - key: modifiedRelocationModel
+    type: bool
+    required: false
+    description: |
+      Activates the modified FRAPCON relocation formulation.
+
+  - key: outerPatch
+    type: str
+    required: true
+    description: |
+      Name of outer fuel patch.
+
+  - key: GapCold
+    type: scalar
+    required: true
+    description: |
+      Cold gap width used by the model [m].
+
+  - key: DiamCold
+    type: scalar
+    required: true
+    description: |
+      Cold fuel diameter used by the model [m].
+
+usage:
+  - comment: |
+      Example selection of the FRAPCON relocation model.
+    snippet: |
+      materials
+      {
+          fuel
+          {
+              material UO2;
+
+              relocation
+              {
+                  type Frapcon;
+
+                  burnupName Bu;
+                  heatSourceName Q;
+                  gapWidthName gapWidth;
+
+                  recoveryFraction 0.0;
+                  relaxRecovery 1.0;
+                  modifiedRelocationModel true;
+
+                  outerPatch "fuelOuter";
+                  
+                  GapCold 0.075e-3;
+                  DiamCold 4.5e-3;
+              }
+          }
+      }

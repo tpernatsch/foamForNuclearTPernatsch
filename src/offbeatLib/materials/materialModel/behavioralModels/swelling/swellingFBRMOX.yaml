@@ -1,0 +1,69 @@
+description: |
+  Class modelling swelling strain for FBR MOX fuel from Dienst at al.
+  Sources :
+  - Dienst, W., Muelle-Lyda, I., Zimmerman, H. Swelling, densification and
+  creep of oxide and carbide fuels under irradiation, in: International
+  conference on fast breeder reactor performance, 5-8 March 1979, Monterey,
+  California, USA, 1979, pp. 166–175.
+  - "Validazione e analisi dei gas di fissione in combustibili MOX ad
+  elevato burnup", D.Rozzia, N.Forgione, A. Ardizzone, A. Del Nevo.
+
+options:
+  - key: burnupName
+    type: word
+    required: false
+    default: Bu
+    description: |
+      Name of the burnup field.
+  - key: gapWidthName
+    type: word
+    required: false
+    default: gapWidth
+    description: |
+      Name of the gap-width field.
+  - key: par1
+    type: scalar
+    required: false
+    default: 0.020
+    description: |
+      Correlation parameter.
+  - key: par2
+    type: scalar
+    required: false
+    default: 0.012
+    description: |
+      Correlation parameter.
+  - key: par3
+    type: scalar
+    required: false
+    default: 0.0065
+    description: |
+      Correlation parameter.
+  - key: outerPatch
+    type: word
+    required: true
+    description: |
+      Name of the outer boundary patch.
+
+usage:
+  - comment: |
+      Example selection of `UPuO2Fbr`.
+    snippet: |
+        materials
+        {
+            fuel
+            {
+                type UPuO2;
+   
+                swelling
+                {
+                    type UPuO2Fbr;
+                    // burnupName Bu;
+                    // gapWidthName gapWidth;
+                    // par1 0.020;
+                    // par2 0.012;
+                    // par3 0.0065;
+                    outerPatch <required>;
+                }
+            }
+        }

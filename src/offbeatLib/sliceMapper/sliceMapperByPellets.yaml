@@ -1,0 +1,57 @@
+description: |
+  Slice mapper class where slices are created with a similar algorithm as in the 
+  `byMaterial` mapper class. For fuel materials (e.g. UO2) the slice height 
+  coincide with the pellet size, introduced by the user in the material subdictionary. 
+  For non-fuel materials, all cells are agglomerated into 1 slice.
+
+  The algorithm tries to create one slice per pellet, which for 2D or 3D discrete
+  pellet simulations is probably the most logical approximation for phenomena such
+  as relocation or cracking (e.g. no variation of number of cracks along a pellet)
+
+  For coarser simulations (e.g. in 1D or 2D smeared), the cells will be taller
+  than the pellet size. The slice division algorithm will adapt following the
+  mesh axial discretization. For extruded meshes, this will create one slice
+  per axial layer of cells.  
+
+admonitions:
+  - kind: warning
+    body: |
+      This slice mapper class probably duplicates functionalities that can be already
+      achieved using the standard `byMaterial` class, so it might be eliminated
+      in the future.
+
+options: []
+
+
+externalOptions:
+  - key: nPellets
+    path: solverDict.materials.<material>
+    type: label
+    required: true
+    description: |
+      Number of pellets in this material zone (fuel-type materials only).
+
+
+usage:
+- comment: |
+    Example of `solverDict` configuration for the `byPellet` slice mapper.
+  snippet: |
+    ...
+    sliceMapper
+    {
+      type byPellet;
+    }
+
+    materials
+    {
+      fuel
+      {
+        type   UO2;
+
+        ...
+
+        nPellets 100;
+
+        ...
+      }
+    }

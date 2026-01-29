@@ -1,0 +1,76 @@
+description: |
+  Class modelling thermal expansion of (U,Pu)O2 MOX fuel from Matprov11.
+
+options:
+  - key: par1
+    type: scalar
+    required: false
+    default: -3.9735e-4
+    description: |
+      Option read by the model.
+  - key: par2
+    type: scalar
+    required: false
+    default: 8.4955e-6
+    description: |
+      Option read by the model.
+  - key: par3
+    type: scalar
+    required: false
+    default: 2.15130e-9
+    description: |
+      Option read by the model.
+  - key: par4
+    type: scalar
+    required: false
+    default: 3.7143e-16
+    description: |
+      Option read by the model.
+  - key: par5
+    type: scalar
+    required: false
+    default: -4.972e-4
+    description: |
+      Option read by the model.
+  - key: par6
+    type: scalar
+    required: false
+    default: 7.107e-6
+    description: |
+      Option read by the model.
+  - key: par7
+    type: scalar
+    required: false
+    default: 2.581e-9
+    description: |
+      Option read by the model.
+  - key: par8
+    type: scalar
+    required: false
+    default: 1.140e-13
+    description: |
+      Option read by the model.
+
+usage:
+  - comment: |
+      Example selection of the `UPuO2Matpro` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        fuel
+        {
+          type UPuO2;
+          thermalExpansion
+          {
+            type UPuO2Matpro;
+            // par1 -3.9735e-4;
+            // par2 8.4955e-6;
+            // par3 2.15130e-9;
+            // par4 3.7143e-16;
+            // par5 -4.972e-4;
+            // par6 7.107e-6;
+            // par7 2.581e-9;
+            // par8 1.140e-13;
+          }
+        }
+      }

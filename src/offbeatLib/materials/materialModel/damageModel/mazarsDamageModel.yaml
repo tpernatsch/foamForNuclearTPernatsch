@@ -1,0 +1,74 @@
+description: |
+  Mazars scalar damage model.
+
+options:
+  - key: excludeAxialCmpt
+    type: bool
+    required: false
+    default: false
+    description: |
+      If true, excludes the axial stress/strain component from the equivalent
+      strain used to drive damage.
+
+  - key: relaxDamage
+    type: scalar
+    required: false
+    default: 1.0
+    description: |
+      Relaxation factor applied to the damage update.
+
+  - key: d_max
+    type: scalar
+    required: false
+    default: 0.99
+    description: |
+      Maximum allowed value for damage variable.
+
+  - key: temperatureFragmentationThreshold
+    type: scalar
+    required: false
+    default: 1500
+    description: |
+      Temperature threshold above wwhich fragmentation starts.
+
+  - key: equivalentStrainRateThreshold
+    type: bool
+    required: false
+    default: false
+    description: |
+      Activate equivalent strain rate threshold criterion
+
+  - key: strainRateThreshold
+    type: scalar
+    required: false
+    default: 0.1
+    description: |
+      Equivalent strain rate threshold (valid only if previous `equivalentStrainRateThreshold` is set to true)
+
+usage:
+  - comment: |
+      Example selection of the Mazars damage model.
+    snippet: |
+        materials
+        {
+            fuel
+            {
+                material UO2;
+
+                damage
+                {
+                    type mazars;
+
+                    // optional
+                    excludeAxialCmpt false;
+                    relaxDamage 1.0;
+
+                    d_max 0.99;
+                    temperatureFragmentationThreshold 1500;
+                    // equivalentStrainRateThreshold false;
+                    // strainRateThreshold 0.1;
+
+
+                }
+            }
+        }

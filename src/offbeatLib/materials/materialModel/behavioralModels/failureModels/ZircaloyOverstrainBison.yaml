@@ -1,0 +1,45 @@
+# ZircaloyOverstrainBison.yaml
+description: |
+  Failure criterion based on an overstrain limit for Zircaloy cladding, inspired
+  by the implementation used in BISON.
+
+  Failure is triggered when the equivalent plastic strain exceeds a critical
+  threshold.
+
+options:
+  - key: patchNames
+    type: list[word]
+    required: true
+    description: |
+      List of patch names on which the criterion is evaluated.
+
+  - key: hoopStrainLimit
+    type: scalar
+    required: false
+    default: 0.4
+    description: |
+      Critical equivalent plastic strain above which the cladding is considered
+      failed.
+
+usage:
+  - comment: |
+      Example of Zircaloy overstrain-based failure criterion.
+    snippet: |
+      materials
+      {
+          cladding
+          {
+              material Zircaloy;
+
+              failureModel
+              {
+                  type    ZircaloyOverstrainBison;
+
+                  // required
+                  patchNames     ( "cladOuter" "cladInner" );
+
+                  // Optional
+                  hoopStrainLimit 0.4;
+              }
+          }
+      }

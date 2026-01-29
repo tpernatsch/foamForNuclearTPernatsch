@@ -1,0 +1,208 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     |
+    \\  /    A nd           | Copyright (C) 2013 OpenFOAM Foundation
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+License
+    This file is part of OpenFOAM.
+
+    OpenFOAM is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
+Class
+    Foam::rhoPimpleFlowSubSolver
+
+Description
+    Flow solver based using PIMPLE algorithm
+
+    \htmlinclude flowSubSolver_rhoPimpleFlowSubSolver.html
+
+SourceFiles
+    rhoPimpleFlowSubSolver.C
+
+\mainauthor
+    I. Clifford - PSI (Paul Scherrer Institut, Switzerland)
+
+\date 
+    October 2023
+
+\*---------------------------------------------------------------------------*/
+
+#ifndef rhoPimpleFlowSubSolver_H
+#define rhoPimpleFlowSubSolver_H
+
+#include "flowSubSolver.H"
+#include "volFields.H"
+#include "surfaceFields.H"
+#include "uniformDimensionedFields.H"
+#include "singlePhaseTransportModel.H"
+#include "compressibleMomentumTransportModel.H"
+#include "fluidThermophysicalTransportModel.H"
+#include "fluidThermo.H"
+#include "pimpleControl.H"
+#include "pressureReference.H"
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+namespace Foam
+{
+
+/*---------------------------------------------------------------------------*\
+                     Class rhoPimpleFlowSubSolver Declaration
+\*---------------------------------------------------------------------------*/
+
+class rhoPimpleFlowSubSolver
+:
+public flowSubSolver
+{
+    // Private data
+    
+        //- Pointer to mesh (if needed)
+        autoPtr<fvMesh> meshPtr_;
+        
+        //- Reference to mesh
+        fvMesh& mesh_;
+        
+        //- Thermophysical model
+        autoPtr<fluidThermo> thermo_;
+        
+        //- Pressure (Pa)
+        volScalarField& p_;
+
+        //- Fluid Compressibility
+        const volScalarField& psi_;
+
+        //- Density (kg/m3)
+        volScalarField rho_;
+        
+        //- Velocity (m/s)
+        volVectorField U_;
+
+        //- Surface mass fluxes
+        surfaceScalarField phi_;
+        
+        //-Turbulence model
+        autoPtr<compressible::momentumTransportModel> turbulence_;
+        
+        //- Turbulence transport model for energy equation
+        autoPtr<fluidThermophysicalTransportModel> thermoTransport_;
+
+        //- Rate of change of pressure
+        volScalarField dpdt_;
+        
+        //- Kinetic energy magnitude
+        volScalarField K_;        
+
+        //- PIMPLE solver controls
+        pimpleControl pimple_;
+
+        //- Reference pressure
+        pressureReference pressureReference_;
+
+        //- Initial system mass for conservation
+        dimensionedScalar initialMass_;
+        
+        //- Continuity Errors
+        scalar cumulativeContErr_;
+
+        //- Pointer to the demand driven fvModels MeshObject
+        mutable Foam::fvModels fvModels_;
+
+        //- Pointer to the demand driven fvConstraints MeshObject
+        mutable Foam::fvConstraints fvConstraints_;
+        
+    // Protected Member Functions
+        
+        //- Solve the momentum equation
+        tmp<fvVectorMatrix> solveMomentum();
+
+        //- Solve the pressure correction equation
+        void correctPressure(fvVectorMatrix& UEqn);
+        
+        //- Solve the energy equation
+        void correctEnergy();
+        
+        //- Calculate and print the continuity errors
+        void continuityErrors();
+
+    // Private Member Functions
+        
+        //- Helper function to return a reference to the mesh or construct as needed
+        fvMesh& getMesh(const Time& runTime);
+
+        //- Disallow default bitwise copy construct
+        rhoPimpleFlowSubSolver(const rhoPimpleFlowSubSolver&);
+
+        //- Disallow default bitwise assignment
+        void operator=(const rhoPimpleFlowSubSolver&);
+        
+
+public:
+
+    //- Runtime type information
+    TypeName("rhoPimple");
+
+    // Constructors
+
+        //- Construct from mesh, materials and dictionary
+        rhoPimpleFlowSubSolver
+        (
+            const Time& runTime,
+            const dictionary& dict
+        );
+    
+    //- Destructor
+    ~rhoPimpleFlowSubSolver()
+    {}
+
+    // Member Functions
+
+        //- Return the fvModels
+        inline Foam::fvModels& fvModels() const
+        {
+            return fvModels_;
+        }
+        
+        //- Return the fvConstraints
+        inline Foam::fvConstraints& fvConstraints() const
+        {
+            return fvConstraints_;
+        }
+
+        //- Updates before the PIMPLE loop
+        virtual void init();
+
+        //- Updates within the PIMPLE loop
+        virtual void correct();
+
+        //- Updates after the PIMPLE loop
+        virtual void finalise();
+
+        //- Return true if converged
+        virtual bool converged();
+        
+        virtual scalar nextDeltaT() const;
+};
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace Foam
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#endif
+
+// ************************************************************************* //

@@ -1,0 +1,40 @@
+# Zircaloy_CSED_RIA_EPRI.yaml
+description: |
+  Clad failure criterion during the PCMI phase of a RIA transient based on the strain energy density (SED).
+  The complete description of this model is available at : https://www.epri.com/research/products/1021036
+  If the average SED on an axial slice goes over a critical value, the clad is considered to have failed.
+  The SED field corresponds to the strain energy density.
+  The CFP field corresponds to the SED field over the critical value. Thus if CFP > 1, the clad is considered failed.
+
+options:
+  - key: CH
+    type: scalar
+    required: true
+    description: |
+      Hydrogen content in wppm. The critical value is dependent on the hydrogen content.
+
+  - key: crackLength
+    type: scalar
+    required: true
+    description: |
+      Crack length used by the model [m].
+
+usage:
+  - comment: |
+      Example selection of the Zircaloy SED-based RIA failure criterion.
+    snippet: |
+        materials
+        {
+            cladding
+            {
+                ...
+
+                failureModel 
+                {
+                    type ZircaloySed;
+                    
+                    CH          400;
+                    crackLength 0.001;
+                }
+            }
+        }

@@ -1,0 +1,26 @@
+description: |
+  Model for constant Young modulus. The value is read from dictionary.
+
+options:  
+  - key: value
+    type: scalar
+    required: true
+    description: |
+      Constant Young Modulus in Pa.
+
+usage:
+  - comment: |
+      Example selection of the `constant` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        fuel
+        {
+          type constant;
+          thermalExpansion
+          {
+            type constant;
+            value 200e9;
+          }
+        }
+      }

@@ -1,0 +1,41 @@
+description: |
+  Class modelling thermal expansion of H-N from Swinderman.
+
+options:
+  - key: par1
+    type: scalar
+    required: false
+    default: 0.005291
+    description: |
+      Option read by the model.
+  - key: par2
+    type: scalar
+    required: false
+    default: 9.682
+    description: |
+      Option read by the model.
+  - key: par3
+    type: scalar
+    required: false
+    default: 107.8
+    description: |
+      Option read by the model.
+
+usage:
+  - comment: |
+      Example selection of the `HastelloyNSwindeman` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        cladding
+        {
+          type HastlloyN;
+          thermalExpansion
+          {
+            type HastelloyNSwindeman;
+            // par1 0.005291;
+            // par2 9.682;
+            // par3 107.8;
+          }
+        }
+      }

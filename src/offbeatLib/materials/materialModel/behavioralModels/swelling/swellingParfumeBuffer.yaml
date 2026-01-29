@@ -1,0 +1,98 @@
+description: |
+  Class handling irradiation-induced dimensional change phenomenon for Buffer
+  derived from Parfume manual.
+
+options:
+  - key: densityName
+    type: word
+    required: false
+    default: rho
+    description: |
+      Name of the density field.
+  - key: fastFluenceName
+    type: word
+    required: false
+    default: fastFluence
+    description: |
+      Name of the fast fluence field.
+  - key: fastFluxName
+    type: word
+    required: false
+    default: fastFlux
+    description: |
+      Name of the fast flux field.
+  - key: fluxConversionFactor
+    type: scalar
+    required: false
+    default: 1.0
+    description: |
+      Conversion factor applied to the flux/fluence input.
+  - key: tempValues
+    type: scalar
+    required: true
+    description: |
+      Model data table.
+  - key: BAFValues_r
+    type: scalar
+    required: true
+    description: |
+      Model data table.
+  - key: densityValues
+    type: scalar
+    required: true
+    description: |
+      Model data table.
+  - key: strain_iso
+    type: scalar
+    required: true
+    description: |
+      Model option.
+  - key: a1_r
+    type: scalar
+    required: true
+    description: |
+      Model data table.
+  - key: a2_r
+    type: scalar
+    required: true
+    description: |
+      Model data table.
+  - key: a3_r
+    type: scalar
+    required: true
+    description: |
+      Model data table.
+  - key: a4_r
+    type: scalar
+    required: true
+    description: |
+      Model data table.
+
+usage:
+  - comment: |
+      Example selection of `BufferParfume`.
+    snippet: |
+        materials
+        {
+            Buffer
+            {
+                type Buffer;
+
+                swelling
+                {
+                    type BufferParfume;
+                    // densityName rho;
+                    // fastFluenceName fastFluence;
+                    // fastFluxName fastFlux;
+                    // fluxConversionFactor 1.0;
+                    tempValues <required>;
+                    BAFValues_r <required>;
+                    densityValues <required>;
+                    strain_iso <required>;
+                    a1_r <required>;
+                    a2_r <required>;
+                    a3_r <required>;
+                    a4_r <required>;
+                }
+            }
+        }

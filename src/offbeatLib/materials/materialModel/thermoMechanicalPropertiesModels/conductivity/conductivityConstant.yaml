@@ -1,0 +1,46 @@
+description: |
+  The `constant` conductivity model assigns a constant thermal conductivity
+  value to all cells of the addressed material region.
+
+  The preferred input style is a `conductivity` sub-dictionary with a `type`
+  entry and a `value` keyword. The legacy keyword `k` in the material dictionary
+  is still accepted for retro-compatibility but is deprecated.
+
+options:
+  - key: value
+    type: scalar
+    required: true
+    description: |
+      Constant thermal conductivity value [W/m/K].
+
+usage:
+  - comment: |
+      Preferred syntax using a `conductivity` sub-dictionary in the `solverDict`.
+    snippet: |
+      materials
+      {
+          cladding
+          {
+              material constant;
+
+              conductivity
+              {
+                type  constant;
+                value 21.5;
+              }
+          }
+      }
+
+  - comment: |
+      Legacy syntax (deprecated).
+    snippet: |
+      materials
+      {
+          cladding
+          {
+              material constant;
+
+              conductivityModel constant;
+              k 21.5;
+          }
+      }

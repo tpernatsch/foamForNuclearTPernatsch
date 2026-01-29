@@ -1,0 +1,29 @@
+description: |
+  Base fission gas release (FGR) model class. It disables fission gas production and
+  release, and therefore also disables any FGR-related gaseous swelling.
+
+  With this selection, **no additional fission-gas fields** (e.g. concentrations,
+  release fractions) are created or evolved.
+
+admonitions:
+  - kind: warning
+    body: |
+      Even when selecting `none`, the *base* FGR infrastructure currently still
+      creates a set of auxiliary fields:
+      `grainRadius`, `oxygenMetalRatio`, `intragranularGasSwelling`,
+      `intergranularGasSwelling`.
+
+      At the moment these fields are created and remain constant during the
+      simulation. This behavior may change in future OFFBEAT versions.
+
+optionsLocations:
+  - name: solverDict
+    in: solverDict
+
+options: []
+
+usage:
+  - comment: |
+      Disable fission gas release models.
+    snippet: |
+      fgr none;

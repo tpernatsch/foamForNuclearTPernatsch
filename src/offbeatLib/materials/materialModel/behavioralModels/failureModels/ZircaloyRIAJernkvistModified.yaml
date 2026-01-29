@@ -1,0 +1,90 @@
+description: |
+  Modified Jernkvist failure criterion for Zircaloy cladding during RIA
+  transients.
+
+options:
+  - key: phi
+    type: scalar
+    required: true
+    description: |
+      Fast neutron fluence in 1e25 n/m2
+
+  - key: meanHydrogenConcentration
+    type: scalar
+    required: true
+    description: |
+      Mean hydrogen concentration in the cladding (wppm).
+
+  - key: rimThicknessReductionFactor
+    type: bool
+    required: false
+    default: false
+    description: |
+      If true, activates a rim-thickness reduction factor and requires additional
+      rim-related inputs (`rimThickness`, `cladOuterRadius`, `rimHydrogenConcentration`).
+
+  - key: rimThickness
+    type: scalar
+    required: false
+    description: |
+      Rim thickness (in um) used when `rimThicknessReductionFactor` is enabled.
+
+  - key: cladOuterRadius
+    type: scalar
+    required: false
+    description: |
+      Cladding outer radius (in m) used when `rimThicknessReductionFactor` is enabled.
+
+  - key: rimHydrogenConcentration
+    type: scalar
+    required: false
+    description: |
+      Hydrogen concentration in the rim region (wppm), used when
+      `rimThicknessReductionFactor` is enabled.
+
+usage:
+  - comment: |
+      Example of modified Jernkvist RIA failure criterion (no rim factor).
+    snippet: |
+      materials
+      {
+          cladding
+          {
+              material Zircaloy;
+
+              failureModel
+              {
+                  type                    ZircaloyRIAJernkvistModified;
+
+                  phi                     1.0;
+                  meanHydrogenConcentration 400;
+
+                  // optional
+                  rimThicknessReductionFactor false;
+              }
+          }
+      }
+
+  - comment: |
+      Example with rim-thickness reduction factor enabled.
+    snippet: |
+        materials
+        {
+            cladding
+            {
+                material Zircaloy;
+
+                failureModel
+                {
+                    type                    ZircaloyRIAJernkvistModified;
+
+                    phi                     1.0;
+                    meanHydrogenConcentration 400;
+
+                    rimThicknessReductionFactor true; 
+                    rimHydrogenConcentration 1200;
+                    rimThickness 80;
+                    cladOuterRadius 4.75e-3;
+                    }
+            }
+        }

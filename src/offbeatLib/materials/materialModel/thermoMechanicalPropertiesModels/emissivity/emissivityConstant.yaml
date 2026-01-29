@@ -1,0 +1,32 @@
+description: |
+  Model for constant emissivity. The value is read from dictionary.
+
+admonitions:
+  - kind: warning
+    body: |
+      For retro-compatibility, the constant emissivity can still be provided as a `dimensionedScalar` keyword `emissivity` in the material dictionary. This is deprecated; prefer an `emissivity` sub-dictionary with `type constant;` and keyword `value`.
+
+options:
+  - key: value
+    type: scalar
+    required: true
+    description: |
+      Constant emissivity value.
+
+usage:
+  - comment: |
+      Example selection of the constant emissivity model (recommended style).
+    snippet: |
+      materials
+      {
+          <zoneName>
+          {
+              type <MaterialTypeName>;
+              
+              emissivity
+              {
+                  type constant;
+                  value 0.8;
+              }
+          }
+      }

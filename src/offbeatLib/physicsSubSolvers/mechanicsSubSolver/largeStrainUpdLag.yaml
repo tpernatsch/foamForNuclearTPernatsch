@@ -1,0 +1,37 @@
+description: |
+  Mechanics solver class that solves for incremental displacement `DD` in an 
+  updated Lagrangian configuration (i.e. the mesh is updated at every time step) 
+  and employs a finite-strain mechanics framework.
+
+  Geometric non-linearity is handled via the relative deformation gradient
+  and its Jacobian.
+
+options:
+  - key: strainTensor
+    type: word
+    required: false
+    default: EulerAlmansi
+    description: Select strain tensor definition.
+
+usage:
+  - comment: |
+      Code snippet of the `solverDict` to activate the
+      `largeStrainUpdLag` mechanics solver.
+    snippet: |
+      mechanicsSolver largeStrainUpdLag;
+
+      mechanicsOptions
+      {
+          forceSummary false;
+          cylindricalStress false;
+          sphericalStress false;
+          strainTensor Hencky;
+
+          // RhieChow correction deactived if multiMaterialCorrection is found
+          RhieChowCorrection true;
+
+          multiMaterialCorrection
+          {
+              type none;
+          }
+      }

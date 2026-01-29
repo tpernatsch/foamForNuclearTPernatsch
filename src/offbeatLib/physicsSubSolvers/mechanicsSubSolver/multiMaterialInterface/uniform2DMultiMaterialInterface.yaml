@@ -1,0 +1,42 @@
+description: |
+  Multi-material correction class that applies a uniform multi-material correction
+  **only in the x–y plane**.
+
+  It was designed for 2D r–z simulations with a coarse axial discretization.
+  In such cases, the full 3D correction may cause convergence issues due to
+  insufficient axial resolution.
+
+  As the axial mesh is refined, the standard `uniform` correction can be used
+  safely.
+
+options:
+  - key: defaultWeights
+    type: scalar
+    required: true
+    description: |
+      Fraction of the full correction applied (between 0 and 1).
+      Applying full correction everywhere may negatively impact convergence.
+      A value between 0.9 and 1 is recommended (1 if possible).
+  - key: defaultWeightsGrad
+    type: scalar
+    required: false
+    description: |
+      Fraction of the correction applied to the gradient contribution of
+      `sigmaExp`. By default equal to `defaultWeights`.
+
+usage:
+  - comment: |
+      Example of the `solverDict` configuration to activate the
+      2D uniform multi-material correction.
+    snippet: |
+      mechanicsSolver
+      {
+        type smallStrain;
+        RhieChowCorrection false;
+
+        multiMaterialCorrection
+        {
+            type uniform2D;
+            defaultWeights 1.0;
+        }
+      }

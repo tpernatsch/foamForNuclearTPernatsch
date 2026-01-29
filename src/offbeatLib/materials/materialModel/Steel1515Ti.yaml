@@ -1,0 +1,90 @@
+description: |
+  The `Steel1515Ti` material model represents the austenitic Steel 15-15 Ti
+  cladding material.
+
+  The class selects a set of thermophysical/mechanical property models and a
+  swelling (irradiation-induced) model. If not specified in the material
+  dictionary, default models are used.
+
+options:
+  - key: densityModel
+    type: word
+    required: false
+    default: Steel1515TiSchumann
+    description: |
+      Selects the density correlation used by the `Steel1515Ti` material.
+
+  - key: heatCapacityModel
+    type: word
+    required: false
+    default: Steel1515TiBanerjee
+    description: |
+      Selects the heat capacity correlation used by the `Steel1515Ti` material.
+
+  - key: conductivityModel
+    type: word
+    required: false
+    default: Steel1515TiTobbe
+    description: |
+      Selects the thermal conductivity correlation used by the `Steel1515Ti`
+      material.
+
+  - key: emissivityModel
+    type: word
+    required: false
+    default: ZircaloyConstant
+    description: |
+      Selects the emissivity correlation used by the `Steel1515Ti` material.
+
+  - key: YoungModulusModel
+    type: word
+    required: false
+    default: Steel1515TiTobbe
+    description: |
+      Selects the Young's modulus correlation used by the `Steel1515Ti` material.
+
+  - key: PoissonRatioModel
+    type: word
+    required: false
+    default: Steel1515TiTobbe
+    description: |
+      Selects the Poisson's ratio correlation used by the `Steel1515Ti` material.
+
+  - key: thermalExpansionModel
+    type: word
+    required: false
+    default: Steel1515TiGehr
+    description: |
+      Selects the thermal expansion correlation used by the `Steel1515Ti` material.
+
+  - key: swellingModel
+    type: word
+    required: false
+    default: Steel1515TiGeneralized
+    description: |
+      Selects the swelling (irradiation-induced strain) model used by the
+      `Steel1515Ti` material.
+
+usage:
+  - comment: |
+      Example of a `solverDict` materials entry using the `Steel1515Ti` material
+      model with its default sub-model selections.
+    snippet: |
+      materials
+      {
+          cladding
+          {
+              material Steel1515Ti;
+
+              // Optional overrides (defaults shown)
+              densityModel            Steel1515TiSchumann;
+              heatCapacityModel       Steel1515TiBanerjee;
+              conductivityModel       Steel1515TiTobbe;
+              emissivityModel         ZircaloyConstant;
+              YoungModulusModel       Steel1515TiTobbe;
+              PoissonRatioModel       Steel1515TiTobbe;
+              thermalExpansionModel   Steel1515TiGehr;
+
+              swellingModel           Steel1515TiGeneralized;
+          }
+      }

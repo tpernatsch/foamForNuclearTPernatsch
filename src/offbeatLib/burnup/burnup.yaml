@@ -1,0 +1,30 @@
+description: |
+  Base burnup model class. It disables burnup tracking entirely, i.e. when this 
+  model is selected, the burnup field `Bu` is **not created** and is not
+  present in the simulation. No burnup evolution or burnup-dependent quantities
+  are computed.
+
+  This is the default choice when no burnup model is explicitly selected.
+
+  Other burnup models are available; see the documentation of the corresponding
+  burnup implementations for details.
+
+admonitions:
+  - kind: warning
+    body: |
+      The absence of the `Bu` field may cause conflicts with other models that
+      partially or entirely depend on burnup (for example, some fuel conductivity
+      models).
+
+      If such models are required in your simulation while neglecting burnup 
+      *evolution* over time, use the `constant` burnup model instead. The
+      burnup field will be automatically set to 0.
+
+options: []
+
+usage:
+  - comment: |
+      Activate the `none` burnup model by selecting it explicitly in the
+      `solverDict`.
+    snippet: |
+      burnup none;

@@ -1,0 +1,33 @@
+description: |
+  Base class for fuel relocation models.
+
+  The base model has type `none`. When selected, fuel relocation is not modeled,
+  but the relocation-related fields are still created and registered.
+
+  If a relocation field is provided in the initial time folder, it is read;
+  otherwise it is initialized to zero.
+
+admonitions:
+  - kind: warning
+    body: |
+      The keyword `relocationModel` is deprecated. Prefer a `relocation`
+      dictionary with a `type` entry.
+
+options: []
+
+usage:
+  - comment: |
+      Recommended selection via the `relocation` dictionary.
+    snippet: |
+        materials
+        {
+            fuel
+            {
+                material UO2;
+
+                relocation
+                {
+                    type none;
+                }
+            }
+        }

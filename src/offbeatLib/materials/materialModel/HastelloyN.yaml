@@ -1,0 +1,88 @@
+description: |
+  The `HastelloyN` material model represents Hastelloy-N structural material.
+
+  The class selects thermophysical and mechanical property models together with
+  an irradiation-induced swelling model. Several properties default to
+  constant models, requiring user-specified values.
+
+options:
+  - key: densityModel
+    type: word
+    required: false
+    default: constant
+    description: |
+      Selects the density model used by the `HastelloyN` material.
+
+  - key: heatCapacityModel
+    type: word
+    required: false
+    default: constant
+    description: |
+      Selects the heat capacity model used by the `HastelloyN` material.
+
+  - key: conductivityModel
+    type: word
+    required: false
+    default: SwindemanHastelloyN
+    description: |
+      Selects the thermal conductivity correlation used by the `HastelloyN`
+      material.
+
+  - key: emissivityModel
+    type: word
+    required: false
+    default: constant
+    description: |
+      Selects the emissivity model used by the `HastelloyN` material.
+
+  - key: YoungModulusModel
+    type: word
+    required: false
+    default: WatrousHastelloyN
+    description: |
+      Selects the Young's modulus correlation used by the `HastelloyN` material.
+
+  - key: PoissonRatioModel
+    type: word
+    required: false
+    default: constant
+    description: |
+      Selects the Poisson's ratio model used by the `HastelloyN` material.
+
+  - key: thermalExpansionModel
+    type: word
+    required: false
+    default: SwindemanHastelloyN
+    description: |
+      Selects the thermal expansion correlation used by the `HastelloyN` material.
+
+  - key: swellingModel
+    type: word
+    required: false
+    default: WrightShamHastelloyN
+    description: |
+      Selects the irradiation-induced swelling model used by the `HastelloyN`
+      material.
+
+usage:
+  - comment: |
+      Example of a `solverDict` materials entry using the `HastelloyN` material
+      model with default sub-models.
+    snippet: |
+      materials
+      {
+          cladding
+          {
+              material HastelloyN;
+
+              densityModel            constant;
+              heatCapacityModel       constant;
+              emissivityModel         constant;
+              PoissonRatioModel       constant;
+
+              conductivityModel       SwindemanHastelloyN;
+              YoungModulusModel       WatrousHastelloyN;
+              thermalExpansionModel   SwindemanHastelloyN;
+              swellingModel           WrightShamHastelloyN;
+          }
+      }

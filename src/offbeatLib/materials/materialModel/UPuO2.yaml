@@ -1,0 +1,120 @@
+description: |
+  The `UPuO2` material model represents (U,Pu)O$_2$ (MOX-like) nuclear fuel.
+
+  The class selects thermophysical and mechanical property models as well as
+  fuel behavioral models (densification, swelling, relocation, failure, and
+  pore velocity). If not specified in the material dictionary, default models
+  are used.
+
+options:
+  - key: densityModel
+    type: word
+    required: false
+    default: UPuO2Constant
+    description: |
+      Selects the density correlation used by the `UPuO2` material.
+
+  - key: heatCapacityModel
+    type: word
+    required: false
+    default: UPuO2Matpro
+    description: |
+      Selects the heat capacity correlation used by the `UPuO2` material.
+
+  - key: conductivityModel
+    type: word
+    required: false
+    default: MaUPuO2Magni
+    description: |
+      Selects the thermal conductivity correlation used by the `UPuO2` material.
+
+  - key: emissivityModel
+    type: word
+    required: false
+    default: UO2Relap
+    description: |
+      Selects the emissivity correlation used by the `UPuO2` material.
+
+  - key: YoungModulusModel
+    type: word
+    required: false
+    default: UPuO2Matpro
+    description: |
+      Selects the Young's modulus correlation used by the `UPuO2` material.
+
+  - key: PoissonRatioModel
+    type: word
+    required: false
+    default: UPuO2Constant
+    description: |
+      Selects the Poisson's ratio correlation used by the `UPuO2` material.
+
+  - key: thermalExpansionModel
+    type: word
+    required: false
+    default: UPuO2Matpro
+    description: |
+      Selects the thermal expansion correlation used by the `UPuO2` material.
+
+  - key: densificationModel
+    type: word
+    required: false
+    default: UO2Frapcon
+    description: |
+      Selects the densification (additional strain) model used by the `UPuO2` material.
+
+  - key: swellingModel
+    type: word
+    required: false
+    default: UO2Frapcon
+    description: |
+      Selects the swelling (additional strain) model used by the `UPuO2` material.
+
+  - key: relocationModel
+    type: word
+    required: false
+    default: UO2Frapcon
+    description: |
+      Selects the relocation (additional strain) model used by the `UPuO2` material.
+
+  - key: failureModel
+    type: word
+    required: false
+    default: none
+    description: |
+      Selects the failure model used by the `UPuO2` material.
+
+  - key: poreVelocityModel
+    type: word
+    required: false
+    default: none
+    description: |
+      Selects the pore velocity model used by the `UPuO2` material.
+
+usage:
+  - comment: |
+      Example of a `solverDict` materials entry using the `UPuO2` material model
+      with its default sub-model selections.
+    snippet: |
+      materials
+      {
+          fuel
+          {
+              material UPuO2;
+
+              // Optional overrides (defaults shown)
+              densityModel            UPuO2Constant;
+              heatCapacityModel       UPuO2Matpro;
+              conductivityModel       MaUPuO2Magni;
+              emissivityModel         UO2Relap;
+              YoungModulusModel       UPuO2Matpro;
+              PoissonRatioModel       UPuO2Constant;
+              thermalExpansionModel   UPuO2Matpro;
+
+              densificationModel      UO2Frapcon;
+              swellingModel           UO2Frapcon;
+              relocationModel         UO2Frapcon;
+              failureModel            none;
+              poreVelocityModel       none;
+          }
+      }

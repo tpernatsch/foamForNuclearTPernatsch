@@ -1,0 +1,57 @@
+description: |
+  Class modelling the irradiation growth phenomenon according to Matpro
+  correlations.
+  
+options:
+  - key: fastFluenceName
+    type: word
+    required: false
+    default: fastFluence
+    description: |
+      Name of the fast fluence field.
+  - key: coldWork
+    type: scalar
+    required: false
+    default: 0.0
+    description: |
+      Cold work fraction/indicator used by the model.
+  - key: A
+    type: scalar
+    required: false
+    default: 1.407e-16
+    description: |
+      Correlation parameter.
+  - key: par1
+    type: scalar
+    required: false
+    default: 240.8
+    description: |
+      Correlation parameter.
+  - key: fz
+    type: scalar
+    required: false
+    default: 0.05
+    description: |
+      Correlation parameter.
+
+usage:
+  - comment: |
+      Example selection of `ZircaloyMatpro`.
+    snippet: |
+        materials
+        {
+            clad
+            {
+                type Zircaloy;
+
+                swelling
+                {
+                    type ZircaloyMatpro;
+                    // fastFluenceName fastFluence;
+                    // coldWork 0.0;
+                    // A 1.407e-16;
+                    // par1 240.8;
+                    // fz 0.05;
+                }
+            }
+        }

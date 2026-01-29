@@ -1,0 +1,28 @@
+description: |
+  Class to set Molybdenum density to a constant input value.
+
+options:
+  - key: densityValue
+    type: scalar
+    required: false
+    default: 10280
+    description: |
+      Option read by the model.
+
+usage:
+  - comment: |
+      Example selection of the `MolybdenumConstant` density model.
+    snippet: |
+      materials
+      {
+        structure
+        {
+          type Molybdenum;
+
+          density
+          {
+            type MolybdenumConstant;
+            // densityValue 10280;
+          }
+        }
+      }

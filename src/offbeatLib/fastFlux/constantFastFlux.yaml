@@ -1,0 +1,37 @@
+description: |
+  Fast flux model that allows prescribing a fixed fast neutron flux
+  field in OFFBEAT via the `fastFlux` field file in the starting folder.
+
+  When this model is selected, the fast flux (`fastFlux`) and fast fluence
+  (`fastFluence`) fields are read from the starting time folder if present.
+  If the corresponding files are not found, both fields are initialized to zero:
+  - `fastFlux` is set to 0 n/cm²/s
+  - `fastFluence` is set to 0 n/cm²
+
+  In this case, zeroGradient boundary conditions are applied to all non-empty
+  and non-wedge patches.
+
+  The fast flux field remains constant throughout the simulation, i.e. it is
+  not modified during time advancement.
+
+  Even though the fast flux is constant, the fast fluence is updated at every
+  time step by integrating the fast flux over time.
+
+admonitions:
+  - kind: note
+    body: |
+      This model might be useful when a prescribed fast flux distribution is available
+      (e.g. from neutronics calculations) or when fast fluence effects are needed
+      without explicitly considering a time-evolution of the fast flux.
+
+  - kind: warning
+    body: |
+      For backward compatibility, the typename `fromLatestTime` is still accepted for
+      selecting this model. However, its use is deprecated and may be removed in
+      future versions.
+
+usage:
+  - comment: |
+      Example `solverDict` snippet selecting the `constant` fast flux model.
+    snippet: |
+      fastFlux constant;

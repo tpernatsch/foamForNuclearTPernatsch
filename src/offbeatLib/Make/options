@@ -1,0 +1,68 @@
+ifeq ($(WM_PROJECT), foam)
+    VERSION_SPECIFIC_INC = -DFOAMEXTEND
+else
+    VERSION_SPECIFIC_INC = -DOPENFOAMESIORFOUNDATION
+    ifneq (,$(findstring v,$(WM_PROJECT_VERSION)))
+        VERSION_SPECIFIC_INC += -DOPENFOAMESI
+        OF_FLAVOUR := ESI
+    else
+        VERSION_SPECIFIC_INC += -DOPENFOAMFOUNDATION
+        OF_FLAVOUR := FOUNDATION
+    endif
+endif
+
+EXE_INC = \
+    -g \
+    -std=c++17 \
+    -Wno-old-style-cast -Wno-deprecated-declarations \
+    $(VERSION_SPECIFIC_INC) \
+    -I../../thirdParty/SCIANTIX/lnInclude \
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(LIB_SRC)/meshTools/lnInclude \
+    -I$(LIB_SRC)/sampling/lnInclude \
+    -I$(LIB_SRC)/dynamicFvMesh/lnInclude \
+    -I$(LIB_SRC)/dynamicMesh/lnInclude \
+    -I$(LIB_SRC)/surfMesh/lnInclude \
+    -I$(LIB_SRC)/fvMotionSolver/lnInclude \
+    -I$(LIB_SRC)/topoChangerFvMesh/lnInclude \
+    -I$(LIB_SRC)/transportModels/lnInclude \
+    -I$(LIB_SRC)/thermophysicalModels/basic/lnInclude \
+    -I$(LIB_SRC)/MomentumTransportModels/momentumTransportModels/lnInclude \
+    -I$(LIB_SRC)/MomentumTransportModels/compressible/lnInclude \
+    -I$(LIB_SRC)/transportModels/compressible/lnInclude \
+    -I$(LIB_SRC)/ThermophysicalTransportModels/lnInclude \
+    -I$(LIB_SRC)/thermophysicalModels/solidThermo/lnInclude \
+
+LIB_LIBS = \
+    -L$(FOAM_USER_LIBBIN) \
+    -lsciantix \
+    -lOpenFOAM \
+    -lfiniteVolume \
+    -lmeshTools \
+    -lspecie \
+    -lreactionThermophysicalModels \
+    -lsampling  \
+    -lsurfMesh \
+    -ldynamicMesh  \
+    -ldynamicFvMesh \
+    -lfvMotionSolvers  \
+    -ltopoChangerFvMesh \
+    -lfluidThermophysicalModels \
+    -lspecie \
+    -lsolidThermo
+
+ifeq ($(OF_FLAVOUR),FOUNDATION)
+    LIB_LIBS += \
+        -lmomentumTransportModels \
+        -lcompressibleMomentumTransportModels \
+        -lthermophysicalTransportModels
+endif
+    
+ifneq (,$(findstring v,$(WM_PROJECT_VERSION)))
+    ifneq (,$(findstring FMU4FOAM,$(LIB_FMU4FOAM)))
+        EXE_INC += -I$(LIB_FMU4FOAM)/ECI4FOAM/src/externalComm/lnInclude
+        EXE_INC += -I$(LIB_FMU4FOAM)/src/OF_FMU/fmuControl/lnInclude
+        EXE_LIBS += -lexternalComm
+        EXE_LIBS += -L$(FOAM_USER_LIBBIN) -lFMUControl
+    endif
+endif

@@ -1,0 +1,43 @@
+description: |
+  Thermal conductivity correlation for 15-15Ti steel based on the formulation
+  by Tobbe.
+
+  The model provides a temperature-dependent thermal conductivity for
+  austenitic 15-15Ti steel.
+
+options:
+  - key: par1
+    type: scalar
+    required: false
+    default: 13.95
+    description: |
+      Correlation constant term.
+
+  - key: par2
+    type: scalar
+    required: false
+    default: 1.163e-2
+    description: |
+      Linear temperature coefficient of the correlation.
+
+usage:
+  - comment: |
+      Example selection of the Tobbe conductivity correlation for 15-15Ti steel
+      in the `solverDict`.
+    snippet: |
+        materials
+        {
+            cladding
+            {
+                type Steel1515Ti;
+                
+                conductivity
+                {
+                    type Steel1515TiTobbe;
+
+                    // Optional overrides
+                    // par1 13.95;
+                    // par2 1.163e-2;
+                }
+            }
+        }

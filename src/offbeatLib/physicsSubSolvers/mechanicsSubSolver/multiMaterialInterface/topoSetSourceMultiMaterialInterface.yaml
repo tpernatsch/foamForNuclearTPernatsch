@@ -1,0 +1,71 @@
+description: |
+  Multi-material correction class where the interface faces are defined from a
+  `topoSetSource`. The correction is applied as follows:
+
+  - first, the uniform correction is applied everywhere (via `defaultWeights`
+    and optionally `defaultWeightsGrad`);
+  - then, faces selected by the `source` entry are overwritten and forced to use
+    `interfaceWeights`.
+
+admonitions:
+  - kind: warning
+    body: |
+      The current implementation only supports *internal faces* in the generated
+      face set. If the topoSetSource selects boundary faces, the code triggers a
+      NotImplemented error.
+
+options:
+  - key: defaultWeights
+    type: scalar
+    required: true
+    description: |
+      Base (uniform) correction weight applied to internal faces not belonging
+      to the selected interface.
+  - key: defaultWeightsGrad
+    type: scalar
+    required: false
+    description: |
+      Base correction weight for the gradient contribution. Defaults to
+      `defaultWeights`.
+  - key: interfaceWeights
+    type: scalar
+    required: true
+    description: |
+      Correction weight applied to faces selected by the `source` topoSetSource.
+      It overwrites both weightsEps and weightsGrad for those faces.
+  - key: source
+    type: topoSetSource
+    required: true
+    description: |
+      Definition of the interface faces using OpenFOAM `topoSetSource` syntax.
+      The first token is the topoSetSource type, followed by its parameters.
+
+usage:
+  - comment: |
+      Example: activate the topoSetSource-based interface and select faces
+      using a topoSetSource. The exact `source` content depends on the chosen
+      topoSetSource type.
+    snippet: |
+      mechanicsSolver
+      {
+        type smallStrain;
+        RhieChowCorrection false;
+
+        multiMaterialCorrection
+        {
+            type topoSetSource;
+
+            // Base correction (everywhere)
+            defaultWeights 0.95;
+
+            // Stronger correction on selected faces
+            interfaceWeights 1.0;
+
+            // topoSetSource syntax:
+            // source <type> ( ... );
+            source faceZoneToFace
+            (
+                zone interfaceFaces
+            );
+        }
+      }
