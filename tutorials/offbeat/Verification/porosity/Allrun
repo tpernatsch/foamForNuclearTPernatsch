@@ -1,0 +1,76 @@
+#!/bin/bash
+
+# Run from this directory
+cd "${0%/*}" || exit 1
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+./Allclean
+
+if [[ $WM_PROJECT_VERSION == *v* ]]
+then	
+	fileT="0/T"
+	line_numberT=75
+	new_lineT="        os.writeEntry(\"nonuniform\", T);"
+	sed -i "${line_numberT}s/.*/${new_lineT}/" "$fileT"
+
+	fileP="0/poreVelocity"
+	line_numberP=60
+	new_lineP="        os.writeEntry(\"nonuniform\", velocity);"
+	sed -i "${line_numberP}s/.*/${new_lineP}/" "$fileP"	
+else
+	fileT="0/T"
+	line_numberT=75
+	new_lineT="        writeEntry(os, \"\", T);"
+	sed -i "${line_numberT}s/.*/${new_lineT}/" "$fileT"
+
+	fileP="0/poreVelocity"
+	line_numberP=60
+	new_lineP="        writeEntry(os, \"\", velocity);"
+	sed -i "${line_numberP}s/.*/${new_lineP}/" "$fileP"	
+fi	
+
+runApplication blockMesh
+
+cases="bounded unbounded"
+
+rm -f results
+touch results
+echo "Percentage root-mean-square deviation:" >> results
+
+for case in $cases; do
+	
+	runApplication -a foamListTimes -rm
+
+	if [ $case = "bounded" ]; then
+		runApplication foamDictionary constant/solverDict -entry elementTransportOptions/boundedAdvectionTerm -set true
+	else
+		runApplication -a foamDictionary constant/solverDict -entry elementTransportOptions/boundedAdvectionTerm -set false
+	fi
+
+	runApplication -a offbeat
+	
+	runApplication -a postProcess -func "components(poreVelocity)" -noZero
+	
+	runApplication -a postProcess -func 
+
+	if [[ $WM_PROJECT_VERSION == *v* ]]
+	then	
+		runApplication -o postProcess -func sampleRadialProfile_ESI
+		python3 plotProfile_ESI.py $case
+	else
+		runApplication -o postProcess -func sampleRadialProfile 
+		python3 plotProfile.py $case
+	fi	
+
+	# Collect results in a single file 
+	cat results_$case >> results
+	echo "" >> results
+	rm -f results_$case
+
+done
+
+
+
+#------------------------------------------------------------------------------

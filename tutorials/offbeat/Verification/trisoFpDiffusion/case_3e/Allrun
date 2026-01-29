@@ -1,0 +1,68 @@
+#!/bin/sh
+# Run from this directory
+cd "${0%/*}" || exit 1
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+runApplication -o blockMesh
+runApplication -o changeDictionary
+runApplication -o offbeat
+
+initialCs=$(grep -i "Initial Cs amount" log.offbeat | tail -n 1| cut -d" " -f4)
+Cs1=$(grep -i "Released Cs amount" log.offbeat | tail -n 1| cut -d" " -f4)
+initialKr=$(grep -i "Initial Kr amount" log.offbeat | tail -n 1| cut -d" " -f4)
+Kr1=$(grep -i "Released Kr amount" log.offbeat | tail -n 1| cut -d" " -f4)
+
+solverDict='./constant/solverDict'
+
+runApplication -o foamDictionary $solverDict -entry materials/"IPyC|OPyC"/crackFpRelease -set true
+#
+runApplication -o offbeat
+
+Cs2=$(grep -i "Released Cs amount" log.offbeat | tail -n 1| cut -d" " -f4)
+Kr2=$(grep -i "Released Kr amount" log.offbeat | tail -n 1| cut -d" " -f4)
+
+#
+totalCs=$(awk -v var1="$Cs1" \
+                -v var2="$Cs2" \
+                'BEGIN {print (var1+var2)}')
+
+fractionReleaseCs=$(awk -v var1="$totalCs" \
+                -v var2="$initialCs" \
+                'BEGIN {print (var1/var2)}')
+
+totalKr=$(awk -v var1="$Kr1" \
+                -v var2="$Kr2" \
+                'BEGIN {print (var1+var2)}')
+
+fractionReleaseKr=$(awk -v var1="$totalKr" \
+                -v var2="$initialKr" \
+                'BEGIN {print (var1/var2)}')
+
+CsExpected=1
+KrExpected=1
+
+#
+echo "Released Cs: $totalCs" >> results
+echo "Released Cs fraction: $fractionReleaseCs" >> results
+echo "Codes range: [0.970, 1.000]" >> results
+echo "Expected value: $CsExpected" >> results
+
+echo "Released Kr: $totalKr" >> results
+echo "Released Kr fraction: $fractionReleaseKr" >> results
+echo "Codes range: [0.980, 1.000]" >> results
+echo "Expected value: $KrExpected" >> results
+#
+relErrorCs=$(awk -v var1="$fractionReleaseCs" \
+                -v var2="$CsExpected" \
+                'BEGIN {print (100*(var1-var2)/var2)}')
+
+relErrorKr=$(awk -v var1="$fractionReleaseKr" \
+                -v var2="$KrExpected" \
+                'BEGIN {print (100*(var1-var2)/var2)}')
+
+echo "Relative change for Cs: $relErrorCs%" >> results
+echo "Relative change for Kr: $relErrorKr%" >> results
+
+runApplication -o foamDictionary $solverDict -entry materials/"IPyC|OPyC"/crackFpRelease -set false

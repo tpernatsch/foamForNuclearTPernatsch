@@ -1,0 +1,82 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//- Thermal and Mechanical solver selection:
+thermalSolver           constant;
+mechanicsSolver         constant;
+neutronicsSolver        none;
+elementTransport        none;
+
+//- Material and rhelogy treatment:
+materialProperties      byZone;
+rheology                byMaterial;
+
+heatSource              fromLatestTime;
+burnup                  constant;
+fastFlux                constant;
+gapGas                  none;
+fgr                     none;
+sliceMapper             byMaterial;
+corrosion               byPatch;
+
+globalOptions
+{
+    pinDirection            (0 0 1);
+    reactorType             "LWR";
+}
+
+rheologyOptions
+{
+    modifiedPlaneStrain  off;
+}
+
+corrosionOptions
+{
+    patches
+    {
+        cladOuter
+        {
+            corrosionModel ZircaloyOuterCorrosion;
+            oxidationKineticsModel MATPRO-CORROS-BWR|Cathcart-Pawel-Prater-Courtright;
+        }
+    }
+}
+
+materials
+{
+    cladding
+    {
+        material                zircaloy;
+        Tref                    Tref [ 0 0 0 1 0 ] 293;
+
+        nSlices                 1;
+
+        rheologyModel   misesPlasticCreep;
+        rheologyModelOptions
+        {
+            plasticStrainVsYieldStress table
+            (
+                (0    250e6)
+            );
+
+            creepModel LimbackCreepModel;
+            relax 1.0;
+        }
+    }
+}
+
+// ************************************************************************* //

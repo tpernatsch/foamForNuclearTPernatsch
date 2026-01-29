@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# Run from this directory
+cd "${0%/*}" || exit 1
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+# Create mesh
+cd rod3Dmaker
+python3 rod3Dmaker.py
+mv blockMeshDict ../system
+cd ..
+
+runApplication -o blockMesh
+
+runApplication -o createTuFields
+
+
+
+#------------------------------------------------------------------------------

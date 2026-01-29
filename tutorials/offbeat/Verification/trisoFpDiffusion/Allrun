@@ -1,0 +1,120 @@
+#!/bin/bash
+cd case_1a
+./Allrun
+wait
+echo "trisoFpDiffusion/case_1a:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_1b
+./Allrun
+wait
+echo "trisoFpDiffusion/case_1b:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_2a
+./Allrun
+wait
+echo "trisoFpDiffusion/case_2a:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_2b
+./Allrun
+wait
+echo "trisoFpDiffusion/case_2b:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_3a
+./Allrun
+wait
+echo "trisoFpDiffusion/case_3a:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_3b
+./Allrun
+wait
+echo "trisoFpDiffusion/case_3b:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_3c
+./Allrun
+wait
+echo "trisoFpDiffusion/case_3c:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_3d
+./Allrun
+wait
+echo "trisoFpDiffusion/case_3d:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_3e
+./Allrun
+wait
+echo "trisoFpDiffusion/case_3e:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_4a
+./Allrun
+wait
+echo "trisoFpDiffusion/case_4a:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_4b
+./Allrun
+wait
+echo "trisoFpDiffusion/case_4b:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_4c
+./Allrun
+wait
+echo "trisoFpDiffusion/case_4c:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_4d
+./Allrun
+wait
+echo "trisoFpDiffusion/case_4d:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_5a
+./Allrun
+wait
+echo "trisoFpDiffusion/case_5a:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_5b
+./Allrun
+wait
+echo "trisoFpDiffusion/case_5b:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..

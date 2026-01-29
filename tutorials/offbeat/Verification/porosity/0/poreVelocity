@@ -1,0 +1,95 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volVectorField;
+    location    "0";
+    object      poreVelocity;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField  #codeStream
+{
+    codeInclude
+    #{
+    #include "fvCFD.H"
+    #};
+
+    codeOptions
+    #{
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(LIB_SRC)/meshTools/lnInclude
+    #};
+    
+    codeLibs
+    #{
+    -lmeshTools \
+    -lfiniteVolume
+    #};
+
+    code
+    #{
+        const IOdictionary& d = static_cast<const IOdictionary&>(dict);
+        const fvMesh& mesh = refCast<const fvMesh>(d.db());
+        
+        // Initialize vector field
+        vectorField velocity(mesh.nCells(), Foam::vector::zero);
+
+        forAll(velocity, i)
+        {
+            // Take cell center vector
+            const vector cellCenter = mesh.C()[i];
+
+            // Take x direction of cell center (= radius for this geometry)
+            scalar r = cellCenter.x();
+
+            // Assign velocity shape
+            velocity[i].x() = -1e-6 * Foam::exp(-1000*r);
+            velocity[i].y() = 0;
+            velocity[i].z() = 0;
+        }
+
+        os.writeEntry("nonuniform", velocity);
+    #};
+   
+};
+
+boundaryField
+{
+    "fuelOuter|fuelInner"
+    {
+        type            codedFixedValue;
+        value           uniform (0 0 0);
+        name            codedVel;   // name of generated BC
+
+        code
+        #{
+            vectorField velBoundary(this->patch().size(), Foam::vector::zero);
+
+            forAll(this->patch().Cf(), i)
+            {
+                scalar r = this->patch().Cf()[i].x();
+                velBoundary[i].x() = -1e-6 * Foam::exp(-1000*r);
+            }
+            operator==(velBoundary);
+        #};
+    }
+    "fuelFront|fuelBack"
+    {
+        type            wedge;
+    }
+    "fuelBottom|fuelTop"
+    {
+        type            empty;
+    }
+}
+
+

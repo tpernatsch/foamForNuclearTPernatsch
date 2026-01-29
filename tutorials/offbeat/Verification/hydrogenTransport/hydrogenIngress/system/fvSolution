@@ -1,0 +1,88 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    D
+    {
+        solver          PCG;
+        smoother        GaussSeidel;
+        preconditioner  FDIC;
+        tolerance       1e-10;
+        relTol          0.1;
+        nCellsCoarsestLevel 20;
+    }
+
+    T
+    {
+        solver          PCG;
+        preconditioner  FDIC;
+        tolerance       1e-10;
+        relTol          1e-3;
+    }
+
+    Css
+    {
+        solver          PBiCGStab;
+        preconditioner  DILU;
+        tolerance       1e-10;
+        relTol          1e-3;
+        minIter         1;
+    }
+    
+    Cpp
+    {
+        solver          PBiCGStab;
+        preconditioner  DILU;
+        tolerance       1e-10;
+        relTol          0.01;
+    }
+}
+
+stressAnalysis
+{
+    nCorrectors     1;
+    maxOuterIter    100;
+
+    referencePairs  ();
+
+    D               (1e-6 1 1e-6);
+    T               1e-6;
+
+    relD            1;
+    relT            1;
+    relCss          1e-10;
+    Css             1e-10;
+}
+
+relaxationFactors
+{
+    fields
+    {
+        D   0.7;
+        T   0.7;
+    }
+    /*
+    equations
+    {
+        D   0.7;
+        T   0.7;
+    }
+    */
+}
+
+// ************************************************************************* //

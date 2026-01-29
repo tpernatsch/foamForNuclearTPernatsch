@@ -1,0 +1,31 @@
+#!/bin/bash
+# Determine OpenFOAM distribution from WM_PROJECT_VERSION
+if [ -z "$WM_PROJECT_VERSION" ]; then
+    echo "ERROR: WM_PROJECT_VERSION is not set. Is OpenFOAM sourced?" >&2
+    exit 1
+fi
+
+if [[ "$WM_PROJECT_VERSION" == v* ]]; then
+    FOAM_DIST="ESI"
+elif [[ -n "$WM_PROJECT_VERSION" ]]; then
+    FOAM_DIST="FOUNDATION"
+else
+    echo "ERROR: Could not determine OpenFOAM distribution from WM_PROJECT_VERSION='$WM_PROJECT_VERSION'" >&2
+    exit 1
+fi
+
+python3 rodMaker.py
+mv blockMeshDict system
+if [[ "$FOAM_DIST" == "FOUNDATION" ]]; then
+  # FOUNDATION syntax
+  blockMesh > log.blockMesh
+  foamDictionary system/controlDict -entry functions/fuelRadialProfile/sets -set "( line { type lineUniform ; axis distance ; start ( 0 0 0.055 ) ; end ( 0.0045 0 0.055 ) ; nPoints 30 ; } );"
+else
+  # ESI/OpenFOAM syntax
+  blockMesh -merge-points > log.blockMesh
+  foamDictionary system/controlDict -entry functions.fuelRadialProfile.sets -set "( line { type uniform ; axis distance ; start ( 0 0 0.055 ) ; end ( 0.0045 0 0.055 ) ; nPoints 30 ; } );"
+fi
+
+offbeat | tee log.offbeat
+
+#postProcess -func sampleDict

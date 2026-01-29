@@ -1,0 +1,25 @@
+#!/bin/sh
+# Run from this directory
+cd "${0%/*}" || exit 1
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+runApplication -o blockMesh
+runApplication -o changeDictionary
+runApplication -o offbeat
+#
+runApplication -o postProcess -func sampleDict
+
+stressSimulation=$(cat postProcessing/sampleDict/10/inner/symmTensorField/sigma | grep -oE '[^ ]+' | sed -n '4p')
+#
+stressExptected=1.2519e+08
+#
+echo "Tangential stress at inner surface: $stressSimulation" >> results
+echo "Expected value: $stressExptected" >> results
+#
+relError=$(awk -v var1="$stressSimulation" \
+                -v var2="$stressExptected" \
+                'BEGIN {print (100*(var1-var2)/var2)}')
+
+echo "Relative error: $relError%" >> results

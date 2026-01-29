@@ -1,0 +1,102 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| ========                 |                                                 |
+| \      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \    /   O peration     | Version:  5.0                                   |
+|   \  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     5.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters 0.001; 
+
+vertices 
+(
+    (0.009999999722353917 -2.1816615390330637e-06 0.0)
+    (2.6999999250355575 -0.0005890486155389273 0.0)
+    (2.6999999250355575 0.0005890486155389273 0.0)
+    (0.009999999722353917 2.1816615390330637e-06 0.0)
+    (0.009999999722353917 -2.1816615390330637e-06 2.0)
+    (2.6999999250355575 -0.0005890486155389273 2.0)
+    (2.6999999250355575 0.0005890486155389273 2.0)
+    (0.009999999722353917 2.1816615390330637e-06 2.0)
+
+);
+
+blocks 
+(
+    hex ( 0 1 2 3 4 5 6 7 ) fuel (100 1 1) simpleGrading (1 1 1)
+);
+
+edges 
+(
+);
+
+boundary 
+(
+    fuelBottom
+    {
+        type empty;
+        faces 
+        (
+            (0 3 2 1)
+        );
+    }
+
+    fuelTop
+    {
+        type empty;
+        faces 
+        (
+            (4 5 6 7)
+        );
+    }
+
+    fuelInner
+    {
+        type patch;
+        faces 
+        (
+            (0 4 7 3)
+        );
+    }
+
+    fuelOuter
+    {
+        type regionCoupledOFFBEAT;
+        neighbourPatch cladInner;
+        neighbourRegion region0;
+        owner true;
+        updateAMI true;
+        faces 
+        (
+            (1 2 6 5)
+        );
+    }
+
+    fuelFront
+    {
+        type wedge;
+        faces 
+        (
+            (0 1 5 4)
+        );
+    }
+
+    fuelBack
+    {
+        type wedge;
+        faces 
+        (
+            (3 7 6 2)
+        );
+    }
+
+);
+

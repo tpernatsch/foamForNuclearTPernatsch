@@ -1,0 +1,31 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+
+type                sets;
+interpolationScheme cell;
+setFormat           raw;
+libs                ("libsampling.so");
+ 
+sets
+(
+    sample
+    {
+        type        midPoint;
+        start       (-1 0 0.0005);
+        end         (1 0 0.0005);
+        axis        x;
+    }
+);
+ 
+fields
+(
+    porosity
+    poreVelocityx
+);
+
+// ************************************************************************* //

@@ -1,0 +1,14 @@
+#------------------------------------------------------------------------------#
+#                                                                              #
+#                            README - commands                                 #
+#                                                                              #
+#------------------------------------------------------------------------------#
+
+This README file contains a brief description of the verification case.
+
+A simple test for a 1mm x 1mm x 1mm case with only 1 element. The temperature keeps constant with
+a fast flux of 5e19 n/cm²/s, so that the fluence reache 5e25 n/m² at 100s.
+The radial and tangential strain were then compared with the Bison result taken from:
+https://mooseframework.inl.gov/bison/source/materials/tensor_mechanics/PyCCEGAIrradiationEigenstrain.html.
+
+The verification results are shown in figure BAF1.036 and BAF1.063

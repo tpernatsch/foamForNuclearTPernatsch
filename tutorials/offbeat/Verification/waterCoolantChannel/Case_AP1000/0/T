@@ -1,0 +1,84 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 300.0;
+
+boundaryField
+{
+    ".*Front|.*Back"
+    {
+        type            wedge;
+        value           $internalField;
+    }
+
+    fuelOuter
+    {
+        type            fuelRodGap;
+        patchType       regionCoupledOFFBEAT;
+        kappa           k;
+        coupled         true;
+
+        roughness       uniform 2.2e-6;
+        value           $internalField;
+        relax           1;
+    }
+
+    cladInner
+    {
+        type            fuelRodGap;
+        patchType       regionCoupledOFFBEAT;
+        kappa           k;
+        coupled         true;
+        
+        roughness       uniform 0.5e-6;
+        value           $internalField;
+        relax           1;
+    }
+    
+    cladOuter
+    {
+        type            coolantChannel;
+        value           uniform 300.0;
+        enthalpyModel   1;
+        hydraulicDiameter 0.011772;
+        massFlowRate    uniform 0.3450;
+        relaxHTC        0.1;
+        flowArea        0.0000936920;
+        inletTemperatureList    
+        {
+            file           "$FOAM_CASE/constant/inletTemperature";
+            outOfBounds     clamp;
+        };
+        coolantPressureList    
+        {
+            file           "$FOAM_CASE/constant/systemPressure";
+            outOfBounds     clamp;
+        };
+        correlations
+        {
+            ONB                 Basu;
+            CHF                 lookuptableGroeneveld;
+            SubcooledBoiling    Rohsenow;
+            SaturatedBoiling    Rohsenow;
+            FilmBoiling         GroeneveldAnnular; 
+        }
+    }
+}
+
+// ************************************************************************* //

@@ -1,0 +1,31 @@
+#!/bin/bash
+cd ${0%/*} || exit 1    # Run from this directory
+set -o pipefail
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+# Run from this directory
+cd "${0%/*}" || exit 1
+
+if [[ $WM_PROJECT_VERSION == *v* ]]
+then    
+    cp T_ESI 0/T
+    cp sampleRadialProfile_ESI system/sampleRadialProfile
+    cp plotProfile_ESI.py plotProfile.py
+else
+    cp T_FOUNDATION 0/T
+    cp sampleRadialProfile_FOUNDATION system/sampleRadialProfile
+    cp plotProfile_FOUNDATION.py plotProfile.py
+fi
+
+./Allclean
+
+runApplication blockMesh
+
+runApplication offbeat
+
+runApplication postProcess -func sampleRadialProfile
+
+python3 plotProfile.py
+#------------------------------------------------------------------------------

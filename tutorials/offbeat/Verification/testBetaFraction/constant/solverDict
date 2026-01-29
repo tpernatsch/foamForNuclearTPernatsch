@@ -1,0 +1,87 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    location        "constant";
+    object          solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+thermalSolver   solidConduction;
+
+mechanicsSolver fromLatestTime;
+neutronicsSolver        fromLatestTime;
+elementTransport        fromLatestTime;
+
+materialProperties byZone;
+
+rheology        byMaterial;
+
+heatSource      fromLatestTime;
+
+burnup          fromLatestTime;
+
+neutronics      fromLatestTime;
+
+fastFlux        fromLatestTime;
+
+corrosion       fromLatestTime;
+
+gapGas          none;
+
+fgr             none;
+
+sliceMapper             byMaterial;
+
+globalOptions
+{
+    pinDirection    ( 0 0 1 );
+    reactorType     "LWR";
+}
+
+thermalSolverOptions
+{
+    heatFluxSummary off;
+}
+
+rheologyOptions
+{
+    modifiedPlaneStrain off;
+    planeStress     off;
+}
+
+mechanicsSolverOptions
+{
+    forceSummary    off;
+    cylindricalStress on;
+}
+
+materials
+{
+    cladding
+    {
+        material                Zircaloy;
+        Tref                    Tref [ 0 0 0 1 0 ] 293;
+        
+        PoissonRatioModel       ZircaloyConstant;
+
+        failureModel            none;
+
+        nSlices         1;
+
+        phaseTransitionModel ZircaloyDynamic;//ZircaloyStatic;
+
+        rheologyModel   elasticity;
+    }
+}
+
+
+// ************************************************************************* //

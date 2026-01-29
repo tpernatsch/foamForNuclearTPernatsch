@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# Run from this directory
+cd "${0%/*}" || exit 1
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+./Allclean
+
+runApplication blockMesh
+
+cases="UO2Sens MOXLackey vaporPressureMOX"
+
+for case in $cases; do
+	
+	runApplication -o foamListTimes -rm
+
+	runApplication -a foamDictionary constant/solverDict -entry materials/fuel/poreVelocityModel -set $case
+
+	runApplication -a offbeat
+	
+	runApplication -a postProcess -func "components(poreVelocity)"
+
+	runApplication -a postProcess -func "components(gradT)"
+	
+	runApplication -a postProcess -func sampleRadialProfile
+
+	mv postProcessing postProcessing_$case 
+
+done
+
+latestTime=$(foamListTimes -latestTime)
+
+python3 plotProfile.py $latestTime
+#------------------------------------------------------------------------------

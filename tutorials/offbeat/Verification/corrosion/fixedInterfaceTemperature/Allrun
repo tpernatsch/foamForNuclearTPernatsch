@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+runApplication -o blockMesh 
+runApplication -o changeDictionary
+
+function testModel()
+{
+    loTModel=$1
+    oxideExpected=$2
+
+    sed -i -e "s/\(oxidationKineticsModel \)\(.*\)|\(.*\);/\1$loTModel|\3;/" constant/solverDict
+    
+    foamListTimes -rm
+    rm -rf postProcessing
+    
+    runApplication -o offbeat
+
+    oxideSimulation=$(tail -n 1 postProcessing/probes/0/oxideThickness | awk '{print $2}')
+
+    relError=$(awk -v var1="$oxideSimulation" \
+                   -v var2="$oxideExpected" \
+                   'BEGIN {print (100*(var1-var2)/var2)}')
+                   
+    echo $loTModel: >> results
+    echo "  Oxide thickness value:    $oxideSimulation" >> results
+    echo "  Expected oxide thickness: $oxideExpected" >> results
+    echo "  Relative error:           $relError%" >> results
+    echo '' >> results
+}
+
+testModel 'EPRI-KWU-CE' 3.368e-05
+testModel 'MATPRO-CORROS-PWR' 2.688e-5
+testModel 'MATPRO-CORROS-BWR' 1.226e-4
+

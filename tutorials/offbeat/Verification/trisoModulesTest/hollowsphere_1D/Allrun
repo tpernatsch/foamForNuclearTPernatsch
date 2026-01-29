@@ -1,0 +1,93 @@
+#!/bin/sh
+# Run from this directory
+cd "${0%/*}" || exit 1
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+runApplication -o blockMesh
+runApplication -o changeDictionary
+runApplication -o offbeat
+#
+runApplication -o postProcess -func sampleDict
+
+innerHoopStressSimulation=$(cat postProcessing/sampleDict/10/inner/symmTensorField/sigma | grep -oE '[^ ]+' | sed -n '4p')
+innerRadialStressSimulation=$(cat postProcessing/sampleDict/10/inner/symmTensorField/sigma | sed -E 's/.*\(([^\s]+).*/\1/' | cut -d' ' -f1)
+innerHoopStrainSimulation=$(cat postProcessing/sampleDict/10/inner/symmTensorField/epsilon | grep -oE '[^ ]+' | sed -n '4p')
+innerRadialStrainSimulation=$(cat postProcessing/sampleDict/10/inner/symmTensorField/epsilon | sed -E 's/.*\(([^\s]+).*/\1/' | cut -d' ' -f1)
+innerDispSimulation=$(cat postProcessing/sampleDict/10/inner/vectorField/D | sed -E 's/.*\(([^\s]+).*/\1/' | cut -d' ' -f1)
+
+innerHoopStressExpected=-313.157895e6
+innerRadialStressExpected=-100e6
+innerHoopStrainExpected=-0.018921
+innerRadialStrainExpected=0.008789
+innerDispExpected=-3.784211e-6
+
+outerHoopStressSimulation=$(cat postProcessing/sampleDict/10/outer/symmTensorField/sigma | grep -oE '[^ ]+' | sed -n '4p')
+outerRadialStressSimulation=$(cat postProcessing/sampleDict/10/outer/symmTensorField/sigma | sed -E 's/.*\(([^\s]+).*/\1/' | cut -d' ' -f1)
+outerHoopStrainSimulation=$(cat postProcessing/sampleDict/10/outer/symmTensorField/epsilon | grep -oE '[^ ]+' | sed -n '4p')
+outerRadialStrainSimulation=$(cat postProcessing/sampleDict/10/outer/symmTensorField/epsilon | sed -E 's/.*\(([^\s]+).*/\1/' | cut -d' ' -f1)
+outerDispSimulation=$(cat postProcessing/sampleDict/10/outer/vectorField/D | sed -E 's/.*\(([^\s]+).*/\1/' | cut -d' ' -f1)
+
+outerHoopStressExpected=-263.157895e6
+outerRadialStressExpected=-200.000000e6
+outerHoopStrainExpected=-0.012421
+outerRadialStrainExpected=-0.004211
+outerDispExpected=-3.726316e-6
+#
+echo "Inner hoop stress: $innerHoopStressSimulation" >> results
+echo "Expected value: $innerHoopStressExpected" >> results
+echo "Inner radial stress: $innerRadialStressSimulation" >> results
+echo "Expected value: $innerRadialStressExpected" >> results
+echo "Inner hoop strain: $innerHoopStrainSimulation" >> results
+echo "Expected value: $innerHoopStrainExpected" >> results
+echo "Inner radial strain: $innerRadialStrainSimulation" >> results
+echo "Expected value: $innerRadialStrainExpected" >> results
+echo "Inner displacement: $innerDispSimulation" >> results
+echo "Expected value: $innerDispExpected" >> results
+
+echo "outer hoop stress: $outerHoopStressSimulation" >> results
+echo "Expected value: $outerHoopStressExpected" >> results
+echo "outer radial stress: $outerRadialStressSimulation" >> results
+echo "Expected value: $outerRadialStressExpected" >> results
+echo "outer hoop strain: $outerHoopStrainSimulation" >> results
+echo "Expected value: $outerHoopStrainExpected" >> results
+echo "outer radial strain: $outerRadialStrainSimulation" >> results
+echo "Expected value: $outerRadialStrainExpected" >> results
+echo "outer displacement: $outerDispSimulation" >> results
+echo "Expected value: $outerDispExpected" >> results
+#
+relErrorInnerHoopStress=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$innerHoopStressSimulation" var2="$innerHoopStressExpected"`
+relErrorInnerRadialStress=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$innerRadialStressSimulation" var2="$innerRadialStressExpected"`
+relErrorInnerHoopStrain=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$innerHoopStrainSimulation" var2="$innerHoopStrainExpected"`
+relErrorInnerRadialStrain=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$innerRadialStrainSimulation" var2="$innerRadialStrainExpected"`
+relErrorInnerDisp=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$innerDispSimulation" var2="$innerDispExpected"`
+
+relErrorouterHoopStress=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$outerHoopStressSimulation" var2="$outerHoopStressExpected"`
+relErrorouterRadialStress=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$outerRadialStressSimulation" var2="$outerRadialStressExpected"`
+relErrorouterHoopStrain=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$outerHoopStrainSimulation" var2="$outerHoopStrainExpected"`
+relErrorouterRadialStrain=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$outerRadialStrainSimulation" var2="$outerRadialStrainExpected"`
+relErrorouterDisp=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$outerDispSimulation" var2="$outerDispExpected"`
+
+
+echo "Relative error for inner hoop stress: $relErrorInnerHoopStress%" >> results
+echo "Relative error for inner radial stress: $relErrorInnerRadialStress%" >> results
+echo "Relative error for inner hoop strain: $relErrorInnerHoopStrain%" >> results
+echo "Relative error for inner radial strain: $relErrorInnerRadialStrain%" >> results
+echo "Relative error for inner displacement: $relErrorInnerDisp%" >> results
+
+echo "Relative error for outer hoop stress: $relErrorouterHoopStress%" >> results
+echo "Relative error for outer radial stress: $relErrorouterRadialStress%" >> results
+echo "Relative error for outer hoop strain: $relErrorouterHoopStrain%" >> results
+echo "Relative error for outer radial strain: $relErrorouterRadialStrain%" >> results
+echo "Relative error for outer displacement: $relErrorouterDisp%" >> results

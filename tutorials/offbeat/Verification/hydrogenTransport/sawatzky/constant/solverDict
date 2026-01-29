@@ -1,0 +1,94 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//- Select the physics to solve for
+thermalSolver           solidConduction;
+mechanicsSolver         smallStrain;
+neutronicsSolver        none;
+elementTransport        byList;
+
+materialProperties      byZone;
+rheology                byMaterial;
+
+heatSource              fromLatestTime;
+burnup                  constant;
+fastFlux                constant;
+fgr                     none;
+gapGas                  none;
+sliceMapper             none;
+corrosion               constant;
+
+globalOptions
+{
+    reactorType         none;
+    pinDirection        (0 0 1);
+}
+
+thermalSolverOptions
+{
+    heatFluxSummary     off;
+}
+
+rheologyOptions
+{
+    thermalExpansion    off;
+}
+
+mechanicsSolverOptions
+{
+    forceSummary        off;  
+    cylindricalStress   on;
+
+    RhieChowCorrection   true;
+}
+
+materials
+{
+    sample
+    {
+        material                Zircaloy;
+        Tref                    Tref [ 0 0 0 1 0 ] 293;
+
+        rheologyModel           elasticity;
+    }
+}
+
+elementTransportOptions
+{
+    solvers ( HNGD );
+    
+    HSolverOptions
+    {
+        effectiveTSSp   false;
+        stressDrivenDiffusion   false;
+	    Q*        25500;
+ 		V_H       1.7e-6;     
+
+		HDiffusionCoefficientModel  HDiffusionCoefficientBison;
+	                                 
+        materials
+        {
+            sample
+            {
+                TSSdModel   TSSdBison;
+				TSSpModel   TSSpBison;
+            }
+        }
+    }
+}
+
+// ************************************************************************* //

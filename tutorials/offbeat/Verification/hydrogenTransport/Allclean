@@ -1,0 +1,15 @@
+#!/bin/bash
+
+cases="heatingCooling
+       laCroixBenchmark
+       sawatzky"
+
+for case in $cases
+do
+
+    cd $case
+    ./Allclean
+    cd ..
+done
+
+rm -f results

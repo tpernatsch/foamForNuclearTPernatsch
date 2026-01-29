@@ -1,0 +1,90 @@
+1. Purpose and case introduction
+--------------------------------
+The purpose of the present calculation cases was to verify the water coolant channel module of 
+OFFBEAT against the U.S. NRC system code TRACE for relevant single rod cases. The rod cases include 
+two boiling water reactor (ABWR, BWR4) and two pressurized water reactor (AP1000, VVER440) scenarios
+(BWR4 and VVER440 are Generation II, ABWR is Generation III and AP1000 is Generation III+ design).
+The used power histories simulated steady-state and slow transient scenarios.
+
+
+2. Model description
+--------------------
+Each TRACE model consists of a FILL, a PIPE and a BREAK component. The wall of the PIPE component is 
+heated by a HEAT STRUCTURE unit, which is powered by a POWER component. Identically to the OFFBEAT 
+cases, the TRACE models are divided into 11 axial nodes, where the bottom 10 nodes have the same 
+length, while the top plenum node has a fixed length and is not powered. The dimensions (hydraulic 
+diameter, volume, flow area etc.) and the boundaries (power, mass flow rate, pressure history etc.) 
+are identical in the corresponding OFFBEAT and TRACE models.
+
+
+3. Scenario description
+-----------------------
+The applied hypothetical power scenario was designed to cover a wide range of water boiling regimes. 
+It consist of the following phases:
+	   I.     0 -  3600 s: The inlet temperature and the system pressure are raised linearly to 
+	                       their nominal values, while the power is increased linearly from 0% to 
+	                       25% nominal power.
+	  II.  3600 -  7200 s: The rod is kept at the values corresponding to t = 3600 s.
+	 III.  7200 - 10800 s: The power is raised linearly to its nominal level.
+	  IV. 10800 - 14400 s: The rod is kept at the values corresponding to t = 10800 s.
+	   V. 14400 - 18000 s: The power is raised linearly to the 200% of the nominal level.
+	  VI. 18000 - 21600 s: The rod is kept at the values corresponding to t = 18000 s.
+	 VII. 21600 - 25200 s: The power is raised linearly to the 300% of the nominal level for the 
+	                       ABWR and BWR4. For the VVER440 and AP1000 cases the final power levels 
+	                       had to be increased to 325% and decreased to 240% of the corresponding 
+	                       nominal powers, respectively, to ensure the entering of the film boiling 
+	                       regime and preventing clad failure.
+	VIII. 25200 - 28000 s: The rod is kept at the values corresponding to t = 25200 s.
+
+
+4. Results and discussion
+-------------------------
+Absolute wall temperature and wall temperature differences can be visualized with the included
+"analyzeResults.py" Python script, which also computes the maximum and average difference between
+the OFFBEAT and TRACE wall temperatures at a given time point. In general, the calculated OFFBEAT 
+and TRACE wall temperatures agree within a few Kelvins up to the departure from nucleate 
+boiling (DNB). The time of DNB generally agree within 8 minutes. The differences are mainly 
+attributed to the different qualities (the enthalpy model in OFFBEAT uses the homogeneous 
+equilibrium assumption, while TRACE solves the six equations for two fluids).
+
+Significant differences were observed between the film boiling temperatures calculated by the two
+codes. In general, the heat transfer correlations obtained from different film boiling correlations
+might vary significantly. The differences in wall temperature results obtained for the BWR4 and ABWR
+cases correspond to the expected magnitude (i.e. 1-100 K). However, for the VVER440 and AP1000 cases
+the differences in film boiling temperatures were above 500 K, with TRACE yielding unexpectedly high
+(> 1500 K) wall temperatures. 
+
+Sensitivity calculations were carried out with TRACE and it was found that within a few W of power
+variation the top heated node of the pipe either stays in saturated boiling regimes or jumps to 
+film boiling with wall temperature exceeding 1500 K, which phenomenon does not seem physical. 
+By changing the system pressure, the post-CHF wall temperature gets lower. The possible explanation 
+was found in the involved heat transfer coefficient correlations.
+
+In TRACE, three sub-regimes for film boiling are considered: 
+   I. For void fractions lower than 0.6 --> inverted annular film boiling (IAFB)
+  II. For void fractions higher than 0.9 --> dispersed flow film boiling (DFFB)
+ III. For void fractions between 0.6 and 0.9 --> interpolation is carried out between the 
+      correlations of IAFB and DFFB.
+
+When the BWR cases enter film boiling, their void fraction is above 0.9; therefore they enter the 
+DFFB sub-regime. On the other hand, when the PWR cases enter the film boiling, their void fraction 
+is around 0.4, therefore, they will enter the IAFB sub-regime. The correlation used for obtaining 
+the heat transfer coefficient of IAFB is validated to measurement data up to the pressure of 7 MPa.
+In [1], the TRACE developers reach to the following conclusion regarding the IAFB correlation:
+
+"It also does a reasonable job of correlating the pressure effect observed in the Winfrith data as 
+shown in Figure 6-30 though some under-prediction of the high-pressure data for thick vapor films 
+is evident."
+
+In [2] the authors proposed a new model, in which they use measurement data up to 9 MPa. In addition 
+to that, they found that between 2 MPa and 9 MPa, the effect of the system pressure on the wall HTC 
+seems negligible. The authors also suggest that the model of TRACE should be used for low flow rate 
+and low pressure cases. 
+
+
+6. References
+-------------
+[1] U.S. NRC, TRACE V5.0 PATCH 5 THEORY MANUAL, Field Equations, Solution Methods, and Physical 
+    Models, U.S. Nuclear Regulatory Commission,Washington, DC, USA, 2017
+[2] Qingqing Liu, Xiaodong Sun, Wall heat transfer in the inverted annular film boiling regime, 
+    Nuclear Engineering and Design, Volume 363, 2020

@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Determine OpenFOAM distribution from WM_PROJECT_VERSION
+if [ -z "$WM_PROJECT_VERSION" ]; then
+    echo "ERROR: WM_PROJECT_VERSION is not set. Is OpenFOAM sourced?" >&2
+    exit 1
+fi
+
+if [[ "$WM_PROJECT_VERSION" == v* ]]; then
+    FOAM_DIST="ESI"
+elif [[ -n "$WM_PROJECT_VERSION" ]]; then
+    FOAM_DIST="FOUNDATION"
+else
+    echo "ERROR: Could not determine OpenFOAM distribution from WM_PROJECT_VERSION='$WM_PROJECT_VERSION'" >&2
+    exit 1
+fi
+
+ideasUnvToFoam PelletDiscCoarser.unv
+
+if [[ "$FOAM_DIST" == "FOUNDATION" ]]; then
+  # FOUNDATION syntax
+  transformPoints "scale=(0.001 0.001 0.001)"
+  transformPoints "translate=(0.0 0.0 1.5)"
+else
+  # ESI/OpenFOAM syntax
+  transformPoints -scale "(0.001 0.001 0.001)"
+  transformPoints -translate "(0.0 0.0 1.5)"
+fi
+
+changeDictionary > log.changeDictionary
+offbeat | tee log.offbeat
+
+# postProcess -func sampleDict

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cases="vsAnalytical vsTRACE"
+
+for case in $cases; do
+    cd $case
+    ./Allclean
+    cd ..
+done
+
+rm -f results

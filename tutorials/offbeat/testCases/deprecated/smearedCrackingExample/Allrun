@@ -1,0 +1,10 @@
+#!/bin/bash
+
+ideasUnvToFoam PelletDisc.unv
+# ideasUnvToFoam PelletDiscCoarser.unv
+# blockMesh
+transformPoints "scale=(0.001 0.001 0.001)"
+changeDictionary > log.changeDictionary
+offbeat | tee log.offbeat
+
+#postProcess -func sampleDict

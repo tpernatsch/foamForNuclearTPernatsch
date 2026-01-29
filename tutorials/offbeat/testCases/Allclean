@@ -1,0 +1,20 @@
+#!/bin/bash
+cd ${0%/*} || exit 1    # run from this directory
+
+# Loop through all subfolders one level deeper with respect to Verification 
+# folder and run the "Allclean" script (if present) 
+for dir in */
+do
+  # check if the subfolder contains an executable file called "Allclean"
+  if [[ -x "${dir}Allclean" ]]
+  then
+    # execute the "Allclean" file in the subfolder
+    echo "Cleaning ${dir} ..."
+    cd "${dir}"
+    ./Allclean
+    cd ..
+  else
+    # print a warning message if the "Allclean" file is not found
+    echo "Warning: ${dir} does not contain an Allclean file."
+  fi
+done

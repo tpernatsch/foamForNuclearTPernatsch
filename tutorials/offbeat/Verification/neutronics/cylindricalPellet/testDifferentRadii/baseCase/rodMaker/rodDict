@@ -1,0 +1,48 @@
+# --------------------------------------------------------------------------- #
+#                          IFA-650.2 rod geometry                             #
+#           - Data from OECD Halden reactor project report HWR-813 -          #
+# --------------------------------------------------------------------------- #
+
+{
+# geometryType options : 
+# - "1D"
+# - "2Dsmeared"
+# - "2Ddiscrete"
+'geometryType':                 '2Dsmeared',
+'wedgeAngle':                   0.25,
+'convertToMeters':              0.001,
+
+'nBlocksFuel':                  1,
+'nBlocksClad':                  0,
+
+'blockNameFuel':                ['fuel'],
+'blockNameClad':                [''],
+
+'rInnerFuel':                   [0],
+'rInnerClad':                   [],
+
+'rOuterFuel': [10],
+'rOuterClad':                   [],
+
+'heightFuel':                   [12],
+'heightClad':                   [],
+
+'offsetFuel':                   0.0,
+'offsetClad':                   0.0,
+
+'nCellsRFuel':                  [30],
+'nCellsRClad':                  [],
+
+# Only if "1D" is activated : 
+#'nSlicesFuel':                  [50],
+#'nSlicesClad':                  [],
+
+# Only if "2Dsmeared" is activated : 
+'nCellsZFuel':                  [50],
+'nCellsZClad':                  [],
+
+# Only if "2Ddiscrete" is activated :   
+#'nPelletsFuel':                 [3],
+#'nCellsZFuel':                  [10],
+#'nCellsZClad':                  [3],
+}

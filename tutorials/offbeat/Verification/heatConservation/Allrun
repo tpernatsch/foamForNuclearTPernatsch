@@ -1,0 +1,51 @@
+#!/bin/bash
+cd ${0%/*} || exit 1    # run from this directory
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+runApplication -o blockMesh
+runApplication -o changeDictionary
+runApplication -o offbeat 
+paraFoam -touch
+
+fname="log.offbeat" 
+
+pattern="fuelOuter:" 
+if [ -f "$fname" ]
+then
+    result=$(grep -i "$pattern" "$fname")
+    for word in $result; do
+        fuelOuterHeat=$word
+    done
+fi
+
+pattern="cladInner:" 
+if [ -f "$fname" ]
+then
+    result=$(grep -i "$pattern" "$fname")
+    for word in $result; do
+        cladInnerHeat=$(awk -v var="$word" \
+                'BEGIN {print (-1.0*var)}')
+    done
+fi
+
+
+echo "Heat going out from fuelOuter patch: $fuelOuterHeat W" >> results
+
+echo "Heat arriving at cladInner patch: $cladInnerHeat W" >> results
+
+expectedHeat=300.0
+echo "Expected total heat produced: $expectedHeat W" >> results
+
+relError=$(awk -v var1="$fuelOuterHeat" \
+                -v var2="$expectedHeat" \
+                'BEGIN {print (100*(var1-var2)/var2)}')
+
+echo "Relative error for fuelOuter: $relError%"  >> results
+
+relError=$(awk -v var1="$cladInnerHeat" \
+                -v var2="$expectedHeat" \
+                'BEGIN {print (100*(var1-var2)/var2)}')
+
+echo "Relative error for cladInner: $relError%"  >> results

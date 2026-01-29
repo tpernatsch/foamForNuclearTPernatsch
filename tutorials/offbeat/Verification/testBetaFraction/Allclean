@@ -1,0 +1,7 @@
+#! /bin/sh
+
+foamListTimes -rm 
+rm -rf ./postProcessing
+rm -f *.png
+rm -f ./results
+rm -f log.*

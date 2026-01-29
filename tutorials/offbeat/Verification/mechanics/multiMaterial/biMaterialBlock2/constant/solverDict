@@ -1,0 +1,98 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//- Select the physics to solve for
+thermalSolver           fromLatestTime;
+mechanicsSolver         smallStrain;
+neutronicsSolver        fromLatestTime;
+elementTransport        fromLatestTime;
+
+materialProperties      byZone;
+rheology                byMaterial;
+
+heatSource              fromLatestTime;
+burnup                  fromLatestTime;
+fastFlux                fromLatestTime;
+fgr                     none;
+gapGas                  none;
+sliceMapper             none;
+corrosion               fromLatestTime;
+
+globalOptions
+{
+    reactorType         none;
+    pinDirection        (0 0 1);
+}
+
+thermalSolverOptions
+{
+    heatFluxSummary     off;
+}
+
+rheologyOptions
+{
+    thermalExpansion    off;
+}
+
+mechanicsSolverOptions
+{
+    forceSummary        on;  
+    cylindricalStress   on;
+
+    RhieChowCorrection   true;
+
+    multiMaterialCorrection
+    {
+        type                    uniform;
+        defaultWeights          1;
+    }
+}
+
+materials
+{
+    left
+    {
+        material    constant;
+        rho         rho [1 -3 0 0 0] 8000.0;
+        Cp          Cp [0 0 0 0 0] 1000.0;
+        k           k [0 0 0 0 0] 50;
+        alpha       alpha [0 0 0 -1 0] 0;
+        emissivity  emissivity [0 0 0 0 0] 0.7;
+        E           E [0 0 0 0 0] 200e9;
+        nu          nu [0 0 0 0 0] 0.3;
+        Tref        Tref [0 0 0 1 0] 300;
+
+        rheologyModel               elasticity;
+    }
+
+    right
+    {
+        material    constant;
+        rho         rho [1 -3 0 0 0] 8000.0;
+        Cp          Cp [0 0 0 0 0] 1000.0;
+        k           k [0 0 0 0 0] 50;
+        alpha       alpha [0 0 0 -1 0] 0;
+        emissivity  emissivity [0 0 0 0 0] 0.7;
+        E           E [0 0 0 0 0] 50e9;
+        nu          nu [0 0 0 0 0] 0.35;
+        Tref        Tref [0 0 0 1 0] 300;
+
+        rheologyModel               elasticity;
+    }    
+}
+
+// ************************************************************************* //

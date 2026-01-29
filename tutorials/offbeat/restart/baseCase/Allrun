@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "Creating the blockMeshDict"
+python3 rodMaker.py
+mv blockMeshDict system
+
+echo "Creating the mesh"
+blockMesh > log.blockMesh
+
+echo "Running OFFBEAT"
+offbeat > log.offbeat
+
+#postProcess -func sampleDict

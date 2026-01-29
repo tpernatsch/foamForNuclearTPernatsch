@@ -1,0 +1,173 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    object      D;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions          [0 1 0 0 0 0 0];
+
+internalField       uniform (0 0 0);
+
+boundaryField
+{
+    ".*Front|.*Back"
+    {
+        type            wedge;
+    }
+
+    // We can apply coolant pressure to both outer and top
+    // clad patches.
+    "cladTop|cladOuter"
+    {
+        type            coolantPressure;
+
+        coolantPressureList    
+        {
+            file           "$FOAM_CASE/constant/systemPressure";
+            outOfBounds     clamp;
+        };
+
+        traction        uniform (0 0 0);
+        pressure        uniform 15.5e6;
+        relax           1.0;
+        value           $internalField;
+    }
+
+    // It is ncessary to fix at least one point/surface
+    // in the model. Thanks to the implicitContact BCs
+    // we can get away with fixing only the bottom clad. 
+    // Alternatively, one could test fixedDisplacementZeroShear
+    // which fixes only the axial displacement.
+    cladBottom
+    {
+        type            fixedValue;
+        value           $internalField;
+    }
+
+    // To be tested: 
+    // - "gapContact" as an alternative
+    // - activate friction
+    "fuelOuter|cladInner"
+    {
+        type            implicitGapContact;
+        patchType       regionCoupledOFFBEAT;
+        
+        glued off;
+
+        penaltyFactor           0.1;
+        penaltyFactorFriction   0.001;
+        penaltyFactorDashpot      0.0;
+
+        frictionCoefficient        0;
+        
+        relax 0.1;
+        
+        traction        uniform (0 0 0);
+        pressure        uniform 2.25e6;
+        value           $internalField;
+    }
+
+    // implicitContact BC for inter-pellet planes.
+    // penaltyFactor can be increased above 1 to decrease
+    // further the overlap
+    "fuelTop_.*|fuelBottom_.*"
+    {
+        type            implicitGapContact;
+        patchType       regionCoupledOFFBEAT;
+        
+        glued off;
+
+        // method augmentedLagrangian;
+        // relativePenetrationTolerance 0.001;
+
+        penaltyFactor           0.1;
+        penaltyFactorFriction   0.01;        
+        penaltyFactorDashpot      0.0;
+
+        frictionCoefficient        0;
+        
+        relax 0.1;
+        
+        traction        uniform (0 0 0);
+        pressure        uniform 2.25e6;
+        value           $internalField;
+    }
+
+   "topCapInner|fuelTop"
+    {
+        type            plenumSpringPressure;
+        relax           1.0;
+
+        springModulus 3.5e3;
+        springPreCompression 0.001;
+
+        fuelTopPatches (fuelTop);
+        topCapInnerPatches (topCapInner);
+        
+        // fixedSpring on;
+        // fixedSpringModulus 1e3;
+        // dashpotModulus 1e2;
+
+        value           $internalField;
+    }
+
+    // This patch is actually not present in the model.
+    // It would be used in case we add a central hole 
+    // in the model.
+    fuelInner
+    {
+        type            gapPressure;
+        relax           1.0;
+
+        value           $internalField;
+    }
+
+    // This is the dish and chamfer section of the top/bottom
+    // surface of every pellet. As it is improbable that contact
+    // will happen here, we can simply apply the gap pressure.
+    "dishChamferBottom_.*|dishChamferTop_.*"    
+    {
+        type            gapPressure;
+        relax           1.0;
+        value           $internalField;
+    }
+
+    // implicitContact BC for pellet-cap plane.
+    // penaltyFactor can be increased above 1 to decrease
+    // further the overlap.
+    "fuelBottom|bottomCapInner"
+    {
+        type            implicitGapContact;
+        patchType       regionCoupledOFFBEAT;
+        
+        glued off;
+
+        // method augmentedLagrangian;
+        // relativePenetrationTolerance 0.01;
+
+        penaltyFactor           0.1;
+        penaltyFactorFriction   0.01;        
+        penaltyFactorDashpot      0.0;
+
+        frictionCoefficient        0;
+        
+        relax 0.1;
+        
+        traction        uniform (0 0 0);
+        pressure        uniform 2.25e6;
+        value           $internalField;
+    }
+
+}
+
+// ************************************************************************* //

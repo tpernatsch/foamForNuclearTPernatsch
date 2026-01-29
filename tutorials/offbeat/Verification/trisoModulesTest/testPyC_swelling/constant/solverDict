@@ -1,0 +1,129 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//- Thermal and Mechanical solver selection:
+thermalSolver           solidConduction;
+mechanicsSolver         smallStrain;
+neutronicsSolver        fromLatestTime;
+elementTransport        fromLatestTime;
+
+//- Material and rhelogy treatment:
+materialProperties      byZone;
+rheology                byMaterial;
+
+heatSource              fromLatestTime;
+burnup                  fromLatestTime;
+fastFlux                timeDependentAxialProfile;
+corrosion               fromLatestTime;
+gapGas                  none;
+fgr                     none;
+sliceMapper             autoAxialSlices;
+corrosion               fromLatestTime;
+
+globalOptions
+{
+    pinDirection            (0 0 1);
+    reactorType             "LWR";
+}
+
+thermalSolverOptions
+{
+    heatFluxSummary     off;
+}
+
+rheologyOptions
+{
+    thermalExpansion off;
+}
+
+mechanicsSolverOptions
+{
+    forceSummary        off;
+    cylindricalStress   on;
+
+    // multiMaterialCorrection
+    // {
+    //     type                    uniform;
+    //     defaultWeights          1;
+    // }
+}
+
+fgrOptions
+{
+    nFrequency  1;
+    relax       1;
+}
+
+gapGasOptions
+{
+    gapPatches ( fuelOuter cladInner );
+    holePatches ();
+    topFuelPatches    ( fuelTop);
+    bottomFuelPatches ( fuelBottom);
+
+    gapVolumeOffset 0.0;
+    gasReserveVolume 0.0;
+    gasReserveTemperature 290;
+}
+
+fastFluxOptions
+{
+    timePoints  ( 0     100);
+    //- change this value so that the object can have the different fluence at 10s.
+    //- To verify the variation of E with fluence.
+    fastFlux    ( 5e19  5e19); // n/cm2/s
+    timeInterpolationMethod linear;
+
+    axialProfile
+    {
+        type flat;
+    }
+
+    materials (fuel);
+}
+
+materials
+{
+    fuel
+    {
+      material PyC;
+      Tref                        Tref [ 0 0 0 1 0 ] 298.15;
+
+      densityModel                constant;
+      conductivityModel           constant;
+      heatCapacityModel           constant;
+      emissivityModel             constant;
+      YoungModulusModel           PyCParfume;
+      PoissonRatioModel           constant;
+      thermalExpansionModel       PyCParfume;
+      swellingModel               PyCParfume;
+
+      asFabricatedAnisotropy       1.063; //1.0
+
+      emissivity emissivity       [0 0 0 0 0]   0.0;
+      rho         rho     [1 -3 0 0 0]    1960.0;
+      Cp          Cp      [0 2 -2 -1 0]   720;
+      k           k       [1 1 3 -1 0]    4;
+      nu          nu      [0 0 0 0 0]     0.33;
+      //alpha       alpha           [0 0 0 0 0]     5e-6;
+
+
+      rheologyModel               elasticity;
+    }
+}
+
+// ************************************************************************* //

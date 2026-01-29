@@ -1,0 +1,25 @@
+#!/bin/sh
+# Run from this directory
+cd "${0%/*}" || exit 1
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+runApplication -o blockMesh
+runApplication -o changeDictionary
+runApplication -o offbeat
+#
+runApplication -o postProcess -func sampleDict
+
+creepSimulation=$(cat postProcessing/probes/0/epsilonCreep |tail -n 1| cut -d"(" -f2 | cut -d" " -f1)
+creepExpected=-5.9683304085564E-05
+#
+echo "Creep strain: $creepSimulation" >> results
+echo "Expected value: $creepExpected" >> results
+
+
+relError=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$creepSimulation" var2="$creepExpected"`
+
+
+echo "Relative error for creep strain: $relError%" >> results

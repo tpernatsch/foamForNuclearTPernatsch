@@ -1,0 +1,40 @@
+#!/bin/sh
+
+# Run from this directory
+cd "${0%/*}" || exit 1
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+echo "Parallel case: "
+
+./Allclean
+
+python3 rodMaker.py
+
+mv blockMeshDict system
+
+runApplication blockMesh
+
+runApplication decomposePar -cellDist
+
+runParallel offbeat
+
+runApplication reconstructPar
+
+rm -fr processor*
+
+endString=$(grep -wc  " end " log.offbeat)
+
+if [ $endString -eq 1 ]
+then
+  echo "Parallel case : OK"
+  echo ""
+  exit 100
+else
+  echo "Parallel case : The simulation did not end correctly !"
+  echo ""
+  exit 200
+fi
+
+#------------------------------------------------------------------------------

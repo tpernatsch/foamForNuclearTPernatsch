@@ -1,0 +1,46 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 1873.15;
+
+boundaryField
+{
+    "bottom|top|front|back"
+    {
+        type            wedge;
+    }
+
+    outer
+    {
+        type            uniformFixedValue;
+        uniformValue
+        {
+          type          square;
+          frequency     6.9444444444e-7;
+          amplitude     -100;
+          scale         1;
+          start         0.0;
+          level         1973.15;
+        }
+        value           uniform 2073.15;
+    }
+}
+
+
+// ************************************************************************* //

@@ -1,0 +1,181 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//- Thermal and Mechanical solver selection:
+thermalSolver           solidConduction;
+mechanicsSolver         smallStrain;
+neutronicsSolver        diffusion;
+elementTransport        fromLatestTime;
+
+//- Material and rhelogy treatment:
+materialProperties      byZone;
+rheology                byMaterial;
+
+heatSource              timeDependentLhgr;
+burnup                  Lassmann;
+fastFlux                timeDependentAxialProfile;
+gapGas                  Frapcon;
+fgr                     SCIANTIX;
+corrosion               fromLatestTime;
+sliceMapper             byMaterial;
+
+globalOptions
+{
+    pinDirection            (0 0 1);
+    reactorType             "LWR";
+}
+
+thermalSolverOptions
+{
+    heatFluxSummary     off;
+}
+
+rheologyOptions
+{
+    thermalExpansion on;
+}
+
+mechanicsSolverOptions
+{
+    forceSummary        off;  
+    cylindricalStress   on;  
+
+    // Multi-material correction is activated only if 
+    // the subdictionary below is present. 
+    // For this case, a weight larger than 0.9 seems
+    // to create convergence issues.
+    multiMaterialCorrection
+    {
+        type                    uniform;
+        defaultWeights          0.9;
+    }
+}
+
+fgrOptions
+{
+    nFrequency  1;
+    relax       1;
+}
+
+gapGasOptions
+{
+    gapPatches ( fuelOuter cladInner );
+    holePatches ();
+    topFuelPatches    ( fuelTop);
+    bottomFuelPatches ( fuelBottom);
+
+    gapVolumeOffset 0.0;
+    gasReserveVolume 0.0;
+    gasReserveTemperature 290;
+}
+
+heatSourceOptions
+{
+    // Simple 60s ramp, 1yr power hold, 60s ramp down
+    timePoints  ( 0  3600    31536000 31539600 );
+    lhgr        ( 0  200e2 200e2    0);
+    timeInterpolationMethod linear;
+
+    axialProfile
+    {
+        type flat;
+    }
+
+    radialProfile
+    {
+        type    fromBurnup;
+    }
+
+    materials ( fuel );
+}
+
+fastFluxOptions
+{
+    timePoints  ( 0  3600    31536000 31539600 );
+    fastFlux    ( 0  1e13  1e13     0 );
+    timeInterpolationMethod linear;
+
+    axialProfile
+    {
+        type flat;
+    }
+
+    materials ( fuel cladding );
+}
+
+
+materials
+{
+    fuel
+    {
+        material                    UO2;
+        Tref                        Tref [ 0 0 0 1 0 ] 293;
+
+        densificationModel          UO2Frapcon;
+        swellingModel               UO2Frapcon;
+        relocationModel             UO2Frapcon;
+
+        enrichment                  0.045;
+        rGrain                      2.8e-05;
+        GdContent                   0.0;
+        theoreticalDensity          10960;
+        densityFraction             0.95;
+        dishFraction                0.0;
+
+        resinteringDensityChange    0.3;
+        GapCold                     0.02e-3;
+        DiamCold                    9.0e-3;
+        recoveryFraction            0.5;
+        outerPatch                  "fuelOuter";
+
+        isotropicCracking           on;
+        nCracksMax                  12;
+
+        // To be tested: activate MatproCreep for fuel
+        rheologyModel               elasticity;
+
+        // For simplicity we assume all pellets belong to a
+        // single slice. This has only effect for the relocation
+        // model, which will calculate the same average relocation
+        // strain for every pellet
+        nSlices      1;
+    }
+
+    cladding
+    {
+        material                Zircaloy;
+        Tref                    Tref [ 0 0 0 1 0 ] 293;
+
+        nSlices      1;
+
+        PoissonRatioModel ZircaloyConstant;
+
+        rheologyModel   misesPlasticCreep;
+        rheologyModelOptions
+        {
+            plasticStrainVsYieldStress table
+            (
+                (0    250e6)
+            );
+
+            creepModel ZircaloyLimback;
+            relax 1.0;
+        }
+    }
+}
+
+// ************************************************************************* //

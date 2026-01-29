@@ -1,0 +1,47 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  4.x                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      changeDictionaryDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+boundary
+{
+    fuelOuter
+    {
+        type            regionCoupledOFFBEAT;
+        neighbourPatch  cladInner;
+        neighbourRegion region0;
+        owner           true;
+        updateAMI       true;
+    }
+    cladInner
+    {
+        type            regionCoupledOFFBEAT;
+        neighbourPatch  fuelOuter;
+        neighbourRegion region0;
+        owner           false;
+        updateAMI       true;
+    }
+    ".*top.*|.*Top.*|.*bottom.*|.*Bottom.*"
+    {
+        type empty;
+    }
+    front
+    {
+        type            wedge;
+    }
+    back
+    {
+        type            wedge;
+    }
+}

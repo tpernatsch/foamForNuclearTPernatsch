@@ -1,0 +1,21 @@
+iverification = 0
+igrain_growth = 1
+iinert_gas_behavior = 1
+igas_diffusion_coefficient = 1
+iintra_bubble_evolution = 1
+ibubble_radius = 1
+iresolution_rate = 1
+itrapping_rate = 1
+inucleation_rate = 1
+isolver = 1
+iformat_output = 1
+igrain_boundary_vacancy_diffusion_coefficient = 1
+igrain_boundary_behaviour = 1
+igrain_boundary_micro_cracking = 1
+igrain_recrystallization = 0
+ifuel_reactor_type = 0
+igas_effective_coefficient = 1
+igas_sweeping = 1
+imicro_cracking_span = 0
+0	0	0	0	
+0.000277778	0	0	0	

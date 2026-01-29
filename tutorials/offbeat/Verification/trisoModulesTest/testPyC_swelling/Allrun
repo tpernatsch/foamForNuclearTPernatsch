@@ -1,0 +1,52 @@
+#!/bin/sh
+# Run from this directory
+cd "${0%/*}" || exit 1
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+runApplication -o blockMesh
+runApplication -o changeDictionary
+runApplication -o offbeat
+#
+runApplication -o postProcess -func sampleDict
+
+epsilon1_r_Simulation=$(cat postProcessing/probes/0/epsilonSwelling |tail -n 1| cut -d"(" -f2 | cut -d" " -f1)
+epsilon1_t_Simulation=$(cat postProcessing/probes/0/epsilonSwelling |tail -n 1| cut -d"(" -f2 | cut -d" " -f4)
+epsilon2_r_Simulation=$(cat postProcessing/probes/0/epsilonSwelling |head -n 23| tail -n 1|cut -d"(" -f2 | cut -d" " -f1)
+epsilon2_t_Simulation=$(cat postProcessing/probes/0/epsilonSwelling |head -n 23| tail -n 1|cut -d"(" -f2 | cut -d" " -f4)
+
+epsilon1_r_Expected=0.0328573
+epsilon1_t_Expected=-0.0642869
+epsilon2_r_Expected=-0.00109624
+epsilon2_t_Expected=-0.00258954
+
+
+
+#
+echo "Radial swelling strain at 0.1e25 n/m2: $epsilon2_r_Simulation" >> results
+echo "Expected value: $epsilon2_r_Expected" >> results
+echo "Hoop swelling strain at 0.1e25 n/m2: $epsilon2_t_Simulation" >> results
+echo "Expected value: $epsilon2_t_Expected" >> results
+echo "Radial swelling strain at 3.9e25 n/m2: $epsilon1_r_Simulation" >> results
+echo "Expected value: $epsilon1_r_Expected" >> results
+echo "Hoop swelling strain at 3.9e25 n/m2: $epsilon1_t_Simulation" >> results
+echo "Expected value: $epsilon1_t_Expected" >> results
+
+
+
+relError1r=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$epsilon1_r_Simulation" var2="$epsilon1_r_Expected"`
+relError1t=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$epsilon1_t_Simulation" var2="$epsilon1_t_Expected"`
+relError2r=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$epsilon2_r_Simulation" var2="$epsilon2_r_Expected"`
+relError2t=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$epsilon2_t_Simulation" var2="$epsilon2_t_Expected"`
+
+
+
+echo "Relative error for radial swelling strain at 0.1e25 n/m2: $relError2r%" >> results
+echo "Relative error for hoop swelling strain at 0.1e25 n/m2: $relError2t%" >> results
+echo "Relative error for radial swelling strain at 3.9e25 n/m2: $relError1r%" >> results
+echo "Relative error for hoop swelling strain at 3.9e25 n/m2: $relError1t%" >> results

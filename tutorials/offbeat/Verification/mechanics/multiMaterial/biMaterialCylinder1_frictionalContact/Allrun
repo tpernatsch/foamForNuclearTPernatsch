@@ -1,0 +1,20 @@
+#!/bin/bash
+set -o pipefail
+STATUS=0
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+rm -f results
+runApplication -o blockMesh 
+runApplication -o changeDictionary 
+runApplication -o offbeat
+runApplication -o postProcess -func xyGraph 
+gnuplot plots.gnuplot > log.gnuplot 
+python3 test.py | tee -a results
+
+STATUS=$(expr $? "|" $STATUS)
+
+echo "" | tee -a results
+
+exit $STATUS

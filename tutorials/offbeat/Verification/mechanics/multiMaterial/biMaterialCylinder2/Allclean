@@ -1,0 +1,16 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+
+foamListTimes -rm
+rm -rf constant/polyMesh
+rm -rf postProcessing
+rm -f log*
+rm -f results*
+rm -f *.OpenFOAM
+rm -f *.foam
+rm -f *.png
+rm -f .setSet
+rm -rf VTK
+rm -f results
+
+#------------------------------------------------------------------------------

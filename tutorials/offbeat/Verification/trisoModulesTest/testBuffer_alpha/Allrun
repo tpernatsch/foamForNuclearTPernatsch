@@ -1,0 +1,25 @@
+#!/bin/sh
+# Run from this directory
+cd "${0%/*}" || exit 1
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+runApplication -o blockMesh
+runApplication -o offbeat
+#
+runApplication -o postProcess -func sampleDict
+
+Dx_Simulation=$(cat postProcessing/sampleDict/50/right/vectorField/D | sed -E 's/.*\(([^\s]+).*/\1/' | cut -d' ' -f1)
+
+Dx_Expected=7.95535714285714E-06
+#
+echo "Displacement: $Dx_Simulation" >> results
+echo "Expected value: $Dx_Expected" >> results
+
+
+relError=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$Dx_Simulation" var2="$Dx_Expected"`
+
+
+echo "Relative error for Displacement: $relError%" >> results

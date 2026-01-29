@@ -1,0 +1,158 @@
+#!/bin/bash
+# Determine OpenFOAM distribution from WM_PROJECT_VERSION
+if [ -z "$WM_PROJECT_VERSION" ]; then
+    echo "ERROR: WM_PROJECT_VERSION is not set. Is OpenFOAM sourced?" >&2
+    exit 1
+fi
+
+if [[ "$WM_PROJECT_VERSION" == v* ]]; then
+    FOAM_DIST="ESI"
+elif [[ -n "$WM_PROJECT_VERSION" ]]; then
+    FOAM_DIST="FOUNDATION"
+else
+    echo "ERROR: Could not determine OpenFOAM distribution from WM_PROJECT_VERSION='$WM_PROJECT_VERSION'" >&2
+    exit 1
+fi
+
+# Define the output file
+output_file="extracted_data.txt"
+
+if [[ "$FOAM_DIST" == "FOUNDATION" ]]; then
+  # FOUNDATION syntax
+  # Extract time array
+  echo "time = [" > $output_file
+  awk '!/^#/{print $1}' postProcessing/fuelCenterline/0/T | tr '\n' ' ' >> $output_file
+  echo -e "];\n" >> $output_file
+  
+  # Extract temperature array
+  echo "temp = [" >> $output_file
+  awk '!/^#/{print $2}' postProcessing/fuelCenterline/0/T | tr '\n' ' ' >> $output_file
+  echo -e "];\n" >> $output_file
+  
+  # Extract gap width array
+  echo "gapW = [" >> $output_file
+  awk '!/^#/{print $2}' postProcessing/fuelOuter/0/gapWidth | tr '\n' ' ' >> $output_file
+  echo -e "];\n" >> $output_file
+  
+  
+  # Extract radial position array
+  echo "rPos = [" >> $output_file
+  awk '!/^#/{print $1}' postProcessing/fuelRadialProfile/7.04/line_T.xy | tr '\n' ' ' >> $output_file
+  echo -e "];\n" >> $output_file
+  
+  # Extract temperature profile at 7.04 days
+  echo "radialTemp_7_04 = [" >> $output_file
+  awk '!/^#/{print $2}' postProcessing/fuelRadialProfile/7.04/line_T.xy | tr '\n' ' ' >> $output_file
+  echo -e "];\n" >> $output_file
+  
+  # Extract temperature profile at 168.04 days
+  echo "radialTemp_168_04 = [" >> $output_file
+  awk '!/^#/{print $2}' postProcessing/fuelRadialProfile/168.04/line_T.xy | tr '\n' ' ' >>   $output_file
+  echo -e "];\n" >> $output_file
+  
+  # Extract temperature profile at 364 days
+  echo "radialTemp_364 = [" >> $output_file
+  awk '!/^#/{print $2}' postProcessing/fuelRadialProfile/364/line_T.xy | tr '\n' ' ' >> $output_file
+  echo -e "];\n" >> $output_file
+  
+  
+  # Extract radial stress profile at 7.04 days
+  echo "radialSigmaR_7_04 = [" >> $output_file
+  awk '!/^#/{print $2}' postProcessing/fuelRadialProfile/7.04/line_sigma.xy | tr '\n' ' ' >>   $output_file
+  echo -e "];\n" >> $output_file
+  
+  # Extract radial stress profile at 168.04 days
+  echo "radialSigmaR_168_04 = [" >> $output_file
+  awk '!/^#/{print $2}' postProcessing/fuelRadialProfile/168.04/line_sigma.xy | tr '\n' ' ' >>   $output_file
+  echo -e "];\n" >> $output_file
+  
+  # Extract radial stress profile at 364 days
+  echo "radialSigmaR_364 = [" >> $output_file
+  awk '!/^#/{print $2}' postProcessing/fuelRadialProfile/364/line_sigma.xy | tr '\n' ' ' >>   $output_file
+  echo -e "];\n" >> $output_file
+  
+  
+  # Extract hoop stress profile at 7.04 days
+  echo "radialSigmaH_7_04 = [" >> $output_file
+  awk '!/^#/{print $5}' postProcessing/fuelRadialProfile/7.04/line_sigma.xy | tr '\n' ' ' >>   $output_file
+  echo -e "];\n" >> $output_file
+  
+  # Extract hoop stress profile at 168.04 days
+  echo "radialSigmaH_168_04 = [" >> $output_file
+  awk '!/^#/{print $5}' postProcessing/fuelRadialProfile/168.04/line_sigma.xy | tr '\n' ' ' >>   $output_file
+  echo -e "];\n" >> $output_file
+  
+  # Extract hoop stress profile at 364 days
+  echo "radialSigmaH_364 = [" >> $output_file
+  awk '!/^#/{print $5}' postProcessing/fuelRadialProfile/364/line_sigma.xy | tr '\n' ' ' >>   $output_file
+  echo -e "];\n" >> $output_file
+else
+  # ESI syntax
+  # Extract time array
+  echo "time = [" > $output_file
+  awk '!/^#/{print $1}' postProcessing/fuelCenterline/0/T | tr '\n' ' ' >> $output_file
+  echo -e "];\n" >> $output_file
+  
+  # Extract temperature array
+  echo "temp = [" >> $output_file
+  awk '!/^#/{print $2}' postProcessing/fuelCenterline/0/T | tr '\n' ' ' >> $output_file
+  echo -e "];\n" >> $output_file
+  
+  # Extract gap width array
+  echo "gapW = [" >> $output_file
+  awk '!/^#/{print $2}' postProcessing/fuelOuter/0/gapWidth | tr '\n' ' ' >> $output_file
+  echo -e "];\n" >> $output_file
+  
+  
+  # Extract radial position array
+  echo "rPos = [" >> $output_file
+  awk '!/^#/{print $1}' postProcessing/fuelRadialProfile/7.04/line_T_sigma.xy | tr '\n' ' ' >> $output_file
+  echo -e "];\n" >> $output_file
+  
+  # Extract temperature profile at 7.04 days
+  echo "radialTemp_7_04 = [" >> $output_file
+  awk '!/^#/{print $2}' postProcessing/fuelRadialProfile/7.04/line_T_sigma.xy | tr '\n' ' ' >> $output_file
+  echo -e "];\n" >> $output_file
+  
+  # Extract temperature profile at 168.04 days
+  echo "radialTemp_168_04 = [" >> $output_file
+  awk '!/^#/{print $2}' postProcessing/fuelRadialProfile/168.04/line_T_sigma.xy | tr '\n' ' ' >>   $output_file
+  echo -e "];\n" >> $output_file
+  
+  # Extract temperature profile at 364 days
+  echo "radialTemp_364 = [" >> $output_file
+  awk '!/^#/{print $2}' postProcessing/fuelRadialProfile/364/line_T_sigma.xy | tr '\n' ' ' >> $output_file
+  echo -e "];\n" >> $output_file
+  
+  
+  # Extract radial stress profile at 7.04 days
+  echo "radialSigmaR_7_04 = [" >> $output_file
+  awk '!/^#/{print $3}' postProcessing/fuelRadialProfile/7.04/line_T_sigma.xy | tr '\n' ' ' >>   $output_file
+  echo -e "];\n" >> $output_file
+  
+  # Extract radial stress profile at 168.04 days
+  echo "radialSigmaR_168_04 = [" >> $output_file
+  awk '!/^#/{print $3}' postProcessing/fuelRadialProfile/168.04/line_T_sigma.xy | tr '\n' ' ' >>   $output_file
+  echo -e "];\n" >> $output_file
+  
+  # Extract radial stress profile at 364 days
+  echo "radialSigmaR_364 = [" >> $output_file
+  awk '!/^#/{print $3}' postProcessing/fuelRadialProfile/364/line_T_sigma.xy | tr '\n' ' ' >>   $output_file
+  echo -e "];\n" >> $output_file
+  
+  
+  # Extract hoop stress profile at 7.04 days
+  echo "radialSigmaH_7_04 = [" >> $output_file
+  awk '!/^#/{print $6}' postProcessing/fuelRadialProfile/7.04/line_T_sigma.xy | tr '\n' ' ' >>   $output_file
+  echo -e "];\n" >> $output_file
+  
+  # Extract hoop stress profile at 168.04 days
+  echo "radialSigmaH_168_04 = [" >> $output_file
+  awk '!/^#/{print $6}' postProcessing/fuelRadialProfile/168.04/line_T_sigma.xy | tr '\n' ' ' >>   $output_file
+  echo -e "];\n" >> $output_file
+  
+  # Extract hoop stress profile at 364 days
+  echo "radialSigmaH_364 = [" >> $output_file
+  awk '!/^#/{print $6}' postProcessing/fuelRadialProfile/364/line_T_sigma.xy | tr '\n' ' ' >>   $output_file
+  echo -e "];\n" >> $output_file
+fi

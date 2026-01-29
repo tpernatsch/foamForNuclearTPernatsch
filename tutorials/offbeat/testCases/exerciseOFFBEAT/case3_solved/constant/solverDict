@@ -1,0 +1,129 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Thermal and Mechanical solver selection:
+thermalSolver
+{
+    type solidConduction;
+}
+
+mechanicsSolver
+{
+    type smallStrain;    
+    forceSummary        off;  
+    cylindricalStress   on;  
+
+    multiMaterialCorrection
+    {
+        type                    uniform;
+        defaultWeights          1;
+    }
+}
+
+burnup
+{
+    type fromPower;
+}
+
+heatSource
+{
+    type timeDependentLhgr;
+    timePoints  ( 0  0.04    364    364.04 365 );
+    lhgr        ( 0  400e2  400e2  0      0);
+    timeInterpolationMethod linear;
+    
+    axialProfile
+    {
+        type flat;
+    }
+    
+    radialProfile
+    {
+        type    flat;
+    }
+    
+    materials ( fuel );
+}
+
+gapGas
+{
+    type Frapcon;
+
+    gapPatches ( fuelOuter cladInner );
+    holePatches ( );
+    topFuelPatches    ( fuelTop );
+    bottomFuelPatches ( fuelBottom );
+
+    gapVolumeOffset 0.0;
+    gasReserveVolume 0.0;
+}
+
+rheology
+{
+    type byMaterial;
+    modifiedPlaneStrain on;
+    springModulus   3500;
+    coolantPressureList
+    {
+        file            "$FOAM_CASE/constant/systemPressure";
+        outOfBounds     clamp;
+    }
+}
+
+sliceMapper
+{
+    type autoAxialSlices;
+}
+
+globalOptions
+{
+    pinDirection            (0 0 1);
+    reactorType             "LWR";
+}
+
+
+materials
+{
+    fuel
+    {
+        material                    UO2;
+
+        enrichment                  0.045;
+        rGrain                      2.8e-05;
+        GdContent                   0.0;
+        theoreticalDensity          10960;
+        densityFraction             0.95;
+        dishFraction                0.0;
+
+        constitutiveLaw
+        {
+            type elasticity;
+        }
+    }
+
+    cladding
+    {
+        material                    Zircaloy;
+
+        constitutiveLaw
+        {
+            type elasticity;
+        }
+    }
+}
+
+// ************************************************************************* //

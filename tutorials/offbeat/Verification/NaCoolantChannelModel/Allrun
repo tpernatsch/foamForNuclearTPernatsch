@@ -1,0 +1,18 @@
+#!/bin/bash
+
+cases="vsAnalytical vsTRACE"
+
+for case in $cases; do
+    cd $case
+    ./Allrun &
+    cd ..
+done
+
+wait
+
+rm -f results && touch results
+for case in $cases; do
+    cd $case
+    cat results >> ../results
+    cd ..
+done

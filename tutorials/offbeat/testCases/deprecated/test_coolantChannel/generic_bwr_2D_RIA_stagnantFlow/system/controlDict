@@ -1,0 +1,79 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    location        "system";
+    object          controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+libs            ( "libsciantix.so" );
+libs            ( "liboffbeat.so" );
+
+application     offbeat;
+
+//- Run options:
+startFrom       latestTime;
+startTime       0;
+stopAt          endTime;
+endTime         60.0;
+deltaT          1e-03;
+
+//- Write options:
+writeControl    timeStep;
+writeInterval   10000;
+purgeWrite      0;
+writeFormat     ascii;
+writeCompression off;
+timeFormat      general;
+timePrecision   20;
+writePrecision  15;
+
+//- Adjustable time step options:
+adjustableTimeStep true;
+
+maxDeltaT       1e-06;
+minDeltaT       1e-07;
+maxRelativeDeltaTIncrease 1.01;
+minRelativeDeltaTDecrease 1.01;
+maxRelativePowerIncrease 1.01;
+maxRelativePowerDecrease 1.01;
+maxBurnupIncrease 0.1;
+maxAverageCreep 0.0001;
+maxMaximumCreep 0.0001;
+maxTotalFgrChange 1;
+maxLocalFgrChange 1;
+maxAverageEpsilonPEq 0.005;
+maxMaximumEpsilonPEq 0.01;
+
+runTimeModifiable true;
+
+functions
+{
+    #includeFunc  patchProbes_fuelOuter
+    #includeFunc  patchProbes_cladInner
+    #includeFunc  patchProbes_cladOuter
+    
+    enthalpyVolAverage
+    {
+        type            volFieldValue;
+        functionObjectLibs ( "libfieldFunctionObjects.so" );
+        writeFields     false;
+        writeControl    timeStep;
+        writeInterval   1;
+        operation       volAverage;
+        regionType      cellZone;
+        name            fuel;
+        fields          ( enthalpy );
+    }
+}
+
+// ************************************************************************* //

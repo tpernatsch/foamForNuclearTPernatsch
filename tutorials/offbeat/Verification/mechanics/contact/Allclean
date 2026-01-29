@@ -1,0 +1,13 @@
+#!/bin/bash
+cd ${0%/*} || exit 1    # run from this directory
+
+cases="forceConservation"
+
+for case in $cases
+do
+    cd $case
+    ./Allclean
+    cd ..
+done
+
+rm -f results

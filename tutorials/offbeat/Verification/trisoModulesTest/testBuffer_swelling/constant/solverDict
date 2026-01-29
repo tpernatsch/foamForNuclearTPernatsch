@@ -1,0 +1,107 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//- Thermal and Mechanical solver selection:
+thermalSolver           solidConduction;
+mechanicsSolver         smallStrain;
+neutronicsSolver        fromLatestTime;
+elementTransport        fromLatestTime;
+
+//- Material and rhelogy treatment:
+materialProperties      byZone;
+rheology                byMaterial;
+
+heatSource              fromLatestTime;
+burnup                  fromLatestTime;
+fastFlux                timeDependentAxialProfile;
+corrosion               fromLatestTime;
+gapGas                  none;
+fgr                     none;
+sliceMapper             autoAxialSlices;
+corrosion               fromLatestTime;
+
+globalOptions
+{
+    pinDirection            (0 0 1);
+    reactorType             "LWR";
+}
+
+thermalSolverOptions
+{
+    heatFluxSummary     off;
+}
+
+rheologyOptions
+{
+    thermalExpansion off;
+}
+
+mechanicsSolverOptions
+{
+    forceSummary        off;
+    cylindricalStress   on;
+
+    multiMaterialCorrection
+    {
+        type                    uniform;
+        defaultWeights          1;
+    }
+}
+
+fastFluxOptions
+{
+    timePoints  ( 0     10);
+    fastFlux    ( 3.96e20  3.96e20); // n/cm2/s
+    timeInterpolationMethod linear;
+
+    axialProfile
+    {
+        type flat;
+    }
+
+    materials (fuel);
+}
+
+materials
+{
+    writeMaterialProperties  true;
+    fuel
+    {
+      material Buffer;
+      Tref                        Tref [ 0 0 0 1 0 ] 293;
+
+      densityModel                constant;
+      conductivityModel           BufferParfume;
+      heatCapacityModel           constant;
+      emissivityModel             constant;
+      thermalExpansionModel       BufferParfume;
+      swellingModel               BufferParfume;
+
+
+      initialDensity              1000.0;
+      initialConductivity         3.0;
+      rho         rho     [1 -3 0 0 0]    1000.0;
+      Cp          Cp      [0 2 -2 -1 0]   720;
+      emissivity emissivity       [0 0 0 0 0]   0.0;
+      nu          nu      [0 0 0 0 0]     0.33;
+
+
+      rheologyModel               elasticity;
+    }
+}
+
+// ************************************************************************* //

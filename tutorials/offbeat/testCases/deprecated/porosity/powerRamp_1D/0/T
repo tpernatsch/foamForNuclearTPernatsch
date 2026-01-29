@@ -1,0 +1,66 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 300;
+
+boundaryField
+{
+    ".*Bottom|.*Top"
+    {
+        type            empty;
+    }
+    ".*Front|.*Back"
+    {
+        type            wedge;
+    }
+
+    // Radiative boundary condition
+    fuelOuter
+    {
+        type            radiativeConvectiveSink;
+        T0              uniform 300;    // T bulk (convective contrib.)
+        alpha           uniform 10e3;   // heat transfer coeff (convective contrib.)
+        emissivity      uniform 0.8;    // emissivity (radiative contrib.)
+        value           $internalField;
+    }
+
+    // Example: imposed temperature constant in time = to internalField value
+    // fuelOuter
+    // {
+    //     type            fixedValue;
+    //     value           $internalField;
+    // }
+
+    // Example: imposed temperature that varies in time
+    // fuelOuter
+    // {
+    //     type            timeDependentTemperature;
+    //     temperatureSeries
+    //     {
+    //         values
+    //         (
+    //             (0      300)
+    //             (420    773)
+    //             (25200  773)
+    //         );
+    //         outOfBounds         clamp;   
+    //         interpolationScheme linear;    
+    //     }
+    //     value $internalField;
+    // }
+}

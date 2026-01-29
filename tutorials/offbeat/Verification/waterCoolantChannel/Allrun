@@ -1,0 +1,30 @@
+#!/bin/sh
+
+# Run from this directory
+cd "${0%/*}" || exit 1
+
+cases="
+Case_ABWR/
+Case_AP1000/
+Case_BWR4/
+Case_VVER440/
+"
+
+for case in $cases; do
+    cd $case
+    ./Allrun &
+    cd ..
+done
+
+wait
+
+rm -f results && touch results
+
+for case in $cases; do
+    cd $case
+    printf "%s - " "$case" >> ../results && cat results >> ../results
+    echo >> ../results
+    cd ..
+done
+
+#------------------------------------------------------------------------------

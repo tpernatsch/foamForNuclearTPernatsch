@@ -1,0 +1,27 @@
+#------------------------------------------------------------------------------#
+#                                                                              #
+#                            README - commands                                 #
+#                                                                              #
+#------------------------------------------------------------------------------#
+
+This README file contains a brief description of the verification case.
+
+A simple test for a 1-d spherical case with only 100 elements. To test the function
+of OFFBEAT of calculating the mechanics with transversely isotropic thermal expansion.
+
+The equation for constant temperature and thermal expansion coefficient can be expressed as:
+d²u/dr² + 2/r*du/dr - 2u/r² = 2(1-2nu)/(1-nu)/r*(alpha_r-alpha_theta)*deltaT;
+
+For a solid sphere with free expansion (no pressure outside the sphere)
+the analytical solution is:
+u = A/3*r*ln(r)+B*r
+A = 2(1-2nu)/(1-v)*(alpha_r-alpha_theta)*deltaT;
+B = (alpha_r+2*alpha_theta)/3*deltaT - A/3*ln(a);
+a is the radius of the sphere.
+
+The BAF was set to = 1.5 (which normally is not correct, but the object is to have a very different
+coef along r and theta direction), so
+alpha_r = 8.84101836734694E-06
+alpha_theta = 4.06265844023324E-06
+
+Other parameters can be found in the file compare.ods with the verification results.

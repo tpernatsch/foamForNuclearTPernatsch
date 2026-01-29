@@ -1,0 +1,35 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  4.x                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      changeDictionaryDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+boundary
+{
+    symmetry
+    {
+        type            symmetryPlane;
+    }
+    contact1
+    {
+        type            regionCoupledOFFBEAT;
+        neighbourPatch  contact2;
+        neighbourRegion region0;
+    }
+    contact2
+    {
+        type            regionCoupledOFFBEAT;
+        neighbourPatch  contact1;
+        neighbourRegion region0;
+    }
+}
