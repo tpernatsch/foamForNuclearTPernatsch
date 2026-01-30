@@ -13,9 +13,7 @@ and is used to set the type of neutronics simulation by using the following keyw
              false for solid fuel.
 :fastNeutrons: should be set to ``true`` for fast spectrum reactors when using
                the ``pointKinetics`` solver.
-:energyGroups: is an integer representing the number of energy groups used for
-               3D spatial neutronics solver.
-:precGroups: is an integer representing the number of delayed neutrons groups.
+:legendreMoments: Number of Legendre moments used for SN calculations.
 :adjustDiscFactors: when set to ``true``, the neutronics solver will try to
                     automatically adjust the discontinuity factors based on the
                     ``integralFlux`` provided in the ``nuclearData`` dictionary.
@@ -27,6 +25,13 @@ and is used to set the type of neutronics simulation by using the following keyw
                       al., Annals of Nuclear Energy 960 (2016)
 :axialOrientation: fuel axial orientation vector used for thermomechanical
                    expansion.
+:ScNo: Schmidt number.
+:groupsWoDF: List of energy groups that are not affected by discontinuity factors
+             calculations.
+:doNotParametrize: List of energy groups that are not parametrized.
+:isLowMemory: Prepare low memory consumption for XS, useful for SN calculations.
+:isReadXS: Is read XS flag.
+:isWriteXS: Is read XS flag.
 
 One can find detailed, commented examples in most tutorials. See for instance
 `3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/neutroRegion/neutronicsProperties>`_ (single phase).

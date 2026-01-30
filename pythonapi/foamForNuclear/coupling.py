@@ -111,7 +111,7 @@ class MultiPhysicsLoop(CheckedList):
         Multiphysics loop type.
     region : str
         Name of the multi-physics loop, e.g `Level_1`.
-    minResidual : float
+    maxResidual : float
         Minimum residual after which the iteration is ended.
     maxIterations : int
         Maximum number of iterations before the loop is ended.
@@ -125,7 +125,7 @@ class MultiPhysicsLoop(CheckedList):
             self,
             solver: str,
             region: str,
-            minResidual: float,
+            maxResidual: float,
             maxIterations: int,
             couplingStartTime: float=None,
             includeFluidMechanicsInLoop: bool=None,
@@ -135,7 +135,7 @@ class MultiPhysicsLoop(CheckedList):
 
         self.region = region
         self.solver = solver
-        self.minResidual = minResidual
+        self.maxResidual = maxResidual
         self.maxIterations = maxIterations
         self.couplingStartTime = couplingStartTime
         self.includeFluidMechanicsInLoop = includeFluidMechanicsInLoop
@@ -148,7 +148,7 @@ class MultiPhysicsLoop(CheckedList):
         for solver in self:
             text += addParameter(solver.region, solver.solver, indent=3)
         text += 2*tab + "}\n"
-        text += addParameter('minResidual', self.minResidual, indent=2)
+        text += addParameter('maxResidual', self.maxResidual, indent=2)
         text += addParameter('maxIterations', self.maxIterations, indent=2)
         text += addParameter('couplingStartTime', self.couplingStartTime, indent=2, none_ok=False)
         text += addParameter('includeFluidMechanicsInLoop', self.includeFluidMechanicsInLoop, indent=2, none_ok=False)
@@ -175,14 +175,14 @@ class MultiPhysicsLoop(CheckedList):
         self._solver = solver
 
     @property
-    def minResidual(self):
-        return self._minResidual
+    def maxResidual(self):
+        return self._maxResidual
 
-    @minResidual.setter
-    def minResidual(self, minResidual) -> None:
-        check_type("minResidual", minResidual, (float, int))
-        check_positive("minResidual", minResidual)
-        self._minResidual = minResidual
+    @maxResidual.setter
+    def maxResidual(self, maxResidual) -> None:
+        check_type("maxResidual", maxResidual, (float, int))
+        check_positive("maxResidual", maxResidual)
+        self._maxResidual = maxResidual
 
     @property
     def maxIterations(self):
@@ -219,7 +219,7 @@ class CHTLoop(MultiPhysicsLoop):
 
     Parameters
     ----------
-    minResidual : float
+    maxResidual : float
         Minimum residual after which the iteration is ended.
     maxIterations : int
         Maximum number of iterations before the loop is ended.
@@ -235,7 +235,7 @@ class CHTLoop(MultiPhysicsLoop):
     def __init__(
             self,
             region: str,
-            minResidual: float,
+            maxResidual: float,
             maxIterations: int,
             fluidRegionName: str,
             solidRegionName: str,
@@ -252,7 +252,7 @@ class CHTLoop(MultiPhysicsLoop):
         super().__init__(
             "CHTLoop",
             region,
-            minResidual,
+            maxResidual,
             maxIterations,
             couplingStartTime,
             includeFluidMechanicsInLoop,
@@ -373,7 +373,7 @@ class FSILoop(MultiPhysicsLoop):
 
     Parameters
     ----------
-    minResidual : float
+    maxResidual : float
         Minimum residual after which the iteration is ended.
     maxIterations : int
         Maximum number of iterations before the loop is ended.
@@ -395,7 +395,7 @@ class FSILoop(MultiPhysicsLoop):
     def __init__(
             self,
             region: str,
-            minResidual: float,
+            maxResidual: float,
             maxIterations: int,
             FSIInterface: bool,
             fluidRegionName: str,
@@ -414,7 +414,7 @@ class FSILoop(MultiPhysicsLoop):
         super().__init__(
             "FSILoop",
             region,
-            minResidual,
+            maxResidual,
             maxIterations,
             couplingStartTime,
             includeFluidMechanicsInLoop,
@@ -654,7 +654,7 @@ class Coupling(CheckedList):
             if (isinstance(solver, Solver)):
                 text += "\n"
             if (isinstance(solver, MultiPhysicsLoop)):
-                text += f" (minRes={solver.minResidual}, maxIter={solver.maxIterations})\n"
+                text += f" (maxRes={solver.maxResidual}, maxIter={solver.maxIterations})\n"
                 text += self.get_coupling_loop_as_text(solver, depth=depth+1)
 
         return(text)
@@ -771,7 +771,7 @@ class Coupling(CheckedList):
 
 
     def export_to_openfoam(self):
-        with open(f"constant/regionsDict", 'w') as f:
+        with open(f"system/regionsDict", 'w') as f:
             f.write(openfoamHeader)
             f.write(openfoamFileHeader("regionsDict"))
 
@@ -873,7 +873,7 @@ class Coupling(CheckedList):
                     newNodes, newLinks = extract(
                         solver,
                         loopName=solver.region,
-                        info=f"`{solver.region}\ntype: **{solver.solver}**\nminResidual: {solver.minResidual}\nmaxIteration: {solver.maxIterations}`"
+                        info=f"`{solver.region}\ntype: **{solver.solver}**\nmaxResidual: {solver.maxResidual}\nmaxIteration: {solver.maxIterations}`"
                     )
                     nodes = nodes | newNodes
                     links += newLinks

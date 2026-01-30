@@ -432,7 +432,7 @@ fuelFraction = np.pi*corePowerModel.powerModel.fuelOuterRadius**2 / (corePowerMo
 
 totalPower = ffn.VolFieldValue(
     name="totalPower",
-    fields=["powerDensityNeutronics"],
+    fields=["powerDensityStructure"],
     operation="volIntegrate",
     region=thSolver.region,
     regionType="all",
@@ -514,7 +514,7 @@ dataPower = totalPower.read_from_case(startTime=0)
 
 minT, maxT = list(dataTInlet["TBulk"])[-1], list(dataTOutlet["TBulk"])[-1]
 
-print(f"Total power = {dataPower['volIntegrate(powerDensityNeutronics)'][0]/1e9:.2f} GW")
+print(f"Total power = {dataPower['volIntegrate(powerDensityStructure)'][0]/1e9:.2f} GW")
 
 fig, ax = plt.subplots(figsize=(5, 4), dpi=200)
 ax.plot(dataMassFlowInlet["Time"], dataMassFlowInlet["MassFlow"], label="Inlet")

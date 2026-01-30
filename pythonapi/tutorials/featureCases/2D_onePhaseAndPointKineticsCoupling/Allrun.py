@@ -280,8 +280,8 @@ solvers = ffn.Solvers([neutronicsSolver, thSolver])
 
 coupling = ffn.Coupling(solvers)
 
-coupling.add_field_transfer(neutronicsSolver, thSolver, 'powerDensity', 'powerDensityNeutronics')
-coupling.add_field_transfer(neutronicsSolver, thSolver, 'secondaryPowerDensity', 'powerDensityNeutronicsToLiquid')
+coupling.add_field_transfer(neutronicsSolver, thSolver, 'powerDensity', 'powerDensityStructure')
+coupling.add_field_transfer(neutronicsSolver, thSolver, 'secondaryPowerDensity', 'powerDensityLiquid')
 coupling.add_field_transfer(thSolver, neutronicsSolver, 'T', 'TCool')
 coupling.add_field_transfer(thSolver, neutronicsSolver, 'thermo:rho', 'rhoCool')
 coupling.add_field_transfer(thSolver, neutronicsSolver, 'T.fuelAvForNeutronics', 'TFuel')
@@ -325,12 +325,14 @@ ffn.run(model, is_preprocessing=True)
 model.plot_slice(
     region=nMesh.region,
     time=settings.endTime,
-    fieldName='powerDensity'
+    fieldName='powerDensity',
+    offset=(0, 0.05, 0)
 )
 model.plot_slice(
     region=thMesh.region,
     time=settings.endTime,
     fieldName='T',
+    offset=(0, 0.05, 0),
     cmap='RdBu_r',
     show_edges=True,
     unit='K'

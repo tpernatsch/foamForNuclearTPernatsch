@@ -130,4 +130,7 @@ if (eigenvalueNeutronics_)
     #include "normFluxesSN.H"
 }
 
+// Output the integrated power in reactor state
+reactorState_.set("power", pTot);
+
 residual_ = max(residual_, neutroResidual);

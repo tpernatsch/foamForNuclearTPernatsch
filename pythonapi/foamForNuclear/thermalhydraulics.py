@@ -294,7 +294,7 @@ class ThermalHydraulicsSolver(Solver):
         the solver selected. They are labeled "READ_IF_PRESENT"
         """
         common = [
-            "powerDensityNeutronics", "powerDensityNeutronicsToLiquid",
+            "powerDensityStructure", "powerDensityLiquid",
             "magU", "alpha", "alphaPhi", "alphaRhoPhi", "alphaRhoMagU",
             "heatFlux.structure", "alpha.passiveStructure", "dgdt", "contErr",
             "T.passiveStructure", "T.fuelAvForNeutronics", "T.cladAvForNeutronics",
@@ -524,6 +524,12 @@ class PimpleOptions(OpenFOAMDict):
         This limits the minimum magnitude of U that can be used in the
         calculation of the drag factor. Defaults to 0. Only (possibly) useful in
         certain two-phase scenarios.
+    pMin : float
+        Minimum pressure in Pa (default `10000`).
+    pRefCell : int
+        Cell index to apply the reference pressure (default `0`).
+    pRefValue : float
+        Reference pressure value (default `100000`).
     """
 
     def __init__(
@@ -539,6 +545,9 @@ class PimpleOptions(OpenFOAMDict):
             correctUntilConvergence: bool=False,
             porousInterfaceSharpness: float=0.0,
             minMagU: float=0.0,
+            pMin: float=10000,
+            pRefCell: int=0,
+            pRefValue: float=100000,
             continuityErrorCompensationMode: str=None,
             continuityErrorScaleFactor: float=None,
             partialEliminationMode: str=None,
@@ -560,6 +569,9 @@ class PimpleOptions(OpenFOAMDict):
         self.correctUntilConvergence = correctUntilConvergence
         self.porousInterfaceSharpness = porousInterfaceSharpness
         self.minMagU = minMagU
+        self.pMin = pMin
+        self.pRefCell = pRefCell
+        self.pRefValue = pRefValue
         self.continuityErrorCompensationMode = continuityErrorCompensationMode
         self.continuityErrorScaleFactor = continuityErrorScaleFactor
         self.partialEliminationMode = partialEliminationMode
@@ -590,6 +602,13 @@ class PimpleOptions(OpenFOAMDict):
             self.__setitem__('porousInterfaceSharpness', self.porousInterfaceSharpness)
         if (self.minMagU is not None):
             self.__setitem__('minMagU', self.minMagU)
+        if (self.pMin is not None):
+            self.__setitem__('pMin', self.pMin)
+        if (self.pRefCell is not None):
+            self.__setitem__('pRefCell', self.pRefCell)
+        if (self.pRefValue is not None):
+            self.__setitem__('pRefValue', self.pRefValue)
+
         if (self.minNOuterCorrectors is not None):
             self.__setitem__('minNOuterCorrectors', self.minNOuterCorrectors)
 
@@ -727,6 +746,33 @@ class PimpleOptions(OpenFOAMDict):
     def minMagU(self, minMagU) -> None:
         check_type("minMagU", minMagU, (float, int), none_ok=True)
         self._minMagU = minMagU
+
+    @property
+    def pMin(self):
+        return self._pMin
+
+    @pMin.setter
+    def pMin(self, pMin) -> None:
+        check_type("pMin", pMin, (float, int))
+        self._pMin = pMin
+
+    @property
+    def pRefCell(self):
+        return self._pRefCell
+
+    @pRefCell.setter
+    def pRefCell(self, pRefCell) -> None:
+        check_type("pRefCell", pRefCell, int)
+        self._pRefCell = pRefCell
+
+    @property
+    def pRefValue(self):
+        return self._pRefValue
+
+    @pRefValue.setter
+    def pRefValue(self, pRefValue) -> None:
+        check_type("pRefValue", pRefValue, (float, int))
+        self._pRefValue = pRefValue
 
     @property
     def continuityErrorCompensationMode(self):

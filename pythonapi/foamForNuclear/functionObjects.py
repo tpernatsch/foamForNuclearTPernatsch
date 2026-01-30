@@ -19,7 +19,7 @@ _FUNCTION_OBJECT_TYPES = {
 }
 _FUNCTION_OBJECT_LIBS = {
     "fieldFunctionObjects", "libfieldFunctionObjects.so", "libsampling.so",
-    'pyFMUSim', "libFunctionObjects.so",
+    'pyFMUSim', "libFunctionObjects.so", "libFFNFunctionObjects.so",
 }
 _VOLUME_OPERATION_TYPES = {"volIntegrate"}
 _SURFACE_OPERATION_TYPES = {
@@ -504,7 +504,7 @@ class MassFlow(FunctionObject):
         super().__init__(
             name,
             type="massFlow",
-            libs="libfieldFunctionObjects.so",
+            libs="libFFNFunctionObjects.so",
             log=log,
             writeFields=writeFields,
             writeControl=writeControl,
@@ -556,7 +556,7 @@ class TBulk(FunctionObject):
         super().__init__(
             name,
             type="TBulk",
-            libs="libfieldFunctionObjects.so",
+            libs="libFFNFunctionObjects.so",
             log=log,
             writeFields=writeFields,
             writeControl=writeControl,

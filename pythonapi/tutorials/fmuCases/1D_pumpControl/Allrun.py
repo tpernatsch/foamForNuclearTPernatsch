@@ -109,8 +109,6 @@ thSolver.thermophysicalProperties = ffn.thermophysicalProperty.WaterPolynomial()
 
 thSolver.turbulenceProperties.simulationType = 'laminar'
 
-thSolver.phaseProperties.pMin = 150e5
-
 pumpModel = ffn.Pump(
     zones=['pump'],
     volumeFraction=0.2,
@@ -159,6 +157,7 @@ thSolver.fvSolution = thSolution
 
 thSolver.pimpleOptions.nOuterCorrectors = 3
 thSolver.pimpleOptions.nCorrectors = 3
+thSolver.pimpleOptions.pMin = 150e5
 
 
 thSolver.fvSchemes.divSchemes['default'] = 'none'

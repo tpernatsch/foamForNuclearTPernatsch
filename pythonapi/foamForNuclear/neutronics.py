@@ -63,6 +63,22 @@ class NeutronicsSolver(Solver):
         Eigenvalue calculation flag (default `True`).
     externalSourceNeutronics : bool
         External source calculation flag (default `False`).
+    polyharmonicSplineMode : int
+        Polyharmonic spline function mode (1. `r`; 2. `r^2 ln(r)`; 3. `r^3`;
+        4. `r^4 ln(r)`) (default `1`).
+    ScNo : float
+        Schmidt number for diffusion of precursors (default `1`).
+    adjustDiscFactors : bool
+        Flag to apply the discontinuity factor adjustement (default `False`).
+    useGivenDiscFactors : bool
+        Flag to use homogeneous discontinuity factors provided in state/zone
+        (default `False`)
+    legendreMoments : int
+        Number of Legendre moments, used in SN solver (default `None`).
+    isLowMemory : bool
+        Flag for low memory foot print, useful for SN solver (defaulf `None`).
+    liquidFuel : bool
+        Flag to specify that the fuel is liauid (default False).
     keff : float
         Initial eigenvalue (default `1`).
     power : float
@@ -79,6 +95,15 @@ class NeutronicsSolver(Solver):
             solver: str="none",
             eigenvalueNeutronics: bool=True,
             externalSourceNeutronics: bool=False,
+            polyharmonicSplineMode: int=1,
+            ScNo: float=1,
+            axialOrientation: Vector=None,
+            adjustDiscFactors: bool=False,
+            useGivenDiscFactors: bool=False,
+            legendreMoments: int=None,
+            isLowMemory: bool=None,
+            liquidFuel: bool=False,
+            fastNeutrons: bool=True,
             keff: float=1,
             power: float=1,
             subcriticalIndex: float=None,
@@ -98,11 +123,21 @@ class NeutronicsSolver(Solver):
 
         self.eigenvalueNeutronics = eigenvalueNeutronics
         self.externalSourceNeutronics = externalSourceNeutronics
+        self.polyharmonicSplineMode = polyharmonicSplineMode
+        self.ScNo = ScNo
+        self.axialOrientation = axialOrientation
+        self.adjustDiscFactors = adjustDiscFactors
+        self.useGivenDiscFactors = useGivenDiscFactors
+        self.legendreMoments = legendreMoments
+        self.isLowMemory = isLowMemory
+        self.liquidFuel = liquidFuel
+
         self.keff = keff
         self.power = power
 
         self.subcriticalIndex = subcriticalIndex
         self.ksrc = ksrc
+        self.fastNeutrons = fastNeutrons
 
         self.neutronTransportOptions: NeutronTransportOptions = NeutronTransportOptions()
         self.nuclearData: NuclearData = NuclearData(region=region)
@@ -143,6 +178,81 @@ class NeutronicsSolver(Solver):
     def externalSourceNeutronics(self, externalSourceNeutronics) -> None:
         check_type("externalSourceNeutronics", externalSourceNeutronics, bool)
         self._externalSourceNeutronics = externalSourceNeutronics
+
+    @property
+    def polyharmonicSplineMode(self):
+        return self._polyharmonicSplineMode
+
+    @polyharmonicSplineMode.setter
+    def polyharmonicSplineMode(self, polyharmonicSplineMode):
+        check_type("polyharmonicSplineMode", polyharmonicSplineMode, (int, np.int64), none_ok=True)
+        self._polyharmonicSplineMode = polyharmonicSplineMode
+
+    @property
+    def ScNo(self):
+        return self._ScNo
+
+    @ScNo.setter
+    def ScNo(self, ScNo):
+        check_type("ScNo", ScNo, (float, int), none_ok=True)
+        self._ScNo = ScNo
+
+    @property
+    def axialOrientation(self):
+        return self._axialOrientation
+
+    @axialOrientation.setter
+    def axialOrientation(self, axialOrientation):
+        check_type("axialOrientation", axialOrientation, (Vector, list, tuple), none_ok=True)
+        if (isinstance(axialOrientation, (list, tuple))):
+            self._axialOrientation = Vector(axialOrientation[0], axialOrientation[1], axialOrientation[2])
+        else:
+            self._axialOrientation = axialOrientation
+
+    @property
+    def adjustDiscFactors(self):
+        return self._adjustDiscFactors
+
+    @adjustDiscFactors.setter
+    def adjustDiscFactors(self, adjustDiscFactors):
+        check_type("adjustDiscFactors", adjustDiscFactors, bool)
+        self._adjustDiscFactors = adjustDiscFactors
+
+    @property
+    def useGivenDiscFactors(self):
+        return self._useGivenDiscFactors
+
+    @useGivenDiscFactors.setter
+    def useGivenDiscFactors(self, useGivenDiscFactors):
+        check_type("useGivenDiscFactors", useGivenDiscFactors, bool)
+        self._useGivenDiscFactors = useGivenDiscFactors
+
+    @property
+    def legendreMoments(self):
+        return self._legendreMoments
+
+    @legendreMoments.setter
+    def legendreMoments(self, legendreMoments):
+        check_type("legendreMoments", legendreMoments, int, none_ok=True)
+        self._legendreMoments = legendreMoments
+
+    @property
+    def isLowMemory(self):
+        return self._isLowMemory
+
+    @isLowMemory.setter
+    def isLowMemory(self, isLowMemory):
+        check_type("isLowMemory", isLowMemory, bool, none_ok=True)
+        self._isLowMemory = isLowMemory
+
+    @property
+    def liquidFuel(self):
+        return self._liquidFuel
+
+    @liquidFuel.setter
+    def liquidFuel(self, liquidFuel) -> None:
+        check_type("liquidFuel", liquidFuel, bool)
+        self._liquidFuel = liquidFuel
 
     @property
     def keff(self):
@@ -220,6 +330,15 @@ class NeutronicsSolver(Solver):
         check_type("externalSource", externalSource, ExternalSource)
         self._externalSource = externalSource
         self._externalSource.region = self.region
+
+    @property
+    def fastNeutrons(self):
+        return self._fastNeutrons
+
+    @fastNeutrons.setter
+    def fastNeutrons(self, fastNeutrons) -> None:
+        check_type("fastNeutrons", fastNeutrons, bool, none_ok=True)
+        self._fastNeutrons = fastNeutrons
 
     @property
     def controlRodMove(self):
@@ -339,6 +458,21 @@ class NeutronicsSolver(Solver):
 
             f.write(addParameter('eigenvalueNeutronics', self.eigenvalueNeutronics, isAddExtraLine=True))
             f.write(addParameter('externalSourceNeutronics', self.externalSourceNeutronics, isAddExtraLine=True))
+            f.write(addParameter('polyharmonicSplineMode', self.polyharmonicSplineMode, isAddExtraLine=True))
+            f.write(addParameter('ScNo', self.ScNo, isAddExtraLine=True))
+            if (self.axialOrientation is not None):
+                f.write(addParameter('axialOrientation', self.axialOrientation, isAddExtraLine=True))
+
+            f.write(addParameter('adjustDiscFactors', self.adjustDiscFactors, isAddExtraLine=True, none_ok=False))
+            f.write(addParameter('useGivenDiscFactors', self.useGivenDiscFactors, isAddExtraLine=True, none_ok=False))
+
+            if (self.legendreMoments is not None):
+                f.write(addParameter('legendreMoments', self.legendreMoments, isAddExtraLine=True, none_ok=False))
+            if (self.isLowMemory is not None):
+                f.write(addParameter('isLowMemory', self.isLowMemory, isAddExtraLine=True, none_ok=False))
+
+            f.write(addParameter("fastNeutrons", self.fastNeutrons, isAddExtraLine=True))
+            f.write(addParameter('liquidFuel', self.liquidFuel, isAddExtraLine=True, none_ok=False))
 
             f.write(openfoamFooterLine)
 

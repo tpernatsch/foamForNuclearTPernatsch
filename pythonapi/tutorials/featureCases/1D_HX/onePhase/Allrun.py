@@ -262,7 +262,12 @@ settings.runTimeModifiable = True
 settings.adjustTimeStep = True
 settings.maxDeltaT = 0.01
 
-settings.functionObjects.append(ffn.FunctionObject('vOutlet', "surfaceFieldValue"))
+# settings.functionObjects.append(ffn.FunctionObject(
+#     'vOutlet',
+#     "surfaceFieldValue",
+#     region=thMesh.region,
+#     writeFields=False,
+# ))
 
 print(model)
 
@@ -295,7 +300,8 @@ model.plot_slice(
     time=20,
     fieldName='T',
     cmap='RdBu_r',
-    unit='K'
+    unit='K',
+    offset=(0, 0.05, 0)
 )
 model.plot_animation(
     region=thMesh,

@@ -51,8 +51,8 @@ nxyMesh = 1
 def createMesh(region: str, isAddRing: bool=False):
     nMesh = mesh.BlockMesh(region=region)
 
-    nMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: nMesh.createCube(
+    nMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: nMesh.create_cube(
             name="core",
             lowX=x-assemblyPitch/2,
             highX=x+assemblyPitch/2,
@@ -63,7 +63,7 @@ def createMesh(region: str, isAddRing: bool=False):
             nx=nxyMesh,
             ny=nxyMesh,
             nz=coreNodes,
-            isAddBoundaryConditions=True
+            isAddAllBC=True
         ),
         lattice=lattice,
         latticeType="square",
@@ -74,7 +74,7 @@ def createMesh(region: str, isAddRing: bool=False):
 
     # Fill the gap
     if (isAddRing):
-        nMesh.fillLatticeRingGap(
+        nMesh.fill_lattice_ring_gap(
             name='gap',
             ringRadius=1.725,
             nxLat=nXY,
@@ -91,27 +91,27 @@ def createMesh(region: str, isAddRing: bool=False):
 
 
     # Merge patches with same name pattern
-    nMesh.addMergePatchPairs(
+    nMesh.add_merge_patch_pairs(
         includeFacename=['Top', 'Bottom'],
         excludeFacename=['Wall']
     )
-    nMesh.addMergePatchPairs(
+    nMesh.add_merge_patch_pairs(
         includeFacename=['Wall'],
         excludeFacename=['Top', 'Bottom'],
     )
-    externalWalls = nMesh.getStandaloneFaces(
+    externalWalls = nMesh.get_standalone_faces(
         includeFacename=['Wall'],
         excludeFacename=['Top', 'Bottom'],
     )
 
     # Rename patches
-    nMesh.mergePatchesWithName(
+    nMesh.merge_patches_with_name(
         name="wall",
         includeFacename=[face.name for face in externalWalls],
         patchType="wall"
     )
-    nMesh.mergePatchesWithName(name="bottom", includeFacename=["Bottom_"])
-    nMesh.mergePatchesWithName(name="top", includeFacename=["Top_"])
+    nMesh.merge_patches_with_name(name="bottom", includeFacename=["Bottom_"])
+    nMesh.merge_patches_with_name(name="top", includeFacename=["Top_"])
 
     return(nMesh)
 
@@ -187,6 +187,8 @@ neutronicsSolver = ffn.NeutronicsSolver(
     power=3e9,
     keff=0.9388902,
 )
+
+neutronicsSolver.nuclearData.import_from_openfoam("XS/nuclearData")
 
 
 #==============================================================================*
@@ -303,8 +305,8 @@ solvers = ffn.Solvers([neutronicsSolver, thSolver])
 
 coupling = ffn.Coupling(solvers=solvers)
 
-coupling.add_field_transfer(neutronicsSolver, thSolver, "powerDensity", "powerDensityNeutronics")
-coupling.add_field_transfer(neutronicsSolver, thSolver, "secondaryPowerDensity", "powerDensityNeutronicsToLiquid")
+coupling.add_field_transfer(neutronicsSolver, thSolver, "powerDensity", "powerDensityStructure")
+coupling.add_field_transfer(neutronicsSolver, thSolver, "secondaryPowerDensity", "powerDensityLiquid")
 
 coupling.add_field_transfer(thSolver, neutronicsSolver, "T", "TCool")
 coupling.add_field_transfer(thSolver, neutronicsSolver, "thermo:rho", "rhoCool")
@@ -383,8 +385,8 @@ if (True):
     #==============================================================================*
     # Duplicate and overwrite files
 
-    for filename in ['nuclearData']:
-        ffn.copyFolder(f"./XS/{filename}", f"constant/{nMesh.region}")
+    # for filename in ['nuclearData']:
+    #     ffn.copyFolder(f"./XS/{filename}", f"constant/{nMesh.region}")
 
 
     #==============================================================================*

@@ -79,7 +79,17 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
 )
 :
     neutronics(mesh),
-    nuclearData_(this->subDict("nuclearData")),
+    nuclearData_
+    (
+        IOobject
+        (
+            "nuclearData",
+            mesh.time().constant(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::NO_WRITE
+        )
+    ),
     power_(reactorState_.get<scalar>("power")),
     fissionPower_(power_),
     decayPower_(0.0),
@@ -820,7 +830,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
         beta_ += betas_[i];
     }
 
-    // 
+    //
     setFeedbackCellField
     (
         fuelFeedbackCellField_,

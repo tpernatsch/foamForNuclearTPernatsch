@@ -119,6 +119,9 @@ if (eigenvalueNeutronics_)
     xs_.adjustDiscFactors(fluxStar_);
 }
 
+// Output the integrated power in reactor state
+reactorState_.set("power", pTot);
+
 residual_ = max(residual_,neutroResidual);
 
 oneGroupFlux_ *= 0.0;

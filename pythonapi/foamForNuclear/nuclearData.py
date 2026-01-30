@@ -478,7 +478,8 @@ class NuclearDataZone(OpenFOAMDict):
             burnup: float=None,
             days: float=None,
             isEffective: bool=True,
-            serpentToolsResfile=None
+            serpentToolsResfile=None,
+            normalizingUniverseName: str='0'
         ) -> None:
         """
         Extract the nuclear data from Serpent `.m` output file for a single
@@ -500,6 +501,8 @@ class NuclearDataZone(OpenFOAMDict):
             Flag to extract the effective or analogue values (default to True)
         serpentToolsResfile :
             serpentTools results file already open
+        normalizingUniverseName : str
+            Name of the normalizing universe for intergalFlux (default '0')
         """
         import serpentTools
 
@@ -570,7 +573,7 @@ class NuclearDataZone(OpenFOAMDict):
 
         discFactor = [1] * ng
 
-        univ0 = res.getUniv('0', burnup=burnup, index=step, timeDays=days)
+        univ0 = res.getUniv(normalizingUniverseName, burnup=burnup, index=step, timeDays=days)
         integralFlux = univ.infExp['infFlx'] / univ0.infExp['infFlx']
 
         # Fill the variables
@@ -1012,14 +1015,14 @@ class NuclearDataState(OpenFOAMDict):
     def __init__(
             self,
             name: str,
-            parameters: dict[str, float]={},
+            parameters: dict[str, float]=None,
             zones: list[NuclearDataZone]=[]
         ):
         super().__init__(name=name)
 
         self.zones: OpenFOAMList[NuclearDataZone] = OpenFOAMList(NuclearDataZone, "zones", items=zones)
 
-        self.parameters = parameters
+        self.parameters = parameters if parameters is not None else {}
 
 
     def __repr__(self, depth = 0):
@@ -1087,6 +1090,7 @@ class NuclearDataState(OpenFOAMDict):
             burnup: float=None,
             days: float=None,
             isEffective: bool=True,
+            normalizingUniverseName: str='0'
         ):
         """
         Extract the nuclear data from Serpent `.m` output file for multiple
@@ -1125,6 +1129,8 @@ class NuclearDataState(OpenFOAMDict):
             Time [days] of the desired universe
         isEffective : bool
             Flag to extract the effective or analogue values (default to True)
+        normalizingUniverseName : str
+            Name of the normalizing universe for intergalFlux (default '0')
         """
         import serpentTools
 
@@ -1140,7 +1146,8 @@ class NuclearDataState(OpenFOAMDict):
                 step=step,
                 days=days,
                 isEffective=isEffective,
-                serpentToolsResfile=res
+                serpentToolsResfile=res,
+                normalizingUniverseName=normalizingUniverseName
             )
             self.add_zone(newZone)
 
@@ -1268,20 +1275,6 @@ class NuclearData(OpenFOAMFile):
         Number of energy groups
     precGroups : int
         Number of precursor groups
-    polyharmonicSplineMode : int
-        Polyharmonic spline function mode (1. `r`; 2. `r^2 ln(r)`; 3. `r^3`;
-        4. `r^4 ln(r)`) (default `1`).
-    ScNo : float
-        Schmidt number for diffusion of precursors (default `1`).
-    adjustDiscFactors : bool
-        Flag to apply the discontinuity factor adjustement (default `False`).
-    useGivenDiscFactors : bool
-        Flag to use homogeneous discontinuity factors provided in state/zone
-        (default `False`)
-    legendreMoments : int
-        Number of Legendre moments, used in SN solver (default `None`).
-    isLowMemory : bool
-        Flag for low memory foot print, useful for SN solver (defaulf `None`).
     """
     def __init__(
             self,
@@ -1289,25 +1282,11 @@ class NuclearData(OpenFOAMFile):
             xsVariables: OpenFOAMDict=None,
             energyGroups: int=None,
             precGroups: int=None,
-            polyharmonicSplineMode: int=1,
-            ScNo: float=1,
-            axialOrientation: Vector=None,
-            adjustDiscFactors: bool=False,
-            useGivenDiscFactors: bool=False,
-            legendreMoments: int=None,
-            isLowMemory: bool=None,
         ):
         super().__init__("nuclearData", folder="constant", region=region)
 
         self.energyGroups = energyGroups
         self.precGroups = precGroups
-        self.polyharmonicSplineMode = polyharmonicSplineMode
-        self.ScNo = ScNo
-        self.axialOrientation = axialOrientation
-        self.adjustDiscFactors = adjustDiscFactors
-        self.useGivenDiscFactors = useGivenDiscFactors
-        self.legendreMoments = legendreMoments
-        self.isLowMemory = isLowMemory
 
         self.xsVariables = xsVariables
 
@@ -1331,72 +1310,6 @@ class NuclearData(OpenFOAMFile):
     def precGroups(self, precGroups):
         check_type("precGroups", precGroups, (int, np.int64), none_ok=True)
         self._precGroups = precGroups
-
-    @property
-    def polyharmonicSplineMode(self):
-        return self._polyharmonicSplineMode
-
-    @polyharmonicSplineMode.setter
-    def polyharmonicSplineMode(self, polyharmonicSplineMode):
-        check_type("polyharmonicSplineMode", polyharmonicSplineMode, (int, np.int64), none_ok=True)
-        self._polyharmonicSplineMode = polyharmonicSplineMode
-
-    @property
-    def ScNo(self):
-        return self._ScNo
-
-    @ScNo.setter
-    def ScNo(self, ScNo):
-        check_type("ScNo", ScNo, (float, int), none_ok=True)
-        self._ScNo = ScNo
-
-    @property
-    def axialOrientation(self):
-        return self._axialOrientation
-
-    @axialOrientation.setter
-    def axialOrientation(self, axialOrientation):
-        check_type("axialOrientation", axialOrientation, (Vector, list, tuple), none_ok=True)
-        if (isinstance(axialOrientation, (list, tuple))):
-            self._axialOrientation = Vector(axialOrientation[0], axialOrientation[1], axialOrientation[2])
-        else:
-            self._axialOrientation = axialOrientation
-
-    @property
-    def adjustDiscFactors(self):
-        return self._adjustDiscFactors
-
-    @adjustDiscFactors.setter
-    def adjustDiscFactors(self, adjustDiscFactors):
-        check_type("adjustDiscFactors", adjustDiscFactors, bool)
-        self._adjustDiscFactors = adjustDiscFactors
-
-    @property
-    def useGivenDiscFactors(self):
-        return self._useGivenDiscFactors
-
-    @useGivenDiscFactors.setter
-    def useGivenDiscFactors(self, useGivenDiscFactors):
-        check_type("useGivenDiscFactors", useGivenDiscFactors, bool)
-        self._useGivenDiscFactors = useGivenDiscFactors
-
-    @property
-    def legendreMoments(self):
-        return self._legendreMoments
-
-    @legendreMoments.setter
-    def legendreMoments(self, legendreMoments):
-        check_type("legendreMoments", legendreMoments, int, none_ok=True)
-        self._legendreMoments = legendreMoments
-
-    @property
-    def isLowMemory(self):
-        return self._isLowMemory
-
-    @isLowMemory.setter
-    def isLowMemory(self, isLowMemory):
-        check_type("isLowMemory", isLowMemory, bool, none_ok=True)
-        self._isLowMemory = isLowMemory
 
     @property
     def xsVariables(self):
@@ -1510,19 +1423,6 @@ class NuclearData(OpenFOAMFile):
             text += addParameter('energyGroups', self.energyGroups, isAddExtraLine=True)
             text += addParameter('precGroups', self.precGroups, isAddExtraLine=True)
 
-            text += addParameter('polyharmonicSplineMode', self.polyharmonicSplineMode, isAddExtraLine=True)
-            text += addParameter('ScNo', self.ScNo, isAddExtraLine=True)
-            if (self.axialOrientation is not None):
-                text += addParameter('axialOrientation', self.axialOrientation, isAddExtraLine=True)
-
-            text += addParameter('adjustDiscFactors', self.adjustDiscFactors, isAddExtraLine=True, none_ok=False)
-            text += addParameter('useGivenDiscFactors', self.useGivenDiscFactors, isAddExtraLine=True, none_ok=False)
-
-            if (self.legendreMoments is not None):
-                text += addParameter('legendreMoments', self.legendreMoments, isAddExtraLine=True, none_ok=False)
-            if (self.isLowMemory is not None):
-                text += addParameter('isLowMemory', self.isLowMemory, isAddExtraLine=True, none_ok=False)
-
         text += f"xsVariables{self.xsVariables!r}\n"
 
         text += self.export_states_to_openfoam()
@@ -1550,20 +1450,6 @@ class NuclearData(OpenFOAMFile):
 
         self.energyGroups = foamFile['energyGroups']
         self.precGroups = foamFile['precGroups']
-        if ('polyharmonicSplineMode' in foamFile):
-            self.polyharmonicSplineMode = foamFile['polyharmonicSplineMode']
-        if ('ScNo' in foamFile):
-            self.ScNo = foamFile['ScNo']
-        if ('axialOrientation' in foamFile):
-            self.axialOrientation = foamFile['axialOrientation']
-        if ('adjustDiscFactors' in foamFile):
-            self.adjustDiscFactors = foamFile['adjustDiscFactors']
-        if ('useGivenDiscFactors' in foamFile):
-            self.useGivenDiscFactors = foamFile['useGivenDiscFactors']
-        if ('legendreMoments' in foamFile):
-            self.legendreMoments = foamFile['legendreMoments']
-        if ('isLowMemory' in foamFile):
-            self.isLowMemory = foamFile['isLowMemory']
 
         # Read variable law
         xsVariables = foamFile['xsVariables']
@@ -1573,7 +1459,12 @@ class NuclearData(OpenFOAMFile):
         # Read nuclear data states
         for state in foamFile["states"]:
             stateName, stateDict = state
+
             nuclearDataState = NuclearDataState(name=stateName)
+
+            for xsVariable in xsVariables:
+                if (xsVariable in stateDict.keys()):
+                    nuclearDataState.add_parameters(name=xsVariable, value=stateDict[xsVariable])
 
             zones = stateDict['zones']
             for zone in zones:
@@ -1619,7 +1510,6 @@ class PointKineticsData(NuclearData):
     def __init__(
             self,
             region: str="",
-            fastNeutrons: bool=None,
             promptGenerationTime: float=None,
             nuFission: float=None,
             energyPerFission: float=None,
@@ -1643,7 +1533,6 @@ class PointKineticsData(NuclearData):
         ):
         super().__init__(region)
 
-        self.fastNeutrons = fastNeutrons
         self.promptGenerationTime = promptGenerationTime
         self.nuFission = nuFission
         self.energyPerFission = energyPerFission
@@ -1670,14 +1559,6 @@ class PointKineticsData(NuclearData):
         self.structFeedbackZones = structFeedbackZones
         self.drivelineFeedbackZones = drivelineFeedbackZones
 
-    @property
-    def fastNeutrons(self):
-        return self._fastNeutrons
-
-    @fastNeutrons.setter
-    def fastNeutrons(self, fastNeutrons) -> None:
-        check_type("fastNeutrons", fastNeutrons, bool, none_ok=True)
-        self._fastNeutrons = fastNeutrons
 
     @property
     def promptGenerationTime(self):
@@ -1852,7 +1733,6 @@ class PointKineticsData(NuclearData):
     def export_to_openfoam(self):
         text = ""
 
-        text += addParameter("fastNeutrons", self.fastNeutrons, isAddExtraLine=True)
         text += addParameter("promptGenerationTime", self.promptGenerationTime, isAddExtraLine=True)
 
         if (self.nuFission is not None):
