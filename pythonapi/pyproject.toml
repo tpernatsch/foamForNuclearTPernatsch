@@ -10,7 +10,7 @@ authors = [
 description = "FoamForNuclear Python API"
 requires-python = ">=3.10"
 license = {file = "LICENSE"}
-version = "v2506"
+version = "v2512"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",

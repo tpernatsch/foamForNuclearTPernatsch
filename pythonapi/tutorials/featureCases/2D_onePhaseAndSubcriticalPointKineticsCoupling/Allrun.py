@@ -298,12 +298,14 @@ ffn.run(model, is_preprocessing=True)
 model.plot_slice(
     region=nMesh.region,
     time=settings.endTime,
-    fieldName='powerDensity'
+    fieldName='powerDensity',
+    offset=(0, 0.05, 0)
 )
 model.plot_slice(
     region=thMesh.region,
     time=settings.endTime,
     fieldName='T',
+    offset=(0, 0.05, 0),
     cmap='RdBu_r',
     show_edges=True,
     unit='K'
@@ -325,6 +327,7 @@ model.plot_residuals(
 neutronicsSolver.solver = "pointKinetics"
 neutronicsSolver.eigenvalueNeutronics = False
 neutronicsSolver.externalSourceNeutronics = True
+neutronicsSolver.fastNeutrons = True
 
 neutronicsSolver.externalSource.nuSource = 15.5 # [neutron/proton]
 neutronicsSolver.externalSource.beamEnergy = 1.28160e-10 # [J/proton], 800 MeV/proton
@@ -339,7 +342,6 @@ neutronicsSolver.externalSource.externalSourceModulationTimeProfile = ffn.TimePr
 )
 
 pointKineticsData = ffn.PointKineticsData(
-    fastNeutrons=True,
     promptGenerationTime=0.0015,
     nuFission=2.45,
     energyPerFission=32e-12,

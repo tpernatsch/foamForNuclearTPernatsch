@@ -12,6 +12,7 @@ from foamForNuclear.powerModels import PowerModel
 from foamForNuclear.powerOffCriterionModels import PowerOffCriterionModel
 from foamForNuclear.regimeMapModels import RegimeMapModel
 from foamForNuclear.twoPhaseDragMultiplierModels import TwoPhaseDragMultiplierModel
+from foamForNuclear.pump import Pump
 
 _LATTICE_TYPES = {"square", "hexagon"}
 _STATE_OF_MATTER_TYPES = {"liquid", "gas"}
@@ -194,6 +195,7 @@ class StructureProperty(OpenFOAMDict):
 
         self.powerModel = None
         self.passiveProperties = None
+        self.pump = None
 
 
     def __repr__(self, depth = 0):
@@ -204,6 +206,9 @@ class StructureProperty(OpenFOAMDict):
 
         if (self.passiveProperties is not None):
             self.__setitem__('passiveProperties', self.passiveProperties)
+
+        if (self.pump is not None):
+            self.__setitem__('pump', self.pump)
 
         return textZones + super().__repr__(depth)
 
@@ -416,6 +421,15 @@ class StructureProperty(OpenFOAMDict):
         check_type("passiveProperties", passiveProperties, PassiveProperties, none_ok=True)
         self._passiveProperties = passiveProperties
 
+    @property
+    def pump(self):
+        return self._pump
+
+    @pump.setter
+    def pump(self, pump) -> None:
+        check_type("pump", pump, Pump, none_ok=True)
+        self._pump = pump
+
 
     def add_power_model(self, powerModel: PowerModel):
         self.powerModel = powerModel
@@ -429,6 +443,10 @@ class StructureProperty(OpenFOAMDict):
             T=T,
             rhoCp=rhoCp
         )
+
+
+    def add_pump(self, pump: Pump):
+        self.pump = pump
 
 
     def compute_hydraulic_parameters(

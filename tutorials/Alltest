@@ -152,7 +152,7 @@ then
     echo "Testing tutorials using FMUs"
 
     tutorials+=(
-        "fmuCases/powerTemperatureMomentumControl                   0.2"
+        "fmuCases/powerTemperatureMomentumControl                   0.5"
         "fmuCases/2D_PKCoupleFMI/comparisonFMU                      0.3"
         "fmuCases/2D_PKCoupleFMI/PIDcontrol                         0.3"
         # "fmuCases/2D_LFRpowerPlant/GeN-FoamAndModelica             10.0"

@@ -1,22 +1,15 @@
 from foamForNuclear.checkvalue import check_type
-from foamForNuclear.common import Vector
-from foamForNuclear.phaseProperties import StructureProperty
+from foamForNuclear.common import OpenFOAMDict, Vector
 from foamForNuclear.timeProfile import TimeProfile
 
 
-class Pump(StructureProperty):
+class Pump(OpenFOAMDict):
     """
     Allow defining a momentum source, including options for a time
     dependent source, and a source coming from an FMU.
 
     Parameters
     ----------
-    zones : list[str]
-        List of zone names to apply the momentum source
-    volumeFraction : float
-        Volume fraction of structure
-    Dh : float
-        Hydraulic diameter
     momentumSource: Vector
         Momentum source strength in kg.m/s / m3
     momentumSourceTimeProfile : TimeProfile, optional
@@ -26,14 +19,10 @@ class Pump(StructureProperty):
 
     def __init__(
             self,
-            zones: list[str]=[],
-            volumeFraction: float=None,
-            Dh: float=None,
             momentumSource: Vector=None,
             momentumSourceTimeProfile: TimeProfile=None
         ):
-        super().__init__(zones, volumeFraction, Dh)
-
+        super().__init__()
         self.momentumSource = momentumSource
         self.momentumSourceTimeProfile: TimeProfile = momentumSourceTimeProfile
 

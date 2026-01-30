@@ -200,11 +200,12 @@ thSolver.fvSchemes.snGradSchemes['default'] = 'uncorrected'
 neutronicsSolver = ffn.NeutronicsSolver(
     "neutroRegion",
     "diffusionNeutronics",
-    mesh=nMesh, power=10000000
+    mesh=nMesh,
+    power=10000000,
+    fastNeutrons=True,
 )
 
 pointKineticsData = ffn.PointKineticsData(
-    fastNeutrons=True,
     promptGenerationTime=1e-06,
     delayedFractions=[
         7.2315e-05,

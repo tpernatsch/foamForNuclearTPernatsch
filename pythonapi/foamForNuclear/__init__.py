@@ -9,7 +9,7 @@ foamForNuclear:
     |    / __/  / __/  / /|  /      |                                            |
     |   /_/    /_/    /_/ |_/       |                                            |
     |                                                                            |
-    |  Built on OpenFOAM v2506                                                   |
+    |  Built on OpenFOAM v2512                                                   |
     |  Copyright 2011-2016 OpenFOAM Foundation, 2017-2025 OpenCFD Ltd.           |
     \*--------------------------------------------------------------------------*/
 
