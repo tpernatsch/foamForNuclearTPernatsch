@@ -11,19 +11,64 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      neutronicsProperties;
+    object      nuclearData;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-eigenvalueNeutronics        true;
+promptGenerationTime 1e-06;
 
-//- Relevant for both pointKinetics and diffusionNeutronics
+Beta
+(
+    7.2315e-05
+    0.000609661
+    0.000471181
+    0.00118907
+    0.000445487
+    9.58515e-05
+);
 
-fastNeutrons    true;
+lambda
+(
+    0.0125371
+    0.0300828
+    0.109879
+    0.325484
+    1.3036
+    9.51817
+);
 
-adjustDiscFactors false;
+feedbackCoeffDoppler        0;
 
-useGivenDiscFactors false;
+feedbackCoeffTFuel          -3e-06;
+
+feedbackCoeffTClad          0;
+
+feedbackCoeffTCool          0;
+
+feedbackCoeffRhoCool        0;
+
+feedbackCoeffTStruct        0;
+
+feedbackCoeffTStructMech    0;
+
+absoluteDrivelineExpansionCoeff 8e-05;
+
+controlRodReactivityMap
+(
+    (  0.1 -0.01 )
+    (  0.0  0.0  )
+    ( -0.1  0.01 )
+);
+
+//- Evolution of the external reactivity
+externalReactivityTimeProfile
+{
+    type        table;
+    table       table
+    (
+        (   0   0.0005767131    ) //- i.e. 57.67131 pcm, == 0.2*Beta
+    );
+}
 
 
 // ************************************************************************* //

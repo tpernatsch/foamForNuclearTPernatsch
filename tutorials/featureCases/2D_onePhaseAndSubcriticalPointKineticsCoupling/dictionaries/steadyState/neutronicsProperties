@@ -19,46 +19,14 @@ eigenvalueNeutronics        true;
 //- If true, add the external source to the point-kinetics equations
 externalSourceNeutronics    false;
 
-liquidFuel          false; // defaulted to false
-fastNeutrons              true;
+liquidFuel                  false; // defaulted to false
+
+fastNeutrons                true;
 
 //- Parameters relevant only for Diffusion Neutronics
-precGroups                1; // 6; // from FWD_ANA_BETA_ZERO
-energyGroups              2; // from MACRO_NG
 adjustDiscFactors         false;
+
 useGivenDiscFactors       false;
 
-nuclearData
-{
-    xsVariables
-    {}
-
-    states
-    (
-        reference
-        {
-
-            zones
-            (
-                zone0
-                {
-                    fuelFraction  1;
-                    sigmaRemoval  nonuniform List<scalar> 2 (5 4);
-                    nuSigmaEff    nonuniform List<scalar> 2 (1 5.74);
-                    sigmaPow      nonuniform List<scalar> 2 {1};
-                    scatteringMatrixP0 2 2 ( ( 10 5 ) ( 0 10 ) );
-                    discFactor    nonuniform List<scalar> 2 {1};
-                    chiPrompt     nonuniform List<scalar> 2 (1 0);
-                    chiDelayed    nonuniform List<scalar> 2 {0.5};
-                    IV            nonuniform List<scalar> 2 (7.1e-08 0.0045);
-                    lambda        nonuniform List<scalar> 1(1e-5);
-                    Beta          nonuniform List<scalar> 1(0.0075);
-                    D             nonuniform List<scalar> 2 (0.1 0.04);
-                    integralFlux  nonuniform List<scalar> 2 {1};
-                }
-            );
-        }
-    );
-}
 
 // ************************************************************************* //

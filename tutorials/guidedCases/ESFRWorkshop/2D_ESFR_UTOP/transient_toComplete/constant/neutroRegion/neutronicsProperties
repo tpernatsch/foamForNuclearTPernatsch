@@ -16,6 +16,8 @@ FoamFile
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 eigenvalueNeutronics    false;
-externalSourceMode false;
+
+externalSourceMode      false;
+
 
 // ************************************************************************* //

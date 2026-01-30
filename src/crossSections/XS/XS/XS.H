@@ -99,9 +99,11 @@ protected:
 
         // Data
 
-            //- Nuclear data dictionary
+            //- Neutronics properties dictionary
             IOdictionary neutronicsProperties_;
-            dictionary   nuclearData_;
+
+            //- Nuclear data dictionary
+            IOdictionary nuclearData_;
 
             //- Flag to read variable XS fields. Be careful, can be intensive
             bool isReadXS_;

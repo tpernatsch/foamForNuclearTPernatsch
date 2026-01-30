@@ -67,16 +67,26 @@ Foam::XS::XS
             IOobject::NO_WRITE
         )
     ),
-    nuclearData_(neutronicsProperties_.subDict("nuclearData")),
+    nuclearData_
+    (
+        IOobject
+        (
+            "nuclearData",
+            mesh.time().constant(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::NO_WRITE
+        )
+    ),
     isReadXS_(neutronicsProperties_.lookupOrDefault("isReadXS", false)),
     isWriteXS_(neutronicsProperties_.lookupOrDefault("isWriteXS", false)),
     isLowMemory_(neutronicsProperties_.lookupOrDefault("isLowMemory", false)),
-    energyGroups_(neutronicsProperties_.lookupOrDefault("energyGroups", 1)),
-    precGroups_(neutronicsProperties_.lookupOrDefault("precGroups", 1)),
+    energyGroups_(nuclearData_.lookupOrDefault("energyGroups", 1)),
+    precGroups_(nuclearData_.lookupOrDefault("precGroups", 1)),
     legendreMoments_(1+neutronicsProperties_.lookupOrDefault("legendreMoments", 0)),
     axialOrientation_(neutronicsProperties_.lookupOrDefault("axialOrientation", vector(0.0, 0.0, 1.0))),
     ScNo_(neutronicsProperties_.lookupOrDefault("ScNo", 1.0)),
-    polyharmonicSplineMode_(nuclearData_.lookupOrDefault("polyharmonicSplineMode", 1)),
+    polyharmonicSplineMode_(neutronicsProperties_.lookupOrDefault("polyharmonicSplineMode", 1)),
     xsVariablesDict_(nuclearData_.subDict("xsVariables")),
     nxsVariables_(xsVariablesDict_.toc().size()),
     xsVariableNames_(nxsVariables_),

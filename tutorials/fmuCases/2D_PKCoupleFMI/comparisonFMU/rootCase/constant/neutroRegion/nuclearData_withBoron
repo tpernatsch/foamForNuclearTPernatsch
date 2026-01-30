@@ -15,9 +15,6 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-//- Relevant for both pointKinetics and diffusionNeutronics
-
-fastNeutrons    true;
 
 //- Relevant only for pointKinetics
 

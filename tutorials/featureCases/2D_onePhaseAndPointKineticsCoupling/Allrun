@@ -36,8 +36,8 @@ setSteadyState()
     foamDictionary $2/system/controlDict -entry writeControl -set adjustableRunTime
     foamDictionary $2/system/controlDict -entry writeInterval -set 100
     cp dictionaries/steadyState/neutronicsProperties $2/constant/neutroRegion/neutronicsProperties
+    cp dictionaries/steadyState/nuclearData $2/constant/neutroRegion/nuclearData
     cp dictionaries/steadyState/regionsDict $2/system/regionsDict
-    foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set true
     GeN-Foam -initializeMappedFields -case $2
 }
 
@@ -51,8 +51,8 @@ setTransientNoDriveline()
     foamDictionary $2/system/controlDict -entry writeControl -set timeStep
     foamDictionary $2/system/controlDict -entry writeInterval -set 10
     cp dictionaries/transient/neutronicsProperties_noBoron $2/constant/neutroRegion/neutronicsProperties
+    cp dictionaries/transient/nuclearData_noBoron $2/constant/neutroRegion/nuclearData
     foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry nuclearData.absoluteDrivelineExpansionCoeff -set 0.0
-    foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
     cp dictionaries/transient/regionsDict $2/system/regionsDict
     GeN-Foam -initializeMappedFields -case $2
 }
@@ -67,8 +67,8 @@ setTransientWithDriveline()
     foamDictionary $2/system/controlDict -entry writeControl -set timeStep
     foamDictionary $2/system/controlDict -entry writeInterval -set 10
     cp dictionaries/transient/neutronicsProperties_noBoron $2/constant/neutroRegion/neutronicsProperties
+    cp dictionaries/transient/nuclearData_noBoron $2/constant/neutroRegion/nuclearData
     foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry nuclearData.absoluteDrivelineExpansionCoeff -set 8e-5
-    foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
     cp dictionaries/transient/regionsDict $2/system/regionsDict
     GeN-Foam -initializeMappedFields -case $2
 }
@@ -79,7 +79,7 @@ setTransientWithBoron()
     runCloneCase $1 $2
     printf "Setting transient with driveline case...\n"
     cp dictionaries/transient/neutronicsProperties_withBoron $2/constant/neutroRegion/neutronicsProperties
-    foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
+    cp dictionaries/transient/nuclearData_withBoron $2/constant/neutroRegion/nuclearData
     foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry nuclearData.absoluteDrivelineExpansionCoeff -set 0.0
     foamDictionary $2/system/controlDict -entry startTime -set 100
     foamDictionary $2/system/controlDict -entry endTime -set 200

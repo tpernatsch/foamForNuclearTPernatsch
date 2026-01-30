@@ -78,10 +78,8 @@ functions
     {
         type            FMUSimulator;
         libs            (pyFMUSim);
-        // pyClassName     momentumSourceTest;
-        // pyFileName      momentumSourceTest;
-        pyClassName     ExternalReactivityController;
-        pyFileName      ExternalReactivityController;
+        pyClassName     momentumSourceTest;
+        pyFileName      momentumSourceTest;
     }
 
     // /*
