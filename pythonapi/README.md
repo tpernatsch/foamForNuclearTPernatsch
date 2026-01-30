@@ -11,7 +11,7 @@ git clone --recursive https://gitlab.com/foamForNuclear/foamForNuclear.git
 
 # Install the Python API
 cd foamForNuclear/pythonapi
-pip3 install .
+pip3 install -e .
 
 # Or
 cd foamForNuclear/
