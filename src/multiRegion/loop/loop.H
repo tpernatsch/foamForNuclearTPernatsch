@@ -63,7 +63,7 @@ Usage
                     neutroRegion            diffusionNeutronics;
                     multiPhysicsSolver2     loop;
                 }
-                minResidual 0.00005;   // residual after which the iteration is ended
+                maxResidual 0.00005;   // residual after which the iteration is ended
                 maxIterations 3;       // maximum number of iterations before the loop is ended
                 includeFluidMechanicsInLoop  false; //defaulted to false
             }

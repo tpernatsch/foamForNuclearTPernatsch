@@ -9,7 +9,7 @@ by the :ref:`XS.H <XS>` class. Detailed explanations on the file format are prov
 :ref:`XS.H <XS>` and in the tutorials (e.g `3D_SmallESFR
 <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/neutroRegion/neutronicsProperties>`_).
 
-The *nuclearData* dictionary can be found under *constant/(neutronicsRegionName)/neutronicsProperties*. It
+The *nuclearData* dictionary can be found under *constant/(neutronicsRegionName)/*. It
 contains all basic nuclear properties for the reference and perturbed reactor
 states. For instance, including ``TFuel`` in the ``reference`` state and a perturbed state
 represents the temperatures at which the reference and perturbed cross-sections
@@ -177,7 +177,7 @@ examples of *nuclearData* in the tutorials
 XS data
 ~~~~~~~
 
-The nuclear data are composed of predined XS and spatial kinetics related
+The nuclear data are composed of predefined XS and spatial kinetics related
 parameters. For each cellZone, the sub-dict must contains the following
 keywords as scalar:
 
@@ -272,3 +272,11 @@ One can also parametrize multiple external code results in the API as follow:
     neutronicsSolver.nuclearData.add_state(refState)
     neutronicsSolver.nuclearData.add_state(Tfuel1200K)
     neutronicsSolver.nuclearData.add_state(TfuelAndRhoHot)
+
+
+If the ``nuclearData`` has been prepared using another tool, one can import it
+using the API as follow:
+
+.. code :: python
+
+    neutronicsSolver.nuclearData.import_from_openfoam("path/to/nuclearData")
