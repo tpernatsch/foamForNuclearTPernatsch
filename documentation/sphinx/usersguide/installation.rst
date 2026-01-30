@@ -27,13 +27,13 @@ the installer script with one of these commands:
    sudo apt-get update
 
    # Install preferred package. Eg,
-   sudo apt-get install openfoam2506-default
+   sudo apt-get install openfoam2512-default
 
 Add in your ``~/.bashrc`` the following command to access all the functionalities of OpenFOAM.
 
 .. code-block:: bash
 
-   source /usr/lib/openfoam/openfoam2506/etc/bashrc
+   source /usr/lib/openfoam/openfoam2512/etc/bashrc
 
 If installing from source, follow the `instructions here <https://develop.openfoam.com/Development/openfoam/-/blob/master/doc/Build.md>`_.
 Check for the appropriate version of OpenFOAM specified in the readme file of the `GitLab repository
