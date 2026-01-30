@@ -75,6 +75,7 @@ tutorials/featureCases/2D_voidMotionNoPhaseChange/*[123456789]*
 tutorials/guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion/[01]
 tutorials/guidedCases/2_reactorSlabReflected_1D_1Gr_neutronicDiffusion/[01]
 tutorials/reactorCases/Godiva_SN/*[123456789]*
+tutorials/reactorCases/3D_genericParticleBedNTP/thermoCase
 tutorials/fmuCases/powerTemperatureMomentumControl/*[123456789]*
 tutorials/*/**/0.converged*
 tutorials/**/postProcessing*
