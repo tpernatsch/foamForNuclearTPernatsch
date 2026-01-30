@@ -293,7 +293,7 @@ Foam::powerModels::nuclearSteadyStatePebble::nuclearSteadyStatePebble
     regionIndexToRegionName_(0),
     pi_(constant::mathematical::pi)
 {
-    structure_.setRegionField(*this, structureRef.powerDensityNeutronics(), "powerDensityNeutronics");
+    structure_.setRegionField(*this, structureRef.powerDensityNeutronics(), "powerDensity");
     const scalarField& V(mesh_.V());
     forAll(this->toc(), regioni)
     {
