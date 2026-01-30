@@ -35,6 +35,8 @@ _SURFACE_REGION_TYPES = {
 }
 _FMI_CONNECTION_DIRECTION_TYPES = {'from', 'to'}
 
+_MAP_METHODS = {"direct", "mapNearest", "cellVolumeWeight", "correctedCellVolumeWeight"}
+
 
 
 class FunctionObject(OpenFOAMDict):
@@ -202,6 +204,92 @@ class FunctionObject(OpenFOAMDict):
     def read_from_case(self, startTime: float, caseFolder: str='./'):
         msg = "FunctionObject.read_from_case not implemented"
         raise NotImplementedError(msg)
+
+
+class MapFields(FunctionObject):
+    def __init__(
+            self,
+            name: str,
+            fields: list[str],
+            mapRegion: str,
+            mapMethod: str,
+            consitent: bool=True,
+            log: bool=None,
+            writeControl: str=None,
+            writeInterval: float=None,
+            region: str=None,
+        ):
+        """
+        Parameters
+        ----------
+        fields : list[str]
+            List of fields name to map from `region` to `mapRegion`.
+        mapRegion : str
+            Name of the region to map to.
+        mapMethod : str {direct, mapNearest, cellVolumeWeight, correctedCellVolumeWeight}
+            Mapping method.
+        region : str
+            Name of the region to map from.
+        """
+        super().__init__(
+            name,
+            "mapFields",
+            "libfieldFunctionObjects.so",
+            log,
+            None,
+            writeControl,
+            writeInterval,
+            region,
+            None,
+            None,
+            None,
+            1
+        )
+        self.fields = fields
+        self.mapRegion = mapRegion
+        self.mapMethod = mapMethod
+        self.consitent = consitent
+
+    @property
+    def fields(self):
+        return self._fields
+
+    @fields.setter
+    def fields(self, fields):
+        check_type("fields", fields, list)
+        self._fields = fields
+        self.__setitem__("fields", List(fields))
+
+    @property
+    def mapRegion(self):
+        return self._mapRegion
+
+    @mapRegion.setter
+    def mapRegion(self, mapRegion):
+        check_type("mapRegion", mapRegion, str)
+        self._mapRegion = mapRegion
+        self.__setitem__("mapRegion", mapRegion)
+
+    @property
+    def mapMethod(self):
+        return self._mapMethod
+
+    @mapMethod.setter
+    def mapMethod(self, mapMethod):
+        check_type("mapMethod", mapMethod, str)
+        check_value("mapMethod", mapMethod, _MAP_METHODS)
+        self._mapMethod = mapMethod
+        self.__setitem__("mapMethod", mapMethod)
+
+    @property
+    def consitent(self):
+        return self._consitent
+
+    @consitent.setter
+    def consitent(self, consitent):
+        check_type("consitent", consitent, bool)
+        self._consitent = consitent
+        self.__setitem__("consitent", consitent)
 
 
 class SurfaceFieldValue(FunctionObject):
