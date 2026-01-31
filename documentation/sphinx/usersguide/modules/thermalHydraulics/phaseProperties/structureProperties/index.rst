@@ -167,7 +167,7 @@ Three examples of *structureProperties* dictionaries are reported below. *diagri
 
 .. note::
 
-    Anisotropic pressure drops can be set by by setting three different correlations    for the three different local axis (see :ref:`the physicsModels sub-dictionary <modules_thermalHydraulics_porousMedium_physicsModels>`). In addition, it is possible to use an
+    Anisotropic pressure drops can be set using three different correlations    for the three different local axis (see :ref:`the physicsModels sub-dictionary <modules_thermalHydraulics_porousMedium_physicsModels>`). In addition, it is possible to use an
     anisotropic hydraulic diameter. The anisotropy of the hydraulic diameter can
     be set using the keyword *localDhAnisotropy* and assigned to it a vector of
     three scaling factors, one for each local direction.
