@@ -17,5 +17,10 @@ that is proportional to the fraction of the other phase (see
 toctreeHere
 
 
+.. raw:: html
+
+   <br><br>
+
+
 .. note ::
   Multiphase simulations require a ``turbulenceProperties`` dictionary for every phase (e.g., ``turbulenceProperties.liquid`` and ``turbulenceProperties.vapour``)
