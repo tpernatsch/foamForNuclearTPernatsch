@@ -200,3 +200,9 @@ An example of dictionary is reported below.
 
 
 
+.. note::
+
+    Anisotropic pressure drops can be set by by setting three different correlations    for the three different local axes (see :ref:`the physicsModels sub-dictionary <modules_thermalHydraulics_porousMedium_physicsModels>`). In addition, it is possible to use an
+    anisotropic hydraulic diameter ((see :ref:`the structureProperties sub-dictionary <modules_thermalHydraulics_porousMedium_structureProperties>`)). The anisotropy of the hydraulic diameter can
+    be set using the keyword *localDhAnisotropy* and assigned to it a vector of
+    three scaling factors, one for each local direction.

@@ -11,6 +11,12 @@ included in the thermal-hydraulics module of foamForNuclear:
 
 toctreeHere
 
+
+.. raw:: html
+
+   <br><br>
+
+
 Power densities can be provided to the :ref:`onePhase <onePhase>`, :ref:`onePhaseLegacy <onePhaseLegacy>` and :ref:`twoPhase <twoPhase>` solvers direclty as fields in the initial time folder. There two types of power densities:
 
    - ``powerDensityLiquid`` is given to the liquid

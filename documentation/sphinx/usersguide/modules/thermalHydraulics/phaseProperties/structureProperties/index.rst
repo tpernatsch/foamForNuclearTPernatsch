@@ -20,7 +20,7 @@ temperature at the surface of the cladding. The fluid will then be capable of
 calculating the heat transfer with the fuel based on the cladding surface
 temperature and the Nusselt number. 
 
-The  *structureProperties* dictionary consists of a series of sub-dictionaries
+The  *structureProperties* sub-dictionary consists of a series of sub-dictionaries
 whose properties are applied to the cellZones that have their name
 in the subDict keys. The presence of any of these
 sub-dictionaries is not mandatory, and the structure defaults, globally, to
@@ -61,7 +61,7 @@ Possible keys include:
      - Properties of the passive structure, including ``volumetricArea``, wither ``rho`` (density) and ``Cp`` or ``rhoCp``, ``volumeFraction`` (if different than that of the entire sub-structure), ``T`` (initial temperature). 
      
 
-Two examples of *structureProperties* dictionaries are reported below. *diagrid*, *axialReflector*, etc. are name of cell zones. 
+Three examples of *structureProperties* dictionaries are reported below. *diagrid*, *axialReflector*, etc. are name of cell zones. 
 
 .. The main run-time selectable models are:
 
@@ -165,6 +165,24 @@ Two examples of *structureProperties* dictionaries are reported below. *diagrid*
 
 
 
+.. note::
+
+    Anisotropic pressure drops can be set by by setting three different correlations    for the three different local axis (see :ref:`the physicsModels sub-dictionary <modules_thermalHydraulics_porousMedium_physicsModels>`). In addition, it is possible to use an
+    anisotropic hydraulic diameter. The anisotropy of the hydraulic diameter can
+    be set using the keyword *localDhAnisotropy* and assigned to it a vector of
+    three scaling factors, one for each local direction.
+
+.. note::
+
+    The thermal-hydraulic class can make use of a local coordinate system, which
+    can be used by setting the keywords *localX* and *localY*  in the
+    sub-dictionary *dragModels.(nameOfPhase).structure.(nameOfCellZones)* of the
+    dictionary *constant/fluidRegion/phaseProperties*. A local coordinate system
+    can be used for instance when one knows the pressure drop correlation in a
+    direction that is different from the x, y, and z directions of the global
+    coordinate system. Besides drag models, the local coordinate system can be
+    used also for defining a tortuosity (keyword *localTortuosity*, to be
+    defined as a vector in the local coordinate system).
 
 
 

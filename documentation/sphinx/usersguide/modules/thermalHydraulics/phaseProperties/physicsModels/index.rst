@@ -11,7 +11,7 @@ The *physicsModels* sub-dictionary is used in one-phase simulations to define th
 
 
 
-An example of dictionary is reported below. 
+Two examples of dictionaries are reported below. 
 
 .. code :: cpp
    
@@ -56,6 +56,37 @@ An example of dictionary is reported below.
    }
 
 
+.. code :: cpp
+
+    physicsModels
+    {
+        dragModels
+        {
+            [nameOfCellZone]
+            {
+                localX
+                {
+                    type    ReynoldsPower;
+                    coeff   1.84; //
+                    exp     -0.2;
+                }
+                localY
+                {
+                    type    ReynoldsPower;
+                    coeff   1.84; //
+                    exp     -0.2;
+                }
+                localZ
+                {
+                    type    ReynoldsPower;
+                    coeff   0.184; //
+                    exp     -0.2;
+                }
+
+            }
+        }
+    }
+
 
 .. .. toctree::
 ..    :maxdepth: 1
@@ -66,3 +97,9 @@ An example of dictionary is reported below.
 
 
 
+.. note::
+
+    Anisotropic pressure drops can be set by by setting three different correlations    for the three different local axes. In addition, it is possible to use an
+    anisotropic hydraulic diameter ((see :ref:`the structureProperties sub-dictionary <modules_thermalHydraulics_porousMedium_structureProperties>`)). The anisotropy of the hydraulic diameter can
+    be set using the keyword *localDhAnisotropy* and assigned to it a vector of
+    three scaling factors, one for each local direction.
