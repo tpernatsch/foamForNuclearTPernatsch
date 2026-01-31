@@ -37,6 +37,7 @@ _FMI_CONNECTION_DIRECTION_TYPES = {'from', 'to'}
 
 _MAP_METHODS = {"direct", "mapNearest", "cellVolumeWeight", "correctedCellVolumeWeight"}
 
+_MODE_TYPES = {"magnitude", "component"}
 
 
 class FunctionObject(OpenFOAMDict):
@@ -220,6 +221,9 @@ class MapFields(FunctionObject):
             region: str=None,
         ):
         """
+        OpenFOAM's Maps input fields from local mesh to secondary mesh at
+        runtime.
+
         Parameters
         ----------
         fields : list[str]
@@ -280,6 +284,102 @@ class MapFields(FunctionObject):
         check_value("mapMethod", mapMethod, _MAP_METHODS)
         self._mapMethod = mapMethod
         self.__setitem__("mapMethod", mapMethod)
+
+    @property
+    def consitent(self):
+        return self._consitent
+
+    @consitent.setter
+    def consitent(self, consitent):
+        check_type("consitent", consitent, bool)
+        self._consitent = consitent
+        self.__setitem__("consitent", consitent)
+
+
+class FieldMinMax(FunctionObject):
+    def __init__(
+            self,
+            name: str,
+            fields: list[str],
+            mode: str,
+            location: bool=True,
+            log: bool=None,
+            writeControl: str=None,
+            writeInterval: float=None,
+            region: str=None,
+        ):
+        """
+        The OpenFOAM's fieldMinMax function object computes the values and
+        locations of field minima and maxima. These are good indicators of
+        calculation performance, e.g. to confirm that predicted results are
+        within expected bounds, or how well a case is converging.
+
+        Multiple fields can be processed, where for rank > 0 primitives, e.g.
+        vectors and tensors, the extrema can be calculated per component, or by
+        magnitude. In addition, spatial location and local processor index are
+        included in the output.
+
+        More info: https://www.openfoam.com/documentation/guides/latest/doc/guide-fos-field-fieldMinMax.html
+
+        Parameters
+        ----------
+        fields : list[str]
+            List of fields name to map from `region` to `mapRegion`.
+        mode : str {magnitude, component}
+            Calculation mode: magnitude or component.
+        location : bool
+            Write location of the min/max value.
+        region : str
+            Name of the region to map from.
+        """
+        super().__init__(
+            name,
+            "fieldMinMax",
+            "libfieldFunctionObjects.so",
+            log,
+            None,
+            writeControl,
+            writeInterval,
+            region,
+            None,
+            None,
+            None,
+            1
+        )
+        self.fields = fields
+        self.mode = mode
+        self.location = location
+
+    @property
+    def fields(self):
+        return self._fields
+
+    @fields.setter
+    def fields(self, fields):
+        check_type("fields", fields, list)
+        self._fields = fields
+        self.__setitem__("fields", List(fields))
+
+    @property
+    def mode(self):
+        return self._mode
+
+    @mode.setter
+    def mode(self, mode):
+        check_type("mode", mode, str)
+        check_value("mode", mode, _MODE_TYPES)
+        self._mode = mode
+        self.__setitem__("mode", mode)
+
+    @property
+    def location(self):
+        return self._location
+
+    @location.setter
+    def location(self, location):
+        check_type("location", location, bool)
+        self._location = location
+        self.__setitem__("location", location)
 
     @property
     def consitent(self):

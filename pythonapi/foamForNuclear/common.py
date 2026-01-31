@@ -140,7 +140,7 @@ class Vector:
         self.z = z
 
     def __repr__(self):
-        return(f"({self.x} {self.y} {self.z})")
+        return(f"({self.x:g} {self.y:g} {self.z:g})")
 
     def __eq__(self, value):
         eps = 1e-6
@@ -562,7 +562,7 @@ def addParameter(paramName, value, indent: int=0, isAddExtraLine: bool=False, no
 openfoamHeader = r"""/*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  v2506                                 |
+|  \\    /   O peration     | Version:  v2512                                 |
 |   \\  /    A nd           | Website:  www.openfoam.com                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
