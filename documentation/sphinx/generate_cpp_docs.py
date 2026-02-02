@@ -1143,7 +1143,7 @@ def main():
         maxdepth=1
     )
     insert_toctree_at_placeholder_for_folder_direct_subfolders(
-        target_rst="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/heatTransferModel.rst",
+        target_rst="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/FSHeatTransferCoefficientModel.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels",
         maxdepth=1
     )
