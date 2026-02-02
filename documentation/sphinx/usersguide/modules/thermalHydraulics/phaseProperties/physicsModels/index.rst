@@ -25,6 +25,11 @@ Two examples of dictionaries are reported below.
                coeff   0.687;
                exp     -0.25;
          }
+         "heatExchanger"
+         {
+               type    constant;
+               value     300;
+         }
       }
 
       heatTransferModels
@@ -51,6 +56,11 @@ Two examples of dictionaries are reported below.
                   expRe   0.827;
                   expPr   0.827;
                }
+         }
+         "heatExchanger"
+         {
+               type    constant;
+               value     5;
          }
       }
    }
@@ -88,18 +98,10 @@ Two examples of dictionaries are reported below.
     }
 
 
-.. .. toctree::
-..    :maxdepth: 1
-
-..    FSHeatTransferCoefficientModels
-..    FSdrag
-
-
-
 
 .. note::
 
     Anisotropic pressure drops can be set using  three different correlations    for the three different local axes. In addition, it is possible to use an
-    anisotropic hydraulic diameter ((see :ref:`the structureProperties sub-dictionary <modules_thermalHydraulics_porousMedium_structureProperties>`)). The anisotropy of the hydraulic diameter can
+    anisotropic hydraulic diameter (see :ref:`the structureProperties sub-dictionary <modules_thermalHydraulics_porousMedium_structureProperties>`). The anisotropy of the hydraulic diameter can
     be set using the keyword *localDhAnisotropy* and assigned to it a vector of
     three scaling factors, one for each local direction.
