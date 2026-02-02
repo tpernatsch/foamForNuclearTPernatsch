@@ -7,10 +7,19 @@ EXE_INC = \
     -I./thermalHydraulics/mappedDarcyVelocity \
     -I./thermalHydraulics/parabolicVelocityPatchField \
     -I./thermalHydraulics/fixedMassFlowRate \
+    -I./thermalHydraulics/discontinuousCyclicAMI \ 
+    -I./thermalHydraulics/jumpDiscontinuousCyclicAMI \ 
+    -I./thermalHydraulics/bernoulliJumpAMI \
+    -I./thermalHydraulics/massConservationJumpAMI \
+    -I./thermalHydraulics/tJunctionJumpAMI \
+    -I./thermalHydraulics/scaledDiscontinuousCyclicAMI \
+    -I./thermalHydraulics/pressureTank \
     -I./neutronics/albedoSP3 \
     -I./thermoMechanics/tractionDisplacement \
     -I./../porousMediaModels/lnInclude \
     -I./../profiles/lnInclude \
+    -I./../patches/lnInclude \
+    -I./../solutionControl/lnInclude \
     -I$(LIB_SRC)/transportModels/compressible/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/basic/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/thermophysicalProperties/lnInclude \
@@ -24,8 +33,9 @@ EXE_INC = \
     -I$(LIB_SRC)/dynamicFvMesh/lnInclude \
 
 LIB_LIBS = \
-    -L$(FOAM_USER_LIBBIN) -lPorousMediaModels \
     -L$(FOAM_USER_LIBBIN) -lProfiles \
+    -L$(FOAM_USER_LIBBIN) -lPatches \
+    -L$(FOAM_USER_LIBBIN) -lSolutionControl \
     -lincompressibleTransportModels \
     -lcompressibleTransportModels \
     -lfluidThermophysicalModels \

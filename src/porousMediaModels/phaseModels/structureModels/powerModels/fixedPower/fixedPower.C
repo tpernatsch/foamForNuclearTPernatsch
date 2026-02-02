@@ -258,6 +258,24 @@ void Foam::powerModels::fixedPower::powerUpdate()
                     powerDensityOld[celli]/timeDependentPowerDensityOld);
             }
         }
+
+        // After updating the power density, print the total power so that
+        // users can debug easier
+
+        scalar totalPower(0.0);
+
+        forAll(cellList_, i)
+        {
+            label celli(cellList_[i]);
+            totalPower +=
+                powerDensity_[celli] * alpha_[celli] * mesh_.V()[celli];
+        }
+
+        reduce(totalPower, sumOp<scalar>());
+        Info<< "Total power in fixedPower model for region "
+            << region << " = " << totalPower << " W" << endl;
+
+
     }
 }
 

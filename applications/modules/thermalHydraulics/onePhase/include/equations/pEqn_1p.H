@@ -22,17 +22,14 @@ while (pimple_.correct(convergedPISO))
     #include "correctBoundaryFlux_1p.H"
 
     //- Construct H/A field
-    volVectorField HbyA
-    (
-        "HbyA",
-        rAU*UEqn.H()
-    );
-
+    volVectorField HbyA(constrainHbyA(rAU*UEqn.H(), U, p_rgh_));
     //- Face-interpolated momentum source terms divided by diagonal coeffs.
     //  Currently includes only gravity/buoyancy and the optional pump momentum
     //  source. Any new explicit source terms in the momentum equation (that
     //  were NOT included in the momentum equation) should be added here
     #include "calcPhiSbyA_1p.H"
+
+    #include "correctFluxHbyAForDiscontinuity.H"
 
     //- Construct phase flux
     surfaceScalarField phiHbyA
@@ -40,7 +37,7 @@ while (pimple_.correct(convergedPISO))
         "phiHbyA",
         alphaf*
         (
-            fvc::flux(HbyA)
+            fluxHbyA
         +   phiSbyA
         )
     );

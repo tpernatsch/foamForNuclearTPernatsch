@@ -1,3 +1,4 @@
+import json
 import numpy as np
 import tqdm
 
@@ -193,13 +194,15 @@ class Face:
 
 class FaceCyclic(Face):
     """
-
     Parameters
     ----------
     transform : str
         Options: "unknown", "rotational", "translational", "coincidentFullMatch",
         "noOrdering"
+    separationVector : Vector
+        Only used when transform == "translational"
     """
+
     def __init__(
             self,
             name: str,
@@ -207,15 +210,17 @@ class FaceCyclic(Face):
             transform: str,
             rotationAxis: Vector=None,
             rotationCentre: Vector=None,
+            separationVector: Vector=None,
             isPrint: bool=True,
             inGroups: list=[]
         ):
-        super().__init__(name, "cyclic", isPrint, {}, inGroups)
+        super().__init__(name, "discontinuousCyclicAMI", isPrint, {}, inGroups)
 
         self.neighbourPatch = neighbourPatch
         self.transform = transform
         self.rotationAxis = rotationAxis
         self.rotationCentre = rotationCentre
+        self.separationVector = separationVector
         self.extraParameters['matchTolerance'] = 0.1
 
     @property
@@ -247,8 +252,11 @@ class FaceCyclic(Face):
     def rotationAxis(self, rotationAxis) -> None:
         check_type("rotationAxis", rotationAxis, Vector, none_ok=True)
         self._rotationAxis = rotationAxis
-        if (rotationAxis is not None):
+        # Only add if rotational
+        if self.transform == "rotational" and rotationAxis is not None:
             self.extraParameters['rotationAxis'] = f"{rotationAxis}"
+        elif 'rotationAxis' in self.extraParameters:
+            del self.extraParameters['rotationAxis']
 
     @property
     def rotationCentre(self):
@@ -258,9 +266,25 @@ class FaceCyclic(Face):
     def rotationCentre(self, rotationCentre) -> None:
         check_type("rotationCentre", rotationCentre, Vector, none_ok=True)
         self._rotationCentre = rotationCentre
-        if (rotationCentre is not None):
+        # Only add if rotational
+        if self.transform == "rotational" and rotationCentre is not None:
             self.extraParameters['rotationCentre'] = f"{rotationCentre}"
+        elif 'rotationCentre' in self.extraParameters:
+            del self.extraParameters['rotationCentre']
 
+    @property
+    def separationVector(self):
+        return self._separationVector
+
+    @separationVector.setter
+    def separationVector(self, separationVector) -> None:
+        # ✅ Only meaningful for translational
+        check_type("separationVector", separationVector, Vector, none_ok=True)
+        self._separationVector = separationVector
+        if self.transform == "translational" and separationVector is not None:
+            self.extraParameters['separationVector'] = f"{separationVector}"
+        elif 'separationVector' in self.extraParameters:
+            del self.extraParameters['separationVector']
 
 class FaceMappedPatch(Face):
     """
@@ -3078,10 +3102,13 @@ class BlockMesh(OpenFOAMFile, Mesh):
             direction: Vector,
             length: float,
             equivalentHydraulicDiameter: float,
-            n: int=1,
-            elbowRadius: float=0,
-            isAddLateralBC: bool=False,
-            originPositionOutletFaceName: str='top'
+            n: int = 1,
+            elbowRadius: float = 0,
+            isAddBoundaryConditions: bool = False,
+            originPositionOutletFaceName: str = 'top',
+            isCustomNames: bool = False,
+            inletCustomName: str = None,
+            outletCustomName: str = None
         ) -> Block:
         """
         Create a 1D square pipe starting from an origin position and extending
@@ -3112,9 +3139,16 @@ class BlockMesh(OpenFOAMFile, Mesh):
         isAddLateralBC : bool
             If `True`, set left, right, front and back faces to `empty` BC
             (default `False`). If `originPosition` is a `Block`, connect the
-            target block to the new pipe via the `connect_pipes` method.
+            target block to the new pipe via the `connectPipes` or
+            `connectPipesCustomNames` method.
         originPositionOutletFaceName : str
             Facename of the origin block to attach the BC (default `top`).
+        isCustomNames : bool
+            If `True`, use custom cyclic patch names via connectPipesCustomNames.
+        inletCustomName : str
+            Custom name for the inlet patch (default `None` → automatic).
+        outletCustomName : str
+            Custom name for the outlet patch (default `None` → automatic).
 
         Return
         ------
@@ -3130,40 +3164,31 @@ class BlockMesh(OpenFOAMFile, Mesh):
         check_positive("elbowRadius", elbowRadius)
         check_type("originPositionOutletFaceName", originPositionOutletFaceName, str)
         check_value("originPositionOutletFaceName", originPositionOutletFaceName, _FACE_NAME_TYPES)
+        check_type("isCustomNames", isCustomNames, bool)
 
         connectingBlock = originPosition
-
         offset = 0
-        # Recompute origin position and offset knowing the elbow radius
-        if (isinstance(connectingBlock, Block)):
-            pipe1outletFace = connectingBlock.get_face(originPositionOutletFaceName)
-            # pipe1inletFace = connectingBlock.get_opposite_face(originPositionOutletFaceName)
 
-            originPosition = connectingBlock.get_face_barycenter(pipe1outletFace)
-            # pipeInlet = connectingBlock.get_face_barycenter(pipe1inletFace)
-            # connectingBlockDir = originPosition - pipeInlet
-            connectingBlockDir = connectingBlock.get_face_normal(originPositionOutletFaceName)
+        # Recompute origin position and offset knowing the elbow radius
+        if isinstance(connectingBlock, Block):
+            pipe1outletFace = connectingBlock.getFace(originPositionOutletFaceName)
+            originPosition = connectingBlock.getFaceBarycenter(pipe1outletFace)
+            connectingBlockDir = connectingBlock.getFaceNormal(originPositionOutletFaceName)
 
             theta = np.arccos(connectingBlockDir.dot(direction) / (connectingBlockDir.norm() * direction.norm()))
-            offset = elbowRadius * np.tan(theta/2)
+            offset = elbowRadius * np.tan(theta / 2)
 
             connectingBlockDir.normalize(offset)
-
             originPosition += connectingBlockDir
 
-        # If conserve hydraulic diameter between a square and circle
-        # cross-section flow
-        # halfDh = equivalentHydraulicDiameter/2
         # Conserve cross-section flow area between a square and circle
-        halfDh = np.sqrt(np.pi) * equivalentHydraulicDiameter/2
+        halfDh = np.sqrt(np.pi)*equivalentHydraulicDiameter / 4
 
-        x = originPosition.x
-        y = originPosition.y
-        z = originPosition.z
+        x, y, z = originPosition.x, originPosition.y, originPosition.z
         direction.normalize()
-        dx = (length + 2*offset) * direction.x
-        dy = (length + 2*offset) * direction.y
-        dz = (length + 2*offset) * direction.z
+        dx = (length + 2 * offset) * direction.x
+        dy = (length + 2 * offset) * direction.y
+        dz = (length + 2 * offset) * direction.z
 
         theta = np.arccos(direction.z)
         phi = np.arctan2(direction.y, direction.x)
@@ -3185,24 +3210,36 @@ class BlockMesh(OpenFOAMFile, Mesh):
         for point in points:
             point.rotateY(theta=-theta)
             point.rotateZ(theta=phi)
-            point.translate(dx=x+dx/2, dy=y+dy/2, dz=z+dz/2)
+            point.translate(dx=x + dx / 2, dy=y + dy / 2, dz=z + dz / 2)
 
-        if (isAddLateralBC):
+        if isAddBoundaryConditions:
             # 'block' is always from bottom to top
             self.pipeWallBC.add_sub_face(block.leftFace())
             self.pipeWallBC.add_sub_face(block.rightFace())
             self.pipeWallBC.add_sub_face(block.frontFace())
             self.pipeWallBC.add_sub_face(block.backFace())
 
-            if (isinstance(connectingBlock, Block)):
-                self.connect_pipes(
-                    pipe1=connectingBlock,
-                    pipe2=block,
-                    elbowRadius=elbowRadius,
-                    pipe1outletFaceName=originPositionOutletFaceName
-                )
+            if isinstance(connectingBlock, Block):
+                if isCustomNames:
+                    self.connectPipesCustomNames(
+                        pipe1=connectingBlock,
+                        pipe2=block,
+                        elbowRadius=elbowRadius,
+                        pipe1outletFaceName=originPositionOutletFaceName,
+                        pipe2inletFaceName='bottom',  # default same as connectPipes
+                        customOutletName=outletCustomName or f"{connectingBlock.name}_outletAMI",
+                        customInletName=inletCustomName or f"{name}_inletAMI",
+                    )
+                else:
+                    self.connectPipes(
+                        pipe1=connectingBlock,
+                        pipe2=block,
+                        elbowRadius=elbowRadius,
+                        pipe1outletFaceName=originPositionOutletFaceName
+                    )
 
-        return(block)
+        return block
+
 
 
     def add_pipe_1D_from_2points(
@@ -3215,11 +3252,13 @@ class BlockMesh(OpenFOAMFile, Mesh):
             elbowRadius: float=0,
             isAddLateralBC: bool=False,
             originPositionOutletFaceName: str='top',
-            finalPositionInletFaceName: str='bottom'
+            finalPositionInletFaceName: str='bottom',
+            tolerance: float=1e-12
         ) -> Block:
         """
         Create a 1D square pipe between two points. The length is automatically
-        computed. Only work in U-shape curve not S-shape curve.
+        computed. Works analytically in U-shape curve and numerically in S-shape
+        curve.
 
         Parameters
         ----------
@@ -3247,6 +3286,9 @@ class BlockMesh(OpenFOAMFile, Mesh):
             Facename of the origin block to attach the BC (default `top`).
         finalPositionInletFaceName : str
             Facename of the new pipe block to attach the BC (default `bottom`).
+        tolerance : float
+            Tolerance when solving for connecting two pipes in S-shape
+            (default 1e-12).
 
         Return
         ------
@@ -3292,12 +3334,36 @@ class BlockMesh(OpenFOAMFile, Mesh):
             rotationAxisOrigin = direction.cross(originDir)
             rotationAxisFinal = direction.cross(finalDir)
 
-            R1 = originDir.cross(rotationAxisOrigin)
+            isUshape = rotationAxisOrigin.dot(rotationAxisFinal) > 0
+
+            R1 = rotationAxisOrigin.cross(originDir)
             R1.normalize(elbowRadius)
             R2 = rotationAxisFinal.cross(finalDir)
             R2.normalize(elbowRadius)
 
-            direction = direction - R1 + R2
+            if (isUshape):
+                direction = direction + R1 + R2
+            else:
+                R1p = copy(R1)
+
+                newDirTemp = direction + R1 + R2 - R1p - R1p
+
+                isSshapePositive = newDirTemp.cross(finalDir).y > 0
+
+                for i in range(10000):
+                    if (isSshapePositive):
+                        newdir = direction + R1 + R2 - R1p - R1p
+                    else:
+                        newdir = direction + R1 + R2 + R1p + R1p
+
+                    costheta = R1p.dot(newdir) / (R1p.norm() * newdir.norm())
+
+                    R1p.rotateY(0.1*costheta)
+
+                    if (abs(costheta) < tolerance):
+                        break
+
+                direction = newdir
 
         length = direction.norm()
 
@@ -3324,14 +3390,100 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
         return(block)
 
+    # def addPipe1DFrom2PointsSCurve(
+    #     self,
+    #     name: str,
+    #     originPosition: Block,
+    #     finalPosition: Block,
+    #     equivalentHydraulicDiameter: float,
+    #     n: int = 1,
+    #     elbowRadius: float = 0,
+    #     isAddBoundaryConditions: bool = False,
+    #     originPositionOutletFaceName: str = 'top',
+    #     finalPositionInletFaceName: str = 'bottom',
+    #     intermediateDirection: Vector = Vector(0, 1, 0),  # Default vertical
+    #     intermediateLength: float = 5.0  # Default length of intermediate pipe
+    #     ) -> tuple[Block, Block]:
+    #     """
+    #     Create a 1D pipe between two blocks using an intermediate segment.
+    #     Useful for S-shaped connections.
+
+    #     Returns
+    #     -------
+    #     Tuple of (intermediatePipe, finalPipe)
+    #     """
+    #     check_type("originPosition", originPosition, Block)
+    #     check_type("finalPosition", finalPosition, Block)
+    #     check_type("intermediateDirection", intermediateDirection, Vector)
+
+    #     # Get pipes discretization
+
+    #     originFace = originPosition.getFace(originPositionOutletFaceName)
+    #     originVec = originPosition.getFaceBarycenter(originFace)
+
+    #     # Manual copy and normalize
+    #     normalizedDirection = Vector(
+    #         intermediateDirection.x,
+    #         intermediateDirection.y,
+    #         intermediateDirection.z
+    #     )
+    #     normalizedDirection.normalize()
+
+
+    #     intermediateOutletVec = Vector(
+    #         originVec.x + normalizedDirection.x * intermediateLength,
+    #         originVec.y + normalizedDirection.y * intermediateLength,
+    #         originVec.z + normalizedDirection.z * intermediateLength
+    #     )
+
+
+    #     finalFace = finalPosition.getFace(finalPositionInletFaceName)
+    #     finalVec = finalPosition.getFaceBarycenter(finalFace)
+
+    #     finalLength = (finalVec - intermediateOutletVec).norm()
+    #     totalLength = intermediateLength + finalLength
+
+    #     intermediateN = math.ceil(n * intermediateLength / totalLength)
+    #     finalN = n - intermediateN
+
+
+    #     # Create intermediate pipe
+    #     intermediatePipe = self.addPipe1DFromDirection(
+    #         name=f"{name}_intermediate",
+    #         originPosition=originPosition,
+    #         direction=intermediateDirection,
+    #         length=intermediateLength,
+    #         equivalentHydraulicDiameter=equivalentHydraulicDiameter,
+    #         n=intermediateN,
+    #         elbowRadius=elbowRadius,
+    #         isAddBoundaryConditions=isAddBoundaryConditions,
+    #         originPositionOutletFaceName=originPositionOutletFaceName
+    #     )
+
+    #     # Create final connecting pipe
+    #     finalPipe = self.addPipe1DFrom2Points(
+    #         name=f"{name}_final",
+    #         originPosition=intermediatePipe,
+    #         finalPosition=finalPosition,
+    #         equivalentHydraulicDiameter=equivalentHydraulicDiameter,
+    #         n=finalN,
+    #         elbowRadius=elbowRadius,
+    #         isAddBoundaryConditions=isAddBoundaryConditions,
+    #         originPositionOutletFaceName='top',  # intermediate pipe always goes bottom → top
+    #         finalPositionInletFaceName=finalPositionInletFaceName
+    #     )
+
+    #     return intermediatePipe, finalPipe
+
+
 
     def connect_pipes(
             self,
             pipe1: Block,
             pipe2: Block,
-            elbowRadius: float=0,
-            pipe1outletFaceName: str='top',
-            pipe2inletFaceName: str='bottom',
+            elbowRadius: float = 0,
+            pipe1outletFaceName: str = 'top',
+            pipe2inletFaceName: str = 'bottom',
         ) -> None:
         """
         Connect two pipes, i.e `pipe1` outlet to `pipe2` inlet. Create a cyclic
@@ -3361,56 +3513,327 @@ class BlockMesh(OpenFOAMFile, Mesh):
         check_value("pipe2inletFaceName", pipe2inletFaceName, _FACE_NAME_TYPES)
 
         # Extract faces
-        # pipe1inletFace = pipe1.get_opposite_face(pipe1outletFaceName)
-        pipe1outletFace = pipe1.get_face(pipe1outletFaceName)
-        pipe2inletFace = pipe2.get_face(pipe2inletFaceName)
-        # pipe2outletFace = pipe2.get_opposite_face(pipe2inletFaceName)
+        pipe1outletFace = pipe1.getFace(pipe1outletFaceName)
+        pipe2inletFace = pipe2.getFace(pipe2inletFaceName)
 
         # Compute barycenters
-        # pipe1Inlet = pipe1.get_face_barycenter(pipe1inletFace)
-        pipe1Outlet = pipe1.get_face_barycenter(pipe1outletFace)
-        # pipe2Inlet = pipe2.get_face_barycenter(pipe2inletFace)
-        # pipe2Outlet = pipe2.get_face_barycenter(pipe2outletFace)
+        pipe1Outlet = pipe1.getFaceBarycenter(pipe1outletFace)
+        pipe2Inlet = pipe2.getFaceBarycenter(pipe2inletFace)
 
         # Compute directions
-        # dir1 = pipe1Outlet - pipe1Inlet
-        # dir2 = pipe2Outlet - pipe2Inlet
-        dir1 = pipe1.get_face_normal(pipe1outletFaceName)
-        dir2 = -pipe2.get_face_normal(pipe2inletFaceName)
+        dir1 = pipe1.getFaceNormal(pipe1outletFaceName)
+        dir2 = -pipe2.getFaceNormal(pipe2inletFaceName)
 
-        # Compute rotation axes
-        rotationAxis1 = dir2.cross(dir1)
-        rotationAxis2 = dir1.cross(dir2)
-        rotationAxis1.normalize()
-        rotationAxis2.normalize()
+        # Check alignment using dot product
+        dir1.normalize()
+        dir2.normalize()
+        dot_product = dir1.dot(dir2)
+        aligned = abs(dot_product - 1.0) < 1e-6 or abs(dot_product + 1.0) < 1e-6
 
-        if (elbowRadius == 0):
-            rotationCentre = pipe1Outlet
+        if aligned:
+            # === TRANSLATIONAL CYCLIC ===
+            separationVector = pipe2Inlet - pipe1Outlet
+
+            inlet = FaceCyclic(
+                name=f"{pipe1.name}_outletAMI",
+                neighbourPatch=f"{pipe2.name}_inletAMI",
+                transform="translational",
+                separationVector=separationVector
+            )
+            inlet.addSubFace(pipe1outletFace)
+
+            outlet = FaceCyclic(
+                name=f"{pipe2.name}_inletAMI",
+                neighbourPatch=f"{pipe1.name}_outletAMI",
+                transform="translational",
+                separationVector=-separationVector
+            )
+            outlet.addSubFace(pipe2inletFace)
+
         else:
-            R1 = dir1.cross(rotationAxis1)
-            R1.normalize(elbowRadius)
-            # R2 = dir2.cross(rotationAxis2)
-            # R2.normalize(elbowRadius)
-            rotationCentre = pipe1Outlet + R1
+            # === ROTATIONAL CYCLIC ===
+            rotationAxis1 = dir2.cross(dir1)
+            rotationAxis2 = dir1.cross(dir2)
+            rotationAxis1.normalize()
+            rotationAxis2.normalize()
 
-        # Create faces
-        inlet = FaceCyclic(
-            f"{pipe1.name}_outlet",
-            neighbourPatch=f"{pipe2.name}_inlet",
-            transform="rotational",
-            rotationAxis=rotationAxis1,
-            rotationCentre=rotationCentre
-        )
-        inlet.add_sub_face(pipe1outletFace)
+            if elbowRadius == 0:
+                rotationCentre = pipe1Outlet
+            else:
+                R1 = dir1.cross(rotationAxis1)
+                R1.normalize(elbowRadius)
+                rotationCentre = pipe1Outlet + R1
 
-        outlet = FaceCyclic(
-            f"{pipe2.name}_inlet",
-            neighbourPatch=f"{pipe1.name}_outlet",
-            transform="rotational",
-            rotationAxis=rotationAxis2,
-            rotationCentre=rotationCentre
-        )
-        outlet.add_sub_face(pipe2inletFace)
+            inlet = FaceCyclic(
+                name=f"{pipe1.name}_outletAMI",
+                neighbourPatch=f"{pipe2.name}_inletAMI",
+                transform="rotational",
+                rotationAxis=rotationAxis1,
+                rotationCentre=rotationCentre
+            )
+            inlet.addSubFace(pipe1outletFace)
+
+            outlet = FaceCyclic(
+                name=f"{pipe2.name}_inletAMI",
+                neighbourPatch=f"{pipe1.name}_outletAMI",
+                transform="rotational",
+                rotationAxis=rotationAxis2,
+                rotationCentre=rotationCentre
+            )
+            outlet.addSubFace(pipe2inletFace)
+
+        self.addBoundary(inlet)
+        self.addBoundary(outlet)
+
+    def createPipeBranch(
+        self,
+        originPipe: Block,
+        branches: list[dict],
+        isAddBoundaryConditions: bool = False,
+        originOutletFaceName: str = 'top'
+    ) -> list[Block]:
+        """
+        Create N branching pipes from a single origin pipe.
+
+        Parameters
+        ----------
+        originPipe : Block
+            The pipe block from which the branches originate.
+        branches : list of dict
+            Each dict must contain:
+                - name: str
+                - direction: Vector
+                - length: float
+                - equivalentHydraulicDiameter: float
+                - elbowRadius: float
+                - n: int (optional, default 1)
+        isAddBoundaryConditions : bool
+            Whether to add wall boundary conditions and connect pipes.
+        originOutletFaceName : str
+            Face name of the origin pipe to branch from.
+
+        Returns
+        -------
+        list[Block]
+            The list of newly created pipe blocks.
+        """
+        createdPipes = []
+
+        for branch in branches:
+            name = branch["name"]
+            direction = branch["direction"]
+            length = branch["length"]
+            dh = branch["equivalentHydraulicDiameter"]
+            elbow = branch["elbowRadius"]
+            n = branch.get("n", 1)
+
+            newPipe = self.addPipe1DFromDirection(
+                name=name,
+                originPosition=originPipe,
+                direction=direction,
+                length=length,
+                equivalentHydraulicDiameter=dh,
+                n=n,
+                elbowRadius=elbow,
+                isAddBoundaryConditions=False,
+                originPositionOutletFaceName=originOutletFaceName
+            )
+
+            createdPipes.append(newPipe)
+
+            if isAddBoundaryConditions:
+                self.pipeWallBC.addSubFace(newPipe.leftFace())
+                self.pipeWallBC.addSubFace(newPipe.rightFace())
+                self.pipeWallBC.addSubFace(newPipe.frontFace())
+                self.pipeWallBC.addSubFace(newPipe.backFace())
+
+                self.connectPipesCustomNames(
+                    pipe1=originPipe,
+                    pipe2=newPipe,
+                    elbowRadius=elbow,
+                    pipe1outletFaceName=originOutletFaceName,
+                    pipe2inletFaceName='bottom',
+                    customOutletName=f"{originPipe.name}to{name}_outletAMI",
+                    customInletName=f"{name}_inletAMI"
+                )
+
+        return createdPipes
+
+
+
+    # def reconnectBranchedToFinal(
+    #     self,
+    #     remainingBranches: list,
+    #     firstIntermediate: 'Block',
+    #     finalPipe: 'Block',
+    #     intermediatePipeSpecs: list,
+    #     elbowRadius: float = 0.0
+    # ) -> list[Block]:
+    #     """
+    #     Reconnect branched pipes to the final pipe via new intermediate pipes.
+    #     Returns the list of newly created intermediate pipes.
+
+    #     Parameters
+    #     ----------
+    #     remainingBranches : list[Block]
+    #         List of branch pipes that still need to reach the final pipe.
+    #     firstIntermediate : Block
+    #         The first intermediate pipe (already created by the user).
+    #     finalPipe : Block
+    #         The final pipe (already created by the user).
+    #     intermediatePipeSpecs : list[dict]
+    #         List of specs for the intermediate pipes to create for each remaining branch:
+    #         [
+    #             {"name": str, "length": float, "direction": Vector, "equivalentHydraulicDiameter": float, "n": int, "elbowRadius": float},
+    #             ...
+    #         ]
+    #     elbowRadius : float
+    #         Default elbow radius.
+    #     """
+    #     createdIntermediates = []
+
+    #     # Step 1: connect first intermediate → final pipe
+    #     self.connectPipesCustomNames(
+    #         pipe1=firstIntermediate,
+    #         pipe2=finalPipe,
+    #         customOutletName=f"{firstIntermediate.name}_outletAMI",
+    #         customInletName=f"{finalPipe.name}from{firstIntermediate.name}_inletAMI",
+    #         pipe1outletFaceName='top',
+    #         pipe2inletFaceName='bottom',
+    #         elbowRadius=elbowRadius
+    #     )
+
+    #     # Step 2: add wall BCs to final pipe
+    #     self.pipeWallBC.addSubFace(finalPipe.leftFace())
+    #     self.pipeWallBC.addSubFace(finalPipe.rightFace())
+    #     self.pipeWallBC.addSubFace(finalPipe.frontFace())
+    #     self.pipeWallBC.addSubFace(finalPipe.backFace())
+
+    #     # Step 3: loop over remaining branches
+    #     for branch, spec in zip(remainingBranches, intermediatePipeSpecs):
+    #         # create intermediate pipe between branch and final
+    #         intermediate = self.addPipe1DFrom2Points(
+    #             name=spec["name"],
+    #             originPosition=branch,
+    #             finalPosition=finalPipe,
+    #             equivalentHydraulicDiameter=spec["equivalentHydraulicDiameter"],
+    #             n=spec["n"],
+    #             elbowRadius=spec.get("elbowRadius", elbowRadius),
+    #             isAddBoundaryConditions=False
+    #         )
+
+    #         createdIntermediates.append(intermediate)
+
+    #         # normal connect branch → intermediate
+    #         self.connectPipes(branch, intermediate, elbowRadius=elbowRadius)
+
+    #         # custom connect intermediate → final pipe
+    #         self.connectPipesCustomNames(
+    #             pipe1=intermediate,
+    #             pipe2=finalPipe,
+    #             customOutletName=f"{intermediate.name}_outletAMI",
+    #             customInletName=f"{finalPipe.name}from{intermediate.name}_inletAMI",
+    #             pipe1outletFaceName='top',
+    #             pipe2inletFaceName='bottom',
+    #             elbowRadius=elbowRadius
+    #         )
+
+    #         # add wall BCs to intermediate pipe
+    #         self.pipeWallBC.addSubFace(intermediate.leftFace())
+    #         self.pipeWallBC.addSubFace(intermediate.rightFace())
+    #         self.pipeWallBC.addSubFace(intermediate.frontFace())
+    #         self.pipeWallBC.addSubFace(intermediate.backFace())
+
+    #     return createdIntermediates
+
+    def connectPipesCustomNames(
+        self,
+        pipe1: Block,
+        pipe2: Block,
+        elbowRadius: float = 0,
+        pipe1outletFaceName: str = 'top',
+        pipe2inletFaceName: str = 'bottom',
+        customOutletName: str = None,
+        customInletName: str = None
+    ) -> None:
+        """
+        Connect two pipes with custom cyclic patch names to avoid duplication.
+
+        CHANGES:
+        - Accepts both customOutletName and customInletName
+        - Applies patch names to the correct owning blocks
+        """
+        check_type("pipe1", pipe1, Block)
+        check_type("pipe2", pipe2, Block)
+        check_type("elbowRadius", elbowRadius, (float, int))
+        check_type("pipe1outletFaceName", pipe1outletFaceName, str)
+        check_type("pipe2inletFaceName", pipe2inletFaceName, str)
+        check_value("pipe1outletFaceName", pipe1outletFaceName, _FACE_NAME_TYPES)
+        check_value("pipe2inletFaceName", pipe2inletFaceName, _FACE_NAME_TYPES)
+
+        pipe1outletFace = pipe1.getFace(pipe1outletFaceName)
+        pipe2inletFace = pipe2.getFace(pipe2inletFaceName)
+
+        pipe1Outlet = pipe1.getFaceBarycenter(pipe1outletFace)
+        pipe2Inlet = pipe2.getFaceBarycenter(pipe2inletFace)
+
+        dir1 = pipe1.getFaceNormal(pipe1outletFaceName)
+        dir2 = -pipe2.getFaceNormal(pipe2inletFaceName)
+
+        dir1.normalize()
+        dir2.normalize()
+        dot_product = dir1.dot(dir2)
+        aligned = abs(dot_product - 1.0) < 1e-6 or abs(dot_product + 1.0) < 1e-6
+
+        if aligned:
+            separationVector = pipe2Inlet - pipe1Outlet
+
+            inlet = FaceCyclic(
+                name=customOutletName,
+                neighbourPatch=customInletName,
+                transform="translational",
+                separationVector=separationVector
+            )
+            inlet.addSubFace(pipe1outletFace)
+
+            outlet = FaceCyclic(
+                name=customInletName,
+                neighbourPatch=customOutletName,
+                transform="translational",
+                separationVector=-separationVector
+            )
+            outlet.addSubFace(pipe2inletFace)
+
+        else:
+            rotationAxis1 = dir2.cross(dir1)
+            rotationAxis2 = dir1.cross(dir2)
+            rotationAxis1.normalize()
+            rotationAxis2.normalize()
+
+            if elbowRadius == 0:
+                rotationCentre = pipe1Outlet
+            else:
+                R1 = dir1.cross(rotationAxis1)
+                R1.normalize(elbowRadius)
+                rotationCentre = pipe1Outlet + R1
+
+            inlet = FaceCyclic(
+                name=customOutletName,
+                neighbourPatch=customInletName,
+                transform="rotational",
+                rotationAxis=rotationAxis1,
+                rotationCentre=rotationCentre
+            )
+            inlet.addSubFace(pipe1outletFace)
+
+            outlet = FaceCyclic(
+                name=customInletName,
+                neighbourPatch=customOutletName,
+                transform="rotational",
+                rotationAxis=rotationAxis2,
+                rotationCentre=rotationCentre
+            )
+            outlet.addSubFace(pipe2inletFace)
 
         self.add_boundary(inlet)
         self.add_boundary(outlet)
@@ -4217,10 +4640,11 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             wall4 = Face(f"{name}WallLeft2_{idxFace}")
                             wall4.add_sub_face(newBlock2.leftFace())
 
-                            self.add_boundary(wall1)
-                            self.add_boundary(wall2)
-                            self.add_boundary(wall3)
-                            self.add_boundary(wall4)
+
+                            self.addBoundary(wall1)
+                            self.addBoundary(wall2)
+                            self.addBoundary(wall3)
+                            self.addBoundary(wall4)
 
                     # Front left
                     if (test == (False, True, True, True)):
@@ -4282,6 +4706,20 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             self.add_boundary(wall4)
 
 
+                            wall1 = Face(f"{name}WallFront1_{idxFace}")
+                            wall1.addSubFace(newBlock1.frontFace())
+                            wall2 = Face(f"{name}WallRight1_{idxFace}")
+                            wall2.addSubFace(newBlock1.rightFace())
+                            wall3 = Face(f"{name}WallBack2_{idxFace}")
+                            wall3.addSubFace(newBlock2.backFace())
+                            wall4 = Face(f"{name}WallLeft2_{idxFace}")
+                            wall4.addSubFace(newBlock2.leftFace())
+
+                            self.addBoundary(wall1)
+                            self.addBoundary(wall2)
+                            self.addBoundary(wall3)
+                            self.addBoundary(wall4)
+
                     # Front right
                     if (test == (True, False, True, True)):
                         xmin, xmax, ymin, ymax = block
@@ -4340,6 +4778,20 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             self.add_boundary(wall2)
                             self.add_boundary(wall3)
                             self.add_boundary(wall4)
+
+                            wall1 = Face(f"{name}WallFront1_{idxFace}")
+                            wall1.addSubFace(newBlock1.frontFace())
+                            wall2 = Face(f"{name}WallLeft1_{idxFace}")
+                            wall2.addSubFace(newBlock1.leftFace())
+                            wall3 = Face(f"{name}WallBack2_{idxFace}")
+                            wall3.addSubFace(newBlock2.backFace())
+                            wall4 = Face(f"{name}WallRight2_{idxFace}")
+                            wall4.addSubFace(newBlock2.rightFace())
+
+                            self.addBoundary(wall1)
+                            self.addBoundary(wall2)
+                            self.addBoundary(wall3)
+                            self.addBoundary(wall4)
 
                     # Back left
                     if (test == (True, True, True, False)):
