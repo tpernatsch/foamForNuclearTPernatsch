@@ -1,0 +1,186 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform (0 0 0);
+
+boundaryField
+{
+    pipeWall
+    {
+        type                    slip;
+    }
+
+    ".*_inletAMI$|.*_outletAMI$" 
+    {
+        type            conditionalCyclicAMI;
+        patchType       discontinuousCyclicAMI;
+    }
+
+    inlet
+    {
+        type            fixedValue;
+        value           uniform (1 0 0);
+    }
+
+    outlet
+    {
+        type            zeroGradient;
+    }
+
+    // First branch left to right
+
+    pipe1topipe2_outletAMI
+    {
+        type conditionalCyclicAMI;
+        patchType discontinuousCyclicAMI;
+        connectedPatches (pipe12_inletAMI);
+        correctFluxAndAreas true;
+    }
+
+    pipe2_inletAMI
+    {
+        type conditionalCyclicAMI;
+        patchType discontinuousCyclicAMI;
+        connectedPatches (pipe12_inletAMI);
+    }
+
+
+    pipe1topipe12_outletAMI
+    {
+        type conditionalCyclicAMI;
+        patchType discontinuousCyclicAMI;
+        connectedPatches (pipe2_inletAMI);
+        correctFluxAndAreas true;
+    }
+
+    pipe12_inletAMI
+    {
+        type conditionalCyclicAMI;
+        patchType discontinuousCyclicAMI;
+        connectedPatches (pipe2_inletAMI);
+    }
+
+    // First branch top branch
+
+    pipe3topipe4_outletAMI
+    {
+        type conditionalCyclicAMI;
+        patchType discontinuousCyclicAMI;
+        connectedPatches (pipe6_inletAMI);
+        correctFluxAndAreas true;
+    }
+
+    pipe4_inletAMI
+    {
+        type conditionalCyclicAMI;
+        patchType discontinuousCyclicAMI;
+        connectedPatches (pipe6_inletAMI);
+    }
+
+    pipe3topipe6_outletAMI
+    {
+        type conditionalCyclicAMI;
+        patchType discontinuousCyclicAMI;
+        connectedPatches (pipe4_inletAMI);
+        correctFluxAndAreas true;
+    }
+
+    pipe6_inletAMI
+    {
+        type conditionalCyclicAMI;
+        patchType discontinuousCyclicAMI;
+        connectedPatches (pipe4_inletAMI);
+    }
+
+    // Second branch top 
+
+    pipe10frompipe8_inletAMI
+    {
+        type conditionalCyclicAMI;
+        patchType discontinuousCyclicAMI;
+        connectedPatches (pipe9_outletAMI);
+        correctFluxAndAreas true;
+    }
+
+    pipe8_outletAMI
+    {
+        type conditionalCyclicAMI;
+        patchType discontinuousCyclicAMI;
+        connectedPatches (pipe9_outletAMI);
+    }
+
+    pipe10frompipe9_inletAMI
+    {
+        type conditionalCyclicAMI;
+        patchType discontinuousCyclicAMI;
+        connectedPatches (pipe8_outletAMI);
+        correctFluxAndAreas true;
+    }
+
+    pipe9_outletAMI
+    {
+        type conditionalCyclicAMI;
+        patchType discontinuousCyclicAMI;
+        connectedPatches (pipe8_outletAMI);
+    }
+
+    // Downstream reconnection
+
+    pipe15frompipe14_inletAMI
+    {
+        type conditionalCyclicAMI;
+        patchType discontinuousCyclicAMI;
+        connectedPatches (pipe11_outletAMI);
+        correctFluxAndAreas true;
+    }
+
+    pipe14_outletAMI
+    {
+        type conditionalCyclicAMI;
+        patchType discontinuousCyclicAMI;
+        connectedPatches (pipe11_outletAMI);
+    }
+
+    pipe15frompipe11_inletAMI
+    {
+        type conditionalCyclicAMI;
+        patchType discontinuousCyclicAMI;
+        connectedPatches (pipe14_outletAMI);
+        correctFluxAndAreas true;
+    }
+
+    pipe11_outletAMI
+    {
+        type conditionalCyclicAMI;
+        patchType discontinuousCyclicAMI;
+        connectedPatches (pipe14_outletAMI);
+    }
+
+
+    // Rest
+
+    ".*_inletAMI$|.*_outletAMI$" 
+    {
+        type                    conditionalCyclicAMI;
+        patchType               discontinuousCyclicAMI;
+    }
+
+}
+
+
+// ************************************************************************* //

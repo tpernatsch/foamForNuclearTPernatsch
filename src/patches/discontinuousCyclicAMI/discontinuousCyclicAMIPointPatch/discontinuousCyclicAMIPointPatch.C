@@ -46,7 +46,7 @@ addNamedToRunTimeSelectionTable
     facePointPatch,
     discontinuousCyclicAMIPointPatch,
     polyPatch,
-    cyclicPeriodicAMI
+    discontinuousCyclicPeriodicAMI
 );
 
 

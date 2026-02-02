@@ -1,0 +1,95 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     GeN-Foam;
+
+startFrom       latestTime;
+
+stopAt          endTime;
+
+startTime       0.0;
+
+endTime         1000;
+
+deltaT          0.001;
+
+writeControl    adjustableRunTime;
+
+writeInterval   250;
+
+purgeWrite      0.0;
+
+writeFormat     ascii;
+
+writePrecision  6;
+
+writeCompression false;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable true;
+
+adjustTimeStep  true;
+
+writeContinuityErrors true;
+
+maxDeltaT       150;
+
+maxCo           20;
+
+maxCoTwoPhase   0.25;
+
+maxPowerVariation 0.01;
+
+removeBaffles
+{
+    fluid  false;
+}
+
+functions
+{
+surfaceFieldValue1
+{
+        type            surfaceFieldValue;
+        libs            (fieldFunctionObjects);
+
+        // Mandatory entries (runtime modifiable)
+        fields          (T);
+        operation       average;
+        regionType      patch;
+        name            outlet;
+
+        writeFields     false;
+        scalingFactor   1.0;
+        writePrecision  8;
+        writeToFile     true;
+        useUserTime     true;
+        region          fluid;
+        enabled         true;
+        log             true;
+        timeStart       0;
+        timeEnd         1000;
+        executeControl  writeTime;
+        executeInterval 1;
+        writeControl    writeTime;
+        writeInterval   1;
+    }
+}
+
+
+// ************************************************************************* //

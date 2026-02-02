@@ -3140,11 +3140,11 @@ class BlockMesh(OpenFOAMFile, Mesh):
             If `True`, set left, right, front and back faces to `empty` BC
             (default `False`). If `originPosition` is a `Block`, connect the
             target block to the new pipe via the `connectPipes` or
-            `connectPipesCustomNames` method.
+            `connect_pipes_custom_names` method.
         originPositionOutletFaceName : str
             Facename of the origin block to attach the BC (default `top`).
         isCustomNames : bool
-            If `True`, use custom cyclic patch names via connectPipesCustomNames.
+            If `True`, use custom cyclic patch names via connect_pipes_custom_names.
         inletCustomName : str
             Custom name for the inlet patch (default `None` → automatic).
         outletCustomName : str
@@ -3171,9 +3171,9 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
         # Recompute origin position and offset knowing the elbow radius
         if isinstance(connectingBlock, Block):
-            pipe1outletFace = connectingBlock.getFace(originPositionOutletFaceName)
-            originPosition = connectingBlock.getFaceBarycenter(pipe1outletFace)
-            connectingBlockDir = connectingBlock.getFaceNormal(originPositionOutletFaceName)
+            pipe1outletFace = connectingBlock.get_face(originPositionOutletFaceName)
+            originPosition = connectingBlock.get_face_barycenter(pipe1outletFace)
+            connectingBlockDir = connectingBlock.get_face_normal(originPositionOutletFaceName)
 
             theta = np.arccos(connectingBlockDir.dot(direction) / (connectingBlockDir.norm() * direction.norm()))
             offset = elbowRadius * np.tan(theta / 2)
@@ -3221,7 +3221,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
             if isinstance(connectingBlock, Block):
                 if isCustomNames:
-                    self.connectPipesCustomNames(
+                    self.connect_pipes_custom_names(
                         pipe1=connectingBlock,
                         pipe2=block,
                         elbowRadius=elbowRadius,
@@ -3231,7 +3231,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                         customInletName=inletCustomName or f"{name}_inletAMI",
                     )
                 else:
-                    self.connectPipes(
+                    self.connect_pipes(
                         pipe1=connectingBlock,
                         pipe2=block,
                         elbowRadius=elbowRadius,
@@ -3513,16 +3513,16 @@ class BlockMesh(OpenFOAMFile, Mesh):
         check_value("pipe2inletFaceName", pipe2inletFaceName, _FACE_NAME_TYPES)
 
         # Extract faces
-        pipe1outletFace = pipe1.getFace(pipe1outletFaceName)
-        pipe2inletFace = pipe2.getFace(pipe2inletFaceName)
+        pipe1outletFace = pipe1.get_face(pipe1outletFaceName)
+        pipe2inletFace = pipe2.get_face(pipe2inletFaceName)
 
         # Compute barycenters
-        pipe1Outlet = pipe1.getFaceBarycenter(pipe1outletFace)
-        pipe2Inlet = pipe2.getFaceBarycenter(pipe2inletFace)
+        pipe1Outlet = pipe1.get_face_barycenter(pipe1outletFace)
+        pipe2Inlet = pipe2.get_face_barycenter(pipe2inletFace)
 
         # Compute directions
-        dir1 = pipe1.getFaceNormal(pipe1outletFaceName)
-        dir2 = -pipe2.getFaceNormal(pipe2inletFaceName)
+        dir1 = pipe1.get_face_normal(pipe1outletFaceName)
+        dir2 = -pipe2.get_face_normal(pipe2inletFaceName)
 
         # Check alignment using dot product
         dir1.normalize()
@@ -3540,7 +3540,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 transform="translational",
                 separationVector=separationVector
             )
-            inlet.addSubFace(pipe1outletFace)
+            inlet.add_sub_face(pipe1outletFace)
 
             outlet = FaceCyclic(
                 name=f"{pipe2.name}_inletAMI",
@@ -3548,7 +3548,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 transform="translational",
                 separationVector=-separationVector
             )
-            outlet.addSubFace(pipe2inletFace)
+            outlet.add_sub_face(pipe2inletFace)
 
         else:
             # === ROTATIONAL CYCLIC ===
@@ -3571,7 +3571,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 rotationAxis=rotationAxis1,
                 rotationCentre=rotationCentre
             )
-            inlet.addSubFace(pipe1outletFace)
+            inlet.add_sub_face(pipe1outletFace)
 
             outlet = FaceCyclic(
                 name=f"{pipe2.name}_inletAMI",
@@ -3580,10 +3580,10 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 rotationAxis=rotationAxis2,
                 rotationCentre=rotationCentre
             )
-            outlet.addSubFace(pipe2inletFace)
+            outlet.add_sub_face(pipe2inletFace)
 
-        self.addBoundary(inlet)
-        self.addBoundary(outlet)
+        self.add_boundary(inlet)
+        self.add_boundary(outlet)
 
     def createPipeBranch(
         self,
@@ -3642,12 +3642,12 @@ class BlockMesh(OpenFOAMFile, Mesh):
             createdPipes.append(newPipe)
 
             if isAddBoundaryConditions:
-                self.pipeWallBC.addSubFace(newPipe.leftFace())
-                self.pipeWallBC.addSubFace(newPipe.rightFace())
-                self.pipeWallBC.addSubFace(newPipe.frontFace())
-                self.pipeWallBC.addSubFace(newPipe.backFace())
+                self.pipeWallBC.add_sub_face(newPipe.leftFace())
+                self.pipeWallBC.add_sub_face(newPipe.rightFace())
+                self.pipeWallBC.add_sub_face(newPipe.frontFace())
+                self.pipeWallBC.add_sub_face(newPipe.backFace())
 
-                self.connectPipesCustomNames(
+                self.connect_pipes_custom_names(
                     pipe1=originPipe,
                     pipe2=newPipe,
                     elbowRadius=elbow,
@@ -3693,7 +3693,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
     #     createdIntermediates = []
 
     #     # Step 1: connect first intermediate → final pipe
-    #     self.connectPipesCustomNames(
+    #     self.connect_pipes_custom_names(
     #         pipe1=firstIntermediate,
     #         pipe2=finalPipe,
     #         customOutletName=f"{firstIntermediate.name}_outletAMI",
@@ -3704,10 +3704,10 @@ class BlockMesh(OpenFOAMFile, Mesh):
     #     )
 
     #     # Step 2: add wall BCs to final pipe
-    #     self.pipeWallBC.addSubFace(finalPipe.leftFace())
-    #     self.pipeWallBC.addSubFace(finalPipe.rightFace())
-    #     self.pipeWallBC.addSubFace(finalPipe.frontFace())
-    #     self.pipeWallBC.addSubFace(finalPipe.backFace())
+    #     self.pipeWallBC.add_sub_face(finalPipe.leftFace())
+    #     self.pipeWallBC.add_sub_face(finalPipe.rightFace())
+    #     self.pipeWallBC.add_sub_face(finalPipe.frontFace())
+    #     self.pipeWallBC.add_sub_face(finalPipe.backFace())
 
     #     # Step 3: loop over remaining branches
     #     for branch, spec in zip(remainingBranches, intermediatePipeSpecs):
@@ -3728,7 +3728,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
     #         self.connectPipes(branch, intermediate, elbowRadius=elbowRadius)
 
     #         # custom connect intermediate → final pipe
-    #         self.connectPipesCustomNames(
+    #         self.connect_pipes_custom_names(
     #             pipe1=intermediate,
     #             pipe2=finalPipe,
     #             customOutletName=f"{intermediate.name}_outletAMI",
@@ -3739,14 +3739,14 @@ class BlockMesh(OpenFOAMFile, Mesh):
     #         )
 
     #         # add wall BCs to intermediate pipe
-    #         self.pipeWallBC.addSubFace(intermediate.leftFace())
-    #         self.pipeWallBC.addSubFace(intermediate.rightFace())
-    #         self.pipeWallBC.addSubFace(intermediate.frontFace())
-    #         self.pipeWallBC.addSubFace(intermediate.backFace())
+    #         self.pipeWallBC.add_sub_face(intermediate.leftFace())
+    #         self.pipeWallBC.add_sub_face(intermediate.rightFace())
+    #         self.pipeWallBC.add_sub_face(intermediate.frontFace())
+    #         self.pipeWallBC.add_sub_face(intermediate.backFace())
 
     #     return createdIntermediates
 
-    def connectPipesCustomNames(
+    def connect_pipes_custom_names(
         self,
         pipe1: Block,
         pipe2: Block,
@@ -3771,14 +3771,14 @@ class BlockMesh(OpenFOAMFile, Mesh):
         check_value("pipe1outletFaceName", pipe1outletFaceName, _FACE_NAME_TYPES)
         check_value("pipe2inletFaceName", pipe2inletFaceName, _FACE_NAME_TYPES)
 
-        pipe1outletFace = pipe1.getFace(pipe1outletFaceName)
-        pipe2inletFace = pipe2.getFace(pipe2inletFaceName)
+        pipe1outletFace = pipe1.get_face(pipe1outletFaceName)
+        pipe2inletFace = pipe2.get_face(pipe2inletFaceName)
 
-        pipe1Outlet = pipe1.getFaceBarycenter(pipe1outletFace)
-        pipe2Inlet = pipe2.getFaceBarycenter(pipe2inletFace)
+        pipe1Outlet = pipe1.get_face_barycenter(pipe1outletFace)
+        pipe2Inlet = pipe2.get_face_barycenter(pipe2inletFace)
 
-        dir1 = pipe1.getFaceNormal(pipe1outletFaceName)
-        dir2 = -pipe2.getFaceNormal(pipe2inletFaceName)
+        dir1 = pipe1.get_face_normal(pipe1outletFaceName)
+        dir2 = -pipe2.get_face_normal(pipe2inletFaceName)
 
         dir1.normalize()
         dir2.normalize()
@@ -3794,7 +3794,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 transform="translational",
                 separationVector=separationVector
             )
-            inlet.addSubFace(pipe1outletFace)
+            inlet.add_sub_face(pipe1outletFace)
 
             outlet = FaceCyclic(
                 name=customInletName,
@@ -3802,7 +3802,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 transform="translational",
                 separationVector=-separationVector
             )
-            outlet.addSubFace(pipe2inletFace)
+            outlet.add_sub_face(pipe2inletFace)
 
         else:
             rotationAxis1 = dir2.cross(dir1)
@@ -3824,7 +3824,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 rotationAxis=rotationAxis1,
                 rotationCentre=rotationCentre
             )
-            inlet.addSubFace(pipe1outletFace)
+            inlet.add_sub_face(pipe1outletFace)
 
             outlet = FaceCyclic(
                 name=customInletName,
@@ -3833,7 +3833,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 rotationAxis=rotationAxis2,
                 rotationCentre=rotationCentre
             )
-            outlet.addSubFace(pipe2inletFace)
+            outlet.add_sub_face(pipe2inletFace)
 
         self.add_boundary(inlet)
         self.add_boundary(outlet)
@@ -4641,10 +4641,10 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             wall4.add_sub_face(newBlock2.leftFace())
 
 
-                            self.addBoundary(wall1)
-                            self.addBoundary(wall2)
-                            self.addBoundary(wall3)
-                            self.addBoundary(wall4)
+                            self.add_boundary(wall1)
+                            self.add_boundary(wall2)
+                            self.add_boundary(wall3)
+                            self.add_boundary(wall4)
 
                     # Front left
                     if (test == (False, True, True, True)):
@@ -4707,18 +4707,18 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
 
                             wall1 = Face(f"{name}WallFront1_{idxFace}")
-                            wall1.addSubFace(newBlock1.frontFace())
+                            wall1.add_sub_face(newBlock1.frontFace())
                             wall2 = Face(f"{name}WallRight1_{idxFace}")
-                            wall2.addSubFace(newBlock1.rightFace())
+                            wall2.add_sub_face(newBlock1.rightFace())
                             wall3 = Face(f"{name}WallBack2_{idxFace}")
-                            wall3.addSubFace(newBlock2.backFace())
+                            wall3.add_sub_face(newBlock2.backFace())
                             wall4 = Face(f"{name}WallLeft2_{idxFace}")
-                            wall4.addSubFace(newBlock2.leftFace())
+                            wall4.add_sub_face(newBlock2.leftFace())
 
-                            self.addBoundary(wall1)
-                            self.addBoundary(wall2)
-                            self.addBoundary(wall3)
-                            self.addBoundary(wall4)
+                            self.add_boundary(wall1)
+                            self.add_boundary(wall2)
+                            self.add_boundary(wall3)
+                            self.add_boundary(wall4)
 
                     # Front right
                     if (test == (True, False, True, True)):
@@ -4780,18 +4780,18 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             self.add_boundary(wall4)
 
                             wall1 = Face(f"{name}WallFront1_{idxFace}")
-                            wall1.addSubFace(newBlock1.frontFace())
+                            wall1.add_sub_face(newBlock1.frontFace())
                             wall2 = Face(f"{name}WallLeft1_{idxFace}")
-                            wall2.addSubFace(newBlock1.leftFace())
+                            wall2.add_sub_face(newBlock1.leftFace())
                             wall3 = Face(f"{name}WallBack2_{idxFace}")
-                            wall3.addSubFace(newBlock2.backFace())
+                            wall3.add_sub_face(newBlock2.backFace())
                             wall4 = Face(f"{name}WallRight2_{idxFace}")
-                            wall4.addSubFace(newBlock2.rightFace())
+                            wall4.add_sub_face(newBlock2.rightFace())
 
-                            self.addBoundary(wall1)
-                            self.addBoundary(wall2)
-                            self.addBoundary(wall3)
-                            self.addBoundary(wall4)
+                            self.add_boundary(wall1)
+                            self.add_boundary(wall2)
+                            self.add_boundary(wall3)
+                            self.add_boundary(wall4)
 
                     # Back left
                     if (test == (True, True, True, False)):

@@ -44,7 +44,7 @@ namespace Foam
         fvPatch,
         discontinuousCyclicAMIFvPatch,
         polyPatch,
-        cyclicPeriodicAMI
+        discontinuousCyclicPeriodicAMI
     );
 }
 
