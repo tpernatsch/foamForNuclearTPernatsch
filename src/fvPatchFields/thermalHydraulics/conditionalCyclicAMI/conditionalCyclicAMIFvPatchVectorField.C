@@ -37,13 +37,13 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "scaledDiscontinuousCyclicAMIFvPatchVectorField.H"
+#include "conditionalCyclicAMIFvPatchVectorField.H"
 #include "addToRunTimeSelectionTable.H"
 #include "primitiveMeshTools.H"
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::scaledDiscontinuousCyclicAMIFvPatchVectorField::scaledDiscontinuousCyclicAMIFvPatchVectorField
+Foam::conditionalCyclicAMIFvPatchVectorField::conditionalCyclicAMIFvPatchVectorField
 (
     const fvPatch& p,
     const DimensionedField<vector, volMesh>& iF
@@ -59,9 +59,9 @@ Foam::scaledDiscontinuousCyclicAMIFvPatchVectorField::scaledDiscontinuousCyclicA
 {}
 
 
-Foam::scaledDiscontinuousCyclicAMIFvPatchVectorField::scaledDiscontinuousCyclicAMIFvPatchVectorField
+Foam::conditionalCyclicAMIFvPatchVectorField::conditionalCyclicAMIFvPatchVectorField
 (
-    const scaledDiscontinuousCyclicAMIFvPatchVectorField& ptf,
+    const conditionalCyclicAMIFvPatchVectorField& ptf,
     const fvPatch& p,
     const DimensionedField<vector, volMesh>& iF,
     const fvPatchFieldMapper& mapper
@@ -77,7 +77,7 @@ Foam::scaledDiscontinuousCyclicAMIFvPatchVectorField::scaledDiscontinuousCyclicA
 {}
 
 
-Foam::scaledDiscontinuousCyclicAMIFvPatchVectorField::scaledDiscontinuousCyclicAMIFvPatchVectorField
+Foam::conditionalCyclicAMIFvPatchVectorField::conditionalCyclicAMIFvPatchVectorField
 (
     const fvPatch& p,
     const DimensionedField<vector, volMesh>& iF,
@@ -149,9 +149,9 @@ Foam::scaledDiscontinuousCyclicAMIFvPatchVectorField::scaledDiscontinuousCyclicA
 }
 
 
-Foam::scaledDiscontinuousCyclicAMIFvPatchVectorField::scaledDiscontinuousCyclicAMIFvPatchVectorField
+Foam::conditionalCyclicAMIFvPatchVectorField::conditionalCyclicAMIFvPatchVectorField
 (
-    const scaledDiscontinuousCyclicAMIFvPatchVectorField& ptf
+    const conditionalCyclicAMIFvPatchVectorField& ptf
 )
 :
     discontinuousCyclicAMIFvPatchField<vector>(ptf),
@@ -163,9 +163,9 @@ Foam::scaledDiscontinuousCyclicAMIFvPatchVectorField::scaledDiscontinuousCyclicA
 {}
 
 
-Foam::scaledDiscontinuousCyclicAMIFvPatchVectorField::scaledDiscontinuousCyclicAMIFvPatchVectorField
+Foam::conditionalCyclicAMIFvPatchVectorField::conditionalCyclicAMIFvPatchVectorField
 (
-    const scaledDiscontinuousCyclicAMIFvPatchVectorField& ptf,
+    const conditionalCyclicAMIFvPatchVectorField& ptf,
     const DimensionedField<vector, volMesh>& iF
 )
 :
@@ -180,15 +180,15 @@ Foam::scaledDiscontinuousCyclicAMIFvPatchVectorField::scaledDiscontinuousCyclicA
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::scaledDiscontinuousCyclicAMIFvPatchVectorField::updateCoeffs()
+void Foam::conditionalCyclicAMIFvPatchVectorField::updateCoeffs()
 {
     
     scalar nBranch = connectedPatches_.size()+1;
 
     // Update jump to account for differences in velocity
 
-    const scaledDiscontinuousCyclicAMIFvPatchVectorField& nbrPatch =
-            refCast<const scaledDiscontinuousCyclicAMIFvPatchVectorField>
+    const conditionalCyclicAMIFvPatchVectorField& nbrPatch =
+            refCast<const conditionalCyclicAMIFvPatchVectorField>
             (
                 this->neighbourPatchField()
             );
@@ -238,7 +238,7 @@ void Foam::scaledDiscontinuousCyclicAMIFvPatchVectorField::updateCoeffs()
 }
 
 Foam::scalarField
-Foam::scaledDiscontinuousCyclicAMIFvPatchVectorField::massConservationCoeffs() const
+Foam::conditionalCyclicAMIFvPatchVectorField::massConservationCoeffs() const
 {
     const scalarField& rho=
         this->patch().lookupPatchField<volScalarField, scalar>("thermo:rho");
@@ -259,7 +259,7 @@ Foam::scaledDiscontinuousCyclicAMIFvPatchVectorField::massConservationCoeffs() c
 }
 
 Foam::scalarField
-Foam::scaledDiscontinuousCyclicAMIFvPatchVectorField::fluxCorrectionFactors() const
+Foam::conditionalCyclicAMIFvPatchVectorField::fluxCorrectionFactors() const
 {
     if(correctFluxAndAreas_)
     {
@@ -280,7 +280,7 @@ Foam::scaledDiscontinuousCyclicAMIFvPatchVectorField::fluxCorrectionFactors() co
 
 
 Foam::tmp<Foam::Field<Foam::vector>>
-Foam::scaledDiscontinuousCyclicAMIFvPatchVectorField::getNeighbourField
+Foam::conditionalCyclicAMIFvPatchVectorField::getNeighbourField
 (
     const UList<vector>& internalData
 ) const
@@ -312,29 +312,29 @@ Foam::scaledDiscontinuousCyclicAMIFvPatchVectorField::getNeighbourField
 
 
 
-void Foam::scaledDiscontinuousCyclicAMIFvPatchVectorField::autoMap
+void Foam::conditionalCyclicAMIFvPatchVectorField::autoMap
 (
     const fvPatchFieldMapper& m
 )
 {
-    scaledDiscontinuousCyclicAMIFvPatchVectorField::autoMap(m);
+    conditionalCyclicAMIFvPatchVectorField::autoMap(m);
 }
 
 
-void Foam::scaledDiscontinuousCyclicAMIFvPatchVectorField::rmap
+void Foam::conditionalCyclicAMIFvPatchVectorField::rmap
 (
     const fvPatchField<vector>& ptf,
     const labelList& addr
 )
 {
-    scaledDiscontinuousCyclicAMIFvPatchVectorField::rmap(ptf, addr);
+    conditionalCyclicAMIFvPatchVectorField::rmap(ptf, addr);
 
-    const scaledDiscontinuousCyclicAMIFvPatchVectorField& tiptf =
-        refCast<const scaledDiscontinuousCyclicAMIFvPatchVectorField>(ptf);
+    const conditionalCyclicAMIFvPatchVectorField& tiptf =
+        refCast<const conditionalCyclicAMIFvPatchVectorField>(ptf);
 }
 
 
-void Foam::scaledDiscontinuousCyclicAMIFvPatchVectorField::write(Ostream& os) const
+void Foam::conditionalCyclicAMIFvPatchVectorField::write(Ostream& os) const
 {
     fvPatchField<vector>::write(os);
     scalingFactors_.writeEntry("scalingFactors", os);
@@ -352,7 +352,7 @@ void Foam::scaledDiscontinuousCyclicAMIFvPatchVectorField::write(Ostream& os) co
 
 namespace Foam 
 { 
-    makePatchTypeField(fvPatchVectorField, scaledDiscontinuousCyclicAMIFvPatchVectorField); 
+    makePatchTypeField(fvPatchVectorField, conditionalCyclicAMIFvPatchVectorField); 
 }
 
 // ************************************************************************* //

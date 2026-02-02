@@ -36,65 +36,56 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::junctionJumpAMIFvPatchVectorField
+    Foam::conditionalCyclicAMIFvPatchVectorField
 
 Group
     grpCoupledBoundaryConditions
 
 Author
-    Giovanni Nervi, EPFL (giovanni.nervi@epfl.ch)
+    Giovanni Nervi (giovanni.nervi@epfl.ch)
 
 Description
-    This boundary condition handles flow branching across non-conformal
-    cyclic AMI interfaces. It is intended for 1D (pipe-type) networks where
-    one incoming branch splits into an arbitrary number of outgoing branches.
+    This boundary condition provides a jump condition, across non-conformal
+    cyclic path-pairs, employing an arbitraryMeshInterface (AMI). 
+    It is intende to be used to enforce mass conservation in 1D TH simulations,
+    by adjusting the velocity field across the AMI according to the porosity,
+    density and area rations. The patch needs to be used with the custom
+    discontinuousCyclicAMI patch type.
 
-    Instead of prescribing a fixed jump, this condition distributes and
-    balances the flow and pressure across the connected patches according
-    to the specified topology.
-
-    The user specifies:
-      - the underlying patch type (as for other discontinuous cyclic patches),
-      - the list of other branch patches connected to this one,
-      - optional under-relaxation for the iterative update.
 
 Usage
     \table
-        Property         | Description                                                    | Required | Default
-        patchType        | underlying patch type (should be 'discontinuousCyclicAMI')     | yes      |
-        conectedPatches  | list of patches representing the other branches                | yes      |
-        underRelaxation  | relaxation factor for iterative coupling                       | no       | 1
+        Property        | Description             | Required    | Default value
+        patchType       | underlying patch type should be \c discontinuousCyclicAMI| yes |
+        underRelaxation | under-relaxation factor for the computed jump      | no         | 1
     \endtable
 
-    Example:
+    Example of the boundary condition specification:
     \verbatim
     <patchName>
     {
-        type            branchingJunctionJumpAMI;
-        patchType       discontinuousCyclicAMI;
-        conectedPatches   (pipe2AMI pipe3AMI pipe4AMI); // all other patches except for nbrPatch
-        underRelaxation 0.5;
+        type                massConservationJumpAMI;
+        patchType           discontinuousCyclicAMI;
+        underRelaxation     0.5;
     }
     \endverbatim
 
 Note
-    The underlying patchType must be 'discontinuousCyclicAMI'. The
-    conectedPatches entry should list all the additional branches that form
-    part of the junction, excluding the neighbour patch directly paired by
-    the AMI.
+     The underlying \c patchType should be set to \c discontinuousCyclicAMI.
 
 See also
-    Foam::jumpDiscontinuousCyclicAMIFvPatchField
+    Foam::conditionalCyclicAMIFvPatchVectorField
 
 SourceFiles
-    junctionJumpAMIFvPatchVectorField.C
+    conditionalCyclicAMIFvPatchVectorField.C
+
+
 \*---------------------------------------------------------------------------*/
 
-#ifndef junctionJumpAMIFvPatchVectorField_H
-#define junctionJumpAMIFvPatchVectorField_H
+#ifndef conditionalCyclicAMIFvPatchVectorField_H
+#define conditionalCyclicAMIFvPatchVectorField_H
 
-#include "jumpDiscontinuousCyclicAMIFvPatchField.H"
-#include "customPimpleControl.H"
+#include "discontinuousCyclicAMIFvPatchField.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -102,81 +93,69 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                  Class junctionJumpAMIFvPatchVectorField Declaration
+                  Class conditionalCyclicAMIFvPatchVectorField Declaration
 \*---------------------------------------------------------------------------*/
 
 
-class junctionJumpAMIFvPatchVectorField
+class conditionalCyclicAMIFvPatchVectorField
 :
-    public jumpDiscontinuousCyclicAMIFvPatchField<vector>
+    public discontinuousCyclicAMIFvPatchField<vector>
 {
 
 protected:
 
     // Protected data
 
-    vectorField jump_;
-    vector residual_;
-    vector residualPrev_;
+    scalarField scalingFactors_;
+    scalarField sigma_;
+    scalarField fluxCorrectionFactors_;
+    wordList connectedPatches_;
+    bool correctFluxAndAreas_;
     scalar underRelaxation_;
-
-    bool leidenFrost_;
-
-
-    // Variables for Aitken acceleration
-    bool useAitken_;
-    scalar aitkenRelaxation_;
-    scalar nIter_;
-
-    scalarList scalingFactors_;
-
-    wordList overlapPatchNames_;
-
-    scalar startTime_;
 
 public:
 
     //- Runtime type information
-    TypeName("junctionJumpAMI");
+    TypeName("conditionalCyclicAMI");
 
 
     // Constructors
 
         //- Construct from patch and internal field
-        junctionJumpAMIFvPatchVectorField
+        conditionalCyclicAMIFvPatchVectorField
         (
             const fvPatch&,
             const DimensionedField<vector, volMesh>&
         );
 
         //- Construct from patch, internal field and dictionary
-        junctionJumpAMIFvPatchVectorField
+        conditionalCyclicAMIFvPatchVectorField
         (
             const fvPatch&,
             const DimensionedField<vector, volMesh>&,
             const dictionary&
         );
 
-        //- Construct by mapping given junctionJumpAMIFvPatchVectorField onto a
+        //- Construct by mapping given conditionalCyclicAMIFvPatchVectorField onto a
         //  new patch
-        junctionJumpAMIFvPatchVectorField
+        conditionalCyclicAMIFvPatchVectorField
         (
-            const junctionJumpAMIFvPatchVectorField&,
+            const conditionalCyclicAMIFvPatchVectorField&,
             const fvPatch&,
             const DimensionedField<vector, volMesh>&,
             const fvPatchFieldMapper&
         );
 
         //- Construct as copy
-        junctionJumpAMIFvPatchVectorField
+        conditionalCyclicAMIFvPatchVectorField
         (
-            const junctionJumpAMIFvPatchVectorField&
+            const conditionalCyclicAMIFvPatchVectorField&
         );
 
         //- Construct as copy setting internal field reference
-        junctionJumpAMIFvPatchVectorField
+        conditionalCyclicAMIFvPatchVectorField
         (
-            const junctionJumpAMIFvPatchVectorField&,
+            const conditionalCyclicAMIFvPatchVectorField&,
             const DimensionedField<vector, volMesh>&
         );
 
@@ -194,6 +173,9 @@ public:
         {
             return fvPatchField<vector>::Clone(*this, iF);
         }
+
+        virtual tmp<Field<vector>> getNeighbourField(const UList<vector>&) const;
+
 
         //         //- Return neighbour coupled given internal cell data
         // virtual tmp<Field<vector>> patchNeighbourField() const;
@@ -215,43 +197,21 @@ public:
     // Member functions
 
         // Access
+            scalarField fluxCorrectionFactors() const;  
 
-            //- Return the "jump" across the patch
-            virtual tmp<Field<vector>> jump() const;
+            bool correctFluxAndAreas() const
+            {
+                return correctFluxAndAreas_;
+            }
 
-
-        // Mapping functions
-            // virtual void evaluate
-            // (
-            //     const Pstream::commsTypes commsType
-            // );
             virtual void updateCoeffs();
 
-            scalarList scalingFactors() const
+            wordList connectedPatches() const
             {
-                return scalingFactors_;
+                return connectedPatches_;
             }
 
-            wordList overlappingPatch() const
-            {
-                return overlapPatchNames_;
-            }
-
-            // virtual void evaluate(const Pstream::commsTypes);
-
-
-            virtual void updateInterfaceMatrix
-            (
-                solveScalarField& result,
-                const bool add,
-                const lduAddressing& lduAddr,
-                const label patchId,
-                const solveScalarField& psiInternal,
-                const scalarField& coeffs,
-                const direction cmpt,
-                const Pstream::commsTypes
-            ) const;
-
+            scalarField massConservationCoeffs() const;
 
             //- Map (and resize as needed) from self given a mapping object
             virtual void autoMap(const fvPatchFieldMapper&);
@@ -268,14 +228,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-// #ifdef NoRepository
-//     #include "junctionJumpAMIFvPatchVectorField.C"
-// #endif
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+//  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #endif
 
