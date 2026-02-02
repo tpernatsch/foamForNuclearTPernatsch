@@ -1,113 +1,133 @@
 description: |-
-  Regime map model that depends on two parameters.
+  Regime map model depending on two parameters.
 
-      Dictionary example
-      \verbatim
-      regimeMaps
-      {
-          "mapName"
-          {
-              type twoParameters;
+  This model defines 2‑D regime domains in a plane whose axes correspond to two
+  scalar fields (``parameter1`` and ``parameter2``). The user declares a set of
+  named points in ``regimePoints`` and uses these to construct polygonal regime
+  domains via the ``regimes`` dictionary.
 
-              // These correspond to the desired parameters for the 2-D map.
-              // These can only correspond to the IOobject names of
-              // tvolScalarField ype objects in the mesh object registry. No
-              // other volTypeFields are supported
-              parameter1      "name1";
-              parameter2      "name2";
+  At run‑time, the model:
+    - retrieves the two parameter fields from the mesh,
+    - normalizes their values using the global domain bounding box,
+    - determines which polygon (regime) the (x/DX, y/DY) point belongs to,
+    - and optionally interpolates across internal boundaries if an
+      ``interpolationWidth`` > 0 is defined.
 
-              // This sets the size (width) of the interpolation region that
-              // sits across the line that separates two different regimes. This
-              // is used to avoid sharp changes in the transfer coefficients that
-              // might depend on this flow regime map to avoid numerical
-              // instabilities. In order to deal with the fact that the two axes
-              // (or dimensions) of the regime map might refer to parameters with
-              // wildy different domains (e.g. one axis corresponds to a volume
-              // fraction, which spans 0-1, while the other corresponds to a
-              // mass flux, which can spans up to e.g. 10000 kg/m2/s), it is
-              // difficult to define an absolute meaningful "distance" in this
-              // 2-D domain. Thus, this width refers to the relative width of
-              // this interpolation region compared to a normalized map wherein
-              // both axes span the 0-1 range only. Thus, this width needs to be
-              // comprised between 0 and 1, wherein 0 = no interpolation (not
-              // recommended) and 1 = everything is interpolated (then the map
-              // loses meaning). A generic value of 0.1 would serve a good
-              // starting guess.
-              interpolationWidth  value;
-
-              // This specifies how the transfer coefficients are interpolated
-              // in the interpolation regions described above. The only possile
-              // modes are linear or quadratic.
-              interpolationMode linear; //quadratic;
-
-              // Dictionary that holds pairs of point names and point coordinates
-              // (par1_X, par2_X) for a generic point pX in the parameters space.
-              // These points are used to construct the regime domains in the
-              // regime map. The names of the points can be set to anything, as
-              // long as they are referenced correctly in the reigmes dictionary
-              // when building the regime domains
-              regimePoints
-              {
-                  p0 (par1_0, par2_0)
-                  p1 (par1_1, par2_1)
-                  //...
-                  pN (par1_N, par2_N)
-              }
-
-              // Dictionary of all regime domains and the points that define
-              // their boundaries. For any domain, the point list can start
-              // from any point as long as the resulting domain boundaries
-              // (i.e. the lines that connect one point to the next one, and
-              // last back to the first) never cross each other. Both convex
-              // and concave shapes are possible. Please note, however, that no
-              // consistency checks are made to enforce the no-crossing
-              // condition (it will be implemented some time in the future).
-              // The last condition for this approach to work is with regards
-              // to scenarios like the one show below, wherein the boundary
-              // of a domain (AB of ABEF) intersects the straight boundary (CE)
-              // of another domain (EDC) at a given point (B).
-              /*
-                  ^ parameter2
-                  |
-                  |
-                  |                     C
-                  |                     |\
-                  |                     | \
-                  |          A----------B  \
-                  |          |          |   \
-                  |          |          |    \
-                  |          |          |     \
-                  |          F----------E------D
-                  |
-                  i-------------------------------------------------> parameter1
-
-admonitions:
-  - kind: warning
-    body: |-
-      Preliminary autogenerated documentation. Validate the description, options, and usage before publishing.
+  Interpolation occurs only across *internal boundaries*, i.e., boundaries
+  shared by two neighbouring regime polygons. Both linear and quadratic blending
+  modes are available.
 
 options:
+  - key: parameter1
+    type: word
+    required: true
+    default:
+    description: name of the first volScalarField used in the 2‑D regime map
+
+  - key: parameter2
+    type: word
+    required: true
+    default:
+    description: name of the second volScalarField used in the 2‑D regime map
+
   - key: interpolationWidth
     type: scalar
     required: true
     default:
-    description: |
+    description: relative width of interpolation region in normalized 2‑D space (0 disables interpolation)
+
+  - key: interpolationMode
+    type: word
+    required: false
+    default: linear
+    description: interpolation type for regime blending (linear or quadratic)
+
+  - key: regimePoints
+    type: dictionary
+    required: true
+    default:
+    description: dictionary mapping point names to (x y) coordinates used to build polygon vertices
+
+  - key: regimes
+    type: dictionary
+    required: true
+    default:
+    description: dictionary mapping regime names to ordered lists of point names defining polygonal domains
+
 
 usage:
   - comment: |-
-      The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``). Here is a snippet enabling the model:
+      The model is selected via the ``type`` entry in the appropriate      ``regimeMapModel``-related sub-dictionary. Here is a commented example:
     snippet: |
-      phaseProperties
+      regimeMapModels
       {
-        physicsModels
-        {
-          <subModel>
+          "preCHFTraceRegimeMap"
           {
-            "<zoneName>"
-            {
               type twoParameters;
-            }
+
+              //- Vapour phase fraction
+              parameter1      "normalized.alpha.vapour";
+
+              //- Liquid mass flux
+              parameter2      "alphaRhoMagU.liquid";
+
+              interpolationWidth  0.125;
+
+              interpolationMode linear;
+
+              //- This is an approximation to the TRACE pre-CHF flow regime map
+              //  described at page 201 (225 of the PDF) in
+              //  https://www.nrc.gov/docs/ML1200/ML120060218.pdf
+              //  It is an approximation as there is no possibility do define
+              //  as explicit interpolation region between alpha 0.5 and alpha
+              //  0.75, as interpolation regions are automatically built across
+              //  all regime boundaries and have a thickness (in the normalized
+              //  regime map wherein both parameter1 and parameter2 vary in the
+              //  [0-1] range) of interpolationWidth specified above. Thus, in
+              //  in this regime map, the explicit interpolation area has been
+              //  split in and divided between the three regimes. This map
+              //  thus looks like the following
+              /*
+                  ^ parameter2 (massFlux)
+                  |
+                  |
+                  |
+                  6------------------5------------4
+                  |                  |            |
+                  | dispersedBubble  |            |
+                  |                  |            |
+                  |             8----9            |
+                  |            /     |            |
+                  |           /      |            |
+                  |          /       |annularMist |
+                  |         /        |            |
+                  |        7         |            |
+                  |        |         |            |
+                  |        |capSlugBu|            |
+                  0--------1---------2------------3--------> parameter1 (void)
+              */
+              //- Nonetheless, consider that the TRACE map is an approixmation
+              //  itself, so this is fine and is still consistent with the
+              //  Choe-Weismann cap/slug to bubbly transition criteria
+              regimePoints
+              {
+                  p0 (0 0);
+                  p1 (0.3 0);
+                  p2 (0.625 0);
+                  p3 (1.0 0);
+                  p4 (1.0 6000);
+                  p5 (0.625 6000);
+                  p6 (0 6000);
+                  p7 (0.3 2000);
+                  p8 (0.5 2700);
+                  p9 (0.625 2700);
+              }
+              regimes
+              {
+                  "dispersedBubble" (p0 p1 p7 p8 p9 p5 p6);
+                  "capSlugBubble" (p1 p2 p9 p8 p7);
+                  "annularMist" (p2 p3 p4 p5 p9);
+              }
           }
-        }
       }
 
