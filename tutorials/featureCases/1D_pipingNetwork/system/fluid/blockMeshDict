@@ -1,0 +1,682 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2512                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+scale           1;
+
+geometry
+{
+}
+
+vertices
+(
+    name v0 ( 0.0 -0.44311346272637897 0.44311346272637864 )
+    name v1 ( 0.0 -0.44311346272637897 -0.4431134627263793 )
+    name v2 ( 0.0 0.44311346272637897 -0.4431134627263793 )
+    name v3 ( 0.0 0.44311346272637897 0.44311346272637864 )
+    name v4 ( 10.0 -0.44311346272637897 0.4431134627263793 )
+    name v5 ( 10.0 -0.44311346272637897 -0.44311346272637864 )
+    name v6 ( 10.0 0.44311346272637897 -0.44311346272637864 )
+    name v7 ( 10.0 0.44311346272637897 0.4431134627263793 )
+    name v8 ( 10.556886537273622 -0.44311346272637897 1.0 )
+    name v9 ( 11.443113462726378 -0.44311346272637897 1.0 )
+    name v10 ( 11.443113462726378 0.44311346272637897 1.0 )
+    name v11 ( 10.556886537273622 0.44311346272637897 1.0 )
+    name v12 ( 10.556886537273622 -0.44311346272637897 11.0 )
+    name v13 ( 11.443113462726378 -0.44311346272637897 11.0 )
+    name v14 ( 11.443113462726378 0.44311346272637897 11.0 )
+    name v15 ( 10.556886537273622 0.44311346272637897 11.0 )
+    name v16 ( 12.0 -0.44311346272637897 12.443113462726378 )
+    name v17 ( 12.0 -0.44311346272637897 11.55688653727362 )
+    name v18 ( 12.0 0.44311346272637897 11.55688653727362 )
+    name v19 ( 12.0 0.44311346272637897 12.443113462726378 )
+    name v20 ( 22.0 -0.44311346272637897 12.44311346272638 )
+    name v21 ( 22.0 -0.44311346272637897 11.556886537273622 )
+    name v22 ( 22.0 0.44311346272637897 11.556886537273622 )
+    name v23 ( 22.0 0.44311346272637897 12.44311346272638 )
+    name v24 ( 22.55688653727362 -0.44311346272637897 13.0 )
+    name v25 ( 23.44311346272638 -0.44311346272637897 13.0 )
+    name v26 ( 23.44311346272638 0.44311346272637897 13.0 )
+    name v27 ( 22.55688653727362 0.44311346272637897 13.0 )
+    name v28 ( 22.55688653727362 -0.44311346272637897 18.0 )
+    name v29 ( 23.44311346272638 -0.44311346272637897 18.0 )
+    name v30 ( 23.44311346272638 0.44311346272637897 18.0 )
+    name v31 ( 22.55688653727362 0.44311346272637897 18.0 )
+    name v32 ( 24.0 -0.44311346272637897 19.443113462726377 )
+    name v33 ( 24.0 -0.44311346272637897 18.55688653727362 )
+    name v34 ( 24.0 0.44311346272637897 18.55688653727362 )
+    name v35 ( 24.0 0.44311346272637897 19.443113462726377 )
+    name v36 ( 44.0 -0.44311346272637897 19.44311346272638 )
+    name v37 ( 44.0 -0.44311346272637897 18.556886537273623 )
+    name v38 ( 44.0 0.44311346272637897 18.556886537273623 )
+    name v39 ( 44.0 0.44311346272637897 19.44311346272638 )
+    name v40 ( 23.44311346272638 -0.44311346272637897 11.0 )
+    name v41 ( 22.55688653727362 -0.44311346272637897 11.0 )
+    name v42 ( 22.55688653727362 0.44311346272637897 11.0 )
+    name v43 ( 23.44311346272638 0.44311346272637897 11.0 )
+    name v44 ( 23.44311346272638 -0.44311346272637897 6.0 )
+    name v45 ( 22.55688653727362 -0.44311346272637897 6.0 )
+    name v46 ( 22.55688653727362 0.44311346272637897 6.0 )
+    name v47 ( 23.44311346272638 0.44311346272637897 6.0 )
+    name v48 ( 24.0 -0.44311346272637897 5.443113462726378 )
+    name v49 ( 24.0 -0.44311346272637897 4.556886537273621 )
+    name v50 ( 24.0 0.44311346272637897 4.556886537273621 )
+    name v51 ( 24.0 0.44311346272637897 5.443113462726378 )
+    name v52 ( 44.0 -0.44311346272637897 5.443113462726379 )
+    name v53 ( 44.0 -0.44311346272637897 4.556886537273622 )
+    name v54 ( 44.0 0.44311346272637897 4.556886537273622 )
+    name v55 ( 44.0 0.44311346272637897 5.443113462726379 )
+    name v56 ( 45.44311346272638 -0.44311346272637897 18.0 )
+    name v57 ( 44.55688653727362 -0.44311346272637897 18.0 )
+    name v58 ( 44.55688653727362 0.44311346272637897 18.0 )
+    name v59 ( 45.44311346272638 0.44311346272637897 18.0 )
+    name v60 ( 45.44311346272638 -0.44311346272637897 13.0 )
+    name v61 ( 44.55688653727362 -0.44311346272637897 13.0 )
+    name v62 ( 44.55688653727362 0.44311346272637897 13.0 )
+    name v63 ( 45.44311346272638 0.44311346272637897 13.0 )
+    name v64 ( 44.55688653727362 -0.44311346272637897 6.0 )
+    name v65 ( 45.44311346272638 -0.44311346272637897 6.0 )
+    name v66 ( 45.44311346272638 0.44311346272637897 6.0 )
+    name v67 ( 44.55688653727362 0.44311346272637897 6.0 )
+    name v68 ( 44.55688653727362 -0.44311346272637897 11.0 )
+    name v69 ( 45.44311346272638 -0.44311346272637897 11.0 )
+    name v70 ( 45.44311346272638 0.44311346272637897 11.0 )
+    name v71 ( 44.55688653727362 0.44311346272637897 11.0 )
+    name v72 ( 46.0 -0.44311346272637897 12.443113462726378 )
+    name v73 ( 46.0 -0.44311346272637897 11.55688653727362 )
+    name v74 ( 46.0 0.44311346272637897 11.55688653727362 )
+    name v75 ( 46.0 0.44311346272637897 12.443113462726378 )
+    name v76 ( 56.0 -0.44311346272637897 12.44311346272638 )
+    name v77 ( 56.0 -0.44311346272637897 11.556886537273622 )
+    name v78 ( 56.0 0.44311346272637897 11.556886537273622 )
+    name v79 ( 56.0 0.44311346272637897 12.44311346272638 )
+    name v80 ( 57.44311346272638 -0.44311346272637897 11.0 )
+    name v81 ( 56.55688653727362 -0.44311346272637897 11.0 )
+    name v82 ( 56.55688653727362 0.44311346272637897 11.0 )
+    name v83 ( 57.44311346272638 0.44311346272637897 11.0 )
+    name v84 ( 57.44311346272638 -0.44311346272637897 1.0 )
+    name v85 ( 56.55688653727362 -0.44311346272637897 1.0 )
+    name v86 ( 56.55688653727362 0.44311346272637897 1.0 )
+    name v87 ( 57.44311346272638 0.44311346272637897 1.0 )
+    name v88 ( 11.443113462726378 -0.44311346272637897 -1.0 )
+    name v89 ( 10.55688653727362 -0.44311346272637897 -1.0 )
+    name v90 ( 10.55688653727362 0.44311346272637897 -1.0 )
+    name v91 ( 11.443113462726378 0.44311346272637897 -1.0 )
+    name v92 ( 11.44311346272638 -0.44311346272637897 -11.0 )
+    name v93 ( 10.556886537273622 -0.44311346272637897 -11.0 )
+    name v94 ( 10.556886537273622 0.44311346272637897 -11.0 )
+    name v95 ( 11.44311346272638 0.44311346272637897 -11.0 )
+    name v96 ( 12.0 -0.44311346272637897 -11.556886537273622 )
+    name v97 ( 12.0 -0.44311346272637897 -12.44311346272638 )
+    name v98 ( 12.0 0.44311346272637897 -12.44311346272638 )
+    name v99 ( 12.0 0.44311346272637897 -11.556886537273622 )
+    name v100 ( 56.0 -0.44311346272637897 -11.55688653727362 )
+    name v101 ( 56.0 -0.44311346272637897 -12.443113462726378 )
+    name v102 ( 56.0 0.44311346272637897 -12.443113462726378 )
+    name v103 ( 56.0 0.44311346272637897 -11.55688653727362 )
+    name v104 ( 56.55688653727362 -0.44311346272637897 -11.0 )
+    name v105 ( 57.44311346272638 -0.44311346272637897 -11.0 )
+    name v106 ( 57.44311346272638 0.44311346272637897 -11.0 )
+    name v107 ( 56.55688653727362 0.44311346272637897 -11.0 )
+    name v108 ( 56.55688653727362 -0.44311346272637897 -1.0 )
+    name v109 ( 57.44311346272638 -0.44311346272637897 -1.0 )
+    name v110 ( 57.44311346272638 0.44311346272637897 -1.0 )
+    name v111 ( 56.55688653727362 0.44311346272637897 -1.0 )
+    name v112 ( 58.0 -0.44311346272637897 0.4431134627263785 )
+    name v113 ( 58.0 -0.44311346272637897 -0.4431134627263794 )
+    name v114 ( 58.0 0.44311346272637897 -0.4431134627263794 )
+    name v115 ( 58.0 0.44311346272637897 0.4431134627263785 )
+    name v116 ( 68.0 -0.44311346272637897 0.4431134627263792 )
+    name v117 ( 68.0 -0.44311346272637897 -0.44311346272637875 )
+    name v118 ( 68.0 0.44311346272637897 -0.44311346272637875 )
+    name v119 ( 68.0 0.44311346272637897 0.4431134627263792 )
+);
+
+blocks
+(
+    hex (v0 v1 v2 v3 v4 v5 v6 v7) pipe1 (1 1 120) simpleGrading (1 1 1)
+    hex (v8 v9 v10 v11 v12 v13 v14 v15) pipe2 (1 1 120) simpleGrading (1 1 1)
+    hex (v16 v17 v18 v19 v20 v21 v22 v23) pipe3 (1 1 120) simpleGrading (1 1 1)
+    hex (v24 v25 v26 v27 v28 v29 v30 v31) pipe4 (1 1 60) simpleGrading (1 1 1)
+    hex (v32 v33 v34 v35 v36 v37 v38 v39) pipe5 (1 1 240) simpleGrading (1 1 1)
+    hex (v40 v41 v42 v43 v44 v45 v46 v47) pipe6 (1 1 60) simpleGrading (1 1 1)
+    hex (v48 v49 v50 v51 v52 v53 v54 v55) pipe7 (1 1 240) simpleGrading (1 1 1)
+    hex (v56 v57 v58 v59 v60 v61 v62 v63) pipe8 (1 1 60) simpleGrading (1 1 1)
+    hex (v64 v65 v66 v67 v68 v69 v70 v71) pipe9 (1 1 60) simpleGrading (1 1 1)
+    hex (v72 v73 v74 v75 v76 v77 v78 v79) pipe10 (1 1 120) simpleGrading (1 1 1)
+    hex (v80 v81 v82 v83 v84 v85 v86 v87) pipe11 (1 1 120) simpleGrading (1 1 1)
+    hex (v88 v89 v90 v91 v92 v93 v94 v95) pipe12 (1 1 120) simpleGrading (1 1 1)
+    hex (v96 v97 v98 v99 v100 v101 v102 v103) pipe13 (1 1 528) simpleGrading (1 1 1)
+    hex (v104 v105 v106 v107 v108 v109 v110 v111) pipe14 (1 1 120) simpleGrading (1 1 1)
+    hex (v112 v113 v114 v115 v116 v117 v118 v119) pipe15 (1 1 120) simpleGrading (1 1 1)
+);
+
+edges
+(
+);
+
+faces
+(
+);
+
+boundary
+(
+    pipeWall
+    {
+        type wall;
+        faces
+        (
+            ( v0 v4 v7 v3 )
+            ( v1 v2 v6 v5 )
+            ( v0 v1 v5 v4 )
+            ( v3 v7 v6 v2 )
+            ( v8 v12 v15 v11 )
+            ( v9 v10 v14 v13 )
+            ( v8 v9 v13 v12 )
+            ( v11 v15 v14 v10 )
+            ( v16 v20 v23 v19 )
+            ( v17 v18 v22 v21 )
+            ( v16 v17 v21 v20 )
+            ( v19 v23 v22 v18 )
+            ( v24 v28 v31 v27 )
+            ( v25 v26 v30 v29 )
+            ( v24 v25 v29 v28 )
+            ( v27 v31 v30 v26 )
+            ( v32 v36 v39 v35 )
+            ( v33 v34 v38 v37 )
+            ( v32 v33 v37 v36 )
+            ( v35 v39 v38 v34 )
+            ( v40 v44 v47 v43 )
+            ( v41 v42 v46 v45 )
+            ( v40 v41 v45 v44 )
+            ( v43 v47 v46 v42 )
+            ( v48 v52 v55 v51 )
+            ( v49 v50 v54 v53 )
+            ( v48 v49 v53 v52 )
+            ( v51 v55 v54 v50 )
+            ( v56 v60 v63 v59 )
+            ( v57 v58 v62 v61 )
+            ( v56 v57 v61 v60 )
+            ( v59 v63 v62 v58 )
+            ( v64 v68 v71 v67 )
+            ( v65 v66 v70 v69 )
+            ( v64 v65 v69 v68 )
+            ( v67 v71 v70 v66 )
+            ( v72 v76 v79 v75 )
+            ( v73 v74 v78 v77 )
+            ( v72 v73 v77 v76 )
+            ( v75 v79 v78 v74 )
+            ( v80 v84 v87 v83 )
+            ( v81 v82 v86 v85 )
+            ( v80 v81 v85 v84 )
+            ( v83 v87 v86 v82 )
+            ( v88 v92 v95 v91 )
+            ( v89 v90 v94 v93 )
+            ( v88 v89 v93 v92 )
+            ( v91 v95 v94 v90 )
+            ( v96 v100 v103 v99 )
+            ( v97 v98 v102 v101 )
+            ( v96 v97 v101 v100 )
+            ( v99 v103 v102 v98 )
+            ( v104 v108 v111 v107 )
+            ( v105 v106 v110 v109 )
+            ( v104 v105 v109 v108 )
+            ( v107 v111 v110 v106 )
+            ( v112 v116 v119 v115 )
+            ( v113 v114 v118 v117 )
+            ( v112 v113 v117 v116 )
+            ( v115 v119 v118 v114 )
+        );
+    }
+    pipe1topipe2_outletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe2_inletAMI;
+        transform       rotational;
+        rotationAxis    (-0 1 0);
+        rotationCentre  (10 0 1);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v4 v5 v6 v7 )
+        );
+    }
+    pipe2_inletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe1topipe2_outletAMI;
+        transform       rotational;
+        rotationAxis    (0 -1 0);
+        rotationCentre  (10 0 1);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v8 v11 v10 v9 )
+        );
+    }
+    pipe2_outletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe3_inletAMI;
+        transform       rotational;
+        rotationAxis    (0 -1 0);
+        rotationCentre  (12 0 11);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v12 v13 v14 v15 )
+        );
+    }
+    pipe3_inletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe2_outletAMI;
+        transform       rotational;
+        rotationAxis    (0 1 -0);
+        rotationCentre  (12 0 11);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v16 v19 v18 v17 )
+        );
+    }
+    pipe3topipe4_outletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe4_inletAMI;
+        transform       rotational;
+        rotationAxis    (-0 1 0);
+        rotationCentre  (22 0 13);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v20 v21 v22 v23 )
+        );
+    }
+    pipe4_inletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe3topipe4_outletAMI;
+        transform       rotational;
+        rotationAxis    (0 -1 0);
+        rotationCentre  (22 0 13);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v24 v27 v26 v25 )
+        );
+    }
+    pipe4_outletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe5_inletAMI;
+        transform       rotational;
+        rotationAxis    (0 -1 0);
+        rotationCentre  (24 0 18);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v28 v29 v30 v31 )
+        );
+    }
+    pipe5_inletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe4_outletAMI;
+        transform       rotational;
+        rotationAxis    (0 1 -0);
+        rotationCentre  (24 0 18);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v32 v35 v34 v33 )
+        );
+    }
+    pipe3topipe6_outletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe6_inletAMI;
+        transform       rotational;
+        rotationAxis    (0 -1 0);
+        rotationCentre  (22 0 11);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v20 v21 v22 v23 )
+        );
+    }
+    pipe6_inletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe3topipe6_outletAMI;
+        transform       rotational;
+        rotationAxis    (-0 1 -0);
+        rotationCentre  (22 0 11);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v40 v43 v42 v41 )
+        );
+    }
+    pipe6_outletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe7_inletAMI;
+        transform       rotational;
+        rotationAxis    (0 1 0);
+        rotationCentre  (24 0 6);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v44 v45 v46 v47 )
+        );
+    }
+    pipe7_inletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe6_outletAMI;
+        transform       rotational;
+        rotationAxis    (-0 -1 -0);
+        rotationCentre  (24 0 6);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v48 v51 v50 v49 )
+        );
+    }
+    pipe5_outletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe8_inletAMI;
+        transform       rotational;
+        rotationAxis    (0 -1 0);
+        rotationCentre  (44 0 18);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v36 v37 v38 v39 )
+        );
+    }
+    pipe8_inletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe5_outletAMI;
+        transform       rotational;
+        rotationAxis    (-0 1 -0);
+        rotationCentre  (44 0 18);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v56 v59 v58 v57 )
+        );
+    }
+    pipe7_outletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe9_inletAMI;
+        transform       rotational;
+        rotationAxis    (-0 1 0);
+        rotationCentre  (44 0 6);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v52 v53 v54 v55 )
+        );
+    }
+    pipe9_inletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe7_outletAMI;
+        transform       rotational;
+        rotationAxis    (0 -1 0);
+        rotationCentre  (44 0 6);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v64 v67 v66 v65 )
+        );
+    }
+    pipe8_outletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe10frompipe8_inletAMI;
+        transform       rotational;
+        rotationAxis    (0 1 0);
+        rotationCentre  (46 0 13);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v60 v61 v62 v63 )
+        );
+    }
+    pipe10frompipe8_inletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe8_outletAMI;
+        transform       rotational;
+        rotationAxis    (-0 -1 -0);
+        rotationCentre  (46 0 13);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v72 v75 v74 v73 )
+        );
+    }
+    pipe9_outletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe10frompipe9_inletAMI;
+        transform       rotational;
+        rotationAxis    (0 -1 0);
+        rotationCentre  (46 0 11);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v68 v69 v70 v71 )
+        );
+    }
+    pipe10frompipe9_inletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe9_outletAMI;
+        transform       rotational;
+        rotationAxis    (0 1 -0);
+        rotationCentre  (46 0 11);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v72 v75 v74 v73 )
+        );
+    }
+    pipe10_outletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe11_inletAMI;
+        transform       rotational;
+        rotationAxis    (0 -1 0);
+        rotationCentre  (56 0 11);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v76 v77 v78 v79 )
+        );
+    }
+    pipe11_inletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe10_outletAMI;
+        transform       rotational;
+        rotationAxis    (-0 1 -0);
+        rotationCentre  (56 0 11);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v80 v83 v82 v81 )
+        );
+    }
+    pipe1topipe12_outletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe12_inletAMI;
+        transform       rotational;
+        rotationAxis    (0 -1 0);
+        rotationCentre  (10 0 -1);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v4 v5 v6 v7 )
+        );
+    }
+    pipe12_inletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe1topipe12_outletAMI;
+        transform       rotational;
+        rotationAxis    (-0 1 -0);
+        rotationCentre  (10 0 -1);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v88 v91 v90 v89 )
+        );
+    }
+    pipe12_outletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe13_inletAMI;
+        transform       rotational;
+        rotationAxis    (0 1 0);
+        rotationCentre  (12 0 -11);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v92 v93 v94 v95 )
+        );
+    }
+    pipe13_inletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe12_outletAMI;
+        transform       rotational;
+        rotationAxis    (-0 -1 -0);
+        rotationCentre  (12 0 -11);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v96 v99 v98 v97 )
+        );
+    }
+    pipe13_outletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe14_inletAMI;
+        transform       rotational;
+        rotationAxis    (-0 1 0);
+        rotationCentre  (56 0 -11);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v100 v101 v102 v103 )
+        );
+    }
+    pipe14_inletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe13_outletAMI;
+        transform       rotational;
+        rotationAxis    (0 -1 0);
+        rotationCentre  (56 0 -11);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v104 v107 v106 v105 )
+        );
+    }
+    pipe14_outletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe15frompipe14_inletAMI;
+        transform       rotational;
+        rotationAxis    (0 -1 0);
+        rotationCentre  (58 0 -1);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v108 v109 v110 v111 )
+        );
+    }
+    pipe15frompipe14_inletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe14_outletAMI;
+        transform       rotational;
+        rotationAxis    (0 1 -0);
+        rotationCentre  (58 0 -1);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v112 v115 v114 v113 )
+        );
+    }
+    pipe11_outletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe15frompipe11_inletAMI;
+        transform       rotational;
+        rotationAxis    (0 1 0);
+        rotationCentre  (58 0 1);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v84 v85 v86 v87 )
+        );
+    }
+    pipe15frompipe11_inletAMI
+    {
+        type discontinuousCyclicAMI;
+        neighbourPatch  pipe11_outletAMI;
+        transform       rotational;
+        rotationAxis    (-0 -1 -0);
+        rotationCentre  (58 0 1);
+        matchTolerance  0.1;
+        faces
+        (
+            ( v112 v115 v114 v113 )
+        );
+    }
+    inlet
+    {
+        type patch;
+        faces
+        (
+            ( v0 v3 v2 v1 )
+        );
+    }
+    outlet
+    {
+        type patch;
+        faces
+        (
+            ( v116 v117 v118 v119 )
+        );
+    }
+);
+
+mergePatchPairs
+(
+);
+
+
+// ************************************************************************* //

@@ -1,0 +1,73 @@
+#!/bin/bash
+
+# --- Run from this directory
+cd "${0%/*}" || exit 1
+
+# --- Initialize output file
+resFile=test.out
+rm -f "$resFile"
+touch "$resFile"
+
+# --- Run the simulation
+echo -e "Running regression test...\n" | tee -a "$resFile"
+./Allrun >> log.simulation
+echo -e "Simulation finished.\n" | tee -a "$resFile"
+
+# --- Check convergence
+endString=$(tail -3 log.GeN-Foam | grep -o End)
+if [ "$endString" = "End" ]; then
+    echo "Simulation has converged." | tee -a "$resFile"
+else
+    echo "Simulation has NOT converged." | tee -a "$resFile"
+    exit 1
+fi
+
+# --- File containing outlet average temperature
+input="postProcessing/fluid/surfaceFieldValue1/0/surfaceFieldValue.dat"
+
+if [ ! -f "$input" ]; then
+    echo "Result file not found: $input" | tee -a "$resFile"
+    exit 1
+fi
+
+# --- Extract last temperature value (average(T))
+averageT=$(grep -v '^#' "$input" | tail -1 | awk '{printf "%.3f\n", $2}')
+
+expectedT=309.12
+error=0.005   # 0.5 %
+
+# --- Range check function
+isInRange()
+{
+    ref=$1
+    value=$2
+    tol=$3
+
+    min=$(bc -l <<<"$value*(1-$tol)")
+    max=$(bc -l <<<"$value*(1+$tol)")
+
+    if (( $(echo "$min <= $ref && $ref <= $max" | bc -l) )); then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# --- Check result
+echo -e "\nOutlet average temperature check (±0.5%)" | tee -a "$resFile"
+
+if isInRange "$averageT" "$expectedT" "$error"; then
+    echo "Regression test PASSED" | tee -a "$resFile"
+    echo "| Quantity | Simulated | Expected |" | tee -a "$resFile"
+    echo "|----------|-----------|----------|" | tee -a "$resFile"
+    echo "| T_outlet | $averageT | $expectedT |" | tee -a "$resFile"
+else
+    echo "Regression test FAILED" | tee -a "$resFile"
+    echo "| Quantity | Simulated | Expected |" | tee -a "$resFile"
+    echo "|----------|-----------|----------|" | tee -a "$resFile"
+    echo "| T_outlet | $averageT | $expectedT |" | tee -a "$resFile"
+    exit 1
+fi
+
+# --- Exit successfully
+exit 0

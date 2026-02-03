@@ -16,6 +16,7 @@ EXE_INC = \
     -I./../../../src/interpolationModels/lnInclude \
     -I./../../../src/solutionControl/lnInclude \
     -I./../../../src/fvPatchFields/lnInclude \
+    -I./../../../src/patches/lnInclude \
     -I$(LIB_SRC)/transportModels/compressible/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/basic/lnInclude \
     -I$(LIB_SRC)/transportModels/incompressible/transportModel \

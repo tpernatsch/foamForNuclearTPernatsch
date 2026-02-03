@@ -303,11 +303,13 @@ then
         echo "  - documentation/doxygen/Doxygen/Doxyfile"
         echo "  - pythonapi/pyproject.toml"
         echo "  - pythonapi/foamForNuclear/__init__.py"
+        echo "  - pythonapi/foamForNuclear/common.py"
 
         sed -i "s/$current_version/$WM_PROJECT_VERSION/" README.md
         sed -i "s/$current_version/$WM_PROJECT_VERSION/" documentation/doxygen/Doxygen/Doxyfile
         sed -i "s/$current_version/$WM_PROJECT_VERSION/" pythonapi/pyproject.toml
         sed -i "s/$current_version/$WM_PROJECT_VERSION/" pythonapi/foamForNuclear/__init__.py
+        sed -i "s/$current_version/$WM_PROJECT_VERSION/" pythonapi/foamForNuclear/common.py
     fi
 
     # Code headers and doxygen

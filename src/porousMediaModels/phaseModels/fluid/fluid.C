@@ -51,6 +51,7 @@ License
 #include "slipFvPatchFields.H"
 #include "partialSlipFvPatchFields.H"
 #include "myOps.H"
+#include "discontinuousCyclicAMIFvPatchField.H"
 
 #include "fluidDiameterModel.H"
 
@@ -377,6 +378,24 @@ Foam::fluid::fluid
 
     // Construct thermodynamics package
     thermo_.reset(rhoThermo::New(mesh, this->name()));
+
+    volScalarField& he = thermo_->he();
+
+    volScalarField::Boundary& heb = he.boundaryFieldRef();
+
+    forAll(mesh_.boundary(), patchi)
+    {
+        if (isA<discontinuousCyclicAMIFvPatchField<scalar>>(heb[patchi]))
+        {
+            discontinuousCyclicAMIFvPatchField<scalar>& discCycPatchField
+                = refCast<discontinuousCyclicAMIFvPatchField<scalar>>(heb[patchi]);
+                
+            discCycPatchField.coupleField();
+        }
+
+    }
+
+    
 
     mesh.setFluxRequired(this->name());
 

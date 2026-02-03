@@ -1,0 +1,77 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      phaseProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+structureProperties
+{
+    "pipe1:pipe2:pipe3:pipe4:pipe6:pipe7:pipe8:pipe9:pipe10:pipe11:pipe12:pipe13:pipe14:pipe15"
+    {
+        volumeFraction  0;
+        Dh              1;
+    }
+
+    "pipe5"
+    {
+        volumeFraction  0.5;
+        Dh              1;
+
+        powerModel
+        {
+            type fixedPower;
+            T 300;
+            powerDensity 3810809.17624515;
+            volumetricArea 25;
+            rhoCp 1000;
+        }
+    }
+
+
+}
+
+regimeMapModels
+{
+}
+
+physicsModels
+{
+    dragModels
+    {
+        "pipe1:pipe2:pipe3:pipe4:pipe5:pipe6:pipe7:pipe8:pipe9:pipe10:pipe11:pipe12:pipe13:pipe14:pipe15"
+        {
+            type            ReynoldsPower;
+            coeff           0.316;
+            exp             -0.25;
+        }
+    }
+
+    heatTransferModels
+    {
+        "pipe5"
+        {
+            type                NusseltReynoldsPrandtlPower;
+            coeff               0.023;
+            expRe               0.8;
+            expPr               0.4;
+            const               0;
+        }
+    }
+
+    pairGeometryModels
+    {
+    }
+
+}
+
+// ************************************************************************* //

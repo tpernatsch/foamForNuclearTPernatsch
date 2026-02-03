@@ -1,0 +1,181 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      p_rgh;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [1 -1 -2 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+
+    pipeWall
+    {
+        type       zeroGradient;
+    }
+
+    inlet
+    {
+        type        zeroGradient;
+    }
+
+    outlet
+    {
+        type fixedValue;
+        value uniform 0;
+    }
+
+    // First branch from left to right
+
+    pipe1topipe2_outletAMI
+    {
+        type pressureJumpAMI;
+        patchType discontinuousCyclicAMI;
+        lossCoeff 1.2;
+        bernoulli off;
+    }
+
+    pipe2_inletAMI
+    {
+        type pressureJumpAMI;
+        patchType discontinuousCyclicAMI;
+        bernoulli off;
+    }
+
+
+    pipe1topipe12_outletAMI
+    {
+        type pressureJumpAMI;
+        patchType discontinuousCyclicAMI;
+        lossCoeff 1.2;
+        bernoulli off;
+    }
+
+    pipe12_inletAMI
+    {
+        type pressureJumpAMI;
+        patchType discontinuousCyclicAMI;
+        bernoulli off;
+    }
+
+    // First branch top branch
+
+    pipe3topipe4_outletAMI
+    {
+        type pressureJumpAMI;
+        patchType discontinuousCyclicAMI;
+        lossCoeff 1.2;
+        bernoulli off;
+    }
+
+    pipe4_inletAMI
+    {
+        type pressureJumpAMI;
+        patchType discontinuousCyclicAMI;
+        bernoulli off;
+    }
+
+    pipe3topipe6_outletAMI
+    {
+        type pressureJumpAMI;
+        patchType discontinuousCyclicAMI;
+        lossCoeff 1.2;
+        bernoulli off;
+    }
+
+    pipe6_inletAMI
+    {
+        type pressureJumpAMI;
+        patchType discontinuousCyclicAMI;
+        bernoulli off;
+    }
+
+    // Second branch top 
+
+    pipe10frompipe8_inletAMI
+    {
+        type pressureJumpAMI;
+        patchType discontinuousCyclicAMI;
+        bernoulli off;
+    }
+
+    pipe8_outletAMI
+    {
+        type pressureJumpAMI;
+        patchType discontinuousCyclicAMI;
+        lossCoeff 1.2;
+        bernoulli off;
+    }
+
+    pipe10frompipe9_inletAMI
+    {
+        type pressureJumpAMI;
+        patchType discontinuousCyclicAMI;
+        bernoulli off;
+    }
+
+    pipe9_outletAMI
+    {
+        type pressureJumpAMI;
+        patchType discontinuousCyclicAMI;
+        lossCoeff 1.2;
+        bernoulli off;
+    }
+
+    // Downstream reconnection
+
+    pipe15frompipe14_inletAMI
+    {
+        type pressureJumpAMI;
+        patchType discontinuousCyclicAMI;
+        bernoulli off;
+    }
+
+    pipe14_outletAMI
+    {
+        type pressureJumpAMI;
+        patchType discontinuousCyclicAMI;
+        lossCoeff 1.2;
+        bernoulli off;
+    }
+
+    pipe15frompipe11_inletAMI
+    {
+        type pressureJumpAMI;
+        patchType discontinuousCyclicAMI;
+        bernoulli off;
+    }
+
+    pipe11_outletAMI
+    {
+        type pressureJumpAMI;
+        patchType discontinuousCyclicAMI;
+        lossCoeff 1.2;
+        bernoulli off;
+    }
+
+    ".*_inletAMI$|.*_outletAMI$" 
+    {
+        type                    pressureJumpAMI;
+        patchType               discontinuousCyclicAMI;
+        bernoulli               off;
+        lossCoeff 0.9;
+    }
+
+
+}
+
+
+// ************************************************************************* //

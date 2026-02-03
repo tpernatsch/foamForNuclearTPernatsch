@@ -1,0 +1,64 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      thermophysicalProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+thermoType
+{
+    type            heRhoThermo;
+    mixture         pureMixture;
+    transport       polynomial;
+    thermo          hPolynomial;
+    equationOfState icoPolynomial;
+    specie          specie;
+    energy          sensibleEnthalpy;
+}
+
+pRef            100000.0;
+
+// rho: Discrepancy with experimental values below 1% in the
+//      400 K - 1950 K range, deteriorates slowly
+// mu:  Discrepancy with experimental values below 1% in the
+//      400 K - 1400 K, deteriorates quickly after that
+// kappa: Provided by evaluators for the 371 K - 2503.7 K
+// 
+mixture
+{
+    specie 
+    {
+        molWeight       18;
+    }
+
+    equationOfState 
+    {
+        rhoCoeffs<8>    (998 -0 0 0 0 0 0 0);
+    }
+
+    thermodynamics 
+    {
+        CpCoeffs<8>     (4186 0 0 0 0 0 0 0);
+        Hf              0;
+        Sf              0;
+    }
+
+    transport 
+    {
+        muCoeffs<8>     (1.00e-3 0 0 0 0 0 0 0);
+        kappaCoeffs<8>  (124.67 -0.11381 5.5226e-05 -1.1842e-08 0 0 0 0);
+    }
+
+}
+
+
+// ************************************************************************* //

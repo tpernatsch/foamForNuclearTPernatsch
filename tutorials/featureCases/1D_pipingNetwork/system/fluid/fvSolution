@@ -1,0 +1,115 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    p_rgh 
+    {
+        solver          PBiCGStab;
+        preconditioner        DIC;
+        tolerance       1e-07;
+        relTol          0;
+    }
+
+    p_rghFinal 
+    {
+        solver          PBiCGStab;
+        preconditioner        DIC;
+        tolerance       1e-07;
+        relTol          0;
+    }
+
+    e 
+    {
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-07;
+        relTol          0;
+        minIter         0;
+    }
+
+    h 
+    {
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-07;
+        relTol          0;
+        minIter         0;
+    }
+
+    ".*" 
+    {
+        solver          PBiCGStab;
+        preconditioner  diagonal;
+        tolerance       1e-07;
+        relTol          0.001;
+    }
+
+}
+
+PIMPLE
+{
+    nCorrectors     4;
+    nNonOrthogonalCorrectors 0;
+    nOuterCorrectors 4;
+    solveEnergy     true;
+    solveFluidMechanics true;
+    momentumMode    cellCentered;
+    correctUntilConvergence true;
+    porousInterfaceSharpness 0.0;
+    minMagU         0.0;
+    minNOuterCorrectors 1;
+    momentumPredictor no;
+
+
+    pMin            -10000000;
+    pRefCell        100;
+    pRefValue       0;
+
+
+    residualControl
+    {
+        p_rgh
+        {
+            tolerance       1e-6;
+            relTol          0;
+        }
+        h
+        {
+            tolerance       1e-6;
+            relTol          0;
+        }
+        
+    }
+}
+
+relaxationFactors
+{
+    equations 
+    {
+        "U|UFinal" 0.7;
+        "h|hFinal"   0.5;
+    }
+
+    fields 
+    {
+        "p_rgh|p_rghFinal" 0.3;
+    }
+
+}
+
+
+// ************************************************************************* //
