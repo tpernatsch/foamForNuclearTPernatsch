@@ -12,8 +12,8 @@ cd ${0%/*} || exit 1    # Run from this directory
 
 
 # clean OFFBEAT libs
-wclean libso ./src/offbeat/src/SCIANTIX
-wclean libso ./src/offbeat/src/offbeatLib
+wclean libso ./thirdParty/SCIANTIX
+wclean libso ./src/offbeatLib
 
 # clean src libs
 wclean libso ./src/interpolationModels
@@ -36,6 +36,7 @@ wclean libso ./applications/modules/openFoamImported
 
 # clean apps
 wclean ./applications/solvers/GeN-Foam
+wclean ./applications/solvers/offbeat
 
 # clean tests
 wclean ./tests/hydrogenThermophysicalProperties
