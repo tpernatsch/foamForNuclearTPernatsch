@@ -1,0 +1,28 @@
+description: |
+  Class modelling the density evolution of 15-15Ti cladding material through
+  the Schumann (1970) correlation.
+
+options:
+  - key: par1
+    type: scalar
+    required: false
+    default: 7900.0
+    description: |
+      Option read by the model.
+
+usage:
+  - comment: |
+      Example selection of the `Steel1515TiSchumann` density model.
+    snippet: |
+      materials
+      {
+        cladding
+        {
+          type Steel1515Ti;
+          density
+          {
+            type Steel1515TiSchumann;
+            // par1 7900.0;
+          }
+        }
+      }

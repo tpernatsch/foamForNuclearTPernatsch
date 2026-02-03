@@ -1,0 +1,91 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    location        "constant";
+    object          solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+mechanicsSolver     fromLatestTime;
+thermalSolver       solidConduction;
+neutronicsSolver    fromLatestTime;
+elementTransport    byList;
+
+materialProperties      byZone;
+rheology                byMaterial;
+heatSource              timeDependentLhgr;
+burnup                  fromLatestTime;
+fastFlux                fromLatestTime;
+gapGas                  none;
+fgr                     none;
+sliceMapper             autoAxialSlices;
+corrosion               fromLatestTime;
+
+elementTransportOptions
+{
+    solvers
+    ( 
+        porosityTransport 
+    );
+    diffusiveTerm               off;
+    boundedAdvectionTerm        on;
+}
+
+globalOptions
+{
+    pinDirection    ( 0 0 1 );
+    reactorType     "LWR";
+}
+
+heatSourceOptions
+{
+    timePoints      ( 0 420     25200 );
+    lhgr            ( 0 70e3    70e3);
+    timeInterpolationMethod linear;
+    axialProfile
+    {
+        type            flat;
+    }
+    radialProfile
+    {
+        type            flat;
+    }
+    materials       ( fuel );
+}
+
+materials
+{
+    writeMaterialProperties on;
+    fuel
+    {
+        material            UO2;
+        Tref                Tref [ 0 0 0 1 0 ] 300;
+        
+        densificationModel  none;
+        swellingModel       none;
+        relocationModel     none;
+        enrichment          ;
+        rGrain              6e-06;
+        theoreticalDensity  10662;
+        densityFraction     0.85;
+        dishFraction        0;
+        isotropicCracking   off;
+        
+        rheologyModel   elasticity;
+        
+        poreVelocityModel UO2Sens;
+        alphaPoreVelocity 1; // Term that multiplies pore velocity magnitude
+    }
+}
+
+
+// ************************************************************************* //

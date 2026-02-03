@@ -1,0 +1,30 @@
+description: |
+  Class modelling  isotropic thermal expansion in MA-MOX fuel (for Pu = 0.3)
+  Source : JNM 469 (2016) 223-227.
+  url : https://doi.org/10.1016/j.jnucmat.2015.11.048
+
+options:
+  - key: oxygenMetalRatio
+    type: scalar
+    required: false
+    description: |
+      Oxygen to metal ratio.
+      Optional override. If not provided here, the value is read from the 
+      material base dictionary (preferred).
+
+usage:
+  - comment: |
+      Example selection of the `MaUPuO2Kato` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        fuel
+        {
+          type UPuO2;
+          thermalExpansion
+          {
+            type MaUPuO2Kato;
+            // oxygenMetalRatio 2.0;
+          }
+        }
+      }

@@ -1,0 +1,48 @@
+description: |
+  Class modelling the thermal expansion of Buffer through the code Parfume.
+
+options:
+  - key: par1
+    type: scalar
+    required: false
+    default: 5.0
+    description: |
+      Option read by the model.
+  - key: par2
+    type: scalar
+    required: false
+    default: 0.11
+    description: |
+      Option read by the model.
+  - key: par3
+    type: scalar
+    required: false
+    default: 400.0
+    description: |
+      Option read by the model.
+  - key: par4
+    type: scalar
+    required: false
+    default: 700.0
+    description: |
+      Option read by the model.
+
+usage:
+  - comment: |
+      Example selection of the `BufferParfume` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        Buffer
+        {
+          type Buffer;
+          thermalExpansion
+          {
+            type BufferParfume;
+            // par1 5.0;
+            // par2 0.11;
+            // par3 400.0;
+            // par4 700.0;
+          }
+        }
+      }

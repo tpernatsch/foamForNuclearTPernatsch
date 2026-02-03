@@ -1,0 +1,75 @@
+#!/bin/sh
+# Run from this directory
+cd "${0%/*}" || exit 1
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+runApplication -o blockMesh
+runApplication -o changeDictionary
+runApplication -o offbeat
+#
+runApplication -o postProcess -func sampleDict
+k_left_Simulation=$(cat postProcessing/sampleDict/10/left/scalarField/k | cut -d'(' -f2 | cut -d')' -f1)
+k_right_Simulation=$(cat postProcessing/sampleDict/10/right/scalarField/k | cut -d'(' -f2 | cut -d')' -f1)
+E_left_Simulation=$(cat postProcessing/sampleDict/10/left/scalarField/E | cut -d'(' -f2 | cut -d')' -f1)
+E_right_Simulation=$(cat postProcessing/sampleDict/10/right/scalarField/E | cut -d'(' -f2 | cut -d')' -f1)
+Cp_left_Simulation=$(cat postProcessing/sampleDict/10/left/scalarField/Cp | cut -d'(' -f2 | cut -d')' -f1)
+Cp_right_Simulation=$(cat postProcessing/sampleDict/10/right/scalarField/Cp | cut -d'(' -f2 | cut -d')' -f1)
+Th_left_Simulation=$(cat postProcessing/sampleDict/10/left/symmTensorField/epsTh | sed -E 's/.*\(([^\s]+).*/\1/' | cut -d' ' -f1)
+Th_right_Simulation=$(cat postProcessing/sampleDict/10/right/symmTensorField/epsTh | sed -E 's/.*\(([^\s]+).*/\1/' | cut -d' ' -f1)
+
+
+k_left_Expected=28.5691153531902
+k_right_Expected=12.6894181633446
+E_left_Expected=406.27868852459e9
+E_right_Expected=271.766233766234e9
+Cp_left_Expected=1073.14688043929
+Cp_right_Expected=1323.47047948226
+Th_left_Expected=0.00168416978242641
+Th_right_Expected=0.006875
+#
+echo "Thermal conductivity under 673.15K: $k_left_Simulation" >> results
+echo "Expected value: $k_left_Expected" >> results
+echo "Thermal conductivity under 1673.15K: $k_right_Simulation" >> results
+echo "Expected value: $k_right_Expected" >> results
+echo "Young's modulus under 673.15K: $E_left_Simulation" >> results
+echo "Expected value: $E_left_Expected" >> results
+echo "Young's modulus under 1673.15K: $E_right_Simulation" >> results
+echo "Expected value: $E_right_Expected" >> results
+echo "Specific heat under 673.15K: $Cp_left_Simulation" >> results
+echo "Expected value: $Cp_left_Expected" >> results
+echo "Specific heat under 1673.15K: $Cp_right_Simulation" >> results
+echo "Expected value: $Cp_right_Expected" >> results
+echo "Thermal strain under 673.15K: $Th_left_Simulation" >> results
+echo "Expected value: $Th_left_Expected" >> results
+echo "Thermal strain under 1673.15K: $Th_right_Simulation" >> results
+echo "Expected value: $Th_right_Expected" >> results
+
+
+relErrorK_left=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$k_left_Simulation" var2="$k_left_Expected"`
+relErrorK_right=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$k_right_Simulation" var2="$k_right_Expected"`
+relErrorE_left=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$E_left_Simulation" var2="$E_left_Expected"`
+relErrorE_right=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$E_right_Simulation" var2="$E_right_Expected"`
+relErrorCp_left=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$Cp_left_Simulation" var2="$Cp_left_Expected"`
+relErrorCp_right=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$Cp_right_Simulation" var2="$Cp_right_Expected"`
+relErrorTh_left=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$Th_left_Simulation" var2="$Th_left_Expected"`
+relErrorTh_right=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$Th_right_Simulation" var2="$Th_right_Expected"`
+
+
+echo "Relative error for Thermal conductivity under 673.15K: $relErrorK_left%" >> results
+echo "Relative error for Thermal conductivity under 1673.15K: $relErrorK_right%" >> results
+echo "Relative error for Young's modulus under 673.15K: $relErrorE_left%" >> results
+echo "Relative error for Young's modulus under 1673.15K: $relErrorE_right%" >> results
+echo "Relative error for Specific heat under 673.15K: $relErrorCp_left%" >> results
+echo "Relative error for Specific heat under 1673.15K: $relErrorCp_right%" >> results
+echo "Relative error for Thermal strain under 673.15K: $relErrorTh_left%" >> results
+echo "Relative error for Thermal strain under 1673.15K: $relErrorTh_right%" >> results

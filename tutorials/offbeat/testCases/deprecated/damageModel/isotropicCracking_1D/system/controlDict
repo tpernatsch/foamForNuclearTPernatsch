@@ -1,0 +1,120 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+libs ("libsciantix.so");
+libs ("liboffbeat.so");
+
+application     offbeat;
+
+//- Run options:
+startFrom       latestTime;
+startTime       0;
+stopAt          endTime;
+endTime         365;
+deltaT          0.01;
+
+//- Write options:
+writeControl    timeStep;
+writeInterval   1;
+purgeWrite      0;
+writeFormat     ascii;
+writeCompression off;
+timeFormat      general;
+timePrecision   6;
+writePrecision   6;
+
+userTime
+{
+    // type is seconds by default
+    type days;
+}
+
+functions 
+{ 
+    fuelCenterline
+    {
+        type            probes;
+        libs            ("libsampling.so");
+
+        writeControl    timeStep;
+        writeInterval   1;
+
+        probeLocations
+        (
+            (0.0 0.0 0.055)
+        );
+
+        fields  (T Bu);
+    }
+
+    fuelOuter
+    {
+        type            patchProbes;
+        libs            ("libsampling.so");
+
+        writeControl    timeStep;
+        writeInterval   1;
+
+        probeLocations
+        (
+            (0.0045 0.0 0.055)
+        );
+        patchName fuelOuter;
+
+        fields  (D);
+    }       
+
+    fuelRadialProfile
+    {
+        type            sets;
+        libs            ("libsampling.so");
+
+        writeControl    writeTime;
+        interpolationScheme cell;
+        setFormat       raw;
+
+        sets
+        (
+            line
+            {
+                type            lineUniform;
+                axis            distance;
+                start           (0.0000 0.0 0.055);
+                end             (0.0045 0.0 0.055);
+                nPoints         30;
+            }
+        );  
+
+        fields          (T sigma);      
+    }
+}
+
+//- Adjustable time step options:
+adjustableTimeStep true;
+
+maxDeltaT         7;
+minDeltaT         0.01;
+maxRelativeDeltaTIncrease 1e9;
+minRelativeDeltaTDecrease 1e9;
+maxRelativePowerIncrease  1e9;
+maxRelativePowerDecrease  1e9;
+
+
+runTimeModifiable true;
+
+
+// ************************************************************************* //

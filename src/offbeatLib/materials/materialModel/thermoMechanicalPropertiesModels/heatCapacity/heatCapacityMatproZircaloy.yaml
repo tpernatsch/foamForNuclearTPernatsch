@@ -1,0 +1,23 @@
+description: |
+  Correlation for Zircaloy heat capacity from Matpro.
+  Link : https://www.nrc.gov/docs/ML1429/ML14296A063.pdf - page 60.
+
+options:
+  []
+
+usage:
+  - comment: |
+      Example selection of the `ZircaloyMatpro` heat capacity model.
+    snippet: |
+      materials
+      {
+          cladding
+          {
+              type Zircaloy;
+      
+              heatCapacity
+              {
+                  type ZircaloyMatpro;
+              }
+          }
+      }

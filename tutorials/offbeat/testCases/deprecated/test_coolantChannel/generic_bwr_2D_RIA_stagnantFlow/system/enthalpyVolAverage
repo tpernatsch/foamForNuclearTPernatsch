@@ -1,0 +1,33 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.0.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      function;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+    enthalpyVolAverage
+    {
+        type            volFieldValue;
+        functionObjectLibs ( "libfieldFunctionObjects.so" );
+        writeFields     true;
+        writeControl    timeStep;
+        writeInterval   1;
+        operation       volAverage;
+        regionType      cellZone;
+        name            fuel;
+        fields          ( enthalpy );
+    }
+
+
+// ****

@@ -1,0 +1,63 @@
+description: |
+  The `ZircaloyRelap` conductivity model provides a temperature-dependent
+  thermal conductivity correlation for Zircaloy derived from RELAP.
+
+  Parameters can optionally be provided in the `conductivity` sub-dictionary.
+  If not provided, the default values embedded in the model are used.
+
+admonitions:
+  - kind: warning
+    body: |
+      The model is intended for temperatures roughly within 290 K < T < 1800 K.
+
+options:
+  - key: par1
+    type: scalar
+    required: false
+    default: 7.51
+    description: |
+      Correlation parameter.
+
+  - key: par2
+    type: scalar
+    required: false
+    default: 2.09e-2
+    description: |
+      Correlation parameter.
+
+  - key: par3
+    type: scalar
+    required: false
+    default: 1.45e-5
+    description: |
+      Correlation parameter.
+
+  - key: par4
+    type: scalar
+    required: false
+    default: 7.67e-9
+    description: |
+      Correlation parameter.
+
+usage:
+  - comment: |
+      Example selection using a `conductivity` sub-dictionary in the `solverDict`.
+    snippet: |
+      materials
+      {
+          cladding
+          {
+              material Zircaloy;
+
+              conductivity
+              {
+                  type ZircaloyRelap;
+
+                  // Optional overrides
+                  // par1 7.51;
+                  // par2 2.09e-2;
+                  // par3 1.45e-5;
+                  // par4 7.67e-9;
+              }
+          }
+      }

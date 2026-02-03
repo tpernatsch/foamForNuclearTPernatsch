@@ -1,0 +1,43 @@
+description: |
+  Class modelling the thermal expansion of 15-15 Ti cladding through the
+  correlation proposed by Gehr (1973).
+
+options:
+  - key: par1
+    type: scalar
+    required: false
+    default: -3.101e-4
+    description: |
+      Option read by the model.
+  - key: par2
+    type: scalar
+    required: false
+    default: 1.545e-5
+    description: |
+      Option read by the model.
+  - key: par3
+    type: scalar
+    required: false
+    default: 2.75e-9
+    description: |
+      Option read by the model.
+
+usage:
+  - comment: |
+      Example selection of the `Steel1515TiGehr` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        cladding
+        {
+          type Steel1515Ti;
+          
+          thermalExpansion
+          {
+            type Steel1515TiGehr;
+            // par1 -3.101e-4;
+            // par2 1.545e-5;
+            // par3 2.75e-9;
+          }
+        }
+      }

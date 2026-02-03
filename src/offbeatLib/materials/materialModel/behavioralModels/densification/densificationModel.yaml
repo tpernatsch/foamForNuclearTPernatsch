@@ -1,0 +1,34 @@
+# densificationModel.yaml
+description: |
+  Base class for densification models.
+
+  The base model has type `none`. When selected, densification is not modeled,
+  but the field `epsilonDensification` is still created and registered.
+
+  If an `epsilonDensification` field file is provided in the starting time folder,
+  it is read and used; otherwise the field is initialized to zero.
+
+admonitions:
+  - kind: warning
+    body: |
+      The keyword `densificationModel` is deprecated. Prefer a `densification`
+      dictionary with a `type` entry.
+
+options: []
+
+usage:
+  - comment: |
+      Recommended selection via the `densification` dictionary.
+    snippet: |
+      materials
+      {
+          fuel
+          {
+              material UO2;
+
+              densification
+              {
+                  type none;
+              }
+          }
+      }

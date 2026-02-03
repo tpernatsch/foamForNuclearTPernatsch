@@ -1,0 +1,57 @@
+description: |
+  Heat Capacity model for (U,Pu)O2 derived from Fink.
+  Source : https://info.ornl.gov/sites/publications/Files/Pub57523.pdf
+
+options:
+  - key: C1
+    type: scalar
+    required: false
+    default: 322.49
+    description: |
+      Model parameter.
+  - key: C2
+    type: scalar
+    required: false
+    default: 1.4679e-2
+    description: |
+      Model parameter.
+  - key: C3
+    type: scalar
+    required: false
+    default: 0
+    description: |
+      Model parameter.
+  - key: Ea
+    type: scalar
+    required: false
+    default: 18531.7
+    description: |
+      Model parameter.
+  - key: theta
+    type: scalar
+    required: false
+    default: 587.41
+    description: |
+      Model parameter.
+
+usage:
+  - comment: |
+      Example selection of the `UPuO2Fink` heat capacity model.
+    snippet: |
+      materials
+      {
+          fuel
+          {
+              type UPuO2;
+      
+              heatCapacity
+              {
+                  type UPuO2Fink;
+                  // C1 322.49;
+                  // C2 1.4679e-2;
+                  // C3 0;
+                  // Ea 18531.7;
+                  // theta 587.41;
+              }
+          }
+      }

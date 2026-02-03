@@ -1,0 +1,27 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5                                     |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+type                sets;
+interpolationScheme cellPointFace;
+setFormat           raw;
+libs                ("libsampling.so");
+ 
+sets
+(
+    radialProfile
+    {
+        type    midPoint;
+        axis    distance;
+        start   (0.01 0 0);
+        end     (0.02 0 0);
+    }
+);
+ 
+fields  (sigmaCyl sigmaEq epsilon gradD D);
+
+// ************************************************************************* //

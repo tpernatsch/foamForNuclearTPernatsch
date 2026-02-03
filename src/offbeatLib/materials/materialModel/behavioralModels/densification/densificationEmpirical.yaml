@@ -1,0 +1,60 @@
+# densificationEmpirical.yaml
+description: |
+  Empirical densification model.
+
+  The fuel density tends toward a final densification state as an exponential
+  function of burnup. The user provides:
+  - the final density increase due to densification
+  - a time constant controlling how fast densification evolves with burnup
+
+options:
+  - key: burnupName
+    type: word
+    required: false
+    default: Bu
+    description: |
+      Name of the burnup field to read from the mesh registry.
+
+  - key: densityFraction
+    type: scalar
+    required: false
+    description: |
+      Initial density fraction (relative density) used by the model.
+
+  - key: densificationDensityChange
+    type: scalar
+    required: true
+    description: |
+      Final density increase due to densification in percent (model parameter).
+
+  - key: densificationTimeConstant
+    type: scalar
+    required: true
+    description: |
+      Time constant controlling densification evolution with burnup in MWd/t
+      (model parameter).
+
+usage:
+  - comment: |
+      Example selection of the empirical densification model.
+    snippet: |
+      materials
+      {
+          fuel
+          {
+              material UO2;
+
+              densification
+              {
+                  type empirical;
+
+                  // optional
+                  burnupName Bu;
+                  densityFraction 0.95;
+
+                  // required
+                  densificationDensityChange 0.01;
+                  densificationTimeConstant 10.0;
+              }
+          }
+      }

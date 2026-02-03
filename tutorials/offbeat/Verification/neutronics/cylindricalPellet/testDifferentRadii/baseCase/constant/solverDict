@@ -1,0 +1,128 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+thermalSolver           fromLatestTime;
+mechanicsSolver         fromLatestTime;
+neutronicsSolver        diffusion;
+elementTransport        fromLatestTime;
+
+materialProperties      byZone;
+rheology                byMaterial;
+
+heatSource              timeDependentLhgr;
+burnup                  Lassmann;
+fastFlux                fromLatestTime;
+corrosion               fromLatestTime;
+gapGas                  none;
+fgr                     none;
+sliceMapper             byMaterial;
+
+globalOptions
+{
+    pinDirection            (0 0 1);
+    reactorType             "LWR";
+}
+
+thermalSolverOptions
+{
+    heatFluxSummary     off;
+}
+
+rheologyOptions
+{
+    modifiedPlaneStrain  off;
+    planeStress          off;
+}
+
+mechanicsSolverOptions
+{
+    forceSummary        off;  
+    cylindricalStress   on;  
+}
+
+burnupOptions
+{
+    timeStepUnit seconds;
+    alpha 1;
+}
+
+fgrOptions
+{
+    nFrequency  1;
+    relax       1;
+}
+
+gapGasOptions
+{
+    topFuelPatches    ( top);
+    bottomFuelPatches ( bottom);
+
+    gapVolumeOffset 0.0;
+    gasReserveVolume 0.0;
+    gasReserveTemperature 290;
+}
+
+heatSourceOptions
+{
+    #include "$FOAM_CASE/constant/lists/lhgr"
+    timeInterpolationMethod linear;
+
+    axialProfile
+    {
+        type flat;
+    }
+
+    radialProfile
+    {
+        type    fromBurnup;
+    }
+
+    materials ( fuel );
+}
+
+
+materials
+{
+    fuel
+    {
+        material                    UO2;
+        Tref                        Tref [ 0 0 0 1 0 ] 293;
+
+        densificationModel          UO2Frapcon;
+        swellingModel               UO2Frapcon;
+        relocationModel             none;//UO2Frapcon;
+
+        enrichment                  0.02;
+        rGrain                      2.8e-05;
+        GdContent                   0.0;
+        theoreticalDensity          10960;
+        densityFraction             0.95;
+        dishFraction                0.0;
+
+        resinteringDensityChange    0.3;
+        DiamCold                    1e-2;
+
+        isotropicCracking           on;
+        nCracksMax                  12;
+
+        nSlices                     1;
+
+        rheologyModel               elasticity;
+    }
+}
+
+// ************************************************************************* //

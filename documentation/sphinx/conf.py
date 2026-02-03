@@ -37,7 +37,12 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.mathjax",
     "myst_parser",
-    "sphinxmermaid"
+    "sphinxmermaid",
+]
+
+extensions += ["sphinxcontrib.bibtex"]
+bibtex_bibfiles = [
+    "usersguide/OFFBEAT/references.bib",
 ]
 
 intersphinx_mapping = {

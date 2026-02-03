@@ -1,0 +1,193 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2412                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    location        "constant";
+    object          solverDict;
+}
+
+thermalSolver   solidConduction;
+
+mechanicsSolver fromLatestTime;
+
+neutronicsSolver fromLatestTime;
+
+elementTransport byList;
+
+materialProperties byZone;
+
+rheology        byMaterial;
+
+heatSource      fromLatestTime;
+
+burnup          fromLatestTime;
+
+fastFlux        timeDependentAxialProfile;
+
+corrosion       fromLatestTime;
+
+gapGas          none;
+
+fgr             none;
+
+sliceMapper     autoAxialSlices;
+
+elementTransportOptions
+{
+    solvers         ( FpDiffusion );
+    FpDiffusionOptions
+    {
+        outerPatches    outer;
+        intialFpConcentration
+        {
+            Cs              1;
+            Kr              1;
+        }
+    }
+}
+
+globalOptions
+{
+    pinDirection    ( 0 0 1 );
+    reactorType     "LWR";
+}
+
+thermalSolverOptions
+{
+    heatFluxSummary off;
+}
+
+rheologyOptions
+{
+    thermalExpansion off;
+}
+
+fastFluxOptions
+{
+    timePoints      ( 0 1e+09 );
+    fastFlux        ( 0 0 );
+    timeInterpolationMethod linear;
+    axialProfile
+    {
+        type            flat;
+    }
+    materials       ( Kernel Buffer IPyC SiC OPyC );
+}
+
+mechanicsSolverOptions
+{
+    forceSummary    off;
+    cylindricalStress on;
+    multiMaterialCorrection
+    {
+        type            uniform;
+        defaultWeights  1;
+    }
+}
+
+materials
+{
+    Kernel
+    {
+        material        UO2;
+        Tref            Tref [ 0 0 0 1 0 ] 298.15;
+        densificationModel none;
+        swellingModel   none;
+        relocationModel none;
+        emissivityModel constant;
+        enrichment      0.025;
+        rGrain          6e-06;
+        theoreticalDensity 10960;
+        densityFraction 0.95;
+        dishFraction    0;
+        isotropicCracking off;
+        nCracksMax      12;
+        emissivity      emissivity [ 0 0 0 0 0 ] 0;
+        rheologyModel   elasticity;
+    }
+    Buffer
+    {
+        material        Buffer;
+        densityModel    constant;
+        conductivityModel constant;
+        heatCapacityModel constant;
+        emissivityModel constant;
+        YoungModulusModel constant;
+        PoissonRatioModel constant;
+        swellingModel   none;
+        fissionProductsTransport
+        {
+            fissionProductsName ( "Cs" "Kr" );
+            Cs
+            {
+                d1              1e-08;
+            }
+            Kr
+            {
+                d1              1e-08;
+            }
+        }
+        rho             rho [ 1 -3 0 0 0 ] 1880;
+        Cp              Cp [ 0 2 -2 -1 0 ] 720;
+        k               k [ 1 1 3 -1 0 ] 4;
+        emissivity      emissivity [ 0 0 0 0 0 ] 1;
+        E               E [ 1 -1 -2 0 0 ] 3.96e+10;
+        nu              nu [ 0 0 0 0 0 ] 0.33;
+        alpha           alpha [ 0 0 0 0 0 ] 5.5e-06;
+        Tref            Tref [ 0 0 0 1 0 ] 1608;
+        rheologyModel   elasticity;
+    }
+    "IPyC|OPyC"
+    {
+        material        PyC;
+        densityModel    constant;
+        conductivityModel constant;
+        heatCapacityModel constant;
+        emissivityModel constant;
+        YoungModulusModel constant;
+        PoissonRatioModel constant;
+        swellingModel   none;
+        rho             rho [ 1 -3 0 0 0 ] 1880;
+        Cp              Cp [ 0 2 -2 -1 0 ] 720;
+        k               k [ 1 1 3 -1 0 ] 4;
+        emissivity      emissivity [ 0 0 0 0 0 ] 1;
+        E               E [ 1 -1 -2 0 0 ] 3.96e+10;
+        nu              nu [ 0 0 0 0 0 ] 0.33;
+        alpha           alpha [ 0 0 0 0 0 ] 5.5e-06;
+        Tref            Tref [ 0 0 0 1 0 ] 1608;
+        rheologyModel   elasticity;
+        crackFpRelease  false;
+    }
+    SiC
+    {
+        material        SiC;
+        densityModel    constant;
+        conductivityModel constant;
+        heatCapacityModel constant;
+        emissivityModel constant;
+        YoungModulusModel constant;
+        PoissonRatioModel constant;
+        rho             rho [ 1 -3 0 0 0 ] 3200;
+        Cp              Cp [ 0 2 -2 -1 0 ] 620;
+        k               k [ 1 1 3 -1 0 ] 13.9;
+        emissivity      emissivity [ 0 0 0 0 0 ] 0;
+        E               E [ 1 -1 -2 0 0 ] 3.7e+11;
+        nu              nu [ 0 0 0 0 0 ] 0.13;
+        alpha           alpha [ 0 0 0 0 0 ] 4.9e-06;
+        Tref            Tref [ 0 0 0 1 0 ] 1608;
+        rheologyModel   elasticity;
+        crackFpRelease  true;
+    }
+}
+
+
+// ************************************************************************* //

@@ -1,0 +1,26 @@
+#!/bin/sh
+# Run from this directory
+cd "${0%/*}" || exit 1
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+runApplication -o blockMesh
+runApplication -o changeDictionary
+runApplication -o offbeat
+#
+runApplication -o postProcess -func sampleDict
+
+epsilon_Simulation=$(cat postProcessing/probes/0/epsilonSwelling |tail -n 1| cut -d"(" -f2 | cut -d" " -f1)
+
+epsilon_Expected=0.00319785483012979
+#
+echo "Swelling strain: $epsilon_Simulation" >> results
+echo "Expected value: $epsilon_Expected" >> results
+
+relError=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$epsilon_Simulation" var2="$epsilon_Expected"`
+
+
+
+echo "Relative error for swelling strain: $relError%" >> results

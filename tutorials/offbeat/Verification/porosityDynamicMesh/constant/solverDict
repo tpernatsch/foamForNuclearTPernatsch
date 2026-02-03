@@ -1,0 +1,164 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    location        "constant";
+    object          solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+thermalSolver   solidConduction;
+
+mechanicsSolver fromLatestTime;
+
+neutronicsSolver fromLatestTime;
+
+elementTransport byList;
+
+materialProperties byZone;
+
+rheology        byMaterial;
+
+heatSource      timeDependentLhgr;
+
+burnup          fromLatestTime;
+
+neutronics      fromLatestTime;
+
+fastFlux        fromLatestTime;
+
+corrosion       fromLatestTime;
+
+gapGas          none;
+
+fgr             none;
+
+sliceMapper     autoAxialSlices;
+
+globalOptions
+{
+    pinDirection    ( 0 0 1 );
+    reactorType     "FBR";
+}
+
+thermalSolverOptions
+{
+    heatFluxSummary off;
+}
+
+gapGasOptions
+{
+    gapVolumeOffset 0;
+    gasReserveVolume 0;
+    gasReserveTemperature 300;
+}
+
+elementTransportOptions
+{
+    solvers
+    ( 
+        porosityTransportDynMesh 
+        // porosityTransport
+    );
+    
+    porosityOptions
+    {
+        updateMesh              on;
+        // updateMesh              off;
+        boundedAdvectionTerm    off;
+        diffusiveTerm           on;
+        coalescenceTerm         on;
+        patches                 ( fuelInner );
+
+        vCoalescenceParameters
+        {
+            a               0.000291334;
+            b               0.000585502;
+            c               0;
+            d               -0.265125;
+            k               1;
+        }
+        moveHole        false;
+        useRiCorrection true;
+    }
+}
+
+heatSourceOptions
+{
+    timePoints      ( 0 72000 158040 160200 246600 248400 249000 251280 );
+    lhgr            ( 0 39130.8 39130.8 43528.7 43528.7 53001.3 53001.3 0 );
+    timeInterpolationMethod linear;
+    axialProfile
+    {
+        type            flat;
+    }
+    radialProfile
+    {
+        type            flat;
+    }
+    materials       ( fuel );
+}
+
+fgrOptions
+{
+    nFrequency      1;
+    relax           1;
+}
+
+materials
+{
+    writeMaterialProperties true;
+    fuel
+    {
+        material        UPuO2;
+        Tref            Tref [ 0 0 0 1 0 ] 300;
+        densificationModel none;
+        swellingModel   none;
+        relocationModel none;
+        outerPatch      "fuelOuter";
+        resinteringDensityChange 0.1;
+        rGrain          6e-06;
+        theoreticalDensity 11057.8;
+        densityFraction 0.857;
+        dishFraction    0;
+        isotropicCracking off;
+        nCracksMax      12;
+        rheologyModel   elasticity;
+        conductivityModel UPuO2Kato;
+        YoungModulusModel constant;
+        poissonRatioModel constant;
+        E               E [ 1 -1 -2 0 0 ] 2.493e+11;
+        nu              nu [ 0 0 0 0 0 ] 0.317;
+        oxygenMetalRatio 1.982;
+        isotopes
+        {
+            U
+            {
+                ratioOverMetal  0.8;
+                massNumbers (235 238);
+                weightFractions (0.007 0.993);
+            }
+            Pu
+            {
+                ratioOverMetal  0.2;
+                massNumbers (238 239 240 241 242);
+                weightFractions (0.02332 0.56873 0.26997 0.06105 0.07693);
+            }
+        }
+        poreVelocityModel vaporPressureMOX;
+        alphaPoreVelocity 1;
+        GapCold         1.6e-07;
+        DiamCold        0.0054;
+    }
+}
+
+
+// ************************************************************************* //

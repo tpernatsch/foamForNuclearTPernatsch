@@ -1,0 +1,49 @@
+description: |
+  Linear elastic–Mises plasticity constitutive law.
+
+  Elastic behaviour is linear isotropic. Plastic flow is governed by a
+  von Mises yield criterion.
+
+  This law requires a `yieldStress` model to be provided as a sub-dictionary.
+
+options:
+  - key: yieldStress
+    type: yieldStress
+    required: true
+    py:
+      type: yield_stress.YieldStress
+      factory: yield_stress.YieldStress
+      imports:
+        - "from . import yield_stress"
+    description: |
+      Yield stress model controlling the onset of plastic flow.
+      This entry selects a run-time-selectable `yieldStress` class and
+      provides its associated parameters.
+
+usage:
+  - comment: |
+      Example of the `solverDict` configuration to activate the
+      `misesPlasticity` constitutive law with the required sub-model.
+    snippet: |
+      materials
+      {
+        solid
+        {
+          type Zircaloy;
+
+          // other material options/models
+
+          constitutiveLaw
+          {
+            type misesPlasticity;
+
+            yieldStress
+            {
+              type constant;
+              // model-specific coefficients
+            }
+          }
+        }
+
+        // other materials subdict
+      }

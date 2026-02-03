@@ -1,0 +1,56 @@
+description: |
+  Class handling irradiation-induced dimensional change eigenstrain phenomenon
+  for PyC with the correlation below for both radial and tangential directions.
+
+options:
+  - key: fastFluenceName
+    type: word
+    required: false
+    default: fastFluence
+    description: |
+      Name of the fast fluence field.
+  - key: sphereCoordinate
+    type: bool
+    required: false
+    default: true
+    description: |
+      If true, interpret coordinates as spherical.
+  - key: fluxConversionFactor
+    type: scalar
+    required: false
+    default: 1.0
+    description: |
+      Conversion factor applied to the flux/fluence input.
+  - key: radialCoefficients
+    type: dict
+    required: true
+    description: |
+      Model data table.
+  - key: tangentialCoefficients
+    type: dict
+    required: true
+    description: |
+      Model data table.
+
+usage:
+  - comment: |
+      Example selection of `PyCCorrelation`.
+    snippet: |
+        materials
+        {
+            PyC
+            {
+                type PyC;
+   
+                swelling
+                {
+                    type PyCCorrelation;
+                    // fastFluenceName fastFluence;
+                    // sphereCoordinate true;
+                    // fluxConversionFactor 1.0;
+                    radialCoefficients <required>;
+                    tangentialCoefficients <required>;
+                }
+            }
+        }
+

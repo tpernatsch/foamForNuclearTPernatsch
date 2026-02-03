@@ -1,0 +1,78 @@
+description: |
+  Class modelling Young Modulus of Bufffer from Parfume.
+
+options:
+  - key: densityName
+    type: word
+    required: false
+    default: "rho"
+    description: |
+      Option read by the model.
+
+  - key: fastFluenceName
+    type: word
+    required: false
+    default: "fastFluence"
+    description: |
+      Option read by the model.
+
+  - key: par1
+    type: scalar
+    required: false
+    default: 25.5
+    description: |
+      Option read by the model.
+  - key: par2
+    type: scalar
+    required: false
+    default: 0.384
+    description: |
+      Option read by the model.
+  - key: par3
+    type: scalar
+    required: false
+    default: 0.324e-3
+    description: |
+      Option read by the model.
+  - key: par4
+    type: scalar
+    required: false
+    default: 0.23
+    description: |
+      Option read by the model.
+  - key: par5
+    type: scalar
+    required: false
+    default: 1.5e-4
+    description: |
+      Option read by the model.
+  - key: par6
+    type: scalar
+    required: false
+    default: 20.0
+    description: |
+      Option read by the model.
+
+usage:
+  - comment: |
+      Example selection of the `BufferParfume` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        Buffer
+        {
+          type Buffer;
+          thermalExpansion
+          {
+            type BufferParfume;
+            // densityName "rho";
+            // fastFluenceName "fastFluence";
+            // par1 25.5;
+            // par2 0.384;
+            // par3 0.324e-3;
+            // par4 0.23;
+            // par5 1.5e-4;
+            // par6 20.0;
+          }
+        }
+      }

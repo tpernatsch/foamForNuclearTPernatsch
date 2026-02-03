@@ -1,0 +1,11 @@
+description: |
+  Mother class for emissivity models.
+
+admonitions:
+  - kind: warning
+    body: |
+      The keyword `emissivityModel` is deprecated. Prefer an `emissivity` dictionary with a `type` entry.
+
+options: []
+
+usage: []

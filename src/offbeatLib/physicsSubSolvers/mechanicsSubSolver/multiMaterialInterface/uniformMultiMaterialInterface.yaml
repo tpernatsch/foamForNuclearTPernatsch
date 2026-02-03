@@ -1,0 +1,35 @@
+description: |
+  Multi-material correction class that applies a uniform multi-material correction.
+
+options:
+  - key: defaultWeights
+    type: scalar
+    required: true
+    description: |
+      Fraction of the full correction applied (between 0 and 1).
+      Applying full correction everywhere may negatively impact convergence.
+      A value between 0.9 and 1 is recommended (1 if possible).
+  - key: defaultWeightsGrad
+    type: scalar
+    required: false
+    description: |
+      Fraction of the correction applied to the gradient contribution of
+      `sigmaExp`. By default equal to `defaultWeights`.
+
+usage:
+  - comment: |
+      Example of the `solverDict` configuration to activate the
+      uniform multi-material correction.
+    snippet: |
+      mechanicsSolver
+      {
+        type smallStrain;
+        RhieChowCorrection false;
+
+        multiMaterialCorrection
+        {
+            type uniform;
+            defaultWeights 1.0;
+            defaultWeightsGrad 1.0;
+        }
+      }

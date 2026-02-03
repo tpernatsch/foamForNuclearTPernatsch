@@ -1,0 +1,352 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     |
+    \\  /    A nd           | Copyright (C) 2021 OpenFOAM Foundation
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+License
+    This file is part of OpenFOAM.
+
+    OpenFOAM is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
+Class
+    Foam::InterpolateTable
+
+Description
+    Class for interpolation in tabulated data.
+    This class doesn't actually store any fields, but is intended as
+    a quick helper class to perform the actual interpolation for
+    different data types, i.e. Fields, FieldFields, etc. effectively 
+    facilitating multi-dimensional interpolation.
+    Currently provides two interpolation methods, step and linear (see )
+    
+    This is an alternative to OpenFOAM's built in interpolateTable and
+    interpolateTable2D classes, which partially combines the two using
+    templates. It was created largely for 2D tables where we want to look up
+    one dimension first and then interpolate many times in the resulting
+    data, i.e. create a 1D table by interpolating in a 2D table.
+
+\mainauthor
+    I. Clifford - PSI (Paul Scherrer Institut, Switzerland)
+
+\contribution
+    A. Scolaro, E. Brunetto, C. Fiorina - EPFL (ECOLE POLYTECHNIQUE FEDERALE 
+    DE LAUSANNE, Switzerland, Laboratory for Reactor Physics and Systems 
+    Behaviour)
+
+\date 
+    November 2021
+
+\modification
+    F. Xiang - EPFL & XJTU (Xi'an JiaoTong University, China,
+    Nuclear Thermal-hydraulic Laboratory)
+
+    January 2023
+      The method to deal with the out-of-bound situation is added. Now one can choose
+      whether to extrapolate, keep constant or report un error when the supplied
+      value are out of bounds.
+
+
+
+\*---------------------------------------------------------------------------*/
+
+#ifndef InterpolateTable_H
+#define InterpolateTable_H
+
+#include "scalar.H"
+#include "scalarField.H"
+
+#ifdef OPENFOAMFOUNDATION   
+#include "NamedEnum.H"
+#elif OPENFOAMESI
+#include "Enum.H"
+#endif
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+namespace Foam
+{
+
+//- Helper base class for interpolation tables
+class interpolateTableBase
+{
+public:
+    // Public typedefs
+    
+        //- Enumeration of interpolation method
+        enum interpolationMethod
+        {
+            STEP,   //!< Each tabulated value applies from that point until 
+                    //!  the next point, i.e. step changes.
+            LINEAR  //!< Linear interpolation between points
+        };
+
+        //- Enumeration of out of bounds method
+        enum outOfBoundsMethod
+        {
+            ERROR,          //!< Report un error.
+            EXTRAPOLATION,  //!< Use the two nearest values to extrapolate.
+            FIXED           //!< The value of the bounds will be used.
+        };
+
+#ifdef OPENFOAMFOUNDATION
+        //- Static lookup of interpolation method names
+        static const NamedEnum<interpolationMethod, 2>
+            interpolationMethodNames_;  
+
+        //- Static lookup of out of bounds method names
+        static const NamedEnum<outOfBoundsMethod, 3>
+            outOfBoundsMethodNames_;   
+
+#elif OPENFOAMESI     
+            
+        //- Static lookup of interpolation method names
+        static const Enum<interpolationMethod>
+            interpolationMethodNames_;
+
+        //- Static lookup of out of bounds method names
+        static const Enum<outOfBoundsMethod>
+            outOfBoundsMethodNames_; 
+#endif            
+};
+
+
+/*---------------------------------------------------------------------------*\
+                         Class InterpolateTable Declaration
+\*---------------------------------------------------------------------------*/
+
+template<class FieldType, class Type, class ReturnType>
+class InterpolateTable
+:
+    interpolateTableBase
+{
+    // Private data
+
+        //- Tabulated points
+        const scalarField& xValues_;
+        
+        //- Tabulated values
+        const FieldType& data_;
+        
+        //- Interpolation method
+        interpolationMethod method_;
+
+        //- Out of bounds method
+        outOfBoundsMethod ob_method_;
+
+    // Private Member Functions
+
+        //- Check the table bounds, etc.
+        void check() const
+        {
+            //- Check that table bounds match
+            if ((xValues_.size() < 2) || (xValues_.size() != data_.size()))
+            {
+                //- TODO Extended error message
+                FatalErrorInFunction()
+                    << "Tabulated data has unexpected/mismatched dimensions:"
+                    << endl << tab << "ordinates: " << xValues_.size()
+                    << endl << tab << "data:     " << data_.size()
+                    << abort(FatalError);
+            }
+            
+            //- Check that supplied x values are in ascending order
+            for (int i=1; i < xValues_.size(); i++)
+            {
+                if (xValues_[i] <= xValues_[i-1])
+                {
+                    FatalErrorInFunction()
+                        << "Supplied table ordinates are not in ascending order."
+                        << abort(FatalError);
+                }
+            }
+
+            //- Check that interpolation and out of bounds method exists
+            interpolateTableBase::interpolationMethodNames_[method_];
+            interpolateTableBase::outOfBoundsMethodNames_[ob_method_];
+        }
+        
+        //- Disallow default bitwise copy construct
+        InterpolateTable(const InterpolateTable<FieldType, Type, ReturnType>&);
+
+        //- Disallow default bitwise assignment
+        void operator=(const InterpolateTable<FieldType, Type, ReturnType>&);
+
+
+public:
+
+    // Constructors
+
+        //- Construct from tabulated values
+        InterpolateTable
+        (
+            const scalarField& xValues,
+            const FieldType& data,
+            const interpolationMethod& method,
+            const outOfBoundsMethod& ob_method = ERROR
+        )
+        :
+            xValues_(xValues),
+            data_(data),
+            method_(method),
+            ob_method_(ob_method)
+        {
+            check();
+        }
+
+
+    //- Destructor
+    ~InterpolateTable() {}
+    
+    // Member Operators
+
+        //- Interpolation function
+        inline ReturnType operator()(scalar x) const
+        {
+            if (x >= xValues_[0])
+            {
+                for (int i=1; i < xValues_.size(); i++)
+                {
+                    if(x <= xValues_[i])
+                    {
+                        if (method_ == STEP)
+                        {
+                            // TODO i-1 or i?
+                            return data_[i-1];
+                        }
+                        else if (method_ == LINEAR)
+                        {
+                            scalar x0 = xValues_[i-1];
+                            scalar x1 = xValues_[i];
+                            scalar alpha = (x-x0)/(x1-x0);
+                            
+                            return (1-alpha)*data_[i-1] + alpha*data_[i];
+                        }
+                    }
+                }
+            }
+
+            //- To keep the main body of the code unchanged, the modification for
+            //- the out-of-bound case is done below.   -F.X.
+            switch (ob_method_ )
+            {
+              case ERROR:// Out of bounds error
+              {
+                FatalErrorInFunction()
+                    << "Supplied value " << x << " is out of bounds ("
+                    <<  xValues_[0] << " ... " << xValues_[xValues_.size()-1] << ")" 
+                    << abort(FatalError);
+
+                return 1.0*data_[0];    // Dummy return value
+                break;
+              }
+
+              case FIXED:
+              {
+                if (x < xValues_[0])
+                {
+                  return 1.0*data_[0];
+                }
+                else
+                {
+                  return 1.0*data_[xValues_.size()-1];
+                }
+                break;
+              }
+
+              case EXTRAPOLATION:
+              {
+                if (x < xValues_[0])
+                {
+                  scalar x0 = xValues_[0];
+                  scalar x1 = xValues_[1];
+                  return (data_[1]-data_[0])/(x1-x0)*(x-x0)+data_[0];
+                }
+                else
+                {
+                  scalar x0 = xValues_[xValues_.size()-2];
+                  scalar x1 = xValues_[xValues_.size()-1];
+                  return (data_[xValues_.size()-1]-data_[xValues_.size()-2])/(x1-x0)*(x-x0)
+                         +data_[xValues_.size()-2];
+                }
+
+                break;
+              }
+
+              default:
+                FatalErrorInFunction()
+                    << "error in interpolateTable.H" << abort(FatalError);
+                return 1.0*data_[0];    // Dummy return value
+                break;
+            }
+        }
+
+    // Member Functions
+    
+        //- Return the integral under the tabulated data.
+        //- The coefficient k determines the power to which to raise the
+        //- x values in calculating the area/volume, e.g. 1 for cartesian (x), 
+        //- 2 for cylindrical (r), 3 for spherical (r).
+        ReturnType integral(scalar k=1) const
+        {
+            NotImplemented;
+            
+            return 1.0*data_[0];    // Dummy return value
+        }
+        
+        // Return the next point x_i on the table for the given value of x
+        scalar getNextPoint(const scalar x) const
+        {
+            if (x >= xValues_[0])
+            {
+                for (int i=1; i < xValues_.size(); i++)
+                {
+                    if(x < xValues_[i])
+                    {
+                        return xValues_[i];
+                    }
+                }
+            }
+            
+            // Out of bounds error
+            FatalErrorInFunction()
+                << "Supplied value " << x << " is out of bounds ("
+                <<  xValues_[0] << " ... " << xValues_[xValues_.size()-1] << ")" 
+                << abort(FatalError);
+            
+            return GREAT;
+        }
+        
+        // Return the last point x_i on the table
+        scalar getLastPoint() const
+        {
+            return xValues_[xValues_.size()-1];
+        }        
+};
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+template<>
+scalar InterpolateTable<scalarField, scalar, scalar>::integral(scalar k) const;
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace Foam
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#endif
+
+// ************************************************************************* //

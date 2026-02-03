@@ -1,0 +1,164 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//- Thermal and Mechanical solver selection:
+thermalSolver           solidConduction;
+mechanicsSolver         smallStrain;
+neutronicsSolver        diffusion;
+elementTransport        fromLatestTime;
+
+//- Material and rhelogy treatment:
+materialProperties      byZone;
+rheology                byMaterial;
+
+heatSource              timeDependentLhgr;
+burnup                  Lassmann;
+fastFlux                timeDependentAxialProfile;
+gapGas                  Frapcon;
+fgr                     SCIANTIX;
+corrosion               fromLatestTime;
+sliceMapper             autoAxialSlices;
+
+globalOptions
+{
+    pinDirection            (0 0 1);
+    reactorType             "LWR";
+}
+
+thermalSolverOptions
+{
+    heatFluxSummary     on;
+    calculateEnthalpy   true;
+}
+
+rheologyOptions
+{
+    thermalExpansion on;                      
+    coolantPressureList    
+    {
+            file           "$FOAM_CASE/constant/lists/systemPressure";
+            outOfBounds     clamp;
+    };                        
+}
+
+mechanicsSolverOptions
+{
+    forceSummary        off;  
+    cylindricalStress   off;  
+
+    multiMaterialCorrection
+    {
+        type                    uniform;
+        defaultWeights          0.9;
+    }
+}
+
+fgrOptions
+{
+    nFrequency      1;
+    relax           0.1;
+    addToRegistry   on;
+}
+
+gapGasOptions
+{
+    gapPatches ( fuelOuter cladInner );
+    holePatches ();
+    topFuelPatches    ( fuelTop);
+    bottomFuelPatches ( fuelBottom);
+
+    gapVolumeOffset 0.0;
+    gasReserveVolume 0.0;
+    gasReserveTemperature 293.15;
+}
+
+heatSourceOptions
+{
+    timePoints  #include    "$FOAM_CASE/constant/lists/lhrTimes";
+    lhgr        #include    "$FOAM_CASE/constant/lists/lhrValues";
+    timeInterpolationMethod linear;
+
+    axialProfile
+    {
+        type flat;
+    }
+
+    radialProfile
+    {
+        type    fromBurnup;
+    }
+
+    materials ( fuel );
+}
+
+fastFluxOptions
+{
+    timePoints  ( 0.0 60.0 );
+    fastFlux    ( 0.0  0.0 );
+    timeInterpolationMethod linear;
+
+    axialProfile
+    {
+        type flat;
+    }
+
+    materials ( fuel cladding );
+}
+
+
+materials
+{
+    fuel
+    {
+        material                    UO2;
+        Tref                        Tref [ 0 0 0 1 0 ] 293;
+
+        densificationModel          UO2Frapcon;
+        swellingModel               UO2Frapcon;
+        relocationModel             UO2Frapcon;
+
+
+        enrichment                  0.035;
+        rGrain                      1.0e-05;
+        GdContent                   0.0;
+        theoreticalDensity          10960;
+        densityFraction             0.95;
+        dishFraction                0.0;
+
+        resinteringDensityChange    0.3;
+        GapCold                     0.12e-3;
+        DiamCold                    10.3e-3;
+        recoveryFraction            0.5;
+        outerPatch                  "fuelOuter";
+
+        isotropicCracking           off;
+
+        rheologyModel   elasticity;
+    }
+
+    cladding
+    {
+        material                    Zircaloy;
+        Tref                        Tref [ 0 0 0 1 0 ] 293;
+        PoissonRatioModel           ZircaloyConstant;
+        phaseTransitionModel        none;
+       
+        rheologyModel elasticity;        
+    }
+}
+
+// ************************************************************************* //

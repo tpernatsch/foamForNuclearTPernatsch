@@ -1,0 +1,34 @@
+{
+# geometryType options : 
+# - "1D"
+# - "2Dsmeared"
+# - "2Ddiscrete"
+'geometryType':                 '1D',
+'wedgeAngle':                   0.025,
+'convertToMeters':              0.001,
+
+'nBlocksFuel':                  1,
+'nBlocksClad':                  0,
+
+'blockNameFuel':                ['tube'],
+'blockNameClad':                [],
+
+'rInnerFuel':                   [0.0],
+'rInnerClad':                   [],
+
+'rOuterFuel':                   [3.4],
+'rOuterClad':                   [],
+
+'heightFuel':                   [1000],
+'heightClad':                   [],
+
+'offsetFuel':                   0,
+'offsetClad':                   0.0,
+
+'nCellsRFuel':                  [10],
+'nCellsRClad':                  [],
+
+# Only if "1D" is activated : 
+'nSlicesFuel':                  [10],
+'nSlicesClad':                  []
+}

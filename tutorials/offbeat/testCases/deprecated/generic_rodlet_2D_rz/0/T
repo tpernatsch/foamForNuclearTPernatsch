@@ -1,0 +1,96 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 300;
+
+boundaryField
+{
+   
+    ".*Front|.*Back"
+    {
+        type            wedge;
+    }
+
+    "dishChamferBottom_.*|dishChamferTop_.*"    
+    {
+        type            zeroGradient;
+        value           $internalField;
+    }
+
+    "fuelTop.*|fuelBottom_.*|topCapInner"
+    {
+        type            zeroGradient;
+        patchType       regionCoupledOFFBEAT;
+    }
+
+    fuelOuter
+    {
+        type            fuelRodGap;
+        patchType       regionCoupledOFFBEAT;
+        kappa           k;
+        coupled         true;
+        alpha           uniform 5000;
+        roughness       uniform 2.2e-6;
+        value           $internalField;
+        relax           1;
+    }
+
+    cladInner
+    {
+        type            fuelRodGap;
+        patchType       regionCoupledOFFBEAT;
+        kappa           k;
+        coupled         true;
+        alpha           uniform 5000;
+        roughness       uniform 0.5e-6;
+        value           $internalField;
+        relax           1;
+    }
+
+    "cladTop|cladOuter|cladBottom"
+    {
+        type uniformFixedValue;
+        uniformValue table
+        (
+            (0 300)
+            (60.0 600.0)
+            (1e8 600.0)
+        );
+    }
+
+    fuelInner
+    {
+        type            zeroGradient;
+    }
+
+    "fuelBottom|bottomCapInner"
+    {
+        type            zeroGradient;
+        patchType       regionCoupledOFFBEAT;
+        kappa           k;
+        coupled         true;
+        value           $internalField;
+        relax           1;
+    }
+
+
+}
+
+
+// ************************************************************************* //

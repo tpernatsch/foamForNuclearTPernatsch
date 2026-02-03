@@ -1,0 +1,39 @@
+#!/bin/bash
+cd ${0%/*} || exit 1    # Run from this directory
+set -o pipefail
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+# Run from this directory
+cd "${0%/*}" || exit 1
+
+if [[ $WM_PROJECT_VERSION == *v* ]]
+then    
+    # cp radialProfile_ESI system/radialProfile
+    rm -f results && touch results
+    echo "The update mesh capabilities of porosityTransportDynMeshSolver are not yet available for OpenFOAM ESI version." >> ./results
+else
+    cp radialProfile_FOUNDATION system/radialProfile
+
+    cd rodMaker && python3 rodMaker.py && mv blockMeshDict ../system && cd ..
+    runApplication blockMesh
+    runApplication changeDictionary
+    runApplication offbeat
+
+    postProcess -func radialProfile
+
+
+    rIni=$(cat './postProcessing/radialProfile/1/radial_porosity.csv' | head -2 | tail -1 | cut -d "," -f1)
+    rFin=$(cat './postProcessing/radialProfile/251280/radial_porosity.csv' | head -2 | tail -1 | cut -d "," -f1)
+
+    rm -f results && touch results
+
+    echo "Initial inner radius: $rIni m" >> ./results
+    echo "Final inner radius: $rFin m" >> ./results
+fi
+
+
+
+
+#------------------------------------------------------------------------------

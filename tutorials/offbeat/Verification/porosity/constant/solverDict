@@ -1,0 +1,109 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2412                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    location        "constant";
+    object          solverDict;
+}
+
+thermalSolver   fromLatestTime;
+
+mechanicsSolver fromLatestTime;
+
+neutronicsSolver fromLatestTime;
+
+elementTransport byList;
+
+materialProperties byZone;
+
+rheology        byMaterial;
+
+heatSource      fromLatestTime;
+
+burnup          fromLatestTime;
+
+fastFlux        fromLatestTime;
+
+gapGas          none;
+
+fgr             none;
+
+sliceMapper     autoAxialSlices;
+
+corrosion       fromLatestTime;
+
+elementTransportOptions
+{
+    solvers         ( porosityTransport );
+    porosityOptions
+    {
+        diffusiveTerm   off;
+        boundedAdvectionTerm off;
+    }
+    boundedAdvectionTerm false;
+}
+
+globalOptions
+{
+    pinDirection    ( 0 0 1 );
+    reactorType     "LWR";
+}
+
+rheologyOptions
+{
+    modifiedPlaneStrain off;
+}
+
+materials
+{
+    fuel
+    {
+        material        UPuO2;
+        Tref            Tref [ 0 0 0 1 0 ] 293;
+        densificationModel none;
+        swellingModel   none;
+        relocationModel none;
+        rGrain          6e-06;
+        GdContent       0;
+        theoreticalDensity 10960;
+        densityFraction 0.85;
+        dishFraction    0;
+        resinteringDensityChange 0.3;
+        GapCold         7.5e-05;
+        DiamCold        0.009;
+        recoveryFraction 0.5;
+        outerPatch      "fuelOuter";
+        isotropicCracking off;
+        nCracksMax      12;
+        rheologyModel   elasticity;
+        oxygenMetalRatio 2;
+        isotopes
+        {
+            U
+            {
+                ratioOverMetal  0.8;
+                massNumbers (235 238);
+                weightFractions (0.007 0.993);
+            }
+            Pu
+            {
+                ratioOverMetal  0.2;
+                massNumbers (238 239 240 241 242);
+                weightFractions (0.02332 0.56873 0.26997 0.06105 0.07693);
+            }
+        }
+        poreVelocityModel constant;
+    }
+}
+
+
+// ************************************************************************* //

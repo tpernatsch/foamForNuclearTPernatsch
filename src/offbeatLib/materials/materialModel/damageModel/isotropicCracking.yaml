@@ -1,0 +1,45 @@
+description: |
+  Isotropic cracking damage model.
+
+  The model supports alternative isotropic cracking formulations selected via
+  `isotropicCrackingType`.
+
+options:
+  - key: isotropicCrackingType
+    type: word
+    required: false
+    default: Barani
+    description: |
+      Choice of isotropic cracking formulation. Either `Barani` or `JankusWeeks`
+
+  - key: nCracksMax
+    type: scalar
+    required: false
+    default: 12
+    description: |
+      Maximum number of cracks (from 0 to 12) for the Barani model.
+      If the JankusWeeks model is selected, this keyword is interepreted as the
+      fixed number of cracks.
+
+usage:
+  - comment: |
+      Example selection of the isotropic cracking model.
+    snippet: |
+        materials
+        {
+            fuel
+            {
+                material UO2;
+
+                damage
+                {
+                    type isotropicCracking;
+
+                    // optional
+                    isotropicCrackingType Barani;//or JankusWeeks
+
+                    // required
+                    nCracksMax 12;
+                }
+            }
+        }

@@ -1,0 +1,50 @@
+description: |
+  Burnup model that tracks the evolution of the local burnup by integrating the
+  the volumetric power density field (divided by local density field) over time.
+
+  The burnup is expressed in MWd/MT$_{oxide}$** and is updated at each time step.
+
+formulation: |
+  At each time step, the updated burnup is computed as:
+
+  $$
+  Bu = Bu^0 + \frac{Q \cdot \Delta t}{1000 \cdot \rho}
+  $$
+
+  where:
+
+  - $Bu^0$ is the local burnup value at the end of the previous time step,
+    in MWd/MT$_{oxide}$
+  - $Q$ is the volumetric power density in W/m$^3$
+  - $\rho$ is the material density in kg/m$^3$
+  - $\Delta t$ is the time step in seconds
+
+admonitions: []
+
+optionsLocations:
+  - name: burnupOptions
+    in: solverDict
+
+options:
+  - key: heatSourceName
+    type: str
+    required: false
+    default: 'Q'    
+    description: |
+      Name of the volumetric power density field used to compute burnup.
+      By default, OFFBEAT expects the power density field to be named `Q`. This
+      option might be useful when the power field is provided by an external neutronics
+      solver or a custom heat source model using a different field name.
+
+usage:
+  - comment: |
+      Activate the `fromPower` burnup model and (optionally) specify the name of
+      the volumetric power density field in the `burnupOptions` sub-dictionary.
+    snippet: |
+      burnup fromPower;
+
+      burnupOptions
+      {
+          // Name of the heat source field (default: "Q")
+          heatSourceName  "Q";
+      }

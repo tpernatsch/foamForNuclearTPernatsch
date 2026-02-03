@@ -1,0 +1,23 @@
+#------------------------------------------------------------------------------#
+#                                                                              #
+#                          README - rodMaker                                   #
+#                                                                              #
+#------------------------------------------------------------------------------#
+
+This folder contains the python script rodMaker.py used to generate 1-D or 2-D
+blockMesh geometries for OFFBEAT
+
+Content of the folder:
+	
+	- rodDict : python dictionary - input file for rodMaker
+
+	- rodMaker.py : python script that reads rodDict and generate blockMeshDict
+					file
+
+================================================================================
+
+Example of execution:
+
+  'python rodMaker.py'
+
+================================================================================

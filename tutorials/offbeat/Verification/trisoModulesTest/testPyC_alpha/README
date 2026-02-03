@@ -1,0 +1,19 @@
+#------------------------------------------------------------------------------#
+#                                                                              #
+#                            README - commands                                 #
+#                                                                              #
+#------------------------------------------------------------------------------#
+
+This README file contains a brief description of the verification case.
+
+A simple test for a 1mm x 1mm x 1mm case with only 1 element. The temperature rise from 
+673.15 K at 0 s till 1673.15 K at 50s. The thermal strain as well as the displacement are
+outputed to verify if they were well coded. 
+
+BAF = 1.0 - total isotropic thermal expansion
+BAF != 1.0 - Orthotropic thermal expansion. The thermal expansion coef along x direction differ 
+             from that of y and z direction.  
+
+
+
+

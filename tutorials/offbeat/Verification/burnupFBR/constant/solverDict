@@ -1,0 +1,183 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//- Thermal and Mechanical solver selection:
+thermalSolver           fromLatestTime;
+mechanicsSolver         fromLatestTime;
+neutronicsSolver        diffusion;
+elementTransport        fromLatestTime;
+
+//- Material and rhelogy treatment:
+materialProperties      byZone;
+rheology                byMaterial;
+
+heatSource              constantLhgr;
+burnup                  LassmannFBR;
+fastFlux                fromLatestTime;
+corrosion               fromLatestTime;
+gapGas                  Frapcon;
+fgr                     none;
+sliceMapper             autoAxialSlices;
+corrosion               fromLatestTime;
+
+globalOptions
+{
+    pinDirection            (0 0 1);
+    reactorType             "FBR";
+}
+
+thermalSolverOptions
+{
+    heatFluxSummary     off;
+}
+
+rheologyOptions
+{
+    thermalExpansion on;
+    modifiedPlaneStrain off;
+    planeStress     off;
+}
+
+mechanicsSolverOptions
+{
+    forceSummary        off;  
+    cylindricalStress   on;  
+
+    multiMaterialCorrection
+    {
+        type                    uniform;
+        defaultWeights          1;
+    }
+}
+
+fgrOptions
+{
+    nFrequency  1;
+    relax       1;
+    addToRegistry   true;
+}
+
+gapGasOptions
+{
+    gapPatches ( fuelOuter cladInner );
+    holePatches ();
+    topFuelPatches    ( fuelTop);
+    bottomFuelPatches ( fuelBottom);
+
+    gapVolumeOffset 0.0;
+    gasReserveVolume 0.0;
+    gasReserveTemperature 290;
+}
+
+heatSourceOptions
+{
+    lhgr 40e3;
+
+    axialProfile
+    {
+        type flat;
+    }
+
+    radialProfile
+    {
+        type    fromBurnup;
+    }
+
+    materials ( fuel );
+}
+
+fastFluxOptions
+{
+    timePoints  ( 0  3600     1.26E+08 );
+    fastFlux    ( 0  2e13     1e13 );
+    timeInterpolationMethod linear;
+
+    axialProfile
+    {
+        type flat;
+    }
+
+    materials ( fuel cladding );
+}
+
+
+materials
+{
+    fuel
+    {
+        material                    UPuO2;
+        Tref                        Tref [ 0 0 0 1 0 ] 293;
+
+        densificationModel          none;
+        swellingModel               none;
+        relocationModel             none;
+
+        theoreticalDensity          10970;
+        densityFraction             1.0;
+        
+        dishFraction                0.0;
+
+        rGrain                      5e-06;
+
+        isotropicCracking           on;
+        nCracksMax                  12;
+
+        rheologyModel               elasticity;
+
+        oxygenMetalRatio            1.97;
+
+        isotopes
+        {
+            U
+            {
+                ratioOverMetal 0.80;
+                massNumbers (235 238);
+                weightFractions (0.007 0.993);
+            }
+            Pu
+            {
+                ratioOverMetal 0.20;
+                massNumbers (238 239 240 241 242);
+                weightFractions (0.02332 0.56873 0.26997 0.06105 0.07693);
+            }
+        }
+
+    }
+
+
+    cladding
+    {
+        material                Steel1515Ti;
+        Tref                    Tref [ 0 0 0 1 0 ] 293;
+
+        PoissonRatioModel ZircaloyConstant;
+
+        rheologyModel   misesPlasticCreep;
+        rheologyModelOptions
+        {
+            plasticStrainVsYieldStress table
+            (
+                (0    250e6)
+            );
+
+            creepModel Steel1515TiAim1Tobbe;
+            relax 1.0;
+        }
+    }
+}
+
+// ************************************************************************* //

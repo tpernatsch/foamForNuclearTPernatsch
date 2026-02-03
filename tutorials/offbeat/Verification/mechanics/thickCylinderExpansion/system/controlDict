@@ -1,0 +1,68 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+libs ("libsciantix.so");
+libs ("liboffbeat.so");
+
+application     offbeat;
+
+//- Run options:
+startFrom       latestTime;
+startTime       0;
+stopAt          endTime;
+endTime         75;
+deltaT          0.5;
+
+
+
+functions
+{
+    innerStress
+    {
+        type            probes;
+        libs            ("libsampling.so");
+        writeControl    writeTime;
+        probeLocations
+        (
+            (0.01 0 0.025)
+            (0.01 0 0.025)
+        );
+        fixedLocations  false;
+        fields
+        (
+            sigmaCyl
+        );
+    }
+}
+
+//- Write options:
+writeControl    runTime;
+writeInterval   0.005;
+purgeWrite      1;
+writeFormat     ascii;
+writeCompression off;
+timeFormat      general;
+timePrecision   6;
+
+
+//- Adjustable time step options:
+adjustableTimeStep false;
+
+runTimeModifiable true;
+
+
+// ************************************************************************* //

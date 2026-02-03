@@ -1,0 +1,78 @@
+description: |
+  The `BufferParfume` conductivity model provides the thermal conductivity of
+  the TRISO buffer layer as a function of its density.
+
+  The model reads the density field (by default `rho`) and uses an initial and a
+  theoretical density, together with an initial conductivity and a conductivity
+  at theoretical density.
+
+  Theoretical density can be provided as an optional override in the
+  `conductivity` sub-dictionary. If not provided there, it is expected in the
+  material base/composition dictionary.
+
+options:
+  - key: densityName
+    type: word
+    required: false
+    default: rho
+    description: |
+      Name of the density field looked up in the mesh.
+
+  - key: initialDensity
+    type: scalar
+    required: false
+    default: 1000.0
+    description: |
+      Initial density of the buffer material used by the model.
+
+  - key: theoreticalDensity
+    type: scalar
+    required: false
+    description: |
+      Theoretical density of the buffer material.
+
+      Optional override: if not provided in the `conductivity` sub-dictionary,
+      it is read from the material base/composition dictionary (recommended).
+
+  - key: initialConductivity
+    type: scalar
+    required: false
+    default: 0.5
+    description: |
+      Initial thermal conductivity of the buffer material.
+
+  - key: theoreticalConductivity
+    type: scalar
+    required: false
+    default: 4.0
+    description: |
+      Thermal conductivity at theoretical density.
+
+usage:
+  - comment: |
+      Example selection using a `conductivity` sub-dictionary in the `solverDict`.
+    snippet: |
+      materials
+      {
+          buffer
+          {
+              material Buffer;
+
+              // Recommended: shared material property in base/composition dict
+              theoreticalDensity 2250;
+
+              conductivity
+              {
+                  type BufferParfume;
+
+                  // Optional
+                  densityName             rho;
+                  initialDensity          1000;
+                  initialConductivity     0.5;
+                  theoreticalConductivity 4.0;
+
+                  // Optional override (otherwise read from base/composition)
+                  // theoreticalDensity 2250;
+              }
+          }
+      }

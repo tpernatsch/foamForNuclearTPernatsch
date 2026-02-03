@@ -1,0 +1,44 @@
+description: |
+  Thermal conductivity correlation for Hastelloy-N derived from the work of
+  Swindeman.
+
+  The correlation is linear in temperature and is expressed as:
+
+  $$
+  k = \mathrm{par1} + \mathrm{par2} \cdot (T - 273.15)
+  $$
+
+options:
+  - key: par1
+    type: scalar
+    required: false
+    default: 8.431
+    description: |
+      Constant term of the conductivity correlation.
+
+  - key: par2
+    type: scalar
+    required: false
+    default: 0.0205
+    description: |
+      Linear temperature coefficient of the conductivity correlation.
+
+usage:
+  - comment: |
+      Example selection of the Swindeman conductivity correlation for Hastelloy-N
+      in the `solverDict`.
+    snippet: |
+      materials
+      {
+        cladding
+        {
+          conductivity
+          {
+              type HastelloyNSwindeman;
+  
+              // Optional overrides
+              // par1 8.431;
+              // par2 0.0205;
+          }
+        }
+      }

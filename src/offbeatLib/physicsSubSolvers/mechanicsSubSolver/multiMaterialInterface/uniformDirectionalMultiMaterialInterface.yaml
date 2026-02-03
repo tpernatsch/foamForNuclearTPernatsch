@@ -1,0 +1,61 @@
+description: |
+  Multi-material correction class where the interfaces between materials are defined 
+  using directionally-dependent correction weights.
+
+  The correction may optionally be defined in a rotated coordinate system,
+  allowing the user to specify principal material directions.
+
+options:
+  - key: rotated
+    type: bool
+    required: true
+    description: |
+      If true, face normals are transformed to a rotated/local coordinate system
+      before applying directional weights.
+  - key: rotation
+    type: dict
+    required: false
+    description: |
+      Coordinate rotation definition (required if `rotated` is true). Supports
+      standard OpenFOAM `coordinateRotation` types; may be spatially varying.
+  - key: defaultWeights
+    type: vector
+    required: true
+    description: |
+      Directional weights applied to the strain-related correction term.
+      The per-face weight is computed as `| nf ⊙ defaultWeights |`, where `nf` is
+      the unit face normal (in rotated coordinates if `rotated` is true).
+  - key: defaultWeightsGrad
+    type: vector
+    required: false
+    description: |
+      Directional weights applied to the gradient contribution in `sigmaExp`.
+      If not provided, it defaults to `defaultWeights`.
+
+usage:
+  - comment: |
+      Example of the `solverDict` configuration to activate the
+      uniform directional multi-material correction.
+    snippet: |
+      mechanicsSolver
+      {
+        type smallStrain;
+        RhieChowCorrection false;
+
+        multiMaterialCorrection
+        {
+            type uniformDirectional;
+
+            rotate true;
+
+            rotation
+            {
+                type axes;
+                e1 (1 0 0);
+                e2 (0 1 0);
+            }
+
+            defaultWeightEps  (1 0.5 0.5);
+            defaultWeightGrad (1 0.5 0.5);
+        }
+      }

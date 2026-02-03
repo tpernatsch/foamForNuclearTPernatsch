@@ -1,0 +1,72 @@
+description: |
+  The `SiC` material model represents silicon carbide structural material.
+
+  The class selects thermophysical and mechanical property models based
+  primarily on PARFUME correlations.
+
+options:
+  - key: densityModel
+    type: word
+    required: false
+    default: constant
+    description: |
+      Selects the density model used by the `SiC` material.
+
+  - key: heatCapacityModel
+    type: word
+    required: false
+    default: SiCSnead
+    description: |
+      Selects the heat capacity correlation used by the `SiC` material.
+
+  - key: conductivityModel
+    type: word
+    required: false
+    default: SiCParfume
+    description: |
+      Selects the thermal conductivity correlation used by the `SiC` material.
+
+  - key: emissivityModel
+    type: word
+    required: false
+    default: "- missing -"
+    description: |
+      Selects the emissivity model used by the `SiC` material.
+
+  - key: YoungModulusModel
+    type: word
+    required: false
+    default: SiCParfume
+    description: |
+      Selects the Young's modulus correlation used by the `SiC` material.
+
+  - key: PoissonRatioModel
+    type: word
+    required: false
+    default: constant
+    description: |
+      Selects the Poisson's ratio model used by the `SiC` material.
+
+  - key: thermalExpansionModel
+    type: word
+    required: false
+    default: SiCParfume
+    description: |
+      Selects the thermal expansion correlation used by the `SiC` material.
+
+usage:
+  - comment: |
+      Example of a `solverDict` materials entry using the `SiC` material model.
+    snippet: |
+      materials
+      {
+          structure
+          {
+              material SiC;
+
+              heatCapacityModel       SiCSnead;
+              conductivityModel       SiCParfume;
+              YoungModulusModel       SiCParfume;
+              thermalExpansionModel   SiCParfume;
+          }
+      }

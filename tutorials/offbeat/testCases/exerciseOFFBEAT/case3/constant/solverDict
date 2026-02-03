@@ -1,0 +1,136 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Thermal and Mechanical solver selection:
+thermalSolver           solidConduction;
+mechanicsSolver         ;
+neutronicsSolver        fromLatestTime;
+elementTransport        fromLatestTime;
+
+// Material and rhelogy treatment:
+materialProperties      byZone;
+rheology                byMaterial;
+
+heatSource              timeDependentLhgr;
+burnup                  fromPower;
+fastFlux                fromLatestTime;
+corrosion               fromLatestTime;
+gapGas                  ;
+fgr                     none;
+sliceMapper             autoAxialSlices;
+
+
+globalOptions
+{
+    pinDirection            (0 0 1);
+    reactorType             "LWR";
+}
+
+
+rheologyOptions
+{
+    modifiedPlaneStrain ;
+    springModulus   3500;
+    coolantPressureList
+    {
+        file            "$FOAM_CASE/constant/systemPressure";
+        outOfBounds     clamp;
+    }
+}
+
+
+mechanicsSolverOptions
+{
+    forceSummary        off;  
+    cylindricalStress   on;  
+
+    multiMaterialCorrection
+    {
+        type                    uniform;
+        defaultWeights          1;
+    }
+}
+
+
+heatSourceOptions
+{
+    timePoints  ( 0  0.04    364    364.04 365 );
+    lhgr        ( 0  400e2  400e2  0      0);
+    timeInterpolationMethod linear;
+
+    axialProfile
+    {
+        type flat;
+    }
+
+    radialProfile
+    {
+        type    flat;
+    }
+
+    materials ( fuel );
+}
+
+
+gapGasOptions
+{
+    gapPatches ( fuelOuter cladInner );
+    holePatches ( );
+    topFuelPatches    ( fuelTop );
+    bottomFuelPatches ( fuelBottom );
+
+    gapVolumeOffset 0.0;
+    gasReserveVolume 0.0;
+}
+
+
+materials
+{
+    fuel
+    {
+        material                    UO2;
+
+        Tref                        Tref [ 0 0 0 1 0 ] 293;
+
+        enrichment                  0.045;
+        rGrain                      2.8e-05;
+        GdContent                   0.0;
+        theoreticalDensity          10960;
+        densityFraction             0.95;
+        dishFraction                0.0;
+
+        densificationModel          none;
+        swellingModel               none;
+        relocationModel             none;
+        isotropicCracking           off;
+
+        rheologyModel               elasticity;
+    }
+
+    cladding
+    {
+        material                    Zircaloy;
+        Tref                        Tref [ 0 0 0 1 0 ] 293;
+
+        swellingModel               none;
+        phaseTransitionModel        none;
+
+        rheologyModel   elasticity;
+    }
+}
+
+// ************************************************************************* //

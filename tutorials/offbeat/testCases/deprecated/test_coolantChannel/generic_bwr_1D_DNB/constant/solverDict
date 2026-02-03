@@ -1,0 +1,166 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//- Thermal and Mechanical solver selection:
+thermalSolver           solidConduction;
+mechanicsSolver         smallStrain;
+neutronicsSolver        diffusion;
+elementTransport        fromLatestTime;
+
+//- Material and rhelogy treatment:
+materialProperties      byZone;
+rheology                byMaterial;
+
+heatSource              timeDependentLhgr;
+burnup                  Lassmann;
+fastFlux                timeDependentAxialProfile;
+corrosion               fromLatestTime;
+gapGas                  Frapcon;
+fgr                     SCIANTIX;
+sliceMapper             autoAxialSlices;
+corrosion               fromLatestTime;
+
+globalOptions
+{
+    pinDirection            (0 0 1);
+    reactorType             "LWR";
+}
+
+thermalSolverOptions
+{
+    heatFluxSummary     off;
+}
+
+rheologyOptions
+{
+    thermalExpansion on;
+    modifiedPlaneStrain on;
+    springModulus   3500;
+    coolantPressureList
+    {
+        file            "$FOAM_CASE/constant/systemPressure";
+        outOfBounds     clamp;
+    }
+    planeStress     off;
+}
+
+mechanicsSolverOptions
+{
+    forceSummary        off;  
+    cylindricalStress   on;  
+
+    multiMaterialCorrection
+    {
+        type                    uniform;
+        defaultWeights          1;
+    }
+}
+
+fgrOptions
+{
+    nFrequency  1;
+    relax       1;
+}
+
+gapGasOptions
+{
+    gapPatches ( fuelOuter cladInner );
+    holePatches ();
+    topFuelPatches    ( fuelTop);
+    bottomFuelPatches ( fuelBottom);
+
+    gapVolumeOffset 0.0;
+    gasReserveVolume 0.0;
+    gasReserveTemperature 290;
+}
+
+heatSourceOptions
+{
+    timePoints  ( 0  3600     10800   14400 );
+    lhgr        ( 0  15000    60000       0 );
+    timeInterpolationMethod linear;
+
+    axialProfile
+    {
+        type flat;
+    }
+
+    radialProfile
+    {
+        type    fromBurnup;
+    }
+
+    materials ( fuel );
+}
+
+fastFluxOptions
+{
+    timePoints  ( 0  3600     1.26E+08 );
+    fastFlux    ( 0  1e13     1e13 );
+    timeInterpolationMethod linear;
+
+    axialProfile
+    {
+        type flat;
+    }
+
+    materials ( fuel cladding );
+}
+
+
+materials
+{
+    fuel
+    {
+        material                    UO2;
+        Tref                        Tref [ 0 0 0 1 0 ] 293;
+
+        densificationModel          UO2Frapcon;
+        swellingModel               UO2Frapcon;
+        relocationModel             UO2Frapcon;
+
+        enrichment                  0.045;
+        rGrain                      2.8e-05;
+        GdContent                   0.0;
+        theoreticalDensity          10960;
+        densityFraction             0.95;
+        dishFraction                0.0;
+
+        resinteringDensityChange    0.3;
+        GapCold                     0.13e-3;
+        DiamCold                    9.0e-3;
+        recoveryFraction            0.5;
+        outerPatch                  "fuelOuter";
+
+        isotropicCracking           on;
+        nCracksMax                  12;
+
+        rheologyModel               elasticity;
+    }
+
+    cladding
+    {
+        material                Zircaloy;
+        Tref                    Tref [ 0 0 0 1 0 ] 293;
+
+        PoissonRatioModel ZircaloyConstant;
+
+        rheologyModel   elasticity;
+    }
+}
+
+// ************************************************************************* //

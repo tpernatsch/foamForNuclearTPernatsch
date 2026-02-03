@@ -1,0 +1,70 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    location        "constant";
+    object          solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+mechanicsSolver     fromLatestTime;
+thermalSolver       fromLatestTime;
+neutronicsSolver    fromLatestTime;
+elementTransport    fromLatestTime;
+
+materialProperties      byZone;
+rheology                byMaterial;
+heatSource              laserHeatSource;
+burnup                  fromLatestTime;
+fastFlux                fromLatestTime;
+gapGas                  none;
+fgr                     none;
+sliceMapper             autoAxialSlices;
+corrosion               fromLatestTime;
+
+globalOptions
+{
+    pinDirection    ( 0 0 1 );
+    reactorType     "LWR";
+}
+
+heatSourceOptions
+{
+    useEffectiveAlpha   on;
+    alphaAbsorption     1e4;
+    beamDirection       (0 0 -1);
+    
+    materials   (fuel);
+}
+
+materials
+{
+    fuel
+    {
+        material            UO2;
+        Tref                Tref [ 0 0 0 1 0 ] 300;
+        
+        densificationModel  none;
+        swellingModel       none;
+        relocationModel     none;
+        enrichment          ;
+        rGrain              6e-06;
+        theoreticalDensity  10662;
+        densityFraction     1.00;
+        dishFraction        0;
+        isotropicCracking   off;
+        
+        rheologyModel   elasticity;
+    }
+}
+
+
+// ************************************************************************* //

@@ -1,0 +1,132 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+
+application     offbeat;
+
+//- Run options:
+startFrom       latestTime;
+startTime       0;
+stopAt          endTime;
+// endTime         31536000; // 1 year
+endTime         94608000; // 3 years
+deltaT          1;
+
+//- Write options:
+writeControl    timeStep;
+writeInterval   1;
+purgeWrite      0;
+writeFormat     ascii;
+writeCompression off;
+timeFormat      general;
+timePrecision   20;
+writePrecision   6;
+
+//- Adjustable time step options:
+adjustableTimeStep true;
+
+//- Probes
+functions 
+{ 
+    burnup
+    {
+        type            volFieldValue;
+        libs            ("libfieldFunctionObjects.so");
+
+        log             false;
+        writeControl    runTime;
+        writeInterval   1;
+        writeFields     false;
+
+        regionType      cellZone;
+        name            fuel;
+        operation       volAverage;
+
+
+        fields
+        (
+            Bu_kgU
+        );
+    }
+        nuclides
+    {
+        type            volFieldValue;
+        libs            ("libfieldFunctionObjects.so");
+
+        log             false;
+        writeControl    runTime;
+        writeInterval   1;
+        writeFields     false;
+
+        regionType      cellZone;
+        name            fuel;
+        operation       volAverage;
+
+
+        fields
+        (
+            N_He4
+            N_U234
+            N_U235
+            N_U236
+            N_U237
+            N_U238
+            N_Np237
+            N_Np238
+            N_Np239
+            N_Pu238
+            N_Pu239
+            N_Pu240
+            N_Pu241
+            N_Pu242
+            N_Pu243
+            N_Am241
+            N_Am242
+            N_Am242m
+            N_Am243
+            N_Am244
+            N_Cm242
+            N_Cm243
+            N_Cm244
+            N_Cm245
+        );
+    }
+}
+
+maxDeltaT         6.048e5;
+minDeltaT         0.001;
+maxRelativeDeltaTIncrease 1e9;
+minRelativeDeltaTDecrease 1e9;
+maxRelativePowerIncrease  1e9;
+maxRelativePowerDecrease  1e9;
+maxBurnupIncrease 0.5;
+maxAverageCreep   1e-4;
+maxMaximumCreep	  1e-4;
+maxFGR 1e-8;	
+
+runTimeModifiable true;
+
+adjustableWriteTimeStep on;
+writeTimeStepList
+(
+    1
+    $endTime
+);
+
+
+// ************************************************************************* //

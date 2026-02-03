@@ -1,0 +1,115 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    location        "constant";
+    object          solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+globalOptions
+{
+    pinDirection    ( 0 0 1 );
+}
+
+thermalSolver       
+{
+    type solidConduction;
+    heatFluxSummary off;
+}
+
+mechanicsSolver
+{
+    type largeStrainUpdLag;
+    forceSummary        off;  
+    cylindricalStress   on;  
+    RhieChowCorrection   true;
+    RhieChowScaleFactor  1;
+    multiMaterialCorrection
+    {
+        type                    uniform;
+        defaultWeights          1;
+        defaultWeightsGrad          0;
+    }
+    strainTensor Hencky;
+}
+
+fastFlux
+{
+    type constant;
+}
+
+rheology
+{
+    type byMaterial;
+    thermalExpansion     on;
+}
+
+sliceMapper         
+{
+    type byMaterial;
+}
+
+materials
+{
+    cladding
+    {
+        type                Zircaloy;
+
+        thermalExpansion
+        {
+            type ZircaloyMatpro;
+            Tref 300;
+        }
+
+        failure
+        {
+            type ZircaloyOverstrainBison;
+            stopIfFailed            on;
+            hoopStrainLimit         0.244897959;
+            patchNames ( "outer" "inner" );
+        }
+
+        phaseTransition
+        {
+            type ZircaloyDynamic;
+        }
+
+        nSlices         1;
+
+        constitutiveLaw
+        {
+            type misesPlasticCreep;
+
+            yieldStress
+            {
+                type constant;
+                sigmaY 600e6;
+            }
+
+            creep
+            {
+                type ZircaloyLimbackLoca;
+                relax 1;
+
+                primaryCreep     off;
+                irradiationCreep off;
+    
+                NewtonRaphsonMethod on;
+                NewtonRaphsonTolerance 1e-6;
+            }
+        
+        }  
+    }
+}
+
+
+// ************************************************************************* //

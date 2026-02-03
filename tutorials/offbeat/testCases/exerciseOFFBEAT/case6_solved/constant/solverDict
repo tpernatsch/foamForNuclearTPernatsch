@@ -1,0 +1,223 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Thermal and Mechanical solver selection:
+thermalSolver
+{
+    type solidConduction;
+}
+
+mechanicsSolver
+{
+    type smallStrain;    
+    forceSummary        off;  
+    cylindricalStress   on;  
+
+    multiMaterialCorrection
+    {
+        type                    uniform;
+        defaultWeights          1;
+    }
+}
+
+burnup
+{
+    type fromPower;
+}
+
+heatSource
+{
+    type timeDependentLhgr;
+    timePoints  ( 0  0.04    364    364.04 365 );
+    lhgr        ( 0  400e2  400e2  0      0);
+    timeInterpolationMethod linear;
+    
+    axialProfile
+    {
+        type flat;
+    }
+    
+    radialProfile
+    {
+        type    flat;
+    }
+    
+    materials ( fuel );
+}
+
+fastFlux
+{
+    type            timeDependentAxialProfile;
+    
+    timePoints   ( 0 0.04 364 364.04 365);
+    fastFlux     ( 0 1e+13 1e+13 0 0);
+    timeInterpolationMethod linear;
+    axialProfile
+    {
+        type            flat;
+    }
+    
+    materials        (fuel cladding);
+}
+
+gapGas
+{
+    type Frapcon;
+
+    gapPatches ( fuelOuter cladInner );
+    holePatches ( );
+    topFuelPatches    ( fuelTop );
+    bottomFuelPatches ( fuelBottom );
+
+    gapVolumeOffset 0.0;
+    gasReserveVolume 0.0;
+}
+
+fissionGasRelease
+{
+    type            SCIANTIX;
+    relax           1.0;
+    nFrequency      1;
+    addToRegistry   false;
+    SCIANTIX
+    {
+        iverification   0;
+        igrain_growth   1;
+        iinert_gas_behavior 1;
+        igas_diffusion_coefficient 1;
+        iintra_bubble_evolution 1;
+        ibubble_radius  1;
+        iresolution_rate 1;
+        itrapping_rate  1;
+        inucleation_rate 1;
+        isolver         1;
+        iformat_output  1;
+        igrain_boundary_vacancy_diffusion_coefficient 1;
+        igrain_boundary_behaviour 1;
+        igrain_boundary_micro_cracking 1;
+        igrain_recrystallization 0;
+        ifuel_reactor_type 0;
+        igas_effective_coefficient 1;
+        igas_sweeping   1;
+        imicro_cracking_span 0;
+        sf_resolution_rate 1;
+        sf_trapping_rate 1;
+        sf_nucleation_rate 1;
+        sf_diffusion_rate 1;
+    }
+
+}
+
+rheology
+{
+    type byMaterial;
+    modifiedPlaneStrain on;
+    springModulus   3500;
+    coolantPressureList
+    {
+        file            "$FOAM_CASE/constant/systemPressure";
+        outOfBounds     clamp;
+    }
+}
+
+sliceMapper
+{
+    type autoAxialSlices;
+}
+
+globalOptions
+{
+    pinDirection            (0 0 1);
+    reactorType             "LWR";
+}
+
+
+materials
+{
+    fuel
+    {
+        material                    UO2;
+
+        enrichment                  0.045;
+        rGrain                      2.8e-05;
+        GdContent                   0.0;
+        theoreticalDensity          10960;
+        densityFraction             0.95;
+        dishFraction                0.0;
+
+        densification
+        {
+            type empirical;
+            densificationDensityChange   1;
+            densificationTimeConstant   1000;
+        }
+
+        relocation
+        {
+            type UO2Frapcon;
+            GapCold                     0.12e-3;
+            DiamCold                    9e-3;
+            outerPatch                  "fuelOuter";
+        }
+
+        swelling
+        {
+            type UO2Frapcon;
+        }
+
+        damage
+        {
+            type isotropicCracking;
+            nCracksMax 12;
+        }
+        
+        constitutiveLaw
+        {
+            type elasticity;
+        }
+    }
+
+    cladding
+    {
+        material                    Zircaloy;        
+
+        swelling
+        {
+            type ZircaloyBison;
+        }
+
+        constitutiveLaw
+        {
+            type            misesPlasticCreep;
+            yieldStress
+            {
+                type            constant;
+                sigmaY          400000000.0;
+            }
+
+            creep
+            {
+                type            ZircaloyLimback;
+                relax           0.9;
+            }
+
+        }
+
+    }
+}
+
+// ************************************************************************* //

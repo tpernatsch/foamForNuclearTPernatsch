@@ -1,0 +1,30 @@
+description: |
+  Class to set Molybdenum emissivity to a constant input value.
+
+options:
+  - key: emissivityValue
+    type: scalar
+    required: false
+    default: 0.2
+    description: |
+      Constant emissivity value.
+
+usage:
+  - comment: |
+      Example selection of the constant emissivity model for Molybdenum.
+    snippet: |
+      materials
+      {
+          <zoneName>
+          {
+              type Molybdenum;
+              
+              emissivity
+              {
+                  type MolybdenumConstant;
+              
+                  // Optional override
+                  // emissivityValue 0.2;
+              }
+          }
+      }

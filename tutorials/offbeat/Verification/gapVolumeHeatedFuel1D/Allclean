@@ -1,0 +1,9 @@
+#!/bin/bash
+cd ${0%/*} || exit 1    # run from this directory
+
+
+foamListTimes -rm
+rm constant/polyMesh -rf
+rm -f log*
+rm -f results*
+rm -f *.OpenFOAM

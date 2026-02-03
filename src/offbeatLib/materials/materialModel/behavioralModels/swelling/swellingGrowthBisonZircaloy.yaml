@@ -1,0 +1,49 @@
+description: |
+  Class modelling the irradiation growth phenomenon derived from Moose documentation.
+  
+options:
+  - key: fastFluenceName
+    type: word
+    required: false
+    default: fastFluence
+    description: |
+      Name of the fast fluence field.
+  - key: A
+    type: scalar
+    required: false
+    default: 3e-20
+    description: |
+      Correlation parameter.
+  - key: n
+    type: scalar
+    required: false
+    default: 0.794
+    description: |
+      Correlation parameter.
+  - key: cladType
+    type: word
+    required: false
+    default: "ESCORE"
+    description: |
+      Cladding type selector used by the model.
+
+usage:
+  - comment: |
+      Example selection of `ZircaloyBison`.
+    snippet: |
+        materials
+        {
+            clad
+            {
+                type Zircaloy;
+
+                swelling
+                {
+                    type ZircaloyBison;
+                    // fastFluenceName fastFluence;
+                    // A 3e-20;
+                    // n 0.794;
+                    cladType <required>;
+                }
+            }
+        }

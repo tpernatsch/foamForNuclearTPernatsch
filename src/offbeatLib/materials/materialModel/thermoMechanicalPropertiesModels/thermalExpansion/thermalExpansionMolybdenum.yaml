@@ -1,0 +1,34 @@
+description: |
+  Class modelling thermal expansion of Molybdenum.
+
+options:
+  - key: par1
+    type: scalar
+    required: false
+    default: 4.985E-06
+    description: |
+      Option read by the model.
+  - key: par2
+    type: scalar
+    required: false
+    default: 6.667E-10
+    description: |
+      Option read by the model.
+
+usage:
+  - comment: |
+      Example selection of the `Molybdenum` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        structure
+        {
+          type Molybdenum;
+          thermalExpansion
+          {
+            type Molybdenum;
+            // par1 4.985E-06;
+            // par2 6.667E-10;
+          }
+        }
+      }

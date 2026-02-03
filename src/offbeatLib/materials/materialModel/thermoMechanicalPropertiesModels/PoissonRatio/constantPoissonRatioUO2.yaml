@@ -1,0 +1,27 @@
+description: |
+  Class to set UO2 Poisson's Ratio to a constant input value.
+
+options:
+  - key: PoissonRatioValue
+    type: scalar
+    required: false
+    default: 0.316
+    description: |
+      Option read by the model.
+
+usage:
+  - comment: |
+      Example selection of the `UO2Constant` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        fuel
+        {
+          type UO2;
+          thermalExpansion
+          {
+            type UO2Constant;
+            // PoissonRatioValue 0.316;
+          }
+        }
+      }

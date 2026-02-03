@@ -1,0 +1,35 @@
+#!/bin/sh
+# Run from this directory
+cd "${0%/*}" || exit 1
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+runApplication -o blockMesh
+runApplication -o changeDictionary
+runApplication -o offbeat
+#
+runApplication -o postProcess -func sampleDict
+
+E_left_Simulation=$(cat postProcessing/sampleDict/10/left/scalarField/E | cut -d'(' -f2 | cut -d')' -f1)
+E_right_Simulation=$(cat postProcessing/sampleDict/10/right/scalarField/E | cut -d'(' -f2 | cut -d')' -f1)
+
+
+E_left_Expected=2.786129388e+10
+E_right_Expected=3.181511988e+10
+
+#
+echo "Young's modulus under 673.15K: $E_left_Simulation" >> results
+echo "Expected value: $E_left_Expected" >> results
+echo "Young's modulus under 1673.15K: $E_right_Simulation" >> results
+echo "Expected value: $E_right_Expected" >> results
+
+
+relErrorE_left=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$E_left_Simulation" var2="$E_left_Expected"`
+relErrorE_right=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$E_right_Simulation" var2="$E_right_Expected"`
+
+
+echo "Relative error for Young's modulus under 673.15K: $relErrorE_left%" >> results
+echo "Relative error for Young's modulus under 1673.15K: $relErrorE_right%" >> results

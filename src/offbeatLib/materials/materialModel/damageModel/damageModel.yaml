@@ -1,0 +1,27 @@
+description: |
+  Base class for damage models. The base model has type `none`. When selected, damage is not modeled.
+
+admonitions:
+  - kind: warning
+    body: |
+      The keyword `damageModel` as a word is deprecated. Prefer a `damage`
+      dictionary with a `type` entry.
+
+options: []
+
+usage:
+  - comment: |
+      Recommended selection via the `damage` dictionary.
+    snippet: |
+        materials
+        {
+            fuel
+            {
+                material UO2;
+
+                damage
+                {
+                    type none;
+                }
+            }
+        }

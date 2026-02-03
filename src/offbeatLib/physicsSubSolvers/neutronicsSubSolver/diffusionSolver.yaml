@@ -1,0 +1,39 @@
+description: |
+  Neutronics solver class that obtains the neutron flux distribution from the
+  solution of a one-group neutron diffusion equation using fitted parameters.
+
+
+formulation: |
+  The solver solves the following equation:
+
+  $$
+  \begin{aligned}
+  D \nabla^2 \Phi = \Sigma_A \Phi
+  \end{aligned}
+  $$
+
+  where:
+
+  - $D$ is the neutron diffusion coefficient
+  - $\Phi$ is the thermal neutron flux
+  - $\Sigma_A$ is the macroscopic absorption cross-section
+
+  The resulting thermal neutron flux shape is used by the `Lassmann` burnup
+  model to compute the intra-pin power distribution.
+
+  The fuel pin is assumed to be a strongly absorbing medium for thermal neutrons,
+  therefore only diffusion and absorption terms are retained.
+
+  Since only the *shape* of the thermal neutron flux is required by the
+  `Lassmann` burnup class, the boundary condition for the neutron flux can be
+  chosen arbitrarily by the user. A common and sufficient choice is a
+  `fixedValue` boundary condition set to 1.
+
+options: []
+
+usage:
+  - comment: |
+      Code snippet of the `solverDict` to activate the
+      one-group diffusion neutronics solver.
+    snippet: |
+      neutronicsSolver diffusion;

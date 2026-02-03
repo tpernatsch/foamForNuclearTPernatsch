@@ -1,0 +1,17 @@
+#!/bin/bash
+cd ${0%/*} || exit 1    # run from this directory
+
+cases="cylindricalPellet hollowPellet"
+tests="testDifferentEnrichments testDifferentRadii"
+for case in $cases
+do
+	for test in $tests
+	do
+		path=$case'/'$test
+		cd $path
+		./Allclean
+		cd ../..
+	done
+done
+
+rm -f results

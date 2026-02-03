@@ -1,0 +1,79 @@
+{
+
+# Either '1D', '2Dsmeared', '2Ddiscrete'
+'geometryType':             	'1D',
+
+# Angle of the wedge, degrees
+'wedgeAngle':               	2.5,
+
+# Unit conversion (e.g. 0.001 for units in mm)
+'convertToMeters':          	0.001,
+
+# Number of blocks of fuel and cladding
+'nBlocksFuel':                  1,
+'nBlocksClad':                  0,
+
+# Block names (one per block)
+'blockNameFuel':                ['fuel'],
+'blockNameClad':                ['cladding'],
+
+# Inner radii (one per block)
+'rInnerFuel':                   [0.75],
+'rInnerClad':                   [],
+
+# Outer radii (one per block)
+'rOuterFuel':                   [3],
+'rOuterClad':                   [],
+
+# Height (or lenght) of each block (bottom to top)
+# (e.g. [1500, 1500] for a 3000 long column)
+'heightFuel':                   [10],
+'heightClad':                   [ ],
+
+# Starting vertical offset
+'offsetFuel':                   0.0,
+'offsetClad':                   0.0,
+
+# Merge consecutive overlapping patches (along z) - True by default
+'mergeCladPatchPairs':              True,
+'mergeFuelPatchPairs':              True,
+
+# Number of cells in the radial (or x) direction (one per block)
+'nCellsRFuel':                  [100],
+'nCellsRClad':                  [],
+
+# # Only for 2D discrete geometries - number of pellets per block
+# 'nPelletsFuel':                 [10],   
+
+# Number of cells in the axial (or z) direction (one per block)
+# NOTE that in case of discrete model, nCellsZFuel is the number
+# of axial division per pellet in that block
+'nCellsZFuel':                  [1],
+'nCellsZClad':                  [],
+
+# Bottom cap (Set height to 0 for neglecting the cap)
+'bottomCapHeight':              0,
+# 'nCellsRBottomCap':             40,
+# 'nCellsZBottomCap':             10,
+
+# Top cap (Set height to 0 for neglecting the cap)
+'topCapHeight':              0,
+# 'nCellsRTopCap':             40,
+# 'nCellsZTopCap':             10,
+
+# # Only for 2D discrete geometries - Outer radius of dish and land portion
+# 'rDishFuel':                     [3.2975],
+# 'chamferWidth':                  [0.4295],
+
+# # Only for 2D discrete geometries - disch curvature and chamfer height
+# 'rCurvatureDish':                  [43.66],
+# 'heightChamferFuel':               [0.16],
+
+# # Only for 2D discrete geometries - axial division in dish, land 
+# # and chamfer (nCellsRFuel is neglected)
+# 'nCellsRDish':                  [15],
+# 'nCellsRLand':                  [8],
+# 'nCellsRChamfer':               [7],
+
+
+}

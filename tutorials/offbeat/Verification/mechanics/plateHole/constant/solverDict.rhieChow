@@ -1,0 +1,87 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    location        "constant";
+    object          solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+thermalSolver   fromLatestTime;
+
+mechanicsSolver largeStrainUpdLag;
+neutronicsSolver        fromLatestTime;
+elementTransport        fromLatestTime;
+
+materialProperties byZone;
+
+rheology        byMaterial;
+
+heatSource      fromLatestTime;
+
+burnup          fromLatestTime;
+
+fastFlux        fromLatestTime;
+
+fgr             none;
+
+gapGas          none;
+
+sliceMapper             none;
+
+corrosion               fromLatestTime;
+
+globalOptions
+{
+    reactorType     none;
+    pinDirection    ( 0 0 1 );
+}
+
+thermalSolverOptions
+{
+    heatFluxSummary off;
+}
+
+rheologyOptions
+{
+    thermalExpansion off;
+}
+
+mechanicsSolverOptions
+{
+    forceSummary    on;
+    cylindricalStress off;
+
+    // Only read by largeStrain solvers
+    strainTensor GreenLagrange;
+    
+    RhieChowCorrection true;
+}
+
+materials
+{
+    default
+    {
+        material        constant;
+        rho             rho [ 1 -3 0 0 0 ] 7854;
+        Cp              Cp [ 0 0 0 0 0 ] 1000;
+        k               k [ 0 0 0 0 0 ] 10;
+        alpha           alpha [ 0 0 0 -1 0 ] 0;
+        emissivity      emissivity [ 0 0 0 0 0 ] 0.7;
+        E               E [ 0 0 0 0 0 ] 2e+11;
+        nu              nu [ 0 0 0 0 0 ] 0.3;
+        Tref            Tref [ 0 0 0 1 0 ] 300;
+        rheologyModel   elasticity;
+    }
+}
+
+
+// ************************************************************************* //

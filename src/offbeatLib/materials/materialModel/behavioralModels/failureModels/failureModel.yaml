@@ -1,0 +1,35 @@
+# failureModel.yaml
+description: |
+  Mother class for materials failure criteria.
+
+  The base model has type `none`. When selected, failure is not modeled.
+
+options:
+  - key: stopIfFailed
+    type: bool
+    required: false
+    default: false
+    description: |
+      If true, the simulation is stopped when the failure criterion is met.
+
+usage:
+  - comment: |
+      Generic example of enabling a failure model for a material.
+    snippet: |
+      materials
+      {
+          cladding
+          {
+              ...
+
+              failureModel         <modelTypeName>;
+
+              // optional (can be in failureModelOptions depending on how the dict is structured)
+              stopIfFailed         false;
+
+              failureModelOptions
+              {
+                  ...
+              }
+          }
+      }

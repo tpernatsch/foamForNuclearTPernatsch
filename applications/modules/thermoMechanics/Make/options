@@ -15,7 +15,7 @@ EXE_INC = \
     -I./include \
     -I./linearElastic \
     -I./linearElastic/include \
-    -I./../../../src/offbeat/src/offbeatLib/lnInclude \
+    -I./../../../src/offbeatLib/lnInclude \
     -I./../../../src/multiRegion/lnInclude \
     -I./../../../src/fvPatchFields/lnInclude \
     -I$(LIB_SRC)/meshTools/lnInclude \

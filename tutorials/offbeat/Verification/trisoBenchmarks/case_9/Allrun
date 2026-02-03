@@ -1,0 +1,46 @@
+#!/bin/sh
+# Run from this directory
+cd "${0%/*}" || exit 1
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+runApplication -o blockMesh
+runApplication -o changeDictionary
+runApplication -o offbeat
+#
+runApplication -o postProcess -func sampleDict
+
+pressureSimulation=$(grep -i "Gas pressure" log.offbeat | tail -n 1| cut -d" " -f3)
+stressSimulationSiC=$(cat postProcessing/probes/0/sigma |tail -n 1| cut -d"(" -f2 | cut -d")" -f1 | cut -d" " -f6)
+
+fname="log.offbeat"
+
+pattern="Gap volume"
+if [ -f "$fname" ]
+then
+    result=$(grep -i "$pattern" "$fname")
+    for word in $result; do
+        gapVolume=$word
+    done
+fi
+#
+pressureExpected=4.2011e+06
+stressExpectedSiC=-1.44644e+08
+#
+echo "Internal pressure: $pressureSimulation" >> results
+echo "Previous value: $pressureExpected" >> results
+echo "Range of other codes: [0.7e6, 16e6]" >> results
+echo "Tangential stress at inner surface of SiC: $stressSimulationSiC" >> results
+echo "Previous value: $stressExpectedSiC" >> results
+echo "Range of other codes: [-157e6, -75e6]" >> results
+#
+relErrorIPyC=$(awk -v var1="$pressureSimulation" \
+                -v var2="$pressureExpected" \
+                'BEGIN {print (100*(var1-var2)/var2)}')
+relErrorSiC=$(awk -v var1="$stressSimulationSiC" \
+                -v var2="$stressExpectedSiC" \
+                'BEGIN {print (100*(var1-var2)/var2)}')
+
+echo "Relative change for gas pressure: $relErrorIPyC%" >> results
+echo "Relative change for SiC: $relErrorSiC%" >> results

@@ -1,0 +1,29 @@
+description: |
+  Neo-Hookean **elastic constitutive law**.
+
+  This model describes finite-strain elastic behaviour using the
+  Neo-Hookean formulation.
+
+options: []
+
+usage:
+  - comment: |
+      Example of the `solverDict` configuration to activate the
+      `neoHookeanElasticity` constitutive law.
+    snippet: |
+      materials
+      {
+        solid
+        {
+          type <materialName>;
+
+          // other material options/models
+
+          constitutiveLaw
+          {
+            type neoHookeanElasticity;
+          }
+        }
+
+        // other materials subdict
+      }

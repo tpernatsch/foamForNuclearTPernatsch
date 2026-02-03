@@ -1,0 +1,32 @@
+description: |
+  Model for constant heat capacity. The value is read from dictionary.
+
+admonitions:
+  - kind: warning
+    body: |
+      The keyword `Cp` as `dimensionedScalar` in the material dictionary is deprecated for the constant heat capacity model. Prefer `heatCapacity { type constant; value <scalar>; }`.
+
+options:
+  - key: value
+    type: scalar
+    required: true
+    description: |
+      Constant heat capacity value.
+
+usage:
+  - comment: |
+      Example selection of the `constant` heat capacity model.
+    snippet: |
+      materials
+      {
+          materialRegion
+          {
+              type UO2;
+      
+              heatCapacity
+              {
+                  type constant;
+                  value <scalar>;
+              }
+          }
+      }

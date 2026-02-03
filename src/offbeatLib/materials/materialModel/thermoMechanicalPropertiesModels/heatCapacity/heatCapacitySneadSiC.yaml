@@ -1,0 +1,49 @@
+description: |
+  Correlation for SiC heat capacity from Snead et al. (2007).
+
+options:
+  - key: par1
+    type: scalar
+    required: false
+    default: 925.65
+    description: |
+      Model parameter.
+  - key: par2
+    type: scalar
+    required: false
+    default: 0.3772
+    description: |
+      Model parameter.
+  - key: par3
+    type: scalar
+    required: false
+    default: -7.9259e-5
+    description: |
+      Model parameter.
+  - key: par4
+    type: scalar
+    required: false
+    default: -3.19446e7
+    description: |
+      Model parameter.
+
+usage:
+  - comment: |
+      Example selection of the `SiCSnead` heat capacity model.
+    snippet: |
+      materials
+      {
+          SiC
+          {
+              material SiC;
+      
+              heatCapacity
+              {
+                  type SiCSnead;
+                  // par1 925.65;
+                  // par2 0.3772;
+                  // par3 -7.9259e-5;
+                  // par4 -3.19446e7;
+              }
+          }
+      }

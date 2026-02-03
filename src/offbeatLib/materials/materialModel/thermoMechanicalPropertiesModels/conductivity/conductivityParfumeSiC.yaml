@@ -1,0 +1,42 @@
+description: |
+  The `SiCParfume` conductivity model provides a temperature-dependent thermal
+  conductivity correlation for SiC based on PARFUME.
+
+  Parameters can optionally be provided in the `conductivity` sub-dictionary.
+  If not provided, the default values embedded in the model are used.
+
+options:
+  - key: par1
+    type: scalar
+    required: false
+    default: 17885.0
+    description: |
+      Correlation parameter.
+
+  - key: par2
+    type: scalar
+    required: false
+    default: 2.0
+    description: |
+      Correlation parameter.
+
+usage:
+  - comment: |
+      Example selection using a `conductivity` sub-dictionary in the `solverDict`.
+    snippet: |
+      materials
+      {
+          structure
+          {
+              material SiC;
+
+              conductivity
+              {
+                  type SiCParfume;
+
+                  // Optional overrides
+                  // par1 17885.0;
+                  // par2 2.0;
+              }
+          }
+      }

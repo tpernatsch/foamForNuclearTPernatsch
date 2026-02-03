@@ -1,0 +1,76 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    location        "constant";
+    object          solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+mechanicsSolver     fromLatestTime;
+thermalSolver       solidConduction;
+neutronicsSolver    fromLatestTime;
+elementTransport    fromLatestTime;
+
+materialProperties      byZone;
+rheology                byMaterial;
+heatSource              fromLatestTime;
+burnup                  fromLatestTime;
+fastFlux                fromLatestTime;
+gapGas                  none;
+fgr                     none;
+sliceMapper             autoAxialSlices;
+corrosion               fromLatestTime;
+
+globalOptions
+{
+    pinDirection    ( 0 0 1 );
+    reactorType     "LWR";
+}
+
+// heatSourceOptions
+// {
+//     materials   (cylinder);
+// }
+
+materials
+{
+    cylinder
+    {
+        material            UO2;
+        Tref                Tref [ 0 0 0 1 0 ] 300;
+        
+        densificationModel  none;
+        swellingModel       none;
+        relocationModel     none;
+        enrichment          ;
+        rGrain              6e-06;
+        theoreticalDensity  10000;
+        densityFraction     1.00;
+        dishFraction        0;
+        isotropicCracking   off;
+        
+        rheologyModel   elasticity;
+
+        isotopes
+        {
+            U
+            {
+                ratioOverMetal 1.000;
+                massNumbers (235 238);
+                weightFractions (0.007 0.993);
+            }
+        }
+    }
+}
+
+
+// ************************************************************************* //

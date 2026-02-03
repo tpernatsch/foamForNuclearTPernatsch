@@ -1,0 +1,50 @@
+description: |
+  Base thermal solver class. It keeps the temperature field `T` unchanged from its 
+  initial configuration throughout the simulation.
+
+  While the `constant` solver keeps the `T` field fixed by default, it is possible
+  to alter the `T` field during the simulation by leveraging advanced OpenFOAM
+  features like `#codeStream#`, `funkySetFields`, or specific function objects.
+
+  At the moment, the `constant` class is one of two possible choices to couple
+  OFFBEAT to an external solver that provides the `T` field directly at every
+  time-step. At every coupled iteration, simply substitute the `T` file generated
+  with the external solver in the starting time folder and (re)start the OFFBEAT
+  simulation.
+
+admonitions:
+  - kind: warning
+    body: |
+      For backward-compatibility, `fromLatestTime` can be still used as the typename
+      for the `constant` thermal solver. However, its use is deprecated.
+
+options:
+  - key: heatFluxSummary
+    type: bool
+    required: false
+    default: false
+    description: |
+      Activates the calculation of the heat flowing out from every surface of the
+      domain and prints this information to the terminal.
+  - key: calculateEnthalpy
+    type: bool
+    required: false
+    default: false
+    description: |
+      Activates the calculation of the enthalpy deposited in the fuel materials
+      (useful for RIA cases).
+
+usage:
+  - comment: |
+      Code snippet of the `solverDict` to activate the `constant` thermal solver.
+    snippet: |
+      thermalSolver
+      {
+        type constant;
+
+        // Print summary of boundary-heat fluxes at each iteration
+        heatFluxSummary false;
+
+        // Activate calculation of enthalpy - false by default
+        calculateEnthalpy false;
+      }

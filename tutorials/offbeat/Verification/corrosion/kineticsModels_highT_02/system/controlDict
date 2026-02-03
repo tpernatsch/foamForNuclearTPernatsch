@@ -1,0 +1,63 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     offbeat;
+
+// Run options (time is user units)
+startFrom       startTime;
+startTime       0;
+stopAt          endTime;
+
+endTime         10000;
+deltaT          100;
+
+//- Write options (time in seconds)
+writeControl                runTime;
+writeInterval               10000;
+purgeWrite                  1;
+writeFormat                 ascii;
+writeCompression            off;
+timeFormat                  general;
+timePrecision               20;
+writePrecision              6;
+
+adjustTimeStep              false;
+runTimeModifiable           true;
+
+DebugSwitches
+{
+    ZircaloyOuterCorrosion  1;
+}
+
+functions
+{
+    oxideThickness
+    {
+        type            patchProbes
+        libs            (sampling);
+        patchName       right;
+        fields          ( T oxideThickness );
+        probeLocations
+        (
+            (0.01 0 0)
+        );
+        executeControl  timeStep;
+        writeControl    timeStep;
+    }
+}
+
+// ************************************************************************* //

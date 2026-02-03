@@ -1,0 +1,51 @@
+description: |
+  Class modelling Zircaloy density from Iaea.
+
+options:
+  - key: par1
+    type: scalar
+    required: false
+    default: 6595.2
+    description: |
+      Option read by the model.
+
+  - key: par2
+    type: scalar
+    required: false
+    default: 0.1477
+    description: |
+      Option read by the model.
+
+  - key: par3
+    type: scalar
+    required: false
+    default: 6690.0
+    description: |
+      Option read by the model.
+
+  - key: par4
+    type: scalar
+    required: false
+    default: 0.1855
+    description: |
+      Option read by the model.
+
+usage:
+  - comment: |
+      Example selection of the `ZircaloyIaea` density model.
+    snippet: |
+      materials
+      {
+        cladding
+        {
+          type Zircaloy;
+          density
+          {
+            type ZircaloyIaea;
+            // par1 6595.2;
+            // par2 0.1477;
+            // par3 6690.0;
+            // par4 0.1855;
+          }
+        }
+      }

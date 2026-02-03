@@ -1,0 +1,104 @@
+description: |
+  The `Zircaloy` material model represents Zircaloy cladding.
+
+  The class selects thermophysical and mechanical property models as well as
+  behavioral models for swelling, phase transition, and failure. If not
+  specified in the material dictionary, default models are used.
+
+options:
+  - key: densityModel
+    type: word
+    required: false
+    default: ZircaloyIaea
+    description: |
+      Selects the density correlation used by the `Zircaloy` material.
+
+  - key: heatCapacityModel
+    type: word
+    required: false
+    default: ZircaloyIaea
+    description: |
+      Selects the heat capacity correlation used by the `Zircaloy` material.
+
+  - key: conductivityModel
+    type: word
+    required: false
+    default: ZircaloyRelap
+    description: |
+      Selects the thermal conductivity correlation used by the `Zircaloy` material.
+
+  - key: emissivityModel
+    type: word
+    required: false
+    default: ZircaloyConstant
+    description: |
+      Selects the emissivity correlation used by the `Zircaloy` material.
+
+  - key: YoungModulusModel
+    type: word
+    required: false
+    default: ZircaloyMatpro
+    description: |
+      Selects the Young's modulus correlation used by the `Zircaloy` material.
+
+  - key: PoissonRatioModel
+    type: word
+    required: false
+    default: ZircaloyConstant
+    description: |
+      Selects the Poisson's ratio correlation used by the `Zircaloy` material.
+
+  - key: thermalExpansionModel
+    type: word
+    required: false
+    default: ZircaloyMatpro
+    description: |
+      Selects the thermal expansion correlation used by the `Zircaloy` material.
+
+  - key: swellingModel
+    type: word
+    required: false
+    default: ZircaloyBison
+    description: |
+      Selects the swelling (irradiation-induced strain) model used by the
+      `Zircaloy` material.
+
+  - key: phaseTransitionModel
+    type: word
+    required: false
+    default: ZircaloyDynamic
+    description: |
+      Selects the phase transition model used by the `Zircaloy` material.
+
+  - key: failureModel
+    type: word
+    required: false
+    default: none
+    description: |
+      Selects the failure model used by the `Zircaloy` material.
+
+usage:
+  - comment: |
+      Example of a `solverDict` materials entry using the `Zircaloy` material
+      model with its default sub-model selections.
+    snippet: |
+      materials
+      {
+          cladding
+          {
+              material Zircaloy;
+
+              // Optional overrides (defaults shown)
+              densityModel            ZircaloyIaea;
+              heatCapacityModel       ZircaloyIaea;
+              conductivityModel       ZircaloyRelap;
+              emissivityModel         ZircaloyConstant;
+              YoungModulusModel       ZircaloyMatpro;
+              PoissonRatioModel       ZircaloyConstant;
+              thermalExpansionModel   ZircaloyMatpro;
+
+              swellingModel           ZircaloyBison;
+              phaseTransitionModel    ZircaloyDynamic;
+              failureModel            none;
+          }
+      }

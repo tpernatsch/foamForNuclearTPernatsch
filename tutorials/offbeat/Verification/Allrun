@@ -1,0 +1,108 @@
+#!/bin/bash
+cd "${0%/*}" || exit 1    # run from this directory
+
+# Parse -j (jobs) — default 1 (serial)
+JOBS=1
+while getopts ":j:" opt; do
+  case "$opt" in
+    j) JOBS="$OPTARG" ;;
+    *) echo "Usage: $0 [-j NUM]"; exit 2 ;;
+  esac
+done
+
+# Remove results of previous run (keep your behavior)
+FILE=resultsOld
+if [[ ! -f "$FILE" ]]; then
+    mv -f results resultsOld 2>/dev/null || true
+else
+    rm -f results
+fi
+
+# Print date of the run:
+today=$(date)
+{
+  echo "============================"
+  echo "Verification cases results  "
+  echo "----------------------------"
+  echo "Date :                      "
+  echo "$today                      "
+  echo "============================"
+  echo ""
+} >> results
+
+GREEN='\033[1;32m'
+NC='\033[0m' # No Color
+
+# Remember base directory (since run_case cd's into subdirs)
+BASEDIR="$(pwd)"
+
+# Temp dir to store per-case outputs (fixed name) + robust cleanup
+TMPDIR=".results_chunks"
+rm -rf "$TMPDIR"
+mkdir -p "$TMPDIR"
+trap 'rm -rf "$BASEDIR/$TMPDIR"' EXIT
+
+# Exclusions: add as many as you want
+EXCLUDES=()
+
+# helper: return 0 (true) if $1 is in EXCLUDES
+is_excluded() {
+  local d="${1%/}"   # strip trailing slash from input dir
+  for e in "${EXCLUDES[@]}"; do
+    [[ "$d" == "${e%/}" ]] && return 0
+  done
+  return 1
+}
+
+run_case () {
+  local dir="$1"
+  (
+    cd "$dir" || exit 1
+    echo -e "Running case ${GREEN}${dir}${NC} ..."
+    ./Allrun
+
+    # Write this case's block to its own file (absolute path back to base)
+    {
+      echo "${dir}:"
+      [[ -f results ]] && cat results
+      echo ""
+    } > "${BASEDIR}/${TMPDIR}/${dir%/}.out"
+  )
+}
+
+# Capture the ordered list of dirs exactly as in `*/`
+mapfile -t DIRS < <(printf '%s\n' */)
+
+# Launch with optional parallelism (skip excluded)
+for dir in "${DIRS[@]}"; do
+  if is_excluded "$dir"; then
+    continue
+  fi
+
+  if [[ -x "${dir}Allrun" ]]; then
+    if (( JOBS > 1 )); then
+      while (( $(jobs -r | wc -l) >= JOBS )); do sleep 0.2; done
+      run_case "$dir" &
+    else
+      run_case "$dir"
+    fi
+  else
+    # Warn only for non-excluded dirs
+    echo "Warning: ${dir} does not contain an Allrun file."
+  fi
+done
+
+wait
+
+# Concatenate in the SAME order as `DIRS` (skip excluded)
+for dir in "${DIRS[@]}"; do
+  if is_excluded "$dir"; then
+    continue
+  fi
+  if [[ -f "${TMPDIR}/${dir%/}.out" ]]; then
+    cat "${TMPDIR}/${dir%/}.out" >> results
+  fi
+done
+
+# Optional explicit cleanup (trap already handles it)
+rm -rf "${TMPDIR}"

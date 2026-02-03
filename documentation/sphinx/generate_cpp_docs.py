@@ -268,8 +268,12 @@ def _rst_usage(examples: list) -> str:
 
 def load_yaml_doc(yaml_path: Path) -> dict:
     """Read a *.yaml file and normalize keys."""
-    with open(yaml_path, "r", encoding="utf-8") as f:
-        data = yaml.safe_load(f) or {}
+    raw = yaml_path.read_text(encoding="utf-8")
+    if "\t" in raw:
+        raw = raw.replace("\t", "    ")
+
+    data = yaml.safe_load(raw) or {}
+
     data.setdefault("type_name", yaml_path.stem.replace(".doc",""))
     data.setdefault("description", "")
     data.setdefault("admonitions", [])

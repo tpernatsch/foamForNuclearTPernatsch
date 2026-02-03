@@ -1,0 +1,31 @@
+description: |
+  Thermal conductivity correlation for MOX fuel (U-Pu-O₂) based on the
+  formulation by Brancheria et al.
+
+  The model accounts for porosity effects. If a porosity field is available,
+  it is used directly; otherwise an initial porosity is derived from the
+  density fraction.
+
+options:
+  - key: densityFraction
+    type: scalar
+    required: false
+    default: 0.945
+    description: |
+      Initial fraction of theoretical density used to derive porosity when no
+      porosity field is available.
+
+      Optional override: if not provided here, it is expected in the material
+      base/composition dictionary.
+
+usage:
+  - comment: |
+      Example selection of the Brancheria conductivity correlation for MOX fuel.
+    snippet: |
+      conductivity
+      {
+          type UPuO2Brancheria;
+
+          // Optional override
+          // densityFraction 0.945;
+      }
