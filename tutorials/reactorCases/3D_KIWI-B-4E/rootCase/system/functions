@@ -350,7 +350,7 @@ functions
     {
         type            volFieldValue;
         libs            (fieldFunctionObjects);
-        fields          (powerDensityNeutronics);
+        fields          (powerDensityStructure);
         operation       volIntegrate;
         region          fluidRegion;
         regionType      all;

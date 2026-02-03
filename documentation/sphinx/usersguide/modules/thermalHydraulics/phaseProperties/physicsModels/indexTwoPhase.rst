@@ -5,7 +5,8 @@ The *physicsModels* sub-dictionary for two-phase flows
 
 The *physicsModels* sub-dictionary is used in two-phase simulations to define the models that describe the interaction between fluid1 and structure, fluid2 and structure, as well as between fluid1 and fluid 2. Several types of models can be defined:
 
-- :ref:`fluid-fluid drag models <modules_thermalHydraulics_porousMdeium_FFdrag>`  and :ref:`fluid-structure drag models <modules_thermalHydraulics_porousMdeium_FSdrag>`  via the ``dragModels`` sub-dictionary;
+- :doc:`fluid-structure drag models <../../../../../cppapi/generated/porousMediaModels/physicsModels/dragModels/FSDragCoefficientModels/FSDragCoefficientModel>`  and :doc:`fluid-fluid drag models <../../../../../cppapi/generated/porousMediaModels/physicsModels/dragModels/FFDragCoefficientModels/FFDragCoefficientModel>`  via the ``dragModels`` sub-dictionary;
+- :doc:`fluid-structure heat transfer models <../../../../../cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/FSHeatTransferCoefficientModel>` and :doc:`fluid-fluid heat transfer models <../../../../../cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FFHeatTransferCoefficientModels/FFHeatTransferCoefficientModel>`  via the ``heatTransferModels`` sub-dictionary;
 - :ref:`two-phase drag multiplier models <modules_thermalHydraulics_porousMdeium_multipliers>`  via the ``twoPhaseDragMultiplierModel`` sub-dictionary;
 - :ref:`virtual mass coefficient models <modules_thermalHydraulics_porousMedium_virtualMassCoefficientModels>` via the ``virtualMassCoefficientModel`` sub-dictionary;
 - pair geometry models via the ``pairGeometryModels`` sub-dictionary, which in turn includes;
@@ -18,6 +19,7 @@ The *physicsModels* sub-dictionary is used in two-phase simulations to define th
 
 
 Each of these two sub-dictionaries consists of a series of other sub-dictionaries whose properties are applied to the cell zones that have their name in the sub-dictionary keys.  Three options exist :
+
 - Use ``constant`` as  type and give a constant value using the keyword ``value``.
 - Use as type a single model chosen among those available;
 - Use ``byRegime`` as  type, and then chose one of the available models for each regime. This requires having set a :ref:`regime map <modules_thermalHydraulics_porousMedium_regimeMapModels>`.
@@ -178,25 +180,9 @@ An example of dictionary is reported below.
 
 
 
+.. note::
 
-.. The main run-time selctable models include:
-
-.. .. toctree::
-..    :maxdepth: 1
-
-..    FFHeatTransferCoefficientModels
-..    FSHeatTransferCoefficientModels
-..    FFdrag
-..    FSdrag
-..    multipliersDrag
-..    phaseChangeModels
-..    contactPartitionModels
-..    dispersionModels
-..    fluidDiameterModels
-..    interfacialAreaModels
-..    virtualMassCoefficientModels
-..    latentHeatModels
-..    saturationModels
-
-
-
+    Anisotropic pressure drops can be set using three different correlations    for the three different local axes (see :ref:`the physicsModels sub-dictionary <modules_thermalHydraulics_porousMedium_physicsModels>`). In addition, it is possible to use an
+    anisotropic hydraulic diameter ((see :ref:`the structureProperties sub-dictionary <modules_thermalHydraulics_porousMedium_structureProperties>`)). The anisotropy of the hydraulic diameter can
+    be set using the keyword *localDhAnisotropy* and assigned to it a vector of
+    three scaling factors, one for each local direction.

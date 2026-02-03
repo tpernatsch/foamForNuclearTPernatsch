@@ -17,7 +17,6 @@ FoamFile
 
 //- Relevant for both pointKinetics and diffusionNeutronics
 
-fastNeutrons    true;
 
 updatePowerFields
 {
@@ -39,7 +38,7 @@ Beta
     47.47e-5
     41.60e-5
     20.68e-5
-    
+
 );
 
 lambda

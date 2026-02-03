@@ -68,13 +68,14 @@ tutorials/featureCases/1D_PSBT_SC/PhaseII_Ex1_01_5215/*[123456789]*
 tutorials/featureCases/1D_PSBT_SC/PhaseII_Ex2_04_6770/*[123456789]*
 tutorials/featureCases/1D_PSBT_SC/PhaseII_Ex3_11-0312_power_increase/*[123456789]*
 tutorials/featureCases/2D_cavityBoussinesq/*[123456789]*
-tutorials/featureCases/2D_flowOverHeatedPlate/*[123456789]*
+tutorials/featureCases/2D_flowOverHeatedPlate/*/*[123456789]*
 tutorials/featureCases/2D_KNS37-L22/*[123456789]*
 !tutorials/featureCases/2D_KNS37-L22/-2
 tutorials/featureCases/2D_voidMotionNoPhaseChange/*[123456789]*
 tutorials/guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion/[01]
 tutorials/guidedCases/2_reactorSlabReflected_1D_1Gr_neutronicDiffusion/[01]
 tutorials/reactorCases/Godiva_SN/*[123456789]*
+tutorials/reactorCases/3D_genericParticleBedNTP/thermoCase
 tutorials/fmuCases/powerTemperatureMomentumControl/*[123456789]*
 tutorials/*/**/0.converged*
 tutorials/**/postProcessing*
@@ -94,6 +95,7 @@ tutorials/**/*.baffleLess/polyMesh
 !**/3FMU
 !**/quadratureSet*
 !tutorials/*/**/XS*
+!tutorials/*/**/dictionaries
 **/old.*
 **/archive.*
 **/*.csv*

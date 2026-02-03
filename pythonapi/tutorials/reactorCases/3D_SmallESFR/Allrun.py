@@ -558,6 +558,7 @@ neutronicsSolver = ffn.NeutronicsSolver(
     region=nMesh.region,
     isMeshDeformation=True,
     displacementFieldName="disp",
+    axialOrientation=ffn.Vector(0, 0, 1),
     power=8e+08,
     keff=0.9388902,
 )
@@ -822,8 +823,8 @@ solvers = ffn.Solvers([neutronicsSolver, thSolver, tmSolver])
 
 coupling = ffn.Coupling(solvers=solvers)
 
-coupling.add_field_transfer(neutronicsSolver, thSolver, "powerDensity", "powerDensityNeutronics")
-coupling.add_field_transfer(neutronicsSolver, thSolver, "secondaryPowerDensity", "powerDensityNeutronicsToLiquid")
+coupling.add_field_transfer(neutronicsSolver, thSolver, "powerDensity", "powerDensityStructure")
+coupling.add_field_transfer(neutronicsSolver, thSolver, "secondaryPowerDensity", "powerDensityLiquid")
 
 coupling.add_field_transfer(thSolver, neutronicsSolver, "T", "TCool")
 coupling.add_field_transfer(thSolver, neutronicsSolver, "thermo:rho", "rhoCool")

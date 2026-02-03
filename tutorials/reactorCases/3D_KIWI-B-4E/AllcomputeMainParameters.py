@@ -134,7 +134,7 @@ inletCentral, outletCentral = SuperDict(), SuperDict()
 
 # Read the file in reverse to extract the last results
 for line in logfile.readlines()[::-1]:
-    powers.findInLine(line, "volIntegrate(fluidRegion) of powerDensityNeutronics", "fluid")
+    powers.findInLine(line, "volIntegrate(fluidRegion) of powerDensityStructure", "fluid")
     powers.findInLine(line, "volIntegrate(neutroRegion) of powerDensity", "neutro")
     powers.findInLine(line, "volIntegrate(fluidRegion) of hdeltaT", "AhdeltaT")
 
@@ -154,7 +154,7 @@ for line in logfile.readlines()[::-1]:
     outlet.findInLine(line, "max(Tsurface.lumpedNuclearStructure) = ", 'Tsurfacemax', pos=2)
     outlet.findInLine(line, "max(Tmatrix.lumpedNuclearStructure) = ", 'Tmatrixmax', pos=2)
     outlet.findInLine(line, "max(Tmax.lumpedNuclearStructure) = ", 'Tfuelmax', pos=2)
-    outlet.findInLine(line, "max(powerDensityNeutronics) = ", 'powerDensityMax', pos=2)
+    outlet.findInLine(line, "max(powerDensityStructure) = ", 'powerDensityMax', pos=2)
 
     inletFuel.findInLine(line, "areaAverage(inletFuelElement) of magU", 'U')
     inletFuel.findInLine(line, "areaAverage(inletFuelElement) of p")

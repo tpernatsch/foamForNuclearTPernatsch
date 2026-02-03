@@ -25,12 +25,12 @@ volumetricArea = 1000 # m2/m3
 data = pd.read_csv("momentumSourceTest.csv")
 
 timeModelica = data["time"]
-modMomentumSourceOut1 = data["model.root.system1.modMomentumSourceOut1"]
-modMomentumSourceOut2 = data["model.root.system1.modMomentumSourceOut2"]
-modPowerOut = data["model.root.system1.modPowerOut"]
-modTemperatureOut = data["model.root.system1.modTemperatureOut"]
-modTin = data["model.root.system1.modTin"]
-modPowerIn = data["model.root.system1.modPowerIn"]
+modMomentumSourceOut1 = data["modMomentumSourceOut1"]
+modMomentumSourceOut2 = data["modMomentumSourceOut2"]
+modPowerOut = data["modPowerOut"]
+modTemperatureOut = data["modTemperatureOut"]
+modTin = data["modTin"]
+modPowerIn = data["modPowerIn"]
 
 
 fig, (axMomentum, axPower, axTemperature) = plt.subplots(nrows=3, figsize=(8, 6))
@@ -52,13 +52,13 @@ with open(filename, "r") as file:
             mFlowRateOutlet1 = float(line.split()[4])
         if "patch outlet2 massFlow" in line:
             mFlowRateOutlet2 = float(line.split()[4])
-            
+
             mFlowRateOutlet1s.append(mFlowRateOutlet1)
             mFlowRateOutlet2s.append(mFlowRateOutlet2)
             TBulkOutlet1s.append(TBuldOutlet1)
             TBulkOutlet2s.append(TBulkOutlet2)
             timesLog.append(time)
-        
+
     for i in range(len(timesLog)):
         timesLog[i] = timesLog[i] - timesLog[0]
 
@@ -99,4 +99,4 @@ axTemperature.legend()
 
 fig.tight_layout()
 
-plt.show()
+fig.savefig("fig_results_timeEvolution.png")

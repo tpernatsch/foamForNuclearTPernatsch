@@ -166,10 +166,6 @@ thermo.Pr = 0.01 # from Cp, lambda, mu
 
 fluidSolver.thermophysicalProperties = thermo
 
-fluidSolver.phaseProperties.pMin = -1e6
-fluidSolver.phaseProperties.pRefCell = 0
-fluidSolver.phaseProperties.pRefValue = 0
-
 # fvSchemes
 fluidSolver.fvSchemes.ddtSchemes['default'] = "Euler"
 fluidSolver.fvSchemes.gradSchemes['default'] = "Gauss linear"
@@ -251,6 +247,9 @@ fluidSolver.pimpleOptions.nCorrectors = 3
 fluidSolver.pimpleOptions.nNonOrthogonalCorrectors = 1
 fluidSolver.pimpleOptions.solveEnergy = True
 fluidSolver.pimpleOptions.solveFluidMechanics = True
+fluidSolver.pimpleOptions.pMin = -1e6
+fluidSolver.pimpleOptions.pRefCell = 0
+fluidSolver.pimpleOptions.pRefValue = 0
 
 fluidSolver.pimpleOptions.add_residual_control_on_field(
     fieldName="U",
@@ -327,7 +326,7 @@ solvers = ffn.Solvers([fluidSolver, solidSolver])
 chtLoop = ffn.CHTLoop(
     region="Level_1",
     solvers=[fluidSolver, solidSolver],
-    minResidual=1e-6,
+    maxResidual=1e-6,
     maxIterations=100,
     fluidRegionName=fluidSolver.region,
     solidRegionName=solidSolver.region,

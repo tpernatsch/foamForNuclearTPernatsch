@@ -51,10 +51,6 @@ removeBaffles
 	neutroRegion    false;
 }
 
-//- Global options -------------------------------------------------------------*
-
-liquidFuel          false;
-
 //- Time step control options --------------------------------------------------*
 
 adjustTimeStep      true;

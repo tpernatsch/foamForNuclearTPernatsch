@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2506                                                  |
+|    Built on OpenFOAM v2512                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2025 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -53,7 +53,7 @@ Description
         Property        | Description               | Req'd | Default value
         subSolvers      | List of subsolvers        | yes   |
         maxIterations   | Maximum number of iterations | yes |
-        minResidual     | Maximum residual          | yes |
+        maxResidual     | Maximum residual          | yes |
         couplingStartTime | Time after which the coupling starts | no | 0
     \endtable
 
@@ -76,7 +76,7 @@ Usage
                     neutroRegion            diffusionNeutronics;
                     Level_2                 picardLoop;
                 }
-                minResidual 0.00005;   // residual after which the iteration is ended
+                maxResidual 0.00005;   // residual after which the iteration is ended
                 maxIterations 3;       // maximum number of iterations before the loop is ended
             }
 

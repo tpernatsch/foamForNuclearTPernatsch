@@ -19,7 +19,7 @@ Code structure
     general overview of the solver and represents a solid basis to understand the software
     functioning and philosophy.
   - Warning - Much of the structure of the solver has changed.
-    The new structure is well described in Nervi et al. (2026). Notable changes are:
+    The new structure is well described in :ref:`Nervi et al. (2026) <NERVI2026106250>`. Notable changes are:
     generalized coupling loops and generalized coupling with multiple physics and multiple
     geometries (overlapped or not).
 
@@ -33,7 +33,13 @@ Code structure
   - Relevance - **OFFBEAT**. The first journal publication on OFFBEAT. @Ale
   - Warning - @Ale
 
-- ADD Nervi. @Giovanni
+
+.. _NERVI2026106250:
+
+- G. Nervi, T. Guilbaud, C. Fiorina, M. Hursin, and A. Scolaro, "`foamForNuclear:
+  A unified OpenFOAM multi-physics platform for nuclear applications
+  <https://doi.org/10.1016/j.pnucene.2026.106250>`_", Progress in Nuclear Energy,
+  vol. 193, 2026, 106250, ISSN 0149-1970.
 
 
 -------------------------------------------

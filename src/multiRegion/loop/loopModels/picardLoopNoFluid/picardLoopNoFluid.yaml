@@ -10,7 +10,7 @@ options:
     required: true
     default:
     description: |
-  - key: minResidual
+  - key: maxResidual
     type: scalar
     required: true
     default:
@@ -35,7 +35,7 @@ usage:
                   neutroRegion            diffusionNeutronics;
                   Level_2                 otherLoop;
               }
-              minResidual 0.00005;   // residual after which the iteration is ended
+              maxResidual 0.00005;   // residual after which the iteration is ended
               maxIterations 3;       // maximum number of iterations before the loop is ended
           }
 
@@ -44,5 +44,3 @@ usage:
               ...
           }
       }
-
-

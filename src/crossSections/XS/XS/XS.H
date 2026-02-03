@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2506                                                  |
+|    Built on OpenFOAM v2512                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2025 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -99,9 +99,11 @@ protected:
 
         // Data
 
-            //- Nuclear data dictionary
+            //- Neutronics properties dictionary
             IOdictionary neutronicsProperties_;
-            dictionary   nuclearData_;
+
+            //- Nuclear data dictionary
+            IOdictionary nuclearData_;
 
             //- Flag to read variable XS fields. Be careful, can be intensive
             bool isReadXS_;

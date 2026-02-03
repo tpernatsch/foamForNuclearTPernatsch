@@ -13,7 +13,7 @@ FoamFile
     arch        "LSB;label=32;scalar=64";
     class       volScalarField;
     location    "0/fluidRegion";
-    object      powerDensityNeutronics;
+    object      powerDensityStructure;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

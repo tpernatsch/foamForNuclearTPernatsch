@@ -74,8 +74,6 @@ timePrecision   8;
 
 runTimeModifiable true;
 
-liquidFuel      false;
-
 
 //-------------------------------//
 //-------COUPLING OPTIONS--------//

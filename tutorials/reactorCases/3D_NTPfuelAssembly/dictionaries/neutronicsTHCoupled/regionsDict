@@ -32,7 +32,7 @@ mappings
         neutroRegion
         {
             sourceFields    ( powerDensity secondaryPowerDensity );
-            targetFields    ( powerDensityNeutronics powerDensityNeutronicsToLiquid );
+            targetFields    ( powerDensityStructure powerDensityLiquid );
         }
     }
     neutroRegion

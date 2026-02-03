@@ -107,7 +107,7 @@ fields
     Tmatrix.lumpedNuclearStructure
     Tmax.lumpedNuclearStructure
     p
-    powerDensityNeutronics
+    powerDensityStructure
     magU
 );
 

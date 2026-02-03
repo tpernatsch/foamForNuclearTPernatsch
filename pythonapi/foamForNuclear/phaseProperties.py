@@ -12,6 +12,7 @@ from foamForNuclear.powerModels import PowerModel
 from foamForNuclear.powerOffCriterionModels import PowerOffCriterionModel
 from foamForNuclear.regimeMapModels import RegimeMapModel
 from foamForNuclear.twoPhaseDragMultiplierModels import TwoPhaseDragMultiplierModel
+from foamForNuclear.pump import Pump
 
 _LATTICE_TYPES = {"square", "hexagon"}
 _STATE_OF_MATTER_TYPES = {"liquid", "gas"}
@@ -194,6 +195,7 @@ class StructureProperty(OpenFOAMDict):
 
         self.powerModel = None
         self.passiveProperties = None
+        self.pump = None
 
 
     def __repr__(self, depth = 0):
@@ -204,6 +206,9 @@ class StructureProperty(OpenFOAMDict):
 
         if (self.passiveProperties is not None):
             self.__setitem__('passiveProperties', self.passiveProperties)
+
+        if (self.pump is not None):
+            self.__setitem__('pump', self.pump)
 
         return textZones + super().__repr__(depth)
 
@@ -416,6 +421,15 @@ class StructureProperty(OpenFOAMDict):
         check_type("passiveProperties", passiveProperties, PassiveProperties, none_ok=True)
         self._passiveProperties = passiveProperties
 
+    @property
+    def pump(self):
+        return self._pump
+
+    @pump.setter
+    def pump(self, pump) -> None:
+        check_type("pump", pump, Pump, none_ok=True)
+        self._pump = pump
+
 
     def add_power_model(self, powerModel: PowerModel):
         self.powerModel = powerModel
@@ -429,6 +443,10 @@ class StructureProperty(OpenFOAMDict):
             T=T,
             rhoCp=rhoCp
         )
+
+
+    def add_pump(self, pump: Pump):
+        self.pump = pump
 
 
     def compute_hydraulic_parameters(
@@ -846,12 +864,6 @@ class PhaseProperties(OpenFOAMFile):
         (default `None`).
     phaseChangeModel: PhaseChangeModel
         (default `None`).
-    pMin : float
-        Minimum pressure in Pa (default `10000`).
-    pRefCell : int
-        Cell index to apply the reference pressure (default `0`).
-    pRefValue : float
-        Reference pressure value (default `100000`).
     residualKd : float
         Default `None`
     region : str
@@ -874,9 +886,6 @@ class PhaseProperties(OpenFOAMFile):
             twoPhaseDragMultiplierModel: TwoPhaseDragMultiplierModel=None,
             pairGeometryModels: PairGeometryModels=None,
             phaseChangeModel: PhaseChangeModel=None,
-            pMin: float=10000,
-            pRefCell: int=0,
-            pRefValue: float=100000,
             residualKd: float=None,
             region: str="",
             phaseNames: list[str]=None,
@@ -893,9 +902,6 @@ class PhaseProperties(OpenFOAMFile):
         self.twoPhaseDragMultiplierModel = twoPhaseDragMultiplierModel
         self.pairGeometryModels: PairGeometryModels = pairGeometryModels
         self.phaseChangeModel = phaseChangeModel
-        self.pMin = pMin
-        self.pRefCell = pRefCell
-        self.pRefValue = pRefValue
         self.residualKd = residualKd
 
         # Two phase
@@ -906,33 +912,6 @@ class PhaseProperties(OpenFOAMFile):
 
     def isTwoPhase(self) -> bool:
         return(self.phaseNames is not None)
-
-    @property
-    def pMin(self):
-        return self._pMin
-
-    @pMin.setter
-    def pMin(self, pMin) -> None:
-        check_type("pMin", pMin, (float, int))
-        self._pMin = pMin
-
-    @property
-    def pRefCell(self):
-        return self._pRefCell
-
-    @pRefCell.setter
-    def pRefCell(self, pRefCell) -> None:
-        check_type("pRefCell", pRefCell, int)
-        self._pRefCell = pRefCell
-
-    @property
-    def pRefValue(self):
-        return self._pRefValue
-
-    @pRefValue.setter
-    def pRefValue(self, pRefValue) -> None:
-        check_type("pRefValue", pRefValue, (float, int))
-        self._pRefValue = pRefValue
 
     @property
     def residualKd(self):
@@ -1082,9 +1061,6 @@ class PhaseProperties(OpenFOAMFile):
             text += f"{tab}{self.phaseChangeModel.__repr__(depth=1)}\n"
         text += "}\n\n"
 
-        text += addParameter("pMin", self.pMin, isAddExtraLine=True)
-        text += addParameter("pRefCell", self.pRefCell, isAddExtraLine=True)
-        text += addParameter("pRefValue", self.pRefValue, isAddExtraLine=True)
         if (self.residualKd is not None):
             text += addParameter("residualKd", self.residualKd, isAddExtraLine=True)
 

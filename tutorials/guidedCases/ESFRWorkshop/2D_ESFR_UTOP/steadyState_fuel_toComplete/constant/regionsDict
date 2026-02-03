@@ -30,7 +30,7 @@ mappings
 	{
 		neutroRegion
 		{
-			targetFields (powerDensityNeutronics);
+			targetFields (powerDensityStructure);
 			sourceFields (powerDensity);
 		};
 	};

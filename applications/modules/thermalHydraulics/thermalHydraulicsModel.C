@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2506                                                  |
+|    Built on OpenFOAM v2512                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2025 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -237,7 +237,7 @@ Foam::solvers::thermalHydraulicsModel::thermalHydraulicsModel
     (
         IOobject
         (
-            "powerDensityNeutronics",
+            "powerDensityStructure",
             mesh_.time().timeName(),
             mesh_,
             IOobject::READ_IF_PRESENT,
@@ -251,7 +251,7 @@ Foam::solvers::thermalHydraulicsModel::thermalHydraulicsModel
     (
         IOobject
         (
-            "powerDensityNeutronicsToLiquid",
+            "powerDensityLiquid",
             mesh_.time().timeName(),
             mesh_,
             IOobject::READ_IF_PRESENT,

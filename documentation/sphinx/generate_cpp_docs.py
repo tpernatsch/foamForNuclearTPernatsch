@@ -1106,13 +1106,18 @@ def main():
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/phaseModels/structureModels/powerOffCriterionModels/",
         maxdepth=1
     )
-    append_toctree_for_folder_direct_subfolders(
-        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/physicsModels/FFdrag.rst",
+    insert_toctree_at_placeholder_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/turbulenceProperties.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/turbulenceModels/",
+        maxdepth=1
+    )
+    insert_toctree_at_placeholder_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dragModels/FFDragCoefficientModels/FFDragCoefficientModel.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dragModels/FFDragCoefficientModels",
         maxdepth=1
     )
-    append_toctree_for_folder_direct_subfolders(
-        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/physicsModels/FSdrag.rst",
+    insert_toctree_at_placeholder_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dragModels/FSDragCoefficientModels/FSDragCoefficientModel.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dragModels/FSDragCoefficientModels",
         maxdepth=1
     )
@@ -1136,13 +1141,13 @@ def main():
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/fluidDiameterModels",
         maxdepth=1
     )
-    append_toctree_for_folder_direct_subfolders(
-        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/physicsModels/FFHeatTransferCoefficientModels.rst",
+    insert_toctree_at_placeholder_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FFHeatTransferCoefficientModels/FFHeatTransferCoefficientModel.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FFHeatTransferCoefficientModels",
         maxdepth=1
     )
-    append_toctree_for_folder_direct_subfolders(
-        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/physicsModels/FSHeatTransferCoefficientModels.rst",
+    insert_toctree_at_placeholder_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/FSHeatTransferCoefficientModel.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels",
         maxdepth=1
     )

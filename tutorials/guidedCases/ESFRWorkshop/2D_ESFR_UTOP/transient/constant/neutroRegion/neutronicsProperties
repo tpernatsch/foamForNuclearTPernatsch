@@ -15,8 +15,9 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-model                   pointKinetics;
-
 eigenvalueNeutronics    false;
+
+fastNeutrons    true;
+
 
 // ************************************************************************* //

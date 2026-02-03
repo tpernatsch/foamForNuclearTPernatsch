@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2506                                                  |
+|    Built on OpenFOAM v2512                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2025 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -63,7 +63,7 @@ Usage
                     neutroRegion            diffusionNeutronics;
                     multiPhysicsSolver2     loop;
                 }
-                minResidual 0.00005;   // residual after which the iteration is ended
+                maxResidual 0.00005;   // residual after which the iteration is ended
                 maxIterations 3;       // maximum number of iterations before the loop is ended
                 includeFluidMechanicsInLoop  false; //defaulted to false
             }

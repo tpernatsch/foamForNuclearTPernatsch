@@ -349,7 +349,7 @@ solvers = ffn.Solvers([thSolver1, thSolver2])
 fluidLoop = ffn.MultiPhysicsLoop(
     solver="picardLoop",
     region="fluidLoop",
-    minResidual=1e-6,
+    maxResidual=1e-6,
     maxIterations=1,
     solvers=[thSolver1, thSolver2]
 )

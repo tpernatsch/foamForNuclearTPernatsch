@@ -56,8 +56,6 @@ class ControlDict(OpenFOAMFile):
         Run time modifiable flag (default `False`).
     adjustTimeStep : bool
         Adjust time step flag (default `False`).
-    liquidFuel : bool, optional
-        Flag if the fuel is liquid (default `False`).
     solveFMI : bool
         Flag to indicate to solve considering the solver as an FMU. Must be set
         to `False` if the solver is managing an FMU using `OMSimulatorContainer`
@@ -94,7 +92,6 @@ class ControlDict(OpenFOAMFile):
             maxAverageCreep: float=None,
             maxMaximumCreep: float=None,
             maxFGR: float=None,
-            liquidFuel: bool=False,
             solveFMI: bool=None,
             minDeltaT: float=None,
             maxCoTwoPhase: float=None,
@@ -136,7 +133,6 @@ class ControlDict(OpenFOAMFile):
         self.maxAverageCreep = maxAverageCreep
         self.maxMaximumCreep = maxMaximumCreep
         self.maxFGR = maxFGR
-        self.liquidFuel = liquidFuel
         self.solveFMI = solveFMI
         self.minDeltaT = minDeltaT
         self.maxCoTwoPhase = maxCoTwoPhase
@@ -453,15 +449,6 @@ class ControlDict(OpenFOAMFile):
         self._maxFGR = maxFGR
 
     @property
-    def liquidFuel(self):
-        return self._liquidFuel
-
-    @liquidFuel.setter
-    def liquidFuel(self, liquidFuel) -> None:
-        check_type("liquidFuel", liquidFuel, bool)
-        self._liquidFuel = liquidFuel
-
-    @property
     def solveFMI(self):
         return self._solveFMI
 
@@ -645,9 +632,6 @@ class ControlDict(OpenFOAMFile):
         if (self.marginToPhaseChange is not None):
             text += addParameter('marginToPhaseChange', self.marginToPhaseChange, isAddExtraLine=True)
         text += addParameter('maxPowerVariation', self.maxPowerVariation, isAddExtraLine=True)
-
-        if (self.liquidFuel):
-            text += addParameter('liquidFuel', self.liquidFuel, isAddExtraLine=True)
 
         if (self.solveFMI is not None):
             text += addParameter('solveFMI', self.solveFMI, isAddExtraLine=True)

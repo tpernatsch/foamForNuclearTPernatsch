@@ -153,7 +153,7 @@ functions
             Tsurface.lumpedNuclearStructure 
             Tmatrix.lumpedNuclearStructure 
             Tmax.lumpedNuclearStructure
-            powerDensityNeutronics
+            powerDensityStructure
         );
         enabled         true;
         log             true;
@@ -167,7 +167,7 @@ functions
     {
         type            volFieldValue;
         libs            (fieldFunctionObjects);
-        fields          (powerDensityNeutronics);
+        fields          (powerDensityStructure);
         operation       volIntegrate;
         region          fluidRegion;
         regionType      all;

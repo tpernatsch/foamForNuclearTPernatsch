@@ -1,4 +1,21 @@
 import FMU4FOAM
+from foamForNuclear import FMPyContainer
+
+
+class momentumSourceTest(FMPyContainer):
+    def __init__(
+            self,
+            endTime,
+            jsonFile
+        ):
+        super().__init__(
+            endTime,
+            jsonFile,
+            fmuName='momentumSourceTest.fmu',
+            outputFilename='momentumSourceTest.csv'
+        )
+
+"""
 from OMSimulator import OMSimulator
 
 
@@ -22,7 +39,7 @@ class momentumSourceTest(FMU4FOAM.FMUBase):
 
         self.oms.instantiate("model")
         #self.oms.setReal("model.root.system1.momentumSource", 1)
-        
+
         self.oms.initialize("model")
         #self.oms.simulate("model")
 
@@ -38,3 +55,5 @@ class momentumSourceTest(FMU4FOAM.FMUBase):
     def __del__(self):
         self.oms.terminate("model")
         self.oms.delete("model")
+
+"""

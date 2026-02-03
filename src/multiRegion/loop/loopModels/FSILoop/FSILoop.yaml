@@ -27,7 +27,7 @@ options:
     required: true
     default:
     description: |
-  - key: minResidual
+  - key: maxResidual
     type: scalar
     required: true
     default:
@@ -63,7 +63,7 @@ usage:
         {
           Level_1 FSILoop;
         }
-        
+
         Level_1
         {
           subSolvers
@@ -71,10 +71,10 @@ usage:
             fluid rhoPimpleFoam;
             solid extendedThermoMechanics;
           }
-   
+
           maxIterations 100;
           maxResidual 1e-5;
-          
+
           FSILoopCoeffs
           {
             FSIInterface true;

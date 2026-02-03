@@ -19,7 +19,7 @@ regionSolvers
 {
     Level_0
     {
-        Level_1 picardLoop;
+        Level_1 picardLoopNoFluid;
     }
     Level_1
     {
@@ -40,7 +40,7 @@ mappings
         neutroRegion
         {
             sourceFields    ( powerDensity secondaryPowerDensity );
-            targetFields    ( powerDensityNeutronics powerDensityNeutronicsToLiquid );
+            targetFields    ( powerDensityStructure powerDensityLiquid );
         }
     }
     neutroRegion

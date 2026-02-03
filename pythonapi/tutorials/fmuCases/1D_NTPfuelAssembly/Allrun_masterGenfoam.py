@@ -130,8 +130,8 @@ model.add_time_folder(timeFolder1)
 # model.solvers.append(thSolver)
 # model.coupling.append(thSolver)
 
-# model.coupling.add_field_transfer(neutronicsSolver, thSolver, "powerDensity", "powerDensityNeutronics")
-# model.coupling.add_field_transfer(neutronicsSolver, thSolver, "secondaryPowerDensity", "powerDensityNeutronicsToLiquid")
+# model.coupling.add_field_transfer(neutronicsSolver, thSolver, "powerDensity", "powerDensityStructure")
+# model.coupling.add_field_transfer(neutronicsSolver, thSolver, "secondaryPowerDensity", "powerDensityLiquid")
 
 # model.coupling.add_field_transfer(thSolver, neutronicsSolver, "T", "TCool")
 # model.coupling.add_field_transfer(thSolver, neutronicsSolver, "thermo:rho", "rhoCool")

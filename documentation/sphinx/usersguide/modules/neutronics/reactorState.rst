@@ -32,7 +32,7 @@ sub-folder. It includes essentially 3 keywords:
 
 
 All neutronics models can be used for liquid-fuel reactors. One can
-activate this option using the *liquidFuel* keyword in */system/controlDict*.
+activate this option using the *liquidFuel* keyword in */constant/(nameOfNeutronicsRegion)/neutronicsProperties*.
 Of course, in such cases, one should pay attention to setting proper boundary
 conditions for the precursors.
 

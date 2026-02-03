@@ -5,7 +5,17 @@
 Case Folder
 ===========
 
-The folder structure of GeN-Foam case is similar to that of typical multi-region solvers shipped with OpenFOAM (e.g., ``chtMultiRegionFoam``). While more traditional OpenFOAM solvers (e.g., ``pimpleFoam`` or ``simpleFoam``) only have the ``0/``, ``constant`` and ``system`` folders, in GeN-Foam, each of these solvers is further subdivided in different sub-folders, one for every region the user is solving for. In the example below, the user is making use of one fluid region, two fluid regions, and one neutronics region.  In GeN-Foam, one region is always associated with a single module. For multi-physics simulations involving multiple modules on the same region of space (e.g., porous-medium thermal-hydraulics and diffusion neutronics in a reactor core), the user must employ multiple overlapped meshes coupled via mesh-to-mesh projection.  
+The folder structure of GeN-Foam case is similar to that of typical multi-region
+solvers shipped with OpenFOAM (e.g., ``chtMultiRegionFoam``). While more
+traditional OpenFOAM solvers (e.g., ``pimpleFoam`` or ``simpleFoam``) only have
+the ``0/``, ``constant`` and ``system`` folders, in GeN-Foam, each of these
+solvers is further subdivided in different sub-folders, one for every region the
+user is solving for. In the example below, the user is making use of one fluid
+region, two fluid regions, and one neutronics region.  In GeN-Foam, one region
+is always associated with a single module. For multi-physics simulations
+involving multiple modules on the same region of space (e.g., porous-medium
+thermal-hydraulics and diffusion neutronics in a reactor core), the user must
+employ multiple overlapped meshes coupled via mesh-to-mesh projection.
 
 .. code-block:: text
 
@@ -69,7 +79,7 @@ The folder structure of GeN-Foam case is similar to that of typical multi-region
 .. note ::
 
     The name of the regions is arbitrary. The ``regionsDict`` dictionary is used to define which physics is solved within each region (see :ref:`Coupled Solutions <couplingGF>`).
- 
+
 .. note ::
 
     The fields within each of the ``0/`` and ``constant/`` sub-folders depend entirely on the physics that the user decides to solve for in that region. Often, only some fields are mandatory. See the user guide for the :ref:`Physics Modules <modules>` for more details.
@@ -81,7 +91,7 @@ The folder structure of GeN-Foam case is similar to that of typical multi-region
     - **Adjacent**, exchanging data through shared boundaries.
     - **Overlapping**, coupled via mesh-to-mesh projection methods.
     - **Independent**, with no direct interaction.
-    
+
     Any combination of these configurations is supported, enabling flexible multi-physics coupling
 
 Folder Overview
@@ -89,13 +99,13 @@ Folder Overview
 
 At the start of the simulation, a GeN-Foam case must contain the following three folders, each with its sub-folders for each region:
 
-1. **0/ (or different starting-time folder)**  
+1. **0/ (or different starting-time folder)**
    Contains initial and boundary conditions for all fields of all regions.
 
-2. **constant/**  
+2. **constant/**
    Contains mesh information (within ``polyMesh/`` ), material properties, behavioral models and correlations,  and module-specific settings.
 
-3. **system/**  
+3. **system/**
    Contains control and numerical settings for the simulation, including discretization schemes (``fvSchemes``), linear solvers (``fvSolution``), and the main simulation controls (``regionsDict`` and ``controlDict``). Other files that can be found in this solver include ``blockMeshDict`` (input dictionary for the ``blockMesh`` utility for mesh generation) and ``changeDictionaryDict`` (instructions to modify patch boundaries or other dictionaries via the ``changeDictionary`` utility).
 
 After the simulation is performed, additional folders and files may appear based on the settings configured by the user:

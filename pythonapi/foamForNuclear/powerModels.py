@@ -404,7 +404,7 @@ class NuclearSteadyStatePebble(PowerModel):
 
     def __init__(
             self,
-            powerDensityNeutronics: float,
+            powerDensity: float,
             pebbleSurfaceTemperatureGuess: float,
             pebbleCoreRadius: float,
             pebbleMatrixRadius: float,
@@ -429,7 +429,7 @@ class NuclearSteadyStatePebble(PowerModel):
         ):
         super().__init__("nuclearSteadyStatePebble")
 
-        self.powerDensityNeutronics = powerDensityNeutronics
+        self.powerDensity = powerDensity
         self.pebbleSurfaceTemperatureGuess = pebbleSurfaceTemperatureGuess
         self.pebbleCoreRadius = pebbleCoreRadius
         self.pebbleMatrixRadius = pebbleMatrixRadius
@@ -454,7 +454,7 @@ class NuclearSteadyStatePebble(PowerModel):
 
 
     def __repr__(self, depth=0):
-        self.__setitem__("powerDensityNeutronics", self.powerDensityNeutronics)
+        self.__setitem__("powerDensity", self.powerDensity)
         self.__setitem__("pebbleSurfaceTemperatureGuess", self.pebbleSurfaceTemperatureGuess)
         self.__setitem__("pebbleCoreRadius", self.pebbleCoreRadius)
         self.__setitem__("pebbleMatrixRadius", self.pebbleMatrixRadius)
@@ -481,14 +481,14 @@ class NuclearSteadyStatePebble(PowerModel):
 
 
     @property
-    def powerDensityNeutronics(self):
-        return self._powerDensityNeutronics
+    def powerDensity(self):
+        return self._powerDensity
 
-    @powerDensityNeutronics.setter
-    def powerDensityNeutronics(self, powerDensityNeutronics) -> None:
-        check_type("powerDensityNeutronics", powerDensityNeutronics, (float, int))
-        check_positive("powerDensityNeutronics", powerDensityNeutronics)
-        self._powerDensityNeutronics = powerDensityNeutronics
+    @powerDensity.setter
+    def powerDensity(self, powerDensity) -> None:
+        check_type("powerDensity", powerDensity, (float, int))
+        check_positive("powerDensity", powerDensity)
+        self._powerDensity = powerDensity
 
     @property
     def pebbleSurfaceTemperatureGuess(self):

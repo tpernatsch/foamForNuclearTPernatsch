@@ -49,8 +49,6 @@ removeBaffles
 {
 }
 
-liquidFuel      true;
-
 adjustTimeStep  true;
 
 maxDeltaT       1;

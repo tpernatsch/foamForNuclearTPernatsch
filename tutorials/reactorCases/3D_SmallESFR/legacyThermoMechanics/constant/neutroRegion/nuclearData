@@ -1,0 +1,107 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      neutronicsProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Number of energy groups. Can be any, but consistent with the data below
+energyGroups        1;
+
+// Number of precursors groups. Can be any, but consistent with the data below
+precGroups          8;
+
+// Here below, the cross-sections (and few other parameters) are specified for
+// each cellZone in the neutronics mesh. ALL cellZones must be specified in
+// "reference" state but can be missed for the perturbed states!
+// The use of #include allows to organise and lighten the nuclearData file but
+// is optional.
+
+xsVariables
+{
+    TFuel   log;
+    TClad   lin;
+    rhoCool lin;
+    axExp   lin;
+    radExp  lin;
+}
+
+states
+(
+    reference
+    {
+        TFuel   900;
+        TClad   668;
+        rhoCool 860;
+        axExp   0;
+        radExp  0;
+
+        zones
+        (
+            #include "XSref"
+        );
+    }
+
+    TFuel1200K
+    {
+        TFuel   1200;
+
+        zones
+        (
+            #include "XSTFuel1200K"
+        );
+    }
+
+    TClad1950K
+    {
+        TClad   1950;
+
+        zones
+        (
+            #include "XSTClad1950K"
+        );
+    }
+
+    rhoCool500kgm3
+    {
+        rhoCool 500;
+
+        zones
+        (
+            #include "XSrhoCool500kgm3"
+        );
+    }
+
+    axialExpansion
+    {
+        axExp   0.05;
+
+        zones
+        (
+            #include "XSaxialExpansion"
+        );
+    }
+
+    radialExpansion
+    {
+        radExp  0.05;
+
+        zones
+        (
+            #include "XSradialExpansion"
+        );
+    }
+);
+
+
+// ************************************************************************* //

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2506                                                  |
+|    Built on OpenFOAM v2512                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2025 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -151,10 +151,10 @@ scalar Foam::solvers::loop::maxDeltaT()
 
         ++iterN;
 
-        if(residual<minResidual_)
+        if(residual<maxResidual_)
             Info << nl<<"Multiphysics loop converged after " << iterN <<" iterations"<<endl<<nl;
     }
-    while(residual>minResidual_ && iterN < maxIterations_);
+    while(residual>maxResidual_ && iterN < maxIterations_);
 }
 
 void Foam::solvers::loop::FSIInitialization()
@@ -291,10 +291,10 @@ void Foam::solvers::loop::FSIRoutine()
 
         ++iterN;
 
-        if(residual<minResidual_)
+        if(residual<maxResidual_)
             Info << nl<<"Multiphysics loop converged after " << iterN <<" iterations"<<endl<<nl;
     }
-    while(residual>minResidual_ && iterN < maxIterations_);
+    while(residual>maxResidual_ && iterN < maxIterations_);
 
 }
 

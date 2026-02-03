@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2506                                                  |
+|    Built on OpenFOAM v2512                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2025 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -293,7 +293,7 @@ Foam::powerModels::nuclearSteadyStatePebble::nuclearSteadyStatePebble
     regionIndexToRegionName_(0),
     pi_(constant::mathematical::pi)
 {
-    structure_.setRegionField(*this, structureRef.powerDensityNeutronics(), "powerDensityNeutronics");
+    structure_.setRegionField(*this, structureRef.powerDensityNeutronics(), "powerDensity");
     const scalarField& V(mesh_.V());
     forAll(this->toc(), regioni)
     {

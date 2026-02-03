@@ -29,6 +29,7 @@ setSteadyState() {
     foamDictionary $2/system/controlDict -entry endTime -set $endTimeSteadyState
     foamDictionary $2/system/controlDict -entry writeInterval -set $endTimeSteadyState
     cp dictionaries/steadyState/neutronicsProperties $2/constant/neutroRegion/neutronicsProperties
+    cp dictionaries/steadyState/nuclearData $2/constant/neutroRegion/nuclearData
     cp dictionaries/steadyState/regionsDict $2/system/regionsDict
 }
 
@@ -36,8 +37,7 @@ setTransient() {
     cp -r $1 $2
     echo "Setting $2 case..."
     cp dictionaries/transient/neutronicsProperties $2/constant/neutroRegion/neutronicsProperties
-    foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
-    foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry externalSourceNeutronics -set true
+    cp dictionaries/transient/nuclearData $2/constant/neutroRegion/nuclearData
     foamDictionary $2/constant/neutroRegion/externalSource \
         -entry externalSourceModulationTimeProfile.startTime -set $endTimeSteadyState
     foamDictionary $2/system/controlDict -entry endTime -set $endTimeTransient

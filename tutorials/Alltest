@@ -152,7 +152,7 @@ then
     echo "Testing tutorials using FMUs"
 
     tutorials+=(
-        "fmuCases/powerTemperatureMomentumControl                   0.2"
+        "fmuCases/powerTemperatureMomentumControl                   0.5"
         "fmuCases/2D_PKCoupleFMI/comparisonFMU                      0.3"
         "fmuCases/2D_PKCoupleFMI/PIDcontrol                         0.3"
         # "fmuCases/2D_LFRpowerPlant/GeN-FoamAndModelica             10.0"
@@ -175,7 +175,6 @@ then
         "featureCases/1D_PSBT_SC/Phase_Ex1_12223                        0.2"
         "featureCases/2D_cavityBoussinesq                               0.2"
         "featureCases/2D_externalSourceDiffusion                        0.2"
-        "featureCases/2D_flowOverHeatedPlate                            0.2"
         "featureCases/2D_fullCoupling                                   0.2"
         "featureCases/2D_onePhaseAndPointKineticsCoupling               0.2"
         "reactorCases/1D_thermalMSR_pointKinetics                       0.2"

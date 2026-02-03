@@ -17,15 +17,11 @@ FoamFile
 
 eigenvalueNeutronics    true;
 
-fastNeutrons    true;
+fastNeutrons            true;
 
-energyGroups    2;
+adjustDiscFactors       false;
 
-precGroups      6;
+useGivenDiscFactors     false;
 
-nuclearData
-{
-    #include "nuclearData"
-}
 
 // ************************************************************************* //

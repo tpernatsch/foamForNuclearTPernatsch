@@ -50,8 +50,6 @@ removeBaffles
     fluidRegion false;
 }
 
-liquidFuel      false;
-
 adjustTimeStep  true;
 
 maxCo           5;

@@ -20,12 +20,13 @@ The *phaseProperties* dictionary is a complex dictionary that handles:
       - The name of the phases
       - The properties of each phase (e.g., state of matter, dispersed diameter model, etc)
 
-Detailed, commented examples are provided in the tutorials
+Detailed examples are provided e.g. in the tutorials
 `3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/fluidRegion/phaseProperties>`_ (single phase) and
 `1D_boiling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/1D_boiling/constant/fluidRegion/phaseProperties>`_
 (two phases). In addition, an example of how to use a two-dimensional
 flow-regime map can be found in
 `1D_PSBT_SC <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/1D_PSBT_SC/Phase_Ex1_12223/constant/fluidRegion/phaseProperties>`_.
+
 
 
 Sub-dictionaries
@@ -46,17 +47,3 @@ Sub-dictionaries
 
 
 
-
-
-
-
-
-.. Both single- and two-phase simulations can be performed using GeN-Foam. All
-.. sub-solvers were developed for a coarse-mesh porous-medium treatment of complex
-.. structures such as core and heat exchanger, and for a standard RANS treatment of
-.. clear-fluid regions. The sub-solvers automatically switch from a porous-medium
-.. (coarse-mesh) treatment to a standard CFD (fine-mesh) treatment when the volume
-.. fraction of the sub-scale structures is set to zero. This allows for an implicit
-.. coupling of porous-medium (sub-channel-like in 2D and 3D, or system-code-like)
-.. treatment of complex structures (e.g., core and heat exchangers) with a standard
-.. CFD treatment of clear-fluid regions (e.g., plena and pools).

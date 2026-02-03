@@ -67,13 +67,16 @@ structureProperties
         volumeFraction      0;
         Dh                  1;
 
-        momentumSource     (0 0 10000);
-
-        momentumSourceTimeProfile
+        pump
         {
-            type            fmi;
-            nameFromFMU     gfMomentumSourceIn1;
-            initialValue    1.0;
+            momentumSource     (0 0 10000);
+
+            momentumSourceTimeProfile
+            {
+                type            fmi;
+                nameFromFMU     gfMomentumSourceIn1;
+                initialValue    1.0;
+            }
         }
     }
 
@@ -82,13 +85,16 @@ structureProperties
         volumeFraction      0;
         Dh                  1;
 
-        momentumSource     (0 0 10000);
-
-        momentumSourceTimeProfile
+        pump
         {
-            type            fmi;
-            nameFromFMU     gfMomentumSourceIn2;
-            initialValue    1.0;
+            momentumSource     (0 0 10000);
+
+            momentumSourceTimeProfile
+            {
+                type            fmi;
+                nameFromFMU     gfMomentumSourceIn2;
+                initialValue    1.0;
+            }
         }
     }
 }

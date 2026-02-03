@@ -13,7 +13,7 @@ options:
     required: true
     default:
     description: |
-  - key: minResidual
+  - key: maxResidual
     type: scalar
     required: true
     default:
@@ -37,7 +37,7 @@ usage:
                   otherRegionName              otherSolverName;
                   Level_2                 otherLoop;
               }
-              minResidual 0.00005;   // residual after which the iteration is ended
+              maxResidual 0.00005;   // residual after which the iteration is ended
               maxIterations 3;       // maximum number of iterations before the loop is ended
           }
 
@@ -51,5 +51,3 @@ usage:
       In some cases, it is convenient to only solve the energy equation of the
       thermal-hydraulics solver, while the fluid-mechanics is solved only once at the
       beginning of the iteration. This can be done by setting the picardLoopNoFluid solover instead.
-
-

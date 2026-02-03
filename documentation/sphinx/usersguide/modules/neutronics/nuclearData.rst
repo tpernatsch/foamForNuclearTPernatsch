@@ -9,7 +9,7 @@ by the :ref:`XS.H <XS>` class. Detailed explanations on the file format are prov
 :ref:`XS.H <XS>` and in the tutorials (e.g `3D_SmallESFR
 <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/neutroRegion/neutronicsProperties>`_).
 
-The *nuclearData* dictionary can be found under *constant/(neutronicsRegionName)/neutronicsProperties*. It
+The *nuclearData* dictionary can be found under *constant/(neutronicsRegionName)/*. It
 contains all basic nuclear properties for the reference and perturbed reactor
 states. For instance, including ``TFuel`` in the ``reference`` state and a perturbed state
 represents the temperatures at which the reference and perturbed cross-sections
@@ -37,7 +37,7 @@ two external tools for Serpent and OpenMC.
     into nuclear data files.
 
 These tools have also been implemented in the `Python API <https://foamfornuclear.gitlab.io/foamForNuclear/pythonapi/base.html#nuclear-data-and-neutronics-dictionaries>`_
-A tutorial is provided to show the usage of the data extraction with the API (see 
+A tutorial is provided to show the usage of the data extraction with the API (see
 `test_fuelPin_monteCarlo <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/docs/pythonapi/tutorials/tests/test_fuelPin_monteCarlo?ref_type=heads>`_).
 
 The entry ``discFactor`` is used only if discontinuity factors have to be used.
@@ -54,9 +54,10 @@ interpolation scheme on any field provided by the solver. This method allows to
 interpolate the XS using multiple parameters/perturbations (see example below).
 
 It is possible to select different radial basis function based on the
-polyharmonic splines using the ``polyharmonicSplineMode`` keyword. The figure
-below shows the radial basis function influence on the interpolation. The
-default mode is ``1``, which guarantee a linear interpolation:
+polyharmonic splines using the ``polyharmonicSplineMode`` keyword in the
+``neutronicsProperties`` file. The figure below shows the radial basis function
+influence on the interpolation. The default mode is ``1``, which guarantee a
+linear interpolation:
 
 :`1`: :math:`\phi(r) = |r|`
 :`2`: :math:`\phi(r) = r^2 \ln(r)`
@@ -84,53 +85,54 @@ coupling with other solvers (see the :ref:`coupling page <userguide_coupling>`).
 
 .. code :: cpp
 
-    nuclearData
+    energyGroups    2;
+
+    precGroups      6;
+
+    xsVariables
     {
-        xsVariables
+        TFuel       log;
+        rhoCool     lin;
+    }
+
+    states
+    (
+        reference // Mandatory name not to be modified
         {
-            TFuel       log;
-            rhoCool     lin;
+            TFuel   900;
+            rhoCool 4125;
+
+            zones
+            (
+                zone1
+                {
+                    fuelFraction 0.5;
+                    IV nonuniform List<scalar> 2 (<value1> <value2>);
+                    ...
+                }
+                ...
+            );
         }
 
-        states
-        (
-            reference // Mandatory name not to be modified
-            {
-                TFuel   900;
-                rhoCool 4125;
+        Tfuel1200K // Arbitrary name
+        {
+            TFuel   1200;
+            #include "XSTfuel1200K" // OpenFOAM shortcut to attach file content at this location
+        }
 
-                zones
-                (
-                    zone1
-                    {
-                        fuelFraction 0.5;
-                        IV nonuniform List<scalar> 2 (<value1> <value2>);
-                        ...
-                    }
-                    ...
-                );
-            }
+        rhoCool3500kgm3
+        {
+            rhoCool 3500;
+            #include "XSrhoCool3500kgm3"
+        }
 
-            Tfuel1200K // Arbitrary name
-            {
-                TFuel   1200;
-                #include "XSTfuel1200K" // OpenFOAM shortcut to attach file content at this location
-            }
-
-            rhoCool3500kgm3
-            {
-                rhoCool 3500;
-                #include "XSrhoCool3500kgm3"
-            }
-
-            Tfuel1200KandRhoCool3500kgm3
-            {
-                TFuel   1200;
-                rhoCool 3500;
-                #include "XSTfuel1200KandRhoCool3500kgm3"
-            }
-        );
-    }
+        Tfuel1200KandRhoCool3500kgm3
+        {
+            TFuel   1200;
+            rhoCool 3500;
+            #include "XSTfuel1200KandRhoCool3500kgm3"
+        }
+    );
 
 
 .. note ::
@@ -151,20 +153,18 @@ coupling with other solvers (see the :ref:`coupling page <userguide_coupling>`).
 
 .. code :: cpp
 
-    nuclearData
-    {
-        xsVariables
-        {}
+    xsVariables
+    {}
 
-        states
-        (
-            reference
-            {
-                zones
-                ();
-            }
-        );
-    }
+    states
+    (
+        reference
+        {
+            zones
+            ();
+        }
+    );
+
 
 One can find more details on all the parameters in the :ref:`XS.H <XS>` file and commented
 examples of *nuclearData* in the tutorials
@@ -177,18 +177,18 @@ examples of *nuclearData* in the tutorials
 XS data
 ~~~~~~~
 
-The nuclear data are composed of predined XS and spatial kinetics related 
-parameters. For each cellZone, the sub-dict must contains the following 
+The nuclear data are composed of predefined XS and spatial kinetics related
+parameters. For each cellZone, the sub-dict must contains the following
 keywords as scalar:
 
 :fuelFraction: Volume of fuel per lattice volume
-:secondaryPowerVolumeFraction: (Optional) Volume fraction of secondary 
-                               power-producing structure e.g., graphite in 
+:secondaryPowerVolumeFraction: (Optional) Volume fraction of secondary
+                               power-producing structure e.g., graphite in
                                MSRs
-:fractionToSecondaryPower: (Optional) Fraction of total power that goes 
+:fractionToSecondaryPower: (Optional) Fraction of total power that goes
                            to secondary power-producing structure
 
-And as a ``nonuniform List<scalar> ng`` with ``ng`` the number of energy 
+And as a ``nonuniform List<scalar> ng`` with ``ng`` the number of energy
 groups, which must be equal to ``energyGroups``:
 
 :IV: Inverse velocity (constant)
@@ -202,7 +202,7 @@ groups, which must be equal to ``energyGroups``:
 :discFactor: Discontinuity factors
 :integralFlux: Integral flux for adapting disc factors
 
-And as a ``nonuniform List<scalar> nd`` with ``nd`` the number of delayed 
+And as a ``nonuniform List<scalar> nd`` with ``nd`` the number of delayed
 neutron groups, which must be equal to ``precGroups``:
 
 :Beta: Delayed neutron fraction
@@ -212,11 +212,11 @@ neutron groups, which must be equal to ``precGroups``:
 XS extraction and parametrization using the Python API
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-As mentioned above, one can use solely the foamForNuclear Python API to 
-pre-process nuclear data from the output of external tools such as Serpent 
+As mentioned above, one can use solely the foamForNuclear Python API to
+pre-process nuclear data from the output of external tools such as Serpent
 or OpenMC.
 
-A tutorial is provided to show the usage of the data extraction with the API (see 
+A tutorial is provided to show the usage of the data extraction with the API (see
 `test_fuelPin_monteCarlo <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/docs/pythonapi/tutorials/tests/test_fuelPin_monteCarlo?ref_type=heads>`_).
 
 Here follows an example of usage using Serpent:
@@ -267,8 +267,16 @@ One can also parametrize multiple external code results in the API as follow:
     )
     TfuelAndRhoHot.read_from_serpent(...)
 
-    
+
     # Then add the states to the nuclear data
     neutronicsSolver.nuclearData.add_state(refState)
     neutronicsSolver.nuclearData.add_state(Tfuel1200K)
     neutronicsSolver.nuclearData.add_state(TfuelAndRhoHot)
+
+
+If the ``nuclearData`` has been prepared using another tool, one can import it
+using the API as follow:
+
+.. code :: python
+
+    neutronicsSolver.nuclearData.import_from_openfoam("path/to/nuclearData")

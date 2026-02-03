@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2506                                                  |
+|    Built on OpenFOAM v2512                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2025 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -79,7 +79,17 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
 )
 :
     neutronics(mesh),
-    nuclearData_(this->subDict("nuclearData")),
+    nuclearData_
+    (
+        IOobject
+        (
+            "nuclearData",
+            mesh.time().constant(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::NO_WRITE
+        )
+    ),
     power_(reactorState_.get<scalar>("power")),
     fissionPower_(power_),
     decayPower_(0.0),
@@ -820,7 +830,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
         beta_ += betas_[i];
     }
 
-    // 
+    //
     setFeedbackCellField
     (
         fuelFeedbackCellField_,
@@ -1091,11 +1101,8 @@ Foam::solvers::pointKineticNeutronics::calcGEMLevelAndReactivity()
             const label& facei(phiFaces_[i]);
             intPhiFrac += (*phiOrig_)[facei]*phiMagSf_[i];
         }
-        Info <<"Bla bla " << intPhiRef_<<endl;
-        Info <<"The other "<< intPhiFrac<<endl;
         reduce(intPhiFrac, sumOp<scalar>());
         intPhiFrac /= intPhiRef_;
-        Info <<"Fractions though is " << intPhiFrac<<endl;
 
         //  Specific FFTF relationship between flow fraction and GEM sodium
         //  level

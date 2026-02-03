@@ -29,7 +29,7 @@ pipe3 = thMesh.add_pipe_1D_from_direction(
     n=10,
     equivalentHydraulicDiameter=pipeWidth/np.sqrt(np.pi),
     elbowRadius=pipeWidth,
-    isAddAllBC=True,
+    isAddLateralBC=True,
     originPositionOutletFaceName='right'
 )
 pipe4 = thMesh.add_pipe_1D_from_direction(
@@ -40,7 +40,7 @@ pipe4 = thMesh.add_pipe_1D_from_direction(
     n=10,
     equivalentHydraulicDiameter=pipeWidth/np.sqrt(np.pi),
     elbowRadius=pipeWidth,
-    isAddAllBC=True,
+    isAddLateralBC=True,
 )
 pipe5 = thMesh.add_pipe_1D_from_2points(
     "pipe5",
@@ -49,7 +49,7 @@ pipe5 = thMesh.add_pipe_1D_from_2points(
     n=10,
     equivalentHydraulicDiameter=pipeWidth/np.sqrt(np.pi),
     elbowRadius=pipeWidth,
-    isAddAllBC=True,
+    isAddLateralBC=True,
     finalPositionInletFaceName='left'
 )
 
@@ -109,19 +109,19 @@ thSolver.thermophysicalProperties = ffn.thermophysicalProperty.WaterPolynomial()
 
 thSolver.turbulenceProperties.simulationType = 'laminar'
 
-thSolver.phaseProperties.pMin = 150e5
-
-pumpModel = ffn.Pump(
+pumpModel = ffn.StructureProperty(
     zones=['pump'],
     volumeFraction=0.2,
-    Dh=0.1,
+    Dh=0.1
+)
+pumpModel.add_pump(ffn.Pump(
     momentumSource=ffn.Vector(1e7, 0, 0),
     momentumSourceTimeProfile=ffn.TimeProfile(
         type='fmi',
         nameFromFMU="gfMomentumSource",
         initialValue=0
     )
-)
+))
 
 flowBlockageModel = ffn.StructureProperty(
     zones=['pipe3'],
@@ -159,6 +159,7 @@ thSolver.fvSolution = thSolution
 
 thSolver.pimpleOptions.nOuterCorrectors = 3
 thSolver.pimpleOptions.nCorrectors = 3
+thSolver.pimpleOptions.pMin = 150e5
 
 
 thSolver.fvSchemes.divSchemes['default'] = 'none'

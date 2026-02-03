@@ -409,10 +409,10 @@ for filename, ls in zip(sys.argv[1:], linestyles):
             )
 
         # Plot
-        pPower, = axPowerDensity.plot(zRange, data['powerDensityNeutronics'], color="tab:grey", label="Power Density", ls=(0, (3, 1, 1, 1, 1, 1)))
+        pPower, = axPowerDensity.plot(zRange, data['powerDensityStructure'], color="tab:grey", label="Power Density", ls=(0, (3, 1, 1, 1, 1, 1)))
         # axPowerDensity.fill_between(
         #     x= zRange,
-        #     y1= data['powerDensityNeutronics'],
+        #     y1= data['powerDensityStructure'],
         #     color= "tab:gray",
         #     alpha= 0.1
         # )

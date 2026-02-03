@@ -8,7 +8,7 @@ The neutronics module  (see :ref:`neutronics.H <neutronics>`)  can be used to
 solve for steady-state and transient neutronics according to different
 approximations. The behavior of the neutronics module is dictated by the
 *neutronicsProperties*,  *nuclearData*, *reactorState*, *quadratureSet*, and
-*quadratureSet* dictionaries. 
+*quadratureSet* dictionaries.
 
 Note that the spatial neutronics solvers always create a *powerDensity* and
 *secondaryPowerDensity* fields. By default, *secondaryPowerDensity* is set to
@@ -22,7 +22,7 @@ calculate a *secondaryPowerDensity*, GeN-Foam needs to know how much of the
 total power goes into the *secondaryPowerDensity*, and what is the volume
 fraction of the secondary power-producing structure or liquid. This can be done
 by using the *fractionToSecondaryPower* and *secondaryPowerVolumeFraction*
-keywords in each cellZone in the *nuclearData* sub-dictionaty (the same place as *fuelFraction*).
+keywords in each cellZone in the *nuclearData* sub-dictionary (the same place as *fuelFraction*).
 If these keywords are present, GeN-Foam will calculate power densities as
 follows:
 
