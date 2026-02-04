@@ -2,3 +2,32 @@ description: |-
   Class to manage the fluid-fluid (i.e. liquid-vapor) heat transfer coefficient models. Available runtime selectable models include:
 
   toctreeHere
+
+
+usage:
+  - comment: |-
+      The fluid-fluid drag coefficient model is constructed at run-time via the
+      heatTransferModels subdictionary of the physicsModel subdictionary of the phaseProperties dictionary. 
+    snippet: |-
+      physicsModels
+      {
+        heatTransferModels
+        {
+            "liquid.vapour"
+            {
+                "liquid"
+                {
+                    type    NusseltReynoldsPrandtlPower;
+                    const   2.0;
+                    coeff   0.6;
+                    expRe   0.5;
+                    expPr   0.33;
+                }
+                "vapour"
+                {
+                    type    constant;
+                    value   1e3;
+                }
+            }
+        }
+      }

@@ -3,3 +3,24 @@ description: |-
 
   toctreeHere
 
+usage:
+  - comment: |-
+      The fluid-structure drag coefficient model is constructed at run-time via the
+      dragModels subdictionary of the physicsModel subdictionary of the phaseProperties dictionary. 
+    snippet: |-
+      physicsModels
+      {
+          dragModels
+          {
+              "liquid.structure"
+              {
+                  "dummyIn:heated"
+                  {
+                      type    ReynoldsPower;
+                      coeff   0.316;
+                      exp     -0.25;
+                  }
+              }
+          }
+        }
+      }
