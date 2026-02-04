@@ -1121,8 +1121,8 @@ def main():
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dragModels/FSDragCoefficientModels",
         maxdepth=1
     )
-    append_toctree_for_folder_direct_subfolders(
-        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/physicsModels/multipliersDrag.rst",
+    insert_toctree_at_placeholder_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dragModels/twoPhaseDragMultiplierModels/twoPhaseDragMultiplierModel.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dragModels/twoPhaseDragMultiplierModels",
         maxdepth=1
     )

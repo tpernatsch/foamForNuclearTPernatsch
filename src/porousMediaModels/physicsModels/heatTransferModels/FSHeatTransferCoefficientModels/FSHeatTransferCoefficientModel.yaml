@@ -5,3 +5,25 @@ description: |-
 
 
 
+usage:
+  - comment: |-
+      The fluid-structure drag coefficient model is constructed at run-time via the
+      heatTransferModels subdictionary of the physicsModel subdictionary of the phaseProperties dictionary. 
+    snippet: |-
+      physicsModels
+      {
+        heatTransferModels
+        {
+          "vapour.structure"
+          {
+              "heated"
+              {
+                  type    multiRegimeBoilingVapourTRACE;
+                  annularFlowModel
+                  {
+                      type                CachardVapour;
+                  }
+              }
+          }
+        }
+      }
