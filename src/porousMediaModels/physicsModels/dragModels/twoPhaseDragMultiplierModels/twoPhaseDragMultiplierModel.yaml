@@ -46,18 +46,13 @@ options:
     required: true
     default:
     description: |-
-      Name of the multiplier fluid phase. The
-      corresponding <fluid> object is looked up as "alpha.<multiplierFluid>"
-      in the objectRegistry. This fluid provides the reference single-phase
-      friction tensor and velocity field used in the model. 
+      Name of the multiplier fluid phase. The  corresponding <fluid> object is looked up as "alpha.<multiplierFluid>" in the objectRegistry. This fluid provides the reference single-phase friction tensor and velocity field used in the model. 
   - key: maxPhi2
     type: scalar
     required: false
     default: 1000
     description: |-
-      Upper bound on the drag multiplier φ₂ used when evaluating the total
-      drag tensor. Larger values of φ₂ are clipped to this limit to avoid
-      excessive or numerically unstable drag amplification.
+      Upper bound on the drag multiplier φ₂ used when evaluating the total       drag tensor. Larger values of φ₂ are clipped to this limit to avoid       excessive or numerically unstable drag amplification.
 
 usage:
   - comment: |-
