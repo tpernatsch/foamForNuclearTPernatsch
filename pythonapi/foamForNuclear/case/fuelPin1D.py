@@ -1,14 +1,14 @@
 import foamForNuclear.boundaryConditions as bc
-from foamForNuclear.field import Dimension, Field, GapGas
+from foamForNuclear.fields import Dimension, Field, GapGas
 from foamForNuclear.mesh.blockMesh import BlockMesh, Face
-from foamForNuclear.offbeat import OffbeatSolver
+from foamForNuclear.solvers.offbeat import OffbeatSolver
 from foamForNuclear.timeFolder import TimeFolder
-from .model import Model
+from .case import Case
 
 
-class FuelPin1D(Model):
+class FuelPin1D(Case):
     """
-    Model of a 1D fuel pin using the OFFBEAT solver.
+    Case of a 1D fuel pin using the OFFBEAT solver.
     """
     def __init__(
             self,

@@ -9,13 +9,18 @@ import tqdm
 
 from foamForNuclear.checkvalue import check_type
 from foamForNuclear.common import *
+from foamForNuclear.control._control import ControlDictFfn, ControlDictOffbeat
 from foamForNuclear.coupling import Coupling
-from foamForNuclear.externalCouplingDict import ExternalCouplingDict
-from foamForNuclear.functionObjects import FMUSimulator, FunctionObject
-from foamForNuclear.mesh.mesh import Mesh
-from foamForNuclear.solver import Solver, Solvers
-from foamForNuclear.controlDict import ControlDict
+from foamForNuclear import offbeat_lib as offbeat
+from foamForNuclear.preprocessing.externalCouplingDict import ExternalCouplingDict
+from foamForNuclear.functions._functions import FMUSimulator, FunctionObject, FunctionObjects
+from foamForNuclear.mesh import Mesh, Rod1DBlockMesh, Rod2DRZBlockMesh
+from foamForNuclear.solvers import Solver, Solvers
+from foamForNuclear.control import ControlDict
 from foamForNuclear.timeFolder import TimeFolder
+from foamForNuclear.fields import Field
+from foamForNuclear.solvers.offbeat import OffbeatSolver
+from foamForNuclear import executor
 
 
 class Residuals:
@@ -117,7 +122,7 @@ class Residuals:
                     )
 
 
-class Model:
+class Case:
     """
     Base class to define an OpenFOAM-based case.
 
@@ -129,6 +134,8 @@ class Model:
         Collection of solvers to be used.
     coupling : Coupling
         Coupling object used to couple multiple regions.
+    fields : list[Field]
+        List of fields. TODO: this must be moved to "solver" object.
     timeFolders : list[TimeFolder]
         List of time folders.
     externalCouplingDict : ExternalCouplingDict
@@ -140,10 +147,14 @@ class Model:
     ----------
     settings : ControlDict
         Main parameters of the simulation (default `ControlDict()`)
+    functions : FunctionObjects
+        List of function objects (default `FunctionObjects()`)
     solvers : Solvers
         Collection of solvers to be used (default `Solvers()`)
     coupling : Coupling
         Coupling object used to couple multiple regions
+    fields : list[Field]
+        List of fields. TODO: this must be moved to "solver" object.
     timeFolders : list[TimeFolder]
         List of time folders
     externalCouplingDict : ExternalCouplingDict
@@ -155,18 +166,30 @@ class Model:
     def __init__(
             self,
             settings: ControlDict=None,
+            functions: FunctionObjects | list[FunctionObject] | None = None,
             solvers: Solvers=None,
-            timeFolders: list[TimeFolder]=[],
+            fields: list[Field] | None = None,
+            timeFolders: list[TimeFolder] | None = None,
             coupling: Coupling=None,
             externalCouplingDict: ExternalCouplingDict=None,
             caseFolder: str="./"
         ):
-        self.settings: ControlDict = ControlDict() if settings is None else settings
+        self.settings: ControlDict = ControlDictFfn() if settings is None else settings
+        self._functions: FunctionObjects = FunctionObjects(owner=self)
         self.solvers: Solvers = Solvers() if solvers is None else solvers
         self.coupling: Coupling = coupling
-        self.timeFolders: list[TimeFolder] = timeFolders
+        self.fields: list[Field] = CheckedList(Field, "fields") if fields is None else CheckedList(fields)
+        self.timeFolders: list[TimeFolder] = [] if timeFolders is None else list(timeFolders)
         self.externalCouplingDict: ExternalCouplingDict = externalCouplingDict
-        self.caseFolder: str = caseFolder
+        self.caseFolder: str = caseFolder        
+        
+        # ensure at least a time folder at t = 0 exists
+        if not self.timeFolders:
+            self.timeFolders.append(TimeFolder(0))
+
+        # set functions if provided
+        if functions is not None:
+            self.functions = functions
 
 
     def __repr__(self):
@@ -224,6 +247,32 @@ class Model:
 
 
     @property
+    def functions(self) -> FunctionObjects:
+        return self._functions
+
+    @functions.setter
+    def functions(self, functions) -> None:
+        # allow None, FunctionObjects, or list[FunctionObject]
+        if functions is None:
+            self._functions = FunctionObjects(owner=self)
+            return
+
+        check_type("functions", functions, (FunctionObjects, list))
+
+        if isinstance(functions, FunctionObjects):
+            # ensure owner is this case
+            functions.owner = self
+            # (optional) re-bind existing items
+            for f in functions:
+                functions._bind_case_folder(f)
+            self._functions = functions
+        else:
+            # assume a plain list of FunctionObject
+            self._functions = FunctionObjects(functionObjects=functions, owner=self)
+
+
+
+    @property
     def externalCouplingDict(self):
         return self._externalCouplingDict
 
@@ -255,10 +304,53 @@ class Model:
             self.timeFolders.append(timeFolder)
 
 
-    def add_function_object(self, functionObject: FunctionObject):
-        check_type("functionObject", functionObject, FunctionObject)
-        self.settings.add_function_object(functionObject)
+    def add_function_object(self, functionObject: FunctionObject | list[FunctionObject]):
+        if(isinstance(functionObject, list)):
+            for functionObject_i in functionObject:
+                check_type("functionObject", functionObject_i, FunctionObject)
+                self.functions.append(functionObject_i)
+        else:
+            check_type("functionObject", functionObject, FunctionObject)
+            self.functions.append(functionObject)
 
+
+    def add_field(
+        self,
+        field: Field | list[Field],
+        time: float | None = None
+    ) -> None:
+        """
+        Add a field to the case.
+
+        Parameters
+        ----------
+        field : Field | list[Field]
+            The field object (or list of fields) to be added.
+        time : float, optional
+            Time value of the time folder where the field should be stored.
+            If None, the latest time folder is used (t=0 is created if needed).
+        """
+        # choose target time folder
+        if time is None:
+            # if somehow there are no time folders, create t=0
+            if not self.timeFolders:
+                self.timeFolders.append(TimeFolder(0.0))
+            tf = max(self.timeFolders, key=lambda folder: folder.time)
+
+        else:
+            # try to find existing folder at this time
+            tf = next(
+                (folder for folder in self.timeFolders if folder.time == time),
+                None,
+            )
+
+            # if none found, create it
+            if tf is None:
+                tf = TimeFolder(time)
+                self.timeFolders.append(tf)
+
+        tf.add_field(field)
+        
 
     @property
     def is_parallel(self) -> bool:
@@ -274,10 +366,40 @@ class Model:
         """
         Return the first FMUSimulator functionObject.
         """
-        for functionObject in self.settings.functionObjects:
+        for functionObject in self.functions:
             if (isinstance(functionObject, FMUSimulator)):
                 return(functionObject)
         return(None)
+
+
+    def import_from_openfoam(self, path: str=None):
+        # Read case folder
+        case = foamlib.FoamCase(path)
+
+        # Read control dict
+        control_dict = ControlDict()
+        control_dict.import_from_openfoam()
+        self.settings = control_dict
+
+        # if (you find regionsDictt then throw an error):
+        #     After reading the regions in regionsDict
+        #     we need to instantiate 0/regionName as TimeDirectory and
+        #     the same logic below applies
+        # else:
+        for time in case:
+            new_time = TimeFolder(time=time.name)
+            for field in time:
+                new_field = Field(name=field.object_)
+                new_field.import_from_openfoam(f"{time.path}/{field.object_}")
+                new_time.add_field(new_field)
+            self.add_time_folder(new_time)
+
+        # Read solver. This includes any property/options dict in constant/
+        # as well as fvSchemes and fvSolution files
+        if case.control_dict["application"] == "offbeat":
+            solver = OffbeatSolver()
+            solver.import_from_openfoam(path)
+            self.add_solver(solver)
 
 
     def export_to_openfoam(self):
@@ -301,26 +423,100 @@ class Model:
 
         if (self.coupling is not None and self.settings.application == "GeN-Foam"):
             self.coupling.export_to_openfoam()
-            self.settings.coupling = self.coupling
+            # self.settings.coupling = self.coupling
             self.settings.solvers = self.solvers
 
         # External coupling dict for FMI
         if (self.externalCouplingDict is not None):
             self.externalCouplingDict.export_to_openfoam()
-        elif (self.settings.solveFMI is not None and self.settings.solveFMI):
+        elif (hasattr(self.settings, "solveFMI") and self.settings.solveFMI is not None and self.settings.solveFMI):
             self.externalCouplingDict = ExternalCouplingDict()
             self.externalCouplingDict.export_to_openfoam()
 
         if (len(self.timeFolders) == 1):
             self.solvers.set_time_folder(self.timeFolders[0])
 
+        if (self.functions is not None):
+            for function in self.functions:
+                if (isinstance(function, FMUSimulator)):
+                    self.settings.libs.append('externalComm')
+                    break
+
         self.settings.export_to_openfoam()
+
+        self.functions.export_to_openfoam(self.settings)
+
         self.solvers.export_to_openfoam()
+        
+        # build region → mesh mapping from solvers
+        region_meshes: dict[str | None, Mesh] = {}
+        for solver in self.solvers:
+            region_name = getattr(solver, "region", None)
+            mesh = getattr(solver, "mesh", None)
+            if mesh is not None:
+                region_meshes[region_name] = mesh
+
+        # Sync self.fields -> timeFolders (typically t=0)
+        if self.fields:
+            # make sure there is at least one folder
+            if not self.timeFolders:
+                self.timeFolders.append(TimeFolder(0.0))
+
+            # choose where to put initial fields: earliest time folder
+            t0_folder = min(self.timeFolders, key=lambda tf: tf.time)
+
+            # avoid duplicates if fields were already added via add_field
+            existing = {fld.name for fld in t0_folder}
+
+            for fld in self.fields:
+                if fld.name not in existing:
+                    # reuse your existing logic, but force time=t0
+                    self.add_field(fld, time=t0_folder.time)
+                    existing.add(fld.name)
+
+        # export time folders, passing region_meshes
         for timeFolder in self.timeFolders:
-            timeFolder.export_to_openfoam()
+            timeFolder.export_to_openfoam(region_meshes=region_meshes)
 
         # Return to the current directory
         os.chdir(cwd)
+
+
+    def clean(self):
+        """Remove existing time folders / logs for this case."""
+        # for now just call global until you specialize per-case later
+        executor.allclean(self)
+
+
+    def run(
+        self,
+        *,
+        export: bool = True,
+        preprocess: bool = True,
+        clean: bool = False,
+    ):
+        """
+        Run the simulation.
+
+        Parameters
+        ----------
+        export : bool
+            Whether to export the case to OpenFOAM files before running.
+        preprocess : bool
+            Whether to run preprocessing step before the main run.
+        clean : bool
+            Whether to clean previous results first.
+        """
+        if clean:
+            self.clean()
+
+        if export:
+            self.export_to_openfoam()
+
+        if preprocess:
+            executor.run_preprocessing(case=self)
+
+        executor.run(case=self)
 
 
     def keff(self, time: float=None) -> float:
@@ -475,8 +671,13 @@ class Model:
         """
         Return the list of available time step folders.
         """
-        reader = pv.POpenFOAMReader(f"./{self.caseFolder}/foam.foam")
-        return([t if '.' in f"{t:g}" else int(t) for t in reader.time_values])
+        case = foamlib.FoamCase(self.caseFolder)
+
+        time_steps = []
+        for t in case:
+            time_steps.append(t.time)
+
+        return time_steps
 
 
     def get_data_range(
@@ -645,7 +846,8 @@ class Model:
             unit: str='-',
             isVerticalLegend: bool=True,
             limits: list[float]=None,
-            isSlice: bool=False
+            isSlice: bool=False,
+            fig_dir: str = ""
         ):
         """
         Plot the mesh. Apply grey color if no field is provided.
@@ -676,6 +878,8 @@ class Model:
             If true, the color bar is vertical, else it is horizontal.
         limits : list[float]
             Limit the colormap range (default `None`).
+        fig_dir : str, default ""
+            Directory where plot figure is saved
         """
         if (isinstance(region, str)):
             regionNames = [region]
@@ -731,13 +935,17 @@ class Model:
                 clim=limits
             )
 
+        time_unit = "s"
+        if (isinstance(self.settings, ControlDictOffbeat)):
+            time_unit = self.settings.userTime
+
         plotter.add_text(
-            f"{time} s",
+            f"{time} {time_unit}",
             position='upper_left',
         )
         if (isSlice):
             plotter.add_text(
-                "Offset = (" + ', '.join([f'{coord:g}' for coord in offset]) + ") m",
+                f"Offset = {offset} m",
                 position='upper_right',
             )
         plotter.show_bounds(location='outer')
@@ -774,6 +982,10 @@ class Model:
             ext = f"{ext}_z{offset[2]:g}"
 
         plotter.screenshot(f"fig_{figType}_{'_'.join(regionNames)}_{time}{ext}.png")
+        if (fig_dir != ""):
+            fig_dir += "/"
+
+        plotter.screenshot(f"{fig_dir}fig_{figType}_{'_'.join(regionNames)}_{time}{ext}.png")
 
 
     def plot_boundary(
@@ -999,3 +1211,159 @@ class Model:
 
         # Closes and finalizes movie
         plotter.close()
+
+
+class OffbeatCase(Case):
+    def __init__(
+        self,
+        *,
+        solver: OffbeatSolver | None = None,
+        mesh=None,
+        settings: ControlDictOffbeat | None = ControlDictOffbeat(),
+        caseFolder: str = "./",
+    ):
+        super().__init__(settings=settings, caseFolder=caseFolder)
+
+        if solver is None:
+            solver = OffbeatSolver(mesh=mesh)
+        self.add_solver(solver)
+
+        if isinstance(mesh, (Rod1DBlockMesh, Rod2DRZBlockMesh)):
+            self.sliceMapper = offbeat.slice_mapper.AutoAxialSlices()
+
+        settings.application = "offbeat"
+
+    @property
+    def solver(self) -> OffbeatSolver:
+        if len(self.solvers) != 1:
+            raise RuntimeError("OffbeatCase expects exactly one solver.")
+        return self.solvers[0]
+
+    # Optional convenience forwards
+    @property
+    def burnup(self):
+        return self.solver.burnup
+
+    @burnup.setter
+    def burnup(self, value):
+        self.solver.burnup = value
+
+    @property
+    def neutronicsSolver(self):
+        return self.solver.neutronicsSolver
+
+    @neutronicsSolver.setter
+    def neutronicsSolver(self, value):
+        self.solver.neutronicsSolver = value
+
+    @property
+    def mechanicsSolver(self):
+        return self.solver.mechanicsSolver
+
+    @mechanicsSolver.setter
+    def mechanicsSolver(self, value):
+        self.solver.mechanicsSolver = value
+
+    @property
+    def thermalSolver(self):
+        return self.solver.thermalSolver
+
+    @thermalSolver.setter
+    def thermalSolver(self, value):
+        self.solver.thermalSolver = value
+
+    @property
+    def elementTransportSolver(self):
+        return self.solver.elementTransportSolver
+
+    @elementTransportSolver.setter
+    def elementTransportSolver(self, value):
+        self.solver.elementTransportSolver = value
+
+    @property
+    def fissionGasRelease(self):
+        return self.solver.fissionGasRelease
+
+    @fissionGasRelease.setter
+    def fissionGasRelease(self, value):
+        self.solver.fissionGasRelease = value
+
+    @property
+    def gapGasModel(self):
+        return self.solver.gapGasModel
+
+    @gapGasModel.setter
+    def gapGasModel(self, value):
+        self.solver.gapGasModel = value
+
+    @property
+    def fastFlux(self):
+        return self.solver.fastFlux
+
+    @fastFlux.setter
+    def fastFlux(self, value):
+        self.solver.fastFlux = value
+
+    @property
+    def heatSource(self):
+        return self.solver.heatSource
+
+    @heatSource.setter
+    def heatSource(self, value):
+        self.solver.heatSource = value
+
+    @property
+    def corrosion(self):
+        return self.solver.corrosion
+
+    @corrosion.setter
+    def corrosion(self, value):
+        self.solver.corrosion = value
+
+    @property
+    def sliceMapper(self):
+        return self.solver.sliceMapper
+
+    @sliceMapper.setter
+    def sliceMapper(self, value):
+        self.solver.sliceMapper = value
+
+    @property
+    def globalOptions(self):
+        return self.solver.globalOptions
+
+    @globalOptions.setter
+    def globalOptions(self, value):
+        self.solver.globalOptions = value
+
+    @property
+    def materials(self):
+        return self.solver.materials
+
+    @materials.setter
+    def materials(self, value):
+        self.solver.materials = value
+
+    @property
+    def rheology(self):
+        return self.solver.rheology
+
+    @materials.setter
+    def rheology(self, value):
+        self.solver.rheology = value
+
+    @property
+    def stressAnalysis(self):
+        return self.solver.stressAnalysis
+
+    @stressAnalysis.setter
+    def stressAnalysis(self, value):
+        self.solver.stressAnalysis = value
+
+    @property
+    def globalOptions(self):
+        return self.solver.globalOptions
+
+    @globalOptions.setter
+    def globalOptions(self, value):
+        self.solver.globalOptions = value
