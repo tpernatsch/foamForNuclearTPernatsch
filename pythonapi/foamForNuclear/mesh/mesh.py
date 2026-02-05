@@ -1,8 +1,8 @@
 import numpy as np
 from foamForNuclear.checkvalue import check_type, check_value
-from foamForNuclear.createBafflesDict import CreateBafflesDict
-from foamForNuclear.createPatchDict import CreatePatchDict
-from foamForNuclear.topoSetDict import TopoSetDict
+from foamForNuclear.mesh.dicts import CreateBafflesDict
+from foamForNuclear.mesh.dicts import CreatePatchDict
+from foamForNuclear.mesh.dicts import TopoSetDict
 
 _LATTICE_TYPES =  {"hexagon", "square"}
 
@@ -17,6 +17,7 @@ class Mesh:
         self.createPatchDict = CreatePatchDict(region=region)
         self.createBafflesDict = CreateBafflesDict(region=region)
         self.topoSetDict = TopoSetDict(region=region)
+        self.transforms: list[tuple[str, tuple[float,float,float]]] = []  # [("scale",(..)), ("translate",(..))]
 
 
     def computeCoordinates(

@@ -7,8 +7,7 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 from foamForNuclear.boundaryConditions.slip import Slip
 from foamForNuclear.checkvalue import check_type, check_value
 from foamForNuclear.common import *
-from foamForNuclear.createBafflesDict import BaffleDict
-from foamForNuclear.topoSetDict import TopoSetAction
+from foamForNuclear.mesh.dicts import BaffleDict, TopoSetAction
 from .mesh import _LATTICE_TYPES, Mesh
 
 
