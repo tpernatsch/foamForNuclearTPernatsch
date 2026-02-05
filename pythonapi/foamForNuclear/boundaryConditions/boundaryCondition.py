@@ -58,7 +58,9 @@ _PATCH_TYPES = {
     "epsilonWallFunction", "kqRWallFunction", "nutkWallFunction",
     "fixedMassFlowRate",
     # OFFBEAT
-    "fuelRodGap", "gapContact", "tractionDisplacement", "coolantPressure",
+    "resistiveGap", "fuelRodGap", "gapContact", "tractionDisplacement", "coolantPressure", 
+    "fixedDisplacementZeroShear", "plenumSpringPressure", "topCladRingPressure",
+    "implicitGapContact", "unilateralContact", "gapPressure",
     # FMU4FOAM
     "coupledUniformExternalValue", "coupledFlowRateInletVelocity",
     "coupledFlowRateOutletVelocity", "coupledUniformExternalValue",
@@ -120,6 +122,10 @@ class Patch(OpenFOAMDict):
                 self._value = Vector(value[0], value[1], value[2])
             else:
                 self._value = value
+
+            if (not self.is_type_no_value()):
+                if (type(self.value) in [float, int, Vector]):
+                    self.__setitem__('value', f"uniform {self.value}")
         else:
             self._value = None
 

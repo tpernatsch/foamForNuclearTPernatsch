@@ -6,45 +6,63 @@ from foamForNuclear.timeProfile import OffbeatTimeProfile
 
 class TractionDisplacement(Patch):
     """
-    The `tractionDisplacement` fvPatchField can be selected in the patch subdictionary
-    inside the `boundaryField` subdictionary of the displacement field.
+    Boundary condition that applies **traction and/or pressure** loading to the
+    displacement field.
 
-    Parameters
-    ----------
+    The `tractionDisplacement` fvPatchField is selected in the patch subdictionary
+    inside the `boundaryField` of the displacement field. It allows prescribing an
+    external traction vector and/or a normal pressure on the patch, either as fixed
+    values or as time-dependent profiles.
+
+    Options
+    -------
+    value : list | Vector
+        Initial displacement value on the patch.
+        (required: True)
+
     tractionList : OffbeatTimeProfile
-        A time-dependent traction table. Each entry consists of a time step and
-        a corresponding traction vector value in Pa.
-    traction : float
-        Fixed traction vector in Pa. Used only if `tractionList` is absent.
+        Time-dependent traction table. Each entry provides a time and a traction
+        vector value (Pa).
+        (required: False)
+
+    traction : Vector
+        Fixed traction vector (Pa). Used only if `tractionList` is absent.
+        (required: False)
+
     pressureList : OffbeatTimeProfile
-        A time-dependent pressure table. Each entry consists of a time step and
-        a corresponding pressure value in Pa.
-    pressure : float
-        Fixed pressure in Pa. Used only if `pressureList` is absent.
+        Time-dependent pressure table. Each entry provides a time and a pressure
+        value (Pa).
+        (required: False)
+
+    pressure : scalar
+        Fixed pressure (Pa). Used only if `pressureList` is absent.
+        (required: False)
+
     planeStrain : bool
-        Activates the plane strain approximation for the normal stress at the
-        boundary. When enabled, the normal component of the strain (e.g.
-        epsilonZZ) is assumed constant at the boundary. Useful for long
-        axisymmetric rods. It cannot be used in combination with `flatSurface`
-        keyword. **Default: `false`.**
+        Activate the plane strain approximation for the normal stress at the boundary.
+        Cannot be used together with `flatSurface`.
+        (default: False; required: False)
+
     flatSurface : bool
-        Activates the flat surface approximation for the normal stress at the
-        boundary. When enabled, the normal component of the displacement (e.g.
-        Dz) is assumed constant at the boundary, i.e. the patch is forced to
-        remain flat. Useful for instance for the simulation of a half pellet
-        fragment. It cannot be used in combination with `planeStrain` keyword.
-        **Default: `false`.**
+        Activate the flat surface approximation for the normal stress at the boundary.
+        Cannot be used together with `planeStrain`.
+        (default: False; required: False)
+
     fixedSpring : bool
-        Activates a fixed spring-dashpot system for additional stability.
-        **Default: `false`.**
-    fixedSpringModulus : float
-        Spring modulus in N/m. Required when `fixedSpring` is set to `true`.
-    dashpotModulus : float
-        Dashpot modulus in N/m. Required when `fixedSpring` is set to `true`.
-    relax : float
-        Relaxation factor for gradient updates. **Default: `1.0`.**
-    value : Vector
-        Initial displacement value (not stress).
+        Enable a fixed spring-dashpot system for additional stability.
+        (default: False; required: False)
+
+    fixedSpringModulus : scalar
+        Spring modulus in N/m (only if `fixedSpring` is true).
+        (required: False)
+
+    dashpotModulus : scalar
+        Dashpot modulus in N/m (only if `fixedSpring` is true).
+        (required: False)
+
+    relax : scalar
+        Relaxation factor for gradient updates.
+        (default: 1; required: False)
     """
 
     def __init__(

@@ -5,16 +5,48 @@ from foamForNuclear.common import List, OpenFOAMDict, Table
 
 class CoolantPressure(Patch):
     """
-    Re-implementation of the tractionDisplacement mother class that allows the user
-    to deal only with "coolantPressure" instead than the more confusion "traction" and
-    "pressure".
+    Boundary condition that applies a coolant-side pressure to the solid, as a
+    simplified re-implementation of OpenFOAM's `tractionDisplacement` interface.
+
+    This wrapper lets the user specify only **coolantPressure**, avoiding the more
+    confusing split between `traction` and `pressure` used by the original condition.
+
+    The pressure can be provided either as a single constant value or as a list / table
+    to define a time-dependent signal. When a time-dependent signal is used, values
+    requested outside the provided range are handled according to `outOfBounds`.
+
+    Options
+    -------
+    value : scalar
+        Initial / placeholder boundary value for the displacement field (required by
+        OpenFOAM patch-field syntax).
+        (required: True)
+
+    relax : scalar
+        Relaxation factor applied when updating the imposed pressure.
+        (default: 1; required: False)
+
+    coolantPressure : scalar
+        Constant coolant pressure to apply (Pa).
+        Use this for a time-independent boundary condition.
+        (required: False)
+
+    coolantPressureList : list[scalar] or Table
+        Time-dependent coolant pressure specification, either as a list of values or
+        as a `Table` object.
+        (required: False)
+
+    outOfBounds : word
+        Behaviour when querying the time-dependent coolant pressure outside the
+        provided range (e.g. `clamp`).
+        (default: clamp; required: False)
     """
     def __init__(
             self,
             value: float,
             relax: float=1,
             coolantPressure: float=None,
-            coolantPressureList: Table=None,
+            coolantPressureList: list[float] | Table=None,
             outOfBounds: str='clamp'
         ):
         super().__init__(type="coolantPressure", value=value)
@@ -60,8 +92,8 @@ class CoolantPressure(Patch):
 
     @coolantPressureList.setter
     def coolantPressureList(self, coolantPressureList) -> None:
-        check_type("coolantPressureList", coolantPressureList, Table, none_ok=True)
-        self._coolantPressureList = coolantPressureList
+        check_type("coolantPressureList", coolantPressureList, (list, Table), none_ok=True)
+        self._coolantPressureList = Table(coolantPressureList)
 
 
     @property

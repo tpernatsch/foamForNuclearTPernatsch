@@ -3,13 +3,16 @@ from foamForNuclear.boundaryConditions.boundaryCondition import Patch
 
 class FixedValue(Patch):
     """
-    Patch with a uniform distribution.
+    Patch boundary condition that applies a **uniform fixed value**.
 
-    Parameters
-    ----------
-    value : float | int | Vector
-        Value at the patch set uniformly
+    The specified value is imposed uniformly over the entire patch and remains
+    constant in time.
+
+    Options
+    -------
+    value : scalar | Vector
+        Value prescribed uniformly on the patch.
+        (required: True)
     """
-
     def __init__(self, value: float):
         super().__init__(type="fixedValue", value=value)
