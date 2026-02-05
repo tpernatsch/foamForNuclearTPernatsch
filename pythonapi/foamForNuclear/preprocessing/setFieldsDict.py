@@ -1,6 +1,6 @@
 from foamForNuclear.checkvalue import check_type
 from foamForNuclear.common import *
-from foamForNuclear.field import Field
+from foamForNuclear.fields import Field
 from foamForNuclear.openfoamFile import OpenFOAMFile
 
 
