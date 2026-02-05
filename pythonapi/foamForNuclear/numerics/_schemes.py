@@ -42,17 +42,41 @@ class fvSchemes(OpenFOAMFile):
                 and isinstance(foamFile[attr], foamlib._files._files.FoamFile.SubDict)
             ):
                 setattr(self, attr, OpenFOAMDict(foamFile[attr], name=attr))
+                
+
+    def _format_scheme_dict(self, name: str, mapping: dict) -> str:
+        lines: list[str] = []
+        lines.append(name)
+        lines.append("{")
+
+        for key, val in mapping.items():
+            # If the value is a tuple/list, join elements with spaces
+            if isinstance(val, (tuple, list)):
+                val_str = " ".join(str(x) for x in val)
+            else:
+                val_str = str(val)
+            if( key == "default"):
+                lines.append(f'    {key}'.ljust(30) + f" {val_str};")
+            else:
+                lines.append(f'    "{key}"'.ljust(30) + f" {val_str};")
+
+
+        lines.append("}")
+        lines.append("")  # blank line after block
+        return "\n".join(lines)
 
 
     @OpenFOAMFile._write_to_file
     def export_to_openfoam(self):
-        text = ""
-        text += f"{self.d2dt2Schemes!r}\n"
-        text += f"{self.ddtSchemes!r}\n"
-        text += f"{self.gradSchemes!r}\n"
-        text += f"{self.divSchemes!r}\n"
-        text += f"{self.laplacianSchemes!r}\n"
-        text += f"{self.interpolationSchemes!r}\n"
-        text += f"{self.snGradSchemes!r}\n"
-        text += f"{self.fluxRequired!r}\n"
-        return(text)
+        parts = [
+           self._format_scheme_dict("d2dt2Schemes",        self.d2dt2Schemes),
+           self._format_scheme_dict("ddtSchemes",          self.ddtSchemes),
+           self._format_scheme_dict("gradSchemes",         self.gradSchemes),
+           self._format_scheme_dict("divSchemes",          self.divSchemes),
+           self._format_scheme_dict("laplacianSchemes",    self.laplacianSchemes),
+           self._format_scheme_dict("interpolationSchemes", self.interpolationSchemes),
+           self._format_scheme_dict("snGradSchemes",       self.snGradSchemes),
+           self._format_scheme_dict("fluxRequired",        self.fluxRequired),
+        ]
+        return "\n".join(parts)
+

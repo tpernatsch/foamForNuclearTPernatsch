@@ -449,6 +449,25 @@ class fvSolution(OpenFOAMFile):
 
         self.extraDict = {}
 
+    @property
+    def relaxationFactors(self):
+        return self._relaxationFactors
+
+    @relaxationFactors.setter
+    def relaxationFactors(self, relaxationFactors):
+        check_type('relaxationFactors', relaxationFactors, (OpenFOAMDict, dict))
+
+        rf = OpenFOAMDict(relaxationFactors)
+
+        # Ensure the two subdicts are OpenFOAMDict even if user passed plain dicts
+        for k in ("equations", "fields"):
+            if k in rf and isinstance(rf[k], dict) and not isinstance(rf[k], OpenFOAMDict):
+                rf[k] = OpenFOAMDict(rf[k])
+            elif k not in rf:
+                rf[k] = OpenFOAMDict()
+
+        rf.name = "relaxationFactors"  # if you rely on name
+        self._relaxationFactors = rf
 
     def append(self, fields: str, solver: fvSolutionSolver):
         """
