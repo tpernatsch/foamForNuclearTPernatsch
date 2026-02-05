@@ -1,6 +1,6 @@
 from foamForNuclear.common import *
 from foamForNuclear.checkvalue import check_positive, check_type, check_value
-from foamForNuclear.solver import Solver
+from foamForNuclear.solvers import Solver
 
 
 _MULTIPHYSICS_LOOP_TYPES = {
