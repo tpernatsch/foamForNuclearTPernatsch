@@ -1,7 +1,7 @@
 import numpy as np
 from foamForNuclear.checkvalue import check_type, check_value
-from foamForNuclear.common import OffbeatDict, List, OpenFOAMDict
-from foamForNuclear._attrs_tools import offbeat_define, _to_List_str
+from foamForNuclear.common import FoamForNuclearDict, List, OpenFOAMDict
+from foamForNuclear._attrs_tools import ffn_define, _to_List_str
 from typing import ClassVar
 from attrs import field, validators as v
 
@@ -9,8 +9,8 @@ from .latent_heat import LatentHeatModel
 from .saturation import SaturationModel
 
 
-@offbeat_define
-class PhaseChangeModel(OffbeatDict):
+@ffn_define
+class PhaseChangeModel(FoamForNuclearDict):
     TYPE: ClassVar[str] = "none"
     latentHeatModel: LatentHeatModel | None = None,
     saturationModel: SaturationModel | None = None,
@@ -18,7 +18,7 @@ class PhaseChangeModel(OffbeatDict):
     residualInterfacialArea: int | float = 1e-3
 
 
-@offbeat_define
+@ffn_define
 class ForcedConstant(PhaseChangeModel):
     """
     """
@@ -29,7 +29,7 @@ class ForcedConstant(PhaseChangeModel):
 
 _HEAT_DRIVEN_MODES = {"conductionLimited", "twoPhaseDriven", "onePhaseDriven"}
 
-@offbeat_define
+@ffn_define
 class HeatDriven(PhaseChangeModel):
     """
     Phase change models that compute mass transfer based on interfacial

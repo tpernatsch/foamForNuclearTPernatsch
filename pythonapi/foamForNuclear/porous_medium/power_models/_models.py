@@ -1,20 +1,20 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from foamForNuclear.checkvalue import check_positive, check_type, check_value
-from foamForNuclear.common import List, OpenFOAMDict, Polynome, Table, OffbeatDict
+from foamForNuclear.common import List, OpenFOAMDict, Polynome, Table, FoamForNuclearDict
 from foamForNuclear.timeProfile import TimeProfile
 
-from foamForNuclear._attrs_tools import offbeat_define, _to_List_str
+from foamForNuclear._attrs_tools import ffn_define, _to_List_str
 from typing import ClassVar
 from attrs import field, validators as v
 
 
-@offbeat_define
-class PowerModel(OffbeatDict):
+@ffn_define
+class PowerModel(FoamForNuclearDict):
     TYPE: ClassVar[str] = "none"
 
 
-@offbeat_define
+@ffn_define
 class FixedPower(PowerModel):
     """
     Describes a generic structure with a constant or time depdendent internal
@@ -32,7 +32,7 @@ class FixedPower(PowerModel):
     powerTimeProfile: TimeProfile | None = None
 
 
-@offbeat_define
+@ffn_define
 class FixedTemperature(PowerModel):
     """
     Describes a structure with a constant surface temperature
@@ -46,7 +46,7 @@ class FixedTemperature(PowerModel):
     temperatureTimeProfile: TimeProfile | None = None
 
 
-@offbeat_define
+@ffn_define
 class FixedTemperatureFMU(PowerModel):
     """
     Describes a structure with a constant surface temperature controlled through
@@ -67,7 +67,7 @@ class FixedTemperatureFMU(PowerModel):
     T:  int | float
 
 
-@offbeat_define
+@ffn_define
 class HeatedPin(PowerModel):
     """
     Model for representing a heated pin with constant material properties that
@@ -104,7 +104,7 @@ class HeatedPin(PowerModel):
     rhoCp:  int | float | None = None
 
 
-@offbeat_define
+@ffn_define
 class NuclearFuelPin(PowerModel):
     """
     Model for representing a nuclear fuel pin with constant material
@@ -172,7 +172,7 @@ class NuclearFuelPin(PowerModel):
     gapHPowerDensity: int | float | None = None
 
 
-@offbeat_define
+@ffn_define
 class NuclearSteadyStatePebble(PowerModel):
     """
     Describes triso and pebble of a pebble-bed reactor. Only steady-state.
@@ -202,7 +202,7 @@ class NuclearSteadyStatePebble(PowerModel):
     coolantDensityCoeffs: list[int | float] = field(factory=list)
 
 
-# @offbeat_define
+# @ffn_define
 # class LumpedNuclearStructure(PowerModel):
 #     r"""
 #     Model for representing a lumped-parameter structure characterized
@@ -294,7 +294,7 @@ class NuclearSteadyStatePebble(PowerModel):
 
 
 # TODO: Complete migration to attrs also, keeping the current checks on the attributes
-# @offbeat_define
+# @ffn_define
 # class XYPosLattice(OpenFOAMDict):
 #     """
 #     Parameters

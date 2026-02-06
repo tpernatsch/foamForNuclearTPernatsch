@@ -4,11 +4,11 @@
 from __future__ import annotations
 from typing import Any, ClassVar
 from attrs import field
-from foamForNuclear._attrs_tools import offbeat_define
-from foamForNuclear.common import OffbeatDict
+from foamForNuclear._attrs_tools import ffn_define
+from foamForNuclear.common import FoamForNuclearDict
 
-@offbeat_define
-class SliceMapper(OffbeatDict):
+@ffn_define
+class SliceMapper(FoamForNuclearDict):
     """
     Base sliceMapper class. It defines the strategy used to map mesh cells or regions
     into axial or logical slices.
@@ -22,7 +22,7 @@ class SliceMapper(OffbeatDict):
     """
     TYPE: ClassVar[str] = 'none'
 
-@offbeat_define
+@ffn_define
 class AutoAxialSlices(SliceMapper):
     """
     Slice mapper class where slices are automaticaly created for each material.
@@ -38,7 +38,7 @@ class AutoAxialSlices(SliceMapper):
     TYPE: ClassVar[str] = 'autoAxialSlices'
     precision: float | int = 1e-06
 
-@offbeat_define
+@ffn_define
 class ByMaterial(SliceMapper):
     """
     Slice mapper class where slices are created material by material.
@@ -47,7 +47,7 @@ class ByMaterial(SliceMapper):
     """
     TYPE: ClassVar[str] = 'byMaterial'
 
-@offbeat_define
+@ffn_define
 class ByPellets(SliceMapper):
     """
     Slice mapper class where slices are created with a similar algorithm as in the

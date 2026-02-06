@@ -4,11 +4,11 @@
 from __future__ import annotations
 from typing import Any, ClassVar
 from attrs import field
-from foamForNuclear._attrs_tools import offbeat_define
-from foamForNuclear.common import OffbeatDict
+from foamForNuclear._attrs_tools import ffn_define
+from foamForNuclear.common import FoamForNuclearDict
 
-@offbeat_define
-class DensityModel(OffbeatDict):
+@ffn_define
+class DensityModel(FoamForNuclearDict):
     """
     Mother class for density models.
     """
@@ -16,7 +16,7 @@ class DensityModel(OffbeatDict):
 
 Density = DensityModel  # alias
 
-@offbeat_define
+@ffn_define
 class MolybdenumConstant(Density):
     """
     Class to set Molybdenum density to a constant input value.
@@ -31,7 +31,7 @@ class MolybdenumConstant(Density):
     TYPE: ClassVar[str] = 'MolybdenumConstant'
     densityValue: float | int = 10280.0
 
-@offbeat_define
+@ffn_define
 class UO2Constant(Density):
     """
     Class to set UO2 density to a constant input value.
@@ -55,7 +55,7 @@ class UO2Constant(Density):
     densityFraction: float | int | None = None
     theoreticalDensity: float | int | None = None
 
-@offbeat_define
+@ffn_define
 class UPuO2Constant(Density):
     """
     Class modelling the constant density of (U,Pu)O2 MOX fuel.
@@ -79,7 +79,7 @@ class UPuO2Constant(Density):
     densityFraction: float | int | None = None
     theoreticalDensity: float | int | None = None
 
-@offbeat_define
+@ffn_define
 class Constant(Density):
     """
     Model for constant density. The value is read from dictionary.
@@ -94,7 +94,7 @@ class Constant(Density):
     TYPE: ClassVar[str] = 'constant'
     value: float | int
 
-@offbeat_define
+@ffn_define
 class ZircaloyIaea(Density):
     """
     Class modelling Zircaloy density from Iaea.
@@ -124,7 +124,7 @@ class ZircaloyIaea(Density):
     par3: float | int = 6690.0
     par4: float | int = 0.1855
 
-@offbeat_define
+@ffn_define
 class Steel1515TiSchumann(Density):
     """
     Class modelling the density evolution of 15-15Ti cladding material through

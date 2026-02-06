@@ -4,11 +4,11 @@
 from __future__ import annotations
 from typing import Any, ClassVar
 from attrs import field
-from foamForNuclear._attrs_tools import offbeat_define
-from foamForNuclear.common import OffbeatDict
+from foamForNuclear._attrs_tools import ffn_define
+from foamForNuclear.common import FoamForNuclearDict
 
-@offbeat_define
-class HeatCapacityModel(OffbeatDict):
+@ffn_define
+class HeatCapacityModel(FoamForNuclearDict):
     """
     Mother class for heatCapacity models.
     """
@@ -16,7 +16,7 @@ class HeatCapacityModel(OffbeatDict):
 
 HeatCapacity = HeatCapacityModel  # alias
 
-@offbeat_define
+@ffn_define
 class Steel1515TiBanerjee(HeatCapacity):
     """
     Correlation for 15-15 Ti heat capacity from Banerjee et al. (2007).
@@ -41,7 +41,7 @@ class Steel1515TiBanerjee(HeatCapacity):
     par2: float | int = 0.177
     par3: float | int = 8.72e-05
 
-@offbeat_define
+@ffn_define
 class Constant(HeatCapacity):
     """
     Model for constant heat capacity. The value is read from dictionary.
@@ -56,7 +56,7 @@ class Constant(HeatCapacity):
     TYPE: ClassVar[str] = 'constant'
     value: float | int
 
-@offbeat_define
+@ffn_define
 class UPuO2Fink(HeatCapacity):
     """
     Heat Capacity model for (U,Pu)O2 derived from Fink.
@@ -92,7 +92,7 @@ class UPuO2Fink(HeatCapacity):
     Ea: float | int = 18531.7
     theta: float | int = 587.41
 
-@offbeat_define
+@ffn_define
 class ZircaloyIaea(HeatCapacity):
     """
     Correlation for Zircaloy heat capacity from Iaea.
@@ -149,7 +149,7 @@ class ZircaloyIaea(HeatCapacity):
     par8: float | int = 2.0
     par9: float | int = 719.61
 
-@offbeat_define
+@ffn_define
 class UO2Matpro(HeatCapacity):
     """
     Heat Capacity model for UO2 derived from Matprov11.
@@ -204,7 +204,7 @@ class UO2Matpro(HeatCapacity):
     par3: float | int = 2.0
     phi: float | int = 535.285
 
-@offbeat_define
+@ffn_define
 class UPuO2Matpro(HeatCapacity):
     """
     Heat Capacity model for (U,Pu)O2 derived from Matprov11.
@@ -255,7 +255,7 @@ class UPuO2Matpro(HeatCapacity):
     ratioOverMetal: Unknown
     theta: float | int = 571.0
 
-@offbeat_define
+@ffn_define
 class ZircaloyMatpro(HeatCapacity):
     """
     Correlation for Zircaloy heat capacity from Matpro.
@@ -263,7 +263,7 @@ class ZircaloyMatpro(HeatCapacity):
     """
     TYPE: ClassVar[str] = 'ZircaloyMatpro'
 
-@offbeat_define
+@ffn_define
 class Molybdenum(HeatCapacity):
     """
     Heat capacity correlation model `Molybdenum`.
@@ -288,7 +288,7 @@ class Molybdenum(HeatCapacity):
     par2: float | int = 0.0537
     par3: float | int = 235.0
 
-@offbeat_define
+@ffn_define
 class SiCSnead(HeatCapacity):
     """
     Correlation for SiC heat capacity from Snead et al. (2007).

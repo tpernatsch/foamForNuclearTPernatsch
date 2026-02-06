@@ -29,7 +29,7 @@ def createDummyCase(nMesh: mesh.Mesh):
     #     pass
 
 
-def createCube():
+def create_cube():
     nMesh = mesh.BlockMesh(region="cube")
 
     block1 = nMesh.create_cube(
@@ -87,7 +87,7 @@ def createCubeWithHoleSqr():
     return(nMesh)
 
 
-def createWedge():
+def create_wedge():
     nMesh = mesh.BlockMesh(region="wedge")
 
     nMesh.create_wedge(
@@ -229,7 +229,7 @@ def createTriangularChannel():
     return(nMesh)
 
 
-def createSphere():
+def create_sphere():
     nMesh = mesh.BlockMesh(region="sphere")
 
     nMesh.create_sphere(
@@ -244,7 +244,7 @@ def createSphere():
     return(nMesh)
 
 
-def createHollowHalfSphere():
+def create_hollow_half_sphere():
     nMesh = mesh.BlockMesh(region="hollow_half_sphere")
 
     nMesh.create_hollow_half_sphere(
@@ -258,7 +258,7 @@ def createHollowHalfSphere():
     return(nMesh)
 
 
-def createHalfSphere():
+def create_half_sphere():
     nMesh = mesh.BlockMesh(region="half_sphere")
 
     nMesh.create_half_sphere(
@@ -273,7 +273,7 @@ def createHalfSphere():
     return(nMesh)
 
 
-def createSphere1D():
+def create_sphere_1D():
     nMesh = mesh.BlockMesh(region="sphere_1D")
 
     nMesh.create_sphere_1D(
@@ -380,11 +380,11 @@ def createQuarterCylinderZ():
 
 
 for funcMeshGen in [
-    createCube,
+    create_cube,
     createCubeWithCornerHole,
     createCubeWithHoleCylz,
     createCubeWithHoleSqr,
-    createWedge,
+    create_wedge,
     createHexagonPrism,
     createHexagonPrismFine,
     createHexagonPrismWithHoleCylz,
@@ -394,9 +394,9 @@ for funcMeshGen in [
     createRingZ,
     createRingSectorZ,
     createTriangularChannel,
-    createSphere,
-    # createHollowHalfSphere,
-    createHalfSphere,
-    createSphere1D
+    create_sphere,
+    # create_hollow_half_sphere,
+    create_half_sphere,
+    create_sphere_1D
 ]:
     createDummyCase(nMesh=funcMeshGen())

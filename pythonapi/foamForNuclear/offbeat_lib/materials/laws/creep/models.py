@@ -1,16 +1,16 @@
-from foamForNuclear.common import OffbeatDict
-from foamForNuclear._attrs_tools import offbeat_define, _to_List_float
+from foamForNuclear.common import FoamForNuclearDict
+from foamForNuclear._attrs_tools import ffn_define, _to_List_float
 from typing import ClassVar
 from foamForNuclear.common import Table, List
 from attrs import field
 
 
-@offbeat_define
-class Creep(OffbeatDict):
+@ffn_define
+class Creep(FoamForNuclearDict):
     TYPE: ClassVar[str] = "none"
 
 
-@offbeat_define
+@ffn_define
 class ConstantPrincipalStress(Creep):
     TYPE: ClassVar[str] = "constantPrincipalStress"
     relax: float | int = 1.0
@@ -20,7 +20,7 @@ class ConstantPrincipalStress(Creep):
     creepCoefficient: float | int
 
 
-@offbeat_define
+@ffn_define
 class CorrelationPrincipalStress(Creep):
     TYPE: ClassVar[str] = "correlationPrincipalStress"
     relax: float | int = 1.0
@@ -30,7 +30,7 @@ class CorrelationPrincipalStress(Creep):
     coefficientList: list | List = field(factory=list, converter=_to_List_float)
 
 
-@offbeat_define
+@ffn_define
 class Limback(Creep):
     TYPE: ClassVar[str] = "ZircaloyLimback"
     relax: float | int = 1.0
@@ -39,7 +39,7 @@ class Limback(Creep):
     cladType: str = "SRA"
 
 
-@offbeat_define
+@ffn_define
 class LimbackLoca(Creep):
     TYPE: ClassVar[str] = "ZircaloyLimbackLoca"
     relax: float | int = 1.0
@@ -53,7 +53,7 @@ class LimbackLoca(Creep):
     NewtonRaphsonTolerance: float | int = 1e-6
 
 
-@offbeat_define
+@ffn_define
 class MOXMalygin(Creep):
     TYPE: ClassVar[str] = "UPuO2Malygin"
     relax: float | int = 1.0
@@ -70,7 +70,7 @@ class MOXMalygin(Creep):
     creepRateLimit: float | int = 4.1e-6
 
 
-@offbeat_define
+@ffn_define
 class UO2Matpro(Creep):
     TYPE: ClassVar[str] = "UO2Matpro"
     relax: float | int = 1.0
@@ -83,7 +83,7 @@ class UO2Matpro(Creep):
     NewtonRaphsonTolerance: float | int = 1e-6
 
 
-@offbeat_define
+@ffn_define
 class SiCMonolithic(Creep):
     TYPE: ClassVar[str] = "SiCMonolithic"
     relax: float | int = 1.0
@@ -93,7 +93,7 @@ class SiCMonolithic(Creep):
     fluxConversionFactor: float | int = 1.0
 
 
-@offbeat_define
+@ffn_define
 class BufferParfume(Creep):
     TYPE: ClassVar[str] = "BufferParfume"
     relax: float | int = 1.0
@@ -104,7 +104,7 @@ class BufferParfume(Creep):
     fluxConversionFactor: float | int = 1.0
 
 
-@offbeat_define
+@ffn_define
 class PyCParfume(Creep):
     TYPE: ClassVar[str] = "PyCParfume"
     relax: float | int = 1.0
@@ -115,7 +115,7 @@ class PyCParfume(Creep):
     fluxConversionFactor: float | int = 1.0
 
 
-@offbeat_define
+@ffn_define
 class PowerLaw(Creep):
     TYPE: ClassVar[str] = "powerLaw"
     relax: float | int = 1.0
@@ -124,7 +124,7 @@ class PowerLaw(Creep):
     n: float | int
 
 
-@offbeat_define
+@ffn_define
 class MOXRoutbort(Creep):
     TYPE: ClassVar[str] = "UPuO2Routbort"
     relax: float | int = 1.0
@@ -137,14 +137,14 @@ class MOXRoutbort(Creep):
     creepRateLimit: float | int = 4.1e-6
 
 
-@offbeat_define
+@ffn_define
 class Steel1515TiAIM1Tobbe(Creep):
     TYPE: ClassVar[str] = "Steel1515TiAim1Tobbe"
     relax: float | int = 1.0
     fastFluxName: str = "fastFlux"
 
 
-@offbeat_define
+@ffn_define
 class Steel1515TiTobbe(Creep):
     TYPE: ClassVar[str] = "Steel1515TiTobbe"
     relax: float | int = 1.0
@@ -152,14 +152,14 @@ class Steel1515TiTobbe(Creep):
     fastFluenceName: str = "fastFluence"
 
 
-@offbeat_define
+@ffn_define
 class Steel1515TiDINTobbe(Creep):
     TYPE: ClassVar[str] = "Steel1515TiDinTobbe"
     relax: float | int = 1.0
     fastFluxName: str = "fastFlux"
 
 
-@offbeat_define
+@ffn_define
 class HastelloyZhang(Creep):
     TYPE: ClassVar[str] = "HastelloyZhang"
     relax: float | int = 1.0

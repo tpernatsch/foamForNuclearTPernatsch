@@ -4,11 +4,11 @@
 from __future__ import annotations
 from typing import Any, ClassVar
 from attrs import field
-from foamForNuclear._attrs_tools import offbeat_define
-from foamForNuclear.common import OffbeatDict
+from foamForNuclear._attrs_tools import ffn_define
+from foamForNuclear.common import FoamForNuclearDict
 
-@offbeat_define
-class EmissivityModel(OffbeatDict):
+@ffn_define
+class EmissivityModel(FoamForNuclearDict):
     """
     Mother class for emissivity models.
     """
@@ -16,7 +16,7 @@ class EmissivityModel(OffbeatDict):
 
 Emissivity = EmissivityModel  # alias
 
-@offbeat_define
+@ffn_define
 class MolybdenumConstant(Emissivity):
     """
     Class to set Molybdenum emissivity to a constant input value.
@@ -31,7 +31,7 @@ class MolybdenumConstant(Emissivity):
     TYPE: ClassVar[str] = 'MolybdenumConstant'
     emissivityValue: float | int = 0.2
 
-@offbeat_define
+@ffn_define
 class ZircaloyConstant(Emissivity):
     """
     Class to set Zircaloy emissivity to a constant input value.
@@ -46,7 +46,7 @@ class ZircaloyConstant(Emissivity):
     TYPE: ClassVar[str] = 'ZircaloyConstant'
     emissivityValue: float | int = 0.808642
 
-@offbeat_define
+@ffn_define
 class Constant(Emissivity):
     """
     Model for constant emissivity. The value is read from dictionary.
@@ -61,7 +61,7 @@ class Constant(Emissivity):
     TYPE: ClassVar[str] = 'constant'
     value: float | int
 
-@offbeat_define
+@ffn_define
 class UO2Relap(Emissivity):
     """
     UO2 emissivity model derived from Relap.

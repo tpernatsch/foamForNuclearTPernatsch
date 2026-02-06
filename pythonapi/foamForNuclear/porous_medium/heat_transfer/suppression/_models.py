@@ -1,19 +1,19 @@
-from foamForNuclear.common import OffbeatDict
-from foamForNuclear._attrs_tools import offbeat_define
+from foamForNuclear.common import FoamForNuclearDict
+from foamForNuclear._attrs_tools import ffn_define
 from typing import ClassVar
 from attrs import field, validators as v
 
-@offbeat_define
-class SuppressionFactorModel(OffbeatDict):
+@ffn_define
+class SuppressionFactorModel(FoamForNuclearDict):
     TYPE: ClassVar[str] = "none"
 
 
-@offbeat_define
+@ffn_define
 class CobraTf(SuppressionFactorModel):
     TYPE: ClassVar[str] = "COBRA-TF"
 
 
-@offbeat_define
+@ffn_define
 class Chen(SuppressionFactorModel):
     TYPE: ClassVar[str] = "Chen"
 

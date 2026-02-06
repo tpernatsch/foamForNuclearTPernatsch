@@ -4,11 +4,11 @@
 from __future__ import annotations
 from typing import Any, ClassVar
 from attrs import field
-from foamForNuclear._attrs_tools import offbeat_define
-from foamForNuclear.common import OffbeatDict
+from foamForNuclear._attrs_tools import ffn_define
+from foamForNuclear.common import FoamForNuclearDict
 
-@offbeat_define
-class DensificationModel(OffbeatDict):
+@ffn_define
+class DensificationModel(FoamForNuclearDict):
     """
     Base class for densification models.
 
@@ -22,7 +22,7 @@ class DensificationModel(OffbeatDict):
 
 Densification = DensificationModel  # alias
 
-@offbeat_define
+@ffn_define
 class Empirical(Densification):
     """
     Empirical densification model.
@@ -58,7 +58,7 @@ class Empirical(Densification):
     densificationDensityChange: float | int
     densificationTimeConstant: float | int
 
-@offbeat_define
+@ffn_define
 class UO2Frapcon(Densification):
     """
     Densification model derived from FRAPCON correlations for UO$_2$ fuel.

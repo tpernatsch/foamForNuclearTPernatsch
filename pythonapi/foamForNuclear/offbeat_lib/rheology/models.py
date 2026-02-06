@@ -1,19 +1,19 @@
 from __future__ import annotations
 
-from foamForNuclear._attrs_tools import offbeat_define
+from foamForNuclear._attrs_tools import ffn_define
 from typing import ClassVar
-from foamForNuclear.common import OffbeatDict, Table
+from foamForNuclear.common import FoamForNuclearDict, Table
 from attrs import field
 
 from foamForNuclear.timeProfile import OffbeatTimeProfile
 
 
-@offbeat_define
-class Rheology(OffbeatDict):
+@ffn_define
+class Rheology(FoamForNuclearDict):
     TYPE: ClassVar[str] = "NOT IMPLEMENTED"
 
 
-@offbeat_define
+@ffn_define
 class ByMaterial(Rheology):
     TYPE: ClassVar[str] = "byMaterial"
     thermalExpansion: bool = True
@@ -26,7 +26,7 @@ class Standard(ByMaterial):
 
 ByMaterial = Standard
 
-@offbeat_define
+@ffn_define
 class PlaneStress(Standard):
     planeStress: bool = True
 
@@ -62,7 +62,7 @@ def coolant_pressure_profile(value):
     )
 
 
-@offbeat_define
+@ffn_define
 class ModifiedPlaneStrain(Standard):
     modifiedPlaneStrain: bool = True
     precisionSpring: float | int = 1

@@ -4,11 +4,11 @@
 from __future__ import annotations
 from typing import Any, ClassVar
 from attrs import field
-from foamForNuclear._attrs_tools import offbeat_define
-from foamForNuclear.common import OffbeatDict
+from foamForNuclear._attrs_tools import ffn_define
+from foamForNuclear.common import FoamForNuclearDict
 
-@offbeat_define
-class SwellingModel(OffbeatDict):
+@ffn_define
+class SwellingModel(FoamForNuclearDict):
     """
     Parent class for swelling model.
 
@@ -26,7 +26,7 @@ class SwellingModel(OffbeatDict):
 
 Swelling = SwellingModel  # alias
 
-@offbeat_define
+@ffn_define
 class ConstantRate(Swelling):
     """
     Class caculating the swelling with a provided constant swelling rate.
@@ -46,7 +46,7 @@ class ConstantRate(Swelling):
     swellingRate: float | int
     fastFluenceName: str = 'fastFluence'
 
-@offbeat_define
+@ffn_define
 class PyCCorrelation(Swelling):
     """
     Class handling irradiation-induced dimensional change eigenstrain phenomenon
@@ -82,7 +82,7 @@ class PyCCorrelation(Swelling):
     radialCoefficients: dict[str, Any]
     tangentialCoefficients: dict[str, Any]
 
-@offbeat_define
+@ffn_define
 class UPuO2Fbr(Swelling):
     """
     Class modelling swelling strain for FBR MOX fuel from Dienst at al.
@@ -129,7 +129,7 @@ class UPuO2Fbr(Swelling):
     par3: float | int = 0.0065
     outerPatch: str
 
-@offbeat_define
+@ffn_define
 class FeCrAl(Swelling):
     """
     Class handling swelling phenomenon for FeCrAl derived from Bison manual.
@@ -149,7 +149,7 @@ class FeCrAl(Swelling):
     fastFluenceName: str = 'fastFluence'
     par1: float | int = 4.5e-29
 
-@offbeat_define
+@ffn_define
 class UO2Frapcon(Swelling):
     """
     Class modelling swelling phenomenon derived from Frapcon.
@@ -199,7 +199,7 @@ class UO2Frapcon(Swelling):
     par5: float | int = 86.4
     par6: float | int = 3.211e-23
 
-@offbeat_define
+@ffn_define
 class Steel1515TiAim1(Swelling):
     """
     Class modelling the void swelling growth phenomenon for 15-15 Ti cladding
@@ -242,7 +242,7 @@ class Steel1515TiAim1(Swelling):
     par4: float | int = 100.0
     par5: float | int = 3.9
 
-@offbeat_define
+@ffn_define
 class ZircaloyBison(Swelling):
     """
     Class modelling the irradiation growth phenomenon derived from Moose documentation.
@@ -272,7 +272,7 @@ class ZircaloyBison(Swelling):
     n: float | int = 0.794
     cladType: str = 'ESCORE'
 
-@offbeat_define
+@ffn_define
 class Steel1515TiGeneralized(Swelling):
     """
     Class modelling the void swelling growth phenomenon for 15-15 Ti cladding
@@ -315,7 +315,7 @@ class Steel1515TiGeneralized(Swelling):
     par4: float | int = 100.0
     par5: float | int = 2.75
 
-@offbeat_define
+@ffn_define
 class ZircaloyMatpro(Swelling):
     """
     Class modelling the irradiation growth phenomenon according to Matpro
@@ -351,7 +351,7 @@ class ZircaloyMatpro(Swelling):
     par1: float | int = 240.8
     fz: float | int = 0.05
 
-@offbeat_define
+@ffn_define
 class UO2Matpro(Swelling):
     """
     Class modelling swelling phenomenon derived from Frapcon.
@@ -401,7 +401,7 @@ class UO2Matpro(Swelling):
     par5: float | int = -0.0162
     par6: float | int = -0.0178
 
-@offbeat_define
+@ffn_define
 class BufferParfume(Swelling):
     """
     Class handling irradiation-induced dimensional change phenomenon for Buffer
@@ -472,7 +472,7 @@ class BufferParfume(Swelling):
     a3_r: float | int
     a4_r: float | int
 
-@offbeat_define
+@ffn_define
 class PyCParfume(Swelling):
     """
     Class handling irradiation-induced dimensional change eigenstrain phenomenon
@@ -584,7 +584,7 @@ class PyCParfume(Swelling):
     a3_t: float | int
     a4_t: float | int
 
-@offbeat_define
+@ffn_define
 class HastelloyNWrightSham(Swelling):
     """
     Class modelling the void swelling phenomenon for HastelloyN cladding

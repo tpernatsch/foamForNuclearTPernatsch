@@ -87,9 +87,9 @@ def createFuelAssemblyMesh():
 
     nMesh.addMergePatchPairs()
 
-    nMesh.mergePatchesWithName(name="top", regex=".*Top_.*")
-    nMesh.mergePatchesWithName(name="bottom", regex=".*Bottom_.*")
-    nMesh.mergePatchesWithName(name="wall", regex="fuelElementWall.*")
+    nMesh.merge_patches_with_name(name="top", regex=".*Top_.*")
+    nMesh.merge_patches_with_name(name="bottom", regex=".*Bottom_.*")
+    nMesh.merge_patches_with_name(name="wall", regex="fuelElementWall.*")
 
 
 
@@ -181,9 +181,9 @@ def createFuelAssemblyMesh():
 
     externalWalls = thMesh.getStandaloneFaces(includeFacename=['Wall'])
 
-    thMesh.mergePatchesWithName(name="wall", includeFacename=[face.name for face in externalWalls], patchType="wall")
-    thMesh.mergePatchesWithName(name="outlet", includeFacename=["Top_.*"])
-    thMesh.mergePatchesWithName(name="inlet", includeFacename=["Bottom_"])
+    thMesh.merge_patches_with_name(name="wall", includeFacename=[face.name for face in externalWalls], patchType="wall")
+    thMesh.merge_patches_with_name(name="outlet", includeFacename=["Top_.*"])
+    thMesh.merge_patches_with_name(name="inlet", includeFacename=["Bottom_"])
 
     return(nMesh, thMesh)
 
@@ -193,7 +193,7 @@ def create1DMesh():
 
     nMesh = mesh.BlockMesh(region='neutroRegion')
 
-    nMesh.createCube(
+    nMesh.create_cube(
         'fuelElement',
         lowX=-sqrSide/2, highX=sqrSide/2,
         lowY=-sqrSide/2, highY=sqrSide/2,
@@ -202,13 +202,13 @@ def create1DMesh():
         isAddBoundaryConditions=True
     )
 
-    nMesh.mergePatchesWithName(name="wall", includeFacename=["Wall"], patchType="wall")
-    nMesh.mergePatchesWithName(name="top", includeFacename=["Top_"])
-    nMesh.mergePatchesWithName(name="bottom", includeFacename=["Bottom_"])
+    nMesh.merge_patches_with_name(name="wall", includeFacename=["Wall"], patchType="wall")
+    nMesh.merge_patches_with_name(name="top", includeFacename=["Top_"])
+    nMesh.merge_patches_with_name(name="bottom", includeFacename=["Bottom_"])
 
     thMesh = mesh.BlockMesh(region='fluidRegion')
 
-    thMesh.createCube(
+    thMesh.create_cube(
         'fuelElement',
         lowX=-sqrSide/2, highX=sqrSide/2,
         lowY=-sqrSide/2, highY=sqrSide/2,
@@ -217,9 +217,9 @@ def create1DMesh():
         isAddBoundaryConditions=True
     )
 
-    thMesh.mergePatchesWithName(name="wall", includeFacename=["Wall"], patchType="wall")
-    thMesh.mergePatchesWithName(name="outlet", includeFacename=["Top_"])
-    thMesh.mergePatchesWithName(name="inlet", includeFacename=["Bottom_"])
+    thMesh.merge_patches_with_name(name="wall", includeFacename=["Wall"], patchType="wall")
+    thMesh.merge_patches_with_name(name="outlet", includeFacename=["Top_"])
+    thMesh.merge_patches_with_name(name="inlet", includeFacename=["Bottom_"])
 
     return(nMesh, thMesh)
 

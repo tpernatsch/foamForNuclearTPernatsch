@@ -4,27 +4,27 @@
 from __future__ import annotations
 from typing import Any, ClassVar
 from attrs import field
-from foamForNuclear._attrs_tools import offbeat_define
-from foamForNuclear.common import OffbeatDict
+from foamForNuclear._attrs_tools import ffn_define
+from foamForNuclear.common import FoamForNuclearDict
 
 from . import yield_stress
 from . import creep
 
-@offbeat_define
-class ConstitutiveLaw(OffbeatDict):
+@ffn_define
+class ConstitutiveLaw(FoamForNuclearDict):
     """
     Base constitutive law class.
     """
     TYPE: ClassVar[str] = 'constitutiveLaw'
 
-@offbeat_define
+@ffn_define
 class Elasticity(ConstitutiveLaw):
     """
     Class for linear elasticity constitutive law.
     """
     TYPE: ClassVar[str] = 'elasticity'
 
-@offbeat_define
+@ffn_define
 class FastNeutronGPLS(ConstitutiveLaw):
     """
     Cconstitutive law for the `fastNeutron`-GPLS model (Guisson–Poussard–Le Saux)
@@ -76,7 +76,7 @@ class FastNeutronGPLS(ConstitutiveLaw):
     relax: float | int = 0.1
     theta: float | int = 1.0
 
-@offbeat_define
+@ffn_define
 class HydrogenGPLS(ConstitutiveLaw):
     """
     hydrogenGPLS (Guisson–Poussard–Le Saux) constitutive law for Zircaloy-4
@@ -134,7 +134,7 @@ class HydrogenGPLS(ConstitutiveLaw):
     relax: float | int = 0.01
     theta: float | int = 1.0
 
-@offbeat_define
+@ffn_define
 class HyperElasticity(ConstitutiveLaw):
     """
     St. Venant–Kirchhoff **hyperelastic constitutive law**.
@@ -144,7 +144,7 @@ class HyperElasticity(ConstitutiveLaw):
     """
     TYPE: ClassVar[str] = 'hyperElasticity'
 
-@offbeat_define
+@ffn_define
 class MisesPlasticity(ConstitutiveLaw):
     """
     Linear elastic–Mises plasticity constitutive law.
@@ -166,7 +166,7 @@ class MisesPlasticity(ConstitutiveLaw):
     TYPE: ClassVar[str] = 'misesPlasticity'
     yieldStress: yield_stress.YieldStress = field(factory=yield_stress.YieldStress)
 
-@offbeat_define
+@ffn_define
 class NeoHookeanElasticity(ConstitutiveLaw):
     """
     Neo-Hookean **elastic constitutive law**.
@@ -176,7 +176,7 @@ class NeoHookeanElasticity(ConstitutiveLaw):
     """
     TYPE: ClassVar[str] = 'neoHookeanElasticity'
 
-@offbeat_define
+@ffn_define
 class NeoHookeanMisesPlasticity(ConstitutiveLaw):
     """
     Neo-Hookean hyperelastic–Mises plasticity constitutive law.
@@ -198,7 +198,7 @@ class NeoHookeanMisesPlasticity(ConstitutiveLaw):
     TYPE: ClassVar[str] = 'neoHookeanMisesPlasticity'
     yieldStress: yield_stress.YieldStress = field(factory=yield_stress.YieldStress)
 
-@offbeat_define
+@ffn_define
 class HyperElasticMisesPlasticCreep(MisesPlasticity):
     """
     Hyperelastic–Mises plasticity–creep constitutive law.
@@ -230,7 +230,7 @@ class HyperElasticMisesPlasticCreep(MisesPlasticity):
     yieldStress: yield_stress.YieldStress = field(factory=yield_stress.YieldStress)
     creep: creep.Creep = field(factory=creep.Creep)
 
-@offbeat_define
+@ffn_define
 class MisesPlasticCreep(MisesPlasticity):
     """
     Linear elastic–Mises plasticity–creep constitutive law.

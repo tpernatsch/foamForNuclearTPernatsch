@@ -1,18 +1,18 @@
 from foamForNuclear.checkvalue import check_type
-from foamForNuclear.common import OffbeatDict, OpenFOAMDict, List
-from foamForNuclear._attrs_tools import offbeat_define, _to_List_any
+from foamForNuclear.common import FoamForNuclearDict, OpenFOAMDict, List
+from foamForNuclear._attrs_tools import ffn_define, _to_List_any
 from attrs import field, validators as v
 from typing import ClassVar
 
 from collections.abc import Mapping
 
 
-@offbeat_define
-class DispersionModel(OffbeatDict):
+@ffn_define
+class DispersionModel(FoamForNuclearDict):
     TYPE: ClassVar[str] = "none"
 
 
-@offbeat_define
+@ffn_define
 class ByRegime(DispersionModel):
     TYPE: ClassVar[str] = "byRegime"
     regimeMap: str
@@ -75,7 +75,7 @@ class ByRegime(DispersionModel):
     #     }))
 
 
-@offbeat_define
+@ffn_define
 class Constant(DispersionModel):
     TYPE: ClassVar[str] = "constant"
     dispersedPhase: str

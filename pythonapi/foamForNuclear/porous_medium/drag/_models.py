@@ -1,13 +1,13 @@
 import numpy as np
 from foamForNuclear.checkvalue import check_type, check_value
-from foamForNuclear.common import OffbeatDict, List
-from foamForNuclear._attrs_tools import offbeat_define, _to_List_str
+from foamForNuclear.common import FoamForNuclearDict, List
+from foamForNuclear._attrs_tools import ffn_define, _to_List_str
 from typing import ClassVar
 from attrs import field, validators as v
 
 
-@offbeat_define
-class DragModel(OffbeatDict):
+@ffn_define
+class DragModel(FoamForNuclearDict):
     """
     Base class for fluid drag.
     """
@@ -48,7 +48,7 @@ class DragByRegime(DragModel):
         self.regimes.append((regimeName, dragModel))
 
 
-@offbeat_define
+@ffn_define
 class BaxiDalleDonne(DragModel):
     """
     Baxi Dalle Donne Drag Model
@@ -65,7 +65,7 @@ class BaxiDalleDonne(DragModel):
     wireLeadLen: int | float
 
 
-@offbeat_define
+@ffn_define
 class Churchill(DragModel):
     """
     Churchill Drag Model
@@ -78,7 +78,7 @@ class Churchill(DragModel):
     surfaceRoughness: int | float
 
 
-@offbeat_define
+@ffn_define
 class Colebrook(DragModel):
     """
     Colebrook Drag Model:
@@ -101,7 +101,7 @@ class Colebrook(DragModel):
         return(pow(self.coeff * np.log10(Re) + self.const, self.exp))
 
 
-@offbeat_define
+@ffn_define
 class Engel(DragModel):
     """
     Engel Drag Model
@@ -110,7 +110,7 @@ class Engel(DragModel):
     coeff: int | float
 
 
-@offbeat_define
+@ffn_define
 class ModifiedEngel(DragModel):
     """
     Modified Engel Drag Model
@@ -118,7 +118,7 @@ class ModifiedEngel(DragModel):
     TYPE: ClassVar[str] = "ModifiedEngel"
 
 
-@offbeat_define
+@ffn_define
 class NoKazimiFluidStructure(DragModel):
     """
     No Kazimi Drag Model
@@ -135,7 +135,7 @@ class NoKazimiFluidStructure(DragModel):
     wireLeadLen: int | float
 
 
-@offbeat_define
+@ffn_define
 class Rehme(DragModel):
     """
     Rehme Drag Model
@@ -156,7 +156,7 @@ class Rehme(DragModel):
     wetWrapPerimeter: int | float
 
 
-@offbeat_define
+@ffn_define
 class ReynoldsPower(DragModel):
     """
     Reynolds Power drag model.
@@ -180,7 +180,7 @@ class ReynoldsPower(DragModel):
         return(self.coeff * pow(Re, self.exp) + self.const)
 
 
-@offbeat_define
+@ffn_define
 class Autruffe(DragModel):
     """
     Autruffe correlation for the friction factor between two fluids,
@@ -195,7 +195,7 @@ class Autruffe(DragModel):
     TYPE: ClassVar[str] = "Autruffe"
 
 
-@offbeat_define
+@ffn_define
 class Bestion(DragModel):
     """
     Bestion Model for interfacial friction in fluid-fluid interactions.
@@ -204,7 +204,7 @@ class Bestion(DragModel):
     TYPE: ClassVar[str] = "Bestion"
 
 
-@offbeat_define
+@ffn_define
 class BestionTRACE(DragModel):
     """
     Bestion model for interfacial friction in fluid-fluid interactions.
@@ -214,7 +214,7 @@ class BestionTRACE(DragModel):
     TYPE: ClassVar[str] = "BestionTRACE"
 
 
-@offbeat_define
+@ffn_define
 class NoKazimiFluidFluid(DragModel):
     """
     No-Kazimi model for interfacial friction in fluid-fluid interactions.
@@ -225,7 +225,7 @@ class NoKazimiFluidFluid(DragModel):
     pinDiameter: int | float
 
 
-@offbeat_define
+@ffn_define
 class SchillerNaumann(DragModel):
     """
     Schiller-Neumann model for interfacial friction in fluid-fluid interactions.
@@ -239,7 +239,7 @@ class SchillerNaumann(DragModel):
         return(0.44)
 
 
-@offbeat_define
+@ffn_define
 class Wallis(DragModel):
     """
     Wallis correlation for interfacial liquid-vapour sodium friction in

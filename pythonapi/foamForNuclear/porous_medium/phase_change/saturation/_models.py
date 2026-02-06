@@ -1,18 +1,18 @@
 import numpy as np
 from foamForNuclear.checkvalue import check_type, check_value
-from foamForNuclear.common import OffbeatDict, List, OpenFOAMDict
-from foamForNuclear._attrs_tools import offbeat_define, _to_List_str
+from foamForNuclear.common import FoamForNuclearDict, List, OpenFOAMDict
+from foamForNuclear._attrs_tools import ffn_define, _to_List_str
 from typing import ClassVar
 from attrs import field, validators as v
 
 
 
-@offbeat_define
-class SaturationModel(OffbeatDict):
+@ffn_define
+class SaturationModel(FoamForNuclearDict):
     TYPE: ClassVar[str] = "none"
 
 
-@offbeat_define
+@ffn_define
 class BrowningPotter(SaturationModel):
     """
     Saturation model based on results by Browning and Potter, refer to
@@ -23,7 +23,7 @@ class BrowningPotter(SaturationModel):
     TYPE: ClassVar[str] = "BrowningPotter"
 
 
-@offbeat_define
+@ffn_define
 class ConstantTemperature(SaturationModel):
     """
     Constant saturation pressure and temperature.
@@ -36,7 +36,7 @@ class ConstantTemperature(SaturationModel):
     TYPE: ClassVar[str] = "constantTemperature"
 
 
-@offbeat_define
+@ffn_define
 class Water(SaturationModel):
     """
     Saturation model for water in the 0.01-350 C range based on an
@@ -51,7 +51,7 @@ class Water(SaturationModel):
     TYPE: ClassVar[str] = "water"
 
 
-@offbeat_define
+@ffn_define
 class WaterTRACE(SaturationModel):
     """
     Saturation model for water in the 0.01-350 C range based on `TRACE

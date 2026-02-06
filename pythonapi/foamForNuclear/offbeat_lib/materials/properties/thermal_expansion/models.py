@@ -4,11 +4,11 @@
 from __future__ import annotations
 from typing import Any, ClassVar
 from attrs import field
-from foamForNuclear._attrs_tools import offbeat_define
-from foamForNuclear.common import OffbeatDict
+from foamForNuclear._attrs_tools import ffn_define
+from foamForNuclear.common import FoamForNuclearDict
 
-@offbeat_define
-class ThermalExpansionModel(OffbeatDict):
+@ffn_define
+class ThermalExpansionModel(FoamForNuclearDict):
     """
     Mother class for thermalExpansion models.
 
@@ -24,7 +24,7 @@ class ThermalExpansionModel(OffbeatDict):
 
 ThermalExpansion = ThermalExpansionModel  # alias
 
-@offbeat_define
+@ffn_define
 class Constant(ThermalExpansion):
     """
     Model for constant thermal expansion coefficient. The value is read from
@@ -45,7 +45,7 @@ class Constant(ThermalExpansion):
     TYPE: ClassVar[str] = 'constant'
     value: float | int
 
-@offbeat_define
+@ffn_define
 class Steel1515TiGehr(ThermalExpansion):
     """
     Class modelling the thermal expansion of 15-15 Ti cladding through the
@@ -76,7 +76,7 @@ class Steel1515TiGehr(ThermalExpansion):
     par2: float | int = 1.545e-05
     par3: float | int = 2.75e-09
 
-@offbeat_define
+@ffn_define
 class UPuO2Lemehov(ThermalExpansion):
     """
     Class modelling thermal expansion of (U,Pu)O2 MOX fuel from Lemehov(2020).
@@ -122,7 +122,7 @@ class UPuO2Lemehov(ThermalExpansion):
     b3: float | int = 3.4636
     by: float | int = 3.98
 
-@offbeat_define
+@ffn_define
 class MaUPuO2Kato(ThermalExpansion):
     """
     Class modelling  isotropic thermal expansion in MA-MOX fuel (for Pu = 0.3)
@@ -146,7 +146,7 @@ class MaUPuO2Kato(ThermalExpansion):
     TYPE: ClassVar[str] = 'MaUPuO2Kato'
     oxygenMetalRatio: float | int | None = None
 
-@offbeat_define
+@ffn_define
 class UPuO2Martin(ThermalExpansion):
     """
     Class modelling thermal expansion of MOX fuel according to Martin
@@ -213,7 +213,7 @@ class UPuO2Martin(ThermalExpansion):
     par7: float | int = 3.756e-12
     par8: float | int = -6.125e-17
 
-@offbeat_define
+@ffn_define
 class UPuO2Matpro(ThermalExpansion):
     """
     Class modelling thermal expansion of (U,Pu)O2 MOX fuel from Matprov11.
@@ -268,7 +268,7 @@ class UPuO2Matpro(ThermalExpansion):
     par7: float | int = 2.581e-09
     par8: float | int = 1.14e-13
 
-@offbeat_define
+@ffn_define
 class ZircaloyMatpro(ThermalExpansion):
     """
     Class modelling thermal expansion of UO2 fuel from Matprov11.
@@ -318,7 +318,7 @@ class ZircaloyMatpro(ThermalExpansion):
     par6: float | int = 0.011
     par7: float | int = 0.00945
 
-@offbeat_define
+@ffn_define
 class Molybdenum(ThermalExpansion):
     """
     Class modelling thermal expansion of Molybdenum.
@@ -343,7 +343,7 @@ class Molybdenum(ThermalExpansion):
     par1: float | int = 4.985e-06
     par2: float | int = 6.667e-10
 
-@offbeat_define
+@ffn_define
 class BufferParfume(ThermalExpansion):
     """
     Class modelling the thermal expansion of Buffer through the code Parfume.
@@ -378,7 +378,7 @@ class BufferParfume(ThermalExpansion):
     par3: float | int = 400.0
     par4: float | int = 700.0
 
-@offbeat_define
+@ffn_define
 class PyCParfume(ThermalExpansion):
     """
     Class modelling the transversly isotropic thermal expansion of PyC through
@@ -424,7 +424,7 @@ class PyCParfume(ThermalExpansion):
     par5: float | int = 700.0
     par6: float | int = 36.0
 
-@offbeat_define
+@ffn_define
 class SiCParfume(ThermalExpansion):
     """
     Class modelling the thermal expansion of SiC with a constant value 4.9×10^−6 /K from
@@ -438,7 +438,7 @@ class SiCParfume(ThermalExpansion):
     """
     TYPE: ClassVar[str] = 'SiCParfume'
 
-@offbeat_define
+@ffn_define
 class UO2Relap(ThermalExpansion):
     """
     Class modelling thermal expansion of UO2 fuel derived from Relap.
@@ -478,7 +478,7 @@ class UO2Relap(ThermalExpansion):
     K3: float | int = 0.316
     k: float | int = 1.38e-23
 
-@offbeat_define
+@ffn_define
 class SiCSnead(ThermalExpansion):
     """
     Class modelling the thermal expansion of SiC with a value from Snead. the mean
@@ -536,7 +536,7 @@ class SiCSnead(ThermalExpansion):
     par4: float | int = 4.5246e-09
     par5: float | int = 5e-6
 
-@offbeat_define
+@ffn_define
 class HastelloyNSwindeman(ThermalExpansion):
     """
     Class modelling thermal expansion of H-N from Swinderman.

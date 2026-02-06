@@ -4,11 +4,11 @@
 from __future__ import annotations
 from typing import Any, ClassVar
 from attrs import field
-from foamForNuclear._attrs_tools import offbeat_define
-from foamForNuclear.common import OffbeatDict
+from foamForNuclear._attrs_tools import ffn_define
+from foamForNuclear.common import FoamForNuclearDict
 
-@offbeat_define
-class Burnup(OffbeatDict):
+@ffn_define
+class Burnup(FoamForNuclearDict):
     """
     Base burnup model class. It disables burnup tracking entirely, i.e. when this
     model is selected, the burnup field `Bu` is **not created** and is not
@@ -22,7 +22,7 @@ class Burnup(OffbeatDict):
     """
     TYPE: ClassVar[str] = 'none'
 
-@offbeat_define
+@ffn_define
 class Constant(Burnup):
     """
     Burnup model that allows the burnup field to be prescribed
@@ -40,7 +40,7 @@ class Constant(Burnup):
     """
     TYPE: ClassVar[str] = 'constant'
 
-@offbeat_define
+@ffn_define
 class FromPower(Constant):
     """
     Burnup model that tracks the evolution of the local burnup by integrating the
@@ -61,7 +61,7 @@ class FromPower(Constant):
     TYPE: ClassVar[str] = 'fromPower'
     heatSourceName: str = 'Q'
 
-@offbeat_define
+@ffn_define
 class Lassmann(FromPower):
     """
     Burnup model that is inspired by Lassmann et al., *“The radial distribution
@@ -94,7 +94,7 @@ class Lassmann(FromPower):
     TYPE: ClassVar[str] = 'Lassmann'
     convergencePrecision: float = 1e-2
 
-@offbeat_define
+@ffn_define
 class LassmannFBR(FromPower):
     """
     Burnup model that extends the similar `Lassmann` depletion approach to

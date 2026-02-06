@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import attrs as attr
 from attrs import field, validators as v
-from foamForNuclear._attrs_tools import offbeat_define, _to_List_float, _to_List_str, _is_number_when_flag
+from foamForNuclear._attrs_tools import ffn_define, _to_List_float, _to_List_str, _is_number_when_flag
 from foamForNuclear._attrs_tools import _to_List_tuple_float, _to_List_tuple2_float, _resolve_type, _to_Vector
 from typing import ClassVar
 
@@ -12,14 +12,14 @@ import foamForNuclear.common
 
 #==============================================================================*
 
-@offbeat_define
-class ThermoMechanicsCouplingOptions(OffbeatDict):
+@ffn_define
+class ThermoMechanicsCouplingOptions(FoamForNuclearDict):
     correctTFromTH: bool = False
     correctDispForNeutro: bool = False
 
 
-@offbeat_define
-class GlobalOptions(OffbeatDict):
+@ffn_define
+class GlobalOptions(FoamForNuclearDict):
     pinDirection: list[float | int] | None = None
     reactorType: str | None = None
     angularFraction: float | None = None
@@ -29,12 +29,12 @@ class GlobalOptions(OffbeatDict):
 #==============================================================================*
 # Element transport solver
 
-@offbeat_define
-class ElementTransportSolver(OffbeatDict):
+@ffn_define
+class ElementTransportSolver(FoamForNuclearDict):
     TYPE: ClassVar[str] = "fromLatestTime"
 
 
-@offbeat_define
+@ffn_define
 class ByListElementTransportSolver(ElementTransportSolver):
     TYPE: ClassVar[str] = "byList"
     solvers: list | List = field(factory=list, converter=_to_List_str)
@@ -43,8 +43,8 @@ class ByListElementTransportSolver(ElementTransportSolver):
 #==============================================================================*
 # Stress Analysis
 
-@offbeat_define
-class StressAnalysis(OffbeatDict):
+@ffn_define
+class StressAnalysis(FoamForNuclearDict):
     """
     StressAnalysis object
 

@@ -4,11 +4,11 @@
 from __future__ import annotations
 from typing import Any, ClassVar
 from attrs import field
-from foamForNuclear._attrs_tools import offbeat_define
-from foamForNuclear.common import OffbeatDict
+from foamForNuclear._attrs_tools import ffn_define
+from foamForNuclear.common import FoamForNuclearDict
 
-@offbeat_define
-class ThermalSubSolver(OffbeatDict):
+@ffn_define
+class ThermalSubSolver(FoamForNuclearDict):
     """
     Base thermal solver class. It keeps the temperature field `T` unchanged from its
     initial configuration throughout the simulation.
@@ -42,7 +42,7 @@ class ThermalSubSolver(OffbeatDict):
 
 Constant = ThermalSubSolver  # alias
 
-@offbeat_define
+@ffn_define
 class ReadTemperature(Constant):
     """
     Thermal solver class that reads the temperature `T`  field from the time-step
@@ -72,7 +72,7 @@ class ReadTemperature(Constant):
     """
     TYPE: ClassVar[str] = 'readTemperature'
 
-@offbeat_define
+@ffn_define
 class SolidConduction(Constant):
     """
     Thermal solver class where the temperature distribution is obtained from

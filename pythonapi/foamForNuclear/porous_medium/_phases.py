@@ -2,14 +2,14 @@ from types import NoneType
 import numpy as np
 from typing import Optional
 from foamForNuclear.checkvalue import check_type, check_value
-from foamForNuclear.common import OffbeatDict, List, OpenFOAMDict, Vector
+from foamForNuclear.common import FoamForNuclearDict, List, OpenFOAMDict, Vector
 from foamForNuclear.porous_medium.dispersed_diameter import DispersedDiameterModel
 from foamForNuclear.porous_medium.power_models import PowerModel
 
 from foamForNuclear.thermo import BaseThermophysicalProperty
 from foamForNuclear.turbulence import TurbulenceProperties
 
-from foamForNuclear._attrs_tools import offbeat_define
+from foamForNuclear._attrs_tools import ffn_define
 from attrs import field, validators as v
 
 
@@ -17,8 +17,8 @@ _LATTICE_TYPES = {"square", "hexagon"}
 _STATE_OF_MATTER_TYPES = {"liquid", "gas"}
 
 
-@offbeat_define
-class PassiveProperties(OffbeatDict):
+@ffn_define
+class PassiveProperties(FoamForNuclearDict):
     volumetricArea: int | float | None = None
     T: int | float | None = None
     rho: int | float | None = None
@@ -26,8 +26,8 @@ class PassiveProperties(OffbeatDict):
     rhoCp: int | float | None = None
 
 
-@offbeat_define
-class Structure(OffbeatDict):
+@ffn_define
+class Structure(FoamForNuclearDict):
     """
     Structure property
 
@@ -269,8 +269,8 @@ class Structure(OffbeatDict):
             self.volumeFraction = 1 - Af1_s / At
 
 
-@offbeat_define
-class Fluid(OffbeatDict):
+@ffn_define
+class Fluid(FoamForNuclearDict):
     """
     The presence of these dictionaries IS MANDATORY for two-phase simulations
 

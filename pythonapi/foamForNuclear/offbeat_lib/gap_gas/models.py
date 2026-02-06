@@ -4,20 +4,20 @@
 from __future__ import annotations
 from typing import Any, ClassVar
 from attrs import field
-from foamForNuclear._attrs_tools import offbeat_define
-from foamForNuclear.common import OffbeatDict
+from foamForNuclear._attrs_tools import ffn_define
+from foamForNuclear.common import FoamForNuclearDict
 
 from foamForNuclear.timeProfile import OffbeatTimeProfile
 
-@offbeat_define
-class GapGasModel(OffbeatDict):
+@ffn_define
+class GapGasModel(FoamForNuclearDict):
     """
     Base gap gas model class. It neglects the presence of any gap gas.
     No gas pressure, composition, or thermal transport through the gap is modeled.
     """
     TYPE: ClassVar[str] = 'none'
 
-@offbeat_define
+@ffn_define
 class Frapcon(GapGasModel):
     """
     Gap gas model that computes gap gas composition, pressure, temperature,
@@ -87,7 +87,7 @@ class Frapcon(GapGasModel):
     includeCentralHole: bool = True
     includeDishes: bool = True
 
-@offbeat_define
+@ffn_define
 class TimeTabulated(GapGasModel):
     """
     Gap gas model class that prescribes **time-dependent gap gas
@@ -149,7 +149,7 @@ class TimeTabulated(GapGasModel):
     Xe: list[float | int]
     timeInterpolationMethod: str = 'linear'
 
-@offbeat_define
+@ffn_define
 class TRISO(GapGasModel):
     """
     Gap gas model class that computes gas composition, volume, temperature, and

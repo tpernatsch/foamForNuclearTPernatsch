@@ -4,11 +4,11 @@
 from __future__ import annotations
 from typing import Any, ClassVar
 from attrs import field
-from foamForNuclear._attrs_tools import offbeat_define
-from foamForNuclear.common import OffbeatDict
+from foamForNuclear._attrs_tools import ffn_define
+from foamForNuclear.common import FoamForNuclearDict
 
-@offbeat_define
-class DamageModel(OffbeatDict):
+@ffn_define
+class DamageModel(FoamForNuclearDict):
     """
     Base class for damage models. The base model has type `none`. When selected, damage is
     not modeled.
@@ -17,7 +17,7 @@ class DamageModel(OffbeatDict):
 
 Damage = DamageModel  # alias
 
-@offbeat_define
+@ffn_define
 class IsotropicCracking(Damage):
     """
     Isotropic cracking damage model.
@@ -42,7 +42,7 @@ class IsotropicCracking(Damage):
     isotropicCrackingType: str = 'Barani'
     nCracksMax: float | int = 12.0
 
-@offbeat_define
+@ffn_define
 class Mazars(Damage):
     """
     Mazars scalar damage model.

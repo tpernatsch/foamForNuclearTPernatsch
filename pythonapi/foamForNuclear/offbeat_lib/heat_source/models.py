@@ -4,14 +4,14 @@
 from __future__ import annotations
 from typing import Any, ClassVar
 from attrs import field
-from foamForNuclear._attrs_tools import offbeat_define
-from foamForNuclear.common import OffbeatDict
+from foamForNuclear._attrs_tools import ffn_define
+from foamForNuclear.common import FoamForNuclearDict
 
 from ..profiles import axial_profile
 from ..profiles import radial_profile
 
-@offbeat_define
-class HeatSource(OffbeatDict):
+@ffn_define
+class HeatSource(FoamForNuclearDict):
     """
     Base heat source model class. It neglects the heat source entirely, allowing
     for a simulation where the heat source field is not at all considered.
@@ -20,7 +20,7 @@ class HeatSource(OffbeatDict):
     """
     TYPE: ClassVar[str] = 'none'
 
-@offbeat_define
+@ffn_define
 class Constant(HeatSource):
     """
     Heat source model class that allows the user to set the volumetric heat source
@@ -37,7 +37,7 @@ class Constant(HeatSource):
     """
     TYPE: ClassVar[str] = 'constant'
 
-@offbeat_define
+@ffn_define
 class ConstantLhgr(Constant):
     """
     Heat source model class that allows for a constant average **linear heat
@@ -99,7 +99,7 @@ class ConstantLhgr(Constant):
     zMax: float | int | None = None
     volumeFraction: float | int | None = None
 
-@offbeat_define
+@ffn_define
 class LaserHeatSource(Constant):
     """
     Heat source model class used to simulate the heating due to energy
@@ -131,7 +131,7 @@ class LaserHeatSource(Constant):
     useEffectiveAlpha: bool
     materials: list[str]
 
-@offbeat_define
+@ffn_define
 class TimeDependentVhgr(Constant):
     """
     Heat source model class that allows the user to set an average **volumetric
@@ -168,7 +168,7 @@ class TimeDependentVhgr(Constant):
     timeInterpolationMethod: str = 'linear'
     materials: list[str]
 
-@offbeat_define
+@ffn_define
 class TimeDependentLhgr(ConstantLhgr):
     """
     Heat source model class that, similarly to the `constantLhgr` heatSource class,

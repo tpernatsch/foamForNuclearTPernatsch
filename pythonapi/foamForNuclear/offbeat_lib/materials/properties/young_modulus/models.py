@@ -4,11 +4,11 @@
 from __future__ import annotations
 from typing import Any, ClassVar
 from attrs import field
-from foamForNuclear._attrs_tools import offbeat_define
-from foamForNuclear.common import OffbeatDict
+from foamForNuclear._attrs_tools import ffn_define
+from foamForNuclear.common import FoamForNuclearDict
 
-@offbeat_define
-class YoungModulusModel(OffbeatDict):
+@ffn_define
+class YoungModulusModel(FoamForNuclearDict):
     """
     Mother class for YoungModulus models.
     """
@@ -16,7 +16,7 @@ class YoungModulusModel(OffbeatDict):
 
 YoungModulus = YoungModulusModel  # alias
 
-@offbeat_define
+@ffn_define
 class Constant(YoungModulus):
     """
     Model for constant Young modulus. The value is read from dictionary.
@@ -31,7 +31,7 @@ class Constant(YoungModulus):
     TYPE: ClassVar[str] = 'constant'
     value: float | int
 
-@offbeat_define
+@ffn_define
 class SteelD9Hofman(YoungModulus):
     """
     Class modelling the Young's modulus of D9 Steel cladding using the Hofman
@@ -52,7 +52,7 @@ class SteelD9Hofman(YoungModulus):
     par1: float | int = 2.01e5
     par2: float | int = 79.29
 
-@offbeat_define
+@ffn_define
 class UO2Matpro(YoungModulus):
     """
     Class modelling Young Modulus of UO2 fuel from Matprov11.
@@ -84,7 +84,7 @@ class UO2Matpro(YoungModulus):
     par2: float | int = 2.752
     par3: float | int = 0.00010915
 
-@offbeat_define
+@ffn_define
 class UPuO2Matpro(YoungModulus):
     """
     Class modelling the Young's modulus of (U,Pu)O2 MOX fuel.
@@ -123,7 +123,7 @@ class UPuO2Matpro(YoungModulus):
     par2: float | int = 2.752
     par3: float | int = 0.00010915
 
-@offbeat_define
+@ffn_define
 class ZircaloyMatpro(YoungModulus):
     """
     Class modelling Young Modulus of Zircaloy from Matprov11.
@@ -188,7 +188,7 @@ class ZircaloyMatpro(YoungModulus):
     par8: float | int = 5.475e7
     par9: float | int = 9.21e10
 
-@offbeat_define
+@ffn_define
 class Molybdenum(YoungModulus):
     """
     Class modelling Young Modulus of Molybdenum from Bison manual.
@@ -208,7 +208,7 @@ class Molybdenum(YoungModulus):
     par1: float | int = 334900000000.0
     par2: float | int = 51010000.0
 
-@offbeat_define
+@ffn_define
 class BufferParfume(YoungModulus):
     """
     Class modelling Young Modulus of Bufffer from Parfume.
@@ -258,7 +258,7 @@ class BufferParfume(YoungModulus):
     par5: float | int = 0.00015
     par6: float | int = 20.0
 
-@offbeat_define
+@ffn_define
 class PyCParfume(YoungModulus):
     """
     Class modelling Young Modulus of PyC from Parfume.
@@ -338,7 +338,7 @@ class PyCParfume(YoungModulus):
     par8: float | int = 0.23
     par9: float | int = 0.00015
 
-@offbeat_define
+@ffn_define
 class SiCParfume(YoungModulus):
     """
     Class modelling Young Modulus of SiC with the Interpolation from Parfume.
@@ -388,7 +388,7 @@ class SiCParfume(YoungModulus):
     temp3: float | int = 1215.0
     temp4: float | int = 1600.0
 
-@offbeat_define
+@ffn_define
 class UPuO2SckCen(YoungModulus):
     """
     Correlation for Young's modulus of (U,Pu)O2 MOX fuel from SCK-CEN
@@ -434,7 +434,7 @@ class UPuO2SckCen(YoungModulus):
     EUO2: float | int = 218.74
     oxygenMetalRatio: float | int | None = None
 
-@offbeat_define
+@ffn_define
 class SiCSnead(YoungModulus):
     """
     Class modelling Young Modulus of SiC from Snead et al. work:
@@ -467,7 +467,7 @@ class SiCSnead(YoungModulus):
     E0: float | int = 460e9
     T0: float | int = 962.0
 
-@offbeat_define
+@ffn_define
 class Steel1515TiTobbe(YoungModulus):
     """
     Class modelling the Young's modulus of 15-15 Ti using the Tobbe correlation
@@ -488,7 +488,7 @@ class Steel1515TiTobbe(YoungModulus):
     par1: float | int = 202.7
     par2: float | int = 0.08167
 
-@offbeat_define
+@ffn_define
 class HastelloyNWatrous(YoungModulus):
     """
     Class modelling Young Modulus of HN from work of Watrous.

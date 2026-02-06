@@ -1,5 +1,5 @@
-from foamForNuclear.common import OffbeatDict, List
-from foamForNuclear._attrs_tools import offbeat_define, _to_List_str
+from foamForNuclear.common import FoamForNuclearDict, List
+from foamForNuclear._attrs_tools import ffn_define, _to_List_str
 from typing import ClassVar
 from attrs import field, validators as v
 
@@ -12,8 +12,8 @@ from .subcooled_fraction import SubCooledBoilingFractionModel
 from .suppression import SuppressionFactorModel
 
 
-@offbeat_define
-class HeatTransferModel(OffbeatDict):
+@ffn_define
+class HeatTransferModel(FoamForNuclearDict):
     """
     Base class for heat-transfer.
     """
@@ -28,7 +28,7 @@ class HeatTransferModel(OffbeatDict):
         return textZones + super().__repr__(depth)
 
 
-@offbeat_define
+@ffn_define
 class Gorenflo(HeatTransferModel):
     r"""
     Gorenflo Heat Transfer Model
@@ -80,7 +80,7 @@ class Gorenflo(HeatTransferModel):
     useExplicitHeatFlux: bool = False
 
 
-@offbeat_define
+@ffn_define
 class NusseltAndWall(HeatTransferModel):
     """
     Nusselt Heat Transfer Model with an additional wall
@@ -101,7 +101,7 @@ class NusseltAndWall(HeatTransferModel):
     addH:  int | float
 
 
-@offbeat_define
+@ffn_define
 class NusseltWallAndHfromFMU(HeatTransferModel):
     """
     Nusselt Heat Transfer Model with an additional wall
@@ -125,7 +125,7 @@ class NusseltWallAndHfromFMU(HeatTransferModel):
     HNameFromFMU: str
 
 
-@offbeat_define
+@ffn_define
 class Shah(HeatTransferModel):
     """
     Shah Heat Transfer Model
@@ -189,7 +189,7 @@ class Shah(HeatTransferModel):
     useExplicitHeatFlux: bool = False
 
 
-@offbeat_define
+@ffn_define
 class ByRegime(HeatTransferModel):
     TYPE: ClassVar[str] = "byRegime"
     regimeMap: str
@@ -209,7 +209,7 @@ class ByRegime(HeatTransferModel):
     #     self.regimes.append((regimeName, heatTransferModel))
 
 
-@offbeat_define
+@ffn_define
 class NoKazimiHeatTransferModel(HeatTransferModel):
     """
     NoKazimi model for the liquid side of a liquid-vapour heat transfer
@@ -219,7 +219,7 @@ class NoKazimiHeatTransferModel(HeatTransferModel):
     TYPE: ClassVar[str] = "NoKazimi"
 
 
-@offbeat_define
+@ffn_define
 class NusseltReynoldsPrandtlPower(HeatTransferModel):
     """
     Heat transfer coefficient for forced convective flows that is computed
@@ -249,13 +249,13 @@ class NusseltReynoldsPrandtlPower(HeatTransferModel):
     phaseName: str | None = field(default=None, metadata={"ffn_internal": True})   
 
 
-@offbeat_define
+@ffn_define
 class Constant(HeatTransferModel):
     TYPE: ClassVar[str] = "constant"
     value: int | float
 
 
-@offbeat_define
+@ffn_define
 class SuperpositionNucleateBoiling(HeatTransferModel):
     """
     Heat transfer coefficient for both single-phase convective scenarios that
@@ -269,7 +269,7 @@ class SuperpositionNucleateBoiling(HeatTransferModel):
     suppressionFactor: SuppressionFactorModel = field(factory=SuppressionFactorModel)
 
 
-@offbeat_define
+@ffn_define
 class MultiRegimeBoilingTRACECHF(HeatTransferModel):
     """
     Heat transfer coefficient for multi-regime boiling from TRACE CHF.
@@ -286,7 +286,7 @@ class MultiRegimeBoilingTRACECHF(HeatTransferModel):
     annularFlowModel: AnnularFlowModel = field(factory=AnnularFlowModel)
 
 
-@offbeat_define
+@ffn_define
 class MultiRegimeBoilingVapourTRACE(HeatTransferModel):
     """
     Heat transfer coefficient for multi-regime boiling for vapour from TRACE.

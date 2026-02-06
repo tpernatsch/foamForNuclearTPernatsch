@@ -4,13 +4,13 @@
 from __future__ import annotations
 from typing import Any, ClassVar
 from attrs import field
-from foamForNuclear._attrs_tools import offbeat_define
-from foamForNuclear.common import OffbeatDict
+from foamForNuclear._attrs_tools import ffn_define
+from foamForNuclear.common import FoamForNuclearDict
 
 from foamForNuclear.common import SciantixDict
 
-@offbeat_define
-class FissionGasRelease(OffbeatDict):
+@ffn_define
+class FissionGasRelease(FoamForNuclearDict):
     """
     Base fission gas release (FGR) model class. It disables fission gas production and
     release, and therefore also disables any FGR-related gaseous swelling.
@@ -20,7 +20,7 @@ class FissionGasRelease(OffbeatDict):
     """
     TYPE: ClassVar[str] = 'none'
 
-@offbeat_define
+@ffn_define
 class SCIANTIX(FissionGasRelease):
     """
     Fission gas release (FGR) model that couples OFFBEAT with the 0-D
@@ -60,7 +60,7 @@ class SCIANTIX(FissionGasRelease):
     addToRegistry: bool = False
     SCIANTIX: SciantixDict = field(factory=SciantixDict)
 
-@offbeat_define
+@ffn_define
 class SCIANTIXRIA(FissionGasRelease):
     """
     Fission gas release (FGR) model that is intended for **RIA or

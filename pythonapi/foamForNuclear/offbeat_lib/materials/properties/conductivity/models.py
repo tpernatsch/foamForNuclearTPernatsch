@@ -4,11 +4,11 @@
 from __future__ import annotations
 from typing import Any, ClassVar
 from attrs import field
-from foamForNuclear._attrs_tools import offbeat_define
-from foamForNuclear.common import OffbeatDict
+from foamForNuclear._attrs_tools import ffn_define
+from foamForNuclear.common import FoamForNuclearDict
 
-@offbeat_define
-class ConductivityModel(OffbeatDict):
+@ffn_define
+class ConductivityModel(FoamForNuclearDict):
     """
     Mother class for conductivity models.
     """
@@ -16,7 +16,7 @@ class ConductivityModel(OffbeatDict):
 
 Conductivity = ConductivityModel  # alias
 
-@offbeat_define
+@ffn_define
 class Constant(Conductivity):
     """
     The `constant` conductivity model assigns a constant thermal conductivity
@@ -36,7 +36,7 @@ class Constant(Conductivity):
     TYPE: ClassVar[str] = 'constant'
     value: float | int
 
-@offbeat_define
+@ffn_define
 class UO2Matpro(Conductivity):
     """
     The `UO2Matpro` conductivity model implements a UO$_2$ thermal conductivity
@@ -136,7 +136,7 @@ class UO2Matpro(Conductivity):
     par12: float | int = 2.0
     par13: float | int = 16360.0
 
-@offbeat_define
+@ffn_define
 class Molybdenum(Conductivity):
     """
     The `Molybdenum` conductivity model provides a temperature-dependent thermal
@@ -165,7 +165,7 @@ class Molybdenum(Conductivity):
     par2: float | int = 0.04945
     par3: float | int = 152.0
 
-@offbeat_define
+@ffn_define
 class UO2Nfir(Conductivity):
     """
     The `UO2Nfir` conductivity model implements a UO$_2$ thermal conductivity
@@ -206,7 +206,7 @@ class UO2Nfir(Conductivity):
     densityFraction: float | int | None = None
     GdContent: float | int | None = None
 
-@offbeat_define
+@ffn_define
 class BufferParfume(Conductivity):
     """
     The `BufferParfume` conductivity model provides the thermal conductivity of
@@ -253,7 +253,7 @@ class BufferParfume(Conductivity):
     initialConductivity: float | int = 0.5
     theoreticalConductivity: float | int = 4.0
 
-@offbeat_define
+@ffn_define
 class SiCParfume(Conductivity):
     """
     The `SiCParfume` conductivity model provides a temperature-dependent thermal
@@ -277,7 +277,7 @@ class SiCParfume(Conductivity):
     par1: float | int = 17885.0
     par2: float | int = 2.0
 
-@offbeat_define
+@ffn_define
 class ZircaloyRelap(Conductivity):
     """
     The `ZircaloyRelap` conductivity model provides a temperature-dependent
@@ -311,7 +311,7 @@ class ZircaloyRelap(Conductivity):
     par3: float | int = 1.45e-05
     par4: float | int = 7.67e-09
 
-@offbeat_define
+@ffn_define
 class HastelloyNSwindeman(Conductivity):
     """
     Thermal conductivity correlation for Hastelloy-N derived from the work of
@@ -338,7 +338,7 @@ class HastelloyNSwindeman(Conductivity):
     par1: float | int = 8.431
     par2: float | int = 0.0205
 
-@offbeat_define
+@ffn_define
 class Steel1515TiTobbe(Conductivity):
     """
     Thermal conductivity correlation for 15-15Ti steel based on the formulation
@@ -362,7 +362,7 @@ class Steel1515TiTobbe(Conductivity):
     par1: float | int = 13.95
     par2: float | int = 0.01163
 
-@offbeat_define
+@ffn_define
 class UO2Ifa601(Conductivity):
     """
     Thermal conductivity model for UO₂ fuel based on the IFA-601 formulation.
@@ -420,7 +420,7 @@ class UO2Ifa601(Conductivity):
     par7: float | int = 1.32e-05
     par8: float | int = 0.00188
 
-@offbeat_define
+@ffn_define
 class UPuO2Brancheria(Conductivity):
     """
     Thermal conductivity correlation for MOX fuel (U-Pu-O₂) based on the
@@ -444,7 +444,7 @@ class UPuO2Brancheria(Conductivity):
     TYPE: ClassVar[str] = 'UPuO2Brancheria'
     densityFraction: float | int = 0.945
 
-@offbeat_define
+@ffn_define
 class UPuO2Kato(Conductivity):
     """
     Thermal conductivity correlation for MOX fuel (U-Pu-O₂) based on the
@@ -463,7 +463,7 @@ class UPuO2Kato(Conductivity):
     TYPE: ClassVar[str] = 'UPuO2Kato'
     densityFraction: float | int = 0.95
 
-@offbeat_define
+@ffn_define
 class UPuO2LanningBeyer(Conductivity):
     """
     Thermal conductivity correlation for MOX fuel (U-Pu-O₂) based on the
@@ -482,7 +482,7 @@ class UPuO2LanningBeyer(Conductivity):
     TYPE: ClassVar[str] = 'UPuO2LanningBeyer'
     densityFraction: float | int = 0.95
 
-@offbeat_define
+@ffn_define
 class MaUPuO2Magni(Conductivity):
     """
     Thermal conductivity correlation for MA-bearing MOX fuel based on the
@@ -503,7 +503,7 @@ class MaUPuO2Magni(Conductivity):
     TYPE: ClassVar[str] = 'MaUPuO2Magni'
     densityFraction: float | int = 0.95
 
-@offbeat_define
+@ffn_define
 class UPuO2Philipponeau(Conductivity):
     """
     Thermal conductivity correlation for MOX fuel (U-Pu-O₂) based on the

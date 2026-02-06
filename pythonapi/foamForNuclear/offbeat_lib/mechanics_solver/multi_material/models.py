@@ -4,17 +4,17 @@
 from __future__ import annotations
 from typing import Any, ClassVar
 from attrs import field
-from foamForNuclear._attrs_tools import offbeat_define
-from foamForNuclear.common import OffbeatDict
+from foamForNuclear._attrs_tools import ffn_define
+from foamForNuclear.common import FoamForNuclearDict
 
-@offbeat_define
-class MultiMaterialInterface(OffbeatDict):
+@ffn_define
+class MultiMaterialInterface(FoamForNuclearDict):
     """
     Base class for multi-material correction models.
     """
     TYPE: ClassVar[str] = 'multiMaterialInterface'
 
-@offbeat_define
+@ffn_define
 class Uniform(MultiMaterialInterface):
     """
     Multi-material correction class that applies a uniform multi-material correction.
@@ -37,7 +37,7 @@ class Uniform(MultiMaterialInterface):
     defaultWeights: float | int
     defaultWeightsGrad: float | int | None = None
 
-@offbeat_define
+@ffn_define
 class CellZone(Uniform):
     """
     Multi-material correction class where two sets of weights can be used:
@@ -68,7 +68,7 @@ class CellZone(Uniform):
     defaultWeightsGrad: float | int | None = None
     interfaceWeights: float | int
 
-@offbeat_define
+@ffn_define
 class FaceSet(Uniform):
     """
     Multi-material correction class that uses a user-defined `faceSet`
@@ -99,7 +99,7 @@ class FaceSet(Uniform):
     interfaceWeights: float | int
     faceSetName: str
 
-@offbeat_define
+@ffn_define
 class TopoSetSource(Uniform):
     """
     Multi-material correction class where the interface faces are defined from a
@@ -139,7 +139,7 @@ class TopoSetSource(Uniform):
     interfaceWeights: float | int
     source: TopoSetSource
 
-@offbeat_define
+@ffn_define
 class Uniform2D(Uniform):
     """
     Multi-material correction class that applies a uniform multi-material correction
@@ -170,7 +170,7 @@ class Uniform2D(Uniform):
     defaultWeights: float | int
     defaultWeightsGrad: float | int | None = None
 
-@offbeat_define
+@ffn_define
 class UniformDirectional(Uniform):
     """
     Multi-material correction class where the interfaces between materials are defined

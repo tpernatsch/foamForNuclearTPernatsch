@@ -4,11 +4,11 @@
 from __future__ import annotations
 from typing import Any, ClassVar
 from attrs import field
-from foamForNuclear._attrs_tools import offbeat_define
-from foamForNuclear.common import OffbeatDict
+from foamForNuclear._attrs_tools import ffn_define
+from foamForNuclear.common import FoamForNuclearDict
 
-@offbeat_define
-class RelocationModel(OffbeatDict):
+@ffn_define
+class RelocationModel(FoamForNuclearDict):
     """
     Base class for fuel relocation models.
 
@@ -22,7 +22,7 @@ class RelocationModel(OffbeatDict):
 
 Relocation = RelocationModel  # alias
 
-@offbeat_define
+@ffn_define
 class UO2Frapcon(Relocation):
     """
     Fuel relocation model based on the FRAPCON formulation.

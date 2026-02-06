@@ -1,6 +1,6 @@
 from foamForNuclear.checkvalue import check_type
-from foamForNuclear.common import OffbeatDict, List, OpenFOAMDict
-from foamForNuclear._attrs_tools import offbeat_define
+from foamForNuclear.common import FoamForNuclearDict, List, OpenFOAMDict
+from foamForNuclear._attrs_tools import ffn_define
 from typing import ClassVar
 from attrs import field, validators as v
 
@@ -8,15 +8,15 @@ from attrs import field, validators as v
 _INTERPOLATION_MODE_TYPES = {"linear", "quadratic"}
 
 
-@offbeat_define
-class RegimeMapModel(OffbeatDict):
+@ffn_define
+class RegimeMapModel(FoamForNuclearDict):
     """
     Base class for regime map model.
     """
     TYPE: ClassVar[str] = "none"
 
 
-@offbeat_define
+@ffn_define
 class OneParameter(RegimeMapModel):
     """
     Regime map model dependent on one parameter.

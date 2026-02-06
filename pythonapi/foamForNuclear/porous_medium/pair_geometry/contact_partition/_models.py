@@ -1,17 +1,17 @@
 from foamForNuclear.checkvalue import check_type
-from foamForNuclear.common import OffbeatDict, OpenFOAMDict
-from foamForNuclear._attrs_tools import offbeat_define
+from foamForNuclear.common import FoamForNuclearDict, OpenFOAMDict
+from foamForNuclear._attrs_tools import ffn_define
 from typing import ClassVar
 from attrs import field
 
 from collections.abc import Mapping
 
-@offbeat_define
-class ContactPartitionModel(OffbeatDict):
+@ffn_define
+class ContactPartitionModel(FoamForNuclearDict):
     TYPE: ClassVar[str] = "none"
 
 
-@offbeat_define
+@ffn_define
 class ByRegime(ContactPartitionModel):
     TYPE: ClassVar[str] = "byRegime"
     regimeMap: str
@@ -73,7 +73,7 @@ class ByRegime(ContactPartitionModel):
         }))
 
 
-@offbeat_define
+@ffn_define
 class Constant(ContactPartitionModel):
     TYPE: ClassVar[str] = "constant"
     value: float

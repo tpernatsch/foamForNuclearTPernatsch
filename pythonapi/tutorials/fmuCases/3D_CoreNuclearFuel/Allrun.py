@@ -185,16 +185,16 @@ def generateNeutronicMesh(region: str):
     )
 
     # Merge into unique patches
-    blockMesh.mergePatchesWithName(
+    blockMesh.merge_patches_with_name(
         name="wall",
         includeFacename=[face.name for face in externalWalls],
         patchType="wall"
     )
-    blockMesh.mergePatchesWithName(
+    blockMesh.merge_patches_with_name(
         name="bottom",
         includeFacename=["diagridBottom_"]
     )
-    blockMesh.mergePatchesWithName(
+    blockMesh.merge_patches_with_name(
         name="top",
         includeFacename=["reflectorTop_", "targetTop_", "upperFuelPlenumTop_"]
     )
@@ -342,16 +342,16 @@ def generateThermalhydraulicMesh(region: str):
     )
 
     # Merge into unique patches
-    blockMesh.mergePatchesWithName(
+    blockMesh.merge_patches_with_name(
         name="wall",
         includeFacename=[face.name for face in externalWalls],
         patchType="wall"
     )
-    blockMesh.mergePatchesWithName(
+    blockMesh.merge_patches_with_name(
         name="inlet",
         includeFacename=["diagridBottom_"]
     )
-    blockMesh.mergePatchesWithName(
+    blockMesh.merge_patches_with_name(
         name="outlet",
         includeFacename=["reflectorTop_", "targetTop_", "upperPlenumTop_"]
     )

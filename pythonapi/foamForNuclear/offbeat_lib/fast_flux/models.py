@@ -4,13 +4,13 @@
 from __future__ import annotations
 from typing import Any, ClassVar
 from attrs import field
-from foamForNuclear._attrs_tools import offbeat_define
-from foamForNuclear.common import OffbeatDict
+from foamForNuclear._attrs_tools import ffn_define
+from foamForNuclear.common import FoamForNuclearDict
 
 from ..profiles import axial_profile
 
-@offbeat_define
-class FastFlux(OffbeatDict):
+@ffn_define
+class FastFlux(FoamForNuclearDict):
     """
     Base fast flux model class. It disables entirely the fast flux and fast
     fluence handling in OFFBEAT.
@@ -22,7 +22,7 @@ class FastFlux(OffbeatDict):
     """
     TYPE: ClassVar[str] = 'none'
 
-@offbeat_define
+@ffn_define
 class Constant(FastFlux):
     """
     Fast flux model that allows prescribing a fixed fast neutron flux
@@ -45,7 +45,7 @@ class Constant(FastFlux):
     """
     TYPE: ClassVar[str] = 'constant'
 
-@offbeat_define
+@ffn_define
 class TimeDependentAxialProfile(Constant):
     """
     Fast flux model that allows prescribing a **time-dependent rod-average

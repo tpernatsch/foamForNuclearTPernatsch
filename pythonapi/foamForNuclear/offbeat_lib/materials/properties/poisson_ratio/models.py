@@ -4,11 +4,11 @@
 from __future__ import annotations
 from typing import Any, ClassVar
 from attrs import field
-from foamForNuclear._attrs_tools import offbeat_define
-from foamForNuclear.common import OffbeatDict
+from foamForNuclear._attrs_tools import ffn_define
+from foamForNuclear.common import FoamForNuclearDict
 
-@offbeat_define
-class PoissonRatioModel(OffbeatDict):
+@ffn_define
+class PoissonRatioModel(FoamForNuclearDict):
     """
     Mother class for PoissonRatio models.
     """
@@ -16,7 +16,7 @@ class PoissonRatioModel(OffbeatDict):
 
 PoissonRatio = PoissonRatioModel  # alias
 
-@offbeat_define
+@ffn_define
 class MolybdenumConstant(PoissonRatio):
     """
     Class to set Mo Poisson's Ratio to a constant input value.
@@ -31,7 +31,7 @@ class MolybdenumConstant(PoissonRatio):
     TYPE: ClassVar[str] = 'MolybdenumConstant'
     PoissonRatioValue: float | int = 0.316
 
-@offbeat_define
+@ffn_define
 class UO2Constant(PoissonRatio):
     """
     Class to set UO2 Poisson's Ratio to a constant input value.
@@ -46,7 +46,7 @@ class UO2Constant(PoissonRatio):
     TYPE: ClassVar[str] = 'UO2Constant'
     PoissonRatioValue: float | int = 0.316
 
-@offbeat_define
+@ffn_define
 class UPuO2Constant(PoissonRatio):
     """
     Class modelling the constant Poisson's ratio of UPuO2 MOX fuel from
@@ -62,7 +62,7 @@ class UPuO2Constant(PoissonRatio):
     TYPE: ClassVar[str] = 'UPuO2Constant'
     PoissonRatioValue: float | int = 0.276
 
-@offbeat_define
+@ffn_define
 class ZircaloyConstant(PoissonRatio):
     """
     Class to set Zircaloy Poisson's Ratio to a constant input value.
@@ -77,7 +77,7 @@ class ZircaloyConstant(PoissonRatio):
     TYPE: ClassVar[str] = 'ZircaloyConstant'
     PoissonRatioValue: float | int = 0.3
 
-@offbeat_define
+@ffn_define
 class Constant(PoissonRatio):
     """
     Model for constant Poisson Ratio. The value is read from dictionary.
@@ -92,7 +92,7 @@ class Constant(PoissonRatio):
     TYPE: ClassVar[str] = 'constant'
     value: float | int
 
-@offbeat_define
+@ffn_define
 class ZircaloyMatpro(PoissonRatio):
     """
     Model for Zircaloy Poisson's Ratio from Matprov11.
@@ -162,7 +162,7 @@ class ZircaloyMatpro(PoissonRatio):
     par8: float | int = 2.168e7
     par9: float | int = 3.49e10
 
-@offbeat_define
+@ffn_define
 class Steel1515TiTobbe(PoissonRatio):
     """
     Class modelling Poisson's ratio of 15-15 Ti cladding material based on Tobbe

@@ -1,8 +1,8 @@
 from __future__ import annotations
 from typing import Optional, Dict
 
-from foamForNuclear.common import OffbeatDict, OpenFOAMDict
-from foamForNuclear._attrs_tools import offbeat_define, _to_List_float
+from foamForNuclear.common import FoamForNuclearDict, OpenFOAMDict
+from foamForNuclear._attrs_tools import ffn_define, _to_List_float
 from typing import ClassVar
 from attrs import field, Factory, setters
 from foamForNuclear.common import OpenFOAMListDict, Table, List, CheckedList
@@ -40,8 +40,8 @@ def _sync_Tref_and_alpha_hook(inst, attr, value):
     return value
 
 
-@offbeat_define
-class Material(OffbeatDict):
+@ffn_define
+class Material(FoamForNuclearDict):
     TYPE: ClassVar[str] = "none"
     density: properties.density.Density | None = None
     conductivity: properties.conductivity.Conductivity | None = None
@@ -135,7 +135,7 @@ def _to_const_alpha(value):
     )
 
 
-@offbeat_define
+@ffn_define
 class Constant(Material):
     TYPE: ClassVar[str] = "constant"
 
@@ -163,7 +163,7 @@ class Constant(Material):
 
 
 
-# @offbeat_define
+# @ffn_define
 # class Buffer(Material):
 #     TYPE: ClassVar[str] = "buffer"
 #     swelling: swelling.Swelling | None 
@@ -196,7 +196,7 @@ class Constant(Material):
 #         )
 
 
-# @offbeat_define
+# @ffn_define
 # class Hastelloy(Material):
 #     TYPE: ClassVar[str] = "hastelloy"    
 #     # density: properties.density.Density = field(factory=properties.density.Constant)
@@ -209,13 +209,13 @@ class Constant(Material):
 #     # swelling: swelling.Swelling = field(factory=swelling.HastelloyNWrightSham)
 
 
-# @offbeat_define
+# @ffn_define
 # class Inconel600(Material):
 #     TYPE: ClassVar[str] = "inconel600"    
 #     density: properties.density.Density = field(factory=properties.density.Constant)
 
 
-# @offbeat_define
+# @ffn_define
 # class Molybdenum(Material):
 #     TYPE: ClassVar[str] = "molybdenum"    
 #     # density: properties.density.Density = field(factory=properties.density.MoConstant)
@@ -228,7 +228,7 @@ class Constant(Material):
 #     # swelling: swelling.Swelling = field(factory=swelling.FeCrAl)
 
 
-# @offbeat_define
+# @ffn_define
 # class PyC(Material):
 #     TYPE: ClassVar[str] = "PyC"    
 #     # density: properties.density.Density = field(factory=properties.density.Constant)
@@ -241,7 +241,7 @@ class Constant(Material):
 #     # swelling: swelling.Swelling = field(factory=swelling.PyCParfume)
 
 
-# @offbeat_define
+# @ffn_define
 # class SiC(Material):
 #     TYPE: ClassVar[str] = "SiC"    
 #     # density: properties.density.Density = field(factory=properties.density.Constant)
@@ -253,7 +253,7 @@ class Constant(Material):
 #     # thermalExpansion: properties.thermal_expansion.ThermalExpansion = field(factory=properties.thermal_expansion.SiCParfume)
 
 
-# @offbeat_define
+# @ffn_define
 # class Steel1515Ti(Material):
 #     TYPE: ClassVar[str] = "Steel1515Ti"    
 #     # density: properties.density.Density = field(factory=properties.density.Steel1515TiSchumann)
@@ -267,14 +267,14 @@ class Constant(Material):
 
 
 # ---- Fuel materials and related classes ----
-@offbeat_define
-class ActinideDict(OffbeatDict):
+@ffn_define
+class ActinideDict(FoamForNuclearDict):
     massNumbers: list[int]
     weightFractions: list[float]
     ratioOverMetal: float
 
 
-@offbeat_define
+@ffn_define
 class FuelMaterial(Material):
     TYPE: ClassVar[str] = "fuel"
 
@@ -295,7 +295,7 @@ class FuelMaterial(Material):
     isotopes: dict[str, ActinideDict] = field(factory=dict,)
 
 
-@offbeat_define
+@ffn_define
 class UO2(FuelMaterial):
     TYPE: ClassVar[str] = "UO2"
 
@@ -324,7 +324,7 @@ class UO2(FuelMaterial):
     GdContent: float | int = 0.0
 
 
-# @offbeat_define
+# @ffn_define
 # class UPuO2(Material):
 #     TYPE: ClassVar[str] = "UPuO2"    
 
@@ -346,7 +346,7 @@ class UO2(FuelMaterial):
 #     #     OpenFOAMListDict(IsotopesDict, "isotopes",), takes_self=True))
 
 
-@offbeat_define
+@ffn_define
 class Zircaloy(Material):
     TYPE: ClassVar[str] = "Zircaloy"
 

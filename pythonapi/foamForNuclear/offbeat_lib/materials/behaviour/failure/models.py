@@ -4,11 +4,11 @@
 from __future__ import annotations
 from typing import Any, ClassVar
 from attrs import field
-from foamForNuclear._attrs_tools import offbeat_define
-from foamForNuclear.common import OffbeatDict
+from foamForNuclear._attrs_tools import ffn_define
+from foamForNuclear.common import FoamForNuclearDict
 
-@offbeat_define
-class FailureModel(OffbeatDict):
+@ffn_define
+class FailureModel(FoamForNuclearDict):
     """
     Mother class for materials failure criteria.
 
@@ -26,7 +26,7 @@ class FailureModel(OffbeatDict):
 
 Failure = FailureModel  # alias
 
-@offbeat_define
+@ffn_define
 class Combined(Failure):
     """
     Criterion used to combine multiple failure criteria. Failure is supposed to
@@ -48,7 +48,7 @@ class Combined(Failure):
     TYPE: ClassVar[str] = 'combined'
     criteria: list[str]
 
-@offbeat_define
+@ffn_define
 class UO2Matpro(Failure):
     """
     Model to check failure of UO2 based on a limit melting temperature from
@@ -70,7 +70,7 @@ class UO2Matpro(Failure):
     TYPE: ClassVar[str] = 'UO2Matpro'
     Tmelt: float | int = 3113.0
 
-@offbeat_define
+@ffn_define
 class UPuO2Magni2020(Failure):
     """
     Model to check failure of UPuO2 based on a limit melting temperature from
@@ -98,7 +98,7 @@ class UPuO2Magni2020(Failure):
     burnupName: str = 'Bu'
     Tmelt: float | int = 3147.0
 
-@offbeat_define
+@ffn_define
 class ZircaloySed(Failure):
     """
     Clad failure criterion during the PCMI phase of a RIA transient based on the strain
@@ -131,7 +131,7 @@ class ZircaloySed(Failure):
     CH: float | int
     crackLength: float | int
 
-@offbeat_define
+@ffn_define
 class ZircaloyOverstrainBison(Failure):
     """
     Failure criterion based on an overstrain limit for Zircaloy cladding, inspired
@@ -161,7 +161,7 @@ class ZircaloyOverstrainBison(Failure):
     patchNames: list[str]
     hoopStrainLimit: float | int = 0.4
 
-@offbeat_define
+@ffn_define
 class ZircaloyOverstressBison(Failure):
     """
     Burst overstress criterion for Zircaloy-4 derived from Bison code. NOTE:
@@ -182,7 +182,7 @@ class ZircaloyOverstressBison(Failure):
     TYPE: ClassVar[str] = 'ZircaloyOverstressBison'
     patchNames: list[str]
 
-@offbeat_define
+@ffn_define
 class ZircaloyPlasticInstabilityBison(Failure):
     """
     Plastic instability failure criterion for Zircaloy cladding inspired by BISON.
@@ -210,7 +210,7 @@ class ZircaloyPlasticInstabilityBison(Failure):
     patchNames: list[str]
     burstStrainRate: float | int = 0.0278
 
-@offbeat_define
+@ffn_define
 class ZircaloyRiaJernkvistModified(Failure):
     """
     Modified Jernkvist failure criterion for Zircaloy cladding during RIA

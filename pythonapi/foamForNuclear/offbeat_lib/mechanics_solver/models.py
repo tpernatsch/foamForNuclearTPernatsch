@@ -4,13 +4,13 @@
 from __future__ import annotations
 from typing import Any, ClassVar
 from attrs import field
-from foamForNuclear._attrs_tools import offbeat_define
-from foamForNuclear.common import OffbeatDict
+from foamForNuclear._attrs_tools import ffn_define
+from foamForNuclear.common import FoamForNuclearDict
 
 from . import multi_material
 
-@offbeat_define
-class MechanicsSubSolver(OffbeatDict):
+@ffn_define
+class MechanicsSubSolver(FoamForNuclearDict):
     """
     Base mechanics solver class. It keeps the displacement field `D` unchanged
     from its initial configuration throughout the simulation.
@@ -59,7 +59,7 @@ class MechanicsSubSolver(OffbeatDict):
 
 Constant = MechanicsSubSolver  # alias
 
-@offbeat_define
+@ffn_define
 class LargeStrainTotLag(Constant):
     """
     Mechanics solver class that solves for total displacement `D` in a total
@@ -104,7 +104,7 @@ class LargeStrainTotLag(Constant):
     TYPE: ClassVar[str] = 'largeStrainTotLag'
     strainTensor: str = 'EulerAlmansi'
 
-@offbeat_define
+@ffn_define
 class LargeStrainUpdLag(Constant):
     """
     Mechanics solver class that solves for incremental displacement `DD` in an
@@ -152,7 +152,7 @@ class LargeStrainUpdLag(Constant):
     TYPE: ClassVar[str] = 'largeStrainUpdLag'
     strainTensor: str = 'EulerAlmansi'
 
-@offbeat_define
+@ffn_define
 class SmallStrain(Constant):
     """
     Mechanics solver class that solves for total displacement `D` in a total
@@ -190,7 +190,7 @@ class SmallStrain(Constant):
     """
     TYPE: ClassVar[str] = 'smallStrain'
 
-@offbeat_define
+@ffn_define
 class SmallStrainIncrementalUpdated(Constant):
     """
     Mechanics solver class that solves for incremental displacement `DD` in

@@ -2,7 +2,7 @@ from foamForNuclear.checkvalue import check_type, check_value
 from foamForNuclear.common import *
 from foamForNuclear.openfoamFile import OpenFOAMFile
 
-from foamForNuclear._attrs_tools import auto_type_validator, offbeat_define
+from foamForNuclear._attrs_tools import auto_type_validator, ffn_define
 from attrs import field, validators as v
 
 _TURBULENCE_TYPE_TYPES = {"laminar", "RAS", "LES"}

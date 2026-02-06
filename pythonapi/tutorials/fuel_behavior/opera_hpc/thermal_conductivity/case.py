@@ -26,7 +26,7 @@ def build_case(
     """
     # 1) Mesh: unit cube, 1 cell
     mesh = ffn.mesh.BlockMesh()    
-    mesh.createCube(
+    mesh.create_cube(
         name="fuel",
         lowX=0, lowY=0, lowZ=0,
         highX=1, highY=1, highZ=1,

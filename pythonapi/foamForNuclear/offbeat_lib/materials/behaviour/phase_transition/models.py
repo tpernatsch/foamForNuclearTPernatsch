@@ -4,11 +4,11 @@
 from __future__ import annotations
 from typing import Any, ClassVar
 from attrs import field
-from foamForNuclear._attrs_tools import offbeat_define
-from foamForNuclear.common import OffbeatDict
+from foamForNuclear._attrs_tools import ffn_define
+from foamForNuclear.common import FoamForNuclearDict
 
-@offbeat_define
-class PhaseTransitionModel(OffbeatDict):
+@ffn_define
+class PhaseTransitionModel(FoamForNuclearDict):
     """
     Base class for phase transition models.
 
@@ -22,7 +22,7 @@ class PhaseTransitionModel(OffbeatDict):
 
 PhaseTransition = PhaseTransitionModel  # alias
 
-@offbeat_define
+@ffn_define
 class ZircaloyDynamic(PhaseTransition):
     """
     Dynamic beta-phase transition model for Zircaloy-based claddings, derived from
