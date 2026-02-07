@@ -29,7 +29,7 @@ class Point(Vector):
         self.isIndexed = isIndexed
 
     def __repr__(self):
-        return((f"name {self.name} " if self.id >= 0 else "") + f"( {self.x} {self.y} {self.z} )")
+        return((f"name {self.name} " if (self.isIndexed and self.id >= 0) else "") + f"( {self.x} {self.y} {self.z} )")
 
     @property
     def name(self) -> str:
@@ -575,8 +575,8 @@ class Block:
 
             self.edges.append(
                 EdgeArc(
-                    pointId1=p1,
-                    pointId2=p2,
+                    point1=p1,
+                    point2=p2,
                     midPoint=Point(pm.x, pm.y, pm.z, isIndexed=isMidPointIndexed),
                     isOrigin=False,  # Foundation expects a point on the arc
                 )
@@ -586,8 +586,8 @@ class Block:
         # ESI or standard usage: keep behaviour as before
         self.edges.append(
             EdgeArc(
-                pointId1=p1,
-                pointId2=p2,
+                point1=p1,
+                point2=p2,
                 midPoint=Point(x, y, z, isIndexed=isMidPointIndexed),
                 isOrigin=isOrigin,
             )

@@ -31,7 +31,7 @@ def build_case(
         lowX=0, lowY=0, lowZ=0,
         highX=1, highY=1, highZ=1,
         nx=1, ny=1, nz=1,
-        isAddBoundaryConditions=True
+        isAddAllBC=True
     )
     
     # 2) Fields

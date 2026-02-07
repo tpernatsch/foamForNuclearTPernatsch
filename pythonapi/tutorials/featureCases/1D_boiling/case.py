@@ -266,7 +266,7 @@ def build_case(region: str = "fluidRegion"):
     settings: ffn.control.ControlDict = case.settings
     
     settings.application = "GeN-Foam"
-    settings.endTime = 1
+    settings.endTime = 12
     settings.deltaT = 0.001
     settings.writeControl = "adjustableRunTime"
     settings.writeInterval = 0.1

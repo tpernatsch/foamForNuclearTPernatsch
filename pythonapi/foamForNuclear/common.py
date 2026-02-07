@@ -62,7 +62,7 @@ class OpenFOAMDict(dict):
         self.name = name
 
     def __setitem__(self, key, item):
-        if isinstance(item, list) and not isinstance(item, (OpenFOAMList, OpenFOAMListDict)):
+        if isinstance(item, list) and not isinstance(item, (OpenFOAMList, OpenFOAMListDict, Table)):
             item = List(item)
         super().__setitem__(key, item)
 

@@ -1183,7 +1183,7 @@ class FGR(FunctionObject):
         super().__init__(
             self.name,
             "fgr",
-            "libOffbeatFunctionObject.so",               # no library specified (matches your minimal dict)
+            "libFFNFunctionObjects.so",               # no library specified (matches your minimal dict)
             self.log,
             self.writeFields,
             self.writeControl,
