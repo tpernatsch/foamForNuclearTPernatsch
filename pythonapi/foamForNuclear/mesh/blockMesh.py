@@ -4,9 +4,10 @@ import tqdm
 
 from foamForNuclear.checkvalue import check_positive, check_type, check_value
 
-from .mesh import _LATTICE_TYPES, Mesh
+from .mesh import Mesh, _LATTICE_TYPES
 from foamForNuclear.openfoamFile import OpenFOAMFile
 from foamForNuclear.common import *
+import math
 
 _CYCLIC_PATCH_TRANSFORM_TYPES = {
     "unknown", "rotational", "translational", "coincidentFullMatch", "noOrdering"
@@ -156,6 +157,7 @@ class Face:
         self.faces: list[list[Point]] = []
         self.isPrint = isPrint
         self.extraParameters = extraParameters
+        self.toBeMerged = False
 
     def __repr__(self):
         txt = f"{tab}{self.name}\n"
@@ -412,6 +414,57 @@ class FaceMappedPatch(Face):
             self.extraParameters['offset'] = f"{offset}"
 
 
+def _point_on_circle_from_center(p1: Point, p2: Point, c: Point) -> Point:
+    """
+    Given two points p1,p2 on a circle and the circle center c, return a third
+    point on the same circle suitable for OpenFOAM Foundation 'arc' syntax
+    (which expects a point-on-arc, not a center).
+
+    We pick the point corresponding to the mid-angle on the circle between p1 and p2.
+    """
+    # vectors from center
+    v1 = (p1.x - c.x, p1.y - c.y, p1.z - c.z)
+    v2 = (p2.x - c.x, p2.y - c.y, p2.z - c.z)
+
+    r1 = math.sqrt(v1[0] * v1[0] + v1[1] * v1[1] + v1[2] * v1[2])
+    r2 = math.sqrt(v2[0] * v2[0] + v2[1] * v2[1] + v2[2] * v2[2])
+    if r1 <= 0.0 or r2 <= 0.0:
+        raise ValueError("Cannot build arc: one point coincides with the provided center.")
+    # ensure same radius (tolerant)
+    if abs(r1 - r2) > 1e-10 * max(r1, r2):
+        raise ValueError("Cannot build arc: points are not equidistant from the provided center.")
+
+    # unit vectors
+    u1 = (v1[0] / r1, v1[1] / r1, v1[2] / r1)
+    u2 = (v2[0] / r2, v2[1] / r2, v2[2] / r2)
+
+    # mid-direction: normalize(u1 + u2)
+    um = (u1[0] + u2[0], u1[1] + u2[1], u1[2] + u2[2])
+    nm = math.sqrt(um[0] * um[0] + um[1] * um[1] + um[2] * um[2])
+
+    # If u1 ~ -u2, the arc is ~180 degrees and u1+u2 ~ 0. Choose a stable direction.
+    if nm < 1e-14:
+        # pick something perpendicular to u1 in the plane spanned by u1,u2.
+        # Here u2 ~ -u1, so plane is ill-defined; any perpendicular works.
+        # Use a fallback based on a coordinate axis not parallel to u1.
+        ax = (1.0, 0.0, 0.0) if abs(u1[0]) < 0.9 else (0.0, 1.0, 0.0)
+        # cross(u1, ax)
+        cx = (
+            u1[1] * ax[2] - u1[2] * ax[1],
+            u1[2] * ax[0] - u1[0] * ax[2],
+            u1[0] * ax[1] - u1[1] * ax[0],
+        )
+        nc = math.sqrt(cx[0] * cx[0] + cx[1] * cx[1] + cx[2] * cx[2])
+        if nc < 1e-14:
+            raise ValueError("Cannot build arc: degenerate 180-degree case.")
+        um = (cx[0] / nc, cx[1] / nc, cx[2] / nc)
+    else:
+        um = (um[0] / nm, um[1] / nm, um[2] / nm)
+
+    # third point on circle
+    return Point(c.x + r1 * um[0], c.y + r1 * um[1], c.z + r1 * um[2], isIndexed=False)
+
+
 class Block:
     """
     A Block is defined by 8 points forming a hexahedron.
@@ -470,13 +523,24 @@ class Block:
         return(f"hex ({' '.join([p.name for p in self.points])}) {self.name} ({self.nx} {self.ny} {self.nz}) simpleGrading ({self.gradx} {self.grady} {self.gradz})")
 
     def add_edge_arc(
-            self,
-            pointIdx1: int, pointIdx2: int,
-            x: float=None, y: float=None, z: float=None,
-            isOrigin: bool=False
-        ):
+        self,
+        pointIdx1: int,
+        pointIdx2: int,
+        x: float = None,
+        y: float = None,
+        z: float = None,
+        isMidPointIndexed: bool = False,
+        isOrigin: bool = False,
+    ):
         """
         Deform an edge to be an arc.
+
+        ESI: supports 'origin' form (arc specified by center).
+        Foundation: does NOT support origin form; expects a point on the arc.
+
+        If of_flavour() == 'foundation' and isOrigin=True, we convert the given
+        origin (center) into a third point on the arc (mid-angle point), and
+        write a standard arc with isOrigin=False.
 
         Parameters
         ----------
@@ -494,19 +558,40 @@ class Block:
         check_type("pointIdx1", pointIdx1, int)
         check_type("pointIdx2", pointIdx2, int)
 
-        if (x == None):
+        if x is None:
             x = self.points[pointIdx1].x
-        if (y == None):
+        if y is None:
             y = self.points[pointIdx1].y
-        if (z == None):
+        if z is None:
             z = self.points[pointIdx1].z
 
-        self.edges.append(EdgeArc(
-            point1=self.points[pointIdx1],
-            point2=self.points[pointIdx2],
-            midPoint=Vector(x, y, z),
-            isOrigin=isOrigin
-        ))
+        p1 = self.points[pointIdx1]
+        p2 = self.points[pointIdx2]
+
+        if isOrigin and of_flavour() == "foundation":
+            # Convert center -> point on arc (third point)
+            c = Point(x, y, z, isIndexed=False)
+            pm = _point_on_circle_from_center(p1, p2, c)
+
+            self.edges.append(
+                EdgeArc(
+                    pointId1=p1,
+                    pointId2=p2,
+                    midPoint=Point(pm.x, pm.y, pm.z, isIndexed=isMidPointIndexed),
+                    isOrigin=False,  # Foundation expects a point on the arc
+                )
+            )
+            return
+
+        # ESI or standard usage: keep behaviour as before
+        self.edges.append(
+            EdgeArc(
+                pointId1=p1,
+                pointId2=p2,
+                midPoint=Point(x, y, z, isIndexed=isMidPointIndexed),
+                isOrigin=isOrigin,
+            )
+        )
 
     def add_edge_polyline(
             self,
@@ -966,6 +1051,200 @@ class BlockMesh(OpenFOAMFile, Mesh):
         ], nr, 1, nz, gradx=gradr, gradz=gradz)
 
         return(newBlock)
+
+
+    def create_wedge_chamfered(
+            self,
+            name: str,
+            innerRadius: float, 
+            outerRadius: float, 
+            lowZ: float, 
+            highZ: float,
+            chamferHeight: float,
+            wedgeAngle: float,
+            nr: int, nz: int,
+            gradr: float=1, gradz: float=1
+        ) -> Block:
+        """
+        Create a chamgered wedge along the Z-axis.
+
+        Parameters
+        ----------
+        wedgeAngle : float
+            Total wedge aperture angle in degree
+
+        Return
+        ------
+            (newBlock)
+        """
+        deg = np.pi/180
+        irX = innerRadius * np.cos(wedgeAngle/2 * deg)
+        irY = innerRadius * np.sin(wedgeAngle/2 * deg)
+        orX = outerRadius * np.cos(wedgeAngle/2 * deg)
+        orY = outerRadius * np.sin(wedgeAngle/2 * deg)
+        irZ_bottom = lowZ
+        irZ_top    = highZ
+        orZ_bottom = lowZ + chamferHeight
+        orZ_top    = highZ - chamferHeight
+
+        newBlock = self.create_block(name, [
+            Point(irX, -irY, irZ_bottom),
+            Point(orX, -orY, orZ_bottom),
+            Point(orX, orY, orZ_bottom),
+            Point(irX, irY, irZ_bottom),
+            Point(irX, -irY, irZ_top),
+            Point(orX, -orY, orZ_top),
+            Point(orX, orY, orZ_top),
+            Point(irX, irY, irZ_top),
+        ], nr, 1, nz, gradx=gradr, gradz=gradz)
+
+        return(newBlock)
+
+
+    def create_wedge_dished(
+        self,
+        name: str,
+        innerRadius: float,
+        outerRadius: float,
+        lowZ: float,
+        highZ: float,
+        dishRadiusCurvature: float,   # R (radius of curvature)
+        dishOuterRadius: float,       # a (radius where dish meets flat land)
+        wedgeAngle: float,
+        nr: int,
+        nz: int,
+        gradr: float = 1,
+        gradz: float = 1,
+    ):
+        """
+        Create a "dished" wedge along the Z-axis.
+
+        The pellet end dish is modeled as a spherical cap of radius of curvature R,
+        which meets the flat land at r = a (dishOuterRadius).
+
+        In r-z cross section, the spherical surface (with land plane at z=0) is:
+            z(r) = sqrt(R^2 - a^2) - sqrt(R^2 - r^2)
+
+        For an annular pellet (innerRadius > 0), the inner-most vertex lies at r=innerRadius,
+        therefore its axial recess relative to the land is z(innerRadius).
+
+        We implement the dish by shifting the *inner* vertices in z by dz_inner and leaving
+        the outer vertices on the land plane. This produces a planar slanted face; you should
+        add arcs later to represent the curvature.
+
+        Geometry convention (typical dished pellet):
+        - bottom dish: inner vertices shifted upward  by dz_inner
+        - top dish:    inner vertices shifted downward by dz_inner
+
+        Parameters
+        ----------
+        dishRadiusCurvature : float
+            Radius of curvature of the dish (R).
+        dishOuterRadius : float
+            Outer radius of the dished region (a). Must satisfy:
+                innerRadius <= dishOuterRadius <= outerRadius
+        wedgeAngle : float
+            Total wedge aperture angle in degrees.
+        """
+
+        # ---- checks ----
+        if highZ <= lowZ:
+            raise ValueError("Expected highZ > lowZ.")
+        height = highZ - lowZ
+
+        if innerRadius < 0.0:
+            raise ValueError("Expected innerRadius >= 0.")
+        if outerRadius <= innerRadius:
+            raise ValueError("Expected outerRadius > innerRadius.")
+
+        if dishOuterRadius < innerRadius or dishOuterRadius > outerRadius:
+            raise ValueError(
+                "dishOuterRadius must satisfy innerRadius <= dishOuterRadius <= outerRadius."
+            )
+
+        R = float(dishRadiusCurvature)
+        a = float(dishOuterRadius)
+
+        if R <= 0.0:
+            raise ValueError("dishRadiusCurvature (R) must be > 0.")
+        if R <= a:
+            raise ValueError("dishRadiusCurvature (R) must be > dishOuterRadius (a).")
+
+        if nr <= 0 or nz <= 0:
+            raise ValueError("nr and nz must be positive integers.")
+        if gradr <= 0 or gradz <= 0:
+            raise ValueError("gradr and gradz must be > 0.")
+
+        # ---- spherical-cap math ----
+        # land plane at z=0 at r=a, so sphere center is at zc = sqrt(R^2 - a^2)
+        zc = np.sqrt(R * R - a * a)
+
+        # recess at r=innerRadius relative to land plane:
+        # z(ri) = zc - sqrt(R^2 - ri^2)  (this is <= 0)
+        ri = float(innerRadius)
+        if R <= ri:
+            raise ValueError("dishRadiusCurvature (R) must be > innerRadius.")
+
+        z_ri = zc - np.sqrt(R * R - ri * ri)  # negative or zero
+        dz_inner = -float(z_ri)               # positive recess magnitude
+
+        if dz_inner >= 0.5 * height:
+            raise ValueError(
+                "Dish too deep for pellet height: inner vertices would cross. "
+                "Need dz_inner < (highZ-lowZ)/2."
+            )
+
+        # ---- wedge coordinates ----
+        deg = np.pi / 180.0
+        irX = innerRadius * np.cos(wedgeAngle / 2.0 * deg)
+        irY = innerRadius * np.sin(wedgeAngle / 2.0 * deg)
+        orX = outerRadius * np.cos(wedgeAngle / 2.0 * deg)
+        orY = outerRadius * np.sin(wedgeAngle / 2.0 * deg)
+
+        # bottom: inner is recessed upward, outer stays on land
+        irZ_bottom = lowZ + dz_inner
+        orZ_bottom = lowZ
+
+        # top: inner is recessed downward, outer stays on land
+        irZ_top = highZ - dz_inner
+        orZ_top = highZ
+
+        newBlock = self.create_block(
+            name,
+            [
+                # bottom ring
+                Point(irX, -irY, irZ_bottom),
+                Point(orX, -orY, orZ_bottom),
+                Point(orX,  orY, orZ_bottom),
+                Point(irX,  irY, irZ_bottom),
+                # top ring
+                Point(irX, -irY, irZ_top),
+                Point(orX, -orY, orZ_top),
+                Point(orX,  orY, orZ_top),
+                Point(irX,  irY, irZ_top),
+            ],
+            nr,
+            1,
+            nz,
+            gradx=gradr,
+            gradz=gradz,
+        )
+        
+        # ---- add dish arcs using circle center (isOrigin=True) ----
+        # Circle center in 3D is on the axis (x=0,y=0), with axial coordinate:
+        # bottom: lowZ + zc ; top: highZ - zc
+        zC_bottom = lowZ - zc
+        zC_top    = highZ + zc
+
+        # bottom face arcs (front/back edges in wedge)
+        newBlock.add_edge_arc(0, 1, x=0.0, y=0.0, z=zC_bottom, isOrigin=True)
+        newBlock.add_edge_arc(3, 2, x=0.0, y=0.0, z=zC_bottom, isOrigin=True)
+
+        # top face arcs
+        newBlock.add_edge_arc(4, 5, x=0.0, y=0.0, z=zC_top, isOrigin=True)
+        newBlock.add_edge_arc(7, 6, x=0.0, y=0.0, z=zC_top, isOrigin=True)
+
+        return newBlock
 
 
     def create_wedge_conical(
@@ -3390,92 +3669,6 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
         return(block)
 
-    # def addPipe1DFrom2PointsSCurve(
-    #     self,
-    #     name: str,
-    #     originPosition: Block,
-    #     finalPosition: Block,
-    #     equivalentHydraulicDiameter: float,
-    #     n: int = 1,
-    #     elbowRadius: float = 0,
-    #     isAddBoundaryConditions: bool = False,
-    #     originPositionOutletFaceName: str = 'top',
-    #     finalPositionInletFaceName: str = 'bottom',
-    #     intermediateDirection: Vector = Vector(0, 1, 0),  # Default vertical
-    #     intermediateLength: float = 5.0  # Default length of intermediate pipe
-    #     ) -> tuple[Block, Block]:
-    #     """
-    #     Create a 1D pipe between two blocks using an intermediate segment.
-    #     Useful for S-shaped connections.
-
-    #     Returns
-    #     -------
-    #     Tuple of (intermediatePipe, finalPipe)
-    #     """
-    #     check_type("originPosition", originPosition, Block)
-    #     check_type("finalPosition", finalPosition, Block)
-    #     check_type("intermediateDirection", intermediateDirection, Vector)
-
-    #     # Get pipes discretization
-
-    #     originFace = originPosition.getFace(originPositionOutletFaceName)
-    #     originVec = originPosition.getFaceBarycenter(originFace)
-
-    #     # Manual copy and normalize
-    #     normalizedDirection = Vector(
-    #         intermediateDirection.x,
-    #         intermediateDirection.y,
-    #         intermediateDirection.z
-    #     )
-    #     normalizedDirection.normalize()
-
-
-    #     intermediateOutletVec = Vector(
-    #         originVec.x + normalizedDirection.x * intermediateLength,
-    #         originVec.y + normalizedDirection.y * intermediateLength,
-    #         originVec.z + normalizedDirection.z * intermediateLength
-    #     )
-
-
-    #     finalFace = finalPosition.getFace(finalPositionInletFaceName)
-    #     finalVec = finalPosition.getFaceBarycenter(finalFace)
-
-    #     finalLength = (finalVec - intermediateOutletVec).norm()
-    #     totalLength = intermediateLength + finalLength
-
-    #     intermediateN = math.ceil(n * intermediateLength / totalLength)
-    #     finalN = n - intermediateN
-
-
-    #     # Create intermediate pipe
-    #     intermediatePipe = self.addPipe1DFromDirection(
-    #         name=f"{name}_intermediate",
-    #         originPosition=originPosition,
-    #         direction=intermediateDirection,
-    #         length=intermediateLength,
-    #         equivalentHydraulicDiameter=equivalentHydraulicDiameter,
-    #         n=intermediateN,
-    #         elbowRadius=elbowRadius,
-    #         isAddBoundaryConditions=isAddBoundaryConditions,
-    #         originPositionOutletFaceName=originPositionOutletFaceName
-    #     )
-
-    #     # Create final connecting pipe
-    #     finalPipe = self.addPipe1DFrom2Points(
-    #         name=f"{name}_final",
-    #         originPosition=intermediatePipe,
-    #         finalPosition=finalPosition,
-    #         equivalentHydraulicDiameter=equivalentHydraulicDiameter,
-    #         n=finalN,
-    #         elbowRadius=elbowRadius,
-    #         isAddBoundaryConditions=isAddBoundaryConditions,
-    #         originPositionOutletFaceName='top',  # intermediate pipe always goes bottom → top
-    #         finalPositionInletFaceName=finalPositionInletFaceName
-    #     )
-
-    #     return intermediatePipe, finalPipe
-
-
 
     def connect_pipes(
             self,
@@ -5183,6 +5376,9 @@ class BlockMesh(OpenFOAMFile, Mesh):
             description='mergePatchPairs'
         )
         self.mergePatchPairs += mergeableFaces
+        for pair in mergeableFaces:
+            for f in pair:
+                f.toBeMerged = True
 
 
     def merge_patches_with_name(
@@ -5326,6 +5522,10 @@ class BlockMesh(OpenFOAMFile, Mesh):
             [face for face in self.faces if face.name == facename1][0],
             [face for face in self.faces if face.name == facename2][0]
         ))
+        
+        for face in self.faces:
+            if (face.name == facename1) | (face.name == facename2):
+                face.toBeMerged = True
 
 
     def duplicate_block(
@@ -5800,6 +6000,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         if (facename == 'back'):
             newPoints[0], newPoints[1], newPoints[3] = newPoints[3], newPoints[0], newPoints[1]
             return(self.add_back(targetBlock=targetBlock, name=name, points=newPoints, ny=n, grady=grad))
+
 
     def extrude_normal_arc(
             self,

@@ -215,7 +215,7 @@ def createRingSectorZ():
     return(nMesh)
 
 
-def createTriangularChannel():
+def create_triangular_channel():
     nMesh = mesh.BlockMesh(region="hexagon_channel")
 
     nMesh.create_triangular_channel(
@@ -393,7 +393,7 @@ for funcMeshGen in [
     createQuarterCylinderZ,
     createRingZ,
     createRingSectorZ,
-    createTriangularChannel,
+    create_triangular_channel,
     create_sphere,
     # create_hollow_half_sphere,
     create_half_sphere,

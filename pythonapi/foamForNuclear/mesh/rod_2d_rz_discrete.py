@@ -170,8 +170,8 @@ def rod_2d_rz_discrete(
       - create_wedge(...)
       - create_wedge_chamfered(...)
       - create_wedge_dished(..., dishRadiusCurvature=R, dishOuterRadius=a, ...)
-      - mergePatchPairsByName(facename1, facename2)
-      - mergeBoundaryFaces(...)
+      - merge_patch_pairs_by_name(facename1, facename2)
+      - merge_boundary_faces(...)
     """
     has_fuel = layout in ("fuel_only", "fuel_and_clad")
     has_clad = layout in ("clad_only", "fuel_and_clad")
@@ -623,7 +623,7 @@ def rod_2d_rz_discrete(
         for i, rings in enumerate(fuel_pellets):
             if len(rings) > 1:
                 for k in range(len(rings) - 1):
-                    bm.mergePatchPairsByName(
+                    bm.merge_patch_pairs_by_name(
                         f"{fuel_name}Outer_{i}_{k}",
                         f"{fuel_name}Inner_{i}_{k+1}",
                     )

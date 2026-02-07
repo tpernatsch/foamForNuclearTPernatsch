@@ -27,7 +27,7 @@ nx = 50
 ny = nx
 nz = 1
 
-nMesh.createCylinderAlongZ(
+nMesh.create_cylinder_along_z(
     'fuel',
     radius=fuelOR,
     lowZ=0, highZ=length,
@@ -54,7 +54,7 @@ nMesh.create_cube_with_hole_along_z(
     isAddBoundaryConditions=True
 )
 
-nMesh.addMergePatchPairs()
+nMesh.add_merge_patch_pairs()
 
 nMesh.merge_patches_with_name('top', includeFacename=['Top'])
 nMesh.merge_patches_with_name('bottom', includeFacename=['Bottom'])
