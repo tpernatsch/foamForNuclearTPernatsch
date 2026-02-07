@@ -40,54 +40,53 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from foamForNuclear.axialProfileModels import *
-from foamForNuclear.azimuthalProfileModels import *
-from foamForNuclear.checkvalue import *
-from foamForNuclear.common import *
-from foamForNuclear.controlDict import *
-from foamForNuclear.coupling import *
-from foamForNuclear.createBafflesDict import *
-from foamForNuclear.createPatchDict import *
-from foamForNuclear.decomposeParDict import *
-from foamForNuclear.dispersedDiameterModels import *
-from foamForNuclear.dragModels import *
-from foamForNuclear.dynamicMeshDict import *
-from foamForNuclear.executor import *
-from foamForNuclear.externalCouplingDict import *
-from foamForNuclear.externalSource import *
-from foamForNuclear.field import *
-from foamForNuclear.fmi import *
-from foamForNuclear.fvSchemes import *
-from foamForNuclear.fvSolution import *
-from foamForNuclear.functionObjects import *
-from foamForNuclear.heatExchangerModels import *
-from foamForNuclear.heatTransferModels import *
-from foamForNuclear.neutronics import *
-from foamForNuclear.nuclearData import *
-from foamForNuclear.offbeat import *
-from foamForNuclear.openfoamFile import *
-from foamForNuclear.pairGeometryModels import *
-from foamForNuclear.phaseChangeModel import *
-from foamForNuclear.phaseProperties import *
-from foamForNuclear.powerModels import *
-from foamForNuclear.powerOffCriterionModels import *
-from foamForNuclear.pump import *
-from foamForNuclear.quadratureSet import *
-from foamForNuclear.radialProfileModels import *
-from foamForNuclear.regimeMapModels import *
-from foamForNuclear.setFieldsDict import *
-from foamForNuclear.solver import *
-from foamForNuclear.thermalhydraulics import *
-from foamForNuclear.timeFolder import *
-from foamForNuclear.timeProfile import *
-from foamForNuclear.topoSetDict import *
-from foamForNuclear.transportProperties import *
-from foamForNuclear.turbulenceProperties import *
-from foamForNuclear.twoPhaseDragMultiplierModels import *
+from . import _attrs_tools
+from . import boundaryConditions
 
-import foamForNuclear.boundaryConditions as boundaryConditions
-import foamForNuclear.thermomechanicalMaterial as thermomechanicalMaterial
-import foamForNuclear.model as model
-import foamForNuclear.mesh as mesh
-import foamForNuclear.model as model
-import foamForNuclear.openmcTools as openmcTools
+# To be checked how to group
+from foamForNuclear.checkvalue import (check_value, check_positive, check_type, CheckedList)
+from . import common
+
+from . import control
+
+# To be checked how to group
+from . import coupling
+from foamForNuclear.executor import run, allclean, run_preprocessing
+from . import executor
+from foamForNuclear.externalSource import ExternalSource
+
+from . import fields
+
+# # To be checked what this import does
+# from foamForNuclear.fmi import *
+
+from . import functions
+
+# To be checked how to group
+from . import nuclearData
+
+from . import case
+from . import mesh
+from . import numerics
+from . import offbeat_lib
+from . import openmcTools
+
+# To be checked how to group
+from foamForNuclear.openfoamFile import OpenFOAMFile
+
+from . import porous_medium
+from . import preprocessing
+from . import profiles
+
+# To be checked how to group
+from . import quadratureSet
+
+from . import solvers
+
+# To be checked how to group
+from . import timeFolder
+from . import timeProfile
+
+from . import thermo
+from . import transport
+from . import turbulence
