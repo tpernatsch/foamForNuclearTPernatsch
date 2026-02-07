@@ -4,6 +4,7 @@ massFlow/massFlow.C
 pressureDrop/pressureDrop.C
 stopIfMaxFieldDiff/stopIfMaxFieldDiff.C
 patchScalarFieldValue/patchScalarFieldValue.C
-
+fgr/fgr.C
+rodPressure/rodPressure.C
 
 LIB = $(FOAM_USER_LIBBIN)/libFFNFunctionObjects
