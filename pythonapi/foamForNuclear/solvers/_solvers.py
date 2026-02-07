@@ -1,19 +1,28 @@
+from __future__ import annotations
+
+import attrs as attr
+from attrs import define, field, validators as v
+from foamForNuclear._attrs_tools import auto_type_validator, call_method_on_change, _propagate_region_to
+
 from abc import abstractmethod
 import os
 
 from foamForNuclear.boundaryConditions.zeroGradient import ZeroGradient
 from foamForNuclear.common import *
 from foamForNuclear.checkvalue import check_type, CheckedList
-from foamForNuclear.decomposeParDict import DecomposeParDict
-from foamForNuclear.dynamicMeshDict import DynamicMeshDict
-from foamForNuclear.field import Field
-from foamForNuclear.fvSchemes import fvSchemes
-from foamForNuclear.fvSolution import fvSolution
+from foamForNuclear.mesh.dicts import DecomposeParDict
+from foamForNuclear.mesh.dicts import DynamicMeshDict
+from foamForNuclear.fields import Field
+from foamForNuclear.numerics import fvSchemes, fvSolution
 from foamForNuclear.mesh.mesh import Mesh
-from foamForNuclear.setFieldsDict import SetFieldRegion, SetFieldsDict
+from foamForNuclear.preprocessing import SetFieldRegion, SetFieldsDict
 from foamForNuclear.timeFolder import TimeFolder
 
-
+@define(
+    slots=True, 
+    on_setattr=[attr.setters.validate, call_method_on_change("propagate_region", "region")], 
+    field_transformer=auto_type_validator
+)
 class Solver:
     """
     Base class for solver.
@@ -66,31 +75,32 @@ class Solver:
 
     """
 
-    def __init__(
-            self,
-            region: str="",
-            solver: str="none",
-            removeBaffles: bool=False,
-            timeFolder: TimeFolder=None,
-            mesh: Mesh=None,
-            isMeshDeformation: bool=False,
-            displacementFieldName: str="disp",
-        ):
-        self.region: str = region
-        self.solver: str = solver
-        self.removeBaffles: bool = removeBaffles
-        self.timeFolder: TimeFolder = timeFolder
-        self.mesh: Mesh = mesh
-        self.fvSchemes: fvSchemes = fvSchemes()
-        self.fvSolution: fvSolution = fvSolution()
-        self.decomposeParDict: DecomposeParDict = DecomposeParDict()
-        self.isMeshDeformation: bool = isMeshDeformation
-        self.displacementFieldName: str = displacementFieldName
-        self.setFieldsDict: SetFieldsDict = SetFieldsDict()
-        self.dynamicMeshDict: DynamicMeshDict = DynamicMeshDict(
-            dynamicFvMesh="dynamicMotionSolverFvMesh"
-        )
+    region: str = field(default="")
+    solver: str = field(default="none")
+    removeBaffles: bool = False
+    timeFolder: TimeFolder | None = None
+    mesh: Mesh | None = None
+    isMeshDeformation: bool = False
+    displacementFieldName: str = "disp"
+    
+    fvSchemes: fvSchemes = field(factory=fvSchemes)
+    fvSolution: fvSolution = field(factory=fvSolution)
+    decomposeParDict: DecomposeParDict = field(factory=DecomposeParDict)
+    setFieldsDict: SetFieldsDict = field(factory=SetFieldsDict)
+    dynamicMeshDict: DynamicMeshDict = field(
+        factory=lambda: DynamicMeshDict(dynamicFvMesh="dynamicMotionSolverFvMesh"))
 
+    def propagate_region(self, new_value: str | None = None) -> None:        
+        if new_value is None:
+            new_value = self.region
+        _propagate_region_to(self, new_value, "fvSchemes", "fvSolution")
+
+    def __attrs_post_init__(self):
+        _propagate_region_to(self, self.region, "fvSchemes", "fvSolution")
+
+    # @region.on_setattr
+    # def _on_region_change(self, _attr, _value):
+    #     propagate_region_to(self, "fvSchemes", "fvSolution")
 
     def __repr__(self, depth = 0):
         text = ""
@@ -128,103 +138,41 @@ class Solver:
         return(text)
 
 
-    @property
-    def region(self):
-        return self._region
+    # @property
+    # def region(self):
+    #     return self._region
 
-    @region.setter
-    def region(self, region) -> None:
-        if region is not None:
-            check_type("region", region, str)
-            self._region = region
-        else:
-            self._region = ''
+    # @region.setter
+    # def region(self, region) -> None:
+    #     if region is not None:
+    #         check_type("region", region, str)
+    #         self._region = region
+    #     else:
+    #         self._region = ''
 
-    @property
-    def solver(self):
-        return self._solver
+    # @property
+    # def solver(self):
+    #     return self._solver
 
-    @solver.setter
-    def solver(self, solver) -> None:
-        if solver is not None:
-            check_type("solver", solver, str)
-            self._solver = solver
-        else:
-            self._solver = ''
+    # @solver.setter
+    # def solver(self, solver) -> None:
+    #     if solver is not None:
+    #         check_type("solver", solver, str)
+    #         self._solver = solver
+    #     else:
+    #         self._solver = ''
 
-    @property
-    def removeBaffles(self):
-        return self._removeBaffles
+    # @fvSchemes.setter
+    # def fvSchemes(self, fvSchemes_) -> None:
+    #     check_type("fvSchemes", fvSchemes_, fvSchemes)
+    #     self._fvSchemes = fvSchemes_
+    #     self._fvSchemes.region = self.region
 
-    @removeBaffles.setter
-    def removeBaffles(self, removeBaffles) -> None:
-        check_type("removeBaffles", removeBaffles, bool)
-        self._removeBaffles = removeBaffles
-
-    @property
-    def timeFolder(self):
-        return self._timeFolder
-
-    @timeFolder.setter
-    def timeFolder(self, timeFolder) -> None:
-        check_type("timeFolder", timeFolder, TimeFolder, none_ok=True)
-        self._timeFolder = timeFolder
-
-    @property
-    def fvSchemes(self):
-        return self._fvSchemes
-
-    @fvSchemes.setter
-    def fvSchemes(self, fvSchemes_) -> None:
-        check_type("fvSchemes", fvSchemes_, fvSchemes)
-        self._fvSchemes = fvSchemes_
-        self._fvSchemes.region = self.region
-
-    @property
-    def fvSolution(self):
-        return self._fvSolution
-
-    @fvSolution.setter
-    def fvSolution(self, fvSolution_) -> None:
-        check_type("fvSolution", fvSolution_, fvSolution)
-        self._fvSolution = fvSolution_
-        self._fvSolution.region = self.region
-
-    @property
-    def decomposeParDict(self):
-        return self._decomposeParDict
-
-    @decomposeParDict.setter
-    def decomposeParDict(self, decomposeParDict_) -> None:
-        check_type("decomposeParDict", decomposeParDict_, DecomposeParDict)
-        self._decomposeParDict = decomposeParDict_
-
-    @property
-    def mesh(self):
-        return self._mesh
-
-    @mesh.setter
-    def mesh(self, mesh) -> None:
-        check_type("mesh", mesh, Mesh, none_ok=True)
-        self._mesh = mesh
-
-    @property
-    def displacementFieldName(self):
-        return self._displacementFieldName
-
-    @displacementFieldName.setter
-    def displacementFieldName(self, displacementFieldName) -> None:
-        check_type("displacementFieldName", displacementFieldName, str, none_ok=True)
-        self._displacementFieldName = displacementFieldName
-
-    @property
-    def dynamicMeshDict(self):
-        return self._dynamicMeshDict
-
-    @dynamicMeshDict.setter
-    def dynamicMeshDict(self, dynamicMeshDict) -> None:
-        check_type("dynamicMeshDict", dynamicMeshDict, DynamicMeshDict, none_ok=True)
-        self._dynamicMeshDict = dynamicMeshDict
+    # @fvSolution.setter
+    # def fvSolution(self, fvSolution_) -> None:
+    #     check_type("fvSolution", fvSolution_, fvSolution)
+    #     self._fvSolution = fvSolution_
+    #     self._fvSolution.region = self.region
 
 
     def create_folders(self) -> None:

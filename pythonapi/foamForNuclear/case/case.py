@@ -908,7 +908,9 @@ class Case:
             internalMesh = mesh['internalMesh']
             internalMesh = internalMesh.scale(scalingVector)
             if (isSlice):
-                slice_mesh = internalMesh.slice(normal=normal, origin=offset)
+                # TODO: this line somehow breaks the plotter.add_mesh function a few lines below
+                # slice_mesh = internalMesh.slice(normal=normal, origin=offset)
+                slice_mesh = internalMesh.slice(normal=normal)
                 internalMesh = slice_mesh.translate(offset, inplace=True)
 
             # Recompute limits
