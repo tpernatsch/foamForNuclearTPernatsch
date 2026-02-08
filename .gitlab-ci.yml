@@ -28,7 +28,7 @@ pages:
     - cd documentation/doxygen/Doxygen && doxygen && cd ../../../
 
     # Install and build Sphinx doc
-    - pip3 install -U sphinx sphinx-rtd-theme sphinx_intl myst-parser sphinx-mermaid
+    - pip3 install -U sphinx sphinx-rtd-theme sphinx_intl myst-parser sphinx-mermaid sphinxcontrib-bibtex
     - cd pythonapi && pip3 install -e . && cd ..
     - python3 tools/caseFormatting/AllcheckYamlDoc.py
     - python3 documentation/sphinx/generate_tutorials_docs.py
