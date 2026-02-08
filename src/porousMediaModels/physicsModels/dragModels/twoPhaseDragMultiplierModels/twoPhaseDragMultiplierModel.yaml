@@ -10,14 +10,15 @@ description: |-
       K_d,2φ / |U_m| ≈ min(maxPhi2, φ₂) · K_d,sp · α_m^2 · |U_m|
 
   where:
+
   - K_d,sp is the single-phase drag tensor of the multiplier fluid
   - α_m is the normalized volume (or flow) fraction of the multiplier fluid
   - |U_m| is the magnitude of the multiplier-fluid velocity 
 
   This base class provides:
+
   - run-time selection infrastructure (twoPhaseDragMultiplierModels table)
-  - storage and access to the underlying friction factor tensor of the
-    multiplier fluid
+  - storage and access to the underlying friction factor tensor of the multiplier fluid
   - the default implementation φ₂ = 1.0 (no additional two-phase drag)
   - a utility to fill a volTensorField with the resulting two-phase drag
     tensor divided by velocity 
