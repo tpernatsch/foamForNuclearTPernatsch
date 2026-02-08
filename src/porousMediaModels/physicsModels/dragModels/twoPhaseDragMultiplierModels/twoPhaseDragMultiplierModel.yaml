@@ -5,15 +5,24 @@ description: |-
   The class computes a cell-wise drag multiplier φ₂ and a corresponding total
   (two-phase) drag tensor divided by the multiplier-fluid velocity. 
 
-  The effective drag factor tensor divided by U is evaluated as
+  The effective drag-factor tensor divided by the magnitude of the mixture velocity
+  is evaluated as:
 
-      K_d,2φ / |U_m| ≈ min(maxPhi2, φ₂) · K_d,sp · α_m^2 · |U_m|
+  .. math::
+
+      \frac{\mathbf{K}_{d,2\phi}}{\lvert \mathbf{U}_m \rvert}
+      \;\approx\;
+      \min\!\left(\max\Phi_2,\ \phi_2\right)
+      \;\mathbf{K}_{d,\mathrm{sp}}\;
+      \alpha_m^{2}\;
+      \lvert \mathbf{U}_m \rvert
 
   where:
 
-  - K_d,sp is the single-phase drag tensor of the multiplier fluid
-  - α_m is the normalized volume (or flow) fraction of the multiplier fluid
-  - |U_m| is the magnitude of the multiplier-fluid velocity 
+  - :math:`\mathbf{K}_{d,\mathrm{sp}}` is the single‑phase drag tensor of the multiplier fluid,
+  - :math:`\alpha_m` is the normalized volume (or flow) fraction of the multiplier fluid,
+  - :math:`\lvert \mathbf{U}_m \rvert` is the magnitude of the multiplier‑fluid velocity
+
 
   This base class provides:
 
