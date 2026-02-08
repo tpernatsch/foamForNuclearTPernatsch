@@ -813,6 +813,144 @@ def append_toctree_for_folder_direct_subfolders(target_rst: str, folder: str, ma
     print(f"Appended toctree (direct subfolders only) with {len(rst_files)} entries to {target_rst}")
 
 
+# def insert_toctree_at_placeholder_for_folder_direct_subfolders(
+#     target_rst: str,
+#     folder: str,
+#     maxdepth: int = 1,
+#     placeholder: str = "toctreeHere",
+#     append_if_missing: bool = True,
+# ) -> None:
+#     """
+#     Replace a line containing `placeholder` with a Sphinx toctree listing *.rst files
+#     that are exactly one level below `folder` (direct subfolders only).
+
+#     - Preserves the placeholder line's leading indentation for the directive.
+#     - Ensures a blank line before the directive (adds one if the previous line isn't blank).
+#     - Indents options and entries by exactly 3 spaces relative to the directive.
+#     - Uses forward slashes in entries for Sphinx portability.
+#     """
+#     target_path = Path(target_rst).resolve()
+#     folder_path = Path(folder).resolve()
+
+#     # Collect *.rst files in direct subfolders only (depth = 1)
+#     rst_files = []
+#     for f in folder_path.rglob("*.rst"):
+#         try:
+#             parts = f.relative_to(folder_path).parts
+#         except ValueError:
+#             continue
+#         if len(parts) == 2 and f.is_file():
+#             rst_files.append(f)
+
+#     rst_files = sorted(rst_files)
+#     if not rst_files:
+#         print(f"[info] No .rst files found in direct subfolders of {folder_path}")
+#         return
+
+#     # Read target file
+#     try:
+#         with open(target_path, "r", encoding="utf-8") as fh:
+#             content = fh.read()
+#     except FileNotFoundError:
+#         print(f"[error] Target RST not found: {target_path}")
+#         return
+
+#     # Work line-by-line to precisely control indentation and blank lines
+#     lines = content.splitlines(keepends=False)
+
+#     # Find placeholder line index and its indent
+#     placeholder_idx = None
+#     placeholder_indent = ""
+#     for i, line in enumerate(lines):
+#         # Match a line that contains only optional whitespace + placeholder + optional whitespace
+#         if re.fullmatch(rf"\s*{re.escape(placeholder)}\s*", line):
+#             placeholder_idx = i
+#             placeholder_indent = re.match(r"\s*", line).group(0)
+#             break
+
+#     # Build toctree with correct indentation rules
+#     INDENT = "   "  # 3 spaces per Sphinx convention
+#     directive_indent = placeholder_indent  # directive starts at the placeholder's indent
+#     opt_indent = directive_indent + INDENT
+#     entry_indent = directive_indent + INDENT
+
+#     toctree_lines = [
+#         f"{directive_indent}.. toctree::",
+#         f"{opt_indent}:maxdepth: {maxdepth}",
+#         f"{directive_indent}",  # blank line separating options from entries (same indent as directive)
+#     ]
+
+#     for f in rst_files:
+#         rel_path = os.path.relpath(f, start=target_path.parent).replace(os.sep, "/")
+#         # You can drop the .rst suffix if you prefer; Sphinx accepts both.
+#         toctree_lines.append(f"{entry_indent}{rel_path}")
+
+#     # Ensure there is a blank line BEFORE the directive
+#     # If the placeholder is at index k, ensure lines[k-1] is blank (or it's the top of file)
+#     def ensure_blank_line_before(lines_list, insert_at_index, indent_for_blank=""):
+#         if insert_at_index <= 0:
+#             # Insert a blank line at the very top only if the first line isn't already blank
+#             return lines_list
+#         prev = lines_list[insert_at_index - 1]
+#         if prev.strip() != "":
+#             # Insert a truly blank line (no spaces) as Sphinx blank line
+#             lines_list.insert(insert_at_index, "")
+#         return lines_list
+
+#     if placeholder_idx is not None:
+#         # Replace the placeholder line with toctree_lines (injecting a blank line before if needed)
+#         lines = ensure_blank_line_before(lines, placeholder_idx)
+#         # After possibly inserting, the placeholder_idx may shift by +1
+#         # Recompute if a blank line was inserted
+#         # We detect by checking if the line at placeholder_idx is empty now
+#         if lines[placeholder_idx].strip() == "":
+#             placeholder_idx += 1
+
+#         # Remove the placeholder line
+#         del lines[placeholder_idx]
+
+#         # Insert toctree block at the placeholder position
+#         for j, tline in enumerate(toctree_lines):
+#             lines.insert(placeholder_idx + j, tline)
+
+#         new_content = "\n".join(lines) + "\n"
+#         with open(target_path, "w", encoding="utf-8") as fh:
+#             fh.write(new_content)
+
+#         print(
+#             f"[ok] Inserted toctree (direct subfolders only, {len(rst_files)} entries) "
+#             f"at placeholder '{placeholder}' in {target_path}"
+#         )
+#         return
+
+#     # If placeholder not found
+#     warn_msg = f"[warn] Placeholder '{placeholder}' not found in {target_path}."
+#     if append_if_missing:
+#         # Append with a preceding blank line for safety
+#         if lines and lines[-1].strip() != "":
+#             lines.append("")
+#         # For appending, left-align the directive at column 0
+#         directive_indent = ""
+#         opt_indent = "   "
+#         entry_indent = "   "
+#         toctree_lines = [
+#             f"{directive_indent}.. toctree::",
+#             f"{opt_indent}:maxdepth: {maxdepth}",
+#             f"{directive_indent}",
+#         ]
+#         for f in rst_files:
+#             rel_path = os.path.relpath(f, start=target_path.parent).replace(os.sep, "/")
+#             toctree_lines.append(f"{entry_indent}{rel_path}")
+
+#         lines.extend(toctree_lines)
+#         new_content = "\n".join(lines) + "\n"
+#         with open(target_path, "w", encoding="utf-8") as fh:
+#             fh.write(new_content)
+#         print(warn_msg + " Appended toctree at end of file instead.")
+#     else:
+#         print(warn_msg + " No changes made.")
+
+
 def insert_toctree_at_placeholder_for_folder_direct_subfolders(
     target_rst: str,
     folder: str,
@@ -828,6 +966,8 @@ def insert_toctree_at_placeholder_for_folder_direct_subfolders(
     - Ensures a blank line before the directive (adds one if the previous line isn't blank).
     - Indents options and entries by exactly 3 spaces relative to the directive.
     - Uses forward slashes in entries for Sphinx portability.
+    - If no .rst files are found in direct subfolders, the placeholder line is
+      replaced by 'none' (with the same indentation).
     """
     target_path = Path(target_rst).resolve()
     folder_path = Path(folder).resolve()
@@ -843,9 +983,45 @@ def insert_toctree_at_placeholder_for_folder_direct_subfolders(
             rst_files.append(f)
 
     rst_files = sorted(rst_files)
+
+    # --- NEW BEHAVIOR: if no rst_files, replace placeholder with 'none' and return
     if not rst_files:
         print(f"[info] No .rst files found in direct subfolders of {folder_path}")
+
+        try:
+            with open(target_path, "r", encoding="utf-8") as fh:
+                content = fh.read()
+        except FileNotFoundError:
+            print(f"[error] Target RST not found: {target_path}")
+            return
+
+        lines = content.splitlines(keepends=False)
+
+        placeholder_pattern = re.compile(rf"(\s*){re.escape(placeholder)}\s*$")
+        changed = False
+        for i, line in enumerate(lines):
+            m = placeholder_pattern.fullmatch(line)
+            if m:
+                indent = m.group(1)
+                lines[i] = f"{indent}none"
+                changed = True
+
+        if changed:
+            new_content = "\n".join(lines) + "\n"
+            with open(target_path, "w", encoding="utf-8") as fh:
+                fh.write(new_content)
+            print(
+                f"[ok] No .rst files found; replaced placeholder '{placeholder}' "
+                f"with 'none' in {target_path}"
+            )
+        else:
+            print(
+                f"[warn] No .rst files found and placeholder '{placeholder}' "
+                f"not found in {target_path}. No changes made."
+            )
+
         return
+    # --- END NEW BEHAVIOR BRANCH
 
     # Read target file
     try:
@@ -877,39 +1053,29 @@ def insert_toctree_at_placeholder_for_folder_direct_subfolders(
     toctree_lines = [
         f"{directive_indent}.. toctree::",
         f"{opt_indent}:maxdepth: {maxdepth}",
-        f"{directive_indent}",  # blank line separating options from entries (same indent as directive)
+        f"{directive_indent}",  # blank line separating options from entries
     ]
 
     for f in rst_files:
         rel_path = os.path.relpath(f, start=target_path.parent).replace(os.sep, "/")
-        # You can drop the .rst suffix if you prefer; Sphinx accepts both.
         toctree_lines.append(f"{entry_indent}{rel_path}")
 
     # Ensure there is a blank line BEFORE the directive
-    # If the placeholder is at index k, ensure lines[k-1] is blank (or it's the top of file)
     def ensure_blank_line_before(lines_list, insert_at_index, indent_for_blank=""):
         if insert_at_index <= 0:
-            # Insert a blank line at the very top only if the first line isn't already blank
             return lines_list
         prev = lines_list[insert_at_index - 1]
         if prev.strip() != "":
-            # Insert a truly blank line (no spaces) as Sphinx blank line
             lines_list.insert(insert_at_index, "")
         return lines_list
 
     if placeholder_idx is not None:
-        # Replace the placeholder line with toctree_lines (injecting a blank line before if needed)
         lines = ensure_blank_line_before(lines, placeholder_idx)
-        # After possibly inserting, the placeholder_idx may shift by +1
-        # Recompute if a blank line was inserted
-        # We detect by checking if the line at placeholder_idx is empty now
         if lines[placeholder_idx].strip() == "":
             placeholder_idx += 1
 
-        # Remove the placeholder line
         del lines[placeholder_idx]
 
-        # Insert toctree block at the placeholder position
         for j, tline in enumerate(toctree_lines):
             lines.insert(placeholder_idx + j, tline)
 
@@ -923,13 +1089,11 @@ def insert_toctree_at_placeholder_for_folder_direct_subfolders(
         )
         return
 
-    # If placeholder not found
+    # If placeholder not found but we DO have rst_files
     warn_msg = f"[warn] Placeholder '{placeholder}' not found in {target_path}."
     if append_if_missing:
-        # Append with a preceding blank line for safety
         if lines and lines[-1].strip() != "":
             lines.append("")
-        # For appending, left-align the directive at column 0
         directive_indent = ""
         opt_indent = "   "
         entry_indent = "   "
@@ -949,9 +1113,7 @@ def insert_toctree_at_placeholder_for_folder_direct_subfolders(
         print(warn_msg + " Appended toctree at end of file instead.")
     else:
         print(warn_msg + " No changes made.")
-
-
-
+        
 
 def append_toctree_for_folder_recursive(target_rst: str, folder: str, maxdepth: int = 1) -> None:
     """

@@ -2,7 +2,7 @@ description: |-
 
   Base class for virtual-mass coefficient models operating on an FFPair.Calculate virtual mass based on a coefficient. Available runtime selectable models include:
 
-  toctreeHere
+  
 
   If no models are available, it means that only templated models, such as ``constant`` exist.
 
