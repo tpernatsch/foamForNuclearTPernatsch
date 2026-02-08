@@ -1,0 +1,11 @@
+description: |
+  Mother class for heatCapacity models.
+
+admonitions:
+  - kind: warning
+    body: |
+      The keyword `heatCapacityModel` is deprecated. Prefer an `heatCapacity` dictionary with a `type` entry.
+
+options: []
+
+usage: []

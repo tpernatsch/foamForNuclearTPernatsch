@@ -1,0 +1,77 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2212                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       volScalarField;
+    location    "0";
+    object      Q;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [1 -1 -3 0 0 0 0];
+
+internalField  #codeStream
+{
+    code
+    #{
+        const IOdictionary& d = static_cast<const IOdictionary&>(dict);
+        const fvMesh& mesh = refCast<const fvMesh>(d.db());
+        scalarField fld(mesh.nCells(), 2.5e7);
+        const vectorField& C(mesh.C());
+        scalar pi(Foam::constant::mathematical::pi);
+
+        forAll(fld, i)
+        {
+            scalar Cz(C[i].z());
+
+            fld[i] *= cos((Cz-1)*pi/2 );
+        }
+
+        writeEntry(os, "", fld);
+    #};
+
+    //! Optional:
+    codeInclude
+    #{
+        #include "fvCFD.H"
+    #};
+
+    //! Optional:
+    codeOptions
+    #{
+        -I$(LIB_SRC)/finiteVolume/lnInclude \
+        -I$(LIB_SRC)/meshTools/lnInclude
+    #};
+};
+
+boundaryField
+{
+    
+    bottom
+    {
+        type            zeroGradient;
+    }
+   
+    top
+    {
+        type            zeroGradient;
+    }
+
+    walls
+    {
+        type            zeroGradient;
+    }
+
+   
+}
+
+
+// ************************************************************************* //

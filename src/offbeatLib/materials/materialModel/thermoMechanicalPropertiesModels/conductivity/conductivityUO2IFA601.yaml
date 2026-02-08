@@ -1,0 +1,86 @@
+description: |
+  Thermal conductivity model for UO₂ fuel based on the IFA-601 formulation.
+
+  The correlation depends on temperature and burnup and is commonly used for
+  LWR fuel applications.
+
+options:
+  - key: burnupName
+    type: word
+    required: false
+    default: Bu
+    description: |
+      Name of the burnup field used by the correlation.
+
+  - key: par1
+    type: scalar
+    required: false
+    default: 40
+    description: |
+      Correlation parameter.
+
+  - key: par2
+    type: scalar
+    required: false
+    default: 5
+    description: |
+      Correlation parameter.
+
+  - key: par3
+    type: scalar
+    required: false
+    default: 0.24
+    description: |
+      Correlation parameter.
+
+  - key: par4
+    type: scalar
+    required: false
+    default: 0.457
+    description: |
+      Correlation parameter.
+
+  - key: par5
+    type: scalar
+    required: false
+    default: 0.00433
+    description: |
+      Correlation parameter.
+
+  - key: par6
+    type: scalar
+    required: false
+    default: 0.11
+    description: |
+      Correlation parameter.
+
+  - key: par7
+    type: scalar
+    required: false
+    default: 1.32e-05
+    description: |
+      Correlation parameter.
+
+  - key: par8
+    type: scalar
+    required: false
+    default: 0.00188
+    description: |
+      Correlation parameter.
+
+usage:
+  - comment: |
+      Example selection of the IFA-601 conductivity model for UO₂ fuel.
+    snippet: |
+      conductivity
+      {
+          type UO2Ifa601;
+
+          // Optional
+          burnupName Bu;
+
+          // Optional overrides
+          // par1 40;
+          // par2 5;
+          // ...
+      }

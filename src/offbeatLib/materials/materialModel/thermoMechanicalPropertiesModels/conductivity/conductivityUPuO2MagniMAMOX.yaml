@@ -1,0 +1,36 @@
+description: |
+  Thermal conductivity correlation for MA-bearing MOX fuel based on the
+  formulation by Magni.
+
+  The model is intended for fuels containing minor actinides.
+
+options:
+  - key: densityFraction
+    type: scalar
+    required: false
+    default: 0.95
+    description: |
+      Fraction of theoretical density used by the correlation.
+
+      Optional override: if not provided here, it is expected in the material
+      base/composition dictionary.
+
+usage:
+  - comment: |
+      Example selection of the Magni MA-MOX conductivity correlation in the `solverDict`.
+    snippet: |
+        materials
+        {
+            fuel
+            {
+                type UPuO2;
+                
+                conductivity
+                {
+                    type MaUPuO2Magni;
+
+                    // Optional override
+                    // densityFraction 0.95;
+                }
+            }
+        }

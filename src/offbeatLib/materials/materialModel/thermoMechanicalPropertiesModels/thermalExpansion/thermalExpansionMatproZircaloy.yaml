@@ -1,0 +1,69 @@
+description: |
+  Class modelling thermal expansion of UO2 fuel from Matprov11.
+
+options:
+  - key: par1
+    type: scalar
+    required: false
+    default: 4.441e-6
+    description: |
+      Option read by the model.
+  - key: par2
+    type: scalar
+    required: false
+    default: 1.238e-3
+    description: |
+      Option read by the model.
+  - key: par3
+    type: scalar
+    required: false
+    default: 6.721e-6
+    description: |
+      Option read by the model.
+  - key: par4
+    type: scalar
+    required: false
+    default: 2.073e-3
+    description: |
+      Option read by the model.
+  - key: par5
+    type: scalar
+    required: false
+    default: 9.7e-6
+    description: |
+      Option read by the model.
+  - key: par6
+    type: scalar
+    required: false
+    default: 1.10e-2
+    description: |
+      Option read by the model.
+  - key: par7
+    type: scalar
+    required: false
+    default: 9.45e-3
+    description: |
+      Option read by the model.
+
+usage:
+  - comment: |
+      Example selection of the `ZircaloyMatpro` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        cladding
+        {
+          type Zircaloy;
+          thermalExpansion
+          {
+            type ZircaloyMatpro;
+            // par1 4.441e-6;
+            // par2 1.238e-3;
+            // par3 6.721e-6;
+            // par4 2.073e-3;
+            // par5 9.7e-6;
+            // par6 1.10e-2;
+            // par7 9.45e-3;
+          }
+        }
+      }

@@ -87,8 +87,8 @@ def generateNeutronicMesh(region: str):
         ('reflector', ['RA']),
         ('upperFuelPlenum', ['IA', 'OA'])
     ]:
-        blockMesh.latticePlacement(
-            funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+        blockMesh.lattice_placement(
+            funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
                 zoneName,
                 zmin=activeCoreHeight/2,
                 zmax=activeCoreHeight/2+upperFuelPlenumHeight,
@@ -111,8 +111,8 @@ def generateNeutronicMesh(region: str):
         ('target',    ['EA']),
         ('reflector', ['RA'])
     ]:
-        blockMesh.latticePlacement(
-            funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+        blockMesh.lattice_placement(
+            funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
                 zoneName,
                 zmin=-activeCoreHeight/2,
                 zmax=activeCoreHeight/2,
@@ -134,8 +134,8 @@ def generateNeutronicMesh(region: str):
         ('reflector', ['RA']),
         ('lowerFuelPlenum', ['IA', 'OA'])
     ]:
-        blockMesh.latticePlacement(
-            funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+        blockMesh.lattice_placement(
+            funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
                 zoneName,
                 zmin=-activeCoreHeight/2-lowerFuelPlenumHeight,
                 zmax=-activeCoreHeight/2,
@@ -152,8 +152,8 @@ def generateNeutronicMesh(region: str):
         )
 
     # Diagrid
-    blockMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+    blockMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
             'diagrid',
             zmin=-activeCoreHeight/2-lowerFuelPlenumHeight-diagridHeight,
             zmax=-activeCoreHeight/2-lowerFuelPlenumHeight,
@@ -170,31 +170,31 @@ def generateNeutronicMesh(region: str):
     )
 
     # Merge patches
-    blockMesh.addMergePatchPairs(
+    blockMesh.add_merge_patch_pairs(
         includeFacename=['Top', 'Bottom'],
         excludeFacename=['Wall']
     )
-    blockMesh.addMergePatchPairs(
+    blockMesh.add_merge_patch_pairs(
         includeFacename=['Wall'],
         excludeFacename=['Top', 'Bottom'],
     )
 
-    externalWalls = blockMesh.getStandaloneFaces(
+    externalWalls = blockMesh.get_standalone_faces(
         includeFacename=['Wall'],
         excludeFacename=['Top', 'Bottom']
     )
 
     # Merge into unique patches
-    blockMesh.mergePatchesWithName(
+    blockMesh.merge_patches_with_name(
         name="wall",
         includeFacename=[face.name for face in externalWalls],
         patchType="wall"
     )
-    blockMesh.mergePatchesWithName(
+    blockMesh.merge_patches_with_name(
         name="bottom",
         includeFacename=["diagridBottom_"]
     )
-    blockMesh.mergePatchesWithName(
+    blockMesh.merge_patches_with_name(
         name="top",
         includeFacename=["reflectorTop_", "targetTop_", "upperFuelPlenumTop_"]
     )
@@ -211,8 +211,8 @@ def generateThermalhydraulicMesh(region: str):
         ('reflector', ['RA']),
         ('upperPlenum', ['IA', 'OA'])
     ]:
-        blockMesh.latticePlacement(
-            funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+        blockMesh.lattice_placement(
+            funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
                 zoneName,
                 zmin=activeCoreHeight/2+0.12,
                 zmax=activeCoreHeight/2+upperFuelPlenumHeight,
@@ -235,8 +235,8 @@ def generateThermalhydraulicMesh(region: str):
         ('target',    ['EA']),
         ('reflector', ['RA'])
     ]:
-        blockMesh.latticePlacement(
-            funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+        blockMesh.lattice_placement(
+            funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
                 zoneName,
                 zmin=-activeCoreHeight/2,
                 zmax=activeCoreHeight/2,
@@ -251,8 +251,8 @@ def generateThermalhydraulicMesh(region: str):
             latticeType='hexagon',
             elementsToPlace=elements
         )
-        blockMesh.latticePlacement(
-            funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+        blockMesh.lattice_placement(
+            funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
                 zoneName,
                 zmin=-activeCoreHeight/2-0.55,
                 zmax=-activeCoreHeight/2,
@@ -267,8 +267,8 @@ def generateThermalhydraulicMesh(region: str):
             latticeType='hexagon',
             elementsToPlace=elements
         )
-        blockMesh.latticePlacement(
-            funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+        blockMesh.lattice_placement(
+            funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
                 zoneName,
                 zmin=activeCoreHeight/2,
                 zmax=activeCoreHeight/2+0.12,
@@ -290,8 +290,8 @@ def generateThermalhydraulicMesh(region: str):
         ('reflector', ['RA']),
         ('lowerPlenum', ['IA', 'OA'])
     ]:
-        blockMesh.latticePlacement(
-            funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+        blockMesh.lattice_placement(
+            funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
                 zoneName,
                 zmin=-activeCoreHeight/2-lowerFuelPlenumHeight,
                 zmax=-activeCoreHeight/2-0.55,
@@ -308,8 +308,8 @@ def generateThermalhydraulicMesh(region: str):
         )
 
     # Diagrid
-    blockMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: blockMesh.createHexagonPrismAlongZ(
+    blockMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: blockMesh.create_hexagon_prism_along_z(
             'diagrid',
             zmin=-activeCoreHeight/2-lowerFuelPlenumHeight-diagridHeight,
             zmax=-activeCoreHeight/2-lowerFuelPlenumHeight,
@@ -326,32 +326,32 @@ def generateThermalhydraulicMesh(region: str):
     )
 
     # Merge patches first
-    blockMesh.addMergePatchPairs(
+    blockMesh.add_merge_patch_pairs(
         includeFacename=['Top', 'Bottom'],
         excludeFacename=['Wall']
     )
     # Create baffles
-    bafflesFaces = blockMesh.addBaffles(
+    bafflesFaces = blockMesh.add_baffles(
         includeFacename=['Wall'],
         excludeFacename=['Top', 'Bottom']
     )
     # Extract lateral external faces
-    externalWalls = blockMesh.getStandaloneFaces(
+    externalWalls = blockMesh.get_standalone_faces(
         includeFacename=['Wall'],
         excludeFacename=['Top', 'Bottom']
     )
 
     # Merge into unique patches
-    blockMesh.mergePatchesWithName(
+    blockMesh.merge_patches_with_name(
         name="wall",
         includeFacename=[face.name for face in externalWalls],
         patchType="wall"
     )
-    blockMesh.mergePatchesWithName(
+    blockMesh.merge_patches_with_name(
         name="inlet",
         includeFacename=["diagridBottom_"]
     )
-    blockMesh.mergePatchesWithName(
+    blockMesh.merge_patches_with_name(
         name="outlet",
         includeFacename=["reflectorTop_", "targetTop_", "upperPlenumTop_"]
     )

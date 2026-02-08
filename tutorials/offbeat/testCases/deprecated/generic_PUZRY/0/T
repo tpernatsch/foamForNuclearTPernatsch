@@ -1,0 +1,57 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           volScalarField;
+    location        "0";
+    object          T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [ 0 0 0 1 0 0 0 ];
+
+internalField   uniform 300;
+
+boundaryField
+{
+    top
+    {
+        type            symmetry;
+    }
+
+    bottom
+    {
+        type            zeroGradient;
+    }
+
+    "front|back"
+    {
+        type            wedge;
+    }
+
+    inner
+    {
+        type            zeroGradient;
+    }
+
+    outer
+    {
+        type            timeDependentAxialProfileT;
+        timeDependentProfile
+        {
+            axialLocations  ( 0 0.005 0.01 0.015 0.02 0.025 );
+            #include        "$FOAM_CASE/constant/data/Tprofile_PUZRY";
+        }
+        value           $internalField;
+    }
+}
+
+
+// ************************************************************************* //

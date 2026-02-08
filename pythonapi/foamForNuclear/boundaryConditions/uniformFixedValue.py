@@ -6,11 +6,17 @@ from .boundaryCondition import Patch
 
 class UniformFixedValue(Patch):
     """
-    This boundary condition provides a uniform fixed value condition.
+    Boundary condition that applies a **uniform fixed value** defined by a table.
 
-    Parameters
-    ----------
-    uniformValue : Table
+    The `uniformFixedValue` fvPatchField prescribes a spatially uniform value on
+    the patch, where the value can be provided through a `Table` (e.g. for
+    time-dependent specifications).
+
+    Options
+    -------
+    uniformValue : list | Table
+        Table defining the uniform value to be applied on the patch.
+        (required: True)
     """
 
     def __init__(self, uniformValue: Table):

@@ -1,0 +1,69 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+  T
+  {
+      solver          PCG;
+      preconditioner  FDIC;
+      tolerance       1e-10;
+      relTol          0.01;
+  }
+  "Cs|Ag"
+  {
+      solver          PCG;
+      preconditioner  FDIC;
+      tolerance       1e-20;
+      relTol          0.01;
+  }
+}
+
+stressAnalysis
+{
+    nCorrectors     3;
+    maxOuterIter    1000;
+
+    referencePairs  ();
+
+    T                   1e-7;
+    FP                  1e-7;
+
+
+    relT                1e-9;
+
+    relD                1e-9;
+}
+
+relaxationFactors
+{
+    fields
+    {
+        D   0.8;
+        Cs  0.8;
+        Ag  0.8;
+    }
+    /*
+    equations
+    {
+        D   0.7;
+        T   0.7;
+    }
+    */
+}
+
+// ************************************************************************* //

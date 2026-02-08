@@ -1,0 +1,87 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2412                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    location        "system";
+    object          controlDict;
+}
+
+libs            ( "liboffbeat.so" );
+
+application     offbeat;
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         1e+06;
+
+deltaT          1000;
+
+writeControl    runTime;
+
+writeInterval   1;
+
+purgeWrite      1;
+
+writeFormat     ascii;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   20;
+
+writePrecision  6;
+
+functions
+{
+    probes
+    {
+        points          ( ( 0.0005 0.0005 0.0005 ) );
+        probeLocations  ( ( 0.0005 0.0005 0.0005 ) );
+        fields          ( betaFraction T );
+        type            probes;
+        libs            ( "libsampling.so" );
+        writeControl    timeStep;
+        writeInterval   1;
+    }
+}
+
+adjustableTimeStep false;
+
+maxDeltaT       1e+06;
+
+minDeltaT       0.001;
+
+maxRelativeDeltaTIncrease 1e+09;
+
+minRelativeDeltaTDecrease 1e+09;
+
+maxRelativePowerIncrease 1;
+
+maxRelativePowerDecrease 1;
+
+maxBurnupIncrease 0.1;
+
+maxAverageCreep 1e+09;
+
+maxMaximumCreep 1e+09;
+
+maxFGR          1e+09;
+
+runTimeModifiable true;
+
+
+// ************************************************************************* //

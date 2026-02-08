@@ -1,7 +1,3 @@
-[submodule "src/offbeat/src"]
-	path = src/offbeat/src
-	url = https://gitlab.com/foam-for-nuclear/offbeat.git
-	branch = ffn/GeN-Foam2
 [submodule "thirdParty/FMU4FOAM"]
 	path = thirdParty/FMU4FOAM
 	url = https://gitlab.com/foam-for-nuclear/FMU4FOAM.git

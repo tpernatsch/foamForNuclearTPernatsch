@@ -1,0 +1,76 @@
+description: |
+  Class modelling Young Modulus of SiC with the Interpolation from Parfume.
+
+options:
+  - key: E1
+    type: scalar
+    required: false
+    default: 428.0
+    description: |
+      Option read by the model.
+  - key: E2
+    type: scalar
+    required: false
+    default: 375.0
+    description: |
+      Option read by the model.
+  - key: E3
+    type: scalar
+    required: false
+    default: 340.0
+    description: |
+      Option read by the model.
+  - key: E4
+    type: scalar
+    required: false
+    default: 198.0
+    description: |
+      Option read by the model.
+  - key: temp1
+    type: scalar
+    required: false
+    default: 25.0
+    description: |
+      Option read by the model.
+  - key: temp2
+    type: scalar
+    required: false
+    default: 940.0
+    description: |
+      Option read by the model.
+  - key: temp3
+    type: scalar
+    required: false
+    default: 1215.0
+    description: |
+      Option read by the model.
+  - key: temp4
+    type: scalar
+    required: false
+    default: 1600.0
+    description: |
+      Option read by the model.
+
+usage:
+  - comment: |
+      Example selection of the `SiCParfume` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        SiC
+        {
+          type SiC;
+          thermalExpansion
+          {
+            type SiCParfume;
+            // E1 428.0;
+            // E2 375.0;
+            // E3 340.0;
+            // E4 198.0;
+            // temp1 25.0;
+            // temp2 940.0;
+            // temp3 1215.0;
+            // temp4 1600.0;
+          }
+        }
+      }

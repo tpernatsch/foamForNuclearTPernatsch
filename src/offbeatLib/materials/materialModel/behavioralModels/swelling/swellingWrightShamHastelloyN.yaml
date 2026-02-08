@@ -1,0 +1,57 @@
+description: |
+  Class modelling the void swelling phenomenon for HastelloyN cladding
+  material according to Wright and Sham correlations.
+
+options:
+  - key: fastFluenceName
+    type: word
+    required: false
+    default: fastFluence
+    description: |
+      Name of the fast fluence field.
+  - key: par1
+    type: scalar
+    required: false
+    default: 9.845e-1
+    description: |
+      Correlation parameter.
+  - key: par2
+    type: scalar
+    required: false
+    default: 4.385e-1
+    description: |
+      Correlation parameter.
+  - key: par3
+    type: scalar
+    required: false
+    default: -9.81e-1
+    description: |
+      Correlation parameter.
+  - key: par4
+    type: scalar
+    required: false
+    default: 490.
+    description: |
+      Correlation parameter.
+
+usage:
+  - comment: |
+      Example selection of `HastelloyNWrightSham`.
+    snippet: |
+        materials
+        {
+            clad
+            {
+                type HastelloyN;
+
+                swelling
+                {
+                    type HastelloyNWrightSham;
+                    // fastFluenceName fastFluence;
+                    // par1 9.845e-1;
+                    // par2 4.385e-1;
+                    // par3 -9.81e-1;
+                    // par4 490.;
+                }
+        }
+

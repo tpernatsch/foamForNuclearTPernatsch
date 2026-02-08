@@ -1,0 +1,27 @@
+description: |
+  Model for constant thermal expansion coefficient. The value is read from
+  dictionary.
+
+options:
+  - key: value
+    type: scalar
+    required: true
+    description: |
+      Constant thermal expansion value [-/K].
+
+usage:
+  - comment: |
+      Example selection of the `constant` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        fuel
+        {
+          type UO2;
+          thermalExpansion
+          {
+            type constant;
+            value <scalar>;
+          }
+        }
+      }

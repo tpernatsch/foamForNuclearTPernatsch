@@ -1,0 +1,24 @@
+description: |
+  The `Inconel600` material model provides temperature-dependent correlations
+  for thermophysical and mechanical properties of Inconel 600.
+
+  All properties are implemented directly in the material class and do not
+  rely on selectable sub-models.
+
+options: []
+
+usage:
+  - comment: |
+      Example of a `solverDict` materials entry using the `Inconel600` material
+      model.
+    snippet: |
+      materials
+      {
+          structure
+          {
+              material Inconel600;
+
+              // Constant density value
+              rho rho [1 -3 0 0 0] 8470;
+          }
+      }

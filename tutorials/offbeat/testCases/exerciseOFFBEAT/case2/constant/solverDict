@@ -1,0 +1,108 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Thermal and Mechanical solver selection:
+thermalSolver
+{
+    type solidConduction;
+}
+
+mechanicsSolver
+{
+    type constant;
+}
+
+burnup
+{
+    type ;
+}
+
+heatSource
+{
+    type timeDependentLhgr;
+    timePoints  ( 0  0.04    364    364.04 365 );
+    lhgr        ( 0  400e2  400e2  0      0);
+    timeInterpolationMethod linear;
+    
+    axialProfile
+    {
+        type flat;
+    }
+    
+    radialProfile
+    {
+        type    flat;
+    }
+    
+    materials ( fuel );
+}
+
+sliceMapper
+{
+    type autoAxialSlices;
+}
+
+globalOptions
+{
+    pinDirection            (0 0 1);
+    reactorType             "LWR";
+}
+
+
+materials
+{
+    fuel
+    {
+        material                    UO2;
+
+        conductivity
+        {
+            type           constant;
+            value          3;
+        }
+
+        enrichment                  0.045;
+        rGrain                      2.8e-05;
+        GdContent                   0.0;
+        theoreticalDensity          10960;
+        densityFraction             0.95;
+        dishFraction                0.0;
+
+        constitutiveLaw
+        {
+            type elasticity;
+        }
+    }
+
+    cladding
+    {
+        material                    Zircaloy;
+
+        conductivity
+        {
+            type           constant;
+            value          21;
+        }
+
+        constitutiveLaw
+        {
+            type elasticity;
+        }
+    }
+}
+
+// ************************************************************************* //

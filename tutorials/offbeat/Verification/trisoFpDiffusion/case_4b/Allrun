@@ -1,0 +1,90 @@
+#!/bin/sh
+# Run from this directory
+cd "${0%/*}" || exit 1
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+runApplication -o blockMesh
+runApplication -o changeDictionary
+runApplication -o offbeat
+
+CsProd1=$(grep -i "Production of Cs" log.offbeat | tail -n 1| cut -d" " -f4)
+CsRele1=$(grep -i "Released Cs amount" log.offbeat | tail -n 1| cut -d" " -f4)
+AgProd1=$(grep -i "Production of Ag" log.offbeat | tail -n 1| cut -d" " -f4)
+AgRele1=$(grep -i "Released Ag amount" log.offbeat | tail -n 1| cut -d" " -f4)
+
+
+case_dir='./4.32e+07'
+new_value="2073.15"
+
+# Update the internalField value in 0/T file
+sed -i "s/internalField   uniform 1273.15;/internalField   uniform $new_value;/g" "$case_dir/T"
+# Update the value in the boundaryField section for the "outer" patch
+sed -i "s/value           uniform 1273.15;/value           uniform $new_value;/g" "$case_dir/T"
+# change end time and timeStep
+controlDict='./system/controlDict'
+runApplication -o foamDictionary $controlDict -entry endTime -set 4.392e7
+runApplication -o foamDictionary $controlDict -entry deltaT -set 3600
+
+
+runApplication -o offbeat
+
+CsProd2=$(grep -i "Production of Cs" log.offbeat | tail -n 1| cut -d" " -f4)
+CsRele2=$(grep -i "Released Cs amount" log.offbeat | tail -n 1| cut -d" " -f4)
+AgProd2=$(grep -i "Production of Ag" log.offbeat | tail -n 1| cut -d" " -f4)
+AgRele2=$(grep -i "Released Ag amount" log.offbeat | tail -n 1| cut -d" " -f4)
+
+#
+CsProd=$(awk -v var1="$CsProd1" \
+             -v var2="$CsProd2" \
+             'BEGIN {print var1+var2}')
+
+CsRele=$(awk -v var1="$CsRele1" \
+             -v var2="$CsRele2" \
+             'BEGIN {print var1+var2}')
+
+AgProd=$(awk -v var1="$AgProd1" \
+             -v var2="$AgProd2" \
+             'BEGIN {print var1+var2}')
+
+AgRele=$(awk -v var1="$AgRele1" \
+             -v var2="$AgRele2" \
+             'BEGIN {print var1+var2}')
+
+fractionReleaseCs=$(awk -v var1="$CsRele" \
+                        -v var2="$CsProd" \
+                        'BEGIN {print var1/var2}')
+
+fractionReleaseAg=$(awk -v var1="$AgRele" \
+                        -v var2="$AgProd" \
+                        'BEGIN {print var1/var2}')
+
+CsExpected=0.210138
+AgExpected=0.862284
+
+#
+
+echo "Released Cs fraction: $fractionReleaseCs" >> results
+echo "Codes range: [0.20, 0.23]" >> results
+echo "Expected value: $CsExpected" >> results
+
+echo "Released Ag fraction: $fractionReleaseAg" >> results
+echo "Codes range: [0.58, 0.95]" >> results
+echo "Expected value: $AgExpected" >> results
+#
+relErrorCs=$(awk -v var1="$fractionReleaseCs" \
+                 -v var2="$CsExpected" \
+                 'BEGIN {print 100*(var1-var2)/var2}')
+
+relErrorAg=$(awk -v var1="$fractionReleaseAg" \
+                 -v var2="$AgExpected" \
+                 'BEGIN {print 100*(var1-var2)/var2}')
+
+
+echo "Relative change for Cs: $relErrorCs%" >> results
+echo "Relative change for Ag: $relErrorAg%" >> results
+
+
+runApplication -o foamDictionary $controlDict -entry endTime -set 4.32e7
+runApplication -o foamDictionary $controlDict -entry deltaT -set 86400

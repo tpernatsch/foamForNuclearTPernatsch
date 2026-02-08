@@ -1,0 +1,49 @@
+description: |
+  Class modelling Young Modulus of UO2 fuel from Matprov11.
+
+options:
+  - key: densityFraction
+    type: scalar
+    required: false
+    description: |
+      Fraction of theoretical density.
+      Optional override. If not provided here, the value is read from the 
+      material base dictionary (preferred).
+  - key: par1
+    type: scalar
+    required: false
+    default: 2.334e11
+    description: |
+      Option read by the model.
+  - key: par2
+    type: scalar
+    required: false
+    default: 2.752
+    description: |
+      Option read by the model.
+  - key: par3
+    type: scalar
+    required: false
+    default: 1.0915e-4
+    description: |
+      Option read by the model.
+
+usage:
+  - comment: |
+      Example selection of the `UO2Matpro` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        fuel
+        {
+          type UO2;
+          thermalExpansion
+          {
+            type UO2Matpro;
+            // densityFraction 0.95;
+            // par1 2.334e11;
+            // par2 2.752;
+            // par3 1.0915e-4;
+          }
+        }
+      }

@@ -1,0 +1,649 @@
+============================
+Verification cases results  
+----------------------------
+Date :                      
+Wed Sep 10 11:32:35 CEST 2025                      
+============================
+
+NaCoolantChannelModel/:
+RMSE (OFFBEAT vs Analytical) = 0.26 K
+RMSE (OFFBEAT vs TRACE) - Wall Temperature = 0.96 K
+
+actinidesRedistribution/:
+RMSE Pu Distribution @ 100 h : 5.40e-03 %
+RMSE Am Distribution @ 100 h : 3.22e-03 %
+
+beamBending/:
+x = 0.8, bending stress error norm = 0.14%, shear stress error norm = 0.072%
+x = 2.4, bending stress error norm = 0.13%, shear stress error norm = 0.058%
+x = 3.8, bending stress error norm = 0.04%, shear stress error norm = 0.21%
+Test passed...
+
+
+burnupFBR/:
+Error Tot. [Pu] OFFBEAT/SERPENT: -4.03e-03 %
+Test passed
+
+corrosion/:
+corrosion/fixedInnerHeatFlux:
+Oxide thickness value: 3.09348e-05
+Expected oxide thickness: 3.09346e-05
+Relative error: 0.000646525%
+
+corrosion/fixedInterfaceTemperature:
+Oxide thickness value: 2.74293e-05
+Expected oxide thickness: 2.73908E-05
+Relative error: 0.140558%
+
+
+gapVolume/:
+Gap volume: 3.44425e-08
+Top plenum volume: 7.30468e-08
+Bottom plenum volume: 3.65234e-08
+Total volume: 1.44013e-07
+Expected volume: 1.44042E-07
+Relative error: -0.020133%
+
+gapVolume1D/:
+Gap volume: 3.44425e-08
+Top plenum volume: 7.30468e-08
+Bottom plenum volume: 3.65234e-08
+Total volume: 1.44013e-07
+Expected volume: 1.44042E-07
+Relative error: -0.020133%
+
+gapVolumeHeatedFuel/:
+Gap volume: 3.03227e-08
+Top plenum volume: 7.19627e-08
+Bottom plenum volume: 3.54392e-08
+Total volume: 1.37725e-07
+Expected volume: 1.37734E-07
+Relative error: -0.00653433%
+
+gapVolumeHeatedFuel1D/:
+Gap volume: 3.02693e-08
+Top plenum volume: 7.31254e-08
+Bottom plenum volume: 3.45553e-08
+Total volume: 1.3795e-07
+Expected volume: 1.37734E-07
+Relative error: 0.156824%
+
+heatConservation/:
+Heat going out from fuelOuter patch: 300.008 W
+Heat arriving at cladInner patch: 300.002 W
+Expected total heat produced: 300.0 W
+Relative error for fuelOuter: 0.00266667%
+Relative error for cladInner: 0.000666667%
+
+hydrogenTransport/:
+hydrogenTransport/hydrogenIngress:
+
+hydrogenTransport/hydrogenUptake:
+
+hydrogenTransport/laCroixBenchmark:
+
+hydrogenTransport/sawatzky:
+
+
+multiMaterial/:
+multiMaterial/biMaterialBlock1:
+sigma_xx, maximum relative error: 0 %
+sigma_yy, maximum relative error: 0.0001 %
+Test passed
+
+
+multiMaterial/biMaterialBlock2:
+sigma_xx, maximum relative error: -2.01553e-08 %
+sigma_xy, maximum relative error: -0 %
+sigma_yy, maximum relative error: -2.46775e-08 %
+Test passed
+
+
+multiMaterial/biMaterialCylinder1:
+Radial stress, maximum relative error: 0.0434598 %
+Hoop stress, maximum relative error: 0.0659214 %
+Test passed
+
+
+multiMaterial/biMaterialCylinder2:
+Shear stress, maximum relative error: 0.161681 %
+Displacement, maximum relative error: 0.0649244 %
+Test passed
+
+
+multiMaterial/biMaterialSkewBlock1:
+sigma_xx, maximum relative error: 0.0001 %
+sigma_yy, maximum relative error: 0.0003 %
+Test passed
+
+
+multiMaterial/biMaterialSkewBlock2:
+sigma_xx, maximum relative error: -1.45332e-07 %
+sigma_xy, maximum relative error: -0 %
+sigma_yy, maximum relative error: -1.66741e-07 %
+Test passed
+
+
+
+neutronics/:
+Max Rel diff for cylindricalPellet/testDifferentEnrichments : 0.0107 %
+Max Rel diff for cylindricalPellet/testDifferentRadii : 0.0331 %
+Max Rel diff for hollowPellet/testDifferentEnrichments : 0.0107 %
+Max Rel diff for hollowPellet/testDifferentRadii : 0.1630 %
+
+plateHole/:
+Testing smallStrain with rhieChow
+Analytical Kc, 2.662
+Kc predicted by OFFBEAT, 2.684
+Maximum relative error: 0.816757 %
+Test passed
+
+Testing smallStrainIncrementalUpdated with rhieChow
+Analytical Kc, 2.662
+Kc predicted by OFFBEAT, 2.684
+Maximum relative error: 0.816757 %
+Test passed
+
+Testing largeStrainTotLag with rhieChow
+Analytical Kc, 2.662
+Kc predicted by OFFBEAT, 2.684
+Maximum relative error: 0.816428 %
+Test passed
+
+Testing largeStrainUpdLag with rhieChow
+Analytical Kc, 2.662
+Kc predicted by OFFBEAT, 2.684
+Maximum relative error: 0.816428 %
+Test passed
+
+Testing smallStrain with multiMaterial
+Analytical Kc, 2.662
+Kc predicted by OFFBEAT, 2.660
+Maximum relative error: 0.0737543 %
+Test passed
+
+Testing smallStrainIncrementalUpdated with multiMaterial
+Analytical Kc, 2.662
+Kc predicted by OFFBEAT, 2.660
+Maximum relative error: 0.0737543 %
+Test passed
+
+Testing largeStrainTotLag with multiMaterial
+Analytical Kc, 2.662
+Kc predicted by OFFBEAT, 2.660
+Maximum relative error: 0.0744118 %
+Test passed
+
+Testing largeStrainUpdLag with multiMaterial
+Analytical Kc, 2.662
+Kc predicted by OFFBEAT, 2.660
+Maximum relative error: 0.0744118 %
+Test passed
+
+
+porosity/:
+Percentage root-mean-square deviation:
+	PRD wrt analytical - bounded Case (t=180s): 0.06406 %
+	PRD wrt analytical - bounded Case (t=360s): 0.16 %
+	PRD wrt analytical - unbounded Case (t=180s): 0.06406 %
+	PRD wrt analytical - unbounded Case (t=360s): 0.16 %
+
+porosityDynamicMesh/:
+The update mesh capabilities of porosityTransportDynMeshSolver are not yet available for OpenFOAM ESI version.
+
+testBetaFraction/:
+Eq. beta fraction at 1150 K (computed): 0.401681
+Eq. beta fraction at 1150 K (expected): 0.401681
+Relative error: 0.000000
+Test passed
+
+testUserParameters/:
+Perturb. behav. models 1.25 : 1039.94 K
+Expected result perturb. 1.25: 1040.01 K
+Relative error: -6.730704512450489e-05
+Test passed
+
+thickCylinderExpansion/:
+Maximum relative error on inner radius stress wrt analytical solution:
+Small strain solver, RhieChow: 1.10 %
+Small strain solver, multiMaterial: 1.02 %
+Large strain UpdLag solver, RhieChow: 17.90 %
+Large strain UpdLag solver, multiMaterial: 1.46 %
+
+trisoBenchmarks/:
+trisoBenchmarks/case_1:
+Tangential stress at inner surface: 1.24386e+08
+Expected value: 1.2519e+08
+Relative error: -0.642224%
+
+trisoBenchmarks/case_2:
+Tangential stress at inner surface: 4.90259e+07
+Expected value: 50.2e6
+Relative error: -2.33884%
+
+trisoBenchmarks/case_3:
+Tangential stress at inner surface of IPyC: 8.5379e+06
+Expected value: 8.8e6
+Tangential stress at inner surface of SiC: 1.03703e+08
+Expected value: 104.4e6
+Relative error for IPyC: -2.97841%
+Relative error for SiC: -0.667625%
+
+trisoBenchmarks/case_4a:
+Tangential stress at inner surface of IPyC: 9.21383e+08
+Expected value: 926.8e6
+Tangential stress at inner surface of SiC: -8.41524e+08
+Expected value: -845.71e6
+Relative error for IPyC: -0.584484%
+Relative error for SiC: -0.494969%
+
+trisoBenchmarks/case_4b:
+Tangential stress at inner surface of IPyC: -2.49991e+07
+Expected value: -25e6
+Tangential stress at inner surface of SiC: 1.38429e+08
+Expected value: 139.34e6
+Relative error for IPyC: -0.0036%
+Relative error for SiC: -0.653796%
+
+trisoBenchmarks/case_4c:
+Tangential stress at inner surface of IPyC: 2.54724e+07
+Expected value: 26.05e6
+Tangential stress at inner surface of SiC: 8.60329e+07
+Expected value: 86.5e6
+Relative error for IPyC: -2.21727%
+Relative error for SiC: -0.54%
+
+trisoBenchmarks/case_4d:
+Tangential stress at inner surface of IPyC: 2.89544e+07
+Previous value: 2.91593e+07
+Range of other codes: [25e6, 35e6]
+Tangential stress at inner surface of SiC: 7.87357e+07
+Previous value: 7.86904e+07
+Range of other codes: [71e6, 88e6]
+Relative change for IPyC: -0.702692%
+Relative change for SiC: 0.0575674%
+
+trisoBenchmarks/case_5:
+Tangential stress at inner surface of IPyC: 4.31405e+07
+Previous value: 4.34138e+07
+Range of other codes: [40e6, 58e6]
+Tangential stress at inner surface of SiC: -4.52547e+07
+Previous value: -4.53027e+07
+Range of other codes: [-56e6, -28e6]
+Relative change for IPyC: -0.629523%
+Relative change for SiC: -0.105954%
+
+trisoBenchmarks/case_6:
+Tangential stress at inner surface of IPyC: 3.03922e+07
+Previous value: 3.06036e+07
+Range of other codes: [27e6, 38e6]
+Tangential stress at inner surface of SiC: 3.15873e+07
+Previous value: 3.15488e+07
+Range of other codes: [28e6, 48e6]
+Relative change for IPyC: -0.690768%
+Relative change for SiC: 0.122033%
+
+trisoBenchmarks/case_7:
+Tangential stress at inner surface of IPyC: 3.93569e+07
+Previous value: 3.95923e+07
+Range of other codes: [37e6, 50e6]
+Tangential stress at inner surface of SiC: 9.04093e+06
+Previous value: 9.0048e+06
+Range of other codes: [10e6, 25e6]
+Relative change for IPyC: -0.59456%
+Relative change for SiC: 0.40123%
+
+trisoBenchmarks/case_8:
+Tangential stress at inner surface of IPyC: 5.8533e+07
+Previous value: 5.79938e+07
+Range of other codes: [50e6, 56e6]
+Tangential stress at inner surface of SiC: -1.38545e+08
+Previous value: -1.10069e+08
+Range of other codes: [-161e6, 17e6]
+Relative change for IPyC: 0.929755%
+Relative change for SiC: 25.871%
+
+trisoBenchmarks/case_9:
+Internal pressure: 4.44509e+06
+Previous value: 4.2011e+06
+Range of other codes: [0.7e6, 16e6]
+Tangential stress at inner surface of SiC: -1.83439e+08
+Previous value: -1.44644e+08
+Range of other codes: [-157e6, -75e6]
+Relative change for gas pressure: 5.80776%
+Relative change for SiC: 26.821%
+
+trisoBenchmarks/case_10:
+Internal pressure: 6.88577e+06
+Previous value: 6.56211e+06
+Range of other codes: [0.7e6, 13e6]
+Tangential stress at inner surface of SiC: -2.00051e+08
+Previous value: -1.7035e+08
+Range of other codes: [-179e6, -121e6]
+Relative change for gas pressure: 4.93226%
+Relative change for SiC: 17.4353%
+
+trisoBenchmarks/case_11:
+Internal pressure: 3.3652e+07
+Previous value: 3.19538e+07
+Range of other codes: [6e6, 75e6]
+Tangential stress at inner surface of SiC: -7.47113e+07
+Previous value: -8.42427e+07
+Range of other codes: [-159e6, 439e6]
+Relative change for gas pressure: 5.31455%
+Relative change for SiC: -11.3142%
+
+trisoBenchmarks/case_13:
+Internal pressure: 1.52327e+07
+Previous value: 1.43578e+07
+Range of other codes: [12e6, 84e6]
+Tangential stress at inner surface of SiC: -1.60559e+08
+Previous value: -1.34632e+08
+Range of other codes: [-127e6, 426e6]
+Relative change for gas pressure: 6.09355%
+Relative change for SiC: 19.2577%
+
+
+trisoFpDiffusion/:
+trisoFpDiffusion/case_1a:
+Released Cs fraction: 0.467034
+Expected value: 0.4673
+Relative error: -0.0569227%
+
+trisoFpDiffusion/case_1b:
+Released Cs fraction: 1
+Expected value: 0.99999959
+Relative error: 4.1e-05%
+
+trisoFpDiffusion/case_2a:
+Released Cs fraction: 0.0265127
+Codes range: [0.006, 0.03]
+Expected value: 0.0265125
+Relative change: 0.000754361%
+
+trisoFpDiffusion/case_2b:
+Released Cs fraction: 0.994714
+Codes range: [0.968, 0.996]
+Expected value: 0.994653
+Relative change: 0.00613279%
+
+trisoFpDiffusion/case_3a:
+Released Cs fraction: 0.000154452
+Codes range: [6.59e-5, 1.13e-3]
+Expected value: 1.54447e-4
+Relative change: 0.00323736%
+
+trisoFpDiffusion/case_3b:
+Released Cs fraction: 0.210283
+Codes range: [0.203, 0.218]
+Expected value: 0.210283
+Relative change: 0%
+
+trisoFpDiffusion/case_3c:
+Released Cs fraction: 0.225066
+Codes range: [0.220, 0.239]
+Expected value: 0.225066
+Relative change: 0%
+
+trisoFpDiffusion/case_3d:
+Released Cs: 6.34195e-15
+Released Cs fraction: 1.00004
+Codes range: [0.999, 1.000]
+Expected value: 0.999992
+Relative change: 0.00480004%
+
+trisoFpDiffusion/case_3e:
+Released Cs: 6.34169e-15
+Released Cs fraction: 1
+Codes range: [0.970, 1.000]
+Expected value: 1
+Released Kr: 6.34169e-15
+Released Kr fraction: 1
+Codes range: [0.980, 1.000]
+Expected value: 1
+Relative change for Cs: 0%
+Relative change for Kr: 0%
+
+trisoFpDiffusion/case_4a:
+Released Cs fraction: 0.000235416
+Codes range: [1.64e-4, 1.47e-3]
+Expected value: 0.000235404
+Released Ag fraction: 0.403469
+Codes range: [0.27, 0.55]
+Expected value: 0.403467
+Relative change for Cs: 0.00509762%
+Relative change for Ag: 0.000495703%
+
+trisoFpDiffusion/case_4b:
+Released Cs fraction: 0.21014
+Codes range: [0.20, 0.23]
+Expected value: 0.210138
+Released Ag fraction: 0.862285
+Codes range: [0.58, 0.95]
+Expected value: 0.862284
+Relative change for Cs: 0.000951756%
+Relative change for Ag: 0.000115971%
+
+trisoFpDiffusion/case_4c:
+Released Cs fraction: 0.22364
+Codes range: [0.21, 0.24]
+Expected value: 0.223638
+Released Ag fraction: 0.915857
+Codes range: [0.92, 0.98]
+Expected value: 0.915856
+Relative change for Cs: 0.000894302%
+Relative change for Ag: 0.000109187%
+
+trisoFpDiffusion/case_4d:
+Released Cs fraction: 0.999866
+Codes range: [1.00, 1.00]
+Expected value: 0.999866
+Released Kr fraction: 0.988044
+Codes range: [0.98, 1.00]
+Expected value: 0.988044
+Relative change for Cs: 0%
+Relative change for Kr: 0%
+
+trisoFpDiffusion/case_5a:
+Released Cs fraction: 2.71216e-17
+Codes range: [2.19e-19, 1.925e-11]
+Expected value: 2.7116e-17
+Released Ag fraction: 6.7888e-06
+Codes range: [5.55e-6, 5.06e-5]
+Expected value: 6.78835e-06
+Relative change for Cs: 0.020652%
+Relative change for Ag: 0.006629%
+
+trisoFpDiffusion/case_5b:
+Released Cs fraction: 0.000315391
+Codes range: [3.07e-4, 1.22e-3]
+Expected value: 0.000315053
+Released Ag fraction: 0.39707
+Codes range: [0.14, 0.54]
+Expected value: 0.398419
+Relative change for Cs: 0.107284%
+Relative change for Ag: -0.338588%
+
+
+trisoModulesTest/:
+trisoBenchmarks/gapVolume1Dsphere:
+Gap volume: 1.53459e-15
+Expected value: 1.53567795228473e-15
+Buffer gas volume: 4.48368e-15
+Expected value: 4.48687243866232e-15
+CO production in kg: 5.1225e-16
+Expected value: 5.12614572876632e-16
+Gap pressure: 32997
+Expected value: 32993.799923485
+Relative error for gap volume: -0.0708451%
+Relative error for Buffer gas volume: -0.0711506%
+Relative error for CO production: -0.0711203%
+Relative error for gap pressure: 0.00969902%
+
+trisoBenchmarks/hollowsphere_1D:
+Inner hoop stress: -3.0836e+08
+Expected value: -313.157895e6
+Inner radial stress: -1e+08
+Expected value: -100e6
+Inner hoop strain: -0.0185852
+Expected value: -0.018921
+Inner radial strain: 0.00850157
+Expected value: 0.008789
+Inner displacement: -3.7852e-06
+Expected value: -3.784211e-6
+outer hoop stress: -2.64175e+08
+Expected value: -263.157895e6
+outer radial stress: -2e+08
+Expected value: -200.000000e6
+outer hoop strain: -0.0124922
+Expected value: -0.012421
+outer radial strain: -0.00414951
+Expected value: -0.004211
+outer displacement: -3.72683e-06
+Expected value: -3.726316e-6
+Relative error for inner hoop stress: -1.5321%
+Relative error for inner radial stress: 0%
+Relative error for inner hoop strain: -1.77475%
+Relative error for inner radial strain: -3.27034%
+Relative error for inner displacement: 0.0261349%
+Relative error for outer hoop stress: 0.3865%
+Relative error for outer radial stress: 0%
+Relative error for outer hoop strain: 0.573223%
+Relative error for outer radial strain: -1.46022%
+Relative error for outer displacement: 0.0137938%
+
+trisoBenchmarks/sphere_1D:
+outer radial stress: -1e+08
+Expected value: -100e6
+outer displacement: -7.99985e-07
+Expected value: -0.8e-6
+center temperature: 458.835
+Expected value: 459.66666667
+Relative error for outer radial stress: 0%
+Relative error for outer displacement: -0.001875%
+Relative error for center temperature: -0.180928%
+
+trisoBenchmarks/sphere_vhgr:
+center temperature: 458.835
+Expected value: 459.66666667
+Relative error for center temperature: -0.180928%
+
+trisoBenchmarks/testBuffer_alpha:
+Displacement: 7.9557e-06
+Expected value: 7.95535714285714E-06
+Relative error for Displacement: 0.00430976%
+
+trisoBenchmarks/testBuffer_creep:
+Creep strain: 0.203875
+Expected value: 0.2039630281875
+Relative error for creep strain: -0.0431589%
+
+trisoBenchmarks/testBuffer_E_nu:
+Young's modulus under 673.15K: 2.79008e+10
+Expected value: 2.786129388e+10
+Young's modulus under 1673.15K: 3.17756e+10
+Expected value: 3.181511988e+10
+Relative error for Young's modulus under 673.15K: 0.141796%
+Relative error for Young's modulus under 1673.15K: -0.124217%
+
+trisoBenchmarks/testBuffer_k:
+Thermal conductivity of density 900 kg/m³: 0.464684
+Expected value: 0.464684014869888
+Relative error for thermal conductivity of density 900 kg/m³: -3.2e-06%
+
+trisoBenchmarks/testBuffer_swelling:
+Swelling strain at 623.15K: -0.154466
+Expected value: -0.155198206124898
+Swelling strain at 1623.15K: -0.191749
+Expected value: -0.193952890624666
+Relative error for swelling strain at  623.15K: -0.471788%
+Relative error for swelling strain at  1623.15K: -1.1363%
+
+trisoBenchmarks/testPyC_alpha:
+Displacement x: 9.24034e-06
+Expected value: 9.2403E-06
+Displacement y: 7.55321e-06
+Expected value: 7.5532E-06
+Relative error for Displacement x: 0.000432886%
+Relative error for Displacement y: 0.000132394%
+
+trisoBenchmarks/testPyC_alpha_spherical:
+Displacement x: 6.50367e-07
+Expected value: 6.50359458925978E-07
+Relative error for Displacement x: 0.00115952%
+
+trisoBenchmarks/testPyC_creep:
+Creep strain: -5.96801e-05
+Expected value: -5.9683304085564E-05
+Relative error for creep strain: -0.00536848%
+
+trisoBenchmarks/testPyC_E_nu:
+Young's modulus under 673.15K: 3.31534e+10
+Expected value: 33.106404334122e9
+Young's modulus under 1673.15K: 3.77576e+10
+Expected value: 37.804569566022e9
+Relative error for Young's modulus under 673.15K: 0.141953%
+Relative error for Young's modulus under 1673.15K: -0.124243%
+
+trisoBenchmarks/testPyC_swelling:
+Radial swelling strain at 0.1e25 n/m2: -0.0011411
+Expected value: -0.00109624
+Hoop swelling strain at 0.1e25 n/m2: -0.00271224
+Expected value: -0.00258954
+Radial swelling strain at 3.9e25 n/m2: 0.032943
+Expected value: 0.0328573
+Hoop swelling strain at 3.9e25 n/m2: -0.0642501
+Expected value: -0.0642869
+Relative error for radial swelling strain at 0.1e25 n/m2: 4.09217%
+Relative error for hoop swelling strain at 0.1e25 n/m2: 4.73829%
+Relative error for radial swelling strain at 3.9e25 n/m2: 0.260825%
+Relative error for hoop swelling strain at 3.9e25 n/m2: -0.0572434%
+
+trisoBenchmarks/testSiC_creep:
+Creep strain: 0.000999997
+Expected value: 0.001
+Relative error for creep strain: -0.0003%
+
+trisoBenchmarks/testSiC_k_Cp_E_alpha:
+Thermal conductivity under 673.15K: 28.3167
+Expected value: 28.5691153531902
+Thermal conductivity under 1673.15K: 12.7816
+Expected value: 12.6894181633446
+Young's modulus under 673.15K: 4.05905e+11
+Expected value: 406.27868852459e9
+Young's modulus under 1673.15K: 2.77043e+11
+Expected value: 271.766233766234e9
+Specific heat under 673.15K: 1076.22
+Expected value: 1073.14688043929
+Specific heat under 1673.15K: 1321.65
+Expected value: 1323.47047948226
+Thermal strain under 673.15K: 0.00172052
+Expected value: 0.00168416978242641
+Thermal strain under 1673.15K: 0.00680347
+Expected value: 0.006875
+Relative error for Thermal conductivity under 673.15K: -0.883525%
+Relative error for Thermal conductivity under 1673.15K: 0.726447%
+Relative error for Young's modulus under 673.15K: -0.0919784%
+Relative error for Young's modulus under 1673.15K: 1.94166%
+Relative error for Specific heat under 673.15K: 0.286365%
+Relative error for Specific heat under 1673.15K: -0.137553%
+Relative error for Thermal strain under 673.15K: 2.15835%
+Relative error for Thermal strain under 1673.15K: -1.04044%
+
+trisoBenchmarks/testSwellingMATPRO:
+Swelling strain: 0.00319583
+Expected value: 0.00319785483012979
+Relative error for swelling strain: -0.0633184%
+
+
+volumeConservationLargeStrain/:
+Relative error on volume conservation:
+Small strain solver : -24.4529 %
+Large strain UpdLag solver : 0.270131 %
+
+waterCoolantChannel/:
+
+Case_ABWR/ - Maximum difference OFFBEAT vs TRACE: 1.24 K
+Case_AP1000/ - Maximum difference OFFBEAT vs TRACE: 3.58 K
+Case_BWR4/ - Maximum difference OFFBEAT vs TRACE: 0.87 K
+Case_VVER440/ - Maximum difference OFFBEAT vs TRACE: 3.76 K

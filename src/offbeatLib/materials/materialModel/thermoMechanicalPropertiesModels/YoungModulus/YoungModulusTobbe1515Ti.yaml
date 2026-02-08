@@ -1,0 +1,35 @@
+description: |
+  Class modelling the Young's modulus of 15-15 Ti using the Tobbe correlation
+  (1975).
+
+options:
+  - key: par1
+    type: scalar
+    required: false
+    default: 202.7
+    description: |
+      Option read by the model.
+  - key: par2
+    type: scalar
+    required: false
+    default: 81.67e-3
+    description: |
+      Option read by the model.
+
+usage:
+  - comment: |
+      Example selection of the `Steel1515TiTobbe` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        cladding
+        {
+          type Steel1515Ti;
+          thermalExpansion
+          {
+            type Steel1515TiTobbe;
+            // par1 202.7;
+            // par2 81.67e-3;
+          }
+        }
+      }

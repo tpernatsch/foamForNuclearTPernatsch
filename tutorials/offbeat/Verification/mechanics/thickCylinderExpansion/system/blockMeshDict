@@ -1,0 +1,94 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| ========                 |                                                 |
+| \      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \    /   O peration     | Version:  5.0                                   |
+|   \  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     5.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters 0.001; 
+
+vertices 
+(
+    (9.999999722353914 -0.0021816615390330635 0.0) //0
+    (19.99999944470783 -0.004363323078066127 0.0) //1
+    (19.99999944470783 0.004363323078066127 0.0) //2
+    (9.999999722353914 0.0021816615390330635 0.0) //3
+    (9.999999722353914 -0.0021816615390330635 50.0) //4
+    (19.99999944470783 -0.004363323078066127 50.0) //5
+    (19.99999944470783 0.004363323078066127 50.0) //6
+    (9.999999722353914 0.0021816615390330635 50.0) //7
+
+);
+
+blocks 
+(
+    hex ( 0 1 2 3 4 5 6 7 ) cladding (80 1 1) simpleGrading (1 1 1)
+);
+
+boundary 
+(
+    bottomCladding
+    {
+        type empty;
+        faces 
+        (
+            (0 3 2 1)
+        );
+    }
+
+    topCladding
+    {
+        type empty;
+        faces 
+        (
+            (4 5 6 7)
+        );
+    }
+
+    claddingInnerSurface
+    {
+        type patch;
+        faces 
+        (
+            (0 4 7 3)
+        );
+    }
+
+    claddingOuterSurface
+    {
+        type patch;
+        faces 
+        (
+            (1 2 6 5)
+        );
+    }
+
+    wedgeCladdingFront
+    {
+        type wedge;
+        faces 
+        (
+            (0 1 5 4)
+        );
+    }
+
+    wedgeCladdingBack
+    {
+        type wedge;
+        faces 
+        (
+            (3 7 6 2)
+        );
+    }
+
+);
+

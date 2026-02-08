@@ -1,0 +1,107 @@
+#------------------------------------------------------------------------------#
+#                                                                              #
+#                            README - commands                                 #
+#                                                                              #
+#------------------------------------------------------------------------------#
+
+This README file contains a brief description of the verification case.
+
+This is a integrated test for the gap and also the gaps behavior for TRISO. The
+geometry is like:
+
+          Kernel                      Buffer             IPyC     SiC     OPyC
+------------------------------x------------------|    |--------x-------x--------
+                             250                350  360      400     435     475um
+
+Other input parameters:
+- wedgeAngle: 2 degrees;
+- Buffer porosity: 0.4054;
+- Heat source : 3.2e9 W/m³;
+- Time:  1e7s;
+- Roughness: 1e-6 m, 2e-6 m;
+
+
+The following items have been verified:
+- The volume of the gap;
+- The volume of the gas in the Buffer;
+- The production of CO;
+- The gas pressure;
+
+
+=============================== Volume of the gap ===============================
+
+The volume of the gap should be:
+Vgap = 4/3*pi*(360³-350³)*1e-18 = 1.58378157642973E-11
+
+In the offbeat model, the wedge angel is 2 degrees, so the fraction of the model is:
+fraction = (2/180*pi)²/4/pi = 9.69627362219072E-05
+
+So the real volume is  Vgap*fraction = 1.53567795228473E-15
+
+And the volume calculated by OFFBEAT is 1.53459e-15
+
+The relative error is 0.0708450807090187%
+
+========================== Volume of the gas in the Buffer ========================
+
+In order to have the volume of Buffer, a faceZone is created between Kernel and
+Buffer. So we need to test the correctness of the volume calculated with a faceZone
+and a patch(bufferOuter).
+
+The gas volume should be:
+4/3*pi*(350³-250³)*1e-18*fraction*porosity = 4.48687243866232E-15
+
+The volume by OFFBEAT is 4.48368e-15
+
+The relative error is 0.0711506445961727%
+
+============================= Production of CO ==================================
+
+--------- GA model ----------------------------
+
+The calculated Kernel outer T is 1321.9505615234375 K
+
+So the production rate is :
+COprod = 1.64*exp(-3311/T) = 0.133997250066855 atom/fission
+
+The fission rate is:
+fission_rate = (3.2e9 W/m³ / 3.2e-11 J/fission) = 1e20 fission/s/m³
+
+the total fission is :
+fission = fission_rate * 4/3*pi*250³*1e-18*fraction * 1e7 = 6346196245556.43
+
+The total CO produced in kg is:
+Mass_CO = COprod * fission /AvogadrosNumber * 28.01 / 1000 = 3.95522860487728E-14
+
+The OFFBEAT value is 3.95245e-14
+
+The relative error is 0.0702514356275999%
+
+--------- Proksch model ----------------------------
+
+Instead of Kernel outer temperature, Proksch use the time average time
+integrated surface temperature of the TRISO particle. In this case, it is set as
+a boundary condtion of 1273 K.
+
+Similar to GA model, the prodcution rate is :
+COprod = (1e7)²/(1.211e10*10.0^(8500.0/1273)) = 0.00173666177031998 atom/fission
+
+The total CO produced in kg is:
+Mass_CO = COprod * fission /AvogadrosNumber * 28.01 / 1000 = 5.12614572876632E-16
+
+The OFFBEAT value is 5.12E-16
+
+The relative error is 0.0709251932872769%
+
+=============================== Gas pressure ===================================
+
+From calculation, we know the average temperature of gap gas is 1293.3 K, the average
+Buffer gas temperature is 1310.33.
+
+So the pressure should be: (using Proksch model)
+P = Mass_CO / 28.01 * 1000 * R / (1.53567795228473E-15/1293.3 + 4.48687243866232E-15/1310.33)
+  = 32993.799923485 Pa
+
+The OFFBEAT value is 32997
+
+The relative error is 0.00969902382393587%

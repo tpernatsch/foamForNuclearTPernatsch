@@ -1,0 +1,73 @@
+description: |
+  Heat source model class that allows the user to set an average **volumetric 
+  heat generation rate (vhgr)**. The vhgr provided by the user can vary over time.
+  
+  This class is mainly developed for TRISO, and it currently doesn't support the
+  addition of a radial and an axial profile of vhgr (as done in the lhgr heat 
+  source classes).
+
+
+admonitions:
+  - kind: warning
+    body: |
+      Remove the `angularFraction` keyword from the `globalOptions` sub-dictionary 
+      for axisymmetric r-z models, as the angular fraction is automatically calculated 
+      from the wedge boundaries. Otherwise, it must be provided. For example, set it to 0.25 for quarter symmetry, to 0.5 for half-symmetry and to 1.0 for 3D simulations.
+
+options:
+  - key: timePoints
+    type: list[scalar]
+    required: true
+    description: |
+      A list of time values at which the vhgr is provided. The time unit depends
+      on the userTime selected by the user (seconds by default).
+  - key: vhgr
+    type: list[scalar]
+    required: true
+    description: A list of vhgr values in W/m3, one value per time-point.
+  - key: timeInterpolationMethod
+    type: word
+    required: true
+    default: linear
+    description: Select the time interpolation method for time steps that fall in between the time points in `timePoints`.
+  - key: materials
+    type: list[word]
+    required: true
+    description: A list of material (or cellZones names) where the heat source model applies.
+
+
+usage:
+  - comment: |
+      Here is a code snippet of the `solverDict` to be used for the case of a vhgr
+      that ramps to 1e9 <code>W/m<sup>3</sup></code> in 1hr time, remains constant for
+      a year, and then ramps down to 0 in 1 hr.
+    snippet: |
+      heatSource
+      {
+        type timeDependentVhgr;
+      
+        //           t0  1hr    1yr       1yr+1hr
+        timePoints  ( 0   3600 31536000  31539600);
+        vhgr        ( 0   1e9  1e9       0       );
+
+        timeInterpolationMethod linear; //step;
+
+        materials ( fuel );
+      }
+  
+  - comment: |
+      As the time point or data lists might be quite long for a realistic history,
+      making the solver dictionary less readable, the user can create separate files
+      and include them in the heatSource dictionary using the #include command.
+      E.g.:
+    snippet: |
+      heatSource
+      {
+        type timeDependentVhgr;
+      
+        timePoints  #include "$FOAM_CASE/constant/lists/timePoints";
+        vhgr        #include "$FOAM_CASE/constant/lists/avgPower";
+        timeInterpolationMethod linear;
+
+        materials ( fuel );
+      }

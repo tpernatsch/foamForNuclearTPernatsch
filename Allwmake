@@ -20,6 +20,7 @@ num_jobs=1
 fmi_flag=false
 doc_flag=false
 api_flag=false
+apps_flag="all"   # {all|genfoam|offbeat}
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -60,8 +61,9 @@ checkCompletionLib()
 # Usage and help
 
 usage() {
-    echo "Usage: $0 [-j N|--jobs N] [--fmi] [--doc] [--api] [--help]"
+    echo "Usage: $0 [-j N|--jobs N] [--apps {all|genfoam|offbeat}] [--fmi] [--doc] [--api] [--help]"
     echo "    -j N|--jobs N     Number of processor used for compilation"
+    echo "    --apps            What to build: all, genfoam, offbeat (default: all)"
     echo "    --fmi             Activate compilation with FMI features"
     echo "    --doc             Change OpenFOAM version in READMEs and in header"
     echo "                      files based on WM_PROJECT_VERSION env variable."
@@ -72,7 +74,7 @@ usage() {
 }
 
 # Parse options using getopt
-PARSED_OPTIONS=$(getopt -n "$0" -o j:h --long jobs:,fmi,doc,api,help -- "$@")
+PARSED_OPTIONS=$(getopt -n "$0" -o j:h --long jobs:,apps:,fmi,doc,api,help -- "$@")
 if [ $? -ne 0 ]; then
     usage
 fi
@@ -85,6 +87,10 @@ while true; do
     case "$1" in
         -j | --jobs)
             num_jobs="$2"
+            shift 2
+            ;;
+        --apps)
+            apps_flag="$2"
             shift 2
             ;;
         --fmi)
@@ -112,6 +118,15 @@ while true; do
     esac
 done
 
+# Validate apps option
+case "$apps_flag" in
+    all|genfoam|offbeat) ;;
+    *)
+        printf "${RED}Error${NC}: --apps must be one of {all|genfoam|offbeat}\n"
+        exit 1
+        ;;
+esac
+
 echo "===================="
 echo "Build foamForNuclear"
 echo "===================="
@@ -121,6 +136,7 @@ echo
 echo "Options"
 echo "-------"
 echo "    Number of jobs: $num_jobs"
+echo "    Apps: $apps_flag"
 echo "    FMI flag: $fmi_flag"
 echo "    Doc flag: $doc_flag"
 echo "    API flag: $api_flag"
@@ -189,46 +205,80 @@ fi
 #==============================================================================*
 # Make applications
 
-echo    "Allwmake GeN-Foam"
-echo -e "-----------------\n"
+if [ "$apps_flag" = "offbeat" ]
+then
+    echo    "Allwmake OFFBEAT"
+    echo -e "---------------\n"
 
-# Make OFFBEAT libs
-wmake -j$num_jobs ./src/offbeat/src/SCIANTIX
-wmake -j$num_jobs ./src/offbeat/src/offbeatLib
+    # Make OFFBEAT deps
+    wmake -j$num_jobs ./thirdParty/SCIANTIX
+    wmake -j$num_jobs ./src/offbeatLib
 
-# Make src libs
-wmake -j$num_jobs ./src/interpolationModels
-wmake -j$num_jobs ./src/solutionControl
-wmake -j$num_jobs ./src/profiles
-wmake -j$num_jobs ./src/crossSections
-wmake -j$num_jobs ./src/porousMediaModels
-wmake -j$num_jobs ./src/thermophysicalProperties
-wmake -j$num_jobs ./src/multiRegion
-wmake -j$num_jobs ./src/functionObjects
-wmake -j$num_jobs ./src/fvPatchFields
+    # Make OFFBEAT app
+    wmake -j$num_jobs ./applications/solvers/offbeat
+fi
 
-# Make modules
-wmake -j$num_jobs ./applications/modules/thermalHydraulics
-wmake -j$num_jobs ./applications/modules/neutronics
-wmake -j$num_jobs ./applications/modules/thermoMechanics
-wmake -j$num_jobs ./applications/modules/fuelBehaviour
-wmake -j$num_jobs ./applications/modules/openFoamImported
+if [ "$apps_flag" = "all" ] || [ "$apps_flag" = "genfoam" ]
+then
+    if [ "$apps_flag" = "all" ]
+    then
+        echo    "Allwmake foamForNuclear"
+    fi
 
-# Make apps
-wmake -j$num_jobs ./applications/solvers/GeN-Foam
+    if [ "$apps_flag" = "genfoam" ]
+    then
+        echo    "Allwmake GeN-Foam"
+    fi
+    
+    echo -e "-----------------\n"
+
+    # Make OFFBEAT libs (keep if GeN-Foam depends on them)
+    wmake -j$num_jobs ./thirdParty/SCIANTIX
+    wmake -j$num_jobs ./src/offbeatLib
+
+    # Make src libs
+    wmake -j$num_jobs ./src/interpolationModels
+    wmake -j$num_jobs ./src/solutionControl
+    wmake -j$num_jobs ./src/profiles
+    wmake -j$num_jobs ./src/crossSections
+    wmake -j$num_jobs ./src/patches
+    wmake -j$num_jobs ./src/fvPatchFields
+    wmake -j$num_jobs ./src/porousMediaModels
+    wmake -j$num_jobs ./src/thermophysicalProperties
+    wmake -j$num_jobs ./src/multiRegion
+    wmake -j$num_jobs ./src/functionObjects
+
+
+    # Make modules
+    wmake -j$num_jobs ./applications/modules/thermalHydraulics
+    wmake -j$num_jobs ./applications/modules/neutronics
+    wmake -j$um_jobs ./applications/modules/thermoMechanics
+    wmake -j$num_jobs ./applications/modules/fuelBehaviour
+    wmake -j$num_jobs ./applications/modules/openFoamImported
+
+    # Make apps
+    wmake -j$num_jobs ./applications/solvers/GeN-Foam
+    if [ "$apps_flag" = "all" ]
+    then
+        wmake -j$num_jobs ./applications/solvers/offbeat
+    fi
+fi
 
 
 #==============================================================================*
 # Make tests
 
-echo
-echo    "Make tests"
-echo -e "----------\n"
+if [ "$apps_flag" = "all" ] || [ "$apps_flag" = "genfoam" ]
+then
+    echo
+    echo    "Make tests"
+    echo -e "----------\n"
 
-wmake -j$num_jobs ./tests/hydrogenThermophysicalProperties
-wmake -j$num_jobs ./tests/radialBasisFunctions
+    wmake -j$num_jobs ./tests/hydrogenThermophysicalProperties
+    wmake -j$num_jobs ./tests/radialBasisFunctions
 
-echo -e "\nMake tests completed\n"
+    echo -e "\nMake tests completed\n"
+fi
 
 
 #==============================================================================*
@@ -255,11 +305,13 @@ then
         echo "  - documentation/doxygen/Doxygen/Doxyfile"
         echo "  - pythonapi/pyproject.toml"
         echo "  - pythonapi/foamForNuclear/__init__.py"
+        echo "  - pythonapi/foamForNuclear/common.py"
 
         sed -i "s/$current_version/$WM_PROJECT_VERSION/" README.md
         sed -i "s/$current_version/$WM_PROJECT_VERSION/" documentation/doxygen/Doxygen/Doxyfile
         sed -i "s/$current_version/$WM_PROJECT_VERSION/" pythonapi/pyproject.toml
         sed -i "s/$current_version/$WM_PROJECT_VERSION/" pythonapi/foamForNuclear/__init__.py
+        sed -i "s/$current_version/$WM_PROJECT_VERSION/" pythonapi/foamForNuclear/common.py
     fi
 
     # Code headers and doxygen
@@ -276,28 +328,45 @@ fi
 #==============================================================================*
 # Info and checks
 
-checkCompletionLib ./src/offbeat/src/SCIANTIX
-checkCompletionLib ./src/offbeat/src/offbeatLib
-checkCompletionLib ./src/interpolationModels
-checkCompletionLib ./src/solutionControl
-checkCompletionLib ./src/profiles
-checkCompletionLib ./src/crossSections
-checkCompletionLib ./src/porousMediaModels
-checkCompletionLib ./src/thermophysicalProperties
-checkCompletionLib ./src/multiRegion
-checkCompletionLib ./src/functionObjects
-checkCompletionLib ./src/fvPatchFields
-checkCompletionLib ./applications/modules/thermalHydraulics
-checkCompletionLib ./applications/modules/neutronics
-checkCompletionLib ./applications/modules/thermoMechanics
-checkCompletionLib ./applications/modules/fuelBehaviour
-checkCompletionLib ./applications/modules/openFoamImported
+if [ "$apps_flag" = "offbeat" ]
+then
+    checkCompletionLib ./thirdParty/SCIANTIX
+    checkCompletionLib ./src/offbeatLib
 
-echo
+    checkCompletionApplication offbeat
+fi
 
-checkCompletionApplication GeN-Foam
+if [ "$apps_flag" = "all" ] || [ "$apps_flag" = "genfoam" ]
+then
+    checkCompletionLib ./thirdParty/SCIANTIX
+    checkCompletionLib ./src/offbeatLib
+    checkCompletionLib ./src/interpolationModels
+    checkCompletionLib ./src/solutionControl
+    checkCompletionLib ./src/profiles
+    checkCompletionLib ./src/crossSections
+    checkCompletionLib ./src/patches
+    checkCompletionLib ./src/fvPatchFields
+    checkCompletionLib ./src/porousMediaModels
+    checkCompletionLib ./src/thermophysicalProperties
+    checkCompletionLib ./src/multiRegion
+    checkCompletionLib ./src/functionObjects
+    checkCompletionLib ./applications/modules/thermalHydraulics
+    checkCompletionLib ./applications/modules/neutronics
+    checkCompletionLib ./applications/modules/thermoMechanics
+    checkCompletionLib ./applications/modules/fuelBehaviour
+    checkCompletionLib ./applications/modules/openFoamImported
 
-echo
+    echo
+
+    checkCompletionApplication GeN-Foam
+
+    if [ "$apps_flag" = "all" ]
+    then
+        checkCompletionApplication offbeat
+    fi
+
+    echo
+fi
 
 # Build the Python API
 if [ $api_flag = 'true' ]

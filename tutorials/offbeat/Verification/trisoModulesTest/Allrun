@@ -1,0 +1,32 @@
+#!/bin/bash
+
+cases="
+gapVolume1Dsphere
+hollowsphere_1D
+sphere_1D
+sphere_vhgr
+testBuffer_alpha
+testBuffer_creep
+testBuffer_E_nu
+testBuffer_k
+testBuffer_swelling
+testPyC_alpha
+testPyC_alpha_spherical
+testPyC_creep
+testPyC_E_nu
+testPyC_swelling
+testSiC_creep
+testSiC_k_Cp_E_alpha
+testSwellingMatpro
+"
+
+for case in $cases; do
+    cd $case
+    ./Allrun
+    wait
+    echo "trisoBenchmarks/$case:"   >> ../results
+    cat results                             >> ../results
+    echo ""                                 >> ../results
+    cd ..
+done
+

@@ -13,6 +13,7 @@ from .cyclic import *
 from .cyclicAMI import *
 from .empty import *
 from .epsilonWallFunction import *
+from .fixedDisplacementZeroShear import *
 from .fixedFluxExtrapolatedPressure import *
 from .fixedFluxPressure import *
 from .fixedJump import *
@@ -21,6 +22,8 @@ from .fixedValue import *
 from .flowRateInletVelocity import *
 from .fuelRodGap import *
 from .gapContact import *
+from .gapPressure import *
+from .implicitGapContact import *
 from .inletOutlet import *
 from .kqRWallFunction import *
 from .lumpedMassWallTemperature import *
@@ -34,14 +37,19 @@ from .mixed import *
 from .movingWallVelocity import *
 from .noSlip import *
 from .nutkWallFunction import *
+from .plenumSpringPressure import *
 from .pressureInletOutletVelocity import *
 from .prghPressure import *
 from .prghTotalHydrostaticPressure import *
 from .prghTotalPressure import *
+from .resistiveGap import *
+from .symmetry import *
 from .slip import *
+from .topCladRingPressure import *
 from .totalPressure import *
 from .tractionDisplacement import *
 from .uniformFixedValue import *
+from .unilateralContact import *
 from .wedge import *
 from .wallHeatTransfer import *
 from .zeroGradient import *

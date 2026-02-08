@@ -1,0 +1,27 @@
+description: |
+  Class to set Zircaloy Poisson's Ratio to a constant input value.
+
+options:
+  - key: PoissonRatioValue
+    type: scalar
+    required: false
+    default: 0.3
+    description: |
+      Option read by the model.
+
+usage:
+  - comment: |
+      Example selection of the `ZircaloyConstant` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        cladding
+        {
+          type Zircaloy;
+          thermalExpansion
+          {
+            type ZircaloyConstant;
+            // PoissonRatioValue 0.3;
+          }
+        }
+      }

@@ -1,0 +1,18 @@
+description: |-
+  Prints the fgr% vs time.
+
+options: []
+
+usage:
+  - comment: |
+      A functionObject is normally specified via the ``type`` entry in the ``functions`` subdictionary of the ``controlDict`` file (located in ``system/``). 
+      It is also necessary to indicate the correct .so library (using the ``libs`` keyword). Here is a snippet enabling the ``fgr`` functionObject:
+    snippet: |
+      functions
+      {
+        <anyName>
+        {
+            type              fgr;
+            libs              ("libFFNFunctionObjects.so");
+        }
+      }

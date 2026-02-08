@@ -1,0 +1,101 @@
+#!/bin/bash
+cd ${0%/*} || exit 1    # run from this directory
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+# Useful paths
+sDict=./constant/solverDict
+pDict=./system/radialProfile
+
+rm -fr results
+mkdir results
+
+if [[ $WM_PROJECT_VERSION == *v* ]]
+then	
+	file="baseCase/system/controlDict"
+	line_number=42
+	new_line="   #includeFunc  radialProfile_ESI"
+	sed -i "${line_number}s/.*/${new_line}/" "$file"
+else
+	file="baseCase/system/controlDict"
+	line_number=42
+	new_line="   #includeFunc  radialProfile"
+	sed -i "${line_number}s/.*/${new_line}/" "$file"
+fi	
+
+enrichments=$(seq 2 1 5)
+
+for e in $enrichments
+do
+	# Copy base folder
+	cp -fr baseCase baseCase_$e
+	cd baseCase_$e
+
+	# Change fuel outer radius
+	cd rodMaker
+	sed -i "/rOuterFuel/c\'rOuterFuel': [5]," rodDict 
+	python3 rodMaker.py 
+	sed -i 's/regionCoupledOFFBEAT/patch/' 	blockMeshDict 
+	sed -i '/fuelInnerSurface/,/}/d' 		blockMeshDict 
+	mv blockMeshDict ../system
+	cd ..
+
+	# Create mesh
+	runApplication -o blockMesh 			
+	runApplication -o changeDictionary 	
+
+	# Set enrichment
+	runApplication -o foamDictionary $sDict -entry materials/fuel/enrichment -set "0.0$e" 
+
+	# Set the solverDict for diffusion
+	runApplication -a foamDictionary $sDict -entry neutronics -set diffusion 
+	runApplication -a foamDictionary $sDict -entry burnup -set Lassmann
+
+	# Run the case
+	runApplication -o foamListTimes -rm
+	runApplication -o offbeat
+
+	# Store probed file
+	lastTimeFolder=$(foamListTimes | tail -n 1)
+	if [[ $WM_PROJECT_VERSION == *v* ]]
+	then	
+		cp postProcessing/radialProfile_ESI/$lastTimeFolder/a_formFactor.xy ../results/diffusion_$e
+	else
+		cp postProcessing/radialProfile/$lastTimeFolder/a_formFactor.xy ../results/diffusion_$e
+	fi	
+	cp ../dataTUBRNP/TUBRNP_$e ../results
+
+	# Change directory and remove folder
+	cd ..
+
+done
+
+cd results
+
+for e in $enrichments; do
+    gnuplot <<- EOF
+        set xlabel "radius (m)"
+        set ylabel "formFactor (-)"
+        set output "${e}.png" 
+        set term png 
+        plot "TUBRNP_${e}" using 1:2 title 'TUBRNP' lw 4 lt 6, \
+        	 "diffusion_${e}" using 1:2 title 'diffusion' lw 2 lt -1 with lines
+EOF
+done
+
+for e in $enrichments; do
+    python3 <<- EOF
+import numpy as np
+T=np.genfromtxt("TUBRNP_${e}")
+D=np.genfromtxt("diffusion_${e}")
+relDiff = (D[:,1]-T[:,1])/T[:,1]*100
+with open('maxDiff','w') as f:
+    f.write("{:.4f}\n".format(max(relDiff)))
+EOF
+done
+
+rm -f diffusion_*
+rm -f TUBRNP_*
+
+

@@ -1,0 +1,26 @@
+description: |
+  Class for linear elasticity constitutive law.
+
+options: []
+
+usage:
+  - comment: |
+      Example of the `solverDict` configuration to activate the
+      `elasticity` constitutive law.
+    snippet: |
+      materials
+      {
+        fuel
+        {
+          type UO2;
+          
+          // other material options/models
+          
+          constitutiveLaw
+          {
+            type elasticity;
+          }
+        }
+
+        // other materials subdict
+      }

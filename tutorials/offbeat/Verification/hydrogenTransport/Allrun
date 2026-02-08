@@ -1,0 +1,22 @@
+#!/bin/bash
+GREEN='\033[1;32m'
+NC='\033[0m' # No Color
+
+cases="heatingCooling
+       laCroixBenchmark
+       sawatzky"
+
+./Allclean
+
+for case in $cases
+do
+    case_full=hydrogenTransport/$case
+    
+    cd $case
+    echo -e "Running case ${GREEN}${case_full}${NC} ..."
+    ./Allrun
+    echo "$case_full:"          >> ../results
+    cat results                 >> ../results
+    echo ""                     >> ../results
+    cd ..
+done

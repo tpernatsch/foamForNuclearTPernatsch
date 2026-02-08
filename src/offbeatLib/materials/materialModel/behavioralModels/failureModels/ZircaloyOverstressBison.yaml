@@ -1,0 +1,35 @@
+# ZircaloyOverstressBison.yaml
+description: |
+  Burst overstress criterion for Zircaloy-4 derived from Bison code. NOTE: 
+  oxidation contribution still needs to be included.
+
+admonitions:
+  - kind: note
+    body: |
+      This model expects a `volScalarField` named `betaFraction` to be present in the mesh
+      registry (it is looked up as `"betaFraction"`). It is not read from the dictionary.
+
+options:
+  - key: patchNames
+    type: list[word]
+    required: true
+    description: |
+      List of patch names where the criterion applies.
+
+usage:
+  - comment: |
+      Example of overstress-based failure criterion (BISON-like) for Zircaloy.
+    snippet: |
+      materials
+      {
+          cladding
+          {
+              material Zircaloy;
+
+              failureModel
+              {
+                  type       ZircaloyOverstressBison;
+                  patchNames ( "cladOuter" "cladInner" );
+              }
+          }
+      }

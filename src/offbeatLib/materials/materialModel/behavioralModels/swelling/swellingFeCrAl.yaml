@@ -1,0 +1,35 @@
+description: |
+  Class handling swelling phenomenon for FeCrAl derived from Bison manual.
+  
+options:
+  - key: fastFluenceName
+    type: word
+    required: false
+    default: fastFluence
+    description: |
+      Name of the fast fluence field.
+  - key: par1
+    type: scalar
+    required: false
+    default: 4.5E-29
+    description: |
+      Correlation parameter.
+
+usage:
+  - comment: |
+      Example selection of `FeCrAl`.
+    snippet: |
+        materials
+        {
+            clad
+            {
+                type FeCrAl;
+   
+                swelling
+                {
+                    type FeCrAl;
+                    // fastFluenceName fastFluence;
+                    // par1 4.5E-29;
+                }
+            }
+        }

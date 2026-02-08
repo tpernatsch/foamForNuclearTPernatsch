@@ -1,0 +1,28 @@
+#!/bin/bash
+cd ${0%/*} || exit 1    # Run from this directory
+set -o pipefail
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+STATUS=0
+rm -rf postProcessing results
+runApplication -o foamListTimes -rm
+runApplication -o fluentMeshToFoam contact.msh -scale 0.01 -writeZones
+runApplication -o changeDictionary
+runApplication -o offbeat
+
+if [[ $WM_PROJECT_VERSION == *v* ]]
+then
+    runApplication -o postProcess -func xyGraph_ESI
+    python3 test_ESI.py | tee -a results
+else
+    runApplication -o postProcess -func xyGraph
+    python3 test.py | tee -a results
+fi
+
+STATUS=$(expr $? "|" $STATUS)
+
+echo "" | tee -a results
+
+exit $STATUS

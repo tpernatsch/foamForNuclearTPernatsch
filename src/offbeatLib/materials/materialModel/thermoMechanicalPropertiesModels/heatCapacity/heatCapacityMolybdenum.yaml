@@ -1,0 +1,42 @@
+description: |
+  Heat capacity correlation model `Molybdenum`.
+
+options:
+  - key: par1
+    type: scalar
+    required: false
+    default: 9.74E-06
+    description: |
+      Model parameter.
+  - key: par2
+    type: scalar
+    required: false
+    default: 5.37E-2
+    description: |
+      Model parameter.
+  - key: par3
+    type: scalar
+    required: false
+    default: 235
+    description: |
+      Model parameter.
+
+usage:
+  - comment: |
+      Example selection of the `Molybdenum` heat capacity model.
+    snippet: |
+      materials
+      {
+          structure
+          {
+              material Molybdenum;
+      
+              heatCapacity
+              {
+                  type Molybdenum;
+                  // par1 9.74E-06;
+                  // par2 5.37E-2;
+                  // par3 235;
+              }
+          }
+      }

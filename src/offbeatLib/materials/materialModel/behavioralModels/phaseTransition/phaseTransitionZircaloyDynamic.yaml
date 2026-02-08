@@ -1,0 +1,26 @@
+description: |
+  Dynamic beta-phase transition model for Zircaloy-based claddings, derived from
+  Massih (2009): "Transformation kinetics of zirconium alloys under non-isothermal
+  conditions", Journal of Nuclear Materials 384 (2009) 330–335.
+
+  This model evolves the `betaFraction` field based on the local temperature and
+  time history.
+
+options: []
+
+usage:
+  - comment: |
+      Example selection of the dynamic Zircaloy phase transition model.
+    snippet: |
+        materials
+        {
+            cladding
+            {
+                material Zircaloy;
+
+                phaseTransition
+                {
+                    type ZircaloyDynamic;
+                }
+            }
+        }

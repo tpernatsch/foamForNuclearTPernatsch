@@ -1,0 +1,110 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField  #codeStream
+{
+    codeInclude
+    #{
+    #include "fvCFD.H"
+    #};
+
+    codeOptions
+    #{
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(LIB_SRC)/meshTools/lnInclude
+    #};
+    
+    codeLibs
+    #{
+    -lmeshTools \
+    -lfiniteVolume
+    #};
+
+    code
+    #{
+        const IOdictionary& d = static_cast<const IOdictionary&>(dict);
+        const fvMesh& mesh = refCast<const fvMesh>(d.db());
+        
+        // Initialize scalar field
+        scalarField T(mesh.nCells(), 0.0);
+
+        // Inner and outer radii
+        const scalar Ri(0.75e-3);
+        const scalar Ro(3.00e-3);
+
+        // Outer temperature
+        const scalar To(1100);
+
+        // Inner temperature
+        const scalar Ti(2550);
+
+        // Compute A constant for the analytical profile
+        const scalar A = 
+            (Ti - To)/((pow(Ro,2.0)-pow(Ri,2.0))/2.0 + pow(Ri,2)*Foam::log(Ri/Ro));
+
+        // Assign Temperature to each cell
+        forAll(T, i)
+        {
+            // Take cell center vector
+            const vector cellCenter = mesh.C()[i];
+
+            // Take x direction of cell center (= radius for this geometry)
+            scalar r = cellCenter.x();
+
+            // Assign temperature
+            T[i] = To 
+                 + A / 2.0 * (pow(Ro,2.0)-pow(r,2.0)) 
+                 + A * pow(Ri,2) * Foam::log(r/Ro);
+        }
+
+        T.writeEntry("", os);
+    #};
+   
+};
+
+boundaryField
+{
+    fuelInner
+    {
+        type            fixedValue;
+        value           uniform 2550.00;
+    }
+    fuelOuter
+    {
+        type            fixedValue;
+        value           uniform 1100.00;
+    }
+    cladInner
+    {
+        type            fixedValue;
+        value           uniform 500.00;
+    }
+    cladOuter
+    {
+        type            fixedValue;
+        value           uniform 450.00;
+    }
+    ".*Bottom|.*Top"
+    {
+        type            empty;
+    }
+    ".*Front|.*Back"
+    {
+        type            wedge;
+    }
+}

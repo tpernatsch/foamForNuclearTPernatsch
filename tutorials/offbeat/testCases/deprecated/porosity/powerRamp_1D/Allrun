@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Run from this directory
+cd "${0%/*}" || exit 1
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+./Allclean
+
+runApplication blockMesh
+
+runApplication -a offbeat
+runApplication -a postProcess -func "components(poreVelocity)"
+runApplication -a postProcess -func sampleRadialProfile
+
+latestTime=$(foamListTimes -latestTime)
+
+python3 plotProfile.py $latestTime
+#------------------------------------------------------------------------------

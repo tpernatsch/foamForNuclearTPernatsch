@@ -1,0 +1,72 @@
+description: |
+  Slice mapper class where slices are created material by material. 
+  The number and height of the slices are provided by the user in the materials 
+  subdictionary (by default the slice number in a material is 1).
+
+admonitions:
+  - kind: warning
+    body: |
+      Note that the number of axial slices cannot exceed the number of axial cells
+      in the mesh, as this would likely result in a Fatal Error during the simulation.
+
+  - kind: warning
+    body: |
+      If specifying the slice heights manually, ensure that the total height of all
+      slices matches the actual height of the mesh exactly.
+
+options: []
+
+externalOptions:
+  - key: pinDirection
+    path: solverDict.globalOptions
+    type: vector
+    required: false
+    default: (0, 0, 1)
+    description: |
+      Axial direction of the pin.
+
+  - key: nSlices
+    path: solverDict.materials.<material>
+    type: label
+    required: true
+    description: |
+      Number of axial slices per material.
+      Required when using TimeDependentLhgr with sliceMapper byMaterial.
+
+  - key: heightSlices
+    path: solverDict.materials.<material>
+    type: list[scalar]
+    required: false
+    description: |
+      List of scalar values indicating the height of each slice, from bottom to top.
+      If `heightSlices` is not specified, the material is split into `nSlices` uniform slices. NOTE: This keyword must be placed within the respective material sub-dict in solverDict.materials.<materialName>
+
+usage:
+- comment: |
+    Example of `solverDict` configuration for the `byMaterial` slice mapper.
+  snippet: |
+
+    sliceMapper
+    {
+        type     byMaterial;
+    }
+
+    materials
+    {
+        fuel
+        {
+            material   UO2;
+
+            ...
+
+            nSlices 10;
+
+            // If heightSlices is not specified, the fuel will be split
+            // nSlices uniform slices.
+            // In this example, the fuel (0.5m long) is split in 5 slices of
+            // 0.1m
+            heightSlices( 0.1 0.1 0.1 0.1 0.1);
+
+            ...
+        }
+    }

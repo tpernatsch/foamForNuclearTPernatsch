@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+runApplication -o blockMesh 
+
+rm -f *.out
+
+for MODEL in 'MATPRO-CORROS-PWR' 'MATPRO-CORROS-BWR' 'EPRI-KWU-CE' 'EPRI-SLI'
+do
+    echo $MODEL
+    sed -i -E "s/oxidationKineticsModel\s+\S+\|(\S+)\;/oxidationKineticsModel $MODEL\|\1\;/gm" constant/solverDict
+    
+    for Q in 0 50 80 100 150
+    do
+        echo Q=$Q W/cm2
+        foamListTimes -rm
+        rm -rf postProcessing
+
+        sed -i -E "s/heatFlux\s+uniform\s+\S+\;/heatFlux uniform -${Q}e4\;/" 0/T
+        runApplication -o offbeat
+        
+        cp -f log.offbeat "${MODEL}_Q${Q}.out"
+    done
+done
+
+python test.py

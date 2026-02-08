@@ -1,0 +1,21 @@
+description: |
+  Class modelling the thermal expansion of SiC with a constant value 4.9×10^−6 /K from Parfume.
+
+options:
+  []
+
+usage:
+  - comment: |
+      Example selection of the `SiCParfume` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        SiC
+        {
+          type SiC;
+          thermalExpansion
+          {
+            type SiCParfume;
+          }
+        }
+      }

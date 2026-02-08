@@ -1,0 +1,60 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 620;
+
+boundaryField
+{
+    "front|back"
+    {
+        type            wedge;
+        value           $internalField;
+    }
+    fuelOuter
+    {
+        type            fuelRodGap;
+        patchType       regionCoupledOFFBEAT;
+        kappa           k;
+        coupled         true;
+        alpha           uniform 5000;
+        roughness       uniform 2.2e-6;
+        value           $internalField;
+    }
+
+    cladInner
+    {
+        type            fuelRodGap;
+        patchType       regionCoupledOFFBEAT;
+        kappa           k;
+        coupled         true;
+        alpha           uniform 5000;
+        roughness       uniform 0.5e-6;
+        value           $internalField;
+    }
+    cladOuter
+    {
+        type            convectiveHTC;
+        h               uniform 2e4;
+        T0              uniform 600;
+        value           $internalField;
+    }
+}
+
+
+// ************************************************************************* //

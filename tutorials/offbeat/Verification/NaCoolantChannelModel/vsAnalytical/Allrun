@@ -1,0 +1,24 @@
+#!/bin/bash
+cd ${0%/*} || exit 1    # Run from this directory
+set -o pipefail
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+# Run from this directory
+cd "${0%/*}" || exit 1
+
+if [[ $WM_PROJECT_VERSION == *v* ]]
+then    
+    cp Q_ESI 0/Q
+else
+    cp Q_FOUNDATION 0/Q
+fi
+
+runApplication -o blockMesh 
+runApplication -o offbeat 
+runApplication -o postProcess -func patchSurface -time 10
+python3 plot.py
+
+
+#------------------------------------------------------------------------------

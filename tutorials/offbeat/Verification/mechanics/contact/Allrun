@@ -1,0 +1,23 @@
+#!/bin/bash
+GREEN='\033[1;32m'
+NC='\033[0m' # No Color
+
+cd ${0%/*} || exit 1    # run from this directory
+
+rm -f results
+touch results
+
+cases="forceConservation"
+
+for case in $cases
+do
+    case_full=mechanics/$case
+    
+    cd $case
+    echo -e "Running case ${GREEN}${case_full}${NC} ..."
+    ./Allrun
+    echo "$case_full:"          >> ../results
+    cat results                 >> ../results
+    echo ""                     >> ../results
+    cd ..
+done

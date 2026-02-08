@@ -1,0 +1,18 @@
+#!/bin/bash
+cd ${0%/*} || exit 1    # run from this directory
+
+cases="biMaterialBlock1 
+       biMaterialBlock2
+       biMaterialCylinder1
+       biMaterialCylinder2
+       biMaterialSkewBlock1
+       biMaterialSkewBlock2"
+
+for case in $cases
+do
+    cd $case
+    ./Allclean
+    cd ..
+done
+
+rm -f results

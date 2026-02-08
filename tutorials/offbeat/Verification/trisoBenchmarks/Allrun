@@ -1,0 +1,120 @@
+#!/bin/bash
+cd case_1
+./Allrun
+wait
+echo "trisoBenchmarks/case_1:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_2
+./Allrun
+wait
+echo "trisoBenchmarks/case_2:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_3
+./Allrun
+wait
+echo "trisoBenchmarks/case_3:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_4a
+./Allrun
+wait
+echo "trisoBenchmarks/case_4a:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_4b
+./Allrun
+wait
+echo "trisoBenchmarks/case_4b:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_4c
+./Allrun
+wait
+echo "trisoBenchmarks/case_4c:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_4d
+./Allrun
+wait
+echo "trisoBenchmarks/case_4d:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_5
+./Allrun
+wait
+echo "trisoBenchmarks/case_5:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_6
+./Allrun
+wait
+echo "trisoBenchmarks/case_6:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_7
+./Allrun
+wait
+echo "trisoBenchmarks/case_7:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_8
+./Allrun
+wait
+echo "trisoBenchmarks/case_8:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_9
+./Allrun
+wait
+echo "trisoBenchmarks/case_9:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_10
+./Allrun
+wait
+echo "trisoBenchmarks/case_10:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_11
+./Allrun
+wait
+echo "trisoBenchmarks/case_11:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..
+
+cd case_13
+./Allrun
+wait
+echo "trisoBenchmarks/case_13:"   >> ../results
+cat results                             >> ../results
+echo ""                                 >> ../results
+cd ..

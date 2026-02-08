@@ -1,0 +1,34 @@
+description: |
+  Class modelling Young Modulus of Molybdenum from Bison manual.
+
+options:
+  - key: par1
+    type: scalar
+    required: false
+    default: 3.349E+11
+    description: |
+      Option read by the model.
+  - key: par2
+    type: scalar
+    required: false
+    default: 5.101E+07
+    description: |
+      Option read by the model.
+
+usage:
+  - comment: |
+      Example selection of the `Molybdenum` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        structure
+        {
+          type Molybdenum;
+          thermalExpansion
+          {
+            type Molybdenum;
+            // par1 3.349E+11;
+            // par2 5.101E+07;
+          }
+        }
+      }

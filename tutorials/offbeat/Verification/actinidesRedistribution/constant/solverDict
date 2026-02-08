@@ -1,0 +1,122 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//- Thermal and Mechanical solver selection:
+thermalSolver           fromLatestTime;
+mechanicsSolver         fromLatestTime;
+neutronicsSolver        fromLatestTime;
+elementTransport        byList;
+
+//- Material and rhelogy treatment:
+materialProperties      byZone;
+rheology                byMaterial;
+
+heatSource              fromLatestTime;
+burnup                  fromLatestTime;
+fastFlux                fromLatestTime;
+gapGas                  none;
+fgr                     none;
+sliceMapper             autoAxialSlices;
+corrosion               fromLatestTime;
+
+elementTransportOptions
+{
+    solvers
+    (
+        AmRedistribution
+        PuRedistribution
+    );
+
+    "AmRedistributionOptions|PuRedistributionOptions"
+    {
+        poreMigration off;
+    }
+}
+
+
+globalOptions
+{
+    pinDirection            (0 0 1);
+    reactorType             "LWR";
+}
+
+rheologyOptions
+{
+    modifiedPlaneStrain  off;
+}
+
+materials
+{
+    fuel
+    {
+        material                    UPuO2;
+        Tref                        Tref [ 0 0 0 1 0 ] 293;
+
+        densificationModel          UO2Frapcon;
+        swellingModel               UO2Frapcon;
+        relocationModel             UO2Frapcon;
+
+        enrichment                  ;
+        rGrain                      6e-6;
+        GdContent                   0.0;
+        theoreticalDensity          10960;
+        densityFraction             1.0;
+        dishFraction                0.0;
+
+        resinteringDensityChange    0.3;
+        GapCold                     0.075e-3;
+        DiamCold                    9.0e-3;
+        recoveryFraction            0.5;
+        outerPatch                  "fuelOuter";
+
+        isotropicCracking           off;
+        nCracksMax                  12;
+
+        rheologyModel               elasticity;
+
+        oxygenMetalRatio    2;
+        isotopes
+        {
+            U
+            {
+                ratioOverMetal  0.78;
+                massNumbers (235 238);
+                weightFractions (0.007 0.993);
+            }
+            Pu
+            {
+                ratioOverMetal  0.20;
+                massNumbers (238 239 240 241 242);
+                weightFractions (0 1 0 0 0);
+            }
+            Am
+            {
+                ratioOverMetal  0.02;
+                massNumbers (241 243);
+                weightFractions (1 0);
+            }
+        }
+    }
+    cladding
+    {
+        material                    Zircaloy;
+        Tref                        Tref [ 0 0 0 1 0 ] 293;
+        rheologyModel               elasticity;
+    }
+}
+
+// ************************************************************************* //

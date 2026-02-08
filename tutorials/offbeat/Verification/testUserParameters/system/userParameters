@@ -1,0 +1,38 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2412                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    location        "system";
+    object          userParameters;
+}
+
+behavioralModels
+{
+    densification
+    {
+        F_epsilonDensification [ 0 0 0 0 0 0 0 ] 1.25;
+    }
+    relocation
+    {
+        F_epsilonRelocation [ 0 0 0 0 0 0 0 ] 1.25;
+    }
+    swelling
+    {
+        UO2Frapcon
+        {
+            F_epsilonSwelling [ 0 0 0 0 0 0 0 ] 1.25;
+        }
+    }
+}
+
+
+// ************************************************************************* //

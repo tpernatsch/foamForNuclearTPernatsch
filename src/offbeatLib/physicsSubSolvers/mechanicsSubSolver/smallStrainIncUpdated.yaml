@@ -1,0 +1,44 @@
+description: |
+  Mechanics solver class that solves for incremental displacement `DD` in 
+  an updated framework (i.e. the mesh is updated at the start of each time step), while employing the small-strain approximation.
+
+
+formulation: |
+  The strain tensor remains linear:
+
+  $$
+  \epsilon = \frac{1}{2} (\nabla D + \nabla^T D)
+  $$
+
+  While the configuration is updated at every time step, geometric non-linearity
+  within a time step is neglected.
+
+options:
+  - key: updateMesh
+    type: bool
+    required: false
+    default: true
+    description: |
+      Decide whether the mesh is updated at every time step.
+      If false, the solver behaves as a small-strain incremental solver.
+
+usage:
+  - comment: |
+      Code snippet of the `solverDict` to activate the
+      `smallStrainIncrementalUpdated` mechanics solver.
+    snippet: |
+      mechanicsSolver smallStrainIncrementalUpdated;
+
+      mechanicsOptions
+      {
+          forceSummary false;
+          cylindricalStress false;
+          sphericalStress false;
+          updateMesh on;
+          RhieChowCorrection true;
+
+          multiMaterialCorrection
+          {
+              type none;
+          }
+      }

@@ -1,0 +1,81 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    location        "system";
+    object          controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+libs            ( "libsciantix.so" );
+
+libs            ( "liboffbeat.so" );
+
+application     offbeat;
+
+startFrom       startTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         251280;
+
+deltaT          1;
+
+writeControl    timeStep;
+
+writeInterval   1;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   20;
+
+writePrecision  6;
+
+adjustableTimeStep true;
+
+maxDeltaT       1000;
+
+minDeltaT       1;
+
+maxRelativeDeltaTIncrease 5;
+
+minRelativeDeltaTDecrease 5;
+
+maxRelativePowerIncrease 1.1;
+
+maxRelativePowerDecrease 1.1;
+
+maxBurnupIncrease 1e+09;
+
+maxAverageCreep 0.0001;
+
+maxMaximumCreep 0.0001;
+
+maxFGR          1e+09;
+
+maxCourantNoPorosity 0.1;
+
+runTimeModifiable true;
+
+adjustableWriteTimeStep true;
+
+writeTimeStepList ( 1 $endTime );
+
+
+// ************************************************************************* //

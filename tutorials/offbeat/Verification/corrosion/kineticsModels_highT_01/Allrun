@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+runApplication -o blockMesh 
+
+rm -f *.out
+
+for case in  "Baker-Just" "Cathcart-Pawel-Prater-Courtright" "Leistikov-Prater-Courtright"
+do
+    foamListTimes -rm
+    rm -rf postProcessing
+    
+    sed -i "s/oxidationKineticsModel .*;/oxidationKineticsModel MATPRO-CORROS-PWR|$case;/gm" constant/solverDict;
+    runApplication -o offbeat
+    
+    oxide=postProcessing/oxideThickness/1000/oxideThickness_patch.raw
+    T=postProcessing/oxideThickness/1000/T_patch.raw
+
+    paste <(awk '{print $4}' $T ) <(awk '{print $4}' $oxide ) | tail -n 51 >> $case.out
+done
+
+python test.py

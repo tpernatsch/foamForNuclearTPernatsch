@@ -1,0 +1,26 @@
+description: |
+  Model for constant Poisson Ratio. The value is read from dictionary.
+
+options:
+  - key: value
+    type: scalar
+    required: true
+    description: |
+      Poisson ratio value in [-]
+
+usage:
+  - comment: |
+      Example selection of the `constant` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        fuel
+        {
+          type constant;
+          thermalExpansion
+          {
+            type constant;
+            value 0.3;
+          }
+        }
+      }

@@ -1,0 +1,52 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5.x                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           volScalarField;
+    location        "0";
+    object          T;
+}
+// ------------------------------------------------------------------------- //
+
+dimensions      [ 0 0 0 1 0 0 0 ];
+
+internalField   uniform 600;
+
+boundaryField
+{
+    ".*Front|.*Back"
+    {
+        type            wedge;
+    }
+
+    outerSurface
+    {
+
+        type                    NaCoolantChannel;
+        flowArea                25e-6;
+        hydraulicDiameter       5e-3;
+        massFlowRate            0.05;
+        inletTemperature        600;
+        
+        NusseltModel            Lyon;
+        
+        heatCapacityModel       constant;
+        cp                      1275;
+        
+        relaxHTC                1.0;
+        value                   $internalField;
+        writeCoolantT           true;
+    }
+}
+
+
+
+
+// ************************************************************************* //

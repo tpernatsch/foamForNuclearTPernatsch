@@ -1,0 +1,30 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5                                     |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+type                sets;
+interpolationScheme cell;
+setFormat           raw;
+libs                ("libsampling.so");
+ 
+sets
+(
+    a
+    {
+        type    lineCell;
+        axis    distance;
+        start   (0 0 0.0055);
+        end     (5 0 0.0055);
+    }
+);
+ 
+fields
+(
+    formFactor
+);
+
+// ************************************************************************* //

@@ -48,8 +48,8 @@ F F 0"""
 def createFuelAssemblyMesh():
     nMesh = mesh.BlockMesh(region='neutroRegion')
 
-    nMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: nMesh.createHexagonPrismAlongZ(
+    nMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: nMesh.create_hexagon_prism_along_z(
             name="fuelElement",
             zmin=-coreHeight/2,
             zmax=coreHeight/2,
@@ -66,8 +66,8 @@ def createFuelAssemblyMesh():
         elementsToPlace=['F'],
         # isMergePatches=True
     )
-    nMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: nMesh.createHexagonPrismAlongZ(
+    nMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: nMesh.create_hexagon_prism_along_z(
             name="centralUnloadedFuelElement",
             zmin=-coreHeight/2,
             zmax=coreHeight/2,
@@ -85,18 +85,18 @@ def createFuelAssemblyMesh():
         # isMergePatches=True
     )
 
-    nMesh.addMergePatchPairs()
+    nMesh.add_merge_patch_pairs()
 
-    nMesh.mergePatchesWithName(name="top", regex=".*Top_.*")
-    nMesh.mergePatchesWithName(name="bottom", regex=".*Bottom_.*")
-    nMesh.mergePatchesWithName(name="wall", regex="fuelElementWall.*")
+    nMesh.merge_patches_with_name(name="top", regex=".*Top_.*")
+    nMesh.merge_patches_with_name(name="bottom", regex=".*Bottom_.*")
+    nMesh.merge_patches_with_name(name="wall", regex="fuelElementWall.*")
 
 
 
     thMesh = mesh.BlockMesh(region='fluidRegion')
 
-    thMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: thMesh.createHexagonPrismAlongZ(
+    thMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: thMesh.create_hexagon_prism_along_z(
             name="fuelElement",
             zmin=-coreHeight/2,
             zmax=coreHeight/2,
@@ -113,8 +113,8 @@ def createFuelAssemblyMesh():
         elementsToPlace=['F'],
         # isMergePatches=True
     )
-    thMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: thMesh.createHexagonPrismAlongZ(
+    thMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: thMesh.create_hexagon_prism_along_z(
             name="centralUnloadedFuelElement",
             zmin=-coreHeight/2,
             zmax=coreHeight/2,
@@ -131,8 +131,8 @@ def createFuelAssemblyMesh():
         elementsToPlace=['C'],
         # isMergePatches=True
     )
-    thMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: thMesh.createHexagonPrismAlongZ(
+    thMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: thMesh.create_hexagon_prism_along_z(
             name="upperPlenum",
             zmin=-coreHeight/2 - lengthNozzleChamber,
             zmax=-coreHeight/2,
@@ -148,8 +148,8 @@ def createFuelAssemblyMesh():
         nx=3, ny=3, pitch=fuelElementPitch,
         elementsToPlace=['F', 'C'],
     )
-    thMesh.latticePlacement(
-        funcElementGenerator=lambda name, x, y: thMesh.createHexagonPrismAlongZ(
+    thMesh.lattice_placement(
+        funcElementGenerator=lambda name, x, y: thMesh.create_hexagon_prism_along_z(
             name="nozzleChamber",
             zmin=coreHeight/2,
             zmax=coreHeight/2 + lengthNozzleChamber,
@@ -166,24 +166,24 @@ def createFuelAssemblyMesh():
         elementsToPlace=['F', 'C'],
     )
 
-    thMesh.addMergePatchPairs(
+    thMesh.add_merge_patch_pairs(
         includeFacename=['Top', 'Bottom'],
         excludeFacename=['Wall']
     )
-    thMesh.addMergePatchPairs(
+    thMesh.add_merge_patch_pairs(
         includeFacename=['nozzleChamberWall', 'upperPlenumWall'],
         excludeFacename=['Top', 'Bottom']
     )
-    bafflesFaces = thMesh.addBaffles(
+    bafflesFaces = thMesh.add_baffles(
         includeFacename=['fuelElementWall', 'centralUnloadedFuelElementWall'],
         excludeFacename=['Top', 'Bottom']
     )
 
-    externalWalls = thMesh.getStandaloneFaces(includeFacename=['Wall'])
+    externalWalls = thMesh.get_standalone_faces(includeFacename=['Wall'])
 
-    thMesh.mergePatchesWithName(name="wall", includeFacename=[face.name for face in externalWalls], patchType="wall")
-    thMesh.mergePatchesWithName(name="outlet", includeFacename=["Top_.*"])
-    thMesh.mergePatchesWithName(name="inlet", includeFacename=["Bottom_"])
+    thMesh.merge_patches_with_name(name="wall", includeFacename=[face.name for face in externalWalls], patchType="wall")
+    thMesh.merge_patches_with_name(name="outlet", includeFacename=["Top_.*"])
+    thMesh.merge_patches_with_name(name="inlet", includeFacename=["Bottom_"])
 
     return(nMesh, thMesh)
 
@@ -193,7 +193,7 @@ def create1DMesh():
 
     nMesh = mesh.BlockMesh(region='neutroRegion')
 
-    nMesh.createCube(
+    nMesh.create_cube(
         'fuelElement',
         lowX=-sqrSide/2, highX=sqrSide/2,
         lowY=-sqrSide/2, highY=sqrSide/2,
@@ -202,13 +202,13 @@ def create1DMesh():
         isAddBoundaryConditions=True
     )
 
-    nMesh.mergePatchesWithName(name="wall", includeFacename=["Wall"], patchType="wall")
-    nMesh.mergePatchesWithName(name="top", includeFacename=["Top_"])
-    nMesh.mergePatchesWithName(name="bottom", includeFacename=["Bottom_"])
+    nMesh.merge_patches_with_name(name="wall", includeFacename=["Wall"], patchType="wall")
+    nMesh.merge_patches_with_name(name="top", includeFacename=["Top_"])
+    nMesh.merge_patches_with_name(name="bottom", includeFacename=["Bottom_"])
 
     thMesh = mesh.BlockMesh(region='fluidRegion')
 
-    thMesh.createCube(
+    thMesh.create_cube(
         'fuelElement',
         lowX=-sqrSide/2, highX=sqrSide/2,
         lowY=-sqrSide/2, highY=sqrSide/2,
@@ -217,9 +217,9 @@ def create1DMesh():
         isAddBoundaryConditions=True
     )
 
-    thMesh.mergePatchesWithName(name="wall", includeFacename=["Wall"], patchType="wall")
-    thMesh.mergePatchesWithName(name="outlet", includeFacename=["Top_"])
-    thMesh.mergePatchesWithName(name="inlet", includeFacename=["Bottom_"])
+    thMesh.merge_patches_with_name(name="wall", includeFacename=["Wall"], patchType="wall")
+    thMesh.merge_patches_with_name(name="outlet", includeFacename=["Top_"])
+    thMesh.merge_patches_with_name(name="inlet", includeFacename=["Bottom_"])
 
     return(nMesh, thMesh)
 

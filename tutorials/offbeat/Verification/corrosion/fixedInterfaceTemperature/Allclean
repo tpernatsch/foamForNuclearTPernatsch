@@ -1,0 +1,14 @@
+#!/bin/bash
+cd ${0%/*} || exit 1    # run from this directory
+
+foamListTimes -rm
+rm -rf constant/polyMesh
+rm -f ./0/cellToRegion
+rm -rf postProcessing
+rm -f log*
+rm -f results*
+rm -f *.png
+rm -f *.OpenFOAM
+rm -f *.foam
+rm -f input_check.txt
+rm -f *.out

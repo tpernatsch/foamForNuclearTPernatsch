@@ -1,0 +1,165 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| ========                 |                                                 |
+| \      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \    /   O peration     | Version:  5.0                                   |
+|   \  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     9.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters 0.001; 
+
+vertices 
+(
+    (0.0 -0.0 0.0)
+    (4.4997715264954214 -0.07854380415712234 0.0)
+    (4.4997715264954214 0.07854380415712234 0.0)
+    (0.0 0.0 0.0)
+    (0.0 -0.0 110.0)
+    (4.4997715264954214 -0.07854380415712234 110.0)
+    (4.4997715264954214 0.07854380415712234 110.0)
+    (0.0 0.0 110.0)
+
+    (4.559768480182027 -0.07959105487921729 0.0)
+    (5.259732939859092 -0.09180897997032521 0.0)
+    (5.259732939859092 0.09180897997032521 0.0)
+    (4.559768480182027 0.07959105487921729 0.0)
+    (4.559768480182027 -0.07959105487921729 120.0)
+    (5.259732939859092 -0.09180897997032521 120.0)
+    (5.259732939859092 0.09180897997032521 120.0)
+    (4.559768480182027 0.07959105487921729 120.0)
+
+);
+
+blocks 
+(
+    hex ( 0 1 2 3 4 5 6 7 ) fuel (30 1 1) simpleGrading (1 1 1)
+    hex ( 8 9 10 11 12 13 14 15 ) cladding (10 1 1) simpleGrading (1 1 1)
+);
+
+edges 
+(
+);
+
+boundary 
+(
+    fuelBottom
+    {
+        type empty;
+        faces 
+        (
+            (0 3 2 1)
+        );
+    }
+
+    fuelTop
+    {
+        type empty;
+        faces 
+        (
+            (4 5 6 7)
+        );
+    }
+
+    fuelOuter
+    {
+        type regionCoupledOFFBEAT;
+        neighbourPatch cladInner;
+        neighbourRegion region0;
+        owner true;
+        updateAMI true;
+        faces 
+        (
+            (1 2 6 5)
+        );
+    }
+
+    fuelFront
+    {
+        type wedge;
+        faces 
+        (
+            (0 1 5 4)
+        );
+    }
+
+    fuelBack
+    {
+        type wedge;
+        faces 
+        (
+            (3 7 6 2)
+        );
+    }
+
+    cladBottom
+    {
+        type empty;
+        faces 
+        (
+            (8 11 10 9)
+        );
+    }
+
+    cladTop
+    {
+        type empty;
+        faces 
+        (
+            (12 13 14 15)
+        );
+    }
+
+    cladInner
+    {
+        type regionCoupledOFFBEAT;
+        neighbourPatch fuelOuter;
+        neighbourRegion region0;
+        owner false;
+        updateAMI true;
+        faces 
+        (
+            (8 12 15 11)
+        );
+    }
+
+    cladOuter
+    {
+        type patch;
+        faces 
+        (
+            (9 10 14 13)
+        );
+    }
+
+    cladFront
+    {
+        type wedge;
+        faces 
+        (
+            (8 9 13 12)
+        );
+    }
+
+    cladBack
+    {
+        type wedge;
+        faces 
+        (
+            (11 15 14 10)
+        );
+    }
+
+);
+
+mergePatchPairs 
+(
+);
+

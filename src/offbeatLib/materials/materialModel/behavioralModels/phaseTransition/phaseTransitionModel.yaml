@@ -1,0 +1,33 @@
+description: |
+  Base class for phase transition models.
+
+  The parent class `type` is `none`. If selected, phase transition is not
+  modeled, but the field `betaFraction` is created and registered.
+
+  If a `betaFraction` file is present in the starting time folder, it is read.
+  Otherwise, `betaFraction` is initialized to 0 with default boundary conditions.
+
+admonitions:
+  - kind: warning
+    body: |
+      The keyword `phaseTransitionModel` is deprecated. Prefer a `phaseTransition`
+      dictionary with a `type` entry.
+
+options: []
+
+usage:
+  - comment: |
+      Recommended selection via the `phaseTransition` dictionary.
+    snippet: |
+      materials
+      {
+          cladding
+          {
+              material Zircaloy;
+
+              phaseTransition
+              {
+                  type none;
+              }
+          }
+      }

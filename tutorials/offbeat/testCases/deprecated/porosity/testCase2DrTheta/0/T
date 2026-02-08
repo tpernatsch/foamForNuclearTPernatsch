@@ -1,0 +1,76 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 630;
+
+boundaryField
+{
+    ".*Bottom|.*Top"
+    {
+        type            empty;
+    }
+    "front|back"
+    {
+        type            symmetry;
+    }
+    fuelOuter
+    {
+        type            timeDependentTemperature;
+        temperatureSeries
+        {
+            values
+            (
+                (0.0   630.00)
+                (1e4  1300.00)
+            );
+            outOfBounds         clamp;   
+            interpolationScheme linear;    
+        }
+        value $internalField;
+    }
+    cladInner
+    {
+        type            timeDependentTemperature;
+        temperatureSeries
+        {
+            values
+            (
+                (0.0   530.00)
+                (1e4  1200.00)
+            );
+            outOfBounds         clamp;   
+            interpolationScheme linear;    
+        }
+        value $internalField;
+    }
+    cladOuter
+    {
+        type            timeDependentTemperature;
+        temperatureSeries
+        {
+            values
+            (
+                (0.0   490.00)
+                (1e4  1160.00)
+            );
+            outOfBounds         clamp;   
+            interpolationScheme linear;    
+        }
+        value $internalField;
+    }
+}

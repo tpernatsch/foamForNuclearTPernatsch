@@ -1,0 +1,37 @@
+#!/bin/sh
+# Run from this directory
+cd "${0%/*}" || exit 1
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+runApplication -o blockMesh
+runApplication -o changeDictionary
+runApplication -o offbeat
+#
+runApplication -o postProcess -func sampleDict
+
+CsSimulation=$(grep -i "Fraction of Cs release" log.offbeat | tail -n 1| cut -d" " -f5)
+AgSimulation=$(grep -i "Fraction of Ag release" log.offbeat | tail -n 1| cut -d" " -f5)
+#
+CsExpected=2.7116e-17
+AgExpected=6.78835e-06
+#
+echo "Released Cs fraction: $CsSimulation" >> results
+echo "Codes range: [2.19e-19, 1.925e-11]" >> results
+echo "Expected value: $CsExpected" >> results
+echo "Released Ag fraction: $AgSimulation" >> results
+echo "Codes range: [5.55e-6, 5.06e-5]" >> results
+echo "Expected value: $AgExpected" >> results
+#
+relErrorCs=$(awk -v var1="$CsSimulation" \
+                 -v var2="$CsExpected" \
+                 'BEGIN {print 100*(var1-var2)/var2}')
+
+relErrorAg=$(awk -v var1="$AgSimulation" \
+                 -v var2="$AgExpected" \
+                 'BEGIN {print 100*(var1-var2)/var2}')
+
+
+echo "Relative change for Cs: $relErrorCs%" >> results
+echo "Relative change for Ag: $relErrorAg%" >> results

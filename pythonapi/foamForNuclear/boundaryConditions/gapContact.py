@@ -8,56 +8,99 @@ _REGION_COUPLED_TYPES = {"regionCoupledOFFBEAT"}
 
 class GapContact(TractionDisplacement):
     """
-    The `gapContact` fvPatchField can be selected in the patch subdictionary
-    inside the `boundaryField` subdictionary of the displacement field.
+    Coupled contact boundary condition for displacement, based on a penalty method.
 
-    Parameters
-    ----------
-    patchType
-        Specifies the patch field type. **Must be set to
-        `regionCoupledOFFBEAT`.**
-    penaltyFactor
-        Penalty scale factor for the normal pressure. Controls the convergence
-        and penetration balance. **Default: `0.1`.** Typical values: `0.01` to
-        `1`.
-    penaltyFactorFriction
-        Penalty scale factor for the frictional forces. **Default: `0.1`.**
-        Typical values: `0.01` to `1`.
-    frictionCoefficient
-        Coefficient of friction between surfaces. **Default: `0`.**
-    relaxInterfacePressure
-        Relaxation factor for the normal pressure update. **Default: `1`.**
-        Typical values: `0.01` to `1`.
-    relaxFriction
-        Relaxation factor for the frictional force update. **Default: `1`.**
-        Typical values: `0.01` to `1`.
-    offset
-        Offset added to the gap width calculation. A positive value increases
-        the gap size. **Default: `0`.**
-    rigidMasterNormal
-        If `true`, the normal component is applied only on the slave side in
-        rigid master mode. **Default: `false`.**
-    rigidMasterFriction
-        If `true`, the friction component is applied only on the slave side in
-        rigid master mode. **Default: `false`.**
+    The `gapContact` fvPatchField is selected in the patch subdictionary inside the
+    `boundaryField` of the displacement field. It is intended to be used on a *pair*
+    of `regionCoupledOFFBEAT` patches coupled via AMI.
 
-    Parameters in the patch subdictionary derived from `tractionDisplacement`:
+    The normal contact pressure is enforced with a penalty approach. Optional friction
+    can be activated via a Coulomb friction coefficient and a separate penalty scaling
+    for tangential forces.
 
-    planeStrain
-        Activates the plane strain approximation for the normal stress at the
-        boundary. When enabled, the normal strain is assumed constant across the
-        last layer of cells. **Default: `false`.**
-    fixedSpring
-        Activates a fixed spring-dashpot system for additional stability.
-        **Default: `false`.**
-    fixedSpringModulus
-        Spring modulus in N/m. Required when `fixedSpring` is set to `true`.
-    dashpotModulus
-        Dashpot modulus in N/m. Required when `fixedSpring` is set to `true`.
-    relax
-        Relaxation factor for gradient updates. **Default: `1.0`.**
-    value
-        Initial displacement value (not stress).
+    Options
+    -------
+    value : list | Vector
+        Initial displacement value on the patch.
+        (required: True)
+
+    patchType : word
+        Type of the underlying fvPatch. Must be set to `regionCoupledOFFBEAT`.
+        (default: regionCoupledOFFBEAT; required: False)
+
+    penaltyFactor : scalar
+        Penalty scale factor for the normal contact pressure. Controls the balance
+        between penetration and convergence.
+        Typical values: 0.01 to 1.
+        (default: 0.1; required: False)
+
+    penaltyFactorFriction : scalar
+        Penalty scale factor for the frictional (tangential) forces.
+        Typical values: 0.01 to 1.
+        (default: 0.1; required: False)
+
+    frictionCoefficient : scalar
+        Coulomb friction coefficient between surfaces.
+        (default: 0; required: False)
+
+    relaxInterfacePressure : scalar
+        Relaxation factor for the normal pressure update.
+        Typical values: 0.01 to 1.
+        (default: 1; required: False)
+
+    relaxFriction : scalar
+        Relaxation factor for the frictional force update.
+        Typical values: 0.01 to 1.
+        (default: 1; required: False)
+
+    offset : scalar
+        Offset added to the computed gap width. A positive value increases the gap.
+        (default: 0; required: False)
+
+    rigidMasterNormal : bool
+        If true, apply the normal component only on the slave side in rigid-master mode.
+        (default: False; required: False)
+
+    rigidMasterFriction : bool
+        If true, apply the friction component only on the slave side in rigid-master mode.
+        (default: False; required: False)
+
+    planeStrain : bool
+        Activate the plane strain approximation for the normal stress at the boundary.
+        (default: False; required: False)
+
+    fixedSpring : bool
+        Enable a fixed spring-dashpot system for additional stability.
+        (default: False; required: False)
+
+    fixedSpringModulus : scalar
+        Spring modulus in N/m (only if `fixedSpring` is true).
+        (required: False)
+
+    dashpotModulus : scalar
+        Dashpot modulus in N/m (only if `fixedSpring` is true).
+        (required: False)
+
+    relax : scalar
+        Relaxation factor for gradient updates. **It is not suggest to use this 
+        relaxation factor. Prefer `relaxInterfacePressure` to improve convergence**.
+        (default: 1; required: False)
+
+    traction : Vector
+        Initial traction value (from `tractionDisplacement` interface).
+        (required: False)
+
+    tractionList : list[Vector]
+        Time-dependent traction specification (from `tractionDisplacement` interface).
+        (required: False)
+
+    pressure : scalar
+        Initial pressure value (from `tractionDisplacement` interface).
+        (required: False)
+
+    pressureList : list[scalar]
+        Time-dependent pressure specification (from `tractionDisplacement` interface).
+        (required: False)
     """
 
     def __init__(

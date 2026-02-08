@@ -1,0 +1,60 @@
+description: |
+  Class modelling thermal expansion of (U,Pu)O2 MOX fuel from Lemehov(2020).
+  This correlation is valid for:
+  - O/M ratios between 1.94 and 2;
+  - Pu/HM ratios lower than 60 %.
+
+  Source : https://re.public.polimi.it/retrieve/handle/11311/1172415/619939/Technical%20Report_INSPYRE_WP7-D7.2_%282020%29.pdf
+
+options:
+  - key: b0
+    type: scalar
+    required: false
+    default: -0.3080
+    description: |
+      Option read by the model.
+  - key: b1
+    type: scalar
+    required: false
+    default: 3.4303
+    description: |
+      Option read by the model.
+  - key: b2
+    type: scalar
+    required: false
+    default: -1.9157
+    description: |
+      Option read by the model.
+  - key: b3
+    type: scalar
+    required: false
+    default: 3.4636
+    description: |
+      Option read by the model.
+  - key: by
+    type: scalar
+    required: false
+    default: 3.98
+    description: |
+      Option read by the model.
+
+usage:
+  - comment: |
+      Example selection of the `UPuO2Lemehov` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        fuel
+        {
+          type UPuO2;
+          thermalExpansion
+          {
+            type UPuO2Lemehov;
+            // b0 -0.3080;
+            // b1 3.4303;
+            // b2 -1.9157;
+            // b3 3.4636;
+            // by 3.98;
+          }
+        }
+      }

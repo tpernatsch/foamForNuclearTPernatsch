@@ -1,0 +1,96 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9.0
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    location        "constant";
+    object          solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+thermalSolver   fromLatestTime;
+
+mechanicsSolver largeStrainUpdLag;
+
+neutronicsSolver fromLatestTime;
+
+elementTransport fromLatestTime;
+
+materialProperties byZone;
+
+rheology        byMaterial;
+
+heatSource      fromLatestTime;
+
+burnup          fromLatestTime;
+
+fastFlux        fromLatestTime;
+
+gapGas          none;
+
+fgr             none;
+
+sliceMapper     none;
+
+corrosion       fromLatestTime;
+
+globalOptions
+{
+    pinDirection    ( 0 0 1 );
+    reactorType     "LWR";
+}
+
+thermalSolverOptions
+{
+    heatFluxSummary off;
+}
+
+rheologyOptions
+{
+    thermalExpansion off;
+    modifiedPlaneStrain off;
+    planeStress     off;
+    solvePressureEqn on;
+    pressureSmoothingScaleFactor 1;
+}
+
+mechanicsSolverOptions
+{
+    forceSummary    off;
+    cylindricalStress on;
+    RhieChowCorrection false;
+    RhieChowScaleFactor 1;
+}
+
+materials
+{
+    cladding
+    {
+        material        constant;
+        rho             rho [ 1 -3 0 0 0 ] 6560;
+        Cp              Cp [ 0 2 -2 -1 0 ] 285;
+        k               k [ 1 1 3 -1 0 ] 21.5;
+        emissivity      emissivity [ 0 0 0 0 0 ] 0;
+        E               E [ 1 -1 -2 0 0 ] 1.10501e+10;
+        nu              nu [ 0 0 0 0 0 ] 0.454;
+        G               G [ 1 -1 -2 0 0 ] 3.8e+09;
+        alpha           alpha [ 0 0 0 0 0 ] 0;
+        Tref            Tref [ 0 0 0 1 0 ] 293;
+        nSlices         1;
+        rheologyModel   neoHookeanMisesPlasticity;
+        rheologyModelOptions
+        {
+            plasticStrainVsYieldStress table ( ( 0 500000 ) );
+        }
+    }
+}
+
+
+// ************************************************************************* //

@@ -1,0 +1,50 @@
+#!/bin/bash
+cd ${0%/*} || exit 1    # Run from this directory
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+runApplication -o blockMesh
+runApplication -o foamListTimes -rm
+rm -fr postProcessing
+
+# List of solvers to be compared:
+laws='neoHookeanMisesPlasticity misesPlasticity'
+
+for correction in rhieChow multiMaterial
+do
+    cp -f constant/solverDict.$correction constant/solverDict
+
+	for lawi in $laws
+	do
+		# change solver entry
+		solverDict='./constant/solverDict'
+		runApplication -o foamDictionary $solverDict -entry materials/cladding/rheologyModel -set $lawi
+
+		runApplication -o foamListTimes -rm
+		rm -fr postProcessing
+		runApplication -o offbeat 
+
+		wait
+		if [[ $WM_PROJECT_VERSION == *v* ]]
+		then	
+			python3 plot_ESI.py $lawi\_$correction
+		else
+			python3 plot.py $lawi\_$correction
+		fi			
+		
+
+    done
+done
+
+# Print results file
+maxRelErrSS_RC=$(cat relativeErrors | grep misesPlasticity_rhieChow | cut -d ' ' -f5)
+maxRelErrSS_MM=$(cat relativeErrors | grep misesPlasticity_multiMaterial | cut -d ' ' -f5)
+maxRelErrLS_RC=$(cat relativeErrors | grep neoHookeanMisesPlasticity_rhieChow | cut -d ' ' -f5)
+maxRelErrLS_MM=$(cat relativeErrors | grep neoHookeanMisesPlasticity_multiMaterial | cut -d ' ' -f5)
+
+echo "Maximum relative error on inner radius stress wrt analytical solution:" >> results
+echo "Small strain solver, RhieChow: $maxRelErrSS_RC %" >> results
+echo "Small strain solver, multiMaterial: $maxRelErrSS_MM %" >> results
+echo "Large strain UpdLag solver, RhieChow: $maxRelErrLS_RC %" >> results
+echo "Large strain UpdLag solver, multiMaterial: $maxRelErrLS_MM %" >> results

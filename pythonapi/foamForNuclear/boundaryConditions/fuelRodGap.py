@@ -7,54 +7,62 @@ _REGION_COUPLED_TYPES = {"regionCoupledOFFBEAT"}
 
 class FuelRodGap(Patch):
     """
-    Coupled boundary condition for modeling the presence of an evolving gap
-    conductance between two bodies. The gap conductance is based primarily
-    on the FRAPCON 4.0 manual, making it most suitable for standard fuel rods
+    Coupled boundary condition for modeling an **evolving thermal gap conductance**
+    between two solid bodies, primarily intended for standard nuclear fuel rods
     (fuel pellet + cladding).
 
-    The total gap conductance $h$ is calculated as the sum of:
+    The gap conductance formulation is based mainly on the FRAPCON-4.0 methodology.
+    The total gap conductance :math:`h` is computed internally as the sum of:
 
-    - h_gas: Gas conductance, which depends on the gap width, surface \
-        roughness, jump distance and the properties of the gas mixture in the gap.
-    - h_rad: Radiative heat transfer, modeled based on the emissivity of \
-        the surfaces and the temperature difference.
-    - h_contact: Contact conductance, which depends on the surface roughness \
-        and contact pressure
+    - **h_gas**: Gas conductance, depending on gap width, surface roughness,
+      jump distance, and gap gas properties.
+    - **h_rad**: Radiative heat transfer, based on surface emissivities and
+      temperature difference.
+    - **h_contact**: Solid-to-solid contact conductance, depending on surface
+      roughness and contact pressure.
 
-    Warning: This boundary condition assumes that the same boundary condition is applied to a
-    pair of `regionCoupledOFFBEAT` patches, which are coupled using the AMI
-    (Arbitrary Mesh Interface) mapping algorithm.
+    This boundary condition must be applied symmetrically on a *pair* of
+    `regionCoupledOFFBEAT` patches coupled via an AMI
+    (Arbitrary Mesh Interface).
 
-    Warning: This boundary condition requires the presence of a `gapGasModel` in the
-    simulation.
+    A `gapGasModel` must be present in the simulation for this boundary
+    condition to operate correctly.
 
-    Parameters
-    ----------
-    patchType : str
-        Specifies the type of underlying fvPatch and must be set to
+    Options
+    -------
+    value : scalar
+        Initial value of the patch temperature field.
+        (required: True)
+
+    patchType : word
+        Type of the underlying fvPatch. Must be set to
         `regionCoupledOFFBEAT`.
-    kappa : str
-        The name of the conductivity field (default to `k`, which is the field
-        name for conductivity used by the OFFBEAT material class).
-    emissivity : str
-        The name of the emissivity field (default to `emissivity`, which is the
-        field name for emissivity used by the OFFBEAT material class).
-    gapGasModel : str
-        The name of the gapGasModel class (default to `gapGas`, which is the
-        name for the OFFBEAT gap gas model class).
-    alpha
-        Since this class is a gap-conductance model itself, it is not
-        necessary to specify the gap conductance as it is calculated by the code.
-        If `alpha` is specified, it will be used as the initial condition for the gap conductance.
-    roughness
-        Specifies the roughness field for the surface, used to calculate
-        the effective gap width.
-    relax : float
-        Relaxation factor for the gap conductance (default to `1.0`, but values as
-        low as 0.1 are often very useful to aid (and sometimes accelerate)
-        convergence).
-    value : float
-        Specifies the initial value of the patch temperature field.
+        (default: regionCoupledOFFBEAT; required: False)
+
+    roughness : scalar
+        Surface roughness used to compute the effective gap width.
+        (required: True)
+
+    coupled : bool
+        Enable coupling between the two opposing patches.
+        (default: True; required: False)
+
+    kappa : word
+        Name of the thermal conductivity field.
+        (default: k; required: False)
+
+    emissivity : word
+        Name of the emissivity field.
+        (default: emissivity; required: False)
+
+    gapGasModel : word
+        Name of the gap gas model class used to evaluate gas properties.
+        (default: gapGas; required: False)
+
+    relax : scalar
+        Relaxation factor applied to the gap conductance update.
+        Values below 1 (e.g. 0.1–0.5) are often useful to improve convergence.
+        (default: 1; required: False)
     """
 
     def __init__(

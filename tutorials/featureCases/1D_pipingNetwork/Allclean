@@ -1,0 +1,6 @@
+#!/bin/sh
+rm -fr log*
+rm -fr test.out
+rm -fr postProcessing
+foamListTimes -rm 
+rm -fr constant/fluid/polyMesh

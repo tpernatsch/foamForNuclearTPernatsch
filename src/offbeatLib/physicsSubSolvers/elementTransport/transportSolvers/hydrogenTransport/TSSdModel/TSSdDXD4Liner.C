@@ -1,0 +1,114 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     |
+    \\  /    A nd           | Copyright (C) 2013 OpenFOAM Foundation
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+License
+    This file is part of OpenFOAM.
+
+    OpenFOAM is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
+\*---------------------------------------------------------------------------*/
+
+#include "TSSdDXD4Liner.H"
+#include "addToRunTimeSelectionTable.H"
+#include "globalFieldLists.H"
+#include "Tuple2.H"
+// * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
+
+namespace Foam
+{
+    defineTypeNameAndDebug(TSSdDXD4Liner, 0);
+    addToRunTimeSelectionTable
+    (
+        TSSdModel, 
+        TSSdDXD4Liner, 
+        dictionary
+    );
+}
+
+// * * * * * * * * * * * * * Static Member Functions * * * * * * * * * * * * //
+
+
+// * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
+
+
+// * * * * * * * * * * * * Protected Member Functions  * * * * * * * * * * * //
+
+
+// * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
+
+Foam::TSSdDXD4Liner::TSSdDXD4Liner
+(
+    const fvMesh& mesh,
+    const materials& mat,
+    const dictionary& lawDict
+)
+:
+    TSSdModel(mesh, mat, lawDict)
+{
+}
+
+// * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
+
+Foam::TSSdDXD4Liner::~TSSdDXD4Liner()
+{}
+
+
+// * * * * * * * * * * * * * * * * Selectors  * * * * * * * * * * * * * * * * //
+
+// * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
+
+void Foam::TSSdDXD4Liner::correctTSSd
+(
+    const labelList& addr
+)
+{
+    const volScalarField& T_(mesh_.lookupObject<volScalarField>("T"));
+    const scalarField& Ti = T_.internalField();
+
+    //Using Kammenzind's expression for TSSd substrate
+    const scalar TSSd0 = 66000;
+    const scalar Qd = 32144;
+    //chemical potential difference from experimental results of Wong et al. (Uncertainty of ~42%)
+    const scalar mu_H0 = -656; // [J/mol]
+    
+    forAll(addr, addrI)
+    {
+        const label cellI = addr[addrI];
+        // TSSd_liner = TSSd_substrate * exp(mu_H0/RT)
+        TSSd_[cellI] = (TSSd0 * exp(-Qd / (8.31446 * Ti[cellI]))) * exp(mu_H0 / (8.31446 * Ti[cellI]));
+
+        const cell& c = mesh_.cells()[cellI];  
+        forAll(c, faceI)
+        {
+            const label patchID = 
+            mesh_.boundaryMesh().whichPatch(c[faceI]);
+
+            if (patchID > -1 and TSSd_.boundaryField()[patchID].size())
+            {
+                const label faceID = 
+                mesh_.boundaryMesh()[patchID].whichFace(c[faceI]);
+                scalarField& TSSdP(TSSd_.boundaryFieldRef()[patchID]);
+                    
+                const scalarField& Tp(T_.boundaryField()[patchID]);
+                TSSdP[faceID] = (TSSd0 * exp(-Qd / (8.31446 * Tp[faceID]))) * exp(mu_H0 / (8.31446 * Tp[faceID]));
+            }
+        }
+    }
+    TSSd_.correctBoundaryConditions();
+}
+// ************************************************************************* //

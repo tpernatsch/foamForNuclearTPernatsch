@@ -1,0 +1,11 @@
+description: |
+  Mother class for YoungModulus models.
+
+admonitions:
+  - kind: warning
+    body: |
+      The keyword `YoungModulusModel` is deprecated. Prefer an `YoungModulus` dictionary with a `type` entry.
+
+options: []
+
+usage: []

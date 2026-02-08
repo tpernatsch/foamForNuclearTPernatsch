@@ -1,0 +1,11 @@
+description: |
+  Mother class for conductivity models.
+
+admonitions:
+  - kind: warning
+    body: |
+      The keyword `conductivityModel` is deprecated. Prefer an `conductivity` dictionary with a `type` entry.
+
+options: []
+
+usage: []

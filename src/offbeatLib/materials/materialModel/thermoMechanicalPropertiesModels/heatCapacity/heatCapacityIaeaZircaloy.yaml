@@ -1,0 +1,85 @@
+description: |
+  Correlation for Zircaloy heat capacity from Iaea.
+  <a href="https://www-pub.iaea.org/MTCD/publications/PDF/te_1496_web.pdf">Click here</a>
+   for the related Iaea publication.
+
+options:
+  - key: par1
+    type: scalar
+    required: false
+    default: 255.66
+    description: |
+      Model parameter.
+  - key: par2
+    type: scalar
+    required: false
+    default: 0.1024
+    description: |
+      Model parameter.
+  - key: par3
+    type: scalar
+    required: false
+    default: 597.1
+    description: |
+      Model parameter.
+  - key: par4
+    type: scalar
+    required: false
+    default: 0.4088
+    description: |
+      Model parameter.
+  - key: par5
+    type: scalar
+    required: false
+    default: 1.565E-4
+    description: |
+      Model parameter.
+  - key: par6
+    type: scalar
+    required: false
+    default: 1058.4
+    description: |
+      Model parameter.
+  - key: par7
+    type: scalar
+    required: false
+    default: 1213.8
+    description: |
+      Model parameter.
+  - key: par8
+    type: scalar
+    required: false
+    default: 2.0
+    description: |
+      Model parameter.
+  - key: par9
+    type: scalar
+    required: false
+    default: 719.61
+    description: |
+      Model parameter.
+
+usage:
+  - comment: |
+      Example selection of the `ZircaloyIaea` heat capacity model.
+    snippet: |
+      materials
+      {
+          cladding
+          {
+              type Zircaloy;
+      
+              heatCapacity
+              {
+                  type ZircaloyIaea;
+                  // par1 255.66;
+                  // par2 0.1024;
+                  // par3 597.1;
+                  // par4 0.4088;
+                  // par5 1.565E-4;
+                  // par6 1058.4;
+                  // par7 1213.8;
+                  // par8 2.0;
+              }
+          }
+      }

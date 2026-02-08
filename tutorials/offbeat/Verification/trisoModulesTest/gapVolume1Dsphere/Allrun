@@ -1,0 +1,45 @@
+#!/bin/sh
+# Run from this directory
+cd "${0%/*}" || exit 1
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+runApplication -o blockMesh
+runApplication -o changeDictionary
+runApplication -o offbeat
+#
+runApplication -o postProcess -func sampleDict
+
+gapVolumeSimulation=$(grep -i "Gap volume" log.offbeat | tail -n 1| cut -d" " -f3)
+BufferGasVolumeSimulation=$(grep -i "Buffer gas volume" log.offbeat | tail -n 1| cut -d" " -f4)
+COprodSimulation=$(grep -i "Gas mass" log.offbeat | tail -n 1| cut -d" " -f3)
+pressureSimulation=$(grep -i "Gas pressure" log.offbeat | tail -n 1| cut -d" " -f3)
+#
+gapVolumeExpected=1.53567795228473e-15
+BufferGasVolumeExpected=4.48687243866232e-15
+COprodExpected=5.12614572876632e-16
+pressureExpected=32993.799923485
+#
+echo "Gap volume: $gapVolumeSimulation" >> results
+echo "Expected value: $gapVolumeExpected" >> results
+echo "Buffer gas volume: $BufferGasVolumeSimulation" >> results
+echo "Expected value: $BufferGasVolumeExpected" >> results
+echo "CO production in kg: $COprodSimulation" >> results
+echo "Expected value: $COprodExpected" >> results
+echo "Gap pressure: $pressureSimulation" >> results
+echo "Expected value: $pressureExpected" >> results
+#
+relErrorGapVolume=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$gapVolumeSimulation" var2="$gapVolumeExpected"`
+relErrorBufferGasVolume=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$BufferGasVolumeSimulation" var2="$BufferGasVolumeExpected"`
+relErrorCOprod=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$COprodSimulation" var2="$COprodExpected"`
+relErrorPressure=`echo - | awk '{print 100*(var1-var2)/var2}' \
+var1="$pressureSimulation" var2="$pressureExpected"`
+
+echo "Relative error for gap volume: $relErrorGapVolume%" >> results
+echo "Relative error for Buffer gas volume: $relErrorBufferGasVolume%" >> results
+echo "Relative error for CO production: $relErrorCOprod%" >> results
+echo "Relative error for gap pressure: $relErrorPressure%" >> results

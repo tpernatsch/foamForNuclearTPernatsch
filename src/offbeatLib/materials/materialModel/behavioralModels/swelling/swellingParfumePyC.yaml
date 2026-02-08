@@ -1,0 +1,149 @@
+description: |
+  Class handling irradiation-induced dimensional change eigenstrain phenomenon
+  for PyC derived from Parfume manual. This class is the general situation for
+  the class: swellingParfumeBuffer (BAF=1).
+  
+options:
+  - key: densityName
+    type: word
+    required: false
+    default: rho
+    description: |
+      Name of the density field.
+  - key: fastFluenceName
+    type: word
+    required: false
+    default: fastFluence
+    description: |
+      Name of the fast fluence field.
+  - key: fastFluxName
+    type: word
+    required: false
+    default: fastFlux
+    description: |
+      Name of the fast flux field.
+  - key: asFabricatedAnisotropy
+    type: scalar
+    required: false
+    default: 1.0
+    description: |
+      Model option.
+  - key: sphereCoordinate
+    type: bool
+    required: false
+    default: true
+    description: |
+      If true, interpret coordinates as spherical.
+  - key: fluxConversionFactor
+    type: scalar
+    required: false
+    default: 1.0
+    description: |
+      Conversion factor applied to the flux/fluence input.
+  - key: tempValues
+    type: scalar
+    required: true
+    description: |
+      Model data table.
+  - key: BAFValues_r
+    type: scalar
+    required: true
+    description: |
+      Model data table.
+  - key: BAFValues_t
+    type: scalar
+    required: true
+    description: |
+      Model data table.
+  - key: densityValues
+    type: scalar
+    required: true
+    description: |
+      Model data table.
+  - key: strain_iso
+    type: scalar
+    required: true
+    description: |
+      Model option.
+  - key: strain_r_t
+    type: scalar
+    required: true
+    description: |
+      Model data table.
+  - key: a1_r
+    type: scalar
+    required: true
+    description: |
+      Model data table.
+  - key: a2_r
+    type: scalar
+    required: true
+    description: |
+      Model data table.
+  - key: a3_r
+    type: scalar
+    required: true
+    description: |
+      Model data table.
+  - key: a4_r
+    type: scalar
+    required: true
+    description: |
+      Model data table.
+  - key: a1_t
+    type: scalar
+    required: true
+    description: |
+      Model data table.
+  - key: a2_t
+    type: scalar
+    required: true
+    description: |
+      Model data table.
+  - key: a3_t
+    type: scalar
+    required: true
+    description: |
+      Model data table.
+  - key: a4_t
+    type: scalar
+    required: true
+    description: |
+      Model data table.
+
+usage:
+  - comment: |
+      Example selection of `PyCParfume`.
+    snippet: |
+        materials
+        {
+            PyC
+            {
+                type PyC;
+
+                swelling
+                {
+                    type PyCParfume;
+                    // densityName rho;
+                    // fastFluenceName fastFluence;
+                    // fastFluxName fastFlux;
+                    // asFabricatedAnisotropy 1.0;
+                    // sphereCoordinate true;
+                    // fluxConversionFactor 1.0;
+                    tempValues <required>;
+                    BAFValues_r <required>;
+                    BAFValues_t <required>;
+                    densityValues <required>;
+                    strain_iso <required>;
+                    strain_r_t <required>;
+                    a1_r <required>;
+                    a2_r <required>;
+                    a3_r <required>;
+                    a4_r <required>;
+                    a1_t <required>;
+                    a2_t <required>;
+                    a3_t <required>;
+                    a4_t <required>;
+                }
+            }
+        }

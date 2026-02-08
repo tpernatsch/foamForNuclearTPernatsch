@@ -1,0 +1,76 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSchemes;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+d2dt2Schemes
+{
+    default         Euler;
+}
+
+ddtSchemes
+{
+    default         Euler;
+}
+
+gradSchemes
+{
+    default         Gauss linear;
+}
+
+divSchemes
+{
+    default         none;
+    "div(phi,alpha)" Gauss upwind;
+    "div(phir,alpha)" Gauss upwind;
+    "div(phirb,alpha)" Gauss linear;
+    "div(rhoPhi,U)" Gauss upwind;
+    "div(rhoPhi,T)" Gauss upwind;
+    "div(rhoPhi,K)" Gauss upwind;
+    "div(phi,p)"    Gauss upwind;
+    "div(phi,K)" Gauss upwind;
+    "div(phi,h)" Gauss upwind;
+    "div(phi,k)"    Gauss upwind;
+    div(((rho*nuEff)*dev2(T(grad(U))))) Gauss linear;
+    "div\(phi.*,U.*\)" Gauss upwind;
+    "div(alphaRhoPhi,U)" Gauss upwind;
+    "div(alphaRhoPhiNu,U)" Gauss linear;
+    "div(alphaRhoPhi,K)" Gauss upwind;
+    "div\(alphaRhoPhi.*,k.*\)" Gauss upwind;
+    "div\(alphaRhoPhi.*,epsilon.*\)" Gauss upwind;
+    "div\(alphaRhoPhi.*,(h|e).*\)" Gauss upwind;
+}
+
+laplacianSchemes
+{
+    default         Gauss linear uncorrected;
+}
+
+interpolationSchemes
+{
+    default         linear;
+}
+
+snGradSchemes
+{
+    default         uncorrected;
+}
+
+fluxRequired
+{
+    default         false;
+}
+
+
+// ************************************************************************* //

@@ -1,0 +1,68 @@
+description: |
+  Base mechanics solver class. It keeps the displacement field `D` unchanged 
+  from its initial configuration throughout the simulation.
+
+  While the `constant` solver keeps the `D` field fixed by default, it is possible
+  to alter the `D` field during the simulation by leveraging advanced OpenFOAM
+  features like `#codeStream#`, `funkySetFields`, or specific function objects.
+
+admonitions:
+  - kind: warning
+    body: |
+      For backward-compatibility, `fromLatestTime` can be still used as the typename
+      for the `constant` mechanics solver. However, its use is deprecated.
+
+options:
+  - key: forceSummary
+    type: bool
+    required: false
+    default: false
+    description: Print a summary of boundary-forces at each iteration.
+  - key: cylindricalStress
+    type: bool
+    required: false
+    default: false
+    description: |
+      Creates cylindrical stress, strain and displacement fields.
+      Useful for visualization and data analysis.
+  - key: sphericalStress
+    type: bool
+    required: false
+    default: false
+    description: |
+      Creates spherical stress, strain and displacement fields.
+      Useful for visualization and data analysis.
+  - key: RhieChowCorrection
+    type: bool
+    required: false
+    default: true
+    description: |
+      Apply a Rhie–Chow–like correction to stabilize the momentum equation.
+  - key: RhieChowScaleFactor
+    type: scalar
+    required: false
+    default: 1
+    description: Scaling factor for the Rhie–Chow correction.
+  - key: multiMaterialCorrection
+    type: dict
+    required: false
+    py:
+      type: multi_material.MultiMaterialInterface
+      factory: "lambda: multi_material.Uniform(defaultWeights=1, defaultWeightsGrad=0)"
+      imports:
+        - "from . import multi_material"
+    description: |
+      Optional sub-dictionary activating a custom discretization for
+      multi-material interfaces.
+
+usage:
+  - comment: |
+      Code snippet of the `solverDict` to activate the `constant`
+      mechanics solver.
+    snippet: |
+      mechanicsSolver
+      {
+        type constant;
+        forceSummary false;
+        cylindricalStress false;
+      }

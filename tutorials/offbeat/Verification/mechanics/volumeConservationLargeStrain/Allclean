@@ -1,0 +1,14 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+
+foamListTimes -rm
+rm -fr postProcessing
+rm -fr constant/polyMesh
+rm -fr constant/referenceMesh
+rm -f log.*
+rm -f Vss*
+rm -f Dss
+rm -f Vls*
+rm -f Dls
+rm -f results
+rm -f *.png

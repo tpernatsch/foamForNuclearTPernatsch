@@ -1,0 +1,271 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| ========                 |                                                 |
+| \      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \    /   O peration     | Version:  5.0                                   |
+|   \  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     5.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters 0.001; 
+
+vertices 
+(
+    (0.0 -0.0 0.0)
+    (4.499200414359281 -0.07853383535770471 0.0)
+    (4.499200414359281 0.07853383535770471 0.0)
+    (0.0 0.0 0.0)
+    (0.0 -0.0 110.0)
+    (4.499200414359281 -0.07853383535770471 110.0)
+    (4.499200414359281 0.07853383535770471 110.0)
+    (0.0 0.0 110.0)
+
+    (0 0 -5.0)
+    (4.559189753217405 -0.0795809531624741 -5.0)
+    (4.559189753217405 0.0795809531624741 -5.0)
+    (0 0 -5.0)
+    (0 0 0.0)
+    (4.559189753217405 -0.0795809531624741 0.0)
+    (4.559189753217405 0.0795809531624741 0.0)
+    (0 0 0.0)
+    (5.259065373228848 -0.09179732755145038 -5.0)
+    (5.259065373228848 0.09179732755145038 -5.0)
+    (5.259065373228848 -0.09179732755145038 0.0)
+    (5.259065373228848 0.09179732755145038 0.0)
+
+    (4.559189753217405 -0.0795809531624741 0.0)
+    (5.259065373228848 -0.09179732755145038 0.0)
+    (5.259065373228848 0.09179732755145038 0.0)
+    (4.559189753217405 0.0795809531624741 0.0)
+    (4.559189753217405 -0.0795809531624741 120.0)
+    (5.259065373228848 -0.09179732755145038 120.0)
+    (5.259065373228848 0.09179732755145038 120.0)
+    (4.559189753217405 0.0795809531624741 120.0)
+
+    (0 0 120.0)
+    (4.559189753217405 -0.0795809531624741 120.0)
+    (4.559189753217405 0.0795809531624741 120.0)
+    (0 0 120.0)
+    (0 0 125.0)
+    (4.559189753217405 -0.0795809531624741 125.0)
+    (4.559189753217405 0.0795809531624741 125.0)
+    (0 0 125.0)
+    (5.259065373228848 -0.09179732755145038 120.0)
+    (5.259065373228848 0.09179732755145038 120.0)
+    (5.259065373228848 -0.09179732755145038 125.0)
+    (5.259065373228848 0.09179732755145038 125.0)
+
+);
+
+blocks 
+(
+    hex ( 0 1 2 3 4 5 6 7 ) fuel (30 1 100) simpleGrading (1 1 1)
+    hex ( 8 9 10 11 12 13 14 15 ) cladding (40 1 5) simpleGrading (1 1 1)
+    hex ( 9 16 17 10 13 18 19 14 ) cladding (10 1 5) simpleGrading (1 1 1)
+    hex ( 20 21 22 23 24 25 26 27 ) cladding (10 1 100) simpleGrading (1 1 1)
+    hex ( 28 29 30 31 32 33 34 35 ) cladding (40 1 5) simpleGrading (1 1 1)
+    hex ( 29 36 37 30 33 38 39 34 ) cladding (10 1 5) simpleGrading (1 1 1)
+);
+
+edges 
+(
+);
+
+boundary 
+(
+    fuelBottom
+    {
+        type regionCoupledOFFBEAT;
+        neighbourPatch bottomCapInner;
+        neighbourRegion region0;
+        owner true;
+        updateAMI false;
+        faces 
+        (
+            (0 3 2 1)
+        );
+    }
+
+    fuelTop
+    {
+        type patch;
+        faces 
+        (
+            (4 5 6 7)
+        );
+    }
+
+    fuelOuter
+    {
+        type regionCoupledOFFBEAT;
+        neighbourPatch cladInner;
+        neighbourRegion region0;
+        owner true;
+        updateAMI true;
+        faces 
+        (
+            (1 2 6 5)
+        );
+    }
+
+    fuelFront
+    {
+        type wedge;
+        faces 
+        (
+            (0 1 5 4)
+        );
+    }
+
+    fuelBack
+    {
+        type wedge;
+        faces 
+        (
+            (3 7 6 2)
+        );
+    }
+
+    cladBottom
+    {
+        type patch;
+        faces 
+        (
+            (8 11 10 9)
+            (9 10 17 16)
+        );
+    }
+
+    cladTop_1
+    {
+        type patch;
+        faces 
+        (
+            (13 18 19 14)
+        );
+    }
+
+    bottomCapInner
+    {
+        type regionCoupledOFFBEAT;
+        neighbourPatch fuelBottom;
+        neighbourRegion region0;
+        owner false;
+        updateAMI false;
+        faces 
+        (
+            (12 13 14 15)
+        );
+    }
+
+    cladOuter
+    {
+        type patch;
+        faces 
+        (
+            (16 17 19 18)
+            (21 22 26 25)
+            (36 37 39 38)
+        );
+    }
+
+    cladFront
+    {
+        type wedge;
+        faces 
+        (
+            (8 9 13 12)
+            (9 16 18 13)
+            (20 21 25 24)
+            (28 29 33 32)
+            (29 36 38 33)
+        );
+    }
+
+    cladBack
+    {
+        type wedge;
+        faces 
+        (
+            (11 15 14 10)
+            (10 14 19 17)
+            (23 27 26 22)
+            (31 35 34 30)
+            (30 34 39 37)
+        );
+    }
+
+    cladBottom_2
+    {
+        type patch;
+        faces 
+        (
+            (20 23 22 21)
+        );
+    }
+
+    cladTop_2
+    {
+        type patch;
+        faces 
+        (
+            (24 25 26 27)
+        );
+    }
+
+    cladInner
+    {
+        type regionCoupledOFFBEAT;
+        neighbourPatch fuelOuter;
+        neighbourRegion region0;
+        owner false;
+        updateAMI true;
+        faces 
+        (
+            (20 24 27 23)
+        );
+    }
+
+    cladBottom_3
+    {
+        type patch;
+        faces 
+        (
+            (29 30 37 36)
+        );
+    }
+
+    topCapInner
+    {
+        type patch;
+        faces 
+        (
+            (28 31 30 29)
+        );
+    }
+
+    cladTop
+    {
+        type patch;
+        faces 
+        (
+            (32 33 34 35)
+            (33 38 39 34)
+        );
+    }
+
+);
+
+mergePatchPairs 
+(
+	(cladTop_1 cladBottom_2)
+	(cladTop_2 cladBottom_3)
+);
+

@@ -1,0 +1,117 @@
+#!/bin/bash
+cd ${0%/*} || exit 1    # Run from this directory
+
+# Source tutorial run functions
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+
+runApplication -o blockMesh
+runApplication -o foamListTimes -rm
+rm -fr postProcessing
+
+solvers='smallStrain largeStrainUpdLag'
+
+for solver_i in $solvers
+do
+	# change solver entry
+	solverDict='./constant/solverDict'
+	runApplication -o foamDictionary $solverDict -entry mechanicsSolver -set $solver_i
+
+	if [ "$solver_i" = "smallStrain" ] ;
+	then
+		# rename BC file
+		mv 0/DD 0/D
+		
+		# assign total displacement values
+		runApplication -o foamDictionary 0/D -entry boundaryField/claddingInnerSurface/uniformValue -set \
+		" table (
+				(0     (0       0 0))
+				(2     (1e-2    0 0))
+		        );"
+
+		# set constitutive law
+		runApplication -o foamDictionary $solverDict -entry materials/cladding/rheologyModel -set misesPlasticity
+	fi
+
+	if [ "$solver_i" = "largeStrainUpdLag" ] ;
+	then
+		mv 0/D 0/DD
+		runApplication -o foamDictionary 0/DD -entry boundaryField/claddingInnerSurface/uniformValue -set \
+		" table (
+				(0     (0       0 0))
+		   		(0.1   (5e-4    0 0))
+		        (2.0   (5e-4    0 0))
+		        );"
+		runApplication -o foamDictionary $solverDict -entry materials/cladding/rheologyModel -set neoHookeanMisesPlasticity
+	fi
+
+	runApplication -o foamListTimes -rm
+	rm -fr postProcessing
+	runApplication -o offbeat
+
+	# Estract total mesh volume 
+	if [ "$solver_i" = "smallStrain" ] ;
+	then
+		# Time step folders list
+		folderList=$(foamListTimes)
+
+		# Create deformation field U from each directory as a copy of D
+		for dir in $folderList; do
+
+			cd "$dir" &&
+			cp -a D U
+
+			runApplication -o foamDictionary ./U -entry boundaryField/claddingInnerSurface/type -set calculated
+			runApplication -o foamDictionary ./U -entry boundaryField/claddingInnerSurface/gradient -remove 
+			runApplication -o foamDictionary ./U -entry boundaryField/claddingInnerSurface/pressure -remove 
+			runApplication -o foamDictionary ./U -entry boundaryField/claddingInnerSurface/uniformValue -remove 
+
+			runApplication -o foamDictionary ./U -entry boundaryField/claddingOuterSurface/type -set calculated
+			runApplication -o foamDictionary ./U -entry boundaryField/claddingOuterSurface/gradient -remove 
+			runApplication -o foamDictionary ./U -entry boundaryField/claddingOuterSurface/pressure -remove 
+			runApplication -o foamDictionary ./U -entry boundaryField/claddingOuterSurface/uniformValue -remove 
+
+			cd ..
+		done
+
+		# Deform the geometry at each timestep according to field U
+		runApplication -o deformedGeom 1
+
+		# Store total mesh volume at each timestep in file 
+		checkMesh | grep "Total volume = " | cut -d ' ' -f17 | rev | cut -c 2- | rev > Vss
+
+		cp -r postProcessing/innerRadius/0/D ./Dss
+	fi
+
+	if [ "$solver_i" = "largeStrainUpdLag" ] ;
+	then
+		# Store total mesh volume at each timestep in file 
+		checkMesh | grep "Total volume = " | cut -d ' ' -f17 | rev | cut -c 2- | rev > Vls
+
+		cp -r postProcessing/innerRadius/0/D ./Dls
+	fi
+done
+
+if [[ $WM_PROJECT_VERSION == *v* ]]
+then	
+	python3 plot_ESI.py $lawi\_$correction
+else
+	python3 plot.py $lawi\_$correction
+fi	
+
+# Print results file
+initialVolSmallStrain=$(cat Vss | head -1)
+initialVolLargeStrain=$(cat Vss | head -1)
+finalVolSmallStrain=$(cat Vss | tail -1)
+finalVolLargeStrain=$(cat Vls | tail -1)
+
+relErrorSS=$(awk -v var1="$finalVolSmallStrain" \
+                -v var2="$initialVolSmallStrain" \
+                'BEGIN {print (100*(var1-var2)/var2)}')
+
+relErrorLS=$(awk -v var1="$finalVolLargeStrain" \
+                -v var2="$initialVolLargeStrain" \
+                'BEGIN {print (100*(var1-var2)/var2)}')
+
+echo "Relative error on volume conservation:" >> results
+echo "Small strain solver : $relErrorSS %" >> results
+echo "Large strain UpdLag solver : $relErrorLS %" >> results

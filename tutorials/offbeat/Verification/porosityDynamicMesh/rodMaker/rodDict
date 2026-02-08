@@ -1,0 +1,89 @@
+{
+    "geometryType": "1D",
+    "wedgeAngle": 0.025,
+    "convertToMeters": 0.001,
+    "nBlocksFuel": 1,
+    "nBlocksClad": 0,
+    "blockNameFuel": [
+        "fuel"
+    ],
+    "blockNameClad": [
+        "cladding"
+    ],
+    "rInnerFuel": [
+        0.01
+    ],
+    "rInnerClad": [
+        2.78
+    ],
+    "rOuterFuel": [
+        2.7
+    ],
+    "rOuterClad": [
+        3.25
+    ],
+    "heightFuel": [
+        2
+    ],
+    "heightClad": [
+        2
+    ],
+    "offsetFuel": 0.0,
+    "offsetClad": 0.0,
+    "nCellsRFuel": [
+        100
+    ],
+    "nCellsRClad": [
+        5
+    ],
+    "nSlicesFuel": [
+        1
+    ],
+    "nSlicesClad": [
+        1
+    ],
+    "nPelletsFuel": [],
+    "nCellsZFuel": [
+        1
+    ],
+    "nCellsZClad": [
+        1
+    ],
+    "bottomCapHeight": 0,
+    "nCellsRBottomCap": 50,
+    "nCellsZBottomCap": 3,
+    "topCapHeight": 0,
+    "nCellsRTopCap": 50,
+    "nCellsZTopCap": 3,
+    "rDishFuel": [
+        3.2975,
+        3.2975,
+        3.2975,
+        3.2975,
+        3.2975,
+        3.2975
+    ],
+    "rLandFuel": [
+        4.0705,
+        4.0705,
+        4.0705,
+        4.0705,
+        4.0705,
+        4.0705
+    ],
+    "rCurvatureDish": [
+        10000000000.0
+    ],
+    "heightChamferFuel": [
+        0.0
+    ],
+    "nCellsRDish": [
+        15
+    ],
+    "nCellsRLand": [
+        8
+    ],
+    "nCellsRChamfer": [
+        7
+    ]
+}

@@ -1,0 +1,138 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//- Thermal and Mechanical solver selection:
+thermalSolver           solidConduction;
+mechanicsSolver         smallStrain;
+neutronicsSolver        fromLatestTime;
+elementTransport        fromLatestTime;
+//- Material and rhelogy treatment:
+materialProperties      byZone;
+rheology                byMaterial;
+
+heatSource              fromLatestTime;
+burnup                  fromLatestTime;
+fastFlux                fromLatestTime;
+corrosion               fromLatestTime;
+gapGas                  none;
+fgr                     none;
+sliceMapper             autoAxialSlices;
+corrosion               fromLatestTime;
+
+globalOptions
+{
+    pinDirection            (0 0 1);
+    reactorType             "LWR";
+}
+
+thermalSolverOptions
+{
+    heatFluxSummary     off;
+}
+
+rheologyOptions
+{
+    thermalExpansion off;
+}
+
+mechanicsSolverOptions
+{
+    forceSummary        off;
+    cylindricalStress   on;
+
+    multiMaterialCorrection
+    {
+        type                    uniform;
+        defaultWeights          1;
+    }
+}
+
+fgrOptions
+{
+    nFrequency  1;
+    relax       1;
+}
+
+gapGasOptions
+{
+    gapPatches ( fuelOuter cladInner );
+    holePatches ();
+    topFuelPatches    ( fuelTop);
+    bottomFuelPatches ( fuelBottom);
+
+    gapVolumeOffset 0.0;
+    gasReserveVolume 0.0;
+    gasReserveTemperature 290;
+}
+
+
+
+/*
+heatSourceOptions
+{
+    timePoints  ( 0  10);
+    lhgr        ( 0  0);
+    timeInterpolationMethod linear;
+
+    axialProfile
+    {
+        type   flat;
+    }
+
+    radialProfile
+    {
+        type    flat;
+    }
+
+    materials ( fuel );
+}*/
+
+fastFluxOptions
+{
+    timePoints  ( 0  3600     1.26E+08 );
+    fastFlux    ( 0  2e13     1e13 );
+    timeInterpolationMethod linear;
+
+    axialProfile
+    {
+        type flat;
+    }
+
+    materials ( fuel cladding );
+}
+
+
+materials
+{
+    fuel
+    {
+      material constant;
+
+      rho         rho     [1 -3 0 0 0]    1;
+      Cp          Cp      [0 2 -2 -1 0]   1;
+      k           k       [1 1 3 -1 0]    1;
+      emissivity emissivity [0 0 0 0 0]   0.0;
+      E           E       [1 -1 -2 0 0]   10e9;
+      nu          nu      [0 0 0 0 0]     0.3;
+      alpha       alpha   [0 0 0 0 0]     0.0;
+      Tref        Tref    [0 0 0 1 0]     293.0;
+
+        rheologyModel               elasticity;
+    }
+}
+
+// ************************************************************************* //

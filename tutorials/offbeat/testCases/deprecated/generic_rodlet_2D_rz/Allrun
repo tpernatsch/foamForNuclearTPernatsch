@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# Default to 1 core
+n=1
+
+# Check for the '-j' option and read the subsequent argument as the number of processors
+while getopts "j:" opt; do
+  case $opt in
+    j)
+      n=$OPTARG
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+  esac
+done
+
+# Always run the Python script
+python3 rodMaker.py
+
+# Move blockMeshDict to the system directory
+mv blockMeshDict system
+
+# Generate the mesh
+blockMesh | tee log.blockMesh
+
+# Check if more than 1 processor is needed
+if [ "$n" -gt 1 ]; then
+
+    # Modify decomposeParDict to set the number of subdomains
+    foamDictionary -entry numberOfSubdomains -set $n system/decomposeParDict
+    foamDictionary -entry simpleCoeffs/n -set "(1 1 $n)" system/decomposeParDict
+
+    # Decompose the domain
+    decomposePar -force
+
+    # Run the application in parallel
+    mpirun -np $n offbeat -parallel | tee log.offbeat
+else
+    # Run the application in single-core mode
+    offbeat | tee log.offbeat
+fi
+
+# Uncomment if post-processing is needed
+# postProcess -func sampleDict

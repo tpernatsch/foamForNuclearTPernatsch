@@ -1,0 +1,62 @@
+#!/bin/bash
+cd case_1
+./Allclean
+cd ..
+
+cd case_2
+./Allclean
+cd ..
+
+cd case_3
+./Allclean
+cd ..
+
+cd case_4a
+./Allclean
+cd ..
+
+cd case_4b
+./Allclean
+cd ..
+
+cd case_4c
+./Allclean
+cd ..
+
+cd case_4d
+./Allclean
+cd ..
+
+cd case_5
+./Allclean
+cd ..
+
+cd case_6
+./Allclean
+cd ..
+
+cd case_7
+./Allclean
+cd ..
+
+cd case_8
+./Allclean
+cd ..
+
+cd case_9
+./Allclean
+cd ..
+
+cd case_10
+./Allclean
+cd ..
+
+cd case_11
+./Allclean
+cd ..
+
+cd case_13
+./Allclean
+cd ..
+
+rm -f results

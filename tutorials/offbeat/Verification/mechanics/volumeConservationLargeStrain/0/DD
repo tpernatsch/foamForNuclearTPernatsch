@@ -1,0 +1,47 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9.0
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           volVectorField;
+    object          DD;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [ 0 1 0 0 0 0 0 ];
+
+internalField   uniform ( 0 0 0 );
+
+boundaryField
+{
+    "wedge.*"
+    {
+        type            wedge;
+    }
+    claddingOuterSurface
+    {
+        type            tractionDisplacement;
+        traction        uniform ( 0 0 0 );
+        pressure        uniform 0;
+        relax           1;
+        value           $internalField;
+    }
+    claddingInnerSurface
+    {
+        type            uniformFixedValue;
+        uniformValue    table ( ( 0 ( 0 0 0 ) ) ( 0.1 ( 0.0005 0 0 ) ) ( 2 ( 0.0005 0 0 ) ) );
+    }
+    "bottom.*|top.*"
+    {
+        type            empty;
+    }
+}
+
+
+// ************************************************************************* //

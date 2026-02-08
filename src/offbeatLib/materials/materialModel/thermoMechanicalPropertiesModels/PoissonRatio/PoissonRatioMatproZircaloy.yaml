@@ -1,0 +1,106 @@
+description: |
+  Model for Zircaloy Poisson's Ratio from Matprov11.
+
+options:
+  - key: YoungModulusName
+    type: word
+    required: false
+    default: "E"
+    description: |
+      Option read by the model.
+
+  - key: fastFluenceName
+    type: word
+    required: false
+    default: "fastFluence"
+    description: |
+      Option read by the model.
+
+  - key: par1
+    type: scalar
+    required: false
+    default: 7.07e11
+    description: |
+      Option read by the model.
+  - key: par10
+    type: scalar
+    required: false
+    default: 1.66e7
+    description: |
+      Option read by the model.
+  - key: par2
+    type: scalar
+    required: false
+    default: 2.315e8
+    description: |
+      Option read by the model.
+  - key: par3
+    type: scalar
+    required: false
+    default: 2.6e10
+    description: |
+      Option read by the model.
+  - key: par4
+    type: scalar
+    required: false
+    default: 0.88
+    description: |
+      Option read by the model.
+  - key: par5
+    type: scalar
+    required: false
+    default: 0.12
+    description: |
+      Option read by the model.
+  - key: par6
+    type: scalar
+    required: false
+    default: 1e25
+    description: |
+      Option read by the model.
+  - key: par7
+    type: scalar
+    required: false
+    default: 4.04e10
+    description: |
+      Option read by the model.
+  - key: par8
+    type: scalar
+    required: false
+    default: 2.168e7
+    description: |
+      Option read by the model.
+  - key: par9
+    type: scalar
+    required: false
+    default: 3.49e10
+    description: |
+      Option read by the model.
+
+usage:
+  - comment: |
+      Example selection of the `ZircaloyMatpro` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        cladding
+        {
+          type Zircaloy;
+          thermalExpansion
+          {
+            type ZircaloyMatpro;
+            // YoungModulusName "E";
+            // fastFluenceName "fastFluence";
+            // par1 7.07e11;
+            // par10 1.66e7;
+            // par2 2.315e8;
+            // par3 2.6e10;
+            // par4 0.88;
+            // par5 0.12;
+            // par6 1e25;
+            // par7 4.04e10;
+            // par8 2.168e7;
+            // par9 3.49e10;
+          }
+        }
+      }

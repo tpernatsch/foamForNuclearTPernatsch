@@ -7,8 +7,7 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 from foamForNuclear.boundaryConditions.slip import Slip
 from foamForNuclear.checkvalue import check_type, check_value
 from foamForNuclear.common import *
-from foamForNuclear.createBafflesDict import BaffleDict
-from foamForNuclear.topoSetDict import TopoSetAction
+from foamForNuclear.mesh.dicts import BaffleDict, TopoSetAction
 from .mesh import _LATTICE_TYPES, Mesh
 
 
@@ -228,6 +227,268 @@ class PolyMesh(Mesh):
 
     def generate_mesh_from_voronoi_points(
             self,
+            cellZonesToStrip: list[str]=[],
+            isAddInletOuletBC: bool=False,
+            isAddBaffles: bool=False
+        ):
+        """
+        Generate the PolyMesh objects using a Voronoi graph. One can add points
+        by using the methods `add_voronoi_points_from_coordinates` and/or
+        `add_voronoi_points_from_lattice`.
+        Don't dump the `polyMesh` folder.
+
+        Notes:
+
+        - Using the `isAddBaffles` to `True` may cause the creation of a \
+            `polyMesh/sets/nonManifoldPoints` file that is the result of a \
+            non-coplanar faceZone. To-do test not affecting the results.
+
+        Parameters
+        ----------
+        cellZonesToStrip : list[str]
+            List of cellZone names to be removed from the mesh. Can be used to
+            have a perfect lattice without the boundary box (default `[]`).
+        isAddInletOuletBC : bool
+            If True, add the `inlet` and `outlet` boundary conditions assuming
+            that the `inlet` is the lowest face along the Z-direction and
+            `outlet` is the highest face along the Z-direction (default `False`).
+        isAddBaffles : bool
+            If true, create baffles along the Z-direction assuming that all the
+            non-baffle faces are normal to the Z-direction (default `False`).
+        """
+
+        # Reset lists
+        self.faceZonesList = List([])
+        self.cellZonesList = List([])
+        self.faceList = List([])
+        self.ownerList = List([])
+        self.neighbourList = List([])
+        self.pointsList = List([])
+
+        from scipy.spatial import Voronoi
+
+        # Compute Voronoi graph
+        vor = Voronoi(self.voronoiPoints)
+
+        # Fill the list of points
+        for point in vor.vertices:
+            self.pointsList.append(Vector(point[0], point[1], point[2]))
+
+        # Convert Voronoi points into a Vector list
+        voronoiPointAsVector = [Vector(x, y, z) for x, y, z in self.voronoiPoints]
+
+        # Points mapping to region (idx = point, value = region)
+        # print("point_region", vor.point_region)
+
+        # Map Voronoi region to initial Voronoi points from user
+        regionToPoint = {
+            int(regionId): pointIdx
+            for pointIdx, regionId in enumerate(vor.point_region)
+            if -1 not in vor.regions[regionId] and len(vor.regions[regionId]) >= 4
+        }
+
+        # Check which cells are closed, meaning no openess, meaning cells
+        pointsClosedCells = [
+            regionToPoint[i]
+            for i, pointList in enumerate(vor.regions)
+            if -1 not in pointList and len(pointList) >= 4
+        ]
+
+        # Renumber from 0 the Voronoi points that are actually used in the mesh
+        renumberedPointClosedCells = {
+            pointIdx: newId
+            for newId, pointIdx in enumerate(pointsClosedCells)
+        }
+
+
+        # Fill faces list
+        for loopVertices, ridgePoint in zip(vor.ridge_vertices, vor.ridge_points):
+            if (-1 in loopVertices):
+                continue
+
+            isPoint1Closed = ridgePoint[0] in pointsClosedCells
+            isPoint2Closed = ridgePoint[1] in pointsClosedCells
+
+            # Loop for internal or boundary faces only
+            if (not isPoint1Closed and not isPoint2Closed):
+                continue
+
+            isInternalFace = None
+            # Boundary of the mesh, point1 is in the mesh
+            if (isPoint1Closed and not isPoint2Closed):
+                isInternalFace = False
+            # Boundary of the mesh, point2 is in the mesh
+            elif (not isPoint1Closed and isPoint2Closed):
+                ridgePoint = ridgePoint[::-1]
+                isInternalFace = False
+            # Internal face
+            elif (isPoint1Closed and isPoint2Closed):
+                isInternalFace = True
+
+
+            # Check face order, right hand rule pointing outside the cell for
+            # owner cells
+            faceDirection = voronoiPointAsVector[ridgePoint[0]] - voronoiPointAsVector[ridgePoint[1]]
+
+            for pointIdx1, pointIdx2, pointIdx3 in zip(loopVertices, loopVertices[1:]+[loopVertices[0]], loopVertices[2:]+loopVertices[:2]):
+                crossProduct = (self.pointsList[pointIdx3] - self.pointsList[pointIdx2]).cross(self.pointsList[pointIdx2] - self.pointsList[pointIdx1])
+
+                isReverse = faceDirection.dot(crossProduct) < 0
+
+            loopVertices = loopVertices[::-1] if isReverse else loopVertices
+
+
+            # Internal face are always at the beginning because owner and
+            # neighbour lists need to be aligned
+            if (isInternalFace):
+                idxInsert = len(self.neighbourList)
+                self.ownerList.insert(idxInsert, renumberedPointClosedCells[int(ridgePoint[0])])
+                self.neighbourList.insert(idxInsert, renumberedPointClosedCells[int(ridgePoint[1])])
+                self.faceList.insert(idxInsert, List(loopVertices))
+
+            # Boundary faces are always at the end
+            else:
+                self.ownerList.append(renumberedPointClosedCells[int(ridgePoint[0])])
+                self.faceList.append(List(loopVertices))
+
+        # Create cellZones
+        for cellZoneName, cellIndices in self.uniqueCellZones.items():
+            if (cellZoneName in cellZonesToStrip):
+                continue
+
+            # Renumber cells
+            cellIndices = List([
+                renumberedPointClosedCells[celli]
+                for celli in cellIndices
+            ])
+
+            self.cellZonesList.append(OpenFOAMDict(
+                items={
+                    'type': 'cellZone',
+                    'cellLabels      List<label>': cellIndices.__repr__(isAddLength=True)
+                },
+                name=cellZoneName
+            ))
+
+        # Create a global boundary condition
+        self.boundaryList.append(OpenFOAMDict(
+            items={
+                'type': 'patch',
+                'nFaces': len(self.faceList)-len(self.neighbourList),
+                'startFace': len(self.neighbourList)
+            },
+            name="defaultFaces"
+        ))
+
+        # Create baffle faces
+        if (isAddBaffles):
+            baffleFaceSet = List([])
+            # Compute face direction, assumes baffles faces are not along the
+            # Z-direction AND are not part of the boundary faces
+            for faceIdx, face in enumerate(self.faceList):
+                vertexZ = [self.pointsList[vertexI].z for vertexI in face]
+                if (
+                    not all([abs((z-vertexZ[0])/vertexZ[0]) < 1e-6 for z in vertexZ])
+                    and faceIdx < len(self.neighbourList)
+                ):
+                    baffleFaceSet.append(faceIdx)
+
+            self.faceZonesList.append(OpenFOAMDict(
+                items={
+                    'type': 'faceZone',
+                    'faceLabels      List<label>': baffleFaceSet.__repr__(isAddLength=True),
+                    'flipMap': f'List<bool> {len(baffleFaceSet)} {"{1}"}'
+                },
+                name="baffleZone"
+            ))
+            # self.createBafflesDict.add_baffle_mapped_wall(
+            #     name="baffleZone",
+            #     zoneName="baffleZone"
+            # )
+            baffleDict = BaffleDict(
+                name="baffleZone",
+                faceType="faceZone",
+                zoneName="baffleZone",
+                masterType="mappedWall",
+                slaveType="mappedWall",
+                sampleMode="nearestPatchFace",
+                sampleRegion=self.region,
+                offsetMode="uniform",
+                transform="coincidentFullMatch",
+                offset=Vector(0, 0, 0)
+            )
+            baffleDict.add_field_boundary_condition('U', Slip())
+            self.createBafflesDict.append(baffleDict)
+
+        if (isAddInletOuletBC):
+            minZ = min([p.z for p in self.pointsList])
+            maxZ = max([p.z for p in self.pointsList])
+
+            self.topoSetDict.append(
+                TopoSetAction(
+                    name='inlet_pointSet',
+                    setType='pointSet',
+                    actionType='new',
+                    sourceType='clipPlaneToPoint',
+                    extraParameters={
+                        'point': Vector(0, 0, minZ + 1e-6),
+                        'normal': Vector(0, 0, -1)
+                    }
+                )
+            )
+            self.topoSetDict.append(
+                TopoSetAction(
+                    name='inlet_faceSet',
+                    setType='faceSet',
+                    actionType='new',
+                    sourceType='pointToFace',
+                    extraParameters={
+                        'set': 'inlet_pointSet',
+                        'option': 'all'
+                    }
+                )
+            )
+            self.topoSetDict.append(
+                TopoSetAction(
+                    name='outlet_pointSet',
+                    setType='pointSet',
+                    actionType='new',
+                    sourceType='clipPlaneToPoint',
+                    extraParameters={
+                        'point': Vector(0, 0, maxZ - 1e-6),
+                        'normal': Vector(0, 0, 1)
+                    }
+                )
+            )
+            self.topoSetDict.append(
+                TopoSetAction(
+                    name='outlet_faceSet',
+                    setType='faceSet',
+                    actionType='new',
+                    sourceType='pointToFace',
+                    extraParameters={
+                        'set': 'outlet_pointSet',
+                        'option': 'all'
+                    }
+                )
+            )
+
+            self.createPatchDict.add_patch(
+                name="inlet",
+                regex="inlet_faceSet",
+                patchType='patch',
+                constructFrom="set"
+            )
+            self.createPatchDict.add_patch(
+                name="outlet",
+                regex="outlet_faceSet",
+                patchType='patch',
+                constructFrom="set"
+            )
+
+
+    def generate_mesh_from_voronoi_points_from_pyvoro(
+            self,
             boundaryBox: list[list[float]]=None,
             cylinderRadius: float=None,
             cylinderZmin: float=None,
@@ -237,6 +498,8 @@ class PolyMesh(Mesh):
             isAddBaffles: bool=False
         ):
         """
+        Deprected since v2512.
+
         Generate the PolyMesh objects. Don't dump the `polyMesh` folder.
         If `cylinderRadius` is not `None`, truncate the boundary mesh into a
         cylinder.
@@ -246,7 +509,6 @@ class PolyMesh(Mesh):
         - Using the `isAddBaffles` to `True` may cause the creation of a \
             `polyMesh/sets/nonManifoldPoints` file that is the result of a \
             non-coplanar faceZone. To-do test not affecting the results.
-        - To be replaced by scipy.spatial.Voronoi?: https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.Voronoi.html#scipy.spatial.Voronoi
 
         Parameters
         ----------
@@ -273,6 +535,9 @@ class PolyMesh(Mesh):
             If true, create baffles along the Z-direction assuming that all the
             non-baffle faces are normal to the Z-direction (default `False`).
         """
+        msg = "Deprecated since v2512"
+        print(FutureWarning(msg))
+
         try:
             import pyvoro
         except ModuleNotFoundError:

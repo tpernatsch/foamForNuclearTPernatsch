@@ -1,0 +1,27 @@
+#------------------------------------------------------------------------------#
+#                                                                              #
+#                            README - commands                                 #
+#                                                                              #
+#------------------------------------------------------------------------------#
+
+This README file contains a brief description of the verification case.
+
+A simple test for a 1mm x 1mm x 1mm case with:
+
+Temperature: 1200K
+density: 2.2 g/cm³
+fast neutron flux: 1.25e18 n/m²/s
+fluxConversionFactor:0.91  //To have the Ks = 1.996e-29 - 4.415e-32T + 3.6544e-35T²
+stress:0.1 MPa
+
+The calculated K = 6.55860484E-30
+So the creep_rate = K*stress*flux*fluxConversionFactor = 7.4604130106955E-13 /s
+creep_strain at 80e6 s = 5.9683304085564E-05
+
+The average creep_strain obtained by OFFBEAT is -5.96833792E-05, the relative error is 0.00012585502289251%.
+
+
+
+
+The verification of creep in form of creep_rate = K * (sigma1 - vc*(sigma2+sigma3)) * phi 
+as well as the solution for principal stress can refer to the case_4b of the Iaea_Benchamark

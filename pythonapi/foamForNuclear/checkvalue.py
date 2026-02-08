@@ -1,6 +1,7 @@
 import copy
+from types import UnionType
 import numpy as np
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 
 
 def check_value(name, value, accepted_values):
@@ -67,6 +68,12 @@ def check_type(name, value, expected_type, expected_iter_type=None, *, none_ok=F
     """
     if none_ok and value is None:
         return
+    
+    # --- normalize unions for isinstance ---
+    if isinstance(expected_type, UnionType):          # int | float
+        expected_type = expected_type.__args__                        # (int, float)
+    else:
+        expected_type = expected_type
 
     if not isinstance(value, expected_type):
         if isinstance(expected_type, Iterable):
@@ -162,3 +169,78 @@ class CheckedList(list):
         """
         check_type(self.name, item, self.expected_type)
         super().insert(index, item)
+
+    def extend(self, iterable):
+        """Extend list by appending each element."""
+        check_type('CheckedList extend operand', iterable, Iterable, self.expected_type)
+        for item in iterable:
+            self.append(item)   
+
+
+class CheckedDict(dict):
+    """
+    A dict for which each key/value is type-checked as it's added.
+
+    Parameters
+    ----------
+    expected_key_type : type or Iterable[type]
+        Allowed type(s) for keys.
+    expected_value_type : type or Iterable[type]
+        Allowed type(s) for values.
+    name : str
+        Name of the field being checked (for error messages).
+    items : Mapping, optional
+        Initial mapping to populate the dict.
+    """
+
+    def __init__(self, expected_key_type, expected_value_type, name, items=None):
+        super().__init__()
+        self.expected_key_type = expected_key_type
+        self.expected_value_type = expected_value_type
+        self.name = name
+
+        if items is not None:
+            if not isinstance(items, Mapping):
+                raise TypeError(
+                    f"{self.name}: Expected a mapping to initialize CheckedDict, got {type(items)}"
+                )
+            for k, v in items.items():
+                self._check_and_set(k, v)
+
+    # Internal check utility
+    def _check_and_set(self, key, value):
+        check_type(f"{self.name} key", key, self.expected_key_type)
+        check_type(f"{self.name} value", value, self.expected_value_type)
+        super().__setitem__(key, value)
+
+    # --- Mutating methods overridden to enforce validation ---
+
+    def __setitem__(self, key, value):
+        self._check_and_set(key, value)
+
+    def update(self, other=None, **kwargs):
+        if other is not None:
+            if not isinstance(other, Mapping):
+                raise TypeError(
+                    f"{self.name}: update() expects a mapping, got {type(other)}"
+                )
+            for k, v in other.items():
+                self._check_and_set(k, v)
+        for k, v in kwargs.items():
+            self._check_and_set(k, v)
+
+    def setdefault(self, key, default=None):
+        check_type(f"{self.name} key", key, self.expected_key_type)
+        if key not in self:
+            check_type(f"{self.name} value", default, self.expected_value_type)
+        return super().setdefault(key, default)
+
+    # --- Optional: copy behavior (like CheckedList __add__/__iadd__) ---
+
+    def copy(self):
+        return CheckedDict(
+            self.expected_key_type,
+            self.expected_value_type,
+            self.name,
+            items=self,
+        )

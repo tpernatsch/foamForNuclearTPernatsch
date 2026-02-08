@@ -1,0 +1,90 @@
+description: |
+  Class modelling thermal expansion of MOX fuel according to Martin
+  correlation.
+  Source : "The thermal expansion of solid UO2 and (U, Pu) mixed oxides — a
+  review and recommendations", D.G.Martin
+
+  url : https://doi.org/10.1016/0022-3115(88)90315-7
+
+options:
+  - key: oxygenMetalRatio
+    type: scalar
+    required: false
+    description: |
+      Oxygen to metal ratio.
+      Optional override. If not provided here, the value is read from the 
+      material base dictionary (preferred).
+
+  - key: par1
+    type: scalar
+    required: false
+    default: 9.828e-6
+    description: |
+      Option read by the model.
+  - key: par2
+    type: scalar
+    required: false
+    default: -6.39e-10
+    description: |
+      Option read by the model.
+  - key: par3
+    type: scalar
+    required: false
+    default: 1.33e-12
+    description: |
+      Option read by the model.
+  - key: par4
+    type: scalar
+    required: false
+    default: -1.757e-17
+    description: |
+      Option read by the model.
+  - key: par5
+    type: scalar
+    required: false
+    default: 1.1833e-5
+    description: |
+      Option read by the model.
+  - key: par6
+    type: scalar
+    required: false
+    default: -5.013e-9
+    description: |
+      Option read by the model.
+  - key: par7
+    type: scalar
+    required: false
+    default: 3.756e-12
+    description: |
+      Option read by the model.
+  - key: par8
+    type: scalar
+    required: false
+    default: -6.125e-17
+    description: |
+      Option read by the model.
+
+usage:
+  - comment: |
+      Example selection of the `UPuO2Martin` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        fuel
+        {
+          type UPuO2:
+          thermalExpansion
+          {
+            type UPuO2Martin;
+            // oxygenMetalRatio 2.0;
+            // par1 9.828e-6;
+            // par2 -6.39e-10;
+            // par3 1.33e-12;
+            // par4 -1.757e-17;
+            // par5 1.1833e-5;
+            // par6 -5.013e-9;
+            // par7 3.756e-12;
+            // par8 -6.125e-17;
+          }
+        }
+      }

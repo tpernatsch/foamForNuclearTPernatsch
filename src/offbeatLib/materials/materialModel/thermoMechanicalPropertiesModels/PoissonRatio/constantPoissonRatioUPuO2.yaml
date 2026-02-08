@@ -1,0 +1,30 @@
+description: |
+  Class modelling the constant Poisson's ratio of UPuO2 MOX fuel from
+  Matprov11.
+
+options:
+  - key: PoissonRatioValue
+    type: scalar
+    required: false
+    default: 0.276
+    description: |
+      Option read by the model.
+
+usage:
+  - comment: |
+      Example selection of the `UPuO2Constant` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        fuel
+        {
+          type UPuO2;
+          thermalExpansion
+          {
+            type UPuO2Constant;
+            // PoissonRatioValue 0.276;
+            // isotropicCracking false;
+            // isotropicCrackingType "Barani";
+          }
+        }
+      }

@@ -1,0 +1,37 @@
+description: |
+  Parent class for swelling model.
+  
+  The parent class typeName is "none". If selected in the solverDict the
+  swelling is not considered, but the swelling field 'epsilonSwelling' is
+  created and added to registry.
+
+  If the 'epsilonSwelling' file is present in the starting time folder,
+  the internal field and boundary conditions are set according to the file.
+
+  Otherwise, the field is set to 0 in each cell, with zeroGradient BCs in all
+  non-empty/-wedge patches.
+
+admonitions:
+  - kind: warning
+    body: |
+      The keyword `swellingModel` is deprecated. Prefer a `swelling`
+      dictionary with a `type` entry.
+
+options: []
+
+usage:
+  - comment: |
+      Recommended selection via the `swelling` dictionary.
+    snippet: |
+        materials
+        {
+            fuel
+            {
+                type UO2;
+
+                swelling
+                {
+                    type none;
+                }
+            }
+        }

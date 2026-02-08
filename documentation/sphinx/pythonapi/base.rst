@@ -164,6 +164,8 @@ Post-processing
    foamForNuclear.FunctionObject
    foamForNuclear.SurfaceFieldValue
    foamForNuclear.VolFieldValue
+   foamForNuclear.FieldMinMax
+   foamForNuclear.MapFields
    foamForNuclear.Probes
    foamForNuclear.MassFlow
    foamForNuclear.TBulk

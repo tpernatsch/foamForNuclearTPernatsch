@@ -1,0 +1,75 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+application     offbeat;
+
+startFrom       startTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         296310;
+
+deltaT          0.01;
+
+adjustableTimeStep          yes;
+maxDeltaT                   300;
+minDeltaT                   0.01;
+maxRelativeDeltaTIncrease   1.1;
+minRelativeDeltaTDecrease   1e9;
+maxRelativePowerIncrease    1e9;
+maxRelativePowerDecrease    1e9;
+maxRelativeTemperatureIncrease  0.01;
+maxRelativeTemperatureDecrease  0.01;
+maxBurnupIncrease           1e9;
+maxAverageCreep             1e9;
+maxMaximumCreep             1e9;
+maxFGR                      1e9;
+maxConcentrationChange      0.5;
+
+writeControl    timeStep;
+writeInterval   1000;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable true;
+
+functions
+{
+    samples
+    {
+        type            probes;
+        libs            ("libsampling.so");
+        fields          ( T Css Cpp );
+        probeLocations  ( (0.005 0.005 0.005) );
+        verbose         true;
+        sampleOnExecute true;
+    }
+}
+
+
+// ************************************************************************* //

@@ -1,0 +1,101 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+libs ("libsciantix.so");
+libs ("liboffbeat.so");
+libs ("libOffbeatFunctionObject.so");
+
+
+application     offbeat;
+
+//- Run options:
+startFrom       latestTime;
+startTime       0;
+stopAt          endTime;
+endTime         2592000;
+deltaT          1;
+
+//- Write options:
+writeControl    timeStep;
+writeInterval   1;
+purgeWrite      0;
+writeFormat     ascii;
+writeCompression off;
+timeFormat      general;
+timePrecision   20;
+writePrecision   6;
+
+functions 
+{ 
+    // Output rod internal pressure
+    writePressure
+    {
+        type            rodPressure;
+    }
+
+    // Output central void radius at Peak Power Node
+    centralVoid_PPN
+    {
+        type            centralVoidRadius;
+        axialPositions  (1.10);
+        criterion       porosityBased;
+        poroThreshold   0.75;
+        annularFuel     off;
+    }
+
+    // Output gap size @ PPN
+    gapSize_PPN
+    {
+        type            patchProbes;
+        libs            ("libsampling.so");
+        patchName       fuelOuter;
+        fields          ( gapWidth );
+        writeControl    runTime;
+        writeInterval   1;
+        probeLocations  ( ( 0 0 1.10) );
+    }
+}
+
+//- Adjustable time step options:
+adjustableTimeStep true;
+
+maxDeltaT                   6.048e5;
+minDeltaT                   0.1;
+maxRelativeDeltaTIncrease   2;
+minRelativeDeltaTDecrease   2;
+maxRelativePowerIncrease    0.5;
+maxRelativePowerDecrease    1e9;
+maxBurnupIncrease           0.1;
+maxAverageCreep             1e-4;
+maxMaximumCreep	            1e-4;
+maxFGR			            1e-8;	
+
+runTimeModifiable true;
+
+maxCourantNoPorosity        1;
+
+adjustableWriteTimeStep true;
+writeTimeStepList
+(
+    3600      // 1h
+    43200     // 12h
+    86400     // 1 day
+    $endTime
+);
+
+
+// ************************************************************************* //

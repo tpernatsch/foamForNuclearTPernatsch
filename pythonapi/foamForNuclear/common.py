@@ -1,4 +1,5 @@
 from copy import copy
+from os import write
 import numpy as np
 import base64
 import errno
@@ -7,7 +8,16 @@ import shutil
 from PIL import Image as im
 import matplotlib.pyplot as plt
 
-from foamForNuclear.checkvalue import CheckedList, check_type
+import attrs as attr
+from attrs import define, field, validators as v
+from foamlib import FoamFile
+from typing import Mapping, Optional, Union, get_args, get_origin
+from types import UnionType
+
+import sys
+import os
+
+from foamForNuclear.checkvalue import CheckedDict, CheckedList, check_type
 
 
 tab = "    "
@@ -44,56 +54,369 @@ class OpenFOAMDict(dict):
     Overload of the Python dictionary. Print in OpenFOAM format.
     """
 
-    def __init__(self, items: dict=None, name: str=None):
+    def __init__(self, items: dict=None, name: str | None =None):
         if (items is not None):
             for key, item in items.items():
                 self[key] = item
 
         self.name = name
 
+    def __setitem__(self, key, item):
+        if isinstance(item, list) and not isinstance(item, (OpenFOAMList, OpenFOAMListDict, Table)):
+            item = List(item)
+        super().__setitem__(key, item)
 
-    def __repr__(self, depth: int=0):
+    def export_body_to_foam(self, depth: int = 0) -> str:
         text = ""
-        if (self.name is not None):
-            text += f"{self.name}"
-
         text += f"\n{depth*tab}" + "{\n"
+        
         for key, item in self.items():
             key = format_to_openfoam_regex(key)
-            # if ("," in key):
-            #     key = "\""+key+"\""
-            if (type(item) == bool):
+
+            if isinstance(item, bool):
                 item = "true" if item else "false"
 
-            if (isinstance(item, OpenFOAMDict)):
-                text += f"{(depth+1)*tab}{key} {item.__repr__(depth=depth+1)}\n"
-            elif (isinstance(item, (OpenFOAMList, OpenFOAMListDict))):
+            if isinstance(item, OpenFOAMDict):
+                # For the printed name, preference is given to dict.name.
+                # If it exists then repr function will write it before the dict body. 
+                # If it does not exist, the key (if any) will be used instead
+                if item.name is None:
+                    text += f"{(depth+1)*tab}{key}{item.__repr__(depth=depth+1)}\n"
+                else:
+                    text += f"{(depth+1)*tab}{item.__repr__(depth=depth+1)}\n"
+            elif isinstance(item, (FoamForNuclearDict, CheckedOpenFOAMDict,)):
+                # For the printed name, preference is given to dict.name.
+                # If it exists then repr function will write it before the dict body. 
+                # If it does not exist, the key (if any) will be used instead
+                if item.name is None:
+                    text += f"{(depth+1)*tab}{key}{item._as_openfoam_dict().__repr__(depth=depth+1)}\n"
+                else:
+                    text += f"{(depth+1)*tab}{item._as_openfoam_dict().__repr__(depth=depth+1)}\n"
+            elif isinstance(item, (OpenFOAMList, OpenFOAMListDict)):
                 text += f"{item.__repr__(depth=depth+1)}\n"
-            elif (isinstance(item, Table)):
+            elif isinstance(item, Table):
                 text += f"{(depth+1)*tab}{key:15} {item.__repr__(depth=depth+1)};\n"
             else:
-                if (item is not None or item == ""):
+                if item is not None or item == "":
                     text += f"{(depth+1)*tab}{key:15} {item};\n"
                 else:
                     text += f"{(depth+1)*tab}{key};\n"
 
         text += depth*tab + "}\n"
-        return(text)
+        return text
+
+    def __repr__(self, depth: int = 0) -> str:
+        text = ""
+        if self.name is not None:
+            text += f"{self.name}"
+        text += self.export_body_to_foam(depth=depth)
+        return text
 
     @property
     def is_empty(self):
         return(len(list(self.keys())) == 0)
+    
+
+class CheckedOpenFOAMDict(CheckedDict):
+    """
+    CheckedDict that prints in OpenFOAM format using OpenFOAMDict underneath.
+    """
+
+    def __init__(self, expected_key_type, expected_value_type,
+                 name: str | None = None, items: dict | None = None):
+        # reuse CheckedDict logic (types + items + .name)
+        super().__init__(expected_key_type, expected_value_type, name, items)
+
+    def export_body_to_foam(self, depth: int = 0) -> str:
+        of_dict = OpenFOAMDict(self, name=self.name)
+        return of_dict.export_body_to_foam(depth=depth)
+
+    def _as_openfoam_dict(self) -> OpenFOAMDict:
+        of_dict = OpenFOAMDict(self, name=self.name)
+        return of_dict
+
+    def __repr__(self, depth: int = 0) -> str:
+        of_dict = OpenFOAMDict(self, name=self.name)
+        return of_dict.__repr__(depth=depth)
+
+    @property
+    def is_empty(self):
+        return len(self.keys()) == 0
+    
+
+# ---------- subclass discovery (no manual registry) ----------
+def _all_subclasses(cls):
+    for sub in cls.__subclasses__():
+        yield sub
+        yield from _all_subclasses(sub)
+
+def _find_by_TYPE(base, type_name: Optional[str]):
+    want = (type_name or "").strip().lower()
+    best = None
+    for c in _all_subclasses(base):
+        typ = getattr(c, "TYPE", None)
+        if isinstance(typ, str) and typ.strip().lower() == want:
+            if best is not None:
+                raise ValueError(f"Ambiguous type '{type_name}' for {base.__name__}: "
+                                 f"{best.__name__} and {c.__name__}")
+            best = c
+    return best or base
+
+def _resolve_type(t, cls):
+    """Resolve string annotations (PEP 563 / future annotations) to real types."""
+    if not isinstance(t, str):
+        return t
+    modns = sys.modules[cls.__module__].__dict__
+    try:
+        return eval(t, modns, modns)
+    except Exception:
+        return None
+    
+#==============================================================================*
+# FoamForNuclearDict and other classes
+
+@define
+class FoamForNuclearDict:
+    """
+    Base for attrs-based OFFBEAT/OpenFOAM dictionary sections.
+
+    - Does NOT inherit from dict / OpenFOAMDict (clean completions)
+    - Internally builds an OpenFOAMDict for printing/export
+    """
+    name: str | None = None
+
+    # internal OpenFOAMDict backing store (hidden from user API & attrs-asdict)
+    _of: OpenFOAMDict = field(
+        factory=OpenFOAMDict,
+        repr=False,
+        metadata={"ffn_internal": True},
+    )
+
+    def __attrs_post_init__(self):
+        self._of.name = self.name
+        self._update_fields()
+
+    # ----------------------------
+    # private helpers
+    # ----------------------------
+    def _update_fields(self) -> None:
+        def _filter(f, v):
+            if v is None:
+                return False
+            if f.metadata.get("ffn_internal", False):
+                return False
+            if f.name == "name":
+                return False
+            return True
+
+        # new values from attrs (flat only)
+        data = attr.asdict(self, recurse=False, filter=_filter)
+
+        # inject class TYPE as 'type'
+        cls_type = getattr(type(self), "TYPE", None)
+        if cls_type and "type" not in data:
+            data = {"type": cls_type, **data}
+
+        # parent-declared field order (same logic as you had)
+        priority: list[str] = []
+        for cls in type(self).mro()[1:]:
+            anns = getattr(cls, "__annotations__", {})
+            for n in anns.keys():
+                if n not in priority:
+                    priority.append(n)
+
+        items = list(data.items())
+        order_in_asdict = {k: i for i, k in enumerate(data.keys())}
+        parent_pos = {k: i for i, k in enumerate(priority)}
+
+        def _sort_key(kv):
+            k = kv[0]
+            if k == "type":
+                return (-1, -1)
+            if k in parent_pos:
+                return (0, parent_pos[k])
+            return (1, order_in_asdict[k])
+
+        items.sort(key=_sort_key)
+
+        # rebuild the internal OpenFOAMDict
+        self._of.clear()
+        self._of.update(items)
+
+    def _as_openfoam_dict(self) -> OpenFOAMDict:
+        self._update_fields()
+        return self._of
+
+    # dunder is OK (won't clutter completions)
+    def __repr__(self, depth: int = 0) -> str:
+        return self._as_openfoam_dict().__repr__(depth=depth)
+
+    @property
+    def is_empty(self) -> bool:
+        # keep your old property name; this is fine as public
+        self._update_fields()
+        return self._of.is_empty
+
+    # ----------------------------
+    # import logic (keep public entry, make core private)
+    # ----------------------------
+    @classmethod
+    def _from_mapping(
+        cls,
+        section: Mapping[str, object],
+        file_path: Optional[str] = None,
+        key_path: tuple = (),
+    ) -> "FoamForNuclearDict":
+
+        if not bool(section):
+            return None
+
+        type_name = section.get("type") if isinstance(section, Mapping) else None
+        concrete = _find_by_TYPE(cls, type_name)
+
+        kwargs = {}
+        for f in attr.fields(concrete):
+            if f.name in ("file_path", "key_path"):
+                continue
+            if not isinstance(section, Mapping) or f.name not in section:
+                continue
+
+            raw = section[f.name]
+
+            t = _resolve_type(f.type, concrete)
+            if t is None:
+                continue
+
+            origin = get_origin(t)
+            args = get_args(t)
+
+            if origin in (Union, UnionType):
+                # 1) FoamForNuclearDict takes precedence
+                offbeat_cls = next(
+                    (a for a in args if isinstance(a, type) and issubclass(a, FoamForNuclearDict)),
+                    None,
+                )
+                if offbeat_cls is not None:
+                    kwargs[f.name] = offbeat_cls._from_mapping(
+                        raw, file_path=file_path, key_path=key_path + (f.name,)
+                    )
+                    continue
+
+                # 2) Table second
+                if any(a is Table for a in args):
+                    if isinstance(raw, list) and raw and isinstance(raw[0], str):
+                        kwargs[f.name] = Table(raw, raw[0])
+                    else:
+                        kwargs[f.name] = Table(raw, "")
+                    continue
+
+                # 3) Fallback converters
+                for a in args:
+                    try:
+                        kwargs[f.name] = a(raw)
+                        break
+                    except Exception:
+                        continue
+                continue
+
+            if isinstance(t, type) and issubclass(t, FoamForNuclearDict):
+                kwargs[f.name] = t._from_mapping(
+                    raw, file_path=file_path, key_path=key_path + (f.name,)
+                )
+                continue
+
+            if t is OpenFOAMDict:
+                kwargs[f.name] = OpenFOAMDict(raw)
+                continue
+
+            if t is Table:
+                kwargs[f.name] = Table(raw)
+                continue
+
+            kwargs[f.name] = raw
+
+        return concrete(**kwargs)  # type: ignore[call-arg]
+
+    @classmethod
+    def import_from_openfoam(
+        cls,
+        file_path: str,
+        *key_path: str,
+    ) -> "FoamForNuclearDict":
+        with FoamFile(file_path) as f:
+            try:
+                section = dict(f[tuple(key_path)])
+            except KeyError:
+                section = {}
+
+        return cls._from_mapping(section, file_path=file_path, key_path=tuple(key_path))
+    
+
+# A helper class to define Sciantix input settings
+# Default corresponds to classic LWR settings
+@define
+class SciantixDict(FoamForNuclearDict):
+    """
+    iverification: int (0= no verification) 
+    igrain_growth: int (1 = ainscough) 
+    iinert_gas_behavior: int (1= do IGB) 
+    igas_diffusion_coefficient: int (1= Turnbull et al., 1988) 
+    iintra_bubble_evolution: int (1=Pizzocri et al., 2018) 
+    ibubble_radius: int (1= Olander&Wongy, 2006) 
+    iresolution_rate: int (1=Turnbull 1971) 
+    itrapping_rate: int (1= Ham 1958) 
+    inucleation_rate: int (1= Baker 1971) 
+    isolver: int (1= SDA, Pizzocri et al., 2019) 
+    iformat_output: int (1 = output.txt, values separated by tabs) 
+    igrain_boundary_vacancy_diffusion_coefficient: int (1= Reynolds and Burton, 1979) 
+    igrain_boundary_behaviour: int (1= do InterGranularGasBehavior - Pastore et al., 2013; Barani et al., 2017) 
+    igrain_boundary_micro_cracking: int (1 = Barani et al., 2017) 
+    igrain_recrystallization: int (0 = non active) 
+    ifuel_reactor_type: int (0=UO2/PWR) 
+    igas_effective_coefficientgas effective: int  (=0) or single atom (=1)
+    igas_sweepingadd boundary: int  gas sweeping 
+    imicro_cracking_span: int 
+    sf_resolution_rate: int 
+    sf_trapping_rate: int 
+    sf_nucleation_rate: int 
+    sf_diffusion_rate: int 
+    
+    """
+    iverification: int = field(default=0, validator=v.instance_of(int))
+    igrain_growth: int = field(default=1, validator=v.instance_of(int))
+    iinert_gas_behavior: int = field(default=1, validator=v.instance_of(int))
+    igas_diffusion_coefficient: int = field(default=1, validator=v.instance_of(int))
+    iintra_bubble_evolution: int = field(default=1, validator=v.instance_of(int))
+    ibubble_radius: int = field(default=1, validator=v.instance_of(int))
+    iresolution_rate: int = field(default=1, validator=v.instance_of(int))
+    itrapping_rate: int = field(default=1, validator=v.instance_of(int))
+    inucleation_rate:int = field(default=1, validator=v.instance_of(int))
+    isolver:int = field(default=1, validator=v.instance_of(int))
+    iformat_output:int = field(default=1, validator=v.instance_of(int))
+    igrain_boundary_vacancy_diffusion_coefficient:int = field(default=1, validator=v.instance_of(int))
+    igrain_boundary_behaviour:int = field(default=1, validator=v.instance_of(int))
+    igrain_boundary_micro_cracking:int = field(default=1, validator=v.instance_of(int))
+    igrain_recrystallization:int = field(default=0, validator=v.instance_of(int))
+    ifuel_reactor_type:int = field(default=0, validator=v.instance_of(int))
+    igas_effective_coefficient:int = field(default=1, validator=v.instance_of(int))
+    igas_sweeping:int = field(default=1, validator=v.instance_of(int))
+    imicro_cracking_span: int = field(default=0, validator=v.instance_of(int))
+    sf_resolution_rate: int = field(default=1, validator=v.instance_of(int))
+    sf_trapping_rate: int = field(default=1, validator=v.instance_of(int))
+    sf_nucleation_rate: int = field(default=1, validator=v.instance_of(int))
+    sf_diffusion_rate: int = field(default=1, validator=v.instance_of(int))
 
 
 class OpenFOAMListDict(CheckedList):
     def __init__(self, expected_type, name, items=None):
+        
         super().__init__(expected_type, name, items)
 
     def __repr__(self, depth = 0):
         text = (depth*tab) + self.name + "\n" + (depth*tab) + "{\n"
         for zone in self:
             if (isinstance(zone, OpenFOAMListDict)):
-                text += f"{depth*tab}{zone.__repr__(depth=depth+1)}\n"
+                text += f"{zone.__repr__(depth=depth+1)}\n"
             else:
                 text += f"{(depth+1)*tab}{zone.__repr__(depth=depth+1)}\n"
         text += (depth*tab) + "}\n"
@@ -140,7 +463,7 @@ class Vector:
         self.z = z
 
     def __repr__(self):
-        return(f"({self.x} {self.y} {self.z})")
+        return(f"({self.x:g} {self.y:g} {self.z:g})")
 
     def __eq__(self, value):
         eps = 1e-6
@@ -296,6 +619,32 @@ class List(list):
         return(self.__len__() == 0)
 
 
+class CheckedOpenFOAMList(CheckedList):
+    """
+    A CheckedList that prints using the OpenFOAM-style List.__repr__.
+    """
+
+    def __init__(self, expected_type, name, items=None):
+        # use the same construction / type checking as CheckedList
+        super().__init__(expected_type, name, items)
+
+    def __repr__(
+        self,
+        depth: int = 0,
+        noBreak: bool = False,
+        nCols: int = 1,
+        isAddLength: bool = False,
+    ):
+        # Reuse the OpenFOAM List formatting on top of our checked content.
+        of_list = List(self)
+        return of_list.__repr__(
+            depth=depth,
+            noBreak=noBreak,
+            nCols=nCols,
+            isAddLength=isAddLength,
+        )
+    
+
 class NonUniformList(List):
     def __init__(self, items: list[(float | int)]):
         super().__init__(items)
@@ -396,8 +745,14 @@ class Table(list):
         super().__init__()
 
         if items is not None:
-            for item in items:
-                self.append(item)
+            # Skipt 'table' name if present in items
+            if (not(isinstance(items, dict)) and
+                    isinstance(items[0],str) and len(items)==2):
+                for item in items[1]:
+                    self.append(item)
+            else:
+                for item in items:
+                    self.append(item)
 
         self.type = type
 
@@ -550,7 +905,7 @@ def addParameter(paramName, value, indent: int=0, isAddExtraLine: bool=False, no
 
     text = f"{indent*tab}{paramName:15} {value}"
 
-    if (not isInclude):
+    if (not isInclude and not isinstance(value, dict)):
         text += ";"
     text += "\n"
 
@@ -562,7 +917,7 @@ def addParameter(paramName, value, indent: int=0, isAddExtraLine: bool=False, no
 openfoamHeader = r"""/*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  v2506                                 |
+|  \\    /   O peration     | Version:  v2512                                 |
 |   \\  /    A nd           | Website:  www.openfoam.com                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -582,3 +937,17 @@ def openfoamFileHeader(objectName: str, className: str="dictionary") -> str:
 
 
 openfoamFooterLine = """\n// ************************************************************************* //\n"""
+
+def of_flavour() -> str | None:
+    """
+    Return "esi" or "foundation" based on WM_PROJECT_VERSION.
+    Heuristic:
+      - ESI/openfoam.com versions look like: v2312, v2506, ...
+      - Foundation versions look like: 10, 11, 12, ...
+    """
+    ver = os.environ.get("WM_PROJECT_VERSION", "")
+    if ver == "":
+        return None
+    if ver.startswith("v"):
+        return "esi"
+    return "foundation"

@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Define the output file
+output_file="extracted_data.txt"
+
+# Extract time array
+echo "time = [" > $output_file
+awk '!/^#/{print $1}' postProcessing/fuelCenterline/0/T | tr '\n' ' ' >> $output_file
+echo -e "];\n" >> $output_file
+
+# Extract temperature array
+echo "temp = [" >> $output_file
+awk '!/^#/{print $2}' postProcessing/fuelCenterline/0/T | tr '\n' ' ' >> $output_file
+echo -e "];\n" >> $output_file
+
+# Extract radial position array
+echo "rPos = [" >> $output_file
+awk '!/^#/{print $1}' postProcessing/fuelRadialProfile/7.04/line_T.xy | tr '\n' ' ' >> $output_file
+echo -e "];\n" >> $output_file
+
+# Extract temperature profile at 7.04 days
+echo "radialTemp_7_04 = [" >> $output_file
+awk '!/^#/{print $2}' postProcessing/fuelRadialProfile/7.04/line_T.xy | tr '\n' ' ' >> $output_file
+echo -e "];\n" >> $output_file
+
+# Extract temperature profile at 168.04 days
+echo "radialTemp_168_04 = [" >> $output_file
+awk '!/^#/{print $2}' postProcessing/fuelRadialProfile/168.04/line_T.xy | tr '\n' ' ' >> $output_file
+echo -e "];\n" >> $output_file
+
+# Extract temperature profile at 364 days
+echo "radialTemp_364 = [" >> $output_file
+awk '!/^#/{print $2}' postProcessing/fuelRadialProfile/364/line_T.xy | tr '\n' ' ' >> $output_file
+echo -e "];\n" >> $output_file
+

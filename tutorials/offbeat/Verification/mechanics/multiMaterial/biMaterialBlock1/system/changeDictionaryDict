@@ -1,0 +1,39 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  4.x                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      changeDictionaryDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+boundary
+{
+    top
+    {
+        type            cyclic;
+        neighbourPatch  bottom;
+        transform       translational;
+        // FOUNDATION syntax
+        separation      ( 0 0.04 0 );
+        // ESI syntax
+        separationVector      ( 0 0.04 0 );
+    }
+    bottom
+    {
+        type            cyclic;
+        neighbourPatch  top;
+        transform       translational;
+        // FOUNDATION syntax
+        separation      ( 0 -0.04 0 );
+        // ESI syntax
+        separationVector      ( 0 -0.04 0 );
+    }
+}

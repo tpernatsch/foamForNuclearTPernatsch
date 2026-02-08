@@ -1,0 +1,12 @@
+#------------------------------------------------------------------------------#
+#                                                                              #
+#                            README - commands                                 #
+#                                                                              #
+#------------------------------------------------------------------------------#
+
+This README file contains a brief description of the verification case.
+
+A simple test for a 1-d case with only 100 elements. To test the correctness of the implantation of
+E, k, Cp,alpha model. The temperature rise from 673.15 at the left side to 1673.15 K at the right side.
+
+The comparison results can be found in file verification.ods.

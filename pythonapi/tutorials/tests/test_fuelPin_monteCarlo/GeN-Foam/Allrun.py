@@ -27,7 +27,7 @@ nx = 50
 ny = nx
 nz = 1
 
-nMesh.createCylinderAlongZ(
+nMesh.create_cylinder_along_z(
     'fuel',
     radius=fuelOR,
     lowZ=0, highZ=length,
@@ -35,7 +35,7 @@ nMesh.createCylinderAlongZ(
     isAddBoundaryConditions=True
 )
 
-nMesh.createRingAlongZ(
+nMesh.create_ring_along_z(
     'cladding',
     innerRadius=fuelOR,
     outerRadius=cladOR,
@@ -44,7 +44,7 @@ nMesh.createRingAlongZ(
     isAddBoundaryConditions=True
 )
 
-nMesh.createCubeWithHoleAlongZ(
+nMesh.create_cube_with_hole_along_z(
     'water',
     lowX=-pitch/2, highX=pitch/2,
     lowY=-pitch/2, highY=pitch/2,
@@ -54,11 +54,11 @@ nMesh.createCubeWithHoleAlongZ(
     isAddBoundaryConditions=True
 )
 
-nMesh.addMergePatchPairs()
+nMesh.add_merge_patch_pairs()
 
-nMesh.mergePatchesWithName('top', includeFacename=['Top'])
-nMesh.mergePatchesWithName('bottom', includeFacename=['Bottom'])
-nMesh.mergePatchesWithName('walls', includeFacename=['Wall'])
+nMesh.merge_patches_with_name('top', includeFacename=['Top'])
+nMesh.merge_patches_with_name('bottom', includeFacename=['Bottom'])
+nMesh.merge_patches_with_name('walls', includeFacename=['Wall'])
 
 
 #==============================================================================*

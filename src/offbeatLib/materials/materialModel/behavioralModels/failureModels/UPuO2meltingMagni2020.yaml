@@ -1,0 +1,41 @@
+# UPuO2meltingMagni2020.yaml
+description: |
+  Model to check failure of UPuO2 based on a limit melting temperature from
+  "Modelling and assessment of thermal conductivity and melting
+  behaviour of MOX fuel for fast reactor applications - A.Magni et al.".
+  (https://doi.org/10.1016/j.jnucmat.2020.152410).
+
+options:
+  - key: burnupName
+    type: word
+    required: false
+    default: Bu
+    description: |
+      Name of the burnup field to read from the mesh registry.
+
+  - key: Tmelt
+    type: scalar
+    required: false
+    default: 3147.0
+    description: |
+      Reference UO2 melting temperature parameter [K] used by the model.
+
+usage:
+  - comment: |
+      Example selection of the UPuO2 melting-temperature failure model.
+    snippet: |
+        materials
+        {
+            fuel
+            {
+                ...
+
+                failureModel 
+                {
+                    type UPuO2Magni2020;
+                    
+                    burnupName Bu;
+                    Tmelt      3147;
+                }
+            }
+        }

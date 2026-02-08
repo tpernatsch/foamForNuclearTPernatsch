@@ -1,0 +1,155 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//- Select the physics to solve for
+thermalSolver           solidConduction;
+mechanicsSolver         smallStrain;
+neutronicsSolver        none;
+elementTransport        byList;
+
+materialProperties      byZone;
+rheology                byMaterial;
+
+heatSource              timeDependentVhgr;
+burnup                  constant;
+fastFlux                constant;
+fgr                     none;
+gapGas                  none;
+sliceMapper             none;
+corrosion               constant;
+
+globalOptions
+{
+    reactorType         none;
+    pinDirection        (0 0 1);
+}
+
+heatSourceOptions
+{
+    materials
+    (
+        sample
+    );
+    
+    // Zero heat source is specified only to ensure time stepping
+    // is consistent with the time-dependent temperature profiles.
+    timePoints
+    (
+        0.0
+        1975.31
+        2616.0
+        3875.26
+        4444.0
+        5500.79
+        6100.0
+        6588.89
+        7710.0
+        8401.36
+        8990.0
+        10255.0
+        10278.83
+        10333.91
+        10382.1
+        10457.83
+        10554.22
+        10664.37
+        10829.6
+        12001.0
+    );
+    vhgr
+    (
+        0
+        0
+        0
+        0
+        0
+        0
+        0
+        0
+        0
+        0
+        0
+        0
+        0
+        0
+        0
+        0
+        0
+        0
+        0
+        0
+    );
+}
+
+thermalSolverOptions
+{
+    heatFluxSummary     off;
+}
+
+rheologyOptions
+{
+    thermalExpansion    off;
+}
+
+mechanicsSolverOptions
+{
+    forceSummary        off;  
+    cylindricalStress   off;
+
+    RhieChowCorrection  off;
+}
+
+materials
+{
+    sample
+    {
+        material                Zircaloy;
+        Tref                    Tref [ 0 0 0 1 0 ] 293;
+
+        rheologyModel           elasticity;
+    }
+}
+
+elementTransportOptions
+{
+    solvers ( HNGD );
+    
+    HSolverOptions
+    {
+        effectiveTSSp   false;
+        stressDrivenDiffusion   false;
+	    Q*        25500;
+ 		V_H       1.7e-6;     
+
+		HDiffusionCoefficientModel  HDiffusionCoefficientBison;
+	                                 
+        materials
+        {
+            sample
+            {
+                TSSdModel   TSSdGeneric;
+				TSSpModel   TSSpGeneric;
+                TSSd0       16.552e5;
+                Qd          50660;
+                TSSp0       6.8e4;
+                Qp          29770;
+            }
+        }
+    }
+}
+
+// ************************************************************************* //

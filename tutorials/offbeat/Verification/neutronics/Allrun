@@ -1,0 +1,21 @@
+#!/bin/bash
+cd ${0%/*} || exit 1    # run from this directory
+
+touch results
+
+cases="cylindricalPellet hollowPellet"
+tests="testDifferentEnrichments testDifferentRadii"
+for case in $cases
+do
+	for test in $tests
+	do
+		path=$case'/'$test
+		cd $path
+		./Allclean
+		./Allrun 
+		# Collect results in a single file
+		maxDiff=$(cat results/maxDiff) 
+		echo "Max Rel diff for $path : $maxDiff %" >> ../../results
+		cd ../..
+	done
+done

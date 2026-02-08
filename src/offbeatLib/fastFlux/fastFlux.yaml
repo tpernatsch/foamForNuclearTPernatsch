@@ -1,0 +1,24 @@
+description: |
+  Base fast flux model class. It disables entirely the fast flux and fast 
+  fluence handling in OFFBEAT.
+
+  When selected, the fast flux and fast fluence fields (`fastFlux`, `fastFluence`)
+  are **not created**, meaning these quantities are not available to other models.
+  
+  This is the default choice when no fast flux model is explicitly selected.
+
+admonitions:
+  - kind: note
+    body: |
+      The absence of the `fastFlux` and `fastFluence` fields may create conflicts
+      with other models that partially or entirely depend on them (e.g., some
+      material property models).
+
+      If you need these fields to exist but want to neglect their time evolution,
+      use the `constant` fastFlux model instead.
+
+usage:
+  - comment: |
+      Example `solverDict` snippet selecting the `none` fast flux model.
+    snippet: |
+      fastFlux none;

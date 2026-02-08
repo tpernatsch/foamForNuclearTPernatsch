@@ -1,0 +1,38 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      patchProbes;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+type patchProbes;
+name patchProbes_cladOuter;
+patchName cladOuter;
+patch cladOuter;
+fields  (T);
+probeLocations
+(
+    ( 0.0 0.0 0.125 )
+    ( 0.0 0.0 0.375 )
+    ( 0.0 0.0 0.625 )
+    ( 0.0 0.0 0.875 )
+    ( 0.0 0.0 1.125 )
+    ( 0.0 0.0 1.375 )
+    ( 0.0 0.0 1.625 )
+    ( 0.0 0.0 1.875 )
+    ( 0.0 0.0 2.125 )
+    ( 0.0 0.0 2.375 )
+    ( 0.0 0.0 2.625 )
+);
+
+// ************************************************************************* //

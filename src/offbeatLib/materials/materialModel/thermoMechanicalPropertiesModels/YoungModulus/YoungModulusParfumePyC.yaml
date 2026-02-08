@@ -1,0 +1,120 @@
+description: |
+  Class modelling Young Modulus of PyC from Parfume.
+
+options:
+  - key: densityName
+    type: word
+    required: false
+    default: "rho"
+    description: |
+      Option read by the model.
+
+  - key: fastFluenceName
+    type: word
+    required: false
+    default: "fastFluence"
+    description: |
+      Option read by the model.
+
+  - key: par1
+    type: scalar
+    required: false
+    default: 25.5
+    description: |
+      Option read by the model.
+  - key: par10
+    type: scalar
+    required: false
+    default: 20.0
+    description: |
+      Option read by the model.
+  - key: par11
+    type: scalar
+    required: false
+    default: 0.481
+    description: |
+      Option read by the model.
+  - key: par12
+    type: scalar
+    required: false
+    default: 0.519
+    description: |
+      Option read by the model.
+  - key: par2
+    type: scalar
+    required: false
+    default: 0.384
+    description: |
+      Option read by the model.
+  - key: par3
+    type: scalar
+    required: false
+    default: 0.324e-3
+    description: |
+      Option read by the model.
+  - key: par4
+    type: scalar
+    required: false
+    default: 1.463
+    description: |
+      Option read by the model.
+  - key: par5
+    type: scalar
+    required: false
+    default: -0.463
+    description: |
+      Option read by the model.
+  - key: par6
+    type: scalar
+    required: false
+    default: 2.985
+    description: |
+      Option read by the model.
+  - key: par7
+    type: scalar
+    required: false
+    default: -0.0662
+    description: |
+      Option read by the model.
+  - key: par8
+    type: scalar
+    required: false
+    default: 0.23
+    description: |
+      Option read by the model.
+  - key: par9
+    type: scalar
+    required: false
+    default: 0.00015
+    description: |
+      Option read by the model.
+
+usage:
+  - comment: |
+      Example selection of the `PyCParfume` thermalExpansion model.
+    snippet: |
+      materials
+      {
+        PyC
+        {
+          type PyC;
+          thermalExpansion
+          {
+            type PyCParfume;
+            // densityName "rho";
+            // fastFluenceName "fastFluence";
+            // par1 25.5;
+            // par10 20.0;
+            // par11 0.481;
+            // par12 0.519;
+            // par2 0.384;
+            // par3 0.324e-3;
+            // par4 1.463;
+            // par5 -0.463;
+            // par6 2.985;
+            // par7 -0.0662;
+            // par8 0.23;
+            // par9 0.00015;
+          }
+        }
+      }

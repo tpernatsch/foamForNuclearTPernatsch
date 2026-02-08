@@ -1,0 +1,78 @@
+description: |
+  The `constant` material model allows the user to prescribe constant
+  thermomechanical properties directly in the input dictionary.
+
+  All thermophysical and mechanical properties are handled using constant
+  models and must be explicitly provided by the user.
+
+options:
+  - key: densityModel
+    type: word
+    required: false
+    default: constant
+    description: |
+      Density model. Always set to `constant`.
+
+  - key: heatCapacityModel
+    type: word
+    required: false
+    default: constant
+    description: |
+      Heat capacity model. Always set to `constant`.
+
+  - key: conductivityModel
+    type: word
+    required: false
+    default: constant
+    description: |
+      Thermal conductivity model. Always set to `constant`.
+
+  - key: emissivityModel
+    type: word
+    required: false
+    default: constant
+    description: |
+      Emissivity model. Always set to `constant`.
+
+  - key: YoungModulusModel
+    type: word
+    required: false
+    default: constant
+    description: |
+      Young's modulus model. Always set to `constant`.
+
+  - key: PoissonRatioModel
+    type: word
+    required: false
+    default: constant
+    description: |
+      Poisson's ratio model. Always set to `constant`.
+
+  - key: thermalExpansionModel
+    type: word
+    required: false
+    default: constant
+    description: |
+      Thermal expansion model. Always set to `constant`.
+
+usage:
+  - comment: |
+      Example of a `solverDict` materials entry using the `constant` material
+      model.
+    snippet: |
+      materials
+      {
+          cladding
+          {
+              material constant;
+
+              rho         rho     [1 -3 0 0 0]    6560;
+              Cp          Cp      [0 2 -2 -1 0]   285;
+              k           k       [1 1 -3 -1 0]   21.5;
+              emissivity emissivity [0 0 0 0 0]   0.81;
+              E           E       [1 -1 -2 0 0]   9.93e10;
+              nu          nu      [0 0 0 0 0]     0.37;
+              alpha       alpha   [0 0 0 0 0]     6e-6;
+              Tref        Tref    [0 0 0 1 0]     300;
+          }
+      }
