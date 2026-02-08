@@ -1293,8 +1293,8 @@ def main():
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/contactPartitionModels",
         maxdepth=1
     )
-    append_toctree_for_folder_direct_subfolders(
-        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/physicsModels/dispersionModels.rst",
+    insert_toctree_at_placeholder_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dispersionModels/dispersionModel.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dispersionModels",
         maxdepth=1
     )
