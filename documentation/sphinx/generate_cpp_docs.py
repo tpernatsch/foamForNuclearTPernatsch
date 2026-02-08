@@ -1157,9 +1157,9 @@ def main():
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/regimeMapModels",
         maxdepth=1
     )
-    append_toctree_for_folder_direct_subfolders(
-        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/physicsModels/virtualMassCoefficientModels.rst",
-        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/virtualMassModels/",
+    insert_toctree_at_placeholder_for_folder_direct_subfolders(
+        target_rst="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/virtualMassModels/virtualMassCoefficientModels/virtualMassCoefficientModel.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/virtualMassModels/virtualMassCoefficientModels",
         maxdepth=1
     )
     append_toctree_for_folder_direct_subfolders(
