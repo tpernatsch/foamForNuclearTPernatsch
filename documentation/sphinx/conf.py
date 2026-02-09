@@ -13,7 +13,9 @@
 import os
 import sys
 import datetime
-sys.path.insert(0, os.path.abspath("../../pythonapi/foamForNuclear"))
+
+# NOTE: temporarily disable Python API doc builds
+# sys.path.insert(0, os.path.abspath("../../pythonapi/foamForNuclear"))
 
 current_year = datetime.datetime.now().year
 
@@ -31,8 +33,9 @@ extensions = [
     "sphinx.ext.duration",
     "sphinx.ext.napoleon",
     "sphinx.ext.doctest",
-    "sphinx.ext.autodoc",
-    "sphinx.ext.autosummary",
+    # NOTE: temporarily disable Python API doc builds
+    # "sphinx.ext.autodoc",
+    # "sphinx.ext.autosummary",
     "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
     "sphinx.ext.mathjax",
@@ -83,6 +86,15 @@ epub_show_urls = "footnote"
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
+# NOTE: temporarily exclude Python API pages from the build
+exclude_patterns += [
+    "pythonapi/**",
+    "**/pythonapi/**",
+    "**/pyapi/**",
+    "api/**",
+    "**/api/**",
+]
+
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -107,5 +119,3 @@ source_suffix = {
 
 def setup(app):
     app.add_js_file('filter-table.js')
-
-
