@@ -456,14 +456,14 @@ class ThermalHydraulicsSolver(Solver):
     def _solver_allowed(self, _attr, value: str):
         if value not in _THERMAL_HYDRAULICS_SOLVER_TYPES:
             raise ValueError(f"Provided solver type \"{value}\" does not exists. Solver must be one of {sorted(_THERMAL_HYDRAULICS_SOLVER_TYPES)}")
-        
-    
+
+
     def propagate_region(self, new_value: str | None = None) -> None:
         super().propagate_region(new_value)
         if new_value is None:
             new_value = self.region
-        _propagate_region_to(self, new_value, "thermophysicalProperties", "turbulenceProperties", 
-                             "phaseProperties", "thermophysicalPropertiesSecondFluid", 
+        _propagate_region_to(self, new_value, "thermophysicalProperties", "turbulenceProperties",
+                             "phaseProperties", "thermophysicalPropertiesSecondFluid",
                              "turbulencePropertiesSecondFluid")
 
     def __attrs_post_init__(self):
@@ -473,8 +473,8 @@ class ThermalHydraulicsSolver(Solver):
             self.set_fvSchemes_default()
 
         super().__attrs_post_init__()
-        _propagate_region_to(self, self.region, "thermophysicalProperties", "turbulenceProperties", 
-                             "phaseProperties", "thermophysicalPropertiesSecondFluid", 
+        _propagate_region_to(self, self.region, "thermophysicalProperties", "turbulenceProperties",
+                             "phaseProperties", "thermophysicalPropertiesSecondFluid",
                              "turbulencePropertiesSecondFluid")
 
 
@@ -655,7 +655,7 @@ class OnePhaseThermalHydraulicsSolver(ThermalHydraulicsSolver):
     regimeMapModels: list[RegimeMapModel] = field(factory=list)
 
     def _write_phase_properties_body(self, buf: StringIO):
-        # Structures        
+        # Structures
         structure_properties_dict = OpenFOAMListDict(
             name="structureProperties", expected_type=Structure, items=self.structures)
         buf.write(f"{structure_properties_dict!r}\n")
@@ -738,7 +738,7 @@ class TwoPhaseThermalHydraulicsSolver(ThermalHydraulicsSolver):
 
         buf.write(f"{self.fluid1.name}Properties{self.fluid1._as_openfoam_dict().export_body_to_foam()}\n")
         buf.write(f"{self.fluid2.name}Properties{self.fluid2._as_openfoam_dict().export_body_to_foam()}\n")
-        
+
         structure_properties_dict = OpenFOAMListDict(
             name="structureProperties", expected_type=Structure, items=self.structures)
         buf.write(f"{structure_properties_dict!r}\n")
@@ -755,7 +755,7 @@ class TwoPhaseThermalHydraulicsSolver(ThermalHydraulicsSolver):
             name=f"\"{self.fluid1.name}.structure\"", expected_type=DragModel, items=self.fluid1_structure.dragModels)
         fluid2_structure_drag = OpenFOAMListDict(
             name=f"\"{self.fluid2.name}.structure\"", expected_type=DragModel, items=self.fluid2_structure.dragModels)
-        
+
         # TODO: Not sure whether ffn allows more than one fluid-fluid model (byZone?)
         if (len(self.fluid_fluid.dragModels) > 1):
             fluid_fluid_drag = OpenFOAMListDict(
@@ -763,7 +763,7 @@ class TwoPhaseThermalHydraulicsSolver(ThermalHydraulicsSolver):
         else:
             fluid_fluid_drag = self.fluid_fluid.dragModels[0]
             fluid_fluid_drag.name = f"\"{self.fluid1.name}.{self.fluid2.name}\""
-        
+
         drag_models = OpenFOAMListDict(expected_type=(OpenFOAMListDict, DragModel), name="dragModels")
         drag_models.extend([fluid1_structure_drag, fluid2_structure_drag])
         drag_models.append(fluid_fluid_drag)
@@ -778,37 +778,37 @@ class TwoPhaseThermalHydraulicsSolver(ThermalHydraulicsSolver):
             name=f"\"{self.fluid1.name}.structure\"", expected_type=HeatTransferModel, items=self.fluid1_structure.heatTransferModels)
         fluid2_structure_ht = OpenFOAMListDict(
             name=f"\"{self.fluid2.name}.structure\"", expected_type=HeatTransferModel, items=self.fluid2_structure.heatTransferModels)
-        
+
         # TODO: Not sure whether ffn allows more than one fluid-fluid heat transfer model per fluid (byZone?)
         # There is typically at least one for fluid1 and one for fluid2
         for ht_model in self.fluid_fluid.heatTransferModels:
             ht_model.name = f"\"{ht_model.phaseName}\""
-            
+
         fluid_fluid_ht = OpenFOAMListDict(
             name=f"\"{self.fluid1.name}.{self.fluid2.name}\"", expected_type=HeatTransferModel, items=self.fluid_fluid.heatTransferModels)
-        
+
         ht_models = OpenFOAMListDict(expected_type=(OpenFOAMListDict, HeatTransferModel), name="heatTransferModels")
         ht_models.extend([fluid1_structure_ht, fluid2_structure_ht])
         ht_models.append(fluid_fluid_ht)
 
         buf.write(f"{ht_models.__repr__(depth=1)}\n")
 
-        # Pair geometry models 
+        # Pair geometry models
         pair_geom_models = OpenFOAMListDict(
             name="pairGeometryModels", expected_type=PairGeometryModel)
-         
+
         if(self.fluid_fluid.pairGeometryModel is not None):
             self.fluid_fluid.pairGeometryModel.name = f"\"{self.fluid1.name}.{self.fluid2.name}\""
             pair_geom_models.append(self.fluid_fluid.pairGeometryModel)
         if(self.fluid1_structure.pairGeometryModel is not None):
             self.fluid1_structure.pairGeometryModel.name = f"\"{self.fluid1.name}.structure\""
-            pair_geom_models.append(self.fluid1_structure.pairGeometryModel)    
+            pair_geom_models.append(self.fluid1_structure.pairGeometryModel)
         if(self.fluid2_structure.pairGeometryModel is not None):
             self.fluid2_structure.pairGeometryModel.name = f"\"{self.fluid2.name}.structure\""
             pair_geom_models.append(self.fluid2_structure.pairGeometryModel)
-            
-        buf.write(f"{pair_geom_models.__repr__(depth=1)}")        
-        
+
+        buf.write(f"{pair_geom_models.__repr__(depth=1)}")
+
         # Phase change
         buf.write(f"\tphaseChangeModel{self.fluid_fluid.phaseChangeModel.__repr__(depth=1)}\n")
         buf.write(f"}}\n\n")

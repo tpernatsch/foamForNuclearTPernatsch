@@ -183,6 +183,8 @@ class NeutronicsSolver(Solver):
         4. `r^4 ln(r)`) (default `1`).
     ScNo : float
         Schmidt number for diffusion of precursors (default `1`).
+    axialOrientation : Vector
+        Axial orientation of the axial expansion
     adjustDiscFactors : bool
         Flag to apply the discontinuity factor adjustement (default `False`).
     useGivenDiscFactors : bool
@@ -192,6 +194,8 @@ class NeutronicsSolver(Solver):
         Number of Legendre moments, used in SN solver (default `None`).
     isLowMemory : bool
         Flag for low memory foot print, useful for SN solver (defaulf `None`).
+    fastNeutrons : bool
+        Flag to change Doppler feedback correlation (default `True`).
     liquidFuel : bool
         Flag to specify that the fuel is liauid (default False).
     keff : float
@@ -213,10 +217,12 @@ class NeutronicsSolver(Solver):
     externalSourceNeutronics: bool = False
     polyharmonicSplineMode: int = 1
     ScNo: float | int = 1
+    axialOrientation: Vector | None = None
     adjustDiscFactors: bool = False
     useGivenDiscFactors: bool = False
     legendreMoments: int | None = None
     isLowMemory: bool | None = None
+    fastNeutrons: bool | None = None
     liquidFuel: bool = False
     keff: float | int = field(
         default=1,
@@ -245,15 +251,7 @@ class NeutronicsSolver(Solver):
 
 
     def __attrs_post_init__(self):
-        super().__init__(
-            region=self.region,
-            solver=self.solver,
-            removeBaffles=self.removeBaffles,
-            timeFolder=self.timeFolder,
-            mesh=self.mesh,
-            isMeshDeformation=self.isMeshDeformation,
-            displacementFieldName=self.displacementFieldName
-        )
+        super().__attrs_post_init__()
 
         self.nuclearData = NuclearData(region=self.region)
         self.quadratureSet = QuadratureSet(region=self.region)
@@ -387,7 +385,8 @@ class NeutronicsSolver(Solver):
             if (self.isLowMemory is not None):
                 f.write(addParameter('isLowMemory', self.isLowMemory, isAddExtraLine=True, none_ok=False))
 
-            f.write(addParameter("fastNeutrons", self.fastNeutrons, isAddExtraLine=True))
+            if (self.fastNeutrons is not None):
+                f.write(addParameter("fastNeutrons", self.fastNeutrons, isAddExtraLine=True))
             f.write(addParameter('liquidFuel', self.liquidFuel, isAddExtraLine=True, none_ok=False))
 
             f.write(openfoamFooterLine)

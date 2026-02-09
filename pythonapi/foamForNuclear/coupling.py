@@ -763,7 +763,8 @@ class Coupling(CheckedList):
         text += tab + "Level_0\n"
         text += tab +"{\n"
         for solver in self:
-            text += f"{2*tab}{solver.region:15} {solver.solver};\n"
+            if (solver.solver != "none"):
+                text += f"{2*tab}{solver.region:15} {solver.solver};\n"
         text += tab + "}\n"
         text += self.write_multi_physics_solvers(self)
         text += "}\n\n"

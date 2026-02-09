@@ -373,7 +373,7 @@ class PolyMesh(Mesh):
         # Create a global boundary condition
         self.boundaryList.append(OpenFOAMDict(
             items={
-                'type': 'patch',
+                'type': 'empty',
                 'nFaces': len(self.faceList)-len(self.neighbourList),
                 'startFace': len(self.neighbourList)
             },

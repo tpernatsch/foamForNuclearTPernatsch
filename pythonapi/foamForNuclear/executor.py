@@ -204,7 +204,7 @@ def run_preprocessing(
                                 commands += (
                                     f"runApplication -o foamDictionary constant/polyMesh/boundary "
                                     f"-entry entry0/{face.name}/{k} -set {v}\n"
-                                )                    
+                                )
 
             elif (isinstance(solver.mesh, PolyMesh)):
                 commands += f"runApplication -s {region} renumberMesh -region {region} -overwrite\n"
@@ -253,10 +253,10 @@ def run_preprocessing(
     if (case.is_parallel):
         commands += "runApplication decomposePar -allRegions -copyUniform\n"
 
-    # GeN-Foam initialize mapped fields
+    # GeN-Foam initialize mapped fields only if more than 2 defined solvers
     if (
         case.settings.application == "GeN-Foam"
-        and len(case.solvers) >= 2
+        and len([solver for solver in case.solvers if solver.solver != 'none']) >= 2
     ):
         commands += "GeN-Foam -initializeMappedFields > log.GeN-Foam.initializeMappedFields\n"
         commands += addVerbose("Run GeN-Foam -initializeMappedFields")
@@ -295,7 +295,7 @@ def run_preprocessing(
                 # faces_by_name[name].boundaryType = ptype
             else:
                 solver.mesh.faces.append(Face(name, boundaryType=ptype))
-        
+
         region_meshes[solver.region] = solver.mesh
 
     # Check boundary field
@@ -474,9 +474,9 @@ def allclean(case=None):
     # NOTE: Changed to cleanCase + rm -rf 0 to be compatible with Foundation v9
     commands += "cleanCase\n"
     commands += (
-        "rm -rf 0"
-        "rm -rf constant system processor* "
-        "log.* Allrun.pre* *.png *.gif *_log.txt "
+        "rm -rf 0\n"
+        "rm -rf constant system processor* \n"
+        "log.* Allrun.pre* *.png *.gif *_log.txt \n"
         "*.csv *.json input_check.txt\n"
     )
 

@@ -19,8 +19,8 @@ from foamForNuclear.preprocessing import SetFieldRegion, SetFieldsDict
 from foamForNuclear.timeFolder import TimeFolder
 
 @define(
-    slots=True, 
-    on_setattr=[attr.setters.validate, call_method_on_change("propagate_region", "region")], 
+    slots=True,
+    on_setattr=[attr.setters.validate, call_method_on_change("propagate_region", "region")],
     field_transformer=auto_type_validator
 )
 class Solver:
@@ -72,7 +72,6 @@ class Solver:
         setFieldsDict
     dynamicMeshDict : DynamicMeshDict
         Dynamic mesh motion dict.
-
     """
 
     region: str = field(default="")
@@ -82,7 +81,7 @@ class Solver:
     mesh: Mesh | None = None
     isMeshDeformation: bool = False
     displacementFieldName: str = "disp"
-    
+
     fvSchemes: fvSchemes = field(factory=fvSchemes)
     fvSolution: fvSolution = field(factory=fvSolution)
     decomposeParDict: DecomposeParDict = field(factory=DecomposeParDict)
@@ -90,7 +89,7 @@ class Solver:
     dynamicMeshDict: DynamicMeshDict = field(
         factory=lambda: DynamicMeshDict(dynamicFvMesh="dynamicMotionSolverFvMesh"))
 
-    def propagate_region(self, new_value: str | None = None) -> None:        
+    def propagate_region(self, new_value: str | None = None) -> None:
         if new_value is None:
             new_value = self.region
         _propagate_region_to(self, new_value, "fvSchemes", "fvSolution")

@@ -25,16 +25,16 @@ nz = 150
 
 zone0 = nMesh.create_cube('zone0', -0.05, -0.05, 0, 0.05, 0.05, fuelLength, 1, 1, nz)
 
-walls = ffn.Face("walls", boundaryType="wall")
+walls = mesh.Face("walls", boundaryType="wall")
 walls.add_sub_face(zone0.frontFace())
 walls.add_sub_face(zone0.backFace())
 walls.add_sub_face(zone0.leftFace())
 walls.add_sub_face(zone0.rightFace())
 
-top = ffn.Face("top")
+top = mesh.Face("top")
 top.add_sub_face(zone0.topFace())
 
-bottom = ffn.Face("bottom")
+bottom = mesh.Face("bottom")
 bottom.add_sub_face(zone0.bottomFace())
 
 nMesh.add_boundary(walls)
@@ -45,10 +45,10 @@ nMesh.add_boundary(bottom)
 #==============================================================================*
 # Fields
 
-timeFolder0 = ffn.TimeFolder(0)
+timeFolder0 = ffn.timeFolder.TimeFolder(0)
 
-defaultFlux = ffn.Field("defaultFlux", region="neutroRegion")
-defaultFlux.dimensions = ffn.Dimension(default='flux')
+defaultFlux = ffn.fields.Field("defaultFlux", region="neutroRegion")
+defaultFlux.dimensions = ffn.fields.Dimension(default='flux')
 defaultFlux.internalField = 1e21
 defaultFlux.set_boundary_condition("walls", bc.ZeroGradient())
 defaultFlux.set_boundary_condition("top", bc.FixedValue(0))
@@ -60,23 +60,22 @@ timeFolder0.append(defaultFlux)
 #==============================================================================*
 # Solvers
 
-neutronicsSolver = ffn.NeutronicsSolver(
+neutronicsSolver = ffn.solvers.NeutronicsSolver(
     region="neutroRegion",
     solver="diffusionNeutronics",
+    mesh=nMesh
 )
 
 print(f"List of require fields: {neutronicsSolver.get_required_fields()}")
-
-neutronicsSolver.mesh = nMesh
 
 neutronicsSolver.fvSchemes.ddtSchemes['default'] = 'steadyState'
 
 nuclearData = neutronicsSolver.nuclearData
 
-refState = ffn.NuclearDataState(
+refState = ffn.nuclearData.NuclearDataState(
     name="reference",
     zones=[
-        ffn.NuclearDataZone(
+        ffn.nuclearData.NuclearDataZone(
             "zone0",
             fuelFraction=0.4,
             removalXS=[5.0082],
@@ -107,12 +106,12 @@ nuclearData.add_state(refState)
 #==============================================================================*
 # Settings
 
-model = ffn.Model()
+model = ffn.case.Case()
 
 model.solvers.append(neutronicsSolver)
 model.timeFolders = [timeFolder0]
 
-settings: ffn.ControlDict = model.settings
+settings: ffn.control.ControlDict = model.settings
 
 settings.application = 'GeN-Foam'
 settings.endTime = 1
@@ -131,7 +130,7 @@ model.export_to_openfoam()
 #==============================================================================*
 # Run
 
-ffn.run(model=model, is_preprocessing=True)
+ffn.run(case=model, is_preprocessing=True)
 
 
 #==============================================================================*

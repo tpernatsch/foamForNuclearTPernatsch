@@ -18,6 +18,7 @@ _WRITE_CONTROL_TYPES = {
 
 _FUNCTION_OBJECT_TYPES = {
     'fieldMinMax', 'surfaceFieldValue', 'volFieldValue',
+    'coded',
     'mag',
     'probes',
     'patchProbes',
@@ -29,11 +30,12 @@ _FUNCTION_OBJECT_TYPES = {
 }
 _FUNCTION_OBJECT_LIBS = {
     "fieldFunctionObjects", "libfieldFunctionObjects.so", "libsampling.so",
-    'pyFMUSim', "libFunctionObjects.so", "libFFNFunctionObjects.so", "libOffbeatFunctionObject.so"
+    'pyFMUSim', "libFunctionObjects.so", "libutilityFunctionObjects.so",
+    "libFFNFunctionObjects.so", "libOffbeatFunctionObject.so"
 }
 _VOLUME_OPERATION_TYPES = {
-    "none", "min", "max", "sum", "sumMag", "average", "volAverage", 
-    "volIntegrate", "CoV", "weightedSum", "weightedAverage", 
+    "none", "min", "max", "sum", "sumMag", "average", "volAverage",
+    "volIntegrate", "CoV", "weightedSum", "weightedAverage",
     "weightedVolAverage", "weightedVolIntegrate"
 }
 _VOLUME_REGION_TYPES = {
@@ -245,7 +247,7 @@ class MapFields(FunctionObject):
             fields: list[str],
             mapRegion: str,
             mapMethod: str,
-            consitent: bool=True,
+            consistent: bool=True,
             log: bool=None,
             writeControl: str=None,
             writeInterval: float=None,
@@ -283,7 +285,7 @@ class MapFields(FunctionObject):
         self.fields = fields
         self.mapRegion = mapRegion
         self.mapMethod = mapMethod
-        self.consitent = consitent
+        self.consistent = consistent
 
     @property
     def fields(self):
@@ -317,14 +319,14 @@ class MapFields(FunctionObject):
         self.__setitem__("mapMethod", mapMethod)
 
     @property
-    def consitent(self):
-        return self._consitent
+    def consistent(self):
+        return self._consistent
 
-    @consitent.setter
-    def consitent(self, consitent):
-        check_type("consitent", consitent, bool)
-        self._consitent = consitent
-        self.__setitem__("consitent", consitent)
+    @consistent.setter
+    def consistent(self, consistent):
+        check_type("consistent", consistent, bool)
+        self._consistent = consistent
+        self.__setitem__("consistent", consistent)
 
 
 class FieldMinMax(FunctionObject):
@@ -411,16 +413,6 @@ class FieldMinMax(FunctionObject):
         check_type("location", location, bool)
         self._location = location
         self.__setitem__("location", location)
-
-    @property
-    def consitent(self):
-        return self._consitent
-
-    @consitent.setter
-    def consitent(self, consitent):
-        check_type("consitent", consitent, bool)
-        self._consitent = consitent
-        self.__setitem__("consitent", consitent)
 
 
 class SurfaceFieldValue(FunctionObject):
@@ -516,7 +508,7 @@ class SurfaceFieldValue(FunctionObject):
             caseFolder = getattr(self, "caseFolder", None)
         if caseFolder is None:
             raise ValueError("Need caseFolder or a bound caseFolder on this functionObject.")
-        
+
         filename = f'{caseFolder}/postProcessing/{self.region}/{self.name}/{startTime}/surfaceFieldValue.dat'
 
         data = pd.read_csv(filename, sep='\t', skiprows=4)
@@ -567,7 +559,7 @@ class VolFieldValue(FunctionObject):
         check_type("fields", fields, list)
         self._fields = fields
         self.__setitem__("fields", List(fields))
-        
+
     @property
     def regionName(self):
         return self._regionName
@@ -587,7 +579,7 @@ class VolFieldValue(FunctionObject):
         check_type("operation", operation, str)
         check_value("operation", operation, _VOLUME_OPERATION_TYPES)
         self._operation = operation
-        self.__setitem__("operation", operation)    
+        self.__setitem__("operation", operation)
 
     @property
     def regionType(self):
@@ -626,7 +618,7 @@ class VolFieldValue(FunctionObject):
             caseFolder = getattr(self, "caseFolder", None)
         if caseFolder is None:
             raise ValueError("Need caseFolder or a bound caseFolder on this functionObject.")
-        
+
         region = "" if self.region is None else self.region
 
         folder = os.path.join(
@@ -841,7 +833,7 @@ class Probes(FunctionObject):
 
         return data, locations
 
-   
+
 class PatchProbes(Probes):
     """
     PatchProbes functionObject
@@ -932,7 +924,7 @@ class PatchProbes(Probes):
     #         caseFolder = getattr(self, "caseFolder", None)
     #     if caseFolder is None:
     #         raise ValueError("Need caseFolder or a bound caseFolder on this functionObject.")
-        
+
     #     region = "" if self.region is None else self.region
     #     filename = f'{caseFolder}/postProcessing/{self.name}/{region}/{startTime}/{fieldName}'
 
@@ -993,7 +985,7 @@ class Graph(FunctionObject):
 
     def __repr__(self, depth=0):
         of_version = of_flavour()
-        
+
         if(of_version == "foundation" and self.graph_type == "uniform"):
             self.graph_type = "lineUniform"
 
@@ -1292,7 +1284,7 @@ class MassFlow(FunctionObject):
             caseFolder = getattr(self, "caseFolder", None)
         if caseFolder is None:
             raise ValueError("Need caseFolder or a bound caseFolder on this functionObject.")
-        
+
         filename = f'{caseFolder}/postProcessing/{self.region}/{self.name}/{startTime}/massFlow.dat'
 
         data = pd.read_csv(filename, sep=' ', skiprows=2, names=['Time', 'MassFlow'])
@@ -1361,7 +1353,7 @@ class TBulk(FunctionObject):
             caseFolder = getattr(self, "caseFolder", None)
         if caseFolder is None:
             raise ValueError("Need caseFolder or a bound caseFolder on this functionObject.")
-        
+
         filename = f'{caseFolder}/postProcessing/{self.region}/{self.name}/{startTime}/TBulk.dat'
 
         data = pd.read_csv(filename, sep=' ', skiprows=2, names=['Time', 'TBulk'])

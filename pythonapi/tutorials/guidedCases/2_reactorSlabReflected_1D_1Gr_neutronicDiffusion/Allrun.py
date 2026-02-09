@@ -25,17 +25,17 @@ reflBot = nMesh.create_cube('reflector', 0, 0, -lCore/2-lRefl, side, side, -lCor
 core = nMesh.extrude_top(reflBot, 'core', lCore, 151)
 reflTop = nMesh.extrude_top(core, 'reflector', lRefl, 150)
 
-walls = ffn.Face("walls", boundaryType="wall")
+walls = ffn.mesh.Face("walls", boundaryType="wall")
 for zone in [core, reflTop, reflBot]:
     walls.add_sub_face(zone.frontFace())
     walls.add_sub_face(zone.backFace())
     walls.add_sub_face(zone.leftFace())
     walls.add_sub_face(zone.rightFace())
 
-top = ffn.Face("top")
+top = ffn.mesh.Face("top")
 top.add_sub_face(reflTop.topFace())
 
-bottom = ffn.Face("bottom")
+bottom = ffn.mesh.Face("bottom")
 bottom.add_sub_face(reflBot.bottomFace())
 
 nMesh.add_boundary(walls)
@@ -46,10 +46,10 @@ nMesh.add_boundary(bottom)
 #==============================================================================*
 # Fields
 
-timeFolder0 = ffn.TimeFolder(0)
+timeFolder0 = ffn.timeFolder.TimeFolder(0)
 
-defaultFlux = ffn.Field("defaultFlux", region="neutroRegion")
-defaultFlux.dimensions = ffn.Dimension(default='flux')
+defaultFlux = ffn.fields.Field("defaultFlux", region="neutroRegion")
+defaultFlux.dimensions = ffn.fields.Dimension(default='flux')
 defaultFlux.internalField = 1e21
 defaultFlux.set_boundary_condition("walls", bc.ZeroGradient())
 defaultFlux.set_boundary_condition("top", bc.FixedValue(0))
@@ -61,20 +61,20 @@ timeFolder0.append(defaultFlux)
 #==============================================================================*
 # Solvers
 
-neutronicsSolver = ffn.NeutronicsSolver(
+neutronicsSolver = ffn.solvers.NeutronicsSolver(
     region="neutroRegion",
-    solver="diffusionNeutronics"
+    solver="diffusionNeutronics",
+    mesh=nMesh
 )
-neutronicsSolver.mesh = nMesh
 
 neutronicsSolver.fvSchemes.ddtSchemes['default'] = 'steadyState'
 
 nuclearData = neutronicsSolver.nuclearData
 
-refState = ffn.NuclearDataState(
+refState = ffn.nuclearData.NuclearDataState(
     name="reference",
     zones=[
-        ffn.NuclearDataZone(
+        ffn.nuclearData.NuclearDataZone(
             "core",
             fuelFraction=0.4,
             removalXS=[5.0082],
@@ -90,7 +90,7 @@ refState = ffn.NuclearDataState(
             decayConstant=[0.0125371, 0.0300828, 0.109879, 0.325484, 1.3036, 9.51817],
             delayedFraction=[7.2315e-05, 0.000609661, 0.000471181, 0.00118907, 0.000445487, 9.58515e-05],
         ),
-        ffn.NuclearDataZone(
+        ffn.nuclearData.NuclearDataZone(
             "reflector",
             fuelFraction=0,
             removalXS=[3],
@@ -119,12 +119,12 @@ timeFolder0.append(idxField)
 #==============================================================================*
 # Settings
 
-model = ffn.Model()
+model = ffn.case.Case()
 
 model.solvers.append(neutronicsSolver)
 model.timeFolders = [timeFolder0]
 
-settings: ffn.ControlDict = model.settings
+settings: ffn.control.ControlDict = model.settings
 
 settings.application = 'GeN-Foam'
 settings.endTime = 1
@@ -143,7 +143,7 @@ model.export_to_openfoam()
 #==============================================================================*
 # Run
 
-ffn.run(model=model, is_preprocessing=True)
+ffn.run(case=model, is_preprocessing=True)
 
 model.plot_mesh(nMesh, fieldName=idxField.name)
 
