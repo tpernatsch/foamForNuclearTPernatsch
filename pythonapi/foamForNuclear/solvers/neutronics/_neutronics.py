@@ -184,20 +184,21 @@ class NeutronicsSolver(Solver):
     ScNo : float
         Schmidt number for diffusion of precursors (default `1`).
     axialOrientation : Vector
-        Axial orientation of the axial expansion
+        Axial orientation of the axial expansion (default `None`).
     adjustDiscFactors : bool
         Flag to apply the discontinuity factor adjustement (default `False`).
     useGivenDiscFactors : bool
         Flag to use homogeneous discontinuity factors provided in state/zone
-        (default `False`)
+        (default `False`).
     legendreMoments : int
         Number of Legendre moments, used in SN solver (default `None`).
     isLowMemory : bool
         Flag for low memory foot print, useful for SN solver (defaulf `None`).
     fastNeutrons : bool
-        Flag to change Doppler feedback correlation (default `True`).
+        Flag to change Doppler feedback correlation in the point-kinetics
+        (default `True`).
     liquidFuel : bool
-        Flag to specify that the fuel is liauid (default False).
+        Flag to specify that the fuel is liauid (default `False`).
     keff : float
         Initial eigenvalue (default `1`).
     power : float
@@ -257,7 +258,6 @@ class NeutronicsSolver(Solver):
         self.quadratureSet = QuadratureSet(region=self.region)
         self.externalSource = ExternalSource(region=self.region)
         self.controlRodMove = ControlRodMove(region=self.region)
-
 
         if self.isSetFvSolutionToDefault:
             self.set_fvSolution_default()
@@ -393,25 +393,27 @@ class NeutronicsSolver(Solver):
 
 
     def export_uniform_to_openfoam(self):
-        if (self.timeFolder is not None):
-            self.timeFolder.export_to_openfoam()
+        if (self.timeFolder is None):
+            return
 
-            if (not os.path.exists(f"{self.timeFolder.time}/uniform")):
-                os.mkdir(f"{self.timeFolder.time}/uniform")
+        self.timeFolder.export_to_openfoam()
 
-            with open(f"{self.timeFolder.time}/uniform/reactorState", 'w') as f:
-                f.write(openfoamHeader)
-                f.write(openfoamFileHeader("reactorState"))
+        if (not os.path.exists(f"{self.timeFolder.time}/uniform")):
+            os.mkdir(f"{self.timeFolder.time}/uniform")
 
-                f.write(addParameter('keff', self.keff, isAddExtraLine=True))
-                f.write(addParameter('power', self.power, isAddExtraLine=True))
+        with open(f"{self.timeFolder.time}/uniform/reactorState", 'w') as f:
+            f.write(openfoamHeader)
+            f.write(openfoamFileHeader("reactorState"))
 
-                if (self.ksrc is not None):
-                    f.write(addParameter('ksrc', self.ksrc, isAddExtraLine=True))
-                if (self.subcriticalIndex is not None):
-                    f.write(addParameter('subcriticalIndex', self.subcriticalIndex, isAddExtraLine=True))
+            f.write(addParameter('keff', self.keff, isAddExtraLine=True))
+            f.write(addParameter('power', self.power, isAddExtraLine=True))
 
-                f.write(openfoamFooterLine)
+            if (self.ksrc is not None):
+                f.write(addParameter('ksrc', self.ksrc, isAddExtraLine=True))
+            if (self.subcriticalIndex is not None):
+                f.write(addParameter('subcriticalIndex', self.subcriticalIndex, isAddExtraLine=True))
+
+            f.write(openfoamFooterLine)
 
 
     def export_to_openfoam(self):

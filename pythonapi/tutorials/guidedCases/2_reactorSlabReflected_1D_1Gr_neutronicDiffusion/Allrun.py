@@ -48,7 +48,7 @@ nMesh.add_boundary(bottom)
 
 timeFolder0 = ffn.timeFolder.TimeFolder(0)
 
-defaultFlux = ffn.fields.Field("defaultFlux", region="neutroRegion")
+defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
 defaultFlux.dimensions = ffn.fields.Dimension(default='flux')
 defaultFlux.internalField = 1e21
 defaultFlux.set_boundary_condition("walls", bc.ZeroGradient())
@@ -62,7 +62,7 @@ timeFolder0.append(defaultFlux)
 # Solvers
 
 neutronicsSolver = ffn.solvers.NeutronicsSolver(
-    region="neutroRegion",
+    region=nMesh.region,
     solver="diffusionNeutronics",
     mesh=nMesh
 )
@@ -153,11 +153,11 @@ model.plot_mesh(nMesh, fieldName=idxField.name)
 
 print(f"keff = {model.keff()}")
 
-model.plot_mesh(region="neutroRegion")
-model.plot_boundary(region="neutroRegion", boundaryName=walls.name)
+model.plot_mesh(region=nMesh.region)
+model.plot_boundary(region=nMesh.region, boundaryName=walls.name)
 
 model.plot_slice(
-    region="neutroRegion",
+    region=nMesh.region,
     time=settings.endTime,
     fieldName="flux0",
     show_edges=False,
@@ -166,7 +166,7 @@ model.plot_slice(
 )
 
 model.plot_mesh(
-    region="neutroRegion",
+    region=nMesh.region,
     time=settings.endTime,
     fieldName="flux0",
     cmap="Blues",

@@ -136,7 +136,8 @@ def _emit_transform_points(mesh, region: str) -> str:
 def run_preprocessing(
         case: Case,
         verbose: bool=False,
-        isRenumberMesh: bool=False
+        isRenumberMesh: bool=False,
+        isCheckMesh: bool=False
     ):
     """
     Execute all the OpenFOAM pre-processing utilities:
@@ -147,7 +148,7 @@ def run_preprocessing(
     - createPatch
     - setFields
     - createBaffles
-    - checkMesh
+    - checkMesh (optional)
     - decomposePar
     - GeN-Foam -initializeMappedFields
 
@@ -222,8 +223,8 @@ def run_preprocessing(
                 commands += f"runApplication createBaffles -overwrite\n"
             if (solver.mesh.transforms):
                 commands += _emit_transform_points(solver.mesh, region="")
-
-            commands += f"runApplication checkMesh\n"
+            if (isCheckMesh):
+                commands += f"runApplication checkMesh\n"
 
         # Multiple regions
         else:
@@ -246,8 +247,8 @@ def run_preprocessing(
                 commands += f"runApplication -s {region} setFields -region {region}\n"
             if (not solver.mesh.createBafflesDict.is_empty):
                 commands += f"runApplication -s {region} createBaffles -region {region} -overwrite\n"
-
-            commands += f"runApplication -s {region} checkMesh -region {region}\n"
+            if (isCheckMesh):
+                commands += f"runApplication -s {region} checkMesh -region {region}\n"
 
     # Mesh decomposition
     if (case.is_parallel):
@@ -474,10 +475,9 @@ def allclean(case=None):
     # NOTE: Changed to cleanCase + rm -rf 0 to be compatible with Foundation v9
     commands += "cleanCase\n"
     commands += (
-        "rm -rf 0\n"
-        "rm -rf constant system processor* \n"
-        "log.* Allrun.pre* *.png *.gif *_log.txt \n"
-        "*.csv *.json input_check.txt\n"
+        "rm -rf 0 constant system processor* "
+            "log.* Allrun.pre* *.png *.gif *_log.txt "
+            "*.csv *.json input_check.txt\n"
     )
 
     # Run inside folder

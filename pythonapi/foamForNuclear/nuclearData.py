@@ -1010,19 +1010,25 @@ class NuclearDataState(OpenFOAMDict):
 
     zones : list[NuclearDataZone]
         List of nuclear data zones
+    description : str
+        Add a description in the `nuclearData` file during export
+        (default `None`).
     """
 
     def __init__(
             self,
             name: str,
             parameters: dict[str, float]=None,
-            zones: list[NuclearDataZone]=[]
+            zones: list[NuclearDataZone]=[],
+            description: str=None,
         ):
         super().__init__(name=name)
 
         self.zones: OpenFOAMList[NuclearDataZone] = OpenFOAMList(NuclearDataZone, "zones", items=zones)
 
         self.parameters = parameters if parameters is not None else {}
+
+        self.description = description
 
 
     def __repr__(self, depth = 0):
@@ -1031,7 +1037,20 @@ class NuclearDataState(OpenFOAMDict):
 
         self.__setitem__("zones", self.zones)
 
-        return super().__repr__(depth)
+        text = ""
+        if (self.description is not None):
+            text += f"// {self.description}\n{depth*tab}"
+        return(text + super().__repr__(depth))
+
+
+    @property
+    def description(self):
+        return self._description
+
+    @description.setter
+    def description(self, description):
+        check_type("description", description, str, none_ok=True)
+        self._description = description
 
 
     def add_zone(self, zone: NuclearDataZone) -> None:
