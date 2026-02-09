@@ -10,7 +10,7 @@ The *physicsModels* sub-dictionary is used in two-phase simulations to define th
 - :doc:`two-phase drag multiplier models <../../../../../cppapi/generated/porousMediaModels/physicsModels/dragModels/twoPhaseDragMultiplierModels/twoPhaseDragMultiplierModel>`  via the ``twoPhaseDragMultiplierModel`` sub-dictionary;
 - :doc:`virtual mass coefficient models <../../../../../cppapi/generated/porousMediaModels/physicsModels/virtualMassModels/virtualMassCoefficientModels/virtualMassCoefficientModel>` via the ``virtualMassCoefficientModel`` sub-dictionary;
 - pair geometry models via the ``pairGeometryModels`` sub-dictionary, which in turn includes;
-   - :ref:`dispersion models <modules_thermalHydraulics_porousMedium_dispersionModels>` for fluid-fluid pairs via the ``dispersionModel`` sub-dictionary;
+   - :doc:`virtual mass coefficient models <../../../../../cppapi/generated/porousMediaModels/physicsModels/dispersionModels/dispersionModel>` for fluid-fluid pairs via the ``dispersionModel`` sub-dictionary;
    - :ref:`interfacial area density models <modules_thermalHydraulics_porousMedium_interfacialAreaModels>` for fluid-fluid pairs via the ``interfacialAreaDensityModel`` sub-dictionary;
    - :ref:`contact partition models <modules_thermalHydraulics_porousMedium_contactPartitionModels>` for fluid-structure pairs via the ``contactPartitionModel`` sub-dictionary
 - :ref:`phase change models <modules_thermalHydraulics_porousMedium_phaseChangeModels>` via the ``phaseChangeModel`` sub-dictionary, which in turn includes:
