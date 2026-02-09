@@ -175,18 +175,6 @@ Neutronics
     CROCUS reactor.
 
 
------------------------------------------
-Structural mechanics and fuel performance
------------------------------------------
-
-- A. Scolaro, C. Fiorina, I. Clifford, and A. Pautz, "`Development of a semi-implicit contact
-  methodology for finite volume stress solvers <https://doi.org/10.1002/nme.6857>`_,"
-  International Journal for Numerical Methods in Engineering, vol. 123, no. 2,
-  pp. 309-338, 2022.
-
-  - Relevance - **OFFBEAT**.@Ale
-
-
 ----------------------------------------
 Multiphysics coupling and integral tests
 ----------------------------------------
@@ -282,56 +270,153 @@ Others
 
 
 --------------------------------------------
-To be added (maybe) to categories above @Ale
+Mechanics and fuel behavior
 --------------------------------------------
 
-- Investigation on the effect of eccentricity for fuel disc irradiation tests
-  A Scolaro, P Van Uffelen, C Fiorina, A Schubert, I Clifford, A Pautz
-  Nuclear Engineering and Technology 53 (5), 1602-1611
+- A. Scolaro, I. Clifford, C. Fiorina, and A. Pautz, "`First steps towards the
+  development of a 3D nuclear fuel behavior solver with OpenFOAM <https://doi.org/10.1115/ICONE26-82381>`_",
+  in Proceedings of the International Conference on Nuclear Engineering (ICONE),
+  vol. 51456, paper V003T02A051, ASME, 2018.
 
-- Pre-release validation database for the multi-dimensional fuel performance code OFFBEAT
-  A Scolaro, C Fiorina, I Clifford, E Brunetto, A Pautz
-  International Conference on Physics of Reactors (PHYSOR), 2914-2923
+  - Relevance - **OFFBEAT**. First thermo-mechanical verification steps for a novel
+    multi-dimensional OpenFOAM-based fuel performance solver.
 
-- Coupling methodology for the multidimensional fuel performance code offbeat and the Monte Carlo neutron transport code SERPENT
-  A Scolaro, Y Robert, C Fiorina, I Clifford, A Pautz
-  Proceedings of the Global/Top Fuel
 
-- Cladding plasticity modeling with the multidimensional fuel performance code OFFBEAT
-  A Scolaro, I Clifford, C Fiorina, A Pautz
-  Global/TopFuel
+- A. Scolaro, I. Clifford, C. Fiorina, and A. Pautz, "`Multi-dimensional creep analysis
+  using the novel OFFBEAT fuel performance code 
+  <https://www.iaea.org/publications/14814/progress-on-pellet-cladding-interaction-and-stress-corrosion-cracking>`_",
+  in IAEA Technical Meeting on Progress on Pellet Cladding Interaction and Stress Corrosion Cracking,
+  2019.
 
-- Simulation of fission gas release in the 3D fuel performance code OFFBEAT
-  A Gianesello, A Scolaro, C Fiorina
-  IAEA Fast Reactor Conference - FR22
+  - Relevance - **OFFBEAT**. First implementation and verification of creep modelling in a multi-dimensional
+    finite-volume fuel performance context.
 
-- International fuel performance study of fresh fuel experiments for PCMI effects during RIA experiments
-  S Seo, C Folsom, C Jensen, D Kamerman, L Giaccardi, M Cherubini, ...
-  Nuclear Engineering and Design 430, 113673
 
-- PuMMA blind benchmark: Performance of high plutonium content MOX fuel under irradiation
-  D Jaramillo-Sierra, M Stefanowska-Skrodzka, J Lavarenne, E Deveaux, ...
-  Nuclear Engineering and Design 435, 113960
+- A. Scolaro, Y. Robert, C. Fiorina, I. Clifford, and A. Pautz, "Coupling methodology for the
+  multidimensional fuel performance code OFFBEAT and the Monte Carlo neutron transport code SERPENT",
+  in Proceedings of the Global/Top Fuel, 2019.
 
-- Application of the OFFBEAT Fuel Performance Code to IAEA Verification Exercises on LMFBR Core Bowing
-  A Cornet, E Brunetto, A Scolaro, C Fiorina, A Pautz
-  The International Conference on Mathematics and Computational Methods …
+  - Relevance - **OFFBEAT**. Coupling methodology between Monte Carlo neutronics and fuel
+    behaviour, using the Serpent Multi-physics interface. Verification against results obtained with TURBNP module.
 
-- Development of a dynamic-mesh porosity transport model for multi-dimensional fuel performance codes
-  EL Brunetto, C Fiorina, A Pautz, S van Til, F Nindiyasari, A Fedorov, ...
-  Journal of Nuclear Materials 608, 155717
 
-- Modeling of Zircaloy Oxidation Through Dynamic Mesh Deformation
-  A Scolaro, E Brunetto, C Fiorina
-  arXiv preprint arXiv:2404.03454
+- A. Scolaro, I. Clifford, C. Fiorina, and A. Pautz, "Cladding plasticity modeling with the
+  multidimensional fuel performance code OFFBEAT",
+  in Proceedings of Global/TopFuel, 2019.
 
-- Implementation of multi-dimensional transport solvers in OFFBEAT
-  EL Brunetto, M Reymond, A Scolaro, C Fiorina, A Pautz
-  Nufuel 2023: Book of abstracts, 12-12
+  - Relevance - **OFFBEAT**. Verification of elasto-plastic constitutive modelling in the
+    finite-volume solid mechanics framework and assessment of stress/strain localization in PCMI.
 
-- Preliminary Extension of OFFBEAT to TRISO Fuel
-  F Xiang, A Scolaro, Y Wu, S Qiu, C Fiorina, A Pautz
-  Nufuel 2023: Book of abstracts, 6-6
 
-- Fuel pin behaviour under irradiation with high Pu content: Benchmark exercise
-  M Stefanowska-Skrodzka, J Lavarenne, E Deveaux, E Brunetto, ...
+- A. Scolaro, I. Clifford, C. Fiorina, and A. Pautz, "`The OFFBEAT multi-dimensional fuel behavior solver
+  <https://doi.org/10.1016/j.nucengdes.2019.110416>`_",
+  Nuclear Engineering and Design, vol. 358, 110416, 2020.
+
+  - Relevance - **OFFBEAT**. Core reference for the solver architecture and main modelling
+    capabilities; verification on representative fuel-rod thermo-mechanical problems and
+    initial validation against IFA432 and IFA562 rods.
+
+
+- A. Scolaro, P. Van Uffelen, C. Fiorina, A. Schubert, I. Clifford, and A. Pautz, "`Investigation on the effect
+  of eccentricity for fuel disc irradiation tests
+  <https://doi.org/10.1016/j.net.2020.11.003>`_",
+  Nuclear Engineering and Technology, vol. 53, no. 5, pp. 1602--1611, 2021.
+
+  - Relevance - **OFFBEAT**. Validation study against data from the HRBP disc irradiation tests. 
+    The parametric analysis of the differences agaisnt the high-temperature cases support the need for multi-dimensional
+    modelling in disc irradiation tests.
+
+
+- A. Scolaro, C. Fiorina, I. Clifford, and A. Pautz, "`Development of a semi-implicit contact methodology for
+  finite volume stress solvers <https://doi.org/10.1002/nme.6857>`_",
+  International Journal for Numerical Methods in Engineering, vol. 123, no. 2,
+  pp. 309--338, 2022.
+
+  - Relevance - **OFFBEAT**. Verification and code-to-code comparison of the semi-implicit OFFBEAT
+    contact algorithm for solid mechanics, including patch tests,
+    Hertzian contact, and punch tests.
+
+
+- E. L. Brunetto, A. Scolaro, C. Fiorina, and A. Pautz, "`Extension of the OFFBEAT fuel performance code to finite strains and validation against LOCA experiments
+  <https://doi.org/10.1016/j.nucengdes.2023.112232>`_",
+  Nuclear Engineering and Design, vol. 406, 112232, 2023.
+
+  - Relevance - **OFFBEAT**. Verification of finite-strain large-deformation
+    thermo-mechanics and validation against integral LOCA experiments (IFA650.2).
+
+
+- G. Zullo, D. Pizzocri, A. Scolaro, P. Van Uffelen, F. Feria, L. E. Herranz, and L. Luzzi,
+  "`Integral-scale validation of the SCIANTIX code for Light Water Reactor fuel rods
+  <https://doi.org/10.1016/j.jnucmat.2024.155305>`_",
+  *Journal of Nuclear Materials*, vol. 601, 155305, 2024.
+
+  - Relevance - **OFFBEAT**. Comprehensive validation activity for thermal related quantities (fuel centerline
+    and fission gas release fraction) against several rods from the IFPE database (IFA432, REGATE, CONTACT, SuperRamp, Risoe3, etc.).
+
+
+- S. Seo, C. Folsom, C. Jensen, D. Kamerman, L. Giaccardi, M. Cherubini, P. Suk,
+  M. Sevecek, J. Sercombe, I. Guenot-Delahaie, et al.,
+  "`International fuel performance study of fresh fuel experiments for PCMI effects during RIA experiments
+  <https://doi.org/10.1016/j.nucengdes.2024.113673>`_",
+  *Nuclear Engineering and Design*, vol. 430, 113673, 2024.
+
+  - Relevance - **OFFBEAT**. Blind international benchmark for RIA PCMI based on
+    TREAT and NSRR experiments; cross-code comparison of cladding deformation
+    and failure sensitivity to pulse width and deposited energy.
+
+
+- L. Verma, I. Clifford, P. Konarski, A. Scolaro, and H. Ferroukhi, "`OFFBEAT V\&V studies for REBEKA tests on
+  cladding ballooning and burst during LOCA conditions <https://doi.org/10.1016/j.anucene.2024.110773>`_",
+  Annals of Nuclear Energy, vol. 208, 110773, 2024.
+
+  - Relevance - **OFFBEAT**. Validation against REBEKA integral LOCA tests for cladding ballooning/burst.
+
+
+- Q. Faure, G. Delipei, A. Scolaro, M. Avramova, and K. Ivanov, "`Fuel performance code to code comparative analysis
+  for the OECD/NEA MPCMIV benchmark
+  <https://doi.org/10.1016/j.nucengdes.2024.113685>`_",
+  Nuclear Engineering and Design, vol. 430, 113685, 2024.
+
+  - Relevance - **OFFBEAT**. Code-to-code and experimental benchmark for PCMI during
+    base irradiation and fast ramp transient; assessment of cladding deformation
+    and sensitivity to multi-physics-derived power histories.
+
+
+- M. Reymond, J. Sercombe, and A. Scolaro, "`Investigation of the PCMI failure of pre-hydrided Zy-4 cladding during
+  Reactivity Initiated Accidents with ALCYONE and OFFBEAT fuel performance codes
+  <https://doi.org/10.1016/j.nucengdes.2024.113430>`_",
+  *Nuclear Engineering and Design*, vol. 427, 113430, 2024.
+
+  - Relevance - **OFFBEAT**. Code-to-code and experimental validation of RIA PCMI
+    failure for hydrided cladding; assessment of anisotropic viscoplastic response
+    and strain-based failure criteria against ALCYONE and NSRR data.
+
+
+- L. Verma, I. Clifford, P. Konarski, A. Scolaro, and H. Ferroukhi, "`Analysing hydrogen behaviour in liner claddings
+  using OFFBEAT fuel performance code <https://doi.org/10.1016/j.anucene.2025.111559>`_",
+  Annals of Nuclear Energy, vol. 222, 111559, 2025.
+
+  - Relevance - **OFFBEAT**. Validation of hydrogen diffusion and hydride-driven
+    redistribution in liner claddings against out-of-pile experiments,
+    including migration toward the substrate–liner interface.
+
+
+- E. L. Brunetto, C. Fiorina, A. Pautz, S. van Til, F. Nindiyasari, A. Fedorov, and A. Scolaro,
+  "`Development of a dynamic-mesh porosity transport model for multi-dimensional fuel performance codes
+  <https://doi.org/10.1016/j.jnucmat.2025.155717>`_",
+  Journal of Nuclear Materials, vol. 608, 155717, 2025.
+
+  - Relevance - **OFFBEAT**. Verification and experimental validation of dynamic-mesh
+    porosity migration and central hole evolution, including off-centred cavity
+    formation and comparison with post-irradiation data.
+
+
+- D. Jaramillo-Sierra, M. Stefanowska-Skrodzka, J. Lavarenne, E. Deveaux, E. Brunetto,
+  V. Matocha, A. Magni, K. Sturm, K. Mikityuk, Y. Wang, et al.,
+  "`PuMMA blind benchmark: Performance of high plutonium content MOX fuel under irradiation
+  <https://doi.org/10.1016/j.nucengdes.2025.113960>`_",
+  *Nuclear Engineering and Design*, vol. 435, 113960, 2025.
+
+  - Relevance - **OFFBEAT**. International blind benchmark for high-Pu MOX fuel;
+    cross-code assessment of irradiation behaviour and model uncertainty prior
+    to comparison with PIE data.
