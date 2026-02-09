@@ -351,7 +351,7 @@ Which can be translated in *system/regionsDict*:
         }
         MultiPhysicsSolver1
         {
-            solvers
+            subSolvers
             {
                 Solver2                 physicsD;
                 MultiPhysicsSolver2     picardLoop;
@@ -361,7 +361,7 @@ Which can be translated in *system/regionsDict*:
         }
         MultiPhysicsSolver2
         {
-            solvers
+            subSolvers
             {
                 Solver3     physicsF;
                 Solver4     physicsG;
