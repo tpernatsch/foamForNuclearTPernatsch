@@ -23,6 +23,7 @@ academic and research institutions.
 
 .. toctree::
    :maxdepth: 2
+   :numbered:
    :caption: Contents
 
    overview/index

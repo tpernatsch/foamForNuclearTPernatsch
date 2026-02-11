@@ -9,7 +9,6 @@ through the essential aspects of using foamForNuclear.
 
 
 .. toctree::
-   :numbered:
    :maxdepth: 2
 
    installation

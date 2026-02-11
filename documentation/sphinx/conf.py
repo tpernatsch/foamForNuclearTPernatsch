@@ -105,6 +105,12 @@ html_title = "foamForNuclear Documentation"
 html_logo = "../logo/ffn-logo-bold-italic.svg"
 html_favicon = "../logo/ffn-logo.svg"
 
+html_theme_options = {
+    "navigation_depth": -1,
+    "collapse_navigation": False,
+}
+
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
