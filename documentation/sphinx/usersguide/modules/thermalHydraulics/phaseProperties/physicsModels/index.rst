@@ -6,8 +6,8 @@ The *physicsModels* sub-dictionary
 The *physicsModels* sub-dictionary is used in one-phase simulations to define the models that describe the effect of the structure on the fluid flow.  Two types of models can be defined: drag models via the ``dragModels`` sub-dictionary and heat transfer models via the ``heatTransferModels`` sub-dictionary. Each of these two sub-dictionaries consists of a series of other sub-dictionaries whose properties are applied to the cell zones that have their name in the sub-dictionary keys. For both the drag models and the heat transfer models, three options exist:
 
 - Use ``constant`` as  type and give a constant value using the keyword ``value``.
-- Use as type a single model chosen among those available (:doc:`fluid-structure drag models <../../../../../cppapi/generated/porousMediaModels/physicsModels/dragModels/FSDragCoefficientModels/FSDragCoefficientModel>`, :doc:`fluid-structure heat transfer models <../../../../../cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/FSHeatTransferCoefficientModel>`)
-- Use ``byRegime`` as  type, and then chose one of the available models (:doc:`fluid-structure drag models <../../../../../cppapi/generated/porousMediaModels/physicsModels/dragModels/FSDragCoefficientModels/FSDragCoefficientModel>`, :doc:`fluid-structure heat transfer models <../../../../../cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/FSHeatTransferCoefficientModel>`) for every regime. This requires having set a :ref:`regime map <modules_thermalHydraulics_porousMedium_regimeMapModels>`.
+- Use as type a single model chosen among those available (:ref:`fluid-structure drag models <FSDragCoefficientModel>`, :ref:`fluid-structure heat transfer models <FSHeatTransferCoefficientModel>`)
+- Use ``byRegime`` as  type, and then chose one of the available models (:ref:`fluid-structure drag models <FSDragCoefficientModel>`, :ref:`fluid-structure heat transfer models <FSHeatTransferCoefficientModel>`) for every regime. This requires having set a :ref:`regime map <modules_thermalHydraulics_porousMedium_regimeMapModels>`.
 
 
 
@@ -105,3 +105,11 @@ Two examples of dictionaries are reported below.
     anisotropic hydraulic diameter (see :ref:`the structureProperties sub-dictionary <modules_thermalHydraulics_porousMedium_structureProperties>`). The anisotropy of the hydraulic diameter can
     be set using the keyword *localDhAnisotropy* and assigned to it a vector of
     three scaling factors, one for each local direction.
+
+
+    
+.. toctree::
+   :hidden:
+
+    ../../../../../cppapi/generated/porousMediaModels/physicsModels/dragModels/FSDragCoefficientModels/FSDragCoefficientModel
+    ../../../../../cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/FSHeatTransferCoefficientModel
