@@ -59,9 +59,10 @@ pre- and post-processing.
    Home <self>
    releasenotes/index
    usersguide/index
-   cppapi/index
    pythonapi/index
    theoryReferences
    V_Vreferences
    contributors
    howToContribute
+
+.. cppapi/index
