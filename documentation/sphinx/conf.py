@@ -106,8 +106,10 @@ html_logo = "../logo/ffn-logo-bold-italic.svg"
 html_favicon = "../logo/ffn-logo.svg"
 
 html_theme_options = {
-    "navigation_depth": 5,
+    "navigation_depth": 6,
+    "collapse_navigation": False,
 }
+
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
