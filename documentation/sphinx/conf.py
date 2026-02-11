@@ -106,7 +106,7 @@ html_logo = "../logo/ffn-logo-bold-italic.svg"
 html_favicon = "../logo/ffn-logo.svg"
 
 html_theme_options = {
-    "navigation_depth": 6,
+    "navigation_depth": -1,
     "collapse_navigation": False,
 }
 
