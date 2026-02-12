@@ -9,6 +9,12 @@ The *physicsModels* sub-dictionary is used in one-phase simulations to define th
 - Use as type a single model chosen among those available (:ref:`fluid-structure drag models <FSDragCoefficientModel>`, :ref:`fluid-structure heat transfer models <FSHeatTransferCoefficientModel>`)
 - Use ``byRegime`` as  type, and then chose one of the available models (:ref:`fluid-structure drag models <FSDragCoefficientModel>`, :ref:`fluid-structure heat transfer models <FSHeatTransferCoefficientModel>`) for every regime. This requires having set a :ref:`regime map <modules_thermalHydraulics_porousMedium_regimeMapModels>`.
 
+Available run-time selection models include:
+
+.. toctree::
+
+   ../../../../../cppapi/generated/porousMediaModels/physicsModels/dragModels/FSDragCoefficientModels/FSDragCoefficientModel
+   ../../../../../cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/FSHeatTransferCoefficientModel
 
 
 Two examples of dictionaries are reported below. 
@@ -108,8 +114,4 @@ Two examples of dictionaries are reported below.
 
 
     
-.. toctree::
-   :hidden:
 
-   ../../../../../cppapi/generated/porousMediaModels/physicsModels/dragModels/FSDragCoefficientModels/FSDragCoefficientModel
-   ../../../../../cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/FSHeatTransferCoefficientModel
