@@ -17,6 +17,10 @@ Available run-time selection models include:
    Fluid-structure drag models <../../../../../cppapi/generated/porousMediaModels/physicsModels/dragModels/FSDragCoefficientModels/FSDragCoefficientModel>
    Fluid-structure heat transfer models <../../../../../cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/FSHeatTransferCoefficientModel>
 
+.. raw:: html
+
+   <div style="margin-top: 1.5em;"></div>
+
 
 Two examples of dictionaries are reported below. 
 
