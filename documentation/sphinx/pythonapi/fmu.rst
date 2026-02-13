@@ -11,9 +11,9 @@ FMU containers are special wrappers to simplify the manipulation of FMU with
 OpenFOAM cases. Three containers are available, each based on different Python
 packages:
 
-- :class:`foamForNuclear.FMPyContainer` based on FMPy
-- :class:`foamForNuclear.OMSimulatorContainer` based on OMSimulator
-- :class:`foamForNuclear.PyFMIContainer` based on PyFMI
+- :class:`foamForNuclear.fmi.FMPyContainer` based on FMPy
+- :class:`foamForNuclear.fmi.OMSimulatorContainer` based on OMSimulator
+- :class:`foamForNuclear.fmi.PyFMIContainer` based on PyFMI
 
 N.B: `FMPyContainer` is recommended as it offers more capabilities than the
 other models.
@@ -43,8 +43,8 @@ Multiple FMU in Parallel
 FoamForNuclear offers the possibility to run multiple couple FMUs in sequential
 or in parallel.
 
-- :class:`foamForNuclear.FMPyMasterRunner` runs in sequential
-- :class:`foamForNuclear.FMPyMasterRunnerParallel` runs in parallel
+- :class:`foamForNuclear.fmi.FMPyMasterRunner` runs in sequential
+- :class:`foamForNuclear.fmi.FMPyMasterRunnerParallel` runs in parallel
 
 These objects allow to run FMUs using a semi-implicit scheme and manage time
 steps based on the smallest among all FMUs.

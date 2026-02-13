@@ -16,10 +16,10 @@ Pre-processing
    :nosignatures:
    :template: myclass.rst
 
-   foamForNuclear.CreateBafflesDict
-   foamForNuclear.DecomposeParDict
-   foamForNuclear.SetFieldsDict
-   foamForNuclear.TopoSetDict
+   foamForNuclear.mesh.dicts.CreateBafflesDict
+   foamForNuclear.mesh.dicts.DecomposeParDict
+   foamForNuclear.preprocessing.SetFieldsDict
+   foamForNuclear.mesh.dicts.TopoSetDict
 
 More information on meshing in :mod:`foamForNuclear.mesh`.
 
@@ -32,14 +32,13 @@ Simulation Settings
    :nosignatures:
    :template: myclass.rst
 
-   foamForNuclear.ControlDict
-   foamForNuclear.Solver
-   foamForNuclear.fvSchemes
-   foamForNuclear.fvSolution
-   foamForNuclear.PhaseProperties
-   foamForNuclear.QuadratureSet
-   foamForNuclear.TransportProperties
-   foamForNuclear.TurbulenceProperties
+   foamForNuclear.control.ControlDict
+   foamForNuclear.solvers.Solver
+   foamForNuclear.numerics.fvSchemes
+   foamForNuclear.numerics.fvSolution
+   foamForNuclear.quadratureSet.QuadratureSet
+   foamForNuclear.transport.TransportProperties
+   foamForNuclear.turbulence.TurbulenceProperties
 
 
 Fields Specifications
@@ -50,10 +49,10 @@ Fields Specifications
    :nosignatures:
    :template: myclass.rst
 
-   foamForNuclear.TimeFolder
-   foamForNuclear.Field
-   foamForNuclear.Dimension
-   foamForNuclear.ReducedDimension
+   foamForNuclear.timeFolder.TimeFolder
+   foamForNuclear.fields.Field
+   foamForNuclear.fields.Dimension
+   foamForNuclear.fields.ReducedDimension
 
 
 Solvers
@@ -64,11 +63,11 @@ Solvers
    :nosignatures:
    :template: myclass.rst
 
-   foamForNuclear.Solver
-   foamForNuclear.ThermalHydraulicsSolver
-   foamForNuclear.CompressibleInterFoam
-   foamForNuclear.NeutronicsSolver
-   foamForNuclear.OffbeatSolver
+   foamForNuclear.solvers.Solver
+   foamForNuclear.solvers.ThermalHydraulicsSolver
+   foamForNuclear.solvers.CompressibleInterFoam
+   foamForNuclear.solvers.NeutronicsSolver
+   foamForNuclear.solvers.OffbeatSolver
 
 More information on thermal-hydraulics sub-models in
 :doc:`thermalHydraulicsModels`.
@@ -82,13 +81,14 @@ Nuclear Data and Neutronics dictionaries
    :nosignatures:
    :template: myclass.rst
 
-   foamForNuclear.NuclearDataZone
-   foamForNuclear.NuclearDataState
-   foamForNuclear.NuclearData
-   foamForNuclear.PointKineticsData
-   foamForNuclear.QuadratureSet
+   foamForNuclear.nuclearData.NuclearDataZone
+   foamForNuclear.nuclearData.NuclearDataState
+   foamForNuclear.nuclearData.NuclearData
+   foamForNuclear.nuclearData.PointKineticsData
+   foamForNuclear.quadratureSet.QuadratureSet
    foamForNuclear.ExternalSource
-   foamForNuclear.ControlRodMove
+   foamForNuclear.nuclearData.ControlRodMove
+   foamForNuclear.nuclearData.ControlRodMovement
 
 
 Thermal-mechanics and Fuel Performance
@@ -99,42 +99,42 @@ Thermal-mechanics and Fuel Performance
    :nosignatures:
    :template: myclass.rst
 
-   foamForNuclear.ThermoMechanicsCouplingOptions
-   foamForNuclear.GlobalOptions
-   foamForNuclear.ThermalSolverOptions
-   foamForNuclear.ReadTemperatureThermalSolverOptions
-   foamForNuclear.SolidConductionThermalSolverOptions
-   foamForNuclear.MechanicsSolverOptions
-   foamForNuclear.SmallStrainMechanicsSolverOptions
-   foamForNuclear.SmallStrainIncrementalUpdatedMechanicsSolverOptions
-   foamForNuclear.LargeStrainTotLagMechanicsSolverOptions
-   foamForNuclear.LargeStrainUpdLagMechanicsSolverOptions
-   foamForNuclear.NeutronicsSolverOptions
-   foamForNuclear.DiffusionNeutronicsSolverOptions
-   foamForNuclear.ElementTransportSolverOptions
-   foamForNuclear.ByListElementTransportSolverOptions
-   foamForNuclear.BurnupOptions
-   foamForNuclear.ConstantBurnupOptions
-   foamForNuclear.FromPowerBurnupOptions
-   foamForNuclear.LassmannBurnupOptions
-   foamForNuclear.FgrOptions
-   foamForNuclear.SciantixFgrOptions
-   foamForNuclear.GapGasOptions
-   foamForNuclear.TrisoGapGasOptions
-   foamForNuclear.FrapconGapGasOptions
-   foamForNuclear.RheologyOptions
-   foamForNuclear.ByMaterialRheologyOptions
-   foamForNuclear.StressAnalysis
-   foamForNuclear.HeatSourceOptions
-   foamForNuclear.TimeDependentLhgrHeatSourceOptions
-   foamForNuclear.TimeDependentVhgrHeatSourceOptions
-   foamForNuclear.FastFluxOptions
-   foamForNuclear.TimeDependentFastFluxOptions
-   foamForNuclear.CorrosionOptions
-   foamForNuclear.SliceMapperOptions
-   foamForNuclear.ByMaterialSliceMapperOptions
-   foamForNuclear.AutoAxialSliceMapperOptions
-   foamForNuclear.ByPelletSliceMapperOptions
+   foamForNuclear.offbeat_lib.ThermoMechanicsCouplingOptions
+   foamForNuclear.offbeat_lib.GlobalOptions
+   foamForNuclear.offbeat_lib.ThermalSolverOptions
+   foamForNuclear.offbeat_lib.ReadTemperatureThermalSolverOptions
+   foamForNuclear.offbeat_lib.SolidConductionThermalSolverOptions
+   foamForNuclear.offbeat_lib.MechanicsSolverOptions
+   foamForNuclear.offbeat_lib.SmallStrainMechanicsSolverOptions
+   foamForNuclear.offbeat_lib.SmallStrainIncrementalUpdatedMechanicsSolverOptions
+   foamForNuclear.offbeat_lib.LargeStrainTotLagMechanicsSolverOptions
+   foamForNuclear.offbeat_lib.LargeStrainUpdLagMechanicsSolverOptions
+   foamForNuclear.offbeat_lib.NeutronicsSolverOptions
+   foamForNuclear.offbeat_lib.DiffusionNeutronicsSolverOptions
+   foamForNuclear.offbeat_lib.ElementTransportSolverOptions
+   foamForNuclear.offbeat_lib.ByListElementTransportSolverOptions
+   foamForNuclear.offbeat_lib.burnup.BurnupOptions
+   foamForNuclear.offbeat_lib.ConstantBurnupOptions
+   foamForNuclear.offbeat_lib.FromPowerBurnupOptions
+   foamForNuclear.offbeat_lib.LassmannBurnupOptions
+   foamForNuclear.offbeat_lib.FgrOptions
+   foamForNuclear.offbeat_lib.SciantixFgrOptions
+   foamForNuclear.offbeat_lib.GapGasOptions
+   foamForNuclear.offbeat_lib.TrisoGapGasOptions
+   foamForNuclear.offbeat_lib.FrapconGapGasOptions
+   foamForNuclear.offbeat_lib.RheologyOptions
+   foamForNuclear.offbeat_lib.ByMaterialRheologyOptions
+   foamForNuclear.offbeat_lib.StressAnalysis
+   foamForNuclear.offbeat_lib.HeatSourceOptions
+   foamForNuclear.offbeat_lib.TimeDependentLhgrHeatSourceOptions
+   foamForNuclear.offbeat_lib.TimeDependentVhgrHeatSourceOptions
+   foamForNuclear.offbeat_lib.FastFluxOptions
+   foamForNuclear.offbeat_lib.TimeDependentFastFluxOptions
+   foamForNuclear.offbeat_lib.CorrosionOptions
+   foamForNuclear.offbeat_lib.SliceMapperOptions
+   foamForNuclear.offbeat_lib.ByMaterialSliceMapperOptions
+   foamForNuclear.offbeat_lib.AutoAxialSliceMapperOptions
+   foamForNuclear.offbeat_lib.ByPelletSliceMapperOptions
 
 
 Coupling
@@ -145,12 +145,12 @@ Coupling
    :nosignatures:
    :template: myclass.rst
 
-   foamForNuclear.FieldTransfer
-   foamForNuclear.MultiPhysicsLoop
-   foamForNuclear.CHTLoop
-   foamForNuclear.FSILoop
-   foamForNuclear.Coupling
-   foamForNuclear.ExternalCouplingDict
+   foamForNuclear.coupling.FieldTransfer
+   foamForNuclear.coupling.MultiPhysicsLoop
+   foamForNuclear.coupling.CHTLoop
+   foamForNuclear.coupling.FSILoop
+   foamForNuclear.coupling.Coupling
+   foamForNuclear.coupling.ExternalCouplingDict
 
 
 Post-processing
@@ -161,16 +161,16 @@ Post-processing
    :nosignatures:
    :template: myclass.rst
 
-   foamForNuclear.FunctionObject
-   foamForNuclear.SurfaceFieldValue
-   foamForNuclear.VolFieldValue
-   foamForNuclear.FieldMinMax
-   foamForNuclear.MapFields
-   foamForNuclear.Probes
-   foamForNuclear.MassFlow
-   foamForNuclear.TBulk
-   foamForNuclear.FMUSimulator
-   foamForNuclear.FunctionObjects
+   foamForNuclear.functions.FunctionObject
+   foamForNuclear.functions.SurfaceFieldValue
+   foamForNuclear.functions.VolFieldValue
+   foamForNuclear.functions.FieldMinMax
+   foamForNuclear.functions.MapFields
+   foamForNuclear.functions.Probes
+   foamForNuclear.functions.MassFlow
+   foamForNuclear.functions.TBulk
+   foamForNuclear.functions.FMUSimulator
+   foamForNuclear.functions.FunctionObjects
 
 
 Mesh Motion
@@ -181,18 +181,18 @@ Mesh Motion
    :nosignatures:
    :template: myclass.rst
 
-   foamForNuclear.DynamicMeshDict
-   foamForNuclear.MotionDict
-   foamForNuclear.LinearMotion
-   foamForNuclear.OscillatingLinearMotion
-   foamForNuclear.RotatingMotion
-   foamForNuclear.OscillatingRotatingMotion
-   foamForNuclear.DiffusivityMotion
-   foamForNuclear.UniformDiffusivityMotion
-   foamForNuclear.DirectionalDiffusivityMotion
-   foamForNuclear.MotionDirectionalDiffusivityMotion
-   foamForNuclear.QuadraticDiffusivityMotion
-   foamForNuclear.FileDiffusivityMotion
+   foamForNuclear.mesh.dicts.DynamicMeshDict
+   foamForNuclear.mesh.dicts.MotionDict
+   foamForNuclear.mesh.dicts.LinearMotion
+   foamForNuclear.mesh.dicts.OscillatingLinearMotion
+   foamForNuclear.mesh.dicts.RotatingMotion
+   foamForNuclear.mesh.dicts.OscillatingRotatingMotion
+   foamForNuclear.mesh.dicts.DiffusivityMotion
+   foamForNuclear.mesh.dicts.UniformDiffusivityMotion
+   foamForNuclear.mesh.dicts.DirectionalDiffusivityMotion
+   foamForNuclear.mesh.dicts.MotionDirectionalDiffusivityMotion
+   foamForNuclear.mesh.dicts.QuadraticDiffusivityMotion
+   foamForNuclear.mesh.dicts.FileDiffusivityMotion
 
 More information on mesh motion in :ref:`Mesh motion <pythonapi_mesh_motion>`.
 
@@ -205,4 +205,4 @@ Common objects
    :nosignatures:
    :template: myclass.rst
 
-   foamForNuclear.TimeProfile
+   foamForNuclear.timeProfile.TimeProfile

@@ -33,9 +33,8 @@ extensions = [
     "sphinx.ext.duration",
     "sphinx.ext.napoleon",
     "sphinx.ext.doctest",
-    # NOTE: temporarily disable Python API doc builds
-    # "sphinx.ext.autodoc",
-    # "sphinx.ext.autosummary",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
     "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
     "sphinx.ext.mathjax",
@@ -86,14 +85,13 @@ epub_show_urls = "footnote"
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
-# NOTE: temporarily exclude Python API pages from the build
-exclude_patterns += [
-    "pythonapi/**",
-    "**/pythonapi/**",
-    "**/pyapi/**",
-    "api/**",
-    "**/api/**",
-]
+# exclude_patterns += [
+#     "pythonapi/**",
+#     "**/pythonapi/**",
+#     "**/pyapi/**",
+#     "api/**",
+#     "**/api/**",
+# ]
 
 # -- Options for HTML output -------------------------------------------------
 

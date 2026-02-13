@@ -1,10 +1,10 @@
 .. _pythonapi_thermalMechanicsModels:
 
-.. module:: foamForNuclear.thermomechanicalMaterial
+.. module:: foamForNuclear.offbeat_lib.materials
 
------------------------------------------------------------------------------
-:mod:`foamForNuclear.thermomechanicalMaterial` -- Thermo-mechanical Materials
------------------------------------------------------------------------------
+--------------------------------------------------------------------------
+:mod:`foamForNuclear.offbeat_lib.materials` -- Thermo-mechanical Materials
+--------------------------------------------------------------------------
 
 .. contents:: Table of Contents
     :local:
@@ -18,32 +18,34 @@ Base and abstract thermo-mechanical class
     :nosignatures:
     :template: myclassinherit.rst
 
-    BaseThermomechanicalMaterial
-    ThermomechanicalPropertyModel
-    ConductivityModel
-    DensityModel
-    EmissivityModel
-    HeatCapacityModel
-    PoissonRatioModel
-    ThermalExpansionModel
-    YoungModulusModel
-    DensificationModel
-    SwellingModel
-    PhaseTransitionModel
-    RelocationModel
-    FailureModel
-    PoreVelocityModel
-    YieldStressModel
-    HardningYieldStressModel
-    CreepModel
-    LimbackCreepModel
+    properties.BaseThermomechanicalMaterial
+    properties.ThermomechanicalPropertyModel
+    properties.conductivity.ConductivityModel
+    properties.density.DensityModel
+    properties.emissivity.EmissivityModel
+    properties.heat_capacity.HeatCapacityModel
+    properties.poisson_ratio.PoissonRatioModel
+    properties.thermal_expansion.ThermalExpansionModel
+    properties.young_modulus.YoungModulusModel
+    behaviour.densification.DensificationModel
+    behaviour.swelling.SwellingModel
+    behaviour.phase_transition.PhaseTransitionModel
+    behaviour.relocation.RelocationModel
+    behaviour.failure.FailureModel
+    properties.PoreVelocityModel
+    laws.yield_stress.YieldStress
+    laws.yield_stress.Hardening
+    laws.yield_stress.Constant
+    laws.yield_stress.FRAPTRAN
+    laws.creep.Creep
+    laws.creep.Limback
     RheologyConstitutiveLaw
     ElasticityRheologyModel
     MisesPlasticityRheologyModel
     MisesPlasticCreepRheologyModel
-    MaterialModel
-    FuelMaterialModel
-    ConstantMechanicalLaw
+    Material
+    FuelMaterial
+    laws.ConstantMechanicalLaw
 
 
 Constant Material
@@ -54,7 +56,7 @@ Constant Material
     :nosignatures:
     :template: myclassinherit.rst
 
-    ConstantMaterial
+    Constant
 
 
 UO2
@@ -65,18 +67,18 @@ UO2
     :nosignatures:
     :template: myclassinherit.rst
 
-    ConductivityMatproUO2
-    ConstantDensityUO2
-    EmissivityRelapUO2
-    HeatCapacityMatproUO2
-    ConstantPoissonRatioUO2
-    ThermalExpansionRelapUO2
-    YoungModulusMatproUO2
-    DensificationFrapcon
-    SwellingFrapcon
-    RelocationFrapcon
-    FailureUO2meltingMatpro
-    PoreVelocityUO2Sens
+    properties.conductivity.UO2Matpro
+    properties.density.UO2Constant
+    properties.emissivity.UO2Relap
+    properties.heat_capacity.UO2Matpro
+    properties.poisson_ratio.UO2Constant
+    properties.thermal_expansion.UO2Relap
+    properties.young_modulus.UO2Matpro
+    behaviour.densification.UO2Frapcon
+    behaviour.failure.UO2Matpro
+    behaviour.relocation.UO2Frapcon
+    behaviour.swelling.UO2Frapcon
+    laws.creep.UO2Frapcon
     UO2
 
 
@@ -84,24 +86,27 @@ UPuO2
 =====
 
 
-Zircalloy
-=========
+Zircaloy
+========
 
 .. autosummary::
     :toctree: generated
     :nosignatures:
     :template: myclassinherit.rst
 
-    DensityIAEAZy
-    HeatCapacityIAEAZy
-    ConductivityRelapZy
-    ConstantEmissivityZy
-    YoungModulusMatproZy
-    ConstantPoissonRatioZy
-    ThermalExpansionMatproZy
-    SwellingGrowthBISONZy
-    PhaseTransitionZyDynamic
-    Zircalloy
+    properties.density.ZircaloyIaea
+    properties.heat_capacity.ZircaloyMatpro
+    properties.heat_capacity.ZircaloyIaea
+    properties.conductivity.ZircaloyRelap
+    properties.emissivity.ZircaloyConstant
+    properties.young_modulus.ZircaloyMatpro
+    properties.poisson_ratio.ZircaloyConstant
+    properties.poisson_ratio.ZircaloyMatpro
+    properties.thermal_expansion.ZircaloyMatpro
+    behaviour.swelling.ZircaloyBison
+    behaviour.swelling.ZircaloyMatpro
+    behaviour.phase_transition.ZircaloyDynamic
+    Zircaloy
 
 
 HastelloyN

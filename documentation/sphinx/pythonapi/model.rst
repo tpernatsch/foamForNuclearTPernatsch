@@ -1,18 +1,18 @@
 .. _pythonapi_model:
 
-.. module:: foamForNuclear.model
+.. module:: foamForNuclear.case
 
----------------------------------------------
-:mod:`foamForNuclear.model` -- Model Building
----------------------------------------------
+--------------------------------------------
+:mod:`foamForNuclear.case` -- Model Building
+--------------------------------------------
 
-Models
-======
+Cases
+=====
 
 .. autosummary::
     :toctree: generated
     :nosignatures:
     :template: myclassinherit.rst
 
-    Model
+    Case
     FuelPin1D

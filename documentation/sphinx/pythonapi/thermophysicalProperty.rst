@@ -1,10 +1,10 @@
 .. _pythonapi_thermophysicalProperty:
 
-.. module:: foamForNuclear.thermophysicalProperty
+.. module:: foamForNuclear.thermo
 
------------------------------------------------------------------------
-:mod:`foamForNuclear.thermophysicalProperty` -- Thermophysical Property
------------------------------------------------------------------------
+-------------------------------------------------------
+:mod:`foamForNuclear.thermo` -- Thermophysical Property
+-------------------------------------------------------
 
 .. contents:: Table of Contents
     :local:
@@ -18,8 +18,8 @@ Base thermophysical property
     :nosignatures:
     :template: myclassinherit.rst
 
-    BaseThermophysicalProperty
-    ThermoType
+    foamForNuclear.thermo.BaseThermophysicalProperty
+    foamForNuclear.thermo.ThermoType
 
 
 Thermophysical property of Water
