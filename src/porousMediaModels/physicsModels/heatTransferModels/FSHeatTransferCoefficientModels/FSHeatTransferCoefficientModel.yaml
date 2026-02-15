@@ -7,6 +7,10 @@ description: |-
 
      ./*/*
 
+  .. raw:: html
+
+    <br><br>
+
   Sub-models include:
 
   .. toctree::

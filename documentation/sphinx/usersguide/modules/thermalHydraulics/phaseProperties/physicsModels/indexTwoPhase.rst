@@ -18,7 +18,7 @@ The *physicsModels* sub-dictionary is used in two-phase simulations to define th
    - Saturation models for fluid-structure pairs via the ``saturationModel`` sub-dictionary.
 
 
-   Available runtime selectable models include:
+Available runtime selectable models include:
 
 .. toctree::
    :maxdepth: 1
