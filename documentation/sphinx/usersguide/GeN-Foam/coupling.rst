@@ -399,7 +399,7 @@ Current loops available in *GeN-Foam* include:
    :maxdepth: 1
    :glob:
 
-   ../../sphinx/cppapi/generated/multiRegion/loop/loopModels/**
+   ../../cppapi/generated/multiRegion/loop/loopModels/**
 
 .. raw:: html
 

@@ -34,7 +34,7 @@ The *physicsModels* sub-dictionary is used in two-phase simulations to define th
    Contact partition models <../../../../../cppapi/generated/porousMediaModels/physicsModels/contactPartitionModels/contactPartitionModel>
    Phase change models <../../../../../cppapi/generated/porousMediaModels/physicsModels/phaseChangeModels/phaseChangeModel>
    Latent heat models <../../../../../cppapi/generated/porousMediaModels/physicsModels/latentHeatModels/latentHeatModel>
-   Saturation models <../../../../../cppapi/generated/porousMediaModels/physicsModels/saturationModels/saturationModels>
+   Saturation models <../../../../../cppapi/generated/porousMediaModels/physicsModels/saturationModels/saturationModel>
 
 .. raw:: html
 

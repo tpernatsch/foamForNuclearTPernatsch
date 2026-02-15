@@ -13,7 +13,7 @@ included in the thermal-hydraulics module of foamForNuclear:
    :maxdepth: 1
    :glob:
 
-   ../../sphinx/cppapi/generated/fvPatchFields/neutronics/**
+   ../../cppapi/generated/fvPatchFields/neutronics/**
 
 .. raw:: html
 

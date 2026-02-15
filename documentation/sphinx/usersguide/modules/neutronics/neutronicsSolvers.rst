@@ -18,7 +18,7 @@ contain specific sub-solvers:
    :maxdepth: 1
    :glob:
 
-   ../../../sphinx/cppapi/generated/modules/neutronics/**
+   ../../../cppapi/generated/modules/neutronics/**
 
 .. raw:: html
 

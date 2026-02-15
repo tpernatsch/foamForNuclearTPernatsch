@@ -85,10 +85,10 @@ foamForNuclear provides some additional function objects with respect to standar
 to be particularly useful in the nuclear field:
 
 .. toctree::
-    :maxdepth: 1
-    :glob:
+   :maxdepth: 1
+   :glob:
 
-    ../../sphinx/cppapi/generated/functionObjects/**
+   ../../cppapi/generated/functionObjects/**
 
 .. raw:: html
 

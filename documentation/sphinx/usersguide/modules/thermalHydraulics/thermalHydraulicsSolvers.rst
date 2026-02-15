@@ -12,7 +12,7 @@ specific sub-solver to be used in a simulation is normally selected at the level
    :maxdepth: 1
    :glob:
 
-    ../../../sphinx/cppapi/generated/modules/thermalHydraulics/**
+    ../../../cppapi/generated/modules/thermalHydraulics/**
 
 .. raw:: html
 
