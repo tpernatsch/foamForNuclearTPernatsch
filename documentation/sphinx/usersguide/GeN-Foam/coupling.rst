@@ -393,13 +393,13 @@ The previous example would correspond to a time loop as shown below.
         G -- Yes --> A
         G --> End@{ shape: framed-circle, label: "Stop" }
 
-Current loops available in *GeN-Foam* are:
+Current loops available in *GeN-Foam* include:
 
 .. toctree::
-    :maxdepth: 1
-    :glob:
+   :maxdepth: 1
+   :glob:
 
-    ../../sphinx/cppapi/generated/multiRegion/loop/loopModels/**
+   ../../sphinx/cppapi/generated/multiRegion/loop/loopModels/**
 
 .. raw:: html
 

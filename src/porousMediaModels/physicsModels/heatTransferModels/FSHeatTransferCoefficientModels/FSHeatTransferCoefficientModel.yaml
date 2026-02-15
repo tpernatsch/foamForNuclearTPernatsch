@@ -5,7 +5,27 @@ description: |-
      :maxdepth: 1
      :glob:
 
-     ./**
+     ./*/*
+
+  Sub-models include:
+
+  .. toctree::
+     :maxdepth: 1
+
+     ./subModels/CHFModels/criticalHeatFluxModels/CHFModel
+     ./subModels/CHFModels/LeidenFrostTemperatureModels/TLFModel
+     ./subModels/flowEnhancementFactorModels/flowEnhancementFactorModel
+     Post-CHF models for liquid <./subModels/postCHFModels/CachardLiquid/CachardLiquidFSHeatTransferCoefficient>
+     Post-CHF models for vapour <./subModels/postCHFModels/CachardVapour/CachardVapourFSHeatTransferCoefficient>
+     ./subModels/subCooledBoilingFractionModels/subCooledBoilingFractionModel
+     ./subModels/superpositionNucleateBoiling/superpositionNucleateBoilingFSHeatTransferCoefficient
+     ./subModels/suppressionFactorModels/suppressionFactorModel
+     Temperature of onset of nucleate boiling <./subModels/TONBModels/TONBModel>
+
+  .. raw:: html
+
+    <br><br>
+
 
 
 

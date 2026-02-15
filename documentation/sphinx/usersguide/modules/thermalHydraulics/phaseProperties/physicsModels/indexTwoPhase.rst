@@ -17,6 +17,9 @@ The *physicsModels* sub-dictionary is used in two-phase simulations to define th
    - Latent heat models for fluid-fluid pairs via the ``latentHeatModel`` sub-dictionary;
    - Saturation models for fluid-structure pairs via the ``saturationModel`` sub-dictionary.
 
+
+   Available runtime selectable models include:
+
 .. toctree::
    :maxdepth: 1
 
@@ -43,10 +46,6 @@ Each of these two sub-dictionaries consists of a series of other sub-dictionarie
 - Use ``constant`` as  type and give a constant value using the keyword ``value``.
 - Use as type a single model chosen among those available;
 - Use ``byRegime`` as  type, and then chose one of the available models for each regime. This requires having set a :ref:`regime map <modules_thermalHydraulics_porousMedium_regimeMapModels>`.
-
-Available run-time selection models include:
-
-
 
 
 

@@ -15,10 +15,10 @@ Neutronics calculations are performed by classes derived from *neutronics* that
 contain specific sub-solvers:
 
 .. toctree::
-    :maxdepth: 1
-    :glob:
+   :maxdepth: 1
+   :glob:
 
-    ../../../sphinx/cppapi/generated/modules/neutronics/**
+   ../../../sphinx/cppapi/generated/modules/neutronics/**
 
 .. raw:: html
 
