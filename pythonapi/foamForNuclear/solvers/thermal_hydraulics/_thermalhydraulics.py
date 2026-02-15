@@ -744,7 +744,7 @@ class TwoPhaseThermalHydraulicsSolver(ThermalHydraulicsSolver):
         default=attr.Factory(lambda self: Fluid(name="fluid", stateOfMatter="liquid"), takes_self=True))
     fluid2: Fluid = field(
         default=attr.Factory(lambda self: Fluid(name="vapour", stateOfMatter="gas"), takes_self=True))
-    structures: list[Structure] = field(factory=list)
+    structures: list[Structure | HeatExchangerModel] = field(factory=list)
     fluid1_structure: FluidStructureModels = field(factory=FluidStructureModels)
     fluid2_structure: FluidStructureModels = field(factory=FluidStructureModels)
     fluid_fluid: FluidFluidModels = field(factory=FluidFluidModels)
@@ -759,7 +759,16 @@ class TwoPhaseThermalHydraulicsSolver(ThermalHydraulicsSolver):
         buf.write(f"{self.fluid2.name}Properties{self.fluid2._as_openfoam_dict().export_body_to_foam()}\n")
 
         structure_properties_dict = OpenFOAMListDict(
-            name="structureProperties", expected_type=Structure, items=self.structures)
+            name="structureProperties",
+            expected_type=Structure | OpenFOAMListDict,
+            items=[struct for struct in self.structures if isinstance(struct, Structure)]
+        )
+        heatExchangers = OpenFOAMListDict(
+            name="heatExchangers",
+            expected_type=HeatExchangerModel,
+            items=[struct for struct in self.structures if isinstance(struct, HeatExchangerModel)]
+        )
+        structure_properties_dict.append(heatExchangers)
         buf.write(f"{structure_properties_dict!r}\n")
 
         # Regime maps

@@ -229,6 +229,8 @@ class NoKazimiFluidFluid(DragModel):
 class SchillerNaumann(DragModel):
     """
     Schiller-Neumann model for interfacial friction in fluid-fluid interactions.
+
+    N.B: No need to provide the "zones" if used for fluid-fluid drag.
     """
     TYPE: ClassVar[str] = "SchillerNaumann"
 

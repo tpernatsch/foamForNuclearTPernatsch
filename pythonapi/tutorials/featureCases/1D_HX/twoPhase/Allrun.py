@@ -7,8 +7,10 @@
 import foamForNuclear as ffn
 import foamForNuclear.boundaryConditions as bc
 import foamForNuclear.mesh as mesh
+import foamForNuclear.porous_medium as porous
 
 import matplotlib.pyplot as plt
+
 
 #==============================================================================*
 # Mesh
@@ -25,19 +27,19 @@ sPipe2 = thMesh.extrude_top([sPipe1], "sPipe", dz=1, nz=20)
 sHX = thMesh.extrude_top([sPipe2], "sHX", dz=1, nz=20)
 sPipe3 = thMesh.extrude_top([sHX], "sPipe", dz=0.5, nz=10)
 
-outletP = ffn.Face("outletP")
+outletP = ffn.mesh.Face("outletP")
 outletP.add_sub_face(pPipe2.topFace())
 
-outletS = ffn.Face("outletS")
+outletS = ffn.mesh.Face("outletS")
 outletS.add_sub_face(sPipe3.topFace())
 
-inletP = ffn.Face("inletP")
+inletP = ffn.mesh.Face("inletP")
 inletP.add_sub_face(pPipe1.bottomFace())
 
-inletS = ffn.Face("inletS")
+inletS = ffn.mesh.Face("inletS")
 inletS.add_sub_face(sPipe1.bottomFace())
 
-walls = ffn.Face("walls", boundaryType="wall")
+walls = ffn.mesh.Face("walls", boundaryType="wall")
 for face in [pPipe1, heater, pHX, pPipe2, sPipe1, sPipe2, sHX, sPipe3]:
     walls.add_sub_face(face.leftFace())
     walls.add_sub_face(face.rightFace())
@@ -54,11 +56,11 @@ thMesh.add_boundary(walls)
 #==============================================================================*
 # Fields
 
-timeFolder0 = ffn.TimeFolder(0)
+timeFolder0 = ffn.timeFolder.TimeFolder(0)
 
 
-Tliquid = ffn.Field("T.liquid", region="fluidRegion")
-Tliquid.dimensions = ffn.Dimension(default='T')
+Tliquid = ffn.fields.Field("T.liquid", region="fluidRegion")
+Tliquid.dimensions = ffn.fields.Dimension(default='T')
 Tliquid.internalField = 653.15
 Tliquid.set_boundary_condition("inletP", bc.FixedValue(Tliquid.internalField))
 Tliquid.set_boundary_condition("inletS", bc.FixedValue(Tliquid.internalField))
@@ -66,44 +68,44 @@ Tliquid.set_boundary_condition("outletP", bc.ZeroGradient())
 Tliquid.set_boundary_condition("outletS", bc.ZeroGradient())
 Tliquid.set_boundary_condition("walls", bc.ZeroGradient())
 
-Tvapour = ffn.Field("T.vapour", region="fluidRegion")
-Tvapour.dimensions = ffn.Dimension(default='T')
+Tvapour = ffn.fields.Field("T.vapour", region="fluidRegion")
+Tvapour.dimensions = ffn.fields.Dimension(default='T')
 Tvapour.internalField = 653.15
 for boundary in thMesh.faces:
     Tvapour.set_boundary_condition(boundary, bc.ZeroGradient())
 
-Uliquid = ffn.Field("U.liquid", region="fluidRegion")
-Uliquid.dimensions = ffn.Dimension(default='U')
-Uliquid.internalField = ffn.Vector(0, 0, 2)
+Uliquid = ffn.fields.Field("U.liquid", region="fluidRegion")
+Uliquid.dimensions = ffn.fields.Dimension(default='U')
+Uliquid.internalField = ffn.common.Vector(0, 0, 2)
 Uliquid.set_boundary_condition("inletP", bc.FixedValue(Uliquid.internalField))
 Uliquid.set_boundary_condition("inletS", bc.FixedValue(Uliquid.internalField))
 Uliquid.set_boundary_condition("outletP", bc.ZeroGradient())
 Uliquid.set_boundary_condition("outletS", bc.ZeroGradient())
 Uliquid.set_boundary_condition("walls", bc.Slip())
 
-Uvapour = ffn.Field("U.vapour", region="fluidRegion")
-Uvapour.dimensions = ffn.Dimension(default='U')
-Uvapour.internalField = ffn.Vector(0, 0, 0.01)
+Uvapour = ffn.fields.Field("U.vapour", region="fluidRegion")
+Uvapour.dimensions = ffn.fields.Dimension(default='U')
+Uvapour.internalField = ffn.common.Vector(0, 0, 0.01)
 Uvapour.set_boundary_condition("inletP", bc.ZeroGradient())
 Uvapour.set_boundary_condition("inletS", bc.ZeroGradient())
 Uvapour.set_boundary_condition("outletP", bc.ZeroGradient())
 Uvapour.set_boundary_condition("outletS", bc.ZeroGradient())
 Uvapour.set_boundary_condition("walls", bc.Slip())
 
-alphaVapour = ffn.Field("alpha.vapour", region="fluidRegion")
-alphaVapour.dimensions = ffn.Dimension()
+alphaVapour = ffn.fields.Field("alpha.vapour", region="fluidRegion")
+alphaVapour.dimensions = ffn.fields.Dimension()
 alphaVapour.internalField = 0
 for boundary in thMesh.faces:
     alphaVapour.set_boundary_condition(boundary, bc.ZeroGradient())
 
-p = ffn.Field("p", region="fluidRegion")
-p.dimensions = ffn.Dimension(default="p")
+p = ffn.fields.Field("p", region="fluidRegion")
+p.dimensions = ffn.fields.Dimension(default="p")
 p.internalField = 1e5
 for boundary in thMesh.faces:
     p.set_boundary_condition(boundary, bc.Calculated(p.internalField))
 
-p_rgh = ffn.Field("p_rgh", region="fluidRegion")
-p_rgh.dimensions = ffn.Dimension(default="p")
+p_rgh = ffn.fields.Field("p_rgh", region="fluidRegion")
+p_rgh.dimensions = ffn.fields.Dimension(default="p")
 p_rgh.internalField = 1e5
 p_rgh.set_boundary_condition("inletP", bc.FixedFluxPressure(p_rgh.internalField))
 p_rgh.set_boundary_condition("inletS", bc.FixedFluxPressure(p_rgh.internalField))
@@ -124,29 +126,44 @@ timeFolder0.append(p_rgh)
 #==============================================================================*
 # Solvers
 
-thSolver = ffn.ThermalHydraulicsSolver(
-    region="fluidRegion",
-    solver="twoPhase",
+thSolver = ffn.solvers.thermal_hydraulics.TwoPhaseThermalHydraulicsSolver(
+    region=thMesh.region,
     removeBaffles=False,
     mesh=thMesh
 )
-thSolver.turbulenceProperties.simulationType = "laminar"
-thSolver.turbulencePropertiesSecondFluid.simulationType = "laminar"
-thSolver.thermophysicalProperties = ffn.thermophysicalProperty.SodiumPolynomial()
-thSolver.thermophysicalPropertiesSecondFluid = ffn.thermophysicalProperty.SodiumVapourPerfectGas()
+# Fluid properties (liquid)
+thSolver.fluid1.turbulenceProperties.simulationType = "laminar"
+thSolver.fluid1 = ffn.solvers.thermal_hydraulics.Fluid(
+    name="liquid",
+    thermophysicalProperties=ffn.thermo.SodiumPolynomial(),
+    stateOfMatter="liquid",
+    thermoResidualAlpha=1e-5,
+    dispersedDiameterModel=porous.dispersed_diameter.Constant(value=0.005),
+)
 
-phaseProperties = thSolver.phaseProperties
-phaseProperties.phaseNames = ['liquid', 'vapour']
+# Fluid properties (vapour)
+thSolver.fluid2.turbulenceProperties.simulationType = "laminar"
+thSolver.fluid2 = ffn.solvers.thermal_hydraulics.Fluid(
+    name="vapour",
+    thermophysicalProperties=ffn.thermo.SodiumVapourPerfectGas(),
+    stateOfMatter="gas",
+    thermoResidualAlpha=0.01,
+    dispersedDiameterModel=porous.dispersed_diameter.Constant(value=0.005),
+)
 
 # Structure properties
-pipes = ffn.StructureProperty(
+pipes = porous.Structure(
     zones=["pPipe", "sPipe", "pHX", "sHX"],
     volumeFraction=0.5,
     Dh=0.005
 )
 
-heater = ffn.StructureProperty(zones=['heater'], volumeFraction=0.5, Dh=0.005)
-heater.powerModel = ffn.FixedPower(
+heater = porous.Structure(
+    zones=['heater'],
+    volumeFraction=0.5,
+    Dh=0.005
+)
+heater.powerModel = porous.power_models.FixedPower(
     volumetricArea=300,
     T=653.15,
     Cp=500,
@@ -154,7 +171,7 @@ heater.powerModel = ffn.FixedPower(
     powerDensity=1.1e9,
 )
 
-heatExchanger = ffn.HeatExchangerModel(
+heatExchanger = porous.HeatExchangerModel(
     name="HeatExchanger1",
     primary="pHX",
     secondary="sHX",
@@ -162,96 +179,74 @@ heatExchanger = ffn.HeatExchangerModel(
     wallConductance=2.5e4
 )
 
-phaseProperties.structureProperties.append(pipes)
-phaseProperties.structureProperties.append(heater)
-phaseProperties.structureProperties.append(heatExchanger)
-
-# Fluid Properties
-liquidProperty = ffn.FluidProperty(
-    thermoResidualAlpha=1e-5,
-    stateOfMatter="liquid",
-    dispersedDiameterModel=ffn.ConstantDispersedDiameterModel(0.005)
-)
-vapourProperty = ffn.FluidProperty(
-    thermoResidualAlpha=0.01,
-    stateOfMatter="gas",
-    dispersedDiameterModel=ffn.ConstantDispersedDiameterModel(0.005)
-)
-phaseProperties.add_fluid_properties(liquidProperty)
-phaseProperties.add_fluid_properties(vapourProperty)
+thSolver.structures.append(pipes)
+thSolver.structures.append(heater)
+thSolver.structures.append(heatExchanger)
 
 # Regime map
-regimeMap = ffn.RegimeMapOneParameter(
+regimeMap = porous.regime_map.OneParameter(
     name="regimeMap01",
     interpolationMode="quadratic",
     parameter="normalized.alpha.vapour",
-    regimeBounds=ffn.OpenFOAMDict({
-        "regime0": ffn.List([0, 0.79]),
-        "regime1": ffn.List([0.99, 1]),
-    })
+    regimeBounds={
+        "regime0": [0, 0.79],
+        "regime1": [0.99, 1],
+    }
 )
-phaseProperties.regimeMapModels.append(regimeMap)
+thSolver.regimeMapModels.append(regimeMap)
 
 # Drag Models
-phaseProperties.dragModels.append(
-    ffn.SchillerNaumann(zones=["liquid.vapour"]),
-    interactionType="fluid-fluid"
+thSolver.fluid_fluid.dragModels.append(
+    porous.drag.SchillerNaumann()
 )
-phaseProperties.dragModels.append(
-    ffn.ReynoldsPower(coeff=0.316, exp=-0.25, zones=["pPipe", "sPipe", "pHX", "sHX", "heater"]),
-    phaseName="liquid"
+thSolver.fluid1_structure.dragModels.append(
+    porous.drag.ReynoldsPower(coeff=0.316, exp=-0.25, zones=["pPipe", "sPipe", "pHX", "sHX", "heater"])
 )
 
 # Heat Transfer Models
-phaseProperties.heatTransferModels.append(
-    ffn.NusseltReynoldsPrandtlPower(const=4, coeff=0.015, expRe=0.7, expPr=0.7, zones=["heater", "pHX", "sHX"]),
-    interactionType="fluid-structure",
-    phaseName="liquid"
+thSolver.fluid1_structure.heatTransferModels.append(
+    porous.heat_transfer.NusseltReynoldsPrandtlPower(const=4, coeff=0.015, expRe=0.7, expPr=0.7, zones=["heater", "pHX", "sHX"])
 )
-phaseProperties.heatTransferModels.append(
-    ffn.NusseltReynoldsPrandtlPowerFluidFluid(const=10, coeff=0, expRe=0, expPr=0, phaseName="liquid"),
-    interactionType="fluid-fluid"
+thSolver.fluid_fluid.heatTransferModels.append(
+    porous.heat_transfer.NusseltReynoldsPrandtlPower(const=10, coeff=0, expRe=0, expPr=0, phaseName="liquid")
 )
-phaseProperties.heatTransferModels.append(
-    ffn.NusseltReynoldsPrandtlPowerFluidFluid(const=10, coeff=0, expRe=0, expPr=0, phaseName="vapour"),
-    interactionType="fluid-fluid"
+thSolver.fluid_fluid.heatTransferModels.append(
+    porous.heat_transfer.NusseltReynoldsPrandtlPower(const=10, coeff=0, expRe=0, expPr=0, phaseName="vapour")
 )
 
 # Two Phase Drag Multiplier
-phaseProperties.twoPhaseDragMultiplierModel = ffn.LottesFlinn("liquid")
+thSolver.fluid_fluid.twoPhaseDragMultiplierModel = porous.two_phase_drag_multiplier.LottesFlinn(multiplierFluid="liquid")
 
 # Pair Geometry Models
-phaseProperties.pairGeometryModels.append(
-    ffn.PairGeometryModel(
-        dispersionModel=ffn.ByRegimeDispersionModel(
-            regimeMap="regimeMap01",
-            regimes={
-                "regime0": ffn.OpenFOAMDict({"type": "constant", "dispersedPhase": "vapour"}),
-                "regime1": ffn.OpenFOAMDict({"type": "constant", "dispersedPhase": "liquid"}),
-            }
-        ),
-        interfacialAreaDensityModel=ffn.SphericalInterfacialAreaDensityModel()
+thSolver.fluid_fluid.pairGeometryModel = porous.pair_geometry.PairGeometryModel(
+    dispersionModel=porous.pair_geometry.dispersion.ByRegime(
+        # name="RegimeMapFluidFluid",
+        regimeMap="regimeMap01",
+        regimes=[
+            {"name": "regime0", "type": "constant", "dispersedPhase": "vapour"},
+            {"name": "regime1", "type": "constant", "dispersedPhase": "liquid"},
+        ]
     ),
-    interactionType="fluid-fluid"
+    interfacialAreaDensityModel=porous.pair_geometry.interfacial_area_density.Spherical()
 )
-phaseProperties.pairGeometryModels.append(
-    ffn.PairGeometryModel(
-        contactPartitionModel=ffn.ByRegimeContactPartitionModel(
-            regimeMap="regimeMap01",
-            regimes={
-                "regime0": ffn.OpenFOAMDict({"type": "constant", "value": 1}),
-                "regime1": ffn.OpenFOAMDict({"type": "constant", "value": 0}),
-            }
-        )
-    ),
-    phaseName="liquid"
+
+thSolver.fluid1_structure.pairGeometryModel = porous.pair_geometry.PairGeometryModel(
+    contactPartitionModel=porous.pair_geometry.contact_partition.ByRegime(
+        # name="RegimeMapLiquid",
+        regimeMap="regimeMap01",
+        regimes=[
+            {"name": "regime0", "type": "constant", "value": 1},
+            {"name": "regime1", "type": "constant", "value": 0},
+        ]
+    )
 )
 
 # Phase Change Model
-phaseProperties.phaseChangeModel = ffn.HeatDriven(
+thSolver.fluid_fluid.phaseChangeModel = porous.phase_change.HeatDriven(
     mode="conductionLimited",
-    latentHeatModel=ffn.FinkLeibowitzLatentHeat(adjust=True),
-    saturationModel=ffn.BrowningPotterSaturationModel()
+    correctLatentHeat=False,
+    latentHeatModel=porous.phase_change.latent_heat.FinkLeibowitz(adjust=True),
+    saturationModel=porous.phase_change.saturation.BrowningPotter()
 )
 
 # fvSchemes
@@ -266,14 +261,14 @@ thSolver.fvSchemes.divSchemes['div(alphaRhoPhi,K)'] = "Gauss upwind"
 thSolver.fvSchemes.divSchemes['div\(alphaRhoPhi.*,(h|e).*\)'] = "Gauss upwind"
 
 # fvSolution
-thSolution = ffn.fvSolution()
-thSolution.append('"p_rgh.*"', ffn.fvSolutionSolver(
+thSolution = ffn.numerics.fvSolution()
+thSolution.append('"p_rgh.*"', ffn.numerics.fvSolutionSolver(
     solver='GAMG',
     smoother='DIC',
     tolerance=1e-6,
     relTol=0
 ))
-smoothSolver = ffn.fvSolutionSolver(
+smoothSolver = ffn.numerics.fvSolutionSolver(
     solver='smoothSolver',
     smoother='symGaussSeidel',
     tolerance=1e-6,
@@ -282,13 +277,13 @@ smoothSolver = ffn.fvSolutionSolver(
 )
 thSolution.append('"e.*"', smoothSolver)
 thSolution.append('"h.*"', smoothSolver)
-thSolution.append('alpha', ffn.fvSolutionSolver(
+thSolution.append('alpha', ffn.numerics.fvSolutionSolver(
     solver='MULES',
     adjustSubCycles=True,
     alphaMaxCo=0.25,
     solverPhase="vapour"
 ))
-thSolution.append('".*"', ffn.fvSolutionSolver(
+thSolution.append('".*"', ffn.numerics.fvSolutionSolver(
     solver='PBiCGStab',
     preconditioner='diagonal',
     tolerance=1e-6,
@@ -330,12 +325,12 @@ thSolver.add_relaxation_on_field('"dmdt.*"', 0.125)
 #==============================================================================*
 # Settings
 
-model = ffn.Model()
+model = ffn.case.Case()
 
 model.solvers.append(thSolver)
 model.timeFolders = [timeFolder0]
 
-settings: ffn.ControlDict = model.settings
+settings: ffn.control.ControlDict = model.settings
 
 settings.application = 'GeN-Foam'
 settings.endTime = 15
@@ -356,7 +351,7 @@ settings.includeKineticEnergy = False
 
 funcObjs = {}
 for patchName in ["inletP", "inletS", "outletP", "outletS"]:
-    funcObjs[patchName] = ffn.SurfaceFieldValue(
+    funcObjs[patchName] = ffn.functions.SurfaceFieldValue(
         name=f'{patchName}Values',
         fields=["alphaRhoPhi.liquid", "alphaRhoPhi.vapour", "T.liquid", "T.vapour"],
         operation="average",
@@ -367,7 +362,7 @@ for patchName in ["inletP", "inletS", "outletP", "outletS"]:
         writeFields=False
     )
 
-    settings.add_function_object(funcObjs[patchName])
+    model.add_function_object(funcObjs[patchName])
 
 print(model)
 
@@ -379,7 +374,7 @@ model.export_to_openfoam()
 #==============================================================================*
 # Run
 
-ffn.run(model=model, is_preprocessing=True)
+ffn.run(case=model, is_preprocessing=True)
 
 
 #==============================================================================*
