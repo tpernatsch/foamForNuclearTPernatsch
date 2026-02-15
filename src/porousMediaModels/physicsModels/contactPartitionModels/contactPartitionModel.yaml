@@ -1,7 +1,23 @@
 description: |-
   Class to handle fluid-structure interfacial contact contact fractions
 
-      Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./**
+     
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./**
+
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./*/*
 
 admonitions:
   - kind: warning
