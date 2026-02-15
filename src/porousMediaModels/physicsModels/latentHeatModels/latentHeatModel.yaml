@@ -1,7 +1,13 @@
 description: |-
   Class used to describe the latent heat of fluid that is undergoing phase
-      change. It can depend on some form of system temperature and system
-      pressure.
+  change. It can depend on some form of system temperature and system
+  pressure.
+
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./**
 
 admonitions:
   - kind: warning

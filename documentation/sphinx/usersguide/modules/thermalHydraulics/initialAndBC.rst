@@ -9,7 +9,11 @@ OpenFOAM provides most of the boundary conditions one may need for
 thermal-hydraulics models. In addition, a few boundary conditions have been
 included in the thermal-hydraulics module of foamForNuclear:
 
-toctreeHere
+.. toctree::
+    :maxdepth: 1
+    :glob:
+
+    ../../sphinx/cppapi/generated/fvPatchFields/thermalHydraulics/**
 
 
 .. raw:: html

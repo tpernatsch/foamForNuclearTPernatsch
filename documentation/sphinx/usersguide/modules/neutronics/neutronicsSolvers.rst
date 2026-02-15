@@ -14,11 +14,15 @@ GeN-Foam, the module is chosen in the ``regionsDict`` (see
 Neutronics calculations are performed by classes derived from *neutronics* that
 contain specific sub-solvers:
 
-:pointKinetics: Point-kinetics (:ref:`pointKineticNeutronics.H <pointKineticNeutronics>`)
-:diffusionNeutronics: Diffusion (:ref:`diffusionNeutronics.H <diffusionNeutronics>`)
-:adjointDiffusion: Adjoint diffusion (:ref:`adjointDiffusionNeutronics.H <adjointDiffusionNeutronics>`)
-:SP3Neutronics: Diffusion in :math:`SP_3` (:ref:`SP3Neutronics.H <SP3Neutronics>`)
-:SNNeutronics: Discrete ordinates (:math:`S_N`) (:ref:`SNNeutronics.H <SNNeutronics>`)
+.. toctree::
+    :maxdepth: 1
+    :glob:
+
+    ../../../sphinx/cppapi/generated/modules/neutronics/**
+
+.. raw:: html
+
+   <br><br>
 
 For the user, the derived classes translate into runtime selectable models. The
 specific sub-solver to be used in a simulation can be selected at runtime in the

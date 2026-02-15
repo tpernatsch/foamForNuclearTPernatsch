@@ -47,7 +47,11 @@ description: |-
 
   Available runtime selectable models include:
 
-  toctreeHere
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./**
 
 
 options:

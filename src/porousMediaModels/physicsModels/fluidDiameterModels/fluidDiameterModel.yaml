@@ -1,7 +1,11 @@
 description: |-
   Class to handle fluid diameter
 
-      Stefan Radman (stefan.radman@alumni.epfl.ch; sradman@protonmail.com)
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./**
 
 admonitions:
   - kind: warning

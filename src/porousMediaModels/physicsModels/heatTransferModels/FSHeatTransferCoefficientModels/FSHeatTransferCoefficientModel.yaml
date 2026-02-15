@@ -1,7 +1,11 @@
 description: |-
   Class to manage the fluid-structure (i.e. fluid-wall) heat transfer coefficient models. Available runtime selectable models include:
 
-  toctreeHere
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./**
 
 
 

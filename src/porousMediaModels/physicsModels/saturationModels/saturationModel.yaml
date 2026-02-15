@@ -1,7 +1,9 @@
 description: |-
-  SourceFiles
-      saturationModel.C
-      newSaturationModel.C
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./**
 
 admonitions:
   - kind: warning

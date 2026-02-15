@@ -1,7 +1,9 @@
 description: |-
-  SourceFiles
-      phaseChangeModel.C
-      newphaseChangeModel.C
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./**
 
 admonitions:
   - kind: warning

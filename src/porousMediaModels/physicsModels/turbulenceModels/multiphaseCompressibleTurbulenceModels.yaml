@@ -1,5 +1,10 @@
 description: |-
   multiphaseCompressibleTurbulenceModels model.
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./**
 
 admonitions:
   - kind: warning

@@ -395,7 +395,15 @@ The previous example would correspond to a time loop as shown below.
 
 Current loops available in *GeN-Foam* are:
 
-toctreeHere
+.. toctree::
+    :maxdepth: 1
+    :glob:
+
+    ../../sphinx/cppapi/generated/multiRegion/loop/loopModels/**
+
+.. raw:: html
+
+   <br><br>
 
 Typical coupling logic for a nuclear reactor
 --------------------------------------------

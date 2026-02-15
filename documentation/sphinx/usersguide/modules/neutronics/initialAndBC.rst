@@ -1,4 +1,4 @@
-.. _userguide_thermalhydraulics_initialAndBC:
+.. _userguide_neutronics_initialAndBC:
 
 
 Initial and boundary conditions
@@ -9,7 +9,16 @@ OpenFOAM provides most of the boundary conditions one may need for
 thermal-hydraulics models. In addition, a few boundary conditions have been
 included in the thermal-hydraulics module of foamForNuclear:
 
-toctreeHere
+.. toctree::
+    :maxdepth: 1
+    :glob:
+
+    ../../sphinx/cppapi/generated/fvPatchFields/neutronics/**
+
+.. raw:: html
+
+   <br><br>
+
 
 
 For the initial conditions of fluxes, 

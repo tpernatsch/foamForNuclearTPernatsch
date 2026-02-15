@@ -1,5 +1,7 @@
 description: |-
-  Class to handle fluid-structure interfacial contact contact fractions
+  Class to handle fluid-structure interfacial contact contact fractions.
+
+  Run-time selectable models include
 
   .. toctree::
      :maxdepth: 1
@@ -7,17 +9,6 @@ description: |-
 
      ./**
      
-  .. toctree::
-     :maxdepth: 1
-     :glob:
-
-     ./**
-
-  .. toctree::
-     :maxdepth: 1
-     :glob:
-
-     ./*/*
 
 admonitions:
   - kind: warning

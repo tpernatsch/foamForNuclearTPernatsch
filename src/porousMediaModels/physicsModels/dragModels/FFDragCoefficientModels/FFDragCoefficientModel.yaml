@@ -1,7 +1,11 @@
 description: |-
   Class to manage the fluid-fluid (i.e. liquid-vapor) drag coefficient models. Available runtime selectable models include:
 
-  toctreeHere
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./**
 
 usage:
   - comment: |-

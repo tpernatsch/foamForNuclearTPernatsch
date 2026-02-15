@@ -1,7 +1,11 @@
 description: |-
   Run-time selectable class to handle flow regime map models.
 
-      Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./**
 
 admonitions:
   - kind: warning

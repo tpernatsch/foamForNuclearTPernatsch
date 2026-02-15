@@ -28,8 +28,8 @@ The *physicsModels* sub-dictionary is used in two-phase simulations to define th
    Virtual mass coefficient models <../../../../../cppapi/generated/porousMediaModels/physicsModels/virtualMassModels/virtualMassCoefficientModels/virtualMassCoefficientModel>
    Dispersion models <../../../../../cppapi/generated/porousMediaModels/physicsModels/dispersionModels/dispersionModel>
    Interfacial area density models <../../../../../cppapi/generated/porousMediaModels/physicsModels/interfacialAreaModels/interfacialAreaModel>
-   Contact partition models <../../../../../cppapi/generated/porousMediaModels/physicsModels/interfacialAreaModels/interfacialAreaModel>
-   Phase change models <../../../../../cppapi/generated/porousMediaModels/physicsModels/interfacialAreaModels/interfacialAreaModel>
+   Contact partition models <../../../../../cppapi/generated/porousMediaModels/physicsModels/contactPartitionModels/contactPartitionModel>
+   Phase change models <../../../../../cppapi/generated/porousMediaModels/physicsModels/phaseChangeModels/phaseChangeModel>
    Latent heat models <../../../../../cppapi/generated/porousMediaModels/physicsModels/latentHeatModels/latentHeatModel>
    Saturation models <../../../../../cppapi/generated/porousMediaModels/physicsModels/saturationModels/saturationModels>
 

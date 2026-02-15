@@ -1,7 +1,11 @@
 description: |-
   Class to handle fluid-fluid interfacial area
 
-      Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./**
 
 admonitions:
   - kind: warning

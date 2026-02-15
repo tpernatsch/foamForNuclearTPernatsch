@@ -82,11 +82,15 @@ Function objects can also be employed at run time via the *controlDict* (see for
 instance `2D_FFTF <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/2D_FFTF/rootCase/system/controlDict>`_).
 
 foamForNuclear provides some additional function objects with respect to standard OpenFOAM that have been found
-to be particularly useful in the nuclear field.
+to be particularly useful in the nuclear field:
 
-.. including for example for 
-   :ref:`mass flow rates <massFlow.H>`, 
-   :ref:`pressure drops <pressureDrop.H>`
-   and :ref:`bulk temperatures <TBulk.H>`.
-   See `here <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/src/functionObjects?ref_type=heads>`_
-   for a full list.
+.. toctree::
+    :maxdepth: 1
+    :glob:
+
+    ../../sphinx/cppapi/generated/functionObjects/**
+
+.. raw:: html
+
+   <br><br>
+

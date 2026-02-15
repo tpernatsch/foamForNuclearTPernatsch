@@ -1,7 +1,11 @@
 description: |-
   Base class for dispersion models defining which phase is dispersed and how. Available runtime selectable models include:
 
-  toctreeHere
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./**
 
 
 options: []
