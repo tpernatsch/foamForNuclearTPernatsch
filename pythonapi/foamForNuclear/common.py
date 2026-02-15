@@ -69,7 +69,7 @@ class OpenFOAMDict(dict):
     def export_body_to_foam(self, depth: int = 0) -> str:
         text = ""
         text += f"\n{depth*tab}" + "{\n"
-        
+
         for key, item in self.items():
             key = format_to_openfoam_regex(key)
 
@@ -78,7 +78,7 @@ class OpenFOAMDict(dict):
 
             if isinstance(item, OpenFOAMDict):
                 # For the printed name, preference is given to dict.name.
-                # If it exists then repr function will write it before the dict body. 
+                # If it exists then repr function will write it before the dict body.
                 # If it does not exist, the key (if any) will be used instead
                 if item.name is None:
                     text += f"{(depth+1)*tab}{key}{item.__repr__(depth=depth+1)}\n"
@@ -86,7 +86,7 @@ class OpenFOAMDict(dict):
                     text += f"{(depth+1)*tab}{item.__repr__(depth=depth+1)}\n"
             elif isinstance(item, (FoamForNuclearDict, CheckedOpenFOAMDict,)):
                 # For the printed name, preference is given to dict.name.
-                # If it exists then repr function will write it before the dict body. 
+                # If it exists then repr function will write it before the dict body.
                 # If it does not exist, the key (if any) will be used instead
                 if item.name is None:
                     text += f"{(depth+1)*tab}{key}{item._as_openfoam_dict().__repr__(depth=depth+1)}\n"
@@ -115,7 +115,7 @@ class OpenFOAMDict(dict):
     @property
     def is_empty(self):
         return(len(list(self.keys())) == 0)
-    
+
 
 class CheckedOpenFOAMDict(CheckedDict):
     """
@@ -142,7 +142,7 @@ class CheckedOpenFOAMDict(CheckedDict):
     @property
     def is_empty(self):
         return len(self.keys()) == 0
-    
+
 
 # ---------- subclass discovery (no manual registry) ----------
 def _all_subclasses(cls):
@@ -171,7 +171,7 @@ def _resolve_type(t, cls):
         return eval(t, modns, modns)
     except Exception:
         return None
-    
+
 #==============================================================================*
 # FoamForNuclearDict and other classes
 
@@ -350,37 +350,37 @@ class FoamForNuclearDict:
                 section = {}
 
         return cls._from_mapping(section, file_path=file_path, key_path=tuple(key_path))
-    
+
 
 # A helper class to define Sciantix input settings
 # Default corresponds to classic LWR settings
 @define
 class SciantixDict(FoamForNuclearDict):
     """
-    iverification: int (0= no verification) 
-    igrain_growth: int (1 = ainscough) 
-    iinert_gas_behavior: int (1= do IGB) 
-    igas_diffusion_coefficient: int (1= Turnbull et al., 1988) 
-    iintra_bubble_evolution: int (1=Pizzocri et al., 2018) 
-    ibubble_radius: int (1= Olander&Wongy, 2006) 
-    iresolution_rate: int (1=Turnbull 1971) 
-    itrapping_rate: int (1= Ham 1958) 
-    inucleation_rate: int (1= Baker 1971) 
-    isolver: int (1= SDA, Pizzocri et al., 2019) 
-    iformat_output: int (1 = output.txt, values separated by tabs) 
-    igrain_boundary_vacancy_diffusion_coefficient: int (1= Reynolds and Burton, 1979) 
-    igrain_boundary_behaviour: int (1= do InterGranularGasBehavior - Pastore et al., 2013; Barani et al., 2017) 
-    igrain_boundary_micro_cracking: int (1 = Barani et al., 2017) 
-    igrain_recrystallization: int (0 = non active) 
-    ifuel_reactor_type: int (0=UO2/PWR) 
+    iverification: int (0= no verification)
+    igrain_growth: int (1 = ainscough)
+    iinert_gas_behavior: int (1= do IGB)
+    igas_diffusion_coefficient: int (1= Turnbull et al., 1988)
+    iintra_bubble_evolution: int (1=Pizzocri et al., 2018)
+    ibubble_radius: int (1= Olander&Wongy, 2006)
+    iresolution_rate: int (1=Turnbull 1971)
+    itrapping_rate: int (1= Ham 1958)
+    inucleation_rate: int (1= Baker 1971)
+    isolver: int (1= SDA, Pizzocri et al., 2019)
+    iformat_output: int (1 = output.txt, values separated by tabs)
+    igrain_boundary_vacancy_diffusion_coefficient: int (1= Reynolds and Burton, 1979)
+    igrain_boundary_behaviour: int (1= do InterGranularGasBehavior - Pastore et al., 2013; Barani et al., 2017)
+    igrain_boundary_micro_cracking: int (1 = Barani et al., 2017)
+    igrain_recrystallization: int (0 = non active)
+    ifuel_reactor_type: int (0=UO2/PWR)
     igas_effective_coefficientgas effective: int  (=0) or single atom (=1)
-    igas_sweepingadd boundary: int  gas sweeping 
-    imicro_cracking_span: int 
-    sf_resolution_rate: int 
-    sf_trapping_rate: int 
-    sf_nucleation_rate: int 
-    sf_diffusion_rate: int 
-    
+    igas_sweepingadd boundary: int  gas sweeping
+    imicro_cracking_span: int
+    sf_resolution_rate: int
+    sf_trapping_rate: int
+    sf_nucleation_rate: int
+    sf_diffusion_rate: int
+
     """
     iverification: int = field(default=0, validator=v.instance_of(int))
     igrain_growth: int = field(default=1, validator=v.instance_of(int))
@@ -409,7 +409,7 @@ class SciantixDict(FoamForNuclearDict):
 
 class OpenFOAMListDict(CheckedList):
     def __init__(self, expected_type, name, items=None):
-        
+
         super().__init__(expected_type, name, items)
 
     def __repr__(self, depth = 0):
@@ -643,7 +643,7 @@ class CheckedOpenFOAMList(CheckedList):
             nCols=nCols,
             isAddLength=isAddLength,
         )
-    
+
 
 class NonUniformList(List):
     def __init__(self, items: list[(float | int)]):
@@ -746,8 +746,13 @@ class Table(list):
 
         if items is not None:
             # Skipt 'table' name if present in items
-            if (not(isinstance(items, dict)) and
-                    isinstance(items[0],str) and len(items)==2):
+            if (
+                not(isinstance(items, dict))
+                and
+                len(items) == 2
+                and
+                isinstance(items[0],str)
+            ):
                 for item in items[1]:
                     self.append(item)
             else:

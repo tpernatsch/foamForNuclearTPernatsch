@@ -419,6 +419,16 @@ class NeutronicsSolver(Solver):
     def export_to_openfoam(self):
         self.create_folders()
 
+        for obj in [
+            self.nuclearData,
+            self.quadratureSet,
+            self.externalSource,
+            self.controlRodMove,
+            self.fvSolution,
+            self.fvSchemes
+        ]:
+            obj.region = self.region
+
         self.export_properties_to_openfoam()
         self.export_uniform_to_openfoam()
         self.nuclearData.export_to_openfoam()
