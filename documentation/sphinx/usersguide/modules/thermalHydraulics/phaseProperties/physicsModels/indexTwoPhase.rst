@@ -5,17 +5,37 @@ The *physicsModels* sub-dictionary for two-phase flows
 
 The *physicsModels* sub-dictionary is used in two-phase simulations to define the models that describe the interaction between fluid1 and structure, fluid2 and structure, as well as between fluid1 and fluid 2. Several types of models can be defined:
 
-- :doc:`fluid-structure drag models <../../../../../cppapi/generated/porousMediaModels/physicsModels/dragModels/FSDragCoefficientModels/FSDragCoefficientModel>`  and :doc:`fluid-fluid drag models <../../../../../cppapi/generated/porousMediaModels/physicsModels/dragModels/FFDragCoefficientModels/FFDragCoefficientModel>`  via the ``dragModels`` sub-dictionary;
-- :doc:`fluid-structure heat transfer models <../../../../../cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/FSHeatTransferCoefficientModel>` and :doc:`fluid-fluid heat transfer models <../../../../../cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FFHeatTransferCoefficientModels/FFHeatTransferCoefficientModel>`  via the ``heatTransferModels`` sub-dictionary;
-- :doc:`two-phase drag multiplier models <../../../../../cppapi/generated/porousMediaModels/physicsModels/dragModels/twoPhaseDragMultiplierModels/twoPhaseDragMultiplierModel>`  via the ``twoPhaseDragMultiplierModel`` sub-dictionary;
-- :doc:`virtual mass coefficient models <../../../../../cppapi/generated/porousMediaModels/physicsModels/virtualMassModels/virtualMassCoefficientModels/virtualMassCoefficientModel>` via the ``virtualMassCoefficientModel`` sub-dictionary;
-- pair geometry models via the ``pairGeometryModels`` sub-dictionary, which in turn includes;
-   - :doc:`dispersion models <../../../../../cppapi/generated/porousMediaModels/physicsModels/dispersionModels/dispersionModel>` for fluid-fluid pairs via the ``dispersionModel`` sub-dictionary;
-   - :ref:`interfacial area density models <modules_thermalHydraulics_porousMedium_interfacialAreaModels>` for fluid-fluid pairs via the ``interfacialAreaDensityModel`` sub-dictionary;
-   - :ref:`contact partition models <modules_thermalHydraulics_porousMedium_contactPartitionModels>` for fluid-structure pairs via the ``contactPartitionModel`` sub-dictionary
-- :ref:`phase change models <modules_thermalHydraulics_porousMedium_phaseChangeModels>` via the ``phaseChangeModel`` sub-dictionary, which in turn includes:
-   - :ref:`latent heat models <modules_thermalHydraulics_porousMedium_latentHeatModels>` for fluid-fluid pairs via the ``latentHeatModel`` sub-dictionary;
-   - :ref:`saturation models <modules_thermalHydraulics_porousMedium_saturationModels>` for fluid-structure pairs via the ``saturationModel`` sub-dictionary
+- Fluid-structure  and fluid-fluid drag models  via the ``dragModels`` sub-dictionary;
+- Fluid-structure and fluid-fluid heat transfer models  via the ``heatTransferModels`` sub-dictionary;
+- Two-phase drag multiplier models  via the ``twoPhaseDragMultiplierModel`` sub-dictionary;
+- Virtual mass coefficient models via the ``virtualMassCoefficientModel`` sub-dictionary;
+- Pair geometry models via the ``pairGeometryModels`` sub-dictionary, which in turn includes:
+   - Dispersion models for fluid-fluid pairs via the ``dispersionModel`` sub-dictionary;
+   - Interfacial area density models  for fluid-fluid pairs via the ``interfacialAreaDensityModel`` sub-dictionary;
+   - Contact partition models for fluid-structure pairs via the ``contactPartitionModel`` sub-dictionary
+- phase change models via the ``phaseChangeModel`` sub-dictionary, which in turn includes:
+   - Latent heat models for fluid-fluid pairs via the ``latentHeatModel`` sub-dictionary;
+   - Saturation models for fluid-structure pairs via the ``saturationModel`` sub-dictionary.
+
+.. toctree::
+   :maxdepth: 1
+
+   Fluid-structure drag models <../../../../../cppapi/generated/porousMediaModels/physicsModels/dragModels/FSDragCoefficientModels/FSDragCoefficientModel>
+   Fluid-fluid drag models <../../../../../cppapi/generated/porousMediaModels/physicsModels/dragModels/FFDragCoefficientModels/FFDragCoefficientModel>
+   Fluid-structure heat transfer models <../../../../../cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/FSHeatTransferCoefficientModel>
+   Fluid-fluid heat transfer models <../../../../../cppapi/generated/porousMediaModels/physicsModels/heatTransferModels/FFHeatTransferCoefficientModels/FFHeatTransferCoefficientModel>
+   Two-phase drag multiplier models <../../../../../cppapi/generated/porousMediaModels/physicsModels/dragModels/twoPhaseDragMultiplierModels/twoPhaseDragMultiplierModel>
+   Virtual mass coefficient models <../../../../../cppapi/generated/porousMediaModels/physicsModels/virtualMassModels/virtualMassCoefficientModels/virtualMassCoefficientModel>
+   Dispersion models <../../../../../cppapi/generated/porousMediaModels/physicsModels/dispersionModels/dispersionModel>
+   Interfacial area density models <../../../../../cppapi/generated/porousMediaModels/physicsModels/interfacialAreaModels/interfacialAreaModel>
+   Contact partition models <../../../../../cppapi/generated/porousMediaModels/physicsModels/interfacialAreaModels/interfacialAreaModel>
+   Phase change models <../../../../../cppapi/generated/porousMediaModels/physicsModels/interfacialAreaModels/interfacialAreaModel>
+   Latent heat models <../../../../../cppapi/generated/porousMediaModels/physicsModels/latentHeatModels/latentHeatModel>
+   Saturation models <../../../../../cppapi/generated/porousMediaModels/physicsModels/saturationModels/saturationModels>
+
+.. raw:: html
+
+   <div style="margin-top: 1.5em;"></div>
 
 
 Each of these two sub-dictionaries consists of a series of other sub-dictionaries whose properties are applied to the cell zones that have their name in the sub-dictionary keys.  Three options exist :
@@ -23,6 +43,11 @@ Each of these two sub-dictionaries consists of a series of other sub-dictionarie
 - Use ``constant`` as  type and give a constant value using the keyword ``value``.
 - Use as type a single model chosen among those available;
 - Use ``byRegime`` as  type, and then chose one of the available models for each regime. This requires having set a :ref:`regime map <modules_thermalHydraulics_porousMedium_regimeMapModels>`.
+
+Available run-time selection models include:
+
+
+
 
 
 An example of dictionary is reported below. 
