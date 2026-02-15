@@ -23,7 +23,7 @@ from foamForNuclear.porous_medium.phase_change import PhaseChangeModel
 from foamForNuclear.porous_medium.two_phase_drag_multiplier import TwoPhaseDragMultiplierModel
 from foamForNuclear.porous_medium.pair_geometry import PairGeometryModel, ContactPartitionModel, DispersionModel, InterfacialAreaDensityModel
 from foamForNuclear.porous_medium.heat_transfer import HeatTransferModel
-from foamForNuclear.porous_medium import Structure, Fluid
+from foamForNuclear.porous_medium import Structure, Fluid, HeatExchangerModel
 from foamForNuclear.porous_medium.regime_map import RegimeMapModel
 from foamForNuclear.thermo import BaseThermophysicalProperty
 from foamForNuclear.numerics import fvSolution, fvSolutionSolver
@@ -72,6 +72,7 @@ class PimpleOptions(OpenFOAMDict):
             pMin: float=10000,
             pRefCell: int=0,
             pRefValue: float=100000,
+            residualKd: float=None,
             continuityErrorCompensationMode: str=None,
             continuityErrorScaleFactor: float=None,
             partialEliminationMode: str=None,
@@ -96,6 +97,7 @@ class PimpleOptions(OpenFOAMDict):
         self.pMin = pMin
         self.pRefCell = pRefCell
         self.pRefValue = pRefValue
+        self.residualKd = residualKd
         self.continuityErrorCompensationMode = continuityErrorCompensationMode
         self.continuityErrorScaleFactor = continuityErrorScaleFactor
         self.partialEliminationMode = partialEliminationMode
@@ -132,6 +134,8 @@ class PimpleOptions(OpenFOAMDict):
             self.__setitem__('pRefCell', self.pRefCell)
         if (self.pRefValue is not None):
             self.__setitem__('pRefValue', self.pRefValue)
+        if (self.residualKd is not None):
+            self.__setitem__('residualKd', self.residualKd)
 
         if (self.minNOuterCorrectors is not None):
             self.__setitem__('minNOuterCorrectors', self.minNOuterCorrectors)
@@ -299,6 +303,15 @@ class PimpleOptions(OpenFOAMDict):
         self._pRefValue = pRefValue
 
     @property
+    def residualKd(self):
+        return self._residualKd
+
+    @residualKd.setter
+    def residualKd(self, residualKd) -> None:
+        check_type("residualKd", residualKd, (float, int), none_ok=True)
+        self._residualKd = residualKd
+
+    @property
     def continuityErrorCompensationMode(self):
         return self._continuityErrorCompensationMode
 
@@ -450,7 +463,6 @@ class ThermalHydraulicsSolver(Solver):
     pMin: int | float = 10000
     pRefCell: int  = 0
     pRefValue: int | float = 100000
-    residualKd: int | float | None = None
 
     @solver.validator
     def _solver_allowed(self, _attr, value: str):
@@ -650,19 +662,31 @@ class OnePhaseThermalHydraulicsSolver(ThermalHydraulicsSolver):
     """
     solver: str = field(default="onePhase", init=False, on_setattr=attr.setters.frozen,)
     fluid: Fluid = field(factory=Fluid)
-    structures: list[Structure] = field(factory=list)
+    structures: list[Structure | HeatExchangerModel] = field(factory=list)
     fluid_structure: FluidStructureModels = field(factory=FluidStructureModels)
     regimeMapModels: list[RegimeMapModel] = field(factory=list)
 
     def _write_phase_properties_body(self, buf: StringIO):
         # Structures
         structure_properties_dict = OpenFOAMListDict(
-            name="structureProperties", expected_type=Structure, items=self.structures)
+            name="structureProperties",
+            expected_type=Structure | OpenFOAMListDict,
+            items=[struct for struct in self.structures if isinstance(struct, Structure)]
+        )
+        heatExchangers = OpenFOAMListDict(
+            name="heatExchangers",
+            expected_type=HeatExchangerModel,
+            items=[struct for struct in self.structures if isinstance(struct, HeatExchangerModel)]
+        )
+        structure_properties_dict.append(heatExchangers)
         buf.write(f"{structure_properties_dict!r}\n")
 
         # Regime maps
         regimes_dict = OpenFOAMListDict(
-            name="regimeMapModels", expected_type=RegimeMapModel, items=self.regimeMapModels)
+            name="regimeMapModels",
+            expected_type=RegimeMapModel,
+            items=self.regimeMapModels
+        )
         buf.write(f"{regimes_dict!r}\n")
 
         # Physics models
@@ -679,11 +703,6 @@ class OnePhaseThermalHydraulicsSolver(ThermalHydraulicsSolver):
         buf.write(f"{fluid_structure_ht.__repr__(depth=1)}\n")
         buf.write("}")
 
-        # pMin, pRefCell, pRefValue, residualKd
-        buf.write(f"pMin {self.pMin};\n")
-        buf.write(f"pRefCell {self.pRefCell};\n")
-        buf.write(f"pRefValue {self.pRefValue};\n")
-        buf.write(f"residualKd {self.residualKd};\n")
 
     def export_to_openfoam(self):
         self.create_folders()
@@ -813,12 +832,6 @@ class TwoPhaseThermalHydraulicsSolver(ThermalHydraulicsSolver):
         buf.write(f"\tphaseChangeModel{self.fluid_fluid.phaseChangeModel.__repr__(depth=1)}\n")
         buf.write(f"}}\n\n")
 
-        # pMin, pRefCell, pRefValue, residualKd
-        buf.write(f"pMin {self.pMin};\n")
-        buf.write(f"pRefCell {self.pRefCell};\n")
-        buf.write(f"pRefValue {self.pRefValue};\n")
-        if(self.residualKd):
-            buf.write(f"residualKd {self.residualKd};\n")
 
     def export_to_openfoam(self):
         self.create_folders()

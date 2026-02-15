@@ -232,8 +232,8 @@ class FunctionObject(OpenFOAMDict):
     def caseFolder(self, caseFolder):
         check_type("caseFolder", caseFolder, str, none_ok=True)
         self._caseFolder = caseFolder
-        if (caseFolder is not None):
-            self.__setitem__("caseFolder", caseFolder)
+        # if (caseFolder is not None):
+        #     self.__setitem__("caseFolder", f"'{caseFolder}'")
 
     def read_from_case(self, startTime: float, caseFolder: str | None =None):
         msg = "FunctionObject.read_from_case not implemented"
