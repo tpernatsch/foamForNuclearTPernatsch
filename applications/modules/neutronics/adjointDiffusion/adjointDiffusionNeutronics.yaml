@@ -1,5 +1,11 @@
 description: |-
-  Derived class for adjointDiffusion neutronics.
+
+  Adjoint multigroup diffusion neutronics solver.
+
+  This class implements the adjoint formulation of multigroup diffusion,
+  including treatment of delayed neutron precursors, cross‑section handling,
+  albedo terms, and adjoint source corr
+
 
 admonitions:
   - kind: warning
