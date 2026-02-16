@@ -1,4 +1,4 @@
-OFFBEAT
+OFFBEAT User's Guide
 ====================
 
 The OpenFOAM Fuel BEhavior Analysis Tool (OFFBEAT) is a multi-dimensional
