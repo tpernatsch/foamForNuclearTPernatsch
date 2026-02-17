@@ -9,6 +9,7 @@ description: |
   \]
 
   where:
+
   - `φ_g` is the adjoint neutron flux for energy group `g`
   - `D_g` is the diffusion coefficient for energy group `g`
   - `Σ_r,g` is the removal cross-section for energy group `g`
@@ -23,6 +24,7 @@ description: |
   \]
 
   where:
+  
   - `C_i` is the concentration of delayed neutron precursors for group `i`
   - `β_i` is the delayed neutron fraction for group `i`
   - `Λ` is the neutron generation time

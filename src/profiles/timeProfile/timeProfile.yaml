@@ -3,8 +3,6 @@ description: |-
   Function1 object used to represents tables. timeProfile is also able to
   input data from an FMI.
 
-  \mainauthor of this file (and associated .C or included .H files):
-      Thomas Guilbaud <thomas.guilbaud@epfl.ch;>, EPFL/Transmutex SA (Switzerland)
 
 options:
   - key: type
