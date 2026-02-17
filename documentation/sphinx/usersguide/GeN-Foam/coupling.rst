@@ -307,7 +307,6 @@ The loops
 
 
 
-
 Typical coupling logic for a nuclear reactor
 --------------------------------------------
 
