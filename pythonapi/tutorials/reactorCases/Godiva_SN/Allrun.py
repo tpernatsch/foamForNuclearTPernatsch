@@ -39,15 +39,15 @@ def generate_model():
     #==========================================================================*
     # Fields
 
-    timeFolder0 = ffn.TimeFolder(0)
+    timeFolder0 = ffn.timeFolder.TimeFolder(0)
 
-    defaultFlux = ffn.Field("defaultFlux", region=nMesh.region)
-    defaultFlux.dimensions = ffn.Dimension(default='flux')
+    defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
+    defaultFlux.dimensions = ffn.fields.Dimension(default='flux')
     defaultFlux.internalField = 1
     defaultFlux.set_boundary_condition("wall", bc.InletOutlet(phi="facePhi", inletValue=0, value=0))
 
-    defaultFlux2 = ffn.Field("defaultFlux2", region=nMesh.region)
-    defaultFlux2.dimensions = ffn.Dimension(default='flux')
+    defaultFlux2 = ffn.fields.Field("defaultFlux2", region=nMesh.region)
+    defaultFlux2.dimensions = ffn.fields.Dimension(default='flux')
     defaultFlux2.internalField = 1
     defaultFlux2.set_boundary_condition("wall", bc.FixedValue(value=0))
 
@@ -59,7 +59,7 @@ def generate_model():
     #==========================================================================*
     # Solvers
 
-    neutronicsSolver = ffn.NeutronicsSolver(
+    neutronicsSolver = ffn.solvers.NeutronicsSolver(
         region=nMesh.region,
         solver="SNNeutronics",
         eigenvalueNeutronics=True,
@@ -68,7 +68,7 @@ def generate_model():
         mesh=nMesh
     )
 
-    neutronicsSolver.quadratureSet = ffn.QuadratureSet(
+    neutronicsSolver.quadratureSet = ffn.quadratureSet.QuadratureSet(
         region=nMesh.region,
         default=4
     )
@@ -138,12 +138,12 @@ def generate_model():
     #==========================================================================*
     # Settings
 
-    model = ffn.Model()
+    model = ffn.case.Case()
 
     model.solvers.append(neutronicsSolver)
     model.timeFolders = [timeFolder0]
 
-    settings: ffn.ControlDict = model.settings
+    settings = model.settings
 
     settings.application = 'GeN-Foam'
     settings.endTime = 20
@@ -185,12 +185,12 @@ def mainSolverComparison():
         model.export_to_openfoam()
 
         # Run
-        ffn.run_preprocessing(model=model)
+        ffn.run_preprocessing(model)
 
-        ffn.run(model=model)
+        ffn.run(model)
 
         if (model.is_parallel):
-            ffn.run_reconstruction(model=model, isLatestTime=True)
+            ffn.run_reconstruction(model, isLatestTime=True)
 
 
         # On-the-fly Post-processing
@@ -276,15 +276,15 @@ def mainMeshConvergence():
         model.export_to_openfoam()
 
         # Run
-        ffn.run_preprocessing(model=model)
+        ffn.run_preprocessing(model)
 
         nMaxCell = neutronicsSolver.decomposeParDict.extract_info_from_log(caseFolder=model.caseFolder)["nMaxCells"]
         print(f"Max number of cells in 1 processor: {nMaxCell}")
 
-        ffn.run(model=model)
+        ffn.run(model)
 
         if (model.is_parallel):
-            ffn.run_reconstruction(model=model, isLatestTime=True)
+            ffn.run_reconstruction(model, isLatestTime=True)
 
 
         # On-the-fly Post-processing

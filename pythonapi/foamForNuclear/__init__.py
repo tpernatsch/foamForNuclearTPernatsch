@@ -51,7 +51,7 @@ from . import control
 
 # To be checked how to group
 from . import coupling
-from foamForNuclear.executor import run, allclean, run_preprocessing, copyFolder
+from foamForNuclear.executor import run, allclean, run_preprocessing, run_reconstruction, copyFolder
 from . import executor
 from foamForNuclear.externalSource import ExternalSource
 

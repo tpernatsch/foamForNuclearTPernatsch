@@ -181,8 +181,8 @@ class Case:
         self.fields: list[Field] = CheckedList(Field, "fields") if fields is None else CheckedList(fields)
         self.timeFolders: list[TimeFolder] = [] if timeFolders is None else list(timeFolders)
         self.externalCouplingDict: ExternalCouplingDict = externalCouplingDict
-        self.caseFolder: str = caseFolder        
-        
+        self.caseFolder: str = caseFolder
+
         # ensure at least a time folder at t = 0 exists
         if not self.timeFolders:
             self.timeFolders.append(TimeFolder(0))
@@ -350,7 +350,7 @@ class Case:
                 self.timeFolders.append(tf)
 
         tf.add_field(field)
-        
+
 
     @property
     def is_parallel(self) -> bool:
@@ -447,7 +447,7 @@ class Case:
         self.functions.export_to_openfoam(self.settings)
 
         self.solvers.export_to_openfoam()
-        
+
         # build region → mesh mapping from solvers
         region_meshes: dict[str | None, Mesh] = {}
         for solver in self.solvers:
@@ -1209,7 +1209,7 @@ class Case:
                 # Write a frame. This triggers a render.
                 plotter.write_frame()
             except:
-                pass
+                print(f"No render time {time}")
 
         # Closes and finalizes movie
         plotter.close()

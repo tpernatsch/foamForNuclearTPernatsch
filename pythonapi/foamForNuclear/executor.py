@@ -208,11 +208,11 @@ def run_preprocessing(
                                 )
 
             elif (isinstance(solver.mesh, PolyMesh)):
-                commands += f"runApplication -s {region} renumberMesh -region {region} -overwrite\n"
+                pass
 
             # Mesh manipulation
             if (isRenumberMesh):
-                commands += f"runApplication renumberMesh -region {region} -overwrite\n"
+                commands += f"runApplication renumberMesh -overwrite\n"
             if (not solver.mesh.topoSetDict.is_empty):
                 commands += f"runApplication topoSet -noZero\n"
             if (not solver.mesh.createPatchDict.is_empty):
@@ -279,6 +279,11 @@ def run_preprocessing(
     p = subprocess.Popen('/bin/bash', stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
     out, err = p.communicate(commands)
 
+    # Return to the original folder
+    os.chdir(cwd)
+
+
+def add_missing_boundary_condition_after_mesh_export(case: Case) -> None:
     # Collect new patches that have been created and might have not been known before
     region_meshes = {}
     for solver in case.solvers:
@@ -302,9 +307,6 @@ def run_preprocessing(
     # Check boundary field
     for timeFolder in case.timeFolders:
         timeFolder.export_to_openfoam(region_meshes=region_meshes)
-
-    # Return to the original folder
-    os.chdir(cwd)
 
 
 def run_reconstruction(

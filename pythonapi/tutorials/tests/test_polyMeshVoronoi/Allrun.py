@@ -15,9 +15,22 @@ if (isGenerateFromRandom):
 
     rng = np.random.default_rng(11)
     # create a set of points in 3D
-    nPoints = 30
-    points = [[p[0], p[1], p[2], f'zone{i}'] for i, p in enumerate(rng.uniform(size=(nPoints, 3)))]
+    # nPoints = 20
+    # points = [
+    #     [p[0], p[1], p[2]] #, f'zone{i}']
+    #     for i, p in enumerate(rng.uniform(size=(nPoints, 3)))
+    # ]
     # points = rng.uniform(size=(nPoints, 3))
+
+    points = [
+        [0, 0, -1],
+        [-1, 0, 0],
+        [0, 0, 0],
+        [1, 0, 0],
+        [0, -1, 0],
+        [0, 1, 0],
+        [0, 0, 1],
+    ]
 
     nMesh.add_voronoi_points_from_coordinates(coords=points)
 
@@ -26,24 +39,32 @@ if (isGenerateFromRandom):
 
 elif (isGenerateFromLattice):
     lattice = """
-    e e e e e e e e e e e e e e e e e
-     e e e e e e e e R R R R R R R R e
-      e e e e e e e R O C O O O C O R e
-       e e e e e e R C O O O O O O C R e
-        e e e e e R O O I I I I I O O R e
-         e e e e R O O I C I I C I O O R e
-          e e e R O O I I I I I I I O O R e
-           e e R C O I I I I I I I I O C R e
-            e R O O I C I I I I I C I O O R e
-             e R C O I I I I I I I I O C R e e
-              e R O O I I I I I I I O O R e e e
-               e R O O I C I I C I O O R e e e e
-                e R O O I I I I I O O R e e e e e
-                 e R C O O O O O O C R e e e e e e
-                  e R O C O O O C O R e e e e e e e
-                   e R R R R R R R R e e e e e e e e
-                    e e e e e e e e e e e e e e e e e
+e e e e e e e e B B B B B B B B B
+ e e e e e e e B R R R R R R R R B
+  e e e e e e B R O C O O O C O R B
+   e e e e e B R C O O O O O O C R B
+    e e e e B R O O I I I I I O O R B
+     e e e B R O O I C I I C I O O R B
+      e e B R O O I I I I I I I O O R B
+       e B R C O I I I I I I I I O C R B
+        B R O O I C I I I I I C I O O R B
+         B R C O I I I I I I I I O C R B e
+          B R O O I I I I I I I O O R B e e
+           B R O O I C I I C I O O R B e e e
+            B R O O I I I I I O O R B e e e e
+             B R C O O O O O O C R B e e e e e
+              B R O C O O O C O R B e e e e e e
+               B R R R R R R R R B e e e e e e e
+                B B B B B B B B B e e e e e e e e
     """
+
+    # lattice = """
+    # e e R R R
+    #  e R I I R
+    #   R I I I R
+    #    R I I R e
+    #     R R R e e
+    # """
 
     nXY = len([line for line in lattice.split('\n') if line.strip() != ""])
 
@@ -58,27 +79,31 @@ elif (isGenerateFromLattice):
         latticeType='hexagon',
         nx=nXY, ny=nXY,
         pitch=pitch,
-        # elementsToPlace=['I', 'O', 'C', 'R', 'e']
+        elementsToPlace=['I', 'O', 'C', 'R', 'B'] # B for border
     )
 
     latticeDiagrid = lattice
-    for elementName in ['I', 'O', 'C', 'R']:
+    for elementName in ['I', 'O', 'C', 'R', 'B']:
         latticeDiagrid = latticeDiagrid.replace(elementName, 'diagrid')
 
     nMesh.add_voronoi_points_from_lattice(
-        lattice=lattice,
+        lattice=latticeDiagrid,
         latticeType='hexagon',
         nx=nXY, ny=nXY,
         pitch=pitch,
-        z=-fuelLength/2 - diagridThickness/2,
-        # elementsToPlace=['diagrid']
+        z=-fuelLength,
+        elementsToPlace=['diagrid']
     )
 
-    boundaryBox = [
-        [-3, 3],
-        [-3, 3],
-        [-fuelLength/2-diagridThickness, fuelLength/2]
-    ]
+    nMesh.add_voronoi_points_from_lattice(
+        lattice=latticeDiagrid,
+        latticeType='hexagon',
+        nx=nXY, ny=nXY,
+        pitch=pitch,
+        z=fuelLength,
+        elementsToPlace=['diagrid']
+    )
+
 
 elif (isGenerateFromCoordinates):
     nMesh.add_voronoi_points_from_coordinates(
@@ -117,18 +142,14 @@ elif (isGenerateFromCoordinates):
 
 # Generate the mesh
 nMesh.generate_mesh_from_voronoi_points(
-    boundaryBox=boundaryBox,
-    # cylinderRadius=3,
-    # cylinderZmin=-fuelLength/2-diagridThickness,
-    # cylinderZmax=fuelLength/2,
-    cellZonesToStrip=['e'],
-    isAddInletOuletBC=True,
+    cellZonesToStrip=['diagrid', 'B'],
+    # isAddInletOuletBC=True,
     # isAddBaffles=True
 )
 
-for i, vec in enumerate(nMesh.pointsList):
-    if (abs(vec.z + 0.55) <= 1e-6):
-        nMesh.pointsList[i].z = -fuelLength/2
+# for i, vec in enumerate(nMesh.pointsList):
+#     if (abs(vec.z + 0.55) <= 1e-6):
+#         nMesh.pointsList[i].z = -fuelLength/2
 
 # Plot the Voronoi graph
 # import matplotlib.pyplot as plt

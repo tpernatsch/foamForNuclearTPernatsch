@@ -243,7 +243,7 @@ class PimpleOptions(OpenFOAMDict):
 
     @momentumMode.setter
     def momentumMode(self, momentumMode) -> None:
-        check_type("momentumMode", momentumMode, str)
+        check_type("momentumMode", momentumMode, str, none_ok=True)
         if momentumMode is not None:
             check_value("momentumMode", momentumMode, _MOMENTUM_MODE_TYPES)
         self._momentumMode = momentumMode
@@ -869,162 +869,154 @@ class TwoPhaseThermalHydraulicsSolver(ThermalHydraulicsSolver):
 
         return super().export_to_openfoam()
 
-# class CompressibleInterFoam(ThermalHydraulicsSolver):
-#     """
-#     OpenFOAM's solver for two compressible, non-isothermal immiscible fluids
-#     using a VOF (volume of fluid) phase-fraction based interface capturing
-#     approach.
-#     """
-#     def __init__(
-#             self,
-#             region="",
-#             removeBaffles=False,
-#             timeFolder=None,
-#             mesh=None,
-#             isMeshDeformation=False,
-#             displacementFieldName="disp",
-#             isSetFvSolutionToDefault: bool=True,
-#             isSetFvSchemesToDefault: bool=True
-#         ):
-#         super().__init__(
-#             region,
-#             "compressibleInterFoam",
-#             removeBaffles,
-#             timeFolder,
-#             mesh,
-#             isMeshDeformation,
-#             displacementFieldName,
-#             isSetFvSolutionToDefault
-#         )
 
-#         if (isSetFvSchemesToDefault):
-#             self.set_fvSchemes_default()
-
-#         if (isSetFvSolutionToDefault):
-#             self.set_fvSolution_default()
+@define(
+    slots=True,
+    on_setattr=[attr.setters.validate, call_method_on_change("propagate_region", "region")],
+    field_transformer=auto_type_validator,
+    repr=False,
+)
+class CompressibleInterFoam(ThermalHydraulicsSolver):
+    """
+    OpenFOAM's solver for two compressible, non-isothermal immiscible fluids
+    using a VOF (volume of fluid) phase-fraction based interface capturing
+    approach.
+    """
+    solver: str = field(default="compressibleInterFoam", init=False, on_setattr=attr.setters.frozen,)
+    fluid: Fluid = field(factory=Fluid)
 
 
-#     def set_fvSchemes_default(self):
-#         self.fvSchemes = fvSchemes()
+    def __attrs_post_init__(self):
+        if self.isSetFvSolutionToDefault:
+            self.set_fvSolution_default()
+        if self.isSetFvSchemesToDefault:
+            self.set_fvSchemes_default()
 
-#         self.fvSchemes.ddtSchemes['default'] = 'Euler'
-
-#         self.fvSchemes.gradSchemes['default'] = 'Gauss linear'
-
-#         self.fvSchemes.divSchemes['div(phi_,alpha)'] = 'Gauss vanLeer'
-#         self.fvSchemes.divSchemes['div(phirb,alpha)'] = 'Gauss linear'
-#         for scheme in [
-#             'div(rhoPhi,U)', 'div(rhoPhi,T)', 'div(rhoPhi,K)', 'div(phi,p)',
-#             'div(phi,k)'
-#         ]:
-#             self.fvSchemes.divSchemes[scheme] = 'Gauss upwind'
-#         self.fvSchemes.divSchemes['div(((rho*nuEff)*dev2(T(grad(U)))))'] = 'Gauss linear'
-
-#         self.fvSchemes.laplacianSchemes['default'] = 'Gauss linear uncorrected'
-
-#         self.fvSchemes.interpolationSchemes['default'] = 'linear'
-
-#         self.fvSchemes.snGradSchemes['default'] = 'uncorrected'
-
-#         del self.fvSchemes.fluxRequired['default']
-#         self.fvSchemes.fluxRequired['alpha.water'] = None
-#         self.fvSchemes.fluxRequired['p_rgh'] = None
+        super().__attrs_post_init__()
+        _propagate_region_to(self, self.region, "thermophysicalProperties", "turbulenceProperties",
+                             "phaseProperties", "thermophysicalPropertiesSecondFluid",
+                             "turbulencePropertiesSecondFluid")
 
 
-#     def set_fvSolution_default(self):
-#         self.fvSolution = fvSolution()
+    def set_fvSchemes_default(self):
+        self.fvSchemes = fvSchemes()
 
-#         self.fvSolution.solvers['"alpha.water.*"'] = fvSolutionSolver(
-#             solver="smoothSolver",
-#             smoother="symGaussSeidel",
-#             tolerance=1e-8,
-#             relTol=0,
-#             MULESCorr=True,
-#             nLimiterIter=5,
-#             nAlphaCorr=2,
-#             nAlphaSubCycles=1,
-#             cAlpha=1
-#         )
+        self.fvSchemes.ddtSchemes['default'] = 'Euler'
 
-#         self.fvSolution.solvers['".*(rho|rhoFinal)"'] = fvSolutionSolver(
-#             solver='diagonal'
-#         )
+        self.fvSchemes.gradSchemes['default'] = 'Gauss linear'
 
-#         self.fvSolution.solvers['"pcorr.*"'] = fvSolutionSolver(
-#             solver='PCG',
-#             preconditioner=OpenFOAMDict({
-#                 'preconditioner': 'GAMG',
-#                 'tolerance': 1e-05,
-#                 'relTol': 0,
-#                 'smoother': 'DICGaussSeidel',
-#             }),
-#             tolerance=1e-5,
-#             relTol=0,
-#             maxIter=100
-#         )
+        self.fvSchemes.divSchemes['div(phi_,alpha)'] = 'Gauss vanLeer'
+        self.fvSchemes.divSchemes['div(phirb,alpha)'] = 'Gauss linear'
+        for scheme in [
+            'div(rhoPhi,U)', 'div(rhoPhi,T)', 'div(rhoPhi,K)', 'div(phi,p)',
+            'div(phi,k)'
+        ]:
+            self.fvSchemes.divSchemes[scheme] = 'Gauss upwind'
+        self.fvSchemes.divSchemes['div(((rho*nuEff)*dev2(T(grad(U)))))'] = 'Gauss linear'
 
-#         self.fvSolution.solvers['p_rgh'] = fvSolutionSolver(
-#             solver='GAMG',
-#             tolerance=1e-7,
-#             relTol=0.01,
-#             smoother='DIC'
-#         )
+        self.fvSchemes.laplacianSchemes['default'] = 'Gauss linear uncorrected'
 
-#         self.fvSolution.solvers['p_rghFinal'] = fvSolutionSolver(
-#             solver='PCG',
-#             preconditioner=OpenFOAMDict({
-#                 'preconditioner': 'GAMG',
-#                 'tolerance': 1e-05,
-#                 'relTol': 0,
-#                 'nVcycles': 2,
-#                 'smoother': 'DICGaussSeidel',
-#                 'nPreSweeps': 2
-#             }),
-#             tolerance=1e-7,
-#             relTol=0,
-#             maxIter=20
-#         )
+        self.fvSchemes.interpolationSchemes['default'] = 'linear'
 
-#         self.fvSolution.solvers['U'] = fvSolutionSolver(
-#             solver='smoothSolver',
-#             smoother='symGaussSeidel',
-#             tolerance=1e-6,
-#             relTol=0,
-#         )
+        self.fvSchemes.snGradSchemes['default'] = 'uncorrected'
 
-#         self.fvSolution.solvers['"(T|k|B|nuTilda).*"'] = fvSolutionSolver(
-#             solver='smoothSolver',
-#             smoother='symGaussSeidel',
-#             tolerance=1e-8,
-#             relTol=0,
-#         )
-
-#         self.pimpleOptions.nOuterCorrectors = 1
-#         self.pimpleOptions.nCorrectors = 3
-#         self.pimpleOptions.nNonOrthogonalCorrectors = 1
-#         self.pimpleOptions.momentumPredictor = False
-#         self.pimpleOptions.minNOuterCorrectors = None
-#         self.pimpleOptions.solveEnergy = None
-#         self.pimpleOptions.solveFluidMechanics = None
-#         self.pimpleOptions.momentumMode = None
-#         self.pimpleOptions.correctUntilConvergence = None
-#         self.pimpleOptions.porousInterfaceSharpness = None
-#         self.pimpleOptions.minMagU = None
+        del self.fvSchemes.fluxRequired['default']
+        self.fvSchemes.fluxRequired['alpha.water'] = None
+        self.fvSchemes.fluxRequired['p_rgh'] = None
 
 
-#     def export_to_openfoam(self):
-#         self.create_folders()
+    def set_fvSolution_default(self):
+        self.fvSolution = fvSolution()
 
-#         self.thermophysicalProperties.region = self.region
-#         self.turbulenceProperties.region = self.region
-#         # self.phaseProperties.region = self.region
+        self.fvSolution.solvers['"alpha.water.*"'] = fvSolutionSolver(
+            solver="smoothSolver",
+            smoother="symGaussSeidel",
+            tolerance=1e-8,
+            relTol=0,
+            MULESCorr=True,
+            nLimiterIter=5,
+            nAlphaCorr=2,
+            nAlphaSubCycles=1,
+            cAlpha=1
+        )
 
-#         self.export_g_to_openfoam()
-#         self.thermophysicalProperties.export_to_openfoam()
-#         self.turbulenceProperties.export_to_openfoam()
-#         # self.phaseProperties.export_to_openfoam()
+        self.fvSolution.solvers['".*(rho|rhoFinal)"'] = fvSolutionSolver(
+            solver='diagonal'
+        )
 
-#         self.fvSolution.extraDict['PIMPLE'] = self.pimpleOptions
+        self.fvSolution.solvers['"pcorr.*"'] = fvSolutionSolver(
+            solver='PCG',
+            preconditioner=OpenFOAMDict({
+                'preconditioner': 'GAMG',
+                'tolerance': 1e-05,
+                'relTol': 0,
+                'smoother': 'DICGaussSeidel',
+            }),
+            tolerance=1e-5,
+            relTol=0,
+            maxIter=100
+        )
 
-#         # return super().export_to_openfoam()
-#         return(Solver.export_to_openfoam(self))
+        self.fvSolution.solvers['p_rgh'] = fvSolutionSolver(
+            solver='GAMG',
+            tolerance=1e-7,
+            relTol=0.01,
+            smoother='DIC'
+        )
+
+        self.fvSolution.solvers['p_rghFinal'] = fvSolutionSolver(
+            solver='PCG',
+            preconditioner=OpenFOAMDict({
+                'preconditioner': 'GAMG',
+                'tolerance': 1e-05,
+                'relTol': 0,
+                'nVcycles': 2,
+                'smoother': 'DICGaussSeidel',
+                'nPreSweeps': 2
+            }),
+            tolerance=1e-7,
+            relTol=0,
+            maxIter=20
+        )
+
+        self.fvSolution.solvers['U'] = fvSolutionSolver(
+            solver='smoothSolver',
+            smoother='symGaussSeidel',
+            tolerance=1e-6,
+            relTol=0,
+        )
+
+        self.fvSolution.solvers['"(T|k|B|nuTilda).*"'] = fvSolutionSolver(
+            solver='smoothSolver',
+            smoother='symGaussSeidel',
+            tolerance=1e-8,
+            relTol=0,
+        )
+
+        self.pimpleOptions.nOuterCorrectors = 1
+        self.pimpleOptions.nCorrectors = 3
+        self.pimpleOptions.nNonOrthogonalCorrectors = 1
+        self.pimpleOptions.momentumPredictor = False
+        self.pimpleOptions.minNOuterCorrectors = None
+        self.pimpleOptions.solveEnergy = None
+        self.pimpleOptions.solveFluidMechanics = None
+        self.pimpleOptions.momentumMode = None
+        self.pimpleOptions.correctUntilConvergence = None
+        self.pimpleOptions.porousInterfaceSharpness = None
+        self.pimpleOptions.minMagU = None
+
+
+    def export_to_openfoam(self):
+        self.create_folders()
+
+        self.fluid.turbulenceProperties.region = self.region
+        self.fluid.turbulenceProperties.export_to_openfoam()
+
+        self.fluid.thermophysicalProperties.region = self.region
+        self.fluid.thermophysicalProperties.export_to_openfoam()
+
+        self.export_g_to_openfoam()
+
+        self.fvSolution.extraDict['PIMPLE'] = self.pimpleOptions
+
+        return super().export_to_openfoam()
