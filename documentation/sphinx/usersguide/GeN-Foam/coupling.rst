@@ -299,7 +299,11 @@ Tutorial `2D_flowOverPlate <https://gitlab.com/foamForNuclear/foamForNuclear/-/t
 shows an example of boundary coupling.
 
 
-.. include:: ../../cppapi/generated/multiRegion/loop/loopModels/loop.rst
+The loops
+---------
+
+.. include:: ../../cppapi/generated/multiRegion/loop/loop.rst
+   :start-line: 7
 
 
 
