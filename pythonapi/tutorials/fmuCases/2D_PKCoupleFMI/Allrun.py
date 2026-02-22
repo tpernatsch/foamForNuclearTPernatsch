@@ -4,7 +4,7 @@
 #==============================================================================*
 # Imports
 
-from copy import copy
+from copy import deepcopy
 import matplotlib.pyplot as plt
 import foamForNuclear as ffn
 import foamForNuclear.boundaryConditions as bc
@@ -18,78 +18,82 @@ ffn.allclean()
 #==============================================================================*
 # Mesh
 
-nMesh = mesh.BlockMesh(region="neutroRegion")
+def create_mesh(region: str):
+    newMesh = mesh.BlockMesh(region=region)
 
-zone0 = nMesh.create_cube("zone0", 0, 0, 0, 1, 0.1, 1, nx=25, nz=25)
+    zone0 = newMesh.create_cube("zone0", 0, 0, 0, 1, 0.1, 1, nx=25, nz=25)
 
-inlet = mesh.Face("inlet")
-inlet.add_sub_face(zone0.bottomFace())
+    inlet = mesh.Face("inlet")
+    inlet.add_sub_face(zone0.bottomFace())
 
-outlet = mesh.Face("outlet")
-outlet.add_sub_face(zone0.topFace())
+    outlet = mesh.Face("outlet")
+    outlet.add_sub_face(zone0.topFace())
 
-fixedWalls = mesh.Face("fixedWalls", boundaryType="wall")
-fixedWalls.add_sub_face(zone0.leftFace())
-fixedWalls.add_sub_face(zone0.rightFace())
+    fixedWalls = mesh.Face("fixedWalls", boundaryType="wall")
+    fixedWalls.add_sub_face(zone0.leftFace())
+    fixedWalls.add_sub_face(zone0.rightFace())
 
-frontAndBack = mesh.Face("frontAndBack", boundaryType="empty")
-frontAndBack.add_sub_face(zone0.frontFace())
-frontAndBack.add_sub_face(zone0.backFace())
+    frontAndBack = mesh.Face("frontAndBack", boundaryType="empty")
+    frontAndBack.add_sub_face(zone0.frontFace())
+    frontAndBack.add_sub_face(zone0.backFace())
 
-nMesh.add_boundary(inlet)
-nMesh.add_boundary(outlet)
-nMesh.add_boundary(fixedWalls)
-nMesh.add_boundary(frontAndBack)
+    newMesh.add_boundary(inlet)
+    newMesh.add_boundary(outlet)
+    newMesh.add_boundary(fixedWalls)
+    newMesh.add_boundary(frontAndBack)
+
+    return(newMesh)
 
 
-thMesh = copy(nMesh)
-thMesh.region = "fluidRegion"
+nMesh = create_mesh(region="neutroRegion")
+thMesh = create_mesh(region="fluidRegion")
+
 
 
 #==============================================================================*
 # Time folder
 
-timeFolder0 = ffn.TimeFolder(0)
+timeFolder0 = ffn.timeFolder.TimeFolder(0)
 
-defaultFlux = ffn.Field("defaultFlux", region=nMesh.region)
-defaultFlux.dimensions = ffn.Dimension(default='neutronFlux')
+defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
+defaultFlux.dimensions = ffn.fields.Dimension(default='neutronFlux')
 defaultFlux.internalField = 1
-defaultFlux.set_boundary_condition(fixedWalls, bc.FixedValue(0))
-defaultFlux.set_boundary_condition(inlet, bc.FixedValue(0))
-defaultFlux.set_boundary_condition(outlet, bc.FixedValue(0))
-defaultFlux.set_boundary_condition(frontAndBack, bc.Empty())
+defaultFlux.set_boundary_condition("fixedWalls", bc.FixedValue(0))
+defaultFlux.set_boundary_condition("inlet", bc.FixedValue(0))
+defaultFlux.set_boundary_condition("outlet", bc.FixedValue(0))
+defaultFlux.set_boundary_condition("frontAndBack", bc.Empty())
 
-T = ffn.Field("T", region=thMesh.region)
-T.dimensions = ffn.Dimension(default='T')
+T = ffn.fields.Field("T", region=thMesh.region)
+T.dimensions = ffn.fields.Dimension(default='T')
 T.internalField = 600
-T.set_boundary_condition(fixedWalls, bc.ZeroGradient())
-T.set_boundary_condition(inlet, bc.FixedValue(600))
-T.set_boundary_condition(outlet, bc.ZeroGradient())
-T.set_boundary_condition(frontAndBack, bc.Empty())
+T.set_boundary_condition("fixedWalls", bc.ZeroGradient())
+T.set_boundary_condition("inlet", bc.FixedValue(600))
+T.set_boundary_condition("outlet", bc.ZeroGradient())
+T.set_boundary_condition("frontAndBack", bc.Empty())
 
-U = ffn.Field("U", region=thMesh.region)
-U.dimensions = ffn.Dimension(default='U')
-U.internalField = ffn.Vector(0, 0, 1)
-U.set_boundary_condition(fixedWalls, bc.Slip())
-U.set_boundary_condition(inlet, bc.FixedValue(U.internalField))
-U.set_boundary_condition(outlet, bc.ZeroGradient())
-U.set_boundary_condition(frontAndBack, bc.Empty())
+U = ffn.fields.Field("U", region=thMesh.region)
+U.dimensions = ffn.fields.Dimension(default='U')
+U.internalField = ffn.common.Vector(0, 0, 1)
+U.set_boundary_condition("fixedWalls", bc.Slip())
+U.set_boundary_condition("inlet", bc.FixedValue(U.internalField))
+U.set_boundary_condition("outlet", bc.ZeroGradient())
+U.set_boundary_condition("frontAndBack", bc.Empty())
 
-p = ffn.Field("p", region=thMesh.region)
-p.dimensions = ffn.Dimension(default='p')
+p = ffn.fields.Field("p", region=thMesh.region)
+p.dimensions = ffn.fields.Dimension(default='p')
 p.internalField = 1e5
-p.set_boundary_condition(fixedWalls, bc.Calculated(p.internalField))
-p.set_boundary_condition(inlet, bc.Calculated(p.internalField))
-p.set_boundary_condition(outlet, bc.Calculated(p.internalField))
-p.set_boundary_condition(frontAndBack, bc.Empty())
+p.set_boundary_condition("fixedWalls", bc.Calculated(p.internalField))
+p.set_boundary_condition("inlet", bc.Calculated(p.internalField))
+p.set_boundary_condition("outlet", bc.Calculated(p.internalField))
+p.set_boundary_condition("frontAndBack", bc.Empty())
 
-p_rgh = ffn.Field("p_rgh", region=thMesh.region)
-p_rgh.dimensions = ffn.Dimension(default='p')
+p_rgh = ffn.fields.Field("p_rgh", region=thMesh.region)
+p_rgh.dimensions = ffn.fields.Dimension(default='p')
 p_rgh.internalField = 1e5
-p_rgh.set_boundary_condition(fixedWalls, bc.FixedFluxPressure(p_rgh.internalField))
-p_rgh.set_boundary_condition(inlet, bc.FixedFluxPressure(p_rgh.internalField))
-p_rgh.set_boundary_condition(outlet, bc.FixedValue(p_rgh.internalField))
-p_rgh.set_boundary_condition(frontAndBack, bc.Empty())
+p_rgh.set_boundary_condition("fixedWalls", bc.FixedFluxPressure(p_rgh.internalField))
+p_rgh.set_boundary_condition("inlet", bc.FixedFluxPressure(p_rgh.internalField))
+p_rgh.set_boundary_condition("outlet", bc.FixedValue(p_rgh.internalField))
+p_rgh.set_boundary_condition("frontAndBack", bc.Empty())
 
 timeFolder0.append(defaultFlux)
 timeFolder0.append(T)
@@ -101,20 +105,20 @@ timeFolder0.append(p_rgh)
 #==============================================================================*
 # Thermal-hydraulics solver
 
-thSolver = ffn.ThermalHydraulicsSolver(
-    "fluidRegion", "onePhase",
+thSolver = ffn.solvers.thermal_hydraulics.OnePhaseThermalHydraulicsSolver(
+    region=thMesh.region,
     mesh=thMesh,
     removeBaffles=True,
     isSetFvSolutionToDefault=False
 )
 
-thSolver.thermophysicalProperties = ffn.thermophysicalProperty.SodiumConst()
+thSolver.fluid.thermophysicalProperties = ffn.thermo.SodiumConst()
 
-thSolver.turbulenceProperties.simulationType = 'laminar'
+thSolver.fluid.turbulenceProperties.simulationType = 'laminar'
 
-core = ffn.StructureProperty(['zone0'], volumeFraction=0.5, Dh=0.01)
+core = ffn.porous_medium.Structure(zones=['zone0'], volumeFraction=0.5, Dh=0.01)
 
-core.powerModel = ffn.NuclearFuelPin(
+core.powerModel = ffn.porous_medium.power_models.NuclearFuelPin(
     fuelInnerRadius=0.0012,
     fuelOuterRadius=0.004715,
     cladInnerRadius=0.004865,
@@ -136,39 +140,40 @@ core.powerModel = ffn.NuclearFuelPin(
     # ]
 )
 
-core.add_passive_structure(
+core.passiveProperties = ffn.porous_medium.PassiveProperties(
     volumetricArea=2,
     rho=7700,
     Cp=500,
     T=600
 )
 
-thSolver.add_structure_property(core)
+thSolver.structures.append(core)
 
-thSolver.add_drag_model(
-    ffn.ReynoldsPower(0.687, -0.25, zones=['zone0'])
+thSolver.fluid_structure.dragModels.append(
+    ffn.porous_medium.drag.ReynoldsPower(coeff=0.687, exp=-0.25, zones=['zone0'])
 )
-thSolver.add_heat_transfer_model(
-    ffn.NusseltReynoldsPrandtlPower(4.82, 0.0185, 0.827, 0.827, zones=['zone0'])
+thSolver.fluid_structure.heatTransferModels.append(
+    ffn.porous_medium.heat_transfer.NusseltReynoldsPrandtlPower(
+        const=4.82, coeff=0.0185, expRe=0.827, expPr=0.827, zones=['zone0'])
 )
 
 
-thSolution = ffn.fvSolution()
+thSolution = ffn.numerics.fvSolution()
 
-thSolution.append('"p_rgh.*"', ffn.fvSolutionSolver(
+thSolution.append('"p_rgh.*"', ffn.numerics.fvSolutionSolver(
     solver='GAMG', smoother='DIC', tolerance=1e-8, relTol=0
 ))
-thSolution.append('"e.*"', ffn.fvSolutionSolver(
+thSolution.append('"e.*"', ffn.numerics.fvSolutionSolver(
     solver='smoothSolver',
     smoother='symGaussSeidel',
     tolerance=1e-8, relTol=0, minIter=0
 ))
-thSolution.append('"h.*"', ffn.fvSolutionSolver(
+thSolution.append('"h.*"', ffn.numerics.fvSolutionSolver(
     solver='smoothSolver',
     smoother='symGaussSeidel',
     tolerance=1e-8, relTol=0, minIter=0
 ))
-thSolution.append('".*"', ffn.fvSolutionSolver(
+thSolution.append('".*"', ffn.numerics.fvSolutionSolver(
     solver='PBiCGStab',
     preconditioner='diagonal',
     tolerance=1e-6, relTol=0.001
@@ -198,18 +203,18 @@ thSolver.fvSchemes.snGradSchemes['default'] = 'uncorrected'
 #==============================================================================*
 # Neutronics solver
 
-neutronicsSolver = ffn.NeutronicsSolver(
-    "neutroRegion",
-    "diffusionNeutronics",
+neutronicsSolver = ffn.solvers.NeutronicsSolver(
+    region=nMesh.region,
+    solver="diffusionNeutronics",
     mesh=nMesh,
     power=10e6
 )
 
 neutronicsSolver.nuclearData.add_state(
-    ffn.NuclearDataState(
+    ffn.nuclearData.NuclearDataState(
         name='reference',
         zones=[
-            ffn.NuclearDataZone(
+            ffn.nuclearData.NuclearDataZone(
                 name='zone0',
                 fuelFraction=1,
                 inverseVelocity=[7.1e-08, 0.0045],
@@ -238,12 +243,12 @@ neutronicsSolver.neutronTransportOptions.maxNeutronIterations = 50
 #==============================================================================*
 # Solvers
 
-solvers = ffn.Solvers([neutronicsSolver, thSolver])
+solvers = ffn.solvers.Solvers([neutronicsSolver, thSolver])
 
 #==============================================================================*
 # Coupling
 
-coupling = ffn.Coupling(solvers)
+coupling = ffn.coupling.Coupling(solvers)
 
 coupling.add_field_transfer(neutronicsSolver, thSolver, 'powerDensity', 'powerDensityStructure')
 coupling.add_field_transfer(neutronicsSolver, thSolver, 'secondaryPowerDensity', 'powerDensityLiquid')
@@ -260,9 +265,9 @@ coupling.add_field_transfer(thSolver, neutronicsSolver, 'T.passiveStructure', 'T
 # of the results especially if PID controllers are present
 
 # Coupling interface
-externalCouplingDict = ffn.ExternalCouplingDict()
+externalCouplingDict = ffn.preprocessing.ExternalCouplingDict()
 
-fieldIntegralToFMU = ffn.FieldIntegralToFMU(
+fieldIntegralToFMU = ffn.preprocessing.FieldIntegralToFMU(
     name="fieldIntegralToFMU",
     nameFMU="gfPower",
     fieldName="powerDensity",
@@ -273,7 +278,7 @@ fieldIntegralToFMU = ffn.FieldIntegralToFMU(
 externalCouplingDict.append(fieldIntegralToFMU)
 
 # FMU simulator
-FMUSimulator = ffn.FMUSimulator(
+FMUSimulator = ffn.functions.FMUSimulator(
     name="FMUSimulator",
     pyClassName="ExternalReactivityController",
     pyFileName="ExternalReactivityController",
@@ -288,7 +293,7 @@ FMUSimulator.plot_coupling_graph()
 #==============================================================================*
 # Model
 
-model = ffn.Model(
+model = ffn.case.Case(
     solvers=solvers,
     coupling=coupling,
     timeFolders=[timeFolder0],
@@ -344,7 +349,7 @@ settings.writeControl = 'timeStep'
 settings.writeInterval = 50
 
 
-pointKineticsData = ffn.PointKineticsData(
+pointKineticsData = ffn.nuclearData.PointKineticsData(
     fastNeutrons=True,
     promptGenerationTime=1e-06,
     delayedFractions=[

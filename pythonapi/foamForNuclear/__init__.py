@@ -51,14 +51,14 @@ from . import control
 
 # To be checked how to group
 from . import coupling
-from foamForNuclear.executor import run, allclean, run_preprocessing, run_reconstruction, copyFolder
+from foamForNuclear.executor import run, allclean, run_preprocessing, run_reconstruction, copyFolder, duplicateFolder
 from . import executor
 from foamForNuclear.externalSource import ExternalSource
 
 from . import fields
 
-# # To be checked what this import does
-# from foamForNuclear.fmi import *
+from . import fmi
+# from foamForNuclear.fmi import FMPyContainer, FMPyMasterRunner, FMPyMasterRunnerParallel, PyFMIContainer, OMSimulatorContainer
 
 from . import functions
 
