@@ -31,8 +31,8 @@ def _sync_Tref_and_alpha_hook(inst, attr, value):
         if isinstance(te, properties.thermal_expansion.ThermalExpansion):
             # align its Tref to the instance's current Tref (if already set)
             tref = getattr(inst, "Tref", None)
-            print(te.Tref)
-            print(tref)
+            # print(te.Tref)
+            # print(tref)
             if tref is not None:
                 te.Tref = tref
 
@@ -48,14 +48,14 @@ class Material(FoamForNuclearDict):
     heatCapacity: properties.heat_capacity.HeatCapacity | None = None
     emissivity: properties.emissivity.Emissivity | None = None
     YoungModulus: properties.young_modulus.YoungModulus | None = None
-    PoissonRatio: properties.poisson_ratio.PoissonRatio | None = None    
+    PoissonRatio: properties.poisson_ratio.PoissonRatio | None = None
     thermalExpansion: properties.thermal_expansion.ThermalExpansion | None = field(
         default=None,
         on_setattr=setters.pipe(
             setters.convert,      # run converter on set
             _sync_Tref_and_alpha_hook,
         ),
-    )     
+    )
     Tref: float | int = field(
         default=293.0,
         metadata={"ffn_internal": True},
@@ -71,7 +71,7 @@ class Material(FoamForNuclearDict):
 
     # Force sync between Tref and thermal expansion
     def __attrs_post_init__(self) -> None:
-        self.Tref = self.Tref 
+        self.Tref = self.Tref
         super().__attrs_post_init__()
 
 
@@ -159,24 +159,24 @@ class Constant(Material):
             setters.convert,      # run converter on set
             _sync_Tref_and_alpha_hook,
         ),
-    )     
+    )
 
 
 
 # @ffn_define
 # class Buffer(Material):
 #     TYPE: ClassVar[str] = "buffer"
-#     swelling: swelling.Swelling | None 
+#     swelling: swelling.Swelling | None
 
     # theoreticalDensity: float | int = 2250.0
-       
+
 #     @classmethod
 #     def preset(
 #         cls,
 #         *,
-#         name: str, 
-#         initialDensity: float | int = 1000, theoreticalDensity: float | int = 2250, 
-#         initialConductivity: float | int = 0.5, theoreticalConductivity: float | int = 4, 
+#         name: str,
+#         initialDensity: float | int = 1000, theoreticalDensity: float | int = 2250,
+#         initialConductivity: float | int = 0.5, theoreticalConductivity: float | int = 4,
 #         cp: float | int =720, emissivity: float | int = 0.0,
 #         nu: float | int = 0.33, Tref: float | int = 293
 #     ) -> Constant:
@@ -184,7 +184,7 @@ class Constant(Material):
 #             name=name,
 #             density=properties.density.Constant(rho=initialDensity),
 #             conductivity=properties.conductivity.BufferParfume(
-#                 initialDensity=initialDensity, theoreticalDensity=theoreticalDensity, 
+#                 initialDensity=initialDensity, theoreticalDensity=theoreticalDensity,
 #                 initialConductivity=initialConductivity, theoreticalConductivity=theoreticalConductivity
 #             ),
 #             heatCapacity=properties.heat_capacity.Constant(cp=cp),
@@ -198,7 +198,7 @@ class Constant(Material):
 
 # @ffn_define
 # class Hastelloy(Material):
-#     TYPE: ClassVar[str] = "hastelloy"    
+#     TYPE: ClassVar[str] = "hastelloy"
 #     # density: properties.density.Density = field(factory=properties.density.Constant)
 #     # conductivity: properties.conductivity.Conductivity = field(factory=properties.conductivity.HastelloyNSwindeman)
 #     # heatCapacity: properties.heat_capacity.HeatCapacity = field(factory=properties.heat_capacity.Constant)
@@ -211,13 +211,13 @@ class Constant(Material):
 
 # @ffn_define
 # class Inconel600(Material):
-#     TYPE: ClassVar[str] = "inconel600"    
+#     TYPE: ClassVar[str] = "inconel600"
 #     density: properties.density.Density = field(factory=properties.density.Constant)
 
 
 # @ffn_define
 # class Molybdenum(Material):
-#     TYPE: ClassVar[str] = "molybdenum"    
+#     TYPE: ClassVar[str] = "molybdenum"
 #     # density: properties.density.Density = field(factory=properties.density.MoConstant)
 #     # conductivity: properties.conductivity.Conductivity = field(factory=properties.conductivity.Molybdenum)
 #     # heatCapacity: properties.heat_capacity.HeatCapacity = field(factory=properties.heat_capacity.Molybdenum)
@@ -230,7 +230,7 @@ class Constant(Material):
 
 # @ffn_define
 # class PyC(Material):
-#     TYPE: ClassVar[str] = "PyC"    
+#     TYPE: ClassVar[str] = "PyC"
 #     # density: properties.density.Density = field(factory=properties.density.Constant)
 #     # conductivity: properties.conductivity.Conductivity = field(factory=properties.conductivity.Constant)
 #     # heatCapacity: properties.heat_capacity.HeatCapacity = field(factory=properties.heat_capacity.Constant)
@@ -243,7 +243,7 @@ class Constant(Material):
 
 # @ffn_define
 # class SiC(Material):
-#     TYPE: ClassVar[str] = "SiC"    
+#     TYPE: ClassVar[str] = "SiC"
 #     # density: properties.density.Density = field(factory=properties.density.Constant)
 #     # conductivity: properties.conductivity.Conductivity = field(factory=properties.conductivity.SiCParfume)
 #     # heatCapacity: properties.heat_capacity.HeatCapacity = field(factory=properties.heat_capacity.SiCSnead)
@@ -255,7 +255,7 @@ class Constant(Material):
 
 # @ffn_define
 # class Steel1515Ti(Material):
-#     TYPE: ClassVar[str] = "Steel1515Ti"    
+#     TYPE: ClassVar[str] = "Steel1515Ti"
 #     # density: properties.density.Density = field(factory=properties.density.Steel1515TiSchumann)
 #     # conductivity: properties.conductivity.Conductivity = field(factory=properties.conductivity.Steel1515TiTobbe)
 #     # heatCapacity: properties.heat_capacity.HeatCapacity = field(factory=properties.heat_capacity.Steel1515TiBanerjee)
@@ -326,10 +326,10 @@ class UO2(FuelMaterial):
 
 # @ffn_define
 # class UPuO2(Material):
-#     TYPE: ClassVar[str] = "UPuO2"    
+#     TYPE: ClassVar[str] = "UPuO2"
 
     # densityFraction: float | int = 0.945
-    # theoreticalDensity: float | int = 10430.0 
+    # theoreticalDensity: float | int = 10430.0
 #     # density: properties.density.Density = field(factory=properties.density.UPuO2Constant)
 #     # conductivity: properties.conductivity.Conductivity = field(factory=properties.conductivity.MaUPuO2Magni)
 #     # heatCapacity: properties.heat_capacity.HeatCapacity = field(factory=properties.heat_capacity.UPuO2Matpro)
@@ -342,7 +342,7 @@ class UO2(FuelMaterial):
 #     # relocation: relocation.Relocation = field(factory=relocation.UO2Frapcon)
 #     # failure: failure.Failure = field(factory=failure.Failure)
 #     # # pore_velocity: pore_velocity.PoreVelocity = field(factory=pore_velocity.PoreVelocity)
-#     # isotopes: OpenFOAMListDict = field(default=Factory(lambda self: 
+#     # isotopes: OpenFOAMListDict = field(default=Factory(lambda self:
 #     #     OpenFOAMListDict(IsotopesDict, "isotopes",), takes_self=True))
 
 
@@ -365,7 +365,7 @@ class Zircaloy(Material):
         factory=properties.poisson_ratio.ZircaloyConstant)
     thermalExpansion: properties.thermal_expansion.ThermalExpansion = field(
         factory=properties.thermal_expansion.ZircaloyMatpro)
-    
+
     # Behavior
     swelling: swelling.Swelling | None = None
     phase_transition: phase_transition.PhaseTransition | None = None

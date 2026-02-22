@@ -362,7 +362,7 @@ class Field(OpenFOAMFile):
     @internalField.setter
     def internalField(self, internalField) -> None:
         check_type("internalField", internalField, (float, int, list, np.ndarray, Vector), none_ok=True)
-    
+
         if (isinstance(internalField, (list, np.ndarray))
                 and len(internalField) == 3):
             self._internalField = Vector(internalField[0], internalField[1], internalField[2])
@@ -438,6 +438,9 @@ class Field(OpenFOAMFile):
 
         Returns the list of patch names it touched (concrete patch names only).
         """
+        if not isinstance(mesh, BlockMesh):
+            return([])
+
         import re
         from typing import Any
 
@@ -977,4 +980,4 @@ class p_rgh(Field):
             boundaryField=boundaryField,
             region=region,
             default_bc=default_bc
-        ) 
+        )

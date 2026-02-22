@@ -28,9 +28,9 @@ import foamlib
 
 
 @define(
-    slots=True, 
+    slots=True,
     on_setattr=[attr.setters.convert, attr.setters.validate],
-    field_transformer=auto_type_validator, 
+    field_transformer=auto_type_validator,
     repr=False
 )
 class OffbeatSolver(Solver):
@@ -118,7 +118,7 @@ class OffbeatSolver(Solver):
     mechanicsSolver: mechanics_solver.MechanicsSolver | None = None
     neutronicsSolver: neutronics_solver.NeutronicsSolver | None = None
     elementTransportSolver: ElementTransportSolver | None = None
-    materials: list[materials.Material] = field(factory=list) 
+    materials: list[materials.Material] = field(factory=list)
     rheology: rheology.Rheology | None = None
     heatSource: heat_source.HeatSource | None = None
     burnup: burnup.Burnup | None = None
@@ -131,14 +131,14 @@ class OffbeatSolver(Solver):
     couplingOptions: ThermoMechanicsCouplingOptions | None = None
     removeBaffles: bool = False
     timeFolder: TimeFolder | None = None
-    mesh: Mesh | None = None        
+    mesh: Mesh | None = None
     isMeshDeformation: bool = False
     displacementFieldName: str = "disp"
     isSetFvSolutionToDefault: bool = True
     isSetFvSchemesToDefault: bool = True
 
     stressAnalysis: StressAnalysis = field(factory=StressAnalysis)
-    
+
     def __attrs_post_init__(self):
         if self.isSetFvSolutionToDefault:
             self.set_fvSolution_default()
@@ -171,14 +171,6 @@ class OffbeatSolver(Solver):
 
     def set_fvSolution_default(self):
         self.fvSolution = fvSolution()
-
-        # self.fvSolution.solvers["porosity"] = fvSolutionSolver(
-        #     solver="PBiCG",
-        #     smoother="GaussSeidel",
-        #     preconditioner="DILU",
-        #     tolerance=1e-10,
-        #     relTol=1e-2,
-        # )
         self.fvSolution.solvers["D"] = fvSolutionSolver(
             solver="PCG",
             preconditioner="FDIC",
@@ -188,13 +180,21 @@ class OffbeatSolver(Solver):
         self.fvSolution.solvers["T"] = copy(self.fvSolution.solvers["D"])
         self.fvSolution.solvers["neutronFlux0"] = copy(self.fvSolution.solvers["D"])
 
-        # self.fvSolution.solvers["fuelDisp"] = fvSolutionSolver(
-        #     solver="PBiCG",
-        #     preconditioner="DILU",
-        #     tolerance=1e-5,
-        #     relTol=1e-2,
-        # )
-        # self.fvSolution.solvers["CRDisp"] = copy(self.fvSolution.solvers["fuelDisp"])
+        # Used only for GeN-Foam
+        self.fvSolution.solvers["porosity"] = fvSolutionSolver(
+            solver="PBiCG",
+            smoother="GaussSeidel",
+            preconditioner="DILU",
+            tolerance=1e-10,
+            relTol=1e-2,
+        )
+        self.fvSolution.solvers["fuelDisp"] = fvSolutionSolver(
+            solver="PBiCG",
+            preconditioner="DILU",
+            tolerance=1e-5,
+            relTol=1e-2,
+        )
+        self.fvSolution.solvers["CRDisp"] = copy(self.fvSolution.solvers["fuelDisp"])
 
         self.stressAnalysis.nCorrectors = dict({"default": 1})
         self.stressAnalysis.maxOuterIter = 1000
@@ -245,7 +245,7 @@ class OffbeatSolver(Solver):
         """
         solverFields = ["T"]
         if (self.mechanicsSolver is not None and
-            self.mechanicsSolver.TYPE != "fromLatestTime" and 
+            self.mechanicsSolver.TYPE != "fromLatestTime" and
             self.mechanicsSolver.TYPE != "constant"):
             solverFields += ["D"]
         if (self.is_offbeat_solver):
@@ -342,7 +342,7 @@ class OffbeatSolver(Solver):
             f"{path}/constant/solverDict", "sliceMapper")
         self.rheology = rheology.Rheology.import_from_openfoam(
             f"{path}/constant/solverDict", "rheology")
-        
+
         # Import materials
         self.import_materials_from_openfoam(path)
 
@@ -401,8 +401,8 @@ class OffbeatSolver(Solver):
 
         # materials block
         materials_dict = OpenFOAMListDict(
-            name="materials", 
-            expected_type=materials.Material, 
+            name="materials",
+            expected_type=materials.Material,
             items=self.materials
         )
         buf.write(f"{materials_dict.__repr__(depth=0)}\n")

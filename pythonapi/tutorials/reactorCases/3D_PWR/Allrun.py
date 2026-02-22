@@ -125,19 +125,19 @@ thMesh = createMesh(region="fluidRegion")
 
 inletTemperature = 292.7 + 273.15
 
-timeFolder0 = ffn.TimeFolder(time=0)
+timeFolder0 = ffn.timeFolder.TimeFolder(time=0)
 
 # Neutronics
-defaultFlux = ffn.Field("defaultFlux", region=nMesh.region)
-defaultFlux.dimensions = ffn.Dimension(default='flux')
+defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
+defaultFlux.dimensions = ffn.fields.Dimension(default='flux')
 defaultFlux.internalField = 1e21
 defaultFlux.set_boundary_condition('wall', bc.FixedValue(0))
 defaultFlux.set_boundary_condition('top', bc.FixedValue(0))
 defaultFlux.set_boundary_condition('bottom', bc.FixedValue(0))
 
 # Fluid
-T = ffn.Field("T", region=thMesh.region)
-T.dimensions = ffn.Dimension(default='T')
+T = ffn.fields.Field("T", region=thMesh.region)
+T.dimensions = ffn.fields.Dimension(default='T')
 T.internalField = inletTemperature
 T.set_boundary_condition('wall', bc.ZeroGradient())
 T.set_boundary_condition('top', bc.ZeroGradient())
@@ -145,9 +145,9 @@ T.set_boundary_condition('bottom', bc.FixedValue(inletTemperature))
 
 nominalMassFlowRate = 3*25000e3/3600 # (25000 t/h / loop)
 
-U = ffn.Field("U", region=thMesh.region)
-U.dimensions = ffn.Dimension(default='U')
-U.internalField = ffn.Vector(0, 0, 1)
+U = ffn.fields.Field("U", region=thMesh.region)
+U.dimensions = ffn.fields.Dimension(default='U')
+U.internalField = ffn.common.Vector(0, 0, 1)
 U.set_boundary_condition('wall', bc.Slip())
 U.set_boundary_condition('top', bc.ZeroGradient())
 U.set_boundary_condition('bottom', bc.FlowRateInletVelocity(
@@ -155,15 +155,15 @@ U.set_boundary_condition('bottom', bc.FlowRateInletVelocity(
     massFlowRate=nominalMassFlowRate
 ))
 
-p = ffn.Field("p", region=thMesh.region)
-p.dimensions = ffn.Dimension(default='p')
+p = ffn.fields.Field("p", region=thMesh.region)
+p.dimensions = ffn.fields.Dimension(default='p')
 p.internalField = 155e5
 p.set_boundary_condition('wall', bc.ZeroGradient())
 p.set_boundary_condition('top', bc.FixedValue(p.internalField))
 p.set_boundary_condition('bottom', bc.ZeroGradient())
 
-p_rgh = ffn.Field("p_rgh", region=thMesh.region)
-p_rgh.dimensions = ffn.Dimension(default='p')
+p_rgh = ffn.fields.Field("p_rgh", region=thMesh.region)
+p_rgh.dimensions = ffn.fields.Dimension(default='p')
 p_rgh.internalField = p.internalField
 p_rgh.set_boundary_condition('wall', bc.ZeroGradient())
 p_rgh.set_boundary_condition('top', bc.FixedValue(p_rgh.internalField))
@@ -180,7 +180,7 @@ timeFolder0.append(p_rgh)
 #==============================================================================*
 # Neutronics solver
 
-neutronicsSolver = ffn.NeutronicsSolver(
+neutronicsSolver = ffn.solvers.NeutronicsSolver(
     solver="diffusionNeutronics",
     mesh=nMesh,
     region=nMesh.region,
@@ -194,53 +194,50 @@ neutronicsSolver.nuclearData.import_from_openfoam("XS/nuclearData")
 #==============================================================================*
 # Thermal-hydraulics solver
 
-thSolver = ffn.ThermalHydraulicsSolver(
+thSolver = ffn.solvers.thermal_hydraulics.OnePhaseThermalHydraulicsSolver(
     region="fluidRegion",
-    solver="onePhase",
     removeBaffles=True,
     mesh=thMesh,
     isSetFvSolutionToDefault=False
 )
 
-thSolver.thermophysicalProperties = ffn.thermophysicalProperty.WaterConst(T=inletTemperature)
+thSolver.fluid.thermophysicalProperties = ffn.thermo.WaterConst(T=inletTemperature)
 
-thSolver.turbulenceProperties.simulationType = 'laminar'
+thSolver.fluid.turbulenceProperties.simulationType = 'laminar'
 
-core = ffn.StructureProperty(
+core = ffn.porous_medium.Structure(
     zones=["core"],
     pitch=fuelPinPitch,
     elementDiameter=cladOD,
     latticeType='square'
 )
-core.add_power_model(
-    ffn.NuclearFuelPin(
-        fuelInnerRadius=0,
-        fuelOuterRadius=fuelOD/2,
-        cladInnerRadius=cladOD/2 - 0.57e-3,
-        cladOuterRadius=cladOD/2,
-        fuelMeshSize=30,
-        cladMeshSize=5,
-        fuelRho=10480,
-        fuelCp=250,
-        fuelK=3,
-        cladRho=7500,
-        cladCp=500,
-        cladK=20,
-        gapH=3000,
-        fuelT=inletTemperature,
-        cladT=inletTemperature
-    )
+core.powerModel = ffn.porous_medium.power_models.NuclearFuelPin(
+    fuelInnerRadius=0,
+    fuelOuterRadius=fuelOD/2,
+    cladInnerRadius=cladOD/2 - 0.57e-3,
+    cladOuterRadius=cladOD/2,
+    fuelMeshSize=30,
+    cladMeshSize=5,
+    fuelRho=10480,
+    fuelCp=250,
+    fuelK=3,
+    cladRho=7500,
+    cladCp=500,
+    cladK=20,
+    gapH=3000,
+    fuelT=inletTemperature,
+    cladT=inletTemperature
 )
-thSolver.add_structure_property(core)
+thSolver.structures.append(core)
 
-thSolver.add_drag_model(
-    ffn.ReynoldsPower(
+thSolver.fluid_structure.dragModels.append(
+    ffn.porous_medium.drag.ReynoldsPower(
         coeff=0.316, exp=-0.25,
         zones=["core"]
     )
 )
-thSolver.add_heat_transfer_model(
-    ffn.NusseltReynoldsPrandtlPower(
+thSolver.fluid_structure.heatTransferModels.append(
+    ffn.porous_medium.heat_transfer.NusseltReynoldsPrandtlPower(
         const=0, coeff=0.023, expRe=0.8, expPr=0.4,
         zones=['core']
     )
@@ -259,21 +256,21 @@ thSolver.fvSchemes.divSchemes['div\(alphaRhoPhi.*,epsilon.*\)'] = 'Gauss upwind'
 thSolver.fvSchemes.divSchemes['div\(alphaRhoPhi.*,(h|e).*\)'] = 'Gauss upwind'
 
 
-fvSolution = ffn.fvSolution()
+fvSolution = ffn.numerics.fvSolution()
 
-fvSolution.append("p_rgh", ffn.fvSolutionSolver(
+fvSolution.append("p_rgh", ffn.numerics.fvSolutionSolver(
     solver='GAMG', smoother='DIC', tolerance=1e-7, relTol=0
 ))
-fvSolution.append("p_rghFinal", ffn.fvSolutionSolver(
+fvSolution.append("p_rghFinal", ffn.numerics.fvSolutionSolver(
     solver='GAMG', smoother='DIC', tolerance=1e-7, relTol=0
 ))
-fvSolution.append("e", ffn.fvSolutionSolver(
+fvSolution.append("e", ffn.numerics.fvSolutionSolver(
     solver='smoothSolver', smoother='symGaussSeidel', tolerance=1e-7, relTol=0, minIter=0
 ))
-fvSolution.append("h", ffn.fvSolutionSolver(
+fvSolution.append("h", ffn.numerics.fvSolutionSolver(
     solver='smoothSolver', smoother='symGaussSeidel', tolerance=1e-7, relTol=0, minIter=0
 ))
-fvSolution.append('".*"', ffn.fvSolutionSolver(
+fvSolution.append('".*"', ffn.numerics.fvSolutionSolver(
     solver='PBiCGStab', preconditioner='diagonal', tolerance=1e-7, relTol=0.001
 ))
 thSolver.fvSolution = fvSolution
@@ -293,7 +290,7 @@ thSolver.pimpleOptions.solveFluidMechanics = True
 #==============================================================================*
 # Solvers
 
-solvers = ffn.Solvers([neutronicsSolver, thSolver])
+solvers = ffn.solvers.Solvers([neutronicsSolver, thSolver])
 
 # for solver in solvers:
 #     solver.decomposeParDict.numberOfSubdomains = 8
@@ -303,7 +300,7 @@ solvers = ffn.Solvers([neutronicsSolver, thSolver])
 #==============================================================================*
 # Coupling
 
-coupling = ffn.Coupling(solvers=solvers)
+coupling = ffn.coupling.Coupling(solvers=solvers)
 
 coupling.add_field_transfer(neutronicsSolver, thSolver, "powerDensity", "powerDensityStructure")
 coupling.add_field_transfer(neutronicsSolver, thSolver, "secondaryPowerDensity", "powerDensityLiquid")
@@ -319,13 +316,13 @@ coupling.add_field_transfer(thSolver, neutronicsSolver, "T.passiveStructure", "T
 # Settings
 
 
-model = ffn.Model(
+model = ffn.case.Case(
     solvers=solvers,
     coupling=coupling,
     timeFolders=[timeFolder0]
 )
 
-settings: ffn.ControlDict = model.settings
+settings = model.settings
 
 settings.application = 'GeN-Foam'
 settings.endTime = 400
@@ -340,7 +337,7 @@ settings.adjustTimeStep = False
 idxField = neutronicsSolver.create_zone_field(nMesh.cellZones)
 timeFolder0.append(idxField)
 
-TOutletFuncObj = ffn.SurfaceFieldValue(
+TOutletFuncObj = ffn.functions.SurfaceFieldValue(
     name=f'surfFieldValue_top',
     fields=['T'],
     operation="areaAverage",
@@ -353,7 +350,7 @@ TOutletFuncObj = ffn.SurfaceFieldValue(
     regionName="top"
 )
 
-TInletFunObj = ffn.SurfaceFieldValue(
+TInletFunObj = ffn.functions.SurfaceFieldValue(
     name=f'surfFieldValue_bottom',
     fields=['T'],
     operation="areaAverage",
@@ -366,8 +363,8 @@ TInletFunObj = ffn.SurfaceFieldValue(
     regionName="bottom"
 )
 
-settings.add_function_object(TOutletFuncObj)
-settings.add_function_object(TInletFunObj)
+model.add_function_object(TOutletFuncObj)
+model.add_function_object(TInletFunObj)
 
 print(model)
 
@@ -392,7 +389,7 @@ if (True):
     #==============================================================================*
     # Preprocessing
 
-    ffn.run_preprocessing(model=model)
+    ffn.run_preprocessing(model)
 
     model.plot_mesh(region=nMesh, show_edges=True)
     model.plot_mesh(region=thMesh, show_edges=True)
@@ -408,7 +405,7 @@ if (True):
     #==============================================================================*
     # Run
 
-    ffn.run(model=model)
+    ffn.run(model)
 
 
 #==============================================================================*

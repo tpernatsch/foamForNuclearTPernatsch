@@ -1,7 +1,11 @@
-from foamForNuclear.common import FoamForNuclearDict, List
+from collections.abc import Mapping
+
+from foamForNuclear.common import FoamForNuclearDict, List, OpenFOAMDict
+from foamForNuclear.checkvalue import check_type
 from foamForNuclear._attrs_tools import ffn_define, _to_List_str
 from typing import ClassVar
 from attrs import field, validators as v
+
 
 from .annular_flow import AnnularFlowModel
 from .chf import CriticalHeatFluxModel
@@ -18,7 +22,7 @@ class HeatTransferModel(FoamForNuclearDict):
     Base class for heat-transfer.
     """
     TYPE: ClassVar[str] = "none"
-    zones: list | List = field(factory=list, metadata={"ffn_internal": True}, converter=_to_List_str)    
+    zones: list | List = field(factory=list, metadata={"ffn_internal": True}, converter=_to_List_str)
 
     def __repr__(self, depth = 0):
         textZones = ""
@@ -193,6 +197,39 @@ class Shah(HeatTransferModel):
 class ByRegime(HeatTransferModel):
     TYPE: ClassVar[str] = "byRegime"
     regimeMap: str
+    regimes: list[HeatTransferModel] = field(
+        factory=list,
+        metadata={"ffn_internal": True},
+    )
+
+    def _update_fields(self) -> None:
+        super()._update_fields()
+
+        for reg in self.regimes:
+            if reg is None:
+                continue
+
+            # --- Case 1: flat dict API ---
+            if isinstance(reg, Mapping):
+                name = reg.get("name")
+                if not name:
+                    raise ValueError("Each regime dict must define a 'name'")
+
+                # everything except 'name' goes into the OpenFOAM sub-dict
+                items = {k: v for k, v in reg.items() if k != "name"}
+                if not items:
+                    raise ValueError(f"Regime '{name}' has no entries")
+
+                reg_of = OpenFOAMDict(name=name, items=items)
+
+            # --- Case 2: OpenFOAMDict-like object ---
+            else:
+                name = getattr(reg, "name", None)
+                if not name:
+                    raise ValueError("Each regime must have a 'name'")
+                reg_of = reg
+
+            self._of[name] = reg_of
 
     # def __repr__(self, depth=0):
     #     self.__setitem__("regimeMap", self.regimeMap)
@@ -202,11 +239,11 @@ class ByRegime(HeatTransferModel):
 
     #     return super().__repr__(depth)
 
-    # def add_regime(self, heatTransferModel: HeatTransferModel):
-    #     check_type("heatTransferModel", heatTransferModel, HeatTransferModel)
-    #     regimeName = heatTransferModel.zones[0]
-    #     heatTransferModel.zones = []
-    #     self.regimes.append((regimeName, heatTransferModel))
+    def add_regime(self, heatTransferModel: HeatTransferModel):
+        check_type("heatTransferModel", heatTransferModel, HeatTransferModel)
+        regimeName = heatTransferModel.zones[0]
+        heatTransferModel.zones = []
+        self.regimes.append((regimeName, heatTransferModel))
 
 
 @ffn_define
@@ -239,14 +276,14 @@ class NusseltReynoldsPrandtlPower(HeatTransferModel):
     expPr : int | float
     expTc : Optional[int | float]
     phaseName : Optional[str] # Only for fluid-fluid interaction
-    """    
+    """
     TYPE: ClassVar[str] = "NusseltReynoldsPrandtlPower"
     const: int | float
     coeff: int | float
     expRe: int | float
     expPr: int | float
     expTc: int | float | None = None
-    phaseName: str | None = field(default=None, metadata={"ffn_internal": True})   
+    phaseName: str | None = field(default=None, metadata={"ffn_internal": True})
 
 
 @ffn_define

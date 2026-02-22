@@ -22,8 +22,21 @@ class PassiveProperties(FoamForNuclearDict):
     volumetricArea: int | float | None = None
     T: int | float | None = None
     rho: int | float | None = None
-    Cp: int | float | None = None,
+    Cp: int | float | None = None
     rhoCp: int | float | None = None
+
+
+def _trigger_compute_hydraulic_parameters(instance, attribute, newValue):
+    object.__setattr__(instance, attribute.name, newValue)
+    print("trigger")
+    instance.compute_hydraulic_parameters(
+        pitch=instance.pitch,
+        elementDiameter=instance.elementDiameter,
+        latticeType=instance.latticeType,
+        spacerThickness=instance.spacerThickness,
+        gridFraction=instance.gridFraction,
+        wireDiameter=instance.wireDiameter
+    )
 
 
 @ffn_define
@@ -145,28 +158,34 @@ class Structure(FoamForNuclearDict):
         validator=v.optional(v.and_(v.instance_of((int, float)), v.ge(0))),
     )
     pitch: int | float | None = field(
-        default=None,
+        default=0,
         validator=v.optional(v.and_(v.instance_of((int, float)), v.ge(0),)),
+        on_setattr=_trigger_compute_hydraulic_parameters
     )
     elementDiameter: int | float | None = field(
-        default=None,
+        default=0,
         validator=v.optional(v.and_(v.instance_of((int, float)), v.ge(0),)),
+        on_setattr=_trigger_compute_hydraulic_parameters
     )
     latticeType: str | None = field(
-        default=None,
+        default="hexagon",
         validator=v.optional(v.and_(v.instance_of(str), v.in_(_LATTICE_TYPES),)),
+        on_setattr=_trigger_compute_hydraulic_parameters
     )
     spacerThickness: int | float | None = field(
-        default=None,
+        default=0,
         validator=v.optional(v.and_(v.instance_of((int, float)), v.ge(0),)),
+        on_setattr=_trigger_compute_hydraulic_parameters
     )
     gridFraction: int | float | None = field(
-        default=None,
+        default=0,
         validator=v.optional(v.and_(v.instance_of((int, float)), v.ge(0), v.le(1),)),
+        on_setattr=_trigger_compute_hydraulic_parameters
     )
     wireDiameter: int | float | None = field(
-        default=None,
+        default=0,
         validator=v.optional(v.and_(v.instance_of((int, float)), v.ge(0),)),
+        on_setattr=_trigger_compute_hydraulic_parameters
     )
     localX: Vector | None = None
     localZ: Vector | None = None
@@ -183,7 +202,7 @@ class Structure(FoamForNuclearDict):
 
         # if (self.passiveProperties is not None):
         #     self.__setitem__('passiveProperties', self.passiveProperties)
-        
+
         return textZones + super().__repr__(depth)
 
     def compute_hydraulic_parameters(
@@ -217,6 +236,7 @@ class Structure(FoamForNuclearDict):
         wireDiameter : float
             Diameter of the wire (default 0) used in hexagonal assemblies
         """
+        print("hello")
         if (
             pitch is None
             or elementDiameter is None
