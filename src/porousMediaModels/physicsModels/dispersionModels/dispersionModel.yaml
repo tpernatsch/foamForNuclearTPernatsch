@@ -12,7 +12,7 @@ options: []
 
 usage:
   - comment: |-
-      The dispersion model is constructed at run-time via the       virtualMassCoefficientModel subdictionary of the physicsModel subdictionary of the phaseProperties dictionary. An example is reported below. Please note that the example makes use of the byRegime templated model, allowing to give different types to different regimes. Notice also that the constant model used in the example is not the templated constant model, but the constant sub-model listed above. 
+      The dispersion model is constructed at run-time via the  dispersionModel subdictionary of the pairGeometryModels subdictionary of the physicsModel subdictionary of the phaseProperties dictionary. An example is reported below. Please note that the example makes use of the byRegime templated model, allowing to give different types to different regimes. Notice also that the constant model used in the example is not the templated constant model used elsewhere in foamForNuclear, but the constantDispersion sub-model listed above. 
     snippet: |-
       physicsModels
       {

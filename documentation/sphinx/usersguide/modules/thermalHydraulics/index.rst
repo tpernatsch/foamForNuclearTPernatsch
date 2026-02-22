@@ -5,6 +5,7 @@ Thermal-hydraulics
 ==================
 
 .. toctree::
+   :numbered:
    :maxdepth: 1
 
    thermalHydraulicsSolvers

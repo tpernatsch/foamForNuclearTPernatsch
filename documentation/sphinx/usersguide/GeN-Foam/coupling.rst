@@ -298,6 +298,14 @@ boundary condition types are readily available in OpenFOAM.
 Tutorial `2D_flowOverPlate <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/2D_flowOverPlate/boundaryCoupling>`_
 shows an example of boundary coupling.
 
+
+.. The loops
+.. ---------
+
+.. .. include:: ../../cppapi/generated/multiRegion/loop/loop.rst
+..    :start-line: 7
+
+
 The *loops*
 -----------
 
@@ -399,11 +407,7 @@ Current loops available in *GeN-Foam* include:
    :maxdepth: 1
    :glob:
 
-   ../../cppapi/generated/multiRegion/loop/loopModels/**
 
-.. raw:: html
-
-   <br><br>
 
 Typical coupling logic for a nuclear reactor
 --------------------------------------------

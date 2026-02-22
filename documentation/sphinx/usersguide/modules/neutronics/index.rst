@@ -38,6 +38,7 @@ GeN-Foam will rescale and print.
 
 
 .. toctree::
+    :numbered:
     :maxdepth: 1
 
     neutronicsSolvers

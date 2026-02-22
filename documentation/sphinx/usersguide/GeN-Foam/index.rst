@@ -10,7 +10,7 @@ through the essential aspects of using GeN-Foam to perform simulations.
 
 .. toctree::
    :numbered:
-   :maxdepth: 3
+   :maxdepth: 1
 
    installation
    workflow

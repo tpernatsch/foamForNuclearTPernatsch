@@ -40,8 +40,8 @@ Sub-dictionaries
    physicsModels/index
    physicsModels/indexTwoPhase
    twoPhaseSpecific/index
-   ../../../../cppapi/generated/porousMediaModels/phaseModels/structureModels/pump/pump.rst
-   ../../../../cppapi/generated/porousMediaModels/phaseModels/structureModels/heatExchanger/heatExchanger.rst
+   Pumps <../../../../cppapi/generated/porousMediaModels/phaseModels/structureModels/pump/pump.rst>
+   Heat exchangers <../../../../cppapi/generated/porousMediaModels/phaseModels/structureModels/heatExchanger/heatExchanger.rst>
 
 
 

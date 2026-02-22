@@ -13,7 +13,7 @@ included in the thermal-hydraulics module of foamForNuclear:
    :maxdepth: 1
    :glob:
 
-   ../../cppapi/generated/fvPatchFields/thermalHydraulics/**
+   ../../../cppapi/generated/fvPatchFields/thermalHydraulics/**
 
 
 .. raw:: html
