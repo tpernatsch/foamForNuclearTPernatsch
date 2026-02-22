@@ -235,31 +235,31 @@ else:
 
 inletT = 300
 
-timeFolder0 = ffn.TimeFolder(0)
+timeFolder0 = ffn.timeFolder.TimeFolder(0)
 
-defaultFlux = ffn.Field("defaultFlux", region=nMesh.region)
-defaultFlux.dimensions = ffn.Dimension(default='neutronFlux')
+defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
+defaultFlux.dimensions = ffn.fields.Dimension(default='neutronFlux')
 defaultFlux.internalField = 1
 defaultFlux.set_boundary_condition("top", bc.FixedValue(0))
 defaultFlux.set_boundary_condition("bottom", bc.FixedValue(0))
 defaultFlux.set_boundary_condition("wall", bc.ZeroGradient())
 
-TFuel = ffn.Field("TFuel", region=nMesh.region)
-TFuel.dimensions = ffn.Dimension(default='T')
+TFuel = ffn.fields.Field("TFuel", region=nMesh.region)
+TFuel.dimensions = ffn.fields.Dimension(default='T')
 TFuel.internalField = inletT
 TFuel.set_boundary_condition("top", bc.ZeroGradient())
 TFuel.set_boundary_condition("bottom", bc.ZeroGradient())
 TFuel.set_boundary_condition("wall", bc.ZeroGradient())
 
-rhoCool = ffn.Field("rhoCool", region=nMesh.region)
-rhoCool.dimensions = ffn.Dimension(mass=1, length=-3)
+rhoCool = ffn.fields.Field("rhoCool", region=nMesh.region)
+rhoCool.dimensions = ffn.fields.Dimension(mass=1, length=-3)
 rhoCool.internalField = 11.1
 rhoCool.set_boundary_condition("top", bc.ZeroGradient())
 rhoCool.set_boundary_condition("bottom", bc.ZeroGradient())
 rhoCool.set_boundary_condition("wall", bc.ZeroGradient())
 
-alphat = ffn.Field("alphat", region=thMesh.region)
-alphat.dimensions = ffn.Dimension(mass=1, length=-1, time=-1)
+alphat = ffn.fields.Field("alphat", region=thMesh.region)
+alphat.dimensions = ffn.fields.Dimension(mass=1, length=-1, time=-1)
 alphat.internalField = 0
 alphat.set_boundary_condition("inlet", bc.FixedValue(0))
 alphat.set_boundary_condition("outlet", bc.FixedValue(0))
@@ -268,8 +268,8 @@ if not isSimpleMesh:
     alphat.set_boundary_condition("baffle0", bc.ZeroGradient())
     alphat.set_boundary_condition("baffle1", bc.ZeroGradient())
 
-epsilon = ffn.Field("epsilon", region=thMesh.region)
-epsilon.dimensions = ffn.Dimension(length=2, time=-3)
+epsilon = ffn.fields.Field("epsilon", region=thMesh.region)
+epsilon.dimensions = ffn.fields.Dimension(length=2, time=-3)
 epsilon.internalField = 0.01155
 epsilon.set_boundary_condition("inlet", bc.FixedValue(epsilon.internalField))
 epsilon.set_boundary_condition("outlet", bc.ZeroGradient())
@@ -278,8 +278,8 @@ if not isSimpleMesh:
     epsilon.set_boundary_condition("baffle0", bc.ZeroGradient())
     epsilon.set_boundary_condition("baffle1", bc.ZeroGradient())
 
-k = ffn.Field("k", region=thMesh.region)
-k.dimensions = ffn.Dimension(length=2, time=-2)
+k = ffn.fields.Field("k", region=thMesh.region)
+k.dimensions = ffn.fields.Dimension(length=2, time=-2)
 k.internalField = 0.02675
 k.set_boundary_condition("inlet", bc.FixedValue(k.internalField))
 k.set_boundary_condition("outlet", bc.ZeroGradient())
@@ -288,8 +288,8 @@ if not isSimpleMesh:
     k.set_boundary_condition("baffle0", bc.ZeroGradient())
     k.set_boundary_condition("baffle1", bc.ZeroGradient())
 
-nut = ffn.Field("nut", region=thMesh.region)
-nut.dimensions = ffn.Dimension(length=2, time=-1)
+nut = ffn.fields.Field("nut", region=thMesh.region)
+nut.dimensions = ffn.fields.Dimension(length=2, time=-1)
 nut.internalField = 0
 nut.set_boundary_condition("inlet", bc.FixedValue(0))
 nut.set_boundary_condition("outlet", bc.FixedValue(0))
@@ -298,8 +298,8 @@ if not isSimpleMesh:
     nut.set_boundary_condition("baffle0", bc.ZeroGradient())
     nut.set_boundary_condition("baffle1", bc.ZeroGradient())
 
-p = ffn.Field("p", region=thMesh.region)
-p.dimensions = ffn.Dimension(default='p')
+p = ffn.fields.Field("p", region=thMesh.region)
+p.dimensions = ffn.fields.Dimension(default='p')
 p.internalField = 3.7e6
 p.set_boundary_condition("inlet", bc.ZeroGradient())
 # p.set_boundary_condition("outlet", bc.FixedValue(3.427e6))
@@ -309,8 +309,8 @@ if not isSimpleMesh:
     p.set_boundary_condition("baffle0", bc.ZeroGradient())
     p.set_boundary_condition("baffle1", bc.ZeroGradient())
 
-p_rgh = ffn.Field("p_rgh", region=thMesh.region)
-p_rgh.dimensions = ffn.Dimension(default='p')
+p_rgh = ffn.fields.Field("p_rgh", region=thMesh.region)
+p_rgh.dimensions = ffn.fields.Dimension(default='p')
 p_rgh.internalField = 3.7e6
 p_rgh.set_boundary_condition("inlet", bc.ZeroGradient())
 # p_rgh.set_boundary_condition("outlet", bc.FixedValue(3.427e6))
@@ -320,8 +320,8 @@ if not isSimpleMesh:
     p_rgh.set_boundary_condition("baffle0", bc.ZeroGradient())
     p_rgh.set_boundary_condition("baffle1", bc.ZeroGradient())
 
-T = ffn.Field("T", region=thMesh.region)
-T.dimensions = ffn.Dimension(default='T')
+T = ffn.fields.Field("T", region=thMesh.region)
+T.dimensions = ffn.fields.Dimension(default='T')
 T.internalField = inletT
 T.set_boundary_condition("inlet", bc.CoupledUniformExternalValue(T.internalField, inputName="gfT_in", initValue=T.internalField))
 # T.set_boundary_condition("inlet", bc.FixedValue(T.internalField))
@@ -331,9 +331,9 @@ if not isSimpleMesh:
     T.set_boundary_condition("baffle0", bc.ZeroGradient())
     T.set_boundary_condition("baffle1", bc.ZeroGradient())
 
-U = ffn.Field("U", region=thMesh.region)
-U.dimensions = ffn.Dimension(default='U')
-U.internalField = ffn.Vector(0, 0, 4.74413)
+U = ffn.fields.Field("U", region=thMesh.region)
+U.dimensions = ffn.fields.Dimension(default='U')
+U.internalField = ffn.common.Vector(0, 0, 4.74413)
 # U.set_boundary_condition('inlet', bc.FixedValue(U.internalField))
 mFlowInit = 30
 if isSimpleMesh:
@@ -383,7 +383,7 @@ if isSimpleMesh:
 else:
     power *= nElementPerAssembly/nTotElement
 
-neutronicsSolver = ffn.NeutronicsSolver(
+neutronicsSolver = ffn.solvers.NeutronicsSolver(
     region=nMesh.region,
     solver="diffusionNeutronics",
     mesh=nMesh,
@@ -397,18 +397,16 @@ neutronicsSolver.neutronTransportOptions.maxNeutronIterations = 50
 #==============================================================================*
 # Thermal-hydraulics solver
 
-thSolver = ffn.ThermalHydraulicsSolver(
+thSolver = ffn.solvers.thermal_hydraulics.OnePhaseThermalHydraulicsSolver(
     region=thMesh.region,
     solver="onePhase",
     mesh=thMesh,
     removeBaffles=True,
     isSetFvSolutionToDefault=True
 )
-thSolver.thermophysicalProperties = ffn.thermophysicalProperty.Hydrogen()
-# thSolver.thermophysicalProperties = ffn.thermophysicalProperty.HydrogenPengRobinsonGas()
-# thSolver.thermophysicalProperties = ffn.thermophysicalProperty.HydrogenPerfectGas()
-
-thSolver.phaseProperties.pMin = 20e5
+thSolver.fluid.thermophysicalProperties = ffn.thermo.Hydrogen()
+# thSolver.fluid.thermophysicalProperties = ffn.thermo.HydrogenPengRobinsonGas()
+# thSolver.fluid.thermophysicalProperties = ffn.thermo.HydrogenPerfectGas()
 
 thSolver.fvSchemes.divSchemes['default'] = 'none'
 thSolver.fvSchemes.divSchemes["div\(phi.*,U.*\)"] = "Gauss upwind"
@@ -419,25 +417,25 @@ thSolver.fvSchemes.divSchemes["div\(alphaRhoPhi.*,k.*\)"] = "Gauss upwind"
 thSolver.fvSchemes.divSchemes["div\(alphaRhoPhi.*,epsilon.*\)"] = "Gauss upwind"
 thSolver.fvSchemes.divSchemes["div\(alphaRhoPhi.*,(h|e).*\)"] = "Gauss upwind"
 
-thSolution = ffn.fvSolution()
+thSolution = ffn.numerics.fvSolution()
 
-thSolution.append('p_rgh', ffn.fvSolutionSolver(
+thSolution.append('p_rgh', ffn.numerics.fvSolutionSolver(
     solver='GAMG', smoother='DIC', tolerance=1e-5, relTol=1e-2
 ))
-thSolution.append('p_rghFinal', ffn.fvSolutionSolver(
+thSolution.append('p_rghFinal', ffn.numerics.fvSolutionSolver(
     solver='GAMG', smoother='DIC', tolerance=1e-5, relTol=1e-2
 ))
-thSolution.append('"e.*"', ffn.fvSolutionSolver(
+thSolution.append('"e.*"', ffn.numerics.fvSolutionSolver(
     solver='smoothSolver',
     smoother='symGaussSeidel',
     tolerance=1e-5, relTol=1e-2, minIter=1
 ))
-thSolution.append('"h.*"', ffn.fvSolutionSolver(
+thSolution.append('"h.*"', ffn.numerics.fvSolutionSolver(
     solver='smoothSolver',
     smoother='symGaussSeidel',
     tolerance=1e-5, relTol=1e-2, minIter=1
 ))
-thSolution.append('".*"', ffn.fvSolutionSolver(
+thSolution.append('".*"', ffn.numerics.fvSolutionSolver(
     solver='PBiCGStab',
     preconditioner='diagonal',
     tolerance=1e-5, relTol=1e-2
@@ -453,13 +451,14 @@ thSolver.pimpleOptions.correctUntilConvergence = None
 thSolver.pimpleOptions.porousInterfaceSharpness = None
 thSolver.pimpleOptions.minMagU = None
 thSolver.pimpleOptions.minNOuterCorrectors = None
+thSolver.pimpleOptions.pMin = 20e5
 
 
-thSolver.turbulenceProperties.simulationType = 'RAS'
-thSolver.turbulenceProperties.RASoptions.RASModel = 'porousKEpsilon'
-thSolver.turbulenceProperties.RASoptions.turbulence = True
-thSolver.turbulenceProperties.RASoptions.printCoeffs = True
-thSolver.turbulenceProperties.porousKEpsilonProperties.append(ffn.PorousKEpsilonPropertiesPerZone(
+thSolver.fluid.turbulenceProperties.simulationType = 'RAS'
+thSolver.fluid.turbulenceProperties.RASoptions.RASModel = 'porousKEpsilon'
+thSolver.fluid.turbulenceProperties.RASoptions.turbulence = True
+thSolver.fluid.turbulenceProperties.RASoptions.printCoeffs = True
+thSolver.fluid.turbulenceProperties.porousKEpsilonProperties.append(ffn.turbulence.PorousKEpsilonPropertiesPerZone(
     zones=['fuelElement'],
     convergenceLength=0.1,
     turbulenceIntensityCoeff=0.16,
@@ -468,35 +467,33 @@ thSolver.turbulenceProperties.porousKEpsilonProperties.append(ffn.PorousKEpsilon
     DhStruct=19.15e-3
 ))
 
-fuelElementProperty = ffn.StructureProperty(
+fuelElementProperty = ffn.porous_medium.Structure(
     zones=['fuelElement'],
     volumeFraction=volumeFractionStructure,
     Dh=coreChannelDiameter
 )
-fuelElementProperty.add_power_model(
-    ffn.LumpedNuclearStructure(
-        volumetricArea=477.305494,
-        powerDensity=0,
-        nodeFuel=0,
-        nodeClad=0,
-        nodeMatrix=0,
-        kappaMatrix=50,
-        heatConductances=ffn.List([2.451162e+07, 1.149520e+07]),
-        rhoCp=ffn.List([3671370]),
-        volumeFractions=ffn.List([1]),
-        powerFractions=ffn.List([1]),
-        T0=T.internalField
-    )
+fuelElementProperty.powerModel = ffn.porous_medium.power_models.LumpedNuclearStructure(
+    volumetricArea=477.305494,
+    powerDensity=0,
+    nodeFuel=0,
+    nodeClad=0,
+    nodeMatrix=0,
+    kappaMatrix=50,
+    heatConductances=ffn.List([2.451162e+07, 1.149520e+07]),
+    rhoCp=ffn.List([3671370]),
+    volumeFractions=ffn.List([1]),
+    powerFractions=ffn.List([1]),
+    T0=T.internalField
 )
-thSolver.add_structure_property(fuelElementProperty)
+thSolver.structures.append(fuelElementProperty)
 
-thSolver.add_drag_model(ffn.Colebrook(
+thSolver.fluid_structure.dragModels.append(ffn.porous_medium.drag.Colebrook(
     coeff=1.2776,
     const=-0.406,
     exp=-2.246,
     zones=['fuelElement']
 ))
-thSolver.add_heat_transfer_model(ffn.NusseltReynoldsPrandtlPower(
+thSolver.fluid_structure.heatTransferModels.append(ffn.porous_medium.heat_transfer.NusseltReynoldsPrandtlPower(
     const=0,
     coeff=0.023,
     expRe=0.8,
@@ -506,7 +503,7 @@ thSolver.add_heat_transfer_model(ffn.NusseltReynoldsPrandtlPower(
 ))
 
 if not isSimpleMesh:
-    thSolver.turbulenceProperties.porousKEpsilonProperties.append(ffn.PorousKEpsilonPropertiesPerZone(
+    thSolver.fluid.turbulenceProperties.porousKEpsilonProperties.append(ffn.turbulence.PorousKEpsilonPropertiesPerZone(
         zones=['centralUnloadedFuelElement'],
         convergenceLength=0.1,
         turbulenceIntensityCoeff=0.16,
@@ -514,24 +511,24 @@ if not isSimpleMesh:
         turbulenceLengthScaleCoeff=0.07,
         DhStruct=19.15e-3
     ))
-    centralUnloadedStructureProp = ffn.StructureProperty(
+    centralUnloadedStructureProp = ffn.porous_medium.Structure(
         zones=['centralUnloadedFuelElement'],
         volumeFraction=0.983257,
         Dh=0.000589/10,
     )
-    centralUnloadedStructureProp.add_passive_structure(
+    centralUnloadedStructureProp.passiveProperties = ffn.porous_medium.PassiveProperties(
         volumetricArea=113.648950,
         rho=8190,
         Cp=500,
         T=T.internalField
     )
-    thSolver.add_structure_property(centralUnloadedStructureProp)
-    thSolver.add_drag_model(ffn.ReynoldsPower(
+    thSolver.structures.append(centralUnloadedStructureProp)
+    thSolver.fluid_structure.dragModels.append(ffn.porous_medium.drag.ReynoldsPower(
         coeff=0.0625,
         exp=-0.32,
         zones=['centralUnloadedFuelElement']
     ))
-    thSolver.add_heat_transfer_model(ffn.NusseltReynoldsPrandtlPower(
+    thSolver.fluid_structure.heatTransferModels.append(ffn.porous_medium.heat_transfer.NusseltReynoldsPrandtlPower(
         const=0,
         coeff=0.023,
         expRe=0.8,
@@ -544,12 +541,12 @@ if not isSimpleMesh:
 #==============================================================================*
 # Solvers
 
-solvers = ffn.Solvers([neutronicsSolver, thSolver])
+solvers = ffn.solvers.Solvers([neutronicsSolver, thSolver])
 
 #==============================================================================*
 # Coupling
 
-coupling = ffn.Coupling(solvers)
+coupling = ffn.coupling.Coupling(solvers)
 
 coupling.add_field_transfer(neutronicsSolver, thSolver, "powerDensity", "powerDensityStructure")
 coupling.add_field_transfer(neutronicsSolver, thSolver, "secondaryPowerDensity", "powerDensityLiquid")
@@ -569,9 +566,9 @@ coupling.add_field_transfer(thSolver, neutronicsSolver, "T.passiveStructure", "T
 massFlowScalingFactor = (nTotElement if isSimpleMesh else nTotElement/nElementPerAssembly) / (1 - volumeFractionStructure)
 
 # Coupling interface
-externalCouplingDict = ffn.ExternalCouplingDict()
+externalCouplingDict = ffn.preprocessing.ExternalCouplingDict()
 
-TnozzleChamberFMU = ffn.ExtPatch(
+TnozzleChamberFMU = ffn.preprocessing.ExtPatch(
     name="TnozzleChamberFMU",
     outputName="gfTnozzleChamber_out",
     fieldName="T",
@@ -579,7 +576,7 @@ TnozzleChamberFMU = ffn.ExtPatch(
     patchName="outlet",
     initValue=inletT
 )
-pInletFMU = ffn.ExtPatch(
+pInletFMU = ffn.preprocessing.ExtPatch(
     name="pInletFMU",
     outputName="gfpInlet_out",
     fieldName="p",
@@ -587,7 +584,7 @@ pInletFMU = ffn.ExtPatch(
     patchName="inlet",
     initValue=12e5
 )
-integratePowerFMU = ffn.FieldIntegralToFMU(
+integratePowerFMU = ffn.preprocessing.FieldIntegralToFMU(
     name="fieldIntegralToFMU",
     nameFMU="gfPower_out",
     fieldName="powerDensity",
@@ -595,7 +592,7 @@ integratePowerFMU = ffn.FieldIntegralToFMU(
     cellZone="fuelElement",
     initValue=power
 )
-massFlowOutletFMU = ffn.MassFlowToFMU(
+massFlowOutletFMU = ffn.preprocessing.MassFlowToFMU(
     name='massFlowOutletFMU',
     nameFMU="gfMassFlowOutlet_out",
     regionType="patch",
@@ -614,7 +611,7 @@ externalCouplingDict.append(massFlowOutletFMU)
 #==============================================================================*
 # Function Objects
 
-massFlowInletFO = ffn.MassFlow(
+massFlowInletFO = ffn.functions.MassFlow(
     "mFlowInlet",
     log=True,
     writeFields=False,
@@ -625,7 +622,7 @@ massFlowInletFO = ffn.MassFlow(
     regionName="inlet",
     scaleFactor=massFlowScalingFactor
 )
-massFlowOutletFO = ffn.MassFlow(
+massFlowOutletFO = ffn.functions.MassFlow(
     "mFlowOutlet",
     log=True,
     writeFields=False,
@@ -636,7 +633,7 @@ massFlowOutletFO = ffn.MassFlow(
     regionName="outlet",
     scaleFactor=massFlowScalingFactor
 )
-TBulkInletFO = ffn.TBulk(
+TBulkInletFO = ffn.functions.TBulk(
     "TInlet",
     log=True,
     writeFields=False,
@@ -646,7 +643,7 @@ TBulkInletFO = ffn.TBulk(
     regionType="patch",
     regionName="inlet"
 )
-TBulkOutletFO = ffn.TBulk(
+TBulkOutletFO = ffn.functions.TBulk(
     "TOutlet",
     log=True,
     writeFields=False,
@@ -661,17 +658,17 @@ TBulkOutletFO = ffn.TBulk(
 #==============================================================================*
 # Model
 
-model = ffn.Model(
+model = ffn.case.Case(
     solvers=solvers,
     coupling=coupling,
     timeFolders=[timeFolder0],
     externalCouplingDict=externalCouplingDict
 )
 
-model.add_function_object(massFlowInletFO)
-model.add_function_object(massFlowOutletFO)
-model.add_function_object(TBulkInletFO)
-model.add_function_object(TBulkOutletFO)
+model.functions.append(massFlowInletFO)
+model.functions.append(massFlowOutletFO)
+model.functions.append(TBulkInletFO)
+model.functions.append(TBulkOutletFO)
 
 settings = model.settings
 

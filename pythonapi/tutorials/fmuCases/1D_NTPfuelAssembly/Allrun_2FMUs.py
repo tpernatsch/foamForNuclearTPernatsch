@@ -23,7 +23,7 @@ if isSimpleMesh:
 else:
     ffn.copyFolder(f"./nuclearData", f"{model.caseFolder}/constant/{nMesh.region}")
 
-ffn.run_preprocessing(model=model)
+ffn.run_preprocessing(model)
 
 model.plot_mesh(
     region=nMesh,
@@ -43,7 +43,7 @@ model.caseFolder = "transient_2FMUs"
 
 ffn.duplicateFolder(oldFolder, model.caseFolder)
 
-timeFolder1 = ffn.TimeFolder(settings.endTime)
+timeFolder1 = ffn.timeFolder.TimeFolder(settings.endTime)
 
 timeFolder1.append(alphat)
 timeFolder1.append(epsilon)
@@ -55,7 +55,7 @@ timeFolder1.append(T)
 # timeFolder1.append(Tmatrix)
 timeFolder1.append(U)
 
-pointKineticsData = ffn.PointKineticsData(
+pointKineticsData = ffn.nuclearData.PointKineticsData(
     fastNeutrons=True,
     promptGenerationTime=3.571485e-05,
     delayedFractions=[
@@ -82,7 +82,7 @@ pointKineticsData = ffn.PointKineticsData(
     structFeedbackZones=["fuelElement"],
 )
 
-pointKineticsData.externalReactivityTimeProfile = ffn.TimeProfile(
+pointKineticsData.externalReactivityTimeProfile = ffn.timeProfile.TimeProfile(
     type='fmi',
     nameFromFMU='gfExtReact_in',
     initialValue=0
@@ -104,7 +104,7 @@ settings.maxDeltaT = 1 # 100e-5
 settings.maxPowerVariation = 0.001
 settings.solveFMI = True
 
-model.add_time_folder(timeFolder1)
+model.timeFolders.append(timeFolder1)
 
 model.coupling.plot_coupling_graph()
 model.coupling.plot_solving_graph()
@@ -112,15 +112,15 @@ model.coupling.plot_solving_flowchart()
 
 model.export_to_openfoam()
 
-ffn.run_preprocessing(model=model)
+ffn.run_preprocessing(model)
 
 print(model)
 
 ffn.generateCaseAsFMU(model.caseFolder, 'CoreFMU')
 
 
-# MasterRunner = ffn.FMPyMasterRunnerParallel(
-MasterRunner = ffn.FMPyMasterRunner(
+# MasterRunner = ffn.fmi.FMPyMasterRunnerParallel(
+MasterRunner = ffn.fmi.FMPyMasterRunner(
     fmuNames={
         'core': 'CoreFMU.fmu',
         'turbomachinery': 'modelica/NTPTurbomachine.fmu'

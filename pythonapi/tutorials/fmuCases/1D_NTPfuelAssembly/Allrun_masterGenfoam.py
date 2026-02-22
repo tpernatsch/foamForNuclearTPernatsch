@@ -9,7 +9,7 @@ from model import *
 
 # FMU simulator
 prefix = "model.root.system1." if False else ""
-FMUSimulator = ffn.FMUSimulator(
+FMUSimulator = ffn.functions.FMUSimulator(
     name="FMUSimulator",
     pyClassName="Turbomachine",
     pyFileName="Turbomachine",
@@ -44,7 +44,7 @@ if isSimpleMesh:
 else:
     ffn.copyFolder(f"./nuclearData", f"{model.caseFolder}/constant/{nMesh.region}")
 
-ffn.run_preprocessing(model=model)
+ffn.run_preprocessing(model)
 
 model.plot_mesh(
     region=nMesh,
@@ -64,7 +64,7 @@ model.caseFolder = "transient_masterGenfoam_PID"
 
 ffn.duplicateFolder(oldFolder, model.caseFolder)
 
-timeFolder1 = ffn.TimeFolder(settings.endTime)
+timeFolder1 = ffn.timeFolder.TimeFolder(settings.endTime)
 
 timeFolder1.append(alphat)
 timeFolder1.append(epsilon)
@@ -76,7 +76,7 @@ timeFolder1.append(T)
 # timeFolder1.append(Tmatrix)
 timeFolder1.append(U)
 
-pointKineticsData = ffn.PointKineticsData(
+pointKineticsData = ffn.nuclearData.PointKineticsData(
     fastNeutrons=True,
     promptGenerationTime=3.571485e-05,
     delayedFractions=[
@@ -103,7 +103,7 @@ pointKineticsData = ffn.PointKineticsData(
     structFeedbackZones=["fuelElement"],
 )
 
-pointKineticsData.externalReactivityTimeProfile = ffn.TimeProfile(
+pointKineticsData.externalReactivityTimeProfile = ffn.timeProfile.TimeProfile(
     type='fmi',
     nameFromFMU='gfExtReact_in',
     initialValue=0
@@ -125,7 +125,7 @@ settings.maxDeltaT = 1 # 100e-5
 settings.maxPowerVariation = 0.001
 
 
-model.add_time_folder(timeFolder1)
+model.timeFolders.append(timeFolder1)
 
 # model.solvers.append(thSolver)
 # model.coupling.append(thSolver)
@@ -139,7 +139,7 @@ model.add_time_folder(timeFolder1)
 # model.coupling.add_field_transfer(thSolver, neutronicsSolver, "T.cladAvForNeutronics", "TClad")
 # model.coupling.add_field_transfer(thSolver, neutronicsSolver, "T.passiveStructure", "TStructMech")
 
-model.add_function_object(FMUSimulator)
+model.functions.append(FMUSimulator)
 
 model.coupling.plot_coupling_graph()
 model.coupling.plot_solving_graph()
