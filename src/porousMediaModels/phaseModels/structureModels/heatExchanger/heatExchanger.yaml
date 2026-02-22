@@ -1,5 +1,5 @@
 description: |-
-  Heat-exchange model used to couple two distinct mesh regions, representing
+  Heat-exchange model used to couple two distinct mesh regions (cellZones), representing
   the primary and secondary sides of a heat exchanger (HX). The two regions may
   contain either single-phase or two-phase mixtures.
 
@@ -101,7 +101,7 @@ description: |-
     * ``HTsOp[cellip]`` returns ``HT[cellis]`` (secondary-over-primary)
     * ``HTpOs[cellis]`` returns ``HT[cellip]`` (primary-over-secondary)
 
-  Mesh-to-mesh interpolation is required because the two region meshes may be
+  Mesh-to-mesh interpolation is required because the two cellZones may be
   non-conformal, so a direct index-level correspondence cannot be assumed.
 
   The ``THX`` field is finally updated using a double-loop procedure:
