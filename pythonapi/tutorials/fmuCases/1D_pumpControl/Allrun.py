@@ -24,23 +24,23 @@ pipe2 = thMesh.extrude_right([pump], "pipe2", dx=1, nx=10)
 pipe3 = thMesh.add_pipe_1D_from_direction(
     "pipe3",
     originPosition=pipe2,
-    direction=ffn.Vector(0, 0, 1),
+    direction=ffn.common.Vector(0, 0, 1),
     length=2,
     n=10,
     equivalentHydraulicDiameter=pipeWidth/np.sqrt(np.pi),
     elbowRadius=pipeWidth,
-    isAddLateralBC=True,
+    isAddBoundaryConditions=True,
     originPositionOutletFaceName='right'
 )
 pipe4 = thMesh.add_pipe_1D_from_direction(
     "pipe4",
     originPosition=pipe3,
-    direction=ffn.Vector(-1, 0, 0),
+    direction=ffn.common.Vector(-1, 0, 0),
     length=2.2,
     n=10,
     equivalentHydraulicDiameter=pipeWidth/np.sqrt(np.pi),
     elbowRadius=pipeWidth,
-    isAddLateralBC=True,
+    isAddBoundaryConditions=True,
 )
 pipe5 = thMesh.add_pipe_1D_from_2points(
     "pipe5",
@@ -49,7 +49,7 @@ pipe5 = thMesh.add_pipe_1D_from_2points(
     n=10,
     equivalentHydraulicDiameter=pipeWidth/np.sqrt(np.pi),
     elbowRadius=pipeWidth,
-    isAddLateralBC=True,
+    isAddBoundaryConditions=True,
     finalPositionInletFaceName='left'
 )
 
@@ -66,20 +66,20 @@ thMesh.add_boundary(walls)
 #==============================================================================*
 # Time folder
 
-timeFolder0 = ffn.TimeFolder(0)
+timeFolder0 = ffn.timeFolder.TimeFolder(0)
 
-T = ffn.Field("T", region=thMesh.region)
-T.dimensions = ffn.Dimension(default='T')
+T = ffn.fields.Field("T", region=thMesh.region)
+T.dimensions = ffn.fields.Dimension(default='T')
 T.internalField = 600
 T.set_boundary_condition(walls, bc.ZeroGradient())
 
-U = ffn.Field("U", region=thMesh.region)
-U.dimensions = ffn.Dimension(default='U')
-U.internalField = ffn.Vector(0, 0, 0)
+U = ffn.fields.Field("U", region=thMesh.region)
+U.dimensions = ffn.fields.Dimension(default='U')
+U.internalField = ffn.common.Vector(0, 0, 0)
 U.set_boundary_condition(walls, bc.Slip())
 
-p_rgh = ffn.Field("p_rgh", region=thMesh.region)
-p_rgh.dimensions = ffn.Dimension(default='p')
+p_rgh = ffn.fields.Field("p_rgh", region=thMesh.region)
+p_rgh.dimensions = ffn.fields.Dimension(default='p')
 p_rgh.internalField = 155e5
 p_rgh.set_boundary_condition(walls, bc.ZeroGradient())
 
@@ -98,58 +98,56 @@ timeFolder0.append(p_rgh)
 #==============================================================================*
 # Thermal-hydraulics solver
 
-thSolver = ffn.ThermalHydraulicsSolver(
-    "fluidRegion", "onePhase",
+thSolver = ffn.solvers.thermal_hydraulics.OnePhaseThermalHydraulicsSolver(
+    region=thMesh.region,
     mesh=thMesh,
     removeBaffles=True,
     isSetFvSolutionToDefault=False
 )
 
-thSolver.thermophysicalProperties = ffn.thermophysicalProperty.WaterPolynomial()
+thSolver.fluid.thermophysicalProperties = ffn.thermo.WaterPolynomial()
 
-thSolver.turbulenceProperties.simulationType = 'laminar'
+thSolver.fluid.turbulenceProperties.simulationType = 'laminar'
 
-pumpModel = ffn.StructureProperty(
+pumpModel = ffn.porous_medium.Pump(
     zones=['pump'],
     volumeFraction=0.2,
-    Dh=0.1
-)
-pumpModel.add_pump(ffn.Pump(
-    momentumSource=ffn.Vector(1e7, 0, 0),
-    momentumSourceTimeProfile=ffn.TimeProfile(
+    Dh=0.1,
+    momentumSource=ffn.common.Vector(1e7, 0, 0),
+    momentumSourceTimeProfile=ffn.timeProfile.TimeProfile(
         type='fmi',
         nameFromFMU="gfMomentumSource",
         initialValue=0
     )
-))
+)
 
-flowBlockageModel = ffn.StructureProperty(
+flowBlockageModel = ffn.porous_medium.Structure(
     zones=['pipe3'],
     pitch=0.02,
     elementDiameter=0.007,
     latticeType='hexagon'
 )
 
-thSolver.add_structure_property(pumpModel)
-thSolver.add_structure_property(flowBlockageModel)
+thSolver.structures.append(pumpModel)
+thSolver.structures.append(flowBlockageModel)
 
 
-thSolution = ffn.fvSolution()
+thSolution = ffn.numerics.fvSolution()
 
-thSolution.append('"p_rgh.*"', ffn.fvSolutionSolver(
+thSolution.append('"p_rgh.*"', ffn.numerics.fvSolutionSolver(
     solver='GAMG', smoother='DIC', tolerance=1e-8, relTol=0
 ))
-thSolution.append('"e.*"', ffn.fvSolutionSolver(
+thSolution.append('"e.*"', ffn.numerics.fvSolutionSolver(
     solver='smoothSolver',
     smoother='symGaussSeidel',
     tolerance=1e-8, relTol=0, minIter=0
 ))
-thSolution.append('"h.*"', ffn.fvSolutionSolver(
+thSolution.append('"h.*"', ffn.numerics.fvSolutionSolver(
     solver='smoothSolver',
     smoother='symGaussSeidel',
     tolerance=1e-8, relTol=0, minIter=0
 ))
-thSolution.append('".*"', ffn.fvSolutionSolver(
+thSolution.append('".*"', ffn.numerics.fvSolutionSolver(
     solver='PBiCGStab',
     preconditioner='diagonal',
     tolerance=1e-6, relTol=0.001
@@ -213,7 +211,7 @@ externalCouplingDict.append(massFlowRateSens)
 #     name='inletP',
 #     fieldName='p_rgh',
 #     sensorName="gfInletP",
-#     sensorPosition=ffn.Vector(0.9, pipeWidth/2, pipeWidth/2),
+#     sensorPosition=ffn.common.Vector(0.9, pipeWidth/2, pipeWidth/2),
 #     region=thMesh.region,
 #     initValue=155e5
 # )
@@ -221,7 +219,7 @@ externalCouplingDict.append(massFlowRateSens)
 #     name='outletP',
 #     fieldName='p_rgh',
 #     sensorName="gfOutletP",
-#     sensorPosition=ffn.Vector(1.3, pipeWidth/2, pipeWidth/2),
+#     sensorPosition=ffn.common.Vector(1.3, pipeWidth/2, pipeWidth/2),
 #     region=thMesh.region,
 #     initValue=155e5
 # )

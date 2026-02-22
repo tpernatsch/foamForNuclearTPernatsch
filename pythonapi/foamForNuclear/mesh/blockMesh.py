@@ -1056,9 +1056,9 @@ class BlockMesh(OpenFOAMFile, Mesh):
     def create_wedge_chamfered(
             self,
             name: str,
-            innerRadius: float, 
-            outerRadius: float, 
-            lowZ: float, 
+            innerRadius: float,
+            outerRadius: float,
+            lowZ: float,
             highZ: float,
             chamferHeight: float,
             wedgeAngle: float,
@@ -1229,7 +1229,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             gradx=gradr,
             gradz=gradz,
         )
-        
+
         # ---- add dish arcs using circle center (isOrigin=True) ----
         # Circle center in 3D is on the axis (x=0,y=0), with axial coordinate:
         # bottom: lowZ + zc ; top: highZ - zc
@@ -3415,7 +3415,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         elbowRadius : float
             Offset the pipe knowing the elbow curvature radius and if
             `originPosition` is a `Block` (default `0`).
-        isAddLateralBC : bool
+        isAddBoundaryConditions : bool
             If `True`, set left, right, front and back faces to `empty` BC
             (default `False`). If `originPosition` is a `Block`, connect the
             target block to the new pipe via the `connectPipes` or
@@ -3529,7 +3529,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             equivalentHydraulicDiameter: float,
             n: int=1,
             elbowRadius: float=0,
-            isAddLateralBC: bool=False,
+            isAddBoundaryConditions: bool=False,
             originPositionOutletFaceName: str='top',
             finalPositionInletFaceName: str='bottom',
             tolerance: float=1e-12
@@ -3557,7 +3557,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             Number cells along the pipe (default `1`)
         elbowRadius : float
             Offset the pipe knowing the elbow curvature radius (default `0`).
-        isAddLateralBC : bool
+        isAddBoundaryConditions : bool
             If `True`, set left, right, front and back face to `empty` BC.
             If `True` and `finalPosition` is a `Block`, connect the new pipe to
             `finalPosition` block. Can be used to close loop.
@@ -3654,11 +3654,11 @@ class BlockMesh(OpenFOAMFile, Mesh):
             equivalentHydraulicDiameter=equivalentHydraulicDiameter,
             n=n,
             elbowRadius=elbowRadius,
-            isAddLateralBC=isAddLateralBC,
+            isAddBoundaryConditions=isAddBoundaryConditions,
             originPositionOutletFaceName=originPositionOutletFaceName
         )
 
-        if (isAddLateralBC and isinstance(finalPosition, Block)):
+        if (isAddBoundaryConditions and isinstance(finalPosition, Block)):
             self.connect_pipes(
                 pipe1=block,
                 pipe2=finalPosition,
@@ -5522,7 +5522,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             [face for face in self.faces if face.name == facename1][0],
             [face for face in self.faces if face.name == facename2][0]
         ))
-        
+
         for face in self.faces:
             if (face.name == facename1) | (face.name == facename2):
                 face.toBeMerged = True
