@@ -12,6 +12,7 @@ This tutorial demonstrates GeN-Foam's multi-group neutronic solver capabilities 
 For a slab reactor with two energy groups (fast and thermal), the steady-state diffusion equations are:
 
 **Fast Group (g=0):**
+
 $$
 -\nabla \cdot D_0 \nabla \phi_0
 + \left( \Sigma_{a,0} + \Sigma_{s}^{0\rightarrow1} \right)\phi_0
@@ -19,6 +20,7 @@ $$
 $$
 
 **Thermal Group (g=1):**
+
 $$
 -\nabla \cdot D_1 \nabla \phi_1
 + \Sigma_{a,1}\phi_1
@@ -42,6 +44,7 @@ $$\phi_g(z) = A_g \cdot \sin\left(\frac{\pi z}{L}\right)$$
 where $A_g$ is the amplitude determined by the power.
 
 The geometric buckling is:
+
 $$B_g^2 = \left(\frac{\pi}{L}\right)^2$$
 
 The two-group k-effective for a critical reactor is:
@@ -90,11 +93,13 @@ The case is prepared to verify the analytical solution described above. One can 
 ### Running a Single Mesh Case
 
 Before running the case, clean it using:
+
 ```bash
 python3 Allclean.py
 ```
 
 Then run the case with:
+
 ```bash
 python3 Allrun.py
 ```
