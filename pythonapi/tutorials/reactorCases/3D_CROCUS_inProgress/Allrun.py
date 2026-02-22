@@ -11,7 +11,7 @@ import foamForNuclear.mesh as mesh
 
 def thermalHydraulicMesh(region):
 
-    crocus = ffn.BlockMesh(region=region)
+    crocus = ffn.mesh.BlockMesh(region=region)
 
     crocus.isReducedCells = False
 
@@ -52,8 +52,8 @@ def thermalHydraulicMesh(region):
         mesh.Point(+coreRadius*np.sin(opening), -coreRadius*np.cos(opening), coreHeight),
     ], ny=4)
 
-    coreFront.addEdge("arc", 0, 1, x=0, y=-coreRadius)
-    coreFront.addEdge("arc", 4, 5, x=0, y=-coreRadius)
+    coreFront.add_edge_arc(0, 1, x=0, y=-coreRadius)
+    coreFront.add_edge_arc(4, 5, x=0, y=-coreRadius)
 
     ffn.PointBottomRight0 = mesh.Point(coreRadius/sqrt2, -coreRadius/sqrt2, 0)
     ffn.PointBottomRightH = mesh.Point(coreRadius/sqrt2, -coreRadius/sqrt2, coreHeight)
@@ -65,8 +65,8 @@ def thermalHydraulicMesh(region):
         coreFrontRight.points[5],
     ], nx=coreFrontRight.nx)
 
-    coreFront1.addEdge("arc", 0, 1, x=coreRadius*np.sin(2*opening), y=-coreRadius*np.cos(2*opening))
-    coreFront1.addEdge("arc", 4, 5, x=coreRadius*np.sin(2*opening), y=-coreRadius*np.cos(2*opening))
+    coreFront1.add_edge_arc(0, 1, x=coreRadius*np.sin(2*opening), y=-coreRadius*np.cos(2*opening))
+    coreFront1.add_edge_arc(4, 5, x=coreRadius*np.sin(2*opening), y=-coreRadius*np.cos(2*opening))
 
     ffn.PointBottomLeft0 = mesh.Point(-coreRadius/sqrt2, -coreRadius/sqrt2, 0)
     ffn.PointBottomLeftH = mesh.Point(-coreRadius/sqrt2, -coreRadius/sqrt2, coreHeight)
@@ -78,8 +78,8 @@ def thermalHydraulicMesh(region):
         coreFrontLeft.points[4],
     ], nx=coreFrontLeft.nx)
 
-    coreFront2.addEdge("arc", 0, 1, x=-coreRadius*np.sin(2*opening), y=-coreRadius*np.cos(2*opening))
-    coreFront2.addEdge("arc", 4, 5, x=-coreRadius*np.sin(2*opening), y=-coreRadius*np.cos(2*opening))
+    coreFront2.add_edge_arc(0, 1, x=-coreRadius*np.sin(2*opening), y=-coreRadius*np.cos(2*opening))
+    coreFront2.add_edge_arc(4, 5, x=-coreRadius*np.sin(2*opening), y=-coreRadius*np.cos(2*opening))
 
     coreRight = crocus.add_right(coreCenterRight, "coreRight", [
         mesh.Point(+coreRadius*np.cos(opening), -coreRadius*np.sin(opening), 0),
@@ -88,8 +88,8 @@ def thermalHydraulicMesh(region):
         mesh.Point(+coreRadius*np.cos(opening), +coreRadius*np.sin(opening), coreHeight),
     ], nx=coreFront.ny)
 
-    coreRight.addEdge("arc", 1, 2, x=coreRadius, y=0)
-    coreRight.addEdge("arc", 5, 6, x=coreRadius, y=0)
+    coreRight.add_edge_arc(1, 2, x=coreRadius, y=0)
+    coreRight.add_edge_arc(5, 6, x=coreRadius, y=0)
 
     ffn.PointTopRight0 = mesh.Point(coreRadius/sqrt2, coreRadius/sqrt2, 0)
     ffn.PointTopRightH = mesh.Point(coreRadius/sqrt2, coreRadius/sqrt2, coreHeight)
@@ -101,8 +101,8 @@ def thermalHydraulicMesh(region):
         coreBackRight.points[6],
     ], ny=coreBackRight.ny)
 
-    coreRight1.addEdge("arc", 1, 2, x=coreRadius*np.cos(2*opening), y=coreRadius*np.sin(2*opening))
-    coreRight1.addEdge("arc", 5, 6, x=coreRadius*np.cos(2*opening), y=coreRadius*np.sin(2*opening))
+    coreRight1.add_edge_arc(1, 2, x=coreRadius*np.cos(2*opening), y=coreRadius*np.sin(2*opening))
+    coreRight1.add_edge_arc(5, 6, x=coreRadius*np.cos(2*opening), y=coreRadius*np.sin(2*opening))
 
     coreRight2 = crocus.add_front(coreRight, "coreRight", [
         coreFrontRight.points[1],
@@ -111,8 +111,8 @@ def thermalHydraulicMesh(region):
         ffn.PointBottomRightH,
     ], ny=coreFrontRight.ny)
 
-    coreRight2.addEdge("arc", 1, 2, x=coreRadius*np.cos(2*opening), y=-coreRadius*np.sin(2*opening))
-    coreRight2.addEdge("arc", 5, 6, x=coreRadius*np.cos(2*opening), y=-coreRadius*np.sin(2*opening))
+    coreRight2.add_edge_arc(1, 2, x=coreRadius*np.cos(2*opening), y=-coreRadius*np.sin(2*opening))
+    coreRight2.add_edge_arc(5, 6, x=coreRadius*np.cos(2*opening), y=-coreRadius*np.sin(2*opening))
 
     coreLeft = crocus.add_left(coreCenterLeft, "coreLeft", [
         mesh.Point(-coreRadius*np.cos(opening), -coreRadius*np.sin(opening), 0),
@@ -121,8 +121,8 @@ def thermalHydraulicMesh(region):
         mesh.Point(-coreRadius*np.cos(opening), +coreRadius*np.sin(opening), coreHeight),
     ], nx=coreFront.ny)
 
-    coreLeft.addEdge("arc", 3, 0, x=-coreRadius, y=0)
-    coreLeft.addEdge("arc", 7, 4, x=-coreRadius, y=0)
+    coreLeft.add_edge_arc(3, 0, x=-coreRadius, y=0)
+    coreLeft.add_edge_arc(7, 4, x=-coreRadius, y=0)
 
     coreLeft1 = crocus.add_front(coreLeft, "coreLeft", [
         ffn.PointBottomLeft0,
@@ -131,8 +131,8 @@ def thermalHydraulicMesh(region):
         coreFrontLeft.points[4],
     ], ny=coreFrontLeft.ny)
 
-    coreLeft1.addEdge("arc", 3, 0, x=-coreRadius*np.cos(2*opening), y=-coreRadius*np.sin(2*opening))
-    coreLeft1.addEdge("arc", 7, 4, x=-coreRadius*np.cos(2*opening), y=-coreRadius*np.sin(2*opening))
+    coreLeft1.add_edge_arc(3, 0, x=-coreRadius*np.cos(2*opening), y=-coreRadius*np.sin(2*opening))
+    coreLeft1.add_edge_arc(7, 4, x=-coreRadius*np.cos(2*opening), y=-coreRadius*np.sin(2*opening))
 
     ffn.PointTopLeft0 = mesh.Point(-coreRadius/sqrt2, coreRadius/sqrt2, 0)
     ffn.PointTopLeftH = mesh.Point(-coreRadius/sqrt2, coreRadius/sqrt2, coreHeight)
@@ -144,8 +144,8 @@ def thermalHydraulicMesh(region):
         ffn.PointTopLeftH,
     ], ny=coreFrontRight.ny)
 
-    coreLeft2.addEdge("arc", 3, 0, x=-coreRadius*np.cos(2*opening), y=coreRadius*np.sin(2*opening))
-    coreLeft2.addEdge("arc", 7, 4, x=-coreRadius*np.cos(2*opening), y=coreRadius*np.sin(2*opening))
+    coreLeft2.add_edge_arc(3, 0, x=-coreRadius*np.cos(2*opening), y=coreRadius*np.sin(2*opening))
+    coreLeft2.add_edge_arc(7, 4, x=-coreRadius*np.cos(2*opening), y=coreRadius*np.sin(2*opening))
 
     coreBack = crocus.add_back(coreCenterBack, "coreBack", [
         mesh.Point(+coreRadius*np.sin(opening), +coreRadius*np.cos(opening), 0),
@@ -154,8 +154,8 @@ def thermalHydraulicMesh(region):
         mesh.Point(-coreRadius*np.sin(opening), +coreRadius*np.cos(opening), coreHeight),
     ], ny=coreFront.ny)
 
-    coreBack.addEdge("arc", 2, 3, x=0, y=coreRadius)
-    coreBack.addEdge("arc", 6, 7, x=0, y=coreRadius)
+    coreBack.add_edge_arc(2, 3, x=0, y=coreRadius)
+    coreBack.add_edge_arc(6, 7, x=0, y=coreRadius)
 
     coreBack1 = crocus.add_left(coreBack, "coreBack", [
         coreBackLeft.points[3],
@@ -164,8 +164,8 @@ def thermalHydraulicMesh(region):
         ffn.PointTopLeftH,
     ], nx=coreFrontLeft.nx)
 
-    coreBack1.addEdge("arc", 2, 3, x=-coreRadius*np.sin(2*opening), y=coreRadius*np.cos(2*opening))
-    coreBack1.addEdge("arc", 6, 7, x=-coreRadius*np.sin(2*opening), y=coreRadius*np.cos(2*opening))
+    coreBack1.add_edge_arc(2, 3, x=-coreRadius*np.sin(2*opening), y=coreRadius*np.cos(2*opening))
+    coreBack1.add_edge_arc(6, 7, x=-coreRadius*np.sin(2*opening), y=coreRadius*np.cos(2*opening))
 
     coreBack2 = crocus.add_right(coreBack, "coreBack", [
         coreBackRight.points[2],
@@ -174,8 +174,8 @@ def thermalHydraulicMesh(region):
         ffn.PointTopRightH,
     ], nx=coreBackRight.nx)
 
-    coreBack2.addEdge("arc", 2, 3, x=coreRadius*np.sin(2*opening), y=coreRadius*np.cos(2*opening))
-    coreBack2.addEdge("arc", 6, 7, x=coreRadius*np.sin(2*opening), y=coreRadius*np.cos(2*opening))
+    coreBack2.add_edge_arc(2, 3, x=coreRadius*np.sin(2*opening), y=coreRadius*np.cos(2*opening))
+    coreBack2.add_edge_arc(6, 7, x=coreRadius*np.sin(2*opening), y=coreRadius*np.cos(2*opening))
 
 
     (
@@ -249,10 +249,10 @@ def thermalHydraulicMesh(region):
         expansionBaseBackRight3, expansionBaseBackRight4
     ], "expansionBackRight", coreHeight, nz=nzExpansionTanks)
 
-    expansionBackRight1.addEdge("arc", 3, 0, x=expansionRadius*np.cos(opening/2), y=expansionRadius*np.sin(opening/2))
-    expansionBackRight1.addEdge("arc", 7, 4, x=expansionRadius*np.cos(opening/2), y=expansionRadius*np.sin(opening/2))
-    expansionBackRight3.addEdge("arc", 0, 1, x=expansionRadius*np.cos(opening/2), y=expansionRadius*np.sin(opening/2))
-    expansionBackRight3.addEdge("arc", 4, 5, x=expansionRadius*np.cos(opening/2), y=expansionRadius*np.sin(opening/2))
+    expansionBackRight1.add_edge_arc(3, 0, x=expansionRadius*np.cos(opening/2), y=expansionRadius*np.sin(opening/2))
+    expansionBackRight1.add_edge_arc(7, 4, x=expansionRadius*np.cos(opening/2), y=expansionRadius*np.sin(opening/2))
+    expansionBackRight3.add_edge_arc(0, 1, x=expansionRadius*np.cos(opening/2), y=expansionRadius*np.sin(opening/2))
+    expansionBackRight3.add_edge_arc(4, 5, x=expansionRadius*np.cos(opening/2), y=expansionRadius*np.sin(opening/2))
 
 
     #---------------------------------------------------------------------------
@@ -312,10 +312,10 @@ def thermalHydraulicMesh(region):
         expansionBaseBackLeft3, expansionBaseBackLeft4
     ], "expansionBackLeft", coreHeight, nz=expansionBackRight1.nz)
 
-    expansionBackLeft1.addEdge("arc", 1, 2, x=-expansionRadius*np.sin(opening/2), y=expansionRadius*np.cos(opening/2))
-    expansionBackLeft1.addEdge("arc", 5, 6, x=-expansionRadius*np.sin(opening/2), y=expansionRadius*np.cos(opening/2))
-    expansionBackLeft3.addEdge("arc", 0, 1, x=-expansionRadius*np.sin(opening/2), y=expansionRadius*np.cos(opening/2))
-    expansionBackLeft3.addEdge("arc", 4, 5, x=-expansionRadius*np.sin(opening/2), y=expansionRadius*np.cos(opening/2))
+    expansionBackLeft1.add_edge_arc(1, 2, x=-expansionRadius*np.sin(opening/2), y=expansionRadius*np.cos(opening/2))
+    expansionBackLeft1.add_edge_arc(5, 6, x=-expansionRadius*np.sin(opening/2), y=expansionRadius*np.cos(opening/2))
+    expansionBackLeft3.add_edge_arc(0, 1, x=-expansionRadius*np.sin(opening/2), y=expansionRadius*np.cos(opening/2))
+    expansionBackLeft3.add_edge_arc(4, 5, x=-expansionRadius*np.sin(opening/2), y=expansionRadius*np.cos(opening/2))
 
 
     #---------------------------------------------------------------------------
@@ -373,10 +373,10 @@ def thermalHydraulicMesh(region):
         expansionBaseFrontLeft3, expansionBaseFrontLeft4
     ], "expansionFrontLeft", coreHeight, nz=expansionBackRight1.nz)
 
-    expansionFrontLeft1.addEdge("arc", 1, 2, x=-expansionRadius*np.cos(opening/2), y=-expansionRadius*np.sin(opening/2))
-    expansionFrontLeft1.addEdge("arc", 5, 6, x=-expansionRadius*np.cos(opening/2), y=-expansionRadius*np.sin(opening/2))
-    expansionFrontLeft3.addEdge("arc", 2, 3, x=-expansionRadius*np.cos(opening/2), y=-expansionRadius*np.sin(opening/2))
-    expansionFrontLeft3.addEdge("arc", 6, 7, x=-expansionRadius*np.cos(opening/2), y=-expansionRadius*np.sin(opening/2))
+    expansionFrontLeft1.add_edge_arc(1, 2, x=-expansionRadius*np.cos(opening/2), y=-expansionRadius*np.sin(opening/2))
+    expansionFrontLeft1.add_edge_arc(5, 6, x=-expansionRadius*np.cos(opening/2), y=-expansionRadius*np.sin(opening/2))
+    expansionFrontLeft3.add_edge_arc(2, 3, x=-expansionRadius*np.cos(opening/2), y=-expansionRadius*np.sin(opening/2))
+    expansionFrontLeft3.add_edge_arc(6, 7, x=-expansionRadius*np.cos(opening/2), y=-expansionRadius*np.sin(opening/2))
 
 
     #---------------------------------------------------------------------------
@@ -434,16 +434,16 @@ def thermalHydraulicMesh(region):
         expansionBaseFrontRight3, expansionBaseFrontRight4
     ], "expansionFrontRight", coreHeight, nz=expansionBackRight1.nz)
 
-    expansionFrontRight1.addEdge("arc", 3, 0, x=expansionRadius*np.sin(opening/2), y=-expansionRadius*np.cos(opening/2))
-    expansionFrontRight1.addEdge("arc", 7, 4, x=expansionRadius*np.sin(opening/2), y=-expansionRadius*np.cos(opening/2))
-    expansionFrontRight3.addEdge("arc", 2, 3, x=expansionRadius*np.sin(opening/2), y=-expansionRadius*np.cos(opening/2))
-    expansionFrontRight3.addEdge("arc", 6, 7, x=expansionRadius*np.sin(opening/2), y=-expansionRadius*np.cos(opening/2))
+    expansionFrontRight1.add_edge_arc(3, 0, x=expansionRadius*np.sin(opening/2), y=-expansionRadius*np.cos(opening/2))
+    expansionFrontRight1.add_edge_arc(7, 4, x=expansionRadius*np.sin(opening/2), y=-expansionRadius*np.cos(opening/2))
+    expansionFrontRight3.add_edge_arc(2, 3, x=expansionRadius*np.sin(opening/2), y=-expansionRadius*np.cos(opening/2))
+    expansionFrontRight3.add_edge_arc(6, 7, x=expansionRadius*np.sin(opening/2), y=-expansionRadius*np.cos(opening/2))
 
 
     #---------------------------------------------------------------------------
     # Patches
 
-    wall = ffn.Face("wall", boundaryType="wall")
+    wall = ffn.mesh.Face("wall", boundaryType="wall")
     wall.add_sub_face(coreFront.frontFace())
     wall.add_sub_face(coreFront1.frontFace())
     wall.add_sub_face(coreFront2.frontFace())
@@ -585,7 +585,7 @@ def thermalHydraulicMesh(region):
     ]:
         wall.add_sub_face(block.frontFace())
 
-    atmosphereCore = ffn.Face("atmosphereCore", boundaryType="patch")
+    atmosphereCore = ffn.mesh.Face("atmosphereCore", boundaryType="patch")
     atmosphereCore.add_sub_face(coreCenter.topFace())
     atmosphereCore.add_sub_face(coreCenterLeft.topFace())
     atmosphereCore.add_sub_face(coreCenterFront.topFace())
@@ -609,25 +609,25 @@ def thermalHydraulicMesh(region):
     atmosphereCore.add_sub_face(coreBack2.topFace())
 
 
-    atmosphereExpansionFrontRight = ffn.Face("atmosphereExpansionFrontRight", boundaryType="patch")
+    atmosphereExpansionFrontRight = ffn.mesh.Face("atmosphereExpansionFrontRight", boundaryType="patch")
     atmosphereExpansionFrontRight.add_sub_face(expansionFrontRight1.topFace())
     atmosphereExpansionFrontRight.add_sub_face(expansionFrontRight2.topFace())
     atmosphereExpansionFrontRight.add_sub_face(expansionFrontRight3.topFace())
     atmosphereExpansionFrontRight.add_sub_face(expansionFrontRight4.topFace())
 
-    atmosphereExpansionBackRight = ffn.Face("atmosphereExpansionBackRight", boundaryType="patch")
+    atmosphereExpansionBackRight = ffn.mesh.Face("atmosphereExpansionBackRight", boundaryType="patch")
     atmosphereExpansionBackRight.add_sub_face(expansionBackRight1.topFace())
     atmosphereExpansionBackRight.add_sub_face(expansionBackRight2.topFace())
     atmosphereExpansionBackRight.add_sub_face(expansionBackRight3.topFace())
     atmosphereExpansionBackRight.add_sub_face(expansionBackRight4.topFace())
 
-    atmosphereExpansionBackLeft = ffn.Face("atmosphereExpansionBackLeft", boundaryType="patch")
+    atmosphereExpansionBackLeft = ffn.mesh.Face("atmosphereExpansionBackLeft", boundaryType="patch")
     atmosphereExpansionBackLeft.add_sub_face(expansionBackLeft1.topFace())
     atmosphereExpansionBackLeft.add_sub_face(expansionBackLeft2.topFace())
     atmosphereExpansionBackLeft.add_sub_face(expansionBackLeft3.topFace())
     atmosphereExpansionBackLeft.add_sub_face(expansionBackLeft4.topFace())
 
-    atmosphereExpansionFrontLeft = ffn.Face("atmosphereExpansionFrontLeft", boundaryType="patch")
+    atmosphereExpansionFrontLeft = ffn.mesh.Face("atmosphereExpansionFrontLeft", boundaryType="patch")
     atmosphereExpansionFrontLeft.add_sub_face(expansionFrontLeft1.topFace())
     atmosphereExpansionFrontLeft.add_sub_face(expansionFrontLeft2.topFace())
     atmosphereExpansionFrontLeft.add_sub_face(expansionFrontLeft3.topFace())
@@ -650,29 +650,29 @@ thMesh = thermalHydraulicMesh(region='fluidRegion')
 #==============================================================================*
 # Time Folder
 
-timeFolder0 = ffn.TimeFolder(0)
+timeFolder0 = ffn.timeFolder.TimeFolder(0)
 
 isOpenValve = True
 
-T = ffn.Field("T", region=thMesh.region)
-T.dimensions = ffn.Dimension(default='T')
+T = ffn.fields.Field("T", region=thMesh.region)
+T.dimensions = ffn.fields.Dimension(default='T')
 T.internalField = 300
 T.set_boundary_condition("wall", bc.FixedValue(T.internalField))
 T.set_boundary_condition('"atmosphere.*"', bc.ZeroGradient())
 
 
-U = ffn.Field("U", region=thMesh.region)
-U.dimensions = ffn.Dimension(default='U')
-U.internalField = ffn.Vector(0, 0, 0)
+U = ffn.fields.Field("U", region=thMesh.region)
+U.dimensions = ffn.fields.Dimension(default='U')
+U.internalField = ffn.common.Vector(0, 0, 0)
 U.set_boundary_condition("wall", bc.NoSlip())
-U.set_boundary_condition('atmosphereCore', bc.PressureInletOutletVelocity(ffn.Vector(0, 0, 0)))
+U.set_boundary_condition('atmosphereCore', bc.PressureInletOutletVelocity(ffn.common.Vector(0, 0, 0)))
 if (isOpenValve):
-    U.set_boundary_condition('"atmosphereExpansion.*"', bc.PressureInletOutletVelocity(ffn.Vector(0, 0, 0)))
+    U.set_boundary_condition('"atmosphereExpansion.*"', bc.PressureInletOutletVelocity(ffn.common.Vector(0, 0, 0)))
 else:
     U.set_boundary_condition('"atmosphereExpansion.*"', bc.NoSlip())
 
-p = ffn.Field("p", region=thMesh.region)
-p.dimensions = ffn.Dimension(default='p')
+p = ffn.fields.Field("p", region=thMesh.region)
+p.dimensions = ffn.fields.Dimension(default='p')
 p.internalField = 1e5
 p.set_boundary_condition("wall", bc.FixedFluxPressure(p.internalField))
 p.set_boundary_condition('atmosphereCore', bc.TotalPressure(p.internalField))
@@ -681,8 +681,8 @@ if (isOpenValve):
 else:
     p.set_boundary_condition('"atmosphereExpansion.*"', bc.FixedFluxPressure(p.internalField))
 
-p_rgh = ffn.Field("p_rgh", region=thMesh.region)
-p_rgh.dimensions = ffn.Dimension(default='p')
+p_rgh = ffn.fields.Field("p_rgh", region=thMesh.region)
+p_rgh.dimensions = ffn.fields.Dimension(default='p')
 p_rgh.internalField = 1.1e5
 p_rgh.set_boundary_condition("wall", bc.FixedFluxPressure(p_rgh.internalField))
 p_rgh.set_boundary_condition('atmosphereCore', bc.TotalPressure(p_rgh.internalField))
@@ -691,8 +691,8 @@ if (isOpenValve):
 else:
     p_rgh.set_boundary_condition('"atmosphereExpansion.*"', bc.FixedFluxPressure(p_rgh.internalField))
 
-alpha_water = ffn.Field("alpha.water", region=thMesh.region)
-alpha_water.dimensions = ffn.Dimension()
+alpha_water = ffn.fields.Field("alpha.water", region=thMesh.region)
+alpha_water.dimensions = ffn.fields.Dimension()
 alpha_water.internalField = 0
 alpha_water.set_boundary_condition("wall", bc.ZeroGradient())
 alpha_water.set_boundary_condition('atmosphereCore', bc.InletOutlet(inletValue=0, value=0))
@@ -711,8 +711,8 @@ timeFolder0.append(alpha_water)
 #==============================================================================*
 # Solver
 
-thSolver = ffn.CompressibleInterFoam(
-    "fluidRegion",
+thSolver = ffn.solvers.thermal_hydraulics.CompressibleInterFoam(
+    region=thMesh.region,
     mesh=thMesh,
     removeBaffles=False,
     isSetFvSolutionToDefault=True,
@@ -722,33 +722,33 @@ thSolver = ffn.CompressibleInterFoam(
 # thSolver.decomposeParDict.numberOfSubdomains = 8
 # thSolver.decomposeParDict.method = 'scotch'
 
-thSolver.turbulenceProperties.simulationType = 'laminar'
+thSolver.fluid.turbulenceProperties.simulationType = 'laminar'
 
-multiPhase = ffn.thermophysicalProperty.MultiPhase()
+multiPhase = ffn.thermo.MultiPhase()
 
-multiPhase.appendPhase(ffn.thermophysicalProperty.WaterPerfectFluid(ext='water'))
-multiPhase.appendPhase(ffn.thermophysicalProperty.AirPerfectGas(ext='air'))
+multiPhase.appendPhase(ffn.thermo.WaterPerfectFluid(ext='water'))
+multiPhase.appendPhase(ffn.thermo.AirPerfectGas(ext='air'))
 
-thSolver.thermophysicalProperties = multiPhase
+thSolver.fluid.thermophysicalProperties = multiPhase
 
 thSolver.setFieldsDict.add_default_values(alpha_water, 0)
 
 thSolver.setFieldsDict.add_cylinder_to_cell(
     fieldValues=[(alpha_water, 1)],
     radius=0.75,
-    point2=ffn.Vector(0, 0, 0.98)
+    point2=ffn.common.Vector(0, 0, 0.98)
 )
 thSolver.setFieldsDict.add_box_to_cell(
     fieldValues=[(alpha_water, 1)],
-    lowCorner=ffn.Vector(-1, -1, -1),
-    highCorner=ffn.Vector(1, 1, 0.1)
+    lowCorner=ffn.common.Vector(-1, -1, -1),
+    highCorner=ffn.common.Vector(1, 1, 0.1)
 )
 
 
 #==============================================================================*
 # Model
 
-model = ffn.Model()
+model = ffn.case.Case()
 
 model.settings.application = "GeN-Foam"
 model.settings.endTime = 10
@@ -774,7 +774,7 @@ if (True):
     model.export_to_openfoam()
 
     # ffn.run_preprocessing(model=model)
-    ffn.run(model=model, is_preprocessing=True)
+    ffn.run(model, is_preprocessing=True)
 
 #==============================================================================*
 # Post-processing
