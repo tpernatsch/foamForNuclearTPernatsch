@@ -1,4 +1,6 @@
-# foamForNuclear (FFN)
+*This is the beta release of foamForNuclear. All core functionalities and tutorials are complete, but the documentation and Python API are still under development. Please use with care.*
+
+# foamForNuclear (FFN) - Beta release
 
 **foamForNuclear** is a **general-purpose, OpenFOAM®-based multiphysics platform** for the analysis and design of nuclear systems. It was established in 2025 through the **integration and extension** of two mature OpenFOAM-based projects—**GeN-Foam** and **OFFBEAT**—both of which had been developed, verified, and validated over more than a decade. GeN-Foam was originally conceived for reactor-scale multiphysics simulations, while OFFBEAT focused on advanced nuclear fuel performance modeling and nonlinear thermo-mechanics.
 

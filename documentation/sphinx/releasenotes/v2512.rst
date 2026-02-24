@@ -19,6 +19,7 @@ Contributors
 ============
 
 This release contains contributions from the following people:
+
 - All past contributors to GeN-Foam and OFFBEAT (see header files)
 - Thomas Guilbaud
 - Giovanni Nervi

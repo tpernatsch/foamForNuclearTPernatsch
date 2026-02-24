@@ -1,6 +1,6 @@
 .. warning::
 
-   This code, tutorials and documentation are currently being finalized and we expect them to be complete by the end of February 2026. This process is expected to lead to some modification in dictionaries and keywords
+   This is the beta release of foamForNuclear. All core functionalities and tutorials are complete, but the documentation and Python API are still under development. Please use with care.
 
 ##############
 foamForNuclear
