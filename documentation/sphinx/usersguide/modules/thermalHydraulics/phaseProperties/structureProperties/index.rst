@@ -60,17 +60,13 @@ Possible keys include:
      - N
      - Properties of the passive structure, including ``volumetricArea``, wither ``rho`` (density) and ``Cp`` or ``rhoCp``, ``volumeFraction`` (if different than that of the entire sub-structure), ``T`` (initial temperature). 
      
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+
+   ../../../../../cppapi/generated/porousMediaModels/phaseModels/structureModels/powerModels/powerModel
 
 Three examples of *structureProperties* dictionaries are reported below. *diagrid*, *axialReflector*, etc. are name of cell zones. 
-
-.. The main run-time selectable models are:
-
-.. .. toctree::
-..    :maxdepth: 1
-
-..    powerModels
-..    powerOffCriterionModels
-
 
 .. code :: cpp
 

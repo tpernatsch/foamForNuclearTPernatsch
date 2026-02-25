@@ -10,6 +10,12 @@ description: |-
 
      ./**
 
+  .. toctree::
+    :maxdepth: 1
+    :hidden:
+
+    ../powerOffCriterionModels/powerOffCriterionModel
+
   .. raw:: html
 
     <br><br>
@@ -36,6 +42,8 @@ options:
     required: false
     default:
     description: See :doc:`../powerOffCriterionModels/powerOffCriterionModel`
+
+
 
 
 usage:
