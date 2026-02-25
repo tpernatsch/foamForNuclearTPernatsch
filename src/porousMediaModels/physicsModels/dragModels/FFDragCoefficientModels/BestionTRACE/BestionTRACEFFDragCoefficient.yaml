@@ -7,9 +7,7 @@ admonitions:
     body: |
       Applicable **only** to liquid–gas systems. Ensure ``stateOfMatter`` is set
       correctly in ``phaseProperties.<phaseName>Properties`` to distinguish gas and liquid.
-  - kind: note
-    body: |
-      This model is selected solely by its runtime ``typeName`` and defines no additional options.
+
 
 options: []
 
