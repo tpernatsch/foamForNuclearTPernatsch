@@ -1,5 +1,5 @@
 import FMU4FOAM
-from foamForNuclear import FMPyContainer
+from foamForNuclear.fmi import FMPyContainer
 
 
 class momentumSourceTest(FMPyContainer):
