@@ -21,23 +21,23 @@ fluidBlock2 = fluidMesh.create_cube("zone0", 0, 0, 0, 1, 0.5, 0.4, nx=200, ny=41
 fluidBlock3 = fluidMesh.extrude_right([fluidBlock2], "zone0", dx=2, nx=51)
 fluidBlock1 = fluidMesh.extrude_left([fluidBlock2], "zone0", dx=0.5, nx=81, gradx=0.2)
 
-fluidInlet = ffn.Face("inlet")
+fluidInlet = ffn.mesh.Face("inlet")
 fluidInlet.add_sub_face(fluidBlock1.leftFace())
 
-fluidOutlet = ffn.Face("outlet")
+fluidOutlet = ffn.mesh.Face("outlet")
 fluidOutlet.add_sub_face(fluidBlock3.rightFace())
 
-fluidTop = ffn.Face("top", boundaryType="wall")
+fluidTop = ffn.mesh.Face("top", boundaryType="wall")
 for face in [fluidBlock1, fluidBlock2, fluidBlock3]:
     fluidTop.add_sub_face(face.backFace())
 
-fluidBottom = ffn.Face("bottom")
+fluidBottom = ffn.mesh.Face("bottom")
 fluidBottom.add_sub_face(fluidBlock3.frontFace())
 
-fluidSlip_bottom = ffn.Face("slip-bottom")
+fluidSlip_bottom = ffn.mesh.Face("slip-bottom")
 fluidSlip_bottom.add_sub_face(fluidBlock1.frontFace())
 
-fluidInterface = ffn.Face(
+fluidInterface = ffn.mesh.Face(
     "interface",
     boundaryType="mappedWall",
     inGroups=["wall"],
@@ -61,13 +61,13 @@ solidMesh = mesh.BlockMesh(region="solid")
 
 solidBlock = solidMesh.create_cube("solid", 0, -0.25, 0, 1, 0, 0.4, nx=200, ny=41, nz=1, gradx=5, grady=0.0625)
 
-solidLeft = ffn.Face("left", boundaryType="wall")
+solidLeft = ffn.mesh.Face("left", boundaryType="wall")
 solidLeft.add_sub_face(solidBlock.leftFace())
 
-solidRight = ffn.Face("right", boundaryType="wall")
+solidRight = ffn.mesh.Face("right", boundaryType="wall")
 solidRight.add_sub_face(solidBlock.rightFace())
 
-solidTop = ffn.Face(
+solidTop = ffn.mesh.Face(
     "top",
     boundaryType="mappedWall",
     inGroups=["wall"],
@@ -79,7 +79,7 @@ solidTop = ffn.Face(
 )
 solidTop.add_sub_face(solidBlock.backFace())
 
-solidBottom = ffn.Face("bottom", boundaryType="wall")
+solidBottom = ffn.mesh.Face("bottom", boundaryType="wall")
 solidBottom.add_sub_face(solidBlock.frontFace())
 
 solidMesh.add_boundary(solidLeft)
@@ -91,11 +91,11 @@ solidMesh.add_boundary(solidBottom)
 #==============================================================================*
 # Fields
 
-timeFolder0 = ffn.TimeFolder(0)
+timeFolder0 = ffn.timeFolder.TimeFolder(0)
 
 
-Tfluid = ffn.Field("T", region=fluidMesh.region)
-Tfluid.dimensions = ffn.Dimension(default='T')
+Tfluid = ffn.fields.Field("T", region=fluidMesh.region)
+Tfluid.dimensions = ffn.fields.Dimension(default='T')
 Tfluid.internalField = 300
 Tfluid.set_boundary_condition(fluidInterface, bc.Mixed(value=Tfluid.internalField, refValue=Tfluid.internalField, refGradient=0, valueFraction=0))
 Tfluid.set_boundary_condition(fluidInlet, bc.FixedValue(Tfluid.internalField))
@@ -103,18 +103,18 @@ for face in [fluidOutlet, fluidTop, fluidBottom, fluidSlip_bottom]: # , outerWal
     Tfluid.set_boundary_condition(face, bc.ZeroGradient())
 Tfluid.set_boundary_condition("defaultFaces", bc.Empty())
 
-U = ffn.Field("U", region=fluidMesh.region)
-U.dimensions = ffn.Dimension(default='U')
-U.internalField = ffn.Vector(1, 0, 0)
-U.set_boundary_condition(fluidInterface, bc.FixedValue(ffn.Vector(0, 0, 0)))
+U = ffn.fields.Field("U", region=fluidMesh.region)
+U.dimensions = ffn.fields.Dimension(default='U')
+U.internalField = ffn.common.Vector(1, 0, 0)
+U.set_boundary_condition(fluidInterface, bc.FixedValue(ffn.common.Vector(0, 0, 0)))
 U.set_boundary_condition(fluidInlet, bc.FixedValue(U.internalField))
 U.set_boundary_condition(fluidBottom, bc.FixedValue(U.internalField))
 for face in [fluidOutlet, fluidTop, fluidSlip_bottom]:
     U.set_boundary_condition(face, bc.ZeroGradient())
 U.set_boundary_condition("defaultFaces", bc.Empty())
 
-p_rgh = ffn.Field("p_rgh", region=fluidMesh.region)
-p_rgh.dimensions = ffn.Dimension(default="p")
+p_rgh = ffn.fields.Field("p_rgh", region=fluidMesh.region)
+p_rgh.dimensions = ffn.fields.Dimension(default="p")
 p_rgh.internalField = 0
 p_rgh.set_boundary_condition(fluidOutlet, bc.FixedValue(0))
 for face in [fluidInterface, fluidInlet, fluidTop, fluidBottom, fluidSlip_bottom]:
@@ -122,8 +122,8 @@ for face in [fluidInterface, fluidInlet, fluidTop, fluidBottom, fluidSlip_bottom
 p_rgh.set_boundary_condition("defaultFaces", bc.Empty())
 
 
-Tsolid = ffn.Field("T", region=solidMesh.region)
-Tsolid.dimensions = ffn.Dimension(default='T')
+Tsolid = ffn.fields.Field("T", region=solidMesh.region)
+Tsolid.dimensions = ffn.fields.Dimension(default='T')
 Tsolid.internalField = 310
 Tsolid.set_boundary_condition(solidTop, bc.Mixed(value=Tsolid.internalField, refValue=Tsolid.internalField, refGradient=0, valueFraction=0))
 Tsolid.set_boundary_condition(solidBottom, bc.FixedValue(Tsolid.internalField))
@@ -141,19 +141,18 @@ timeFolder0.append(Tsolid)
 #==============================================================================*
 # Solvers
 
-fluidSolver = ffn.ThermalHydraulicsSolver(
+fluidSolver = ffn.solvers.thermal_hydraulics.OnePhaseThermalHydraulicsSolver(
     region=fluidMesh.region,
-    solver="onePhase",
     removeBaffles=False,
     mesh=fluidMesh,
     isSetFvSchemesToDefault=False,
     isSetFvSolutionToDefault=False
 )
-fluidSolver.g = ffn.Vector(0, 0, 0)
+fluidSolver.g = ffn.common.Vector(0, 0, 0)
 
-fluidSolver.turbulenceProperties.simulationType = "laminar"
+fluidSolver.fluid.turbulenceProperties.simulationType = "laminar"
 
-thermo = ffn.thermophysicalProperty.SodiumBoussinesq()
+thermo = ffn.thermo.SodiumBoussinesq()
 thermo.description = ""
 thermo.molWeight = 1
 thermo.rho0 = 1
@@ -164,7 +163,7 @@ thermo.Hf = 0
 thermo.mu = 2.0e-4 # nu × rho
 thermo.Pr = 0.01 # from Cp, lambda, mu
 
-fluidSolver.thermophysicalProperties = thermo
+fluidSolver.fluid.thermophysicalProperties = thermo
 
 # fvSchemes
 fluidSolver.fvSchemes.ddtSchemes['default'] = "Euler"
@@ -188,8 +187,8 @@ fluidSolver.fvSchemes.fluxRequired['p_rgh'] = ""
 fluidSolver.fvSchemes.interpolationSchemes['default'] = "linear"
 
 # fvSolution
-fluidSolution = ffn.fvSolution()
-fluidSolution.append('"p_rgh|p_rghFinal"', ffn.fvSolutionSolver(
+fluidSolution = ffn.numerics.fvSolution()
+fluidSolution.append('"p_rgh|p_rghFinal"', ffn.numerics.fvSolutionSolver(
     solver='GAMG',
     tolerance=1e-8,
     relTol=1e-3,
@@ -206,7 +205,7 @@ fluidSolution.append('"p_rgh|p_rghFinal"', ffn.fvSolutionSolver(
     agglomerator="faceAreaPair",
     mergeLevels=1
 ))
-fluidSolution.append('cellMotionU', ffn.fvSolutionSolver(
+fluidSolution.append('cellMotionU', ffn.numerics.fvSolutionSolver(
     solver='GAMG',
     tolerance=1e-6,
     relTol=1e-3,
@@ -223,14 +222,14 @@ fluidSolution.append('cellMotionU', ffn.fvSolutionSolver(
     agglomerator="faceAreaPair",
     mergeLevels=1
 ))
-fluidSolution.append('"U|UFinal"', ffn.fvSolutionSolver(
+fluidSolution.append('"U|UFinal"', ffn.numerics.fvSolutionSolver(
     solver='PBiCG',
     preconditioner="DILU",
     tolerance=1e-8,
     relTol=1e-3,
     minIter=1
 ))
-fluidSolution.append('"h|hFinal"', ffn.fvSolutionSolver(
+fluidSolution.append('"h|hFinal"', ffn.numerics.fvSolutionSolver(
     solver='PBiCG',
     preconditioner="DILU",
     tolerance=1e-12,
@@ -263,29 +262,33 @@ fluidSolver.add_relaxation_on_equation('"U|UFinal"', 0.9)
 #==============================================================================*
 # Thermal solver
 
-solidSolver = ffn.OffbeatSolver(
+solidSolver = ffn.solvers.OffbeatSolver(
     region=solidMesh.region,
     solver="extendedThermoMechanics",
     mesh=solidMesh,
-    thermalSolverOptions=ffn.SolidConductionThermalSolverOptions(),
-    mechanicsSolverOptions=ffn.MechanicsSolverOptions(),
+    thermalSolver=ffn.offbeat_lib.thermal_solver.SolidConduction(),
+    mechanicsSolver=ffn.offbeat_lib.mechanics_solver.SmallStrain(),
+    couplingOptions=ffn.offbeat_lib.ThermoMechanicsCouplingOptions(
+        correctTFromTH=False,
+        correctDispForNeutro=False
+    ),
     isSetFvSchemesToDefault=False,
     isSetFvSolutionToDefault=False
 )
-solidSolver.couplingOptions.correctTFromTH = False
-solidSolver.couplingOptions.correctDispForNeutro = False
+# Dummy options
+solidSolver.globalOptions.pinDirection = [0, 0, 1]
+solidSolver.globalOptions.reactorType = "LWR"
 
 solidSolver.add_material(
-    ffn.thermomechanicalMaterial.ConstantMaterial(
+    ffn.offbeat_lib.materials.Constant(
         name="solid",
-        rho=1,
-        Cp=100,
-        k=100,
+        density=1,
+        heatCapacity=100,
+        conductivity=100,
         emissivity=0,
-        E=2e+11,
-        nu=0.3,
-        G=0,
-        alpha=1e-5,
+        YoungModulus=2e+11,
+        PoissonRatio=0.3,
+        thermalExpansion=1e-5,
         Tref=0
     )
 )
@@ -301,8 +304,8 @@ solidSolver.fvSchemes.interpolationSchemes['default'] = "linear"
 solidSolver.fvSchemes.fluxRequired['default'] = "true"
 
 # fvSolution
-solidSolution = ffn.fvSolution()
-solidSolution.append('T', ffn.fvSolutionSolver(
+solidSolution = ffn.numerics.fvSolution()
+solidSolution.append('T', ffn.numerics.fvSolutionSolver(
     solver='PCG',
     preconditioner='DIC',
     tolerance=1e-10,
@@ -321,9 +324,9 @@ solidSolver.stressAnalysis.relT = 1e-6
 #==============================================================================*
 # Coupling
 
-solvers = ffn.Solvers([fluidSolver, solidSolver])
+solvers = ffn.solvers.Solvers([fluidSolver, solidSolver])
 
-chtLoop = ffn.CHTLoop(
+chtLoop = ffn.coupling.CHTLoop(
     region="Level_1",
     solvers=[fluidSolver, solidSolver],
     maxResidual=1e-6,
@@ -335,19 +338,19 @@ chtLoop = ffn.CHTLoop(
     useHTC=False
 )
 
-coupling = ffn.Coupling(solvers=[chtLoop])
+coupling = ffn.coupling.Coupling(solvers=[chtLoop])
 
 
 #==============================================================================*
 # Settings
 
-model = ffn.Model(
+model = ffn.case.Case(
     timeFolders=[timeFolder0],
     solvers=solvers,
     coupling=coupling
 )
 
-settings: ffn.ControlDict = model.settings
+settings = model.settings
 
 settings.application = 'GeN-Foam'
 settings.endTime = 8
@@ -361,7 +364,7 @@ settings.adjustTimeStep = False
 settings.maxDeltaT = 1
 settings.maxCo = 0.5
 
-probesFunctionObject = ffn.Probes(
+probesFunctionObject = ffn.functions.Probes(
     name="probes",
     fields=["T"],
     enabled=True,
@@ -408,7 +411,7 @@ model.export_to_openfoam()
 coupling.plot_solving_flowchart()
 coupling.plot_solving_graph()
 
-ffn.run_preprocessing(model=model)
+ffn.run_preprocessing(model)
 
 model.plot_mesh(region=[fluidMesh, solidMesh], show_edges=True, normal="z")
 model.plot_mesh(region=fluidMesh, show_edges=True, normal="z")
@@ -418,7 +421,7 @@ model.plot_mesh(region=solidMesh, show_edges=True, normal="z")
 #==============================================================================*
 # Run
 
-ffn.run(model=model, is_preprocessing=False)
+ffn.run(model, is_preprocessing=False)
 
 
 #==============================================================================*

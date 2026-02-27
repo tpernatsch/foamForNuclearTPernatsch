@@ -715,6 +715,7 @@ tmSolver = ffn.solvers.OffbeatSolver(
 )
 
 tmSolver.globalOptions.pinDirection = [0, 0, 1]
+tmSolver.globalOptions.reactorType = "LWR"
 
 baseMat = ffn.offbeat_lib.materials.Constant(
     name="base",
