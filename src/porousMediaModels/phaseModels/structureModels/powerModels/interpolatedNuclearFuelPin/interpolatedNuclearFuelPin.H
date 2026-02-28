@@ -38,15 +38,6 @@ License
 Class
     Foam::powerModels::interpolatedNuclearFuelPin
 
-Description
-    Model for representing a nuclear fuel pin with constant material
-    properties. Models fuel, gap, cladding and solves for the heat equation
-    with a finite differences scheme. Only radial heat diffusion is considered.
-    Derivation of the equations is provided at the end of the present file.
-
-\mainauthor
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com),
-    Carlo Fiorina (carlo.fiorina@outlook.com / carlo.fiorina@epfl.ch)
 
 SourceFiles
     interpolatedNuclearFuelPin.C
