@@ -97,7 +97,6 @@ usage:
               type                LockhartMartinelli;
               multiplierFluid     "liquid";
           }
-        }
       }
 
 
