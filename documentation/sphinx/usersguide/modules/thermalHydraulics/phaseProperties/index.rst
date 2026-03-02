@@ -28,9 +28,7 @@ flow-regime map can be found in
 `1D_PSBT_SC <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/1D_PSBT_SC/Phase_Ex1_12223/constant/fluidRegion/phaseProperties>`_.
 
 
-
-Sub-dictionaries
-~~~~~~~~~~~~~~~~
+Main sub-dictionaries include:
 
 .. toctree::
    :maxdepth: 1
