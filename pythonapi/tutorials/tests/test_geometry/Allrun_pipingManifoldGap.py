@@ -75,29 +75,29 @@ for i, outletPipe in enumerate(outletManifold[::2]):
 
 
 # Add inlet and outlet of manifold
-inletManifoldOutlet = ffn.Face("inletManifoldOutlet")
+inletManifoldOutlet = ffn.mesh.Face("inletManifoldOutlet")
 for block in inletManifold:
     inletManifoldOutlet.add_sub_face(block.bottomFace())
 
-outletManifoldInlet = ffn.Face("outletManifoldInlet")
+outletManifoldInlet = ffn.mesh.Face("outletManifoldInlet")
 for block in outletManifold:
     outletManifoldInlet.add_sub_face(block.bottomFace())
 
-ringTop = ffn.Face("ringTop")
+ringTop = ffn.mesh.Face("ringTop")
 for block in ring:
     ringTop.add_sub_face(block.topFace())
 
-coreTop = ffn.Face("coreTop")
+coreTop = ffn.mesh.Face("coreTop")
 for block in core:
     coreTop.add_sub_face(block.topFace())
 
-coreBottom = ffn.Face("coreBottom")
+coreBottom = ffn.mesh.Face("coreBottom")
 for block in core:
     coreBottom.add_sub_face(block.bottomFace())
 for block in ring:
     coreBottom.add_sub_face(block.bottomFace())
 
-bottomPlenumTop = ffn.Face("bottomPlenumTop")
+bottomPlenumTop = ffn.mesh.Face("bottomPlenumTop")
 for block in bottomPlenum[:-1]:
     bottomPlenumTop.add_sub_face(block.topFace())
 
@@ -128,7 +128,7 @@ thSolver = ffn.ThermalHydraulicsSolver(
 #==============================================================================*
 # Model
 
-model = ffn.Model()
+model = ffn.case.Case()
 model.settings.application = "dummy"
 
 model.add_solver(thSolver)

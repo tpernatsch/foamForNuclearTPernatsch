@@ -25,10 +25,10 @@ nMesh.merge_patches_with_name(name='bottomFuel', includeFacename=['cylinderBotto
 nMesh.merge_patches_with_name(name='topClad', includeFacename=['ringTop_'])
 nMesh.merge_patches_with_name(name='bottomClad', includeFacename=['ringBottom_'])
 
-solver = ffn.NeutronicsSolver(region=nMesh.region, mesh=nMesh, solver='diffusionNeutronics')
+solver = ffn.solvers.NeutronicsSolver(region=nMesh.region, mesh=nMesh, solver='diffusionNeutronics')
 
 
-model = ffn.Model()
+model = ffn.case.Case()
 model.settings.application = 'dummy'
 
 model.solvers.append(solver)

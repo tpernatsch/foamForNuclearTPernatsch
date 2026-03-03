@@ -39,7 +39,7 @@ topSections = thMesh.create_pipe_cylindrical_manifold_along_z(
     nr=3, nt=6
 )
 
-manifoldInlet = ffn.Face("manifoldInlet")
+manifoldInlet = ffn.mesh.Face("manifoldInlet")
 for section in topSections:
     manifoldInlet.add_sub_face(section.bottomFace())
 thMesh.add_boundary(manifoldInlet)
@@ -76,7 +76,7 @@ hotLeg2 = thMesh.add_pipe_1D_from_2points(
 thMesh.merge_patches_with_name(name="walls", includeFacename=["coreWall", "coreTop"], patchType="wall")
 thMesh.merge_patches_with_name(name="coreInlet", includeFacename=["coreBottom"])
 
-hotLegOutlet = ffn.Face("hotLegOutlet")
+hotLegOutlet = ffn.mesh.Face("hotLegOutlet")
 hotLegOutlet.add_sub_face(hotLeg3.topFace())
 thMesh.add_boundary(hotLegOutlet)
 
@@ -86,10 +86,10 @@ thMesh.add_boundary(hotLegOutlet)
 #==============================================================================*
 # Time folder
 
-timeFolder0 = ffn.TimeFolder(0)
+timeFolder0 = ffn.timeFolder.TimeFolder(0)
 
-T = ffn.Field("T", region=thMesh.region)
-T.dimensions = ffn.Dimension(default='T')
+T = ffn.fields.Field("T", region=thMesh.region)
+T.dimensions = ffn.fields.Dimension(default='T')
 T.internalField = 600
 T.set_boundary_condition("pipeWall", bc.ZeroGradient())
 T.set_boundary_condition("hotLegOutlet", bc.ZeroGradient())
@@ -99,8 +99,8 @@ T.set_boundary_condition("manifoldInlet", bc.ZeroGradient())
 T.set_boundary_condition("coreTop_1", bc.ZeroGradient())
 T.set_boundary_condition("defaultFaces", bc.Empty())
 
-U = ffn.Field("U", region=thMesh.region)
-U.dimensions = ffn.Dimension(default='U')
+U = ffn.fields.Field("U", region=thMesh.region)
+U.dimensions = ffn.fields.Dimension(default='U')
 U.internalField = ffn.Vector(0, 0, 0)
 U.set_boundary_condition("pipeWall", bc.Slip())
 U.set_boundary_condition("hotLegOutlet", bc.ZeroGradient())
@@ -110,8 +110,8 @@ U.set_boundary_condition("manifoldInlet", bc.ZeroGradient())
 U.set_boundary_condition("coreTop_1", bc.Slip())
 U.set_boundary_condition("defaultFaces", bc.Empty())
 
-p_rgh = ffn.Field("p_rgh", region=thMesh.region)
-p_rgh.dimensions = ffn.Dimension(default='p')
+p_rgh = ffn.fields.Field("p_rgh", region=thMesh.region)
+p_rgh.dimensions = ffn.fields.Dimension(default='p')
 p_rgh.internalField = 1e5
 p_rgh.set_boundary_condition("pipeWall", bc.ZeroGradient())
 p_rgh.set_boundary_condition("hotLegOutlet", bc.FixedValue(p_rgh.internalField))
@@ -202,7 +202,7 @@ thSolver.fvSchemes.divSchemes['div(alphaRhoPhiNu,U)'] = "Gauss linear"
 #==============================================================================*
 # Model
 
-model = ffn.Model(timeFolders=[timeFolder0])
+model = ffn.case.Case(timeFolders=[timeFolder0])
 model.settings.application = "GeN-Foam"
 model.settings.endTime = 1000
 model.settings.deltaT = 0.001

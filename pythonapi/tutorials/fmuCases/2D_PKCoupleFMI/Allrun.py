@@ -377,7 +377,7 @@ pointKineticsData.controlRodReactivityMap = [
     ( -0.1,  0.01 ),
 ]
 
-pointKineticsData.externalReactivityTimeProfile = ffn.TimeProfile(
+pointKineticsData.externalReactivityTimeProfile = ffn.timeProfile.TimeProfile(
     type='fmi',
     nameFromFMU='gfExtReact',
     initialValue=0

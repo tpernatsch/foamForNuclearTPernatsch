@@ -74,10 +74,10 @@ nMesh.add_right_face_edge_polyline(
 # atmos1 = nMesh.extrude_top([block], "atmosphere", dz=bot, nz=1500)
 # atmos2 = nMesh.extrude_right([atmos1], "atmosphere", dr=maxRadius, nr=30)
 
-solver = ffn.NeutronicsSolver(region=nMesh.region, mesh=nMesh, solver='diffusionNeutronics')
+solver = ffn.solvers.NeutronicsSolver(region=nMesh.region, mesh=nMesh, solver='diffusionNeutronics')
 
 
-model = ffn.Model()
+model = ffn.case.Case()
 model.settings.application = 'dummy'
 
 model.solvers.append(solver)

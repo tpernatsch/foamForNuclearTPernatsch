@@ -308,14 +308,14 @@ createTJunctionOnRing(
 
 
 
-solver = ffn.NeutronicsSolver(
+solver = ffn.solvers.NeutronicsSolver(
     region=nMesh.region,
     mesh=nMesh,
     solver='diffusionNeutronics'
 )
 
 
-model = ffn.Model()
+model = ffn.case.Case()
 model.settings.application = 'dummy'
 
 model.solvers.append(solver)

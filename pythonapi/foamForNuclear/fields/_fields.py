@@ -29,8 +29,8 @@ class Dimension:
     -------
     Example of use ::
 
-        dim1 = ffn.Dimension(default='flux')
-        dim2 = ffn.Dimension(length=3)
+        dim1 = ffn.fields.Dimension(default='flux')
+        dim2 = ffn.fields.Dimension(length=3)
         dim3 = dim1 * dim2
         dim4 = dim3 / dim2
 

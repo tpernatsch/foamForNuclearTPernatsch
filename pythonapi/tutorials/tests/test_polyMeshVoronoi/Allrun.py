@@ -157,11 +157,11 @@ nMesh.generate_mesh_from_voronoi_points(
 # plt.show()
 
 
-timeFolder0 = ffn.TimeFolder(time=0)
+timeFolder0 = ffn.timeFolder.TimeFolder(time=0)
 
-defaultFlux = ffn.Field(
+defaultFlux = ffn.fields.Field(
     name="defaultFlux",
-    dimensions=ffn.Dimension(default='flux'),
+    dimensions=ffn.fields.Dimension(default='flux'),
     region=nMesh.region
 )
 defaultFlux.internalField = 1
@@ -171,14 +171,14 @@ defaultFlux.set_boundary_condition('defaultFaces', bc.FixedValue(0))
 
 timeFolder0.append(defaultFlux)
 
-solver = ffn.NeutronicsSolver(
+solver = ffn.solvers.NeutronicsSolver(
     region=nMesh.region,
     mesh=nMesh,
     solver='diffusionNeutronics'
 )
 
 
-model = ffn.Model(timeFolders=[timeFolder0])
+model = ffn.case.Case(timeFolders=[timeFolder0])
 model.settings.application = 'dummy'
 
 model.solvers.append(solver)

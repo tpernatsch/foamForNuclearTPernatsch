@@ -27,10 +27,10 @@ block13 = nMesh.extrude_left([block23], "block13", dr=1, nr=3)
 mesh.BlockMesh.extrude_right(nMesh, [block33], 'new', 1.3, 10)
 
 
-solver = ffn.NeutronicsSolver(region=nMesh.region, mesh=nMesh, solver='diffusionNeutronics')
+solver = ffn.solvers.NeutronicsSolver(region=nMesh.region, mesh=nMesh, solver='diffusionNeutronics')
 
 
-model = ffn.Model()
+model = ffn.case.Case()
 model.settings.application = 'dummy'
 
 model.solvers.append(solver)

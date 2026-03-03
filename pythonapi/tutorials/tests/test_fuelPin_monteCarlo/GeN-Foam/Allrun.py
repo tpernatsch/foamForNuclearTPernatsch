@@ -64,17 +64,17 @@ nMesh.merge_patches_with_name('walls', includeFacename=['Wall'])
 #==============================================================================*
 # Fields
 
-timeFolder0 = ffn.TimeFolder(time=0)
+timeFolder0 = ffn.timeFolder.TimeFolder(time=0)
 
-defaultFlux = ffn.Field("defaultFlux", region=nMesh.region)
-defaultFlux.dimensions = ffn.Dimension(default='flux')
+defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
+defaultFlux.dimensions = ffn.fields.Dimension(default='flux')
 defaultFlux.internalField = 1e21
 defaultFlux.set_boundary_condition("walls", bc.ZeroGradient())
 defaultFlux.set_boundary_condition("top", bc.ZeroGradient())
 defaultFlux.set_boundary_condition("bottom", bc.ZeroGradient())
 
-defaultFlux2 = ffn.Field("defaultFlux2", region=nMesh.region)
-defaultFlux2.dimensions = ffn.Dimension(default='flux')
+defaultFlux2 = ffn.fields.Field("defaultFlux2", region=nMesh.region)
+defaultFlux2.dimensions = ffn.fields.Dimension(default='flux')
 defaultFlux2.internalField = 1e21
 defaultFlux2.set_boundary_condition("walls", bc.ZeroGradient())
 defaultFlux2.set_boundary_condition("top", bc.ZeroGradient())
@@ -87,7 +87,7 @@ timeFolder0.append(defaultFlux2)
 #==============================================================================*
 # Solver
 
-neutronicsSolver = ffn.NeutronicsSolver(
+neutronicsSolver = ffn.solvers.NeutronicsSolver(
     region=nMesh.region,
     # solver="diffusionNeutronics",
     solver="SP3Neutronics",
@@ -103,7 +103,7 @@ neutronicsSolver = ffn.NeutronicsSolver(
 # neutronicsSolver.nuclearData.legendreMoments = 1
 
 
-serpentState = ffn.NuclearDataState('serpent')
+serpentState = ffn.nuclearData.NuclearDataState('serpent')
 serpentState.read_from_serpent(
     outputFilename="../Serpent/main_res.m",
     universes=[
@@ -113,7 +113,7 @@ serpentState.read_from_serpent(
     ]
 )
 
-openmcState = ffn.NuclearDataState('reference')
+openmcState = ffn.nuclearData.NuclearDataState('reference')
 openmcState.read_from_openmc(
     outputFilename="../OpenMC/statepoint.1000.h5",
     domains=[
@@ -148,9 +148,9 @@ fig.savefig("fig_xs.png")
 #==============================================================================*
 # Settings
 
-solvers = ffn.Solvers([neutronicsSolver])
+solvers = ffn.solvers.Solvers([neutronicsSolver])
 
-model = ffn.Model(solvers=solvers, timeFolders=[timeFolder0])
+model = ffn.case.Case(solvers=solvers, timeFolders=[timeFolder0])
 
 settings: ffn.ControlDict = model.settings
 

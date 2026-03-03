@@ -76,10 +76,10 @@ nMesh.merge_patches_with_name(name='fluidPatch', includeFacename=['WallFluid'])
 nMesh.merge_patches_with_name(name='outlet', includeFacename=['Top_'])
 nMesh.merge_patches_with_name(name='inlet', includeFacename=['Bottom_'])
 
-solver = ffn.NeutronicsSolver(region=nMesh.region, mesh=nMesh, solver='diffusionNeutronics')
+solver = ffn.solvers.NeutronicsSolver(region=nMesh.region, mesh=nMesh, solver='diffusionNeutronics')
 
 
-model = ffn.Model()
+model = ffn.case.Case()
 model.settings.application = 'dummy'
 
 model.solvers.append(solver)

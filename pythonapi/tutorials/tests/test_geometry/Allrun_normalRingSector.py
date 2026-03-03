@@ -83,7 +83,7 @@ thMesh.isMergeCoincidentPoints = True
 
 solver = ffn.ThermalHydraulicsSolver(region=thMesh.region, mesh=thMesh, solver='onePhase')
 
-model = ffn.Model()
+model = ffn.case.Case()
 model.settings.application = 'dummy'
 
 model.solvers.append(solver)

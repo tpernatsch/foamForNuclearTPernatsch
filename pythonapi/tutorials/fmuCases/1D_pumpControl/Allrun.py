@@ -186,7 +186,7 @@ thSolver.add_relaxation_on_equation('"h.*"', 0.7)
 #==============================================================================*
 # Solvers
 
-solvers = ffn.Solvers([thSolver])
+solvers = ffn.solvers.Solvers([thSolver])
 
 
 #==============================================================================*
@@ -244,7 +244,7 @@ FMUSimulator.plot_coupling_graph()
 #==============================================================================*
 # Model
 
-model = ffn.Model(
+model = ffn.case.Case(
     solvers=solvers,
     timeFolders=[timeFolder0],
     externalCouplingDict=externalCouplingDict

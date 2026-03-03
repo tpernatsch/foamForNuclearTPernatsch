@@ -111,24 +111,24 @@ for i, outletPipe in enumerate(outletManifold[::2]):
     )
 
 # Add inlet and outlet of manifold
-inletManifoldOutlet = ffn.Face("inletManifoldOutlet_wall")
+inletManifoldOutlet = ffn.mesh.Face("inletManifoldOutlet_wall")
 for block in inletManifold:
     inletManifoldOutlet.add_sub_face(block.bottomFace())
 
-outletManifoldInlet = ffn.Face("outletManifoldInlet_wall")
+outletManifoldInlet = ffn.mesh.Face("outletManifoldInlet_wall")
 for block in outletManifold:
     outletManifoldInlet.add_sub_face(block.bottomFace())
 
-inlet = ffn.Face("inlet")
+inlet = ffn.mesh.Face("inlet")
 for block in inletPipes:
     inlet.add_sub_face(block.frontFace())
 
-outlet = ffn.Face("outlet")
+outlet = ffn.mesh.Face("outlet")
 for block in outletPipes:
     outlet.add_sub_face(block.frontFace())
 
 
-pipeWall = ffn.Face("pipeWall")
+pipeWall = ffn.mesh.Face("pipeWall")
 for block in outletPipes:
     pipeWall.add_sub_face(block.leftFace())
     pipeWall.add_sub_face(block.rightFace())
@@ -205,17 +205,17 @@ waterConstThermo = thermo.WaterConst(T=T_inlet)
 # print(massFlowRate, rho_inlet, Sp, D, u_inlet, epsilon_inlet, k_inlet, Reynolds, waterConstThermo.mu)
 
 
-timeFolder0 = ffn.TimeFolder(0)
+timeFolder0 = ffn.timeFolder.TimeFolder(0)
 
-T = ffn.Field("T", region=primaryMesh.region)
-T.dimensions = ffn.Dimension(default='T')
+T = ffn.fields.Field("T", region=primaryMesh.region)
+T.dimensions = ffn.fields.Dimension(default='T')
 T.internalField = T_inlet
 T.set_boundary_condition("inlet", bc.FixedValue(T.internalField))
 T.set_boundary_condition("outlet", bc.ZeroGradient())
 T.set_boundary_condition('".*wall"', bc.ZeroGradient())
 
-U = ffn.Field("U", region=primaryMesh.region)
-U.dimensions = ffn.Dimension(default='U')
+U = ffn.fields.Field("U", region=primaryMesh.region)
+U.dimensions = ffn.fields.Dimension(default='U')
 U.internalField = ffn.Vector(0, 0, 0)
 # U.set_boundary_condition("inlet", bc.ZeroGradient())
 U.set_boundary_condition("inlet", bc.FlowRateInletVelocity(
@@ -226,8 +226,8 @@ U.set_boundary_condition("inlet", bc.FlowRateInletVelocity(
 U.set_boundary_condition("outlet", bc.ZeroGradient())
 U.set_boundary_condition('".*wall"', bc.Slip())
 
-p_rgh = ffn.Field("p_rgh", region=primaryMesh.region)
-p_rgh.dimensions = ffn.Dimension(default='p')
+p_rgh = ffn.fields.Field("p_rgh", region=primaryMesh.region)
+p_rgh.dimensions = ffn.fields.Dimension(default='p')
 p_rgh.internalField = 155e5
 # p_rgh.set_boundary_condition("inlet", bc.FixedValue(p_rgh.internalField+1e5))
 p_rgh.set_boundary_condition("inlet", bc.ZeroGradient())
@@ -235,29 +235,29 @@ p_rgh.set_boundary_condition("outlet", bc.FixedValue(p_rgh.internalField))
 p_rgh.set_boundary_condition('".*wall"', bc.ZeroGradient())
 
 
-# epsilon = ffn.Field("epsilon", region=primaryMesh.region)
-# epsilon.dimensions = ffn.Dimension(length=2, time=-3)
+# epsilon = ffn.fields.Field("epsilon", region=primaryMesh.region)
+# epsilon.dimensions = ffn.fields.Dimension(length=2, time=-3)
 # epsilon.internalField = epsilon_inlet
 # epsilon.set_boundary_condition("inlet", bc.FixedValue(epsilon_inlet))
 # epsilon.set_boundary_condition("outlet", bc.ZeroGradient())
 # epsilon.set_boundary_condition('".*wall"', bc.EpsilonWallFunction(0))
 
-# k = ffn.Field("k", region=primaryMesh.region)
-# k.dimensions = ffn.Dimension(length=2, time=-2)
+# k = ffn.fields.Field("k", region=primaryMesh.region)
+# k.dimensions = ffn.fields.Dimension(length=2, time=-2)
 # k.internalField = k_inlet
 # k.set_boundary_condition("inlet", bc.FixedValue(k_inlet))
 # k.set_boundary_condition("outlet", bc.ZeroGradient())
 # k.set_boundary_condition('".*wall"', bc.ZeroGradient())
 
-# alphat = ffn.Field("alphat", region=primaryMesh.region)
-# alphat.dimensions = ffn.Dimension(mass=1, length=-1, time=-1)
+# alphat = ffn.fields.Field("alphat", region=primaryMesh.region)
+# alphat.dimensions = ffn.fields.Dimension(mass=1, length=-1, time=-1)
 # alphat.internalField = 0
 # alphat.set_boundary_condition("inlet", bc.FixedValue(0))
 # alphat.set_boundary_condition("outlet", bc.FixedValue(0))
 # alphat.set_boundary_condition('".*wall"', bc.ZeroGradient())
 
-# nut = ffn.Field("nut", region=primaryMesh.region)
-# nut.dimensions = ffn.Dimension(length=2, time=-1)
+# nut = ffn.fields.Field("nut", region=primaryMesh.region)
+# nut.dimensions = ffn.fields.Dimension(length=2, time=-1)
 # nut.internalField = 0
 # nut.set_boundary_condition("inlet", bc.FixedValue(0))
 # nut.set_boundary_condition("outlet", bc.FixedValue(0))
@@ -357,20 +357,20 @@ thSolver.fvSchemes.divSchemes['default'] = "Gauss upwind" # Better than Gauss li
 thSolver.fvSchemes.divSchemes['div(alphaRhoPhiNu,U)'] = "Gauss linear"
 
 # Solver definition
-thSolver.fvSolution.solvers['"p_rgh.*"'] = ffn.fvSolutionSolver(
+thSolver.fvSolution.solvers['"p_rgh.*"'] = ffn.numerics.fvSolutionSolver(
     solver="GAMG",
     smoother="DIC",
     tolerance=1e-5,
     relTol=0
 )
-thSolver.fvSolution.solvers['"e|h"'] = ffn.fvSolutionSolver(
+thSolver.fvSolution.solvers['"e|h"'] = ffn.numerics.fvSolutionSolver(
     solver="smoothSolver",
     smoother="symGaussSeidel",
     tolerance=1e-5,
     relTol=0,
     minIter=0
 )
-thSolver.fvSolution.solvers['".*"'] = ffn.fvSolutionSolver(
+thSolver.fvSolution.solvers['".*"'] = ffn.numerics.fvSolutionSolver(
     solver="PBiCGStab",
     preconditioner="diagonal",
     tolerance=1e-5,
@@ -447,7 +447,7 @@ totalPower = ffn.VolFieldValue(
 #==============================================================================*
 # Model
 
-model = ffn.Model(timeFolders=[timeFolder0])
+model = ffn.case.Case(timeFolders=[timeFolder0])
 model.settings.application = "GeN-Foam"
 model.settings.endTime = 200
 model.settings.deltaT = 0.1

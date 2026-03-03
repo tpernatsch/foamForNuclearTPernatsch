@@ -316,7 +316,7 @@ for i, nz in enumerate(nz_values):
 print(tabulate(
     table_data,
     headers=['nz', 'k_eff', 'k_err [pcm]', 'L2 err g=0', 'L2 err g=1'],
-    tablefmt='grid'
+    tablefmt='pipe'
 ))
 
 

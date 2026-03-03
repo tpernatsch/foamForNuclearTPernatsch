@@ -88,20 +88,20 @@ thMesh.connect_pipes(coldLeg, core, elbowRadius=elbowRadius)
 #==============================================================================*
 # Time folder
 
-timeFolder0 = ffn.TimeFolder(0)
+timeFolder0 = ffn.timeFolder.TimeFolder(0)
 
-T = ffn.Field("T", region=thMesh.region)
-T.dimensions = ffn.Dimension(default='T')
+T = ffn.fields.Field("T", region=thMesh.region)
+T.dimensions = ffn.fields.Dimension(default='T')
 T.internalField = 600
 T.set_boundary_condition("pipeWall", bc.ZeroGradient())
 
-U = ffn.Field("U", region=thMesh.region)
-U.dimensions = ffn.Dimension(default='U')
+U = ffn.fields.Field("U", region=thMesh.region)
+U.dimensions = ffn.fields.Dimension(default='U')
 U.internalField = ffn.Vector(0, 0, 0)
 U.set_boundary_condition("pipeWall", bc.Slip())
 
-p_rgh = ffn.Field("p_rgh", region=thMesh.region)
-p_rgh.dimensions = ffn.Dimension(default='p')
+p_rgh = ffn.fields.Field("p_rgh", region=thMesh.region)
+p_rgh.dimensions = ffn.fields.Dimension(default='p')
 p_rgh.internalField = 1e5
 p_rgh.set_boundary_condition("pipeWall", bc.ZeroGradient())
 
@@ -203,7 +203,7 @@ thSolver.add_relaxation_on_equation('"U.*"', 1)
 #==============================================================================*
 # Model
 
-model = ffn.Model(timeFolders=[timeFolder0])
+model = ffn.case.Case(timeFolders=[timeFolder0])
 model.settings.application = "GeN-Foam"
 model.settings.endTime = 60
 model.settings.deltaT = 0.1

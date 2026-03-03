@@ -181,7 +181,7 @@ plt.close()
 # Plot 3: Error convergence (L2 and L∞)
 #--------------------------------------
 
-fig2, (ax_L2, ax_Linf) = plt.subplots(2, 1, figsize=(5, 6), dpi=200)
+fig2, (ax_L2, ax_Linf) = plt.subplots(nrows=2, figsize=(5, 6), dpi=200)
 
 # L2 error convergence
 ax_L2.loglog(

@@ -151,7 +151,7 @@ heatExchanger = porous.HeatExchangerModel(
 #     Dh=0.5,
 #     volumeFraction=0,
 #     momentumSource=ffn.Vector(0, 0, -166000),
-#     momentumSourceTimeProfile=ffn.TimeProfile(
+#     momentumSourceTimeProfile=ffn.timeProfile.TimeProfile(
 #         type='table',
 #         table=[
 #             (   0,   1   ),

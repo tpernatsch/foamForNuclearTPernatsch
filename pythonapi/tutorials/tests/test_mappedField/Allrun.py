@@ -94,20 +94,20 @@ th2Mesh.add_boundary(frontAndBack2)
 # - 1->2: zeroGrad U and   mapped p_rgh
 # - 2->1:   mapped U and zeroGrad p_rgh
 
-timeFolder0 = ffn.TimeFolder(0)
+timeFolder0 = ffn.timeFolder.TimeFolder(0)
 
 # --- Region 1
 
-T1 = ffn.Field("T", region=th1Mesh.region)
-T1.dimensions = ffn.Dimension(default='T')
+T1 = ffn.fields.Field("T", region=th1Mesh.region)
+T1.dimensions = ffn.fields.Dimension(default='T')
 T1.internalField = 600
 T1.set_boundary_condition(fixedWalls1, bc.ZeroGradient())
 T1.set_boundary_condition(inlet1, bc.FixedValue(T1.internalField))
 T1.set_boundary_condition(outlet1, bc.ZeroGradient())
 T1.set_boundary_condition(frontAndBack1, bc.Empty())
 
-U1 = ffn.Field("U", region=th1Mesh.region)
-U1.dimensions = ffn.Dimension(default='U')
+U1 = ffn.fields.Field("U", region=th1Mesh.region)
+U1.dimensions = ffn.fields.Dimension(default='U')
 U1.internalField = ffn.Vector(0, 0, 1)
 U1.set_boundary_condition(fixedWalls1, bc.Slip())
 U1.set_boundary_condition(inlet1, bc.UniformFixedValue(
@@ -119,16 +119,16 @@ U1.set_boundary_condition(inlet1, bc.UniformFixedValue(
 U1.set_boundary_condition(outlet1, bc.ZeroGradient())
 U1.set_boundary_condition(frontAndBack1, bc.Empty())
 
-p1 = ffn.Field("p", region=th1Mesh.region)
-p1.dimensions = ffn.Dimension(default='p')
+p1 = ffn.fields.Field("p", region=th1Mesh.region)
+p1.dimensions = ffn.fields.Dimension(default='p')
 p1.internalField = 1e5
 p1.set_boundary_condition(fixedWalls1, bc.Calculated(p1.internalField))
 p1.set_boundary_condition(inlet1, bc.Calculated(p1.internalField))
 p1.set_boundary_condition(outlet1, bc.Calculated(p1.internalField))
 p1.set_boundary_condition(frontAndBack1, bc.Empty())
 
-p_rgh1 = ffn.Field("p_rgh", region=th1Mesh.region)
-p_rgh1.dimensions = ffn.Dimension(default='p')
+p_rgh1 = ffn.fields.Field("p_rgh", region=th1Mesh.region)
+p_rgh1.dimensions = ffn.fields.Dimension(default='p')
 p_rgh1.internalField = 1e5
 p_rgh1.set_boundary_condition(fixedWalls1, bc.ZeroGradient())
 p_rgh1.set_boundary_condition(inlet1, bc.FixedFluxPressure(p_rgh1.internalField))
@@ -143,8 +143,8 @@ p_rgh1.set_boundary_condition(frontAndBack1, bc.Empty())
 
 # --- Region 2
 
-T2 = ffn.Field("T", region=th2Mesh.region)
-T2.dimensions = ffn.Dimension(default='T')
+T2 = ffn.fields.Field("T", region=th2Mesh.region)
+T2.dimensions = ffn.fields.Dimension(default='T')
 T2.internalField = 600
 T2.set_boundary_condition(fixedWalls2, bc.ZeroGradient())
 T2.set_boundary_condition(inlet2, bc.MappedField(
@@ -156,8 +156,8 @@ T2.set_boundary_condition(inlet2, bc.MappedField(
 T2.set_boundary_condition(outlet2, bc.ZeroGradient())
 T2.set_boundary_condition(frontAndBack2, bc.Empty())
 
-U2 = ffn.Field("U", region=th2Mesh.region)
-U2.dimensions = ffn.Dimension(default='U')
+U2 = ffn.fields.Field("U", region=th2Mesh.region)
+U2.dimensions = ffn.fields.Dimension(default='U')
 U2.internalField = ffn.Vector(0, 0, 1)
 U2.set_boundary_condition(fixedWalls2, bc.Slip())
 U2.set_boundary_condition(inlet2, bc.MappedField(
@@ -169,16 +169,16 @@ U2.set_boundary_condition(inlet2, bc.MappedField(
 U2.set_boundary_condition(outlet2, bc.ZeroGradient())
 U2.set_boundary_condition(frontAndBack2, bc.Empty())
 
-p2 = ffn.Field("p", region=th2Mesh.region)
-p2.dimensions = ffn.Dimension(default='p')
+p2 = ffn.fields.Field("p", region=th2Mesh.region)
+p2.dimensions = ffn.fields.Dimension(default='p')
 p2.internalField = 1e5
 p2.set_boundary_condition(fixedWalls2, bc.Calculated(p2.internalField))
 p2.set_boundary_condition(inlet2, bc.Calculated(p2.internalField))
 p2.set_boundary_condition(outlet2, bc.Calculated(p2.internalField))
 p2.set_boundary_condition(frontAndBack2, bc.Empty())
 
-p_rgh2 = ffn.Field("p_rgh", region=th2Mesh.region)
-p_rgh2.dimensions = ffn.Dimension(default='p')
+p_rgh2 = ffn.fields.Field("p_rgh", region=th2Mesh.region)
+p_rgh2.dimensions = ffn.fields.Dimension(default='p')
 p_rgh2.internalField = 1e5
 p_rgh2.set_boundary_condition(fixedWalls2, bc.ZeroGradient())
 p_rgh2.set_boundary_condition(inlet2, bc.ZeroGradient())
@@ -249,22 +249,22 @@ thSolver1.add_heat_transfer_model(
 )
 
 
-thSolution = ffn.fvSolution()
+thSolution = ffn.numerics.fvSolution()
 
-thSolution.append('"p_rgh.*"', ffn.fvSolutionSolver(
+thSolution.append('"p_rgh.*"', ffn.numerics.fvSolutionSolver(
     solver='GAMG', smoother='DIC', tolerance=1e-8, relTol=0
 ))
-thSolution.append('"e.*"', ffn.fvSolutionSolver(
+thSolution.append('"e.*"', ffn.numerics.fvSolutionSolver(
     solver='smoothSolver',
     smoother='symGaussSeidel',
     tolerance=1e-8, relTol=0, minIter=0
 ))
-thSolution.append('"h.*"', ffn.fvSolutionSolver(
+thSolution.append('"h.*"', ffn.numerics.fvSolutionSolver(
     solver='smoothSolver',
     smoother='symGaussSeidel',
     tolerance=1e-8, relTol=0, minIter=0
 ))
-thSolution.append('".*"', ffn.fvSolutionSolver(
+thSolution.append('".*"', ffn.numerics.fvSolutionSolver(
     solver='PBiCGStab',
     preconditioner='diagonal',
     tolerance=1e-6, relTol=0.001
@@ -340,7 +340,7 @@ thSolver2.fvSchemes.snGradSchemes['default'] = 'uncorrected'
 #==============================================================================*
 # Solvers
 
-solvers = ffn.Solvers([thSolver1, thSolver2])
+solvers = ffn.solvers.Solvers([thSolver1, thSolver2])
 
 
 #==============================================================================*
@@ -354,7 +354,7 @@ fluidLoop = ffn.MultiPhysicsLoop(
     solvers=[thSolver1, thSolver2]
 )
 
-coupling = ffn.Coupling(solvers=[fluidLoop])
+coupling = ffn.coupling.Coupling(solvers=[fluidLoop])
 
 coupling.plot_solving_flowchart()
 coupling.plot_solving_graph()
@@ -363,7 +363,7 @@ coupling.plot_solving_graph()
 #==============================================================================*
 # Model
 
-model = ffn.Model(
+model = ffn.case.Case(
     solvers=solvers,
     coupling=coupling,
     timeFolders=[timeFolder0]
