@@ -151,8 +151,8 @@ void Foam::fmiLhgr::correct()
 
     if(mesh_.topoChanging())
     {
-        calcAddressing(heatSourceOptDict_);
-        calcReferenceDimensions(heatSourceOptDict_);
+        calcAddressing(heatSourceDict_);
+        calcReferenceDimensions(heatSourceDict_);
     }
 
     if(!mesh_.foundObject<volScalarField>("QPrevIter"))
