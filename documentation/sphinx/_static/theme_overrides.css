@@ -36,4 +36,8 @@ div#notebook-container.container {
     margin-bottom: 0.75rem;
   } */
 
-  
+/* Only add space for the last in-page toctree on the page */
+.rst-content .document .toctree-wrapper:last-child,
+.rst-content .document .toctree-wrapper.compound:last-child {
+    margin-bottom: 24px;
+}

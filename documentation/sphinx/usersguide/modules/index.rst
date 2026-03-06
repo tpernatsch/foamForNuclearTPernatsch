@@ -18,6 +18,6 @@ Form a programming perspective, modules are hierachical C++ structures where a p
 
    thermalHydraulics/index
    neutronics/index
-   thermoMechanics
+   thermoMechanics/index
    openfoamImportedSolvers
 

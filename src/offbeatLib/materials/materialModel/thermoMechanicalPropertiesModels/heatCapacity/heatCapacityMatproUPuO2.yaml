@@ -38,11 +38,6 @@ options:
     description: |
       Optional override. Unless strictly necessary it is suggested to define the 
       oxygenMetalRatio in the base/composition dict.
-  - key: ratioOverMetal
-    type: unknown
-    required: true
-    description: |
-      Model parameter.
   - key: theta
     type: scalar
     required: false
@@ -69,7 +64,6 @@ usage:
                   // K3 3.86e7;
                   // OM 2.0;
                   // oxygenMetalRatio baseDict.lookupOrDefault<scalar>("oxygenMetalRatio", 2.0;
-                  ratioOverMetal <unknown>;
                   // theta 571;
               }
           }

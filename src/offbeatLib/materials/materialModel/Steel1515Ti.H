@@ -78,6 +78,54 @@ class Steel1515Ti
         //- Disallow default bitwise assignment
         void operator=(const Steel1515Ti&);
 
+
+        //- Scaling parameters for UQ and SA
+    
+            //- Group name for parameter definition
+            declareNameWithVirtual(Steel1515Ti, group_, group);
+    
+            //- Density scaling factor [-]
+            declareParameterWithVirtual(Steel1515Ti, F_rho_, F_rho);
+    
+            //- Specific heat scaling factor [-]
+            declareParameterWithVirtual(Steel1515Ti, F_Cp_, F_Cp);
+    
+            //- Thermal conductivity scaling factor [-]
+            declareParameterWithVirtual(Steel1515Ti, F_k_, F_k);
+    
+            //- Emissivity scaling factor [-]
+            declareParameterWithVirtual(Steel1515Ti, F_emissivity_, F_emissivity);
+    
+            //- Elastic Young's modulus scaling factor [-]
+            declareParameterWithVirtual(Steel1515Ti, F_E_, F_E);
+    
+            //- Poisson's ratio scaling factor [-]
+            declareParameterWithVirtual(Steel1515Ti, F_nu_, F_nu);
+    
+            //- Themral expansion (alpha*DeltaT) scaling factor  [-]
+            declareParameterWithVirtual(Steel1515Ti, F_alphaT_, F_alphaT);
+    
+            // //- Density offset [kg/m3]
+            declareParameterWithVirtual(Steel1515Ti, delta_rho_, delta_rho);
+    
+            //- Specific heat offset [J/kg.K]
+            declareParameterWithVirtual(Steel1515Ti, delta_Cp_, delta_Cp);
+    
+            //- Thermal conductivity offset [W/m.K]
+            declareParameterWithVirtual(Steel1515Ti, delta_k_, delta_k);
+    
+            //- Emissivity offset [-]
+            declareParameterWithVirtual(Steel1515Ti, delta_emissivity_, delta_emissivity);
+    
+            //- Elastic Young's modulus offset [N/m2]
+            declareParameterWithVirtual(Steel1515Ti, delta_E_, delta_E);
+    
+            //- Poisson's ratio offset [-]
+            declareParameterWithVirtual(Steel1515Ti, delta_nu_, delta_nu);
+    
+            //- Themral expansion (alpha*DeltaT) offset [-]
+            declareParameterWithVirtual(Steel1515Ti, delta_alphaT_, delta_alphaT);
+
 public:
 
     //- Runtime type information
