@@ -1,4 +1,4 @@
-Materials and Material Models
+Materials
 =============================
 
 In OFFBEAT, all material-related information is defined in the
@@ -96,7 +96,7 @@ the ``type`` keyword.
                type UO2Nfir;
            }
 
-           Cp
+           heatCapacity
            {
                type UO2Cp;
            }
@@ -126,9 +126,9 @@ syntax that avoids defining a full property subdictionary.
        {
            type constant;
 
-           conductivity [1 -1 -3 -1 0 0 0] 16;
-           Cp           [0 2 -2 -1 0 0 0]  330;
-           rho          [1 -3 0 0 0 0 0]   6500;
+           k k             [1 -1 -3 -1 0 0 0] 16;
+           Cp Cp           [0 2 -2 -1 0 0 0]  330;
+           rho rho         [1 -3 0 0 0 0 0]   6500;
        }
    }
 
@@ -160,6 +160,43 @@ conceptual modeling layers.
     Models describing degradation and loss of load-carrying capacity (e.g. cracking, softening).
 
 These layers are configured independently but act on the same material.
+
+-------------------------------------------------------------------------------
+
+.. rubric:: Writing material properties
+
+For debugging or analysis purposes, the material properties computed by
+the selected models can be written to disk.
+
+This is enabled using the keyword ``writeMaterialProperties`` inside the
+``materials`` dictionary.
+
+.. code-block:: cpp
+
+   materials
+   {
+       writeMaterialProperties on;
+
+       fuel
+       {
+           type UO2;
+
+           conductivity
+           {
+               type UO2Nfir;
+           }
+       }
+   }
+
+When this option is enabled, OFFBEAT writes the evaluated material
+properties (e.g. conductivity, density, heat capacity, elastic
+constants) as fields in the case directory. This allows users to inspect
+the effective properties used by the solver and to verify correlations
+or input settings.
+
+The option is primarily intended for **verification, debugging, or
+post-processing of material models** and is typically disabled in
+production simulations.
 
 -------------------------------------------------------------------------------
 
@@ -247,5 +284,5 @@ The following pages describe the available material models.
    materials/index
    properties/index
    behavior/index
-   constitutive/index
+   constitutive_behavior/index
    damage/index
