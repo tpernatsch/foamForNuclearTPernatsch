@@ -33,7 +33,7 @@ pages:
     - python3 tools/caseFormatting/AllcheckYamlDoc.py
     - python3 documentation/sphinx/generate_tutorials_docs.py
     - python3 documentation/sphinx/generate_cpp_docs.py
-    - sphinx-build -b html documentation/sphinx public
+    - sphinx-build -b html documentation/sphinx public -j auto
 
     # Move Doxygen documentation to the public directory alongside Sphinx
     - mv documentation/doxygen/Doxygen/html/ public/doxygen
