@@ -197,6 +197,27 @@ def is_runTimeSelectable(file_path):
     return False
 
 
+def extract_type_name_from_header(header_path: str) -> str | None:
+    """
+    Extract OpenFOAM runtime TypeName("...") from the header.
+    Falls back to defineTypeNameAndDebug(ClassName, ...) if needed.
+    """
+    try:
+        txt = Path(header_path).read_text(encoding="utf-8", errors="ignore")
+    except Exception:
+        return None
+
+    m = re.search(r'\bTypeName\s*\(\s*"([^"]+)"\s*\)', txt)
+    if m:
+        return m.group(1).strip()
+
+    m = re.search(r"\bdefineTypeNameAndDebug\s*\(\s*([A-Za-z_]\w*)\s*,", txt)
+    if m:
+        return m.group(1).strip()
+
+    return None
+
+
 # ============================================================
 # NEW: YAML-based generation (replaces .H parsing in practice)
 # ============================================================
@@ -282,78 +303,7 @@ def load_yaml_doc(yaml_path: Path) -> dict:
     return data
 
 
-# def render_rst_from_yaml(y: dict, class_name: str) -> str:
-#     """Build an RST page from the YAML dict using Sphinx object markup."""
-
-#     # ---- Description block -------------------------------------------------
-#     summary = y.get("description", "")
-#     summary = format_equation_for_rst(summary)
-#     summary = format_table_for_rst(summary)
-#     summary = format_code_for_rst(summary)
-#     summary = replaceInlineMath(replaceInlineReference(summary))
-
-#     # ---- Admonitions --------------------------------------------------------
-#     admonitions = y.get("admonitions") or []
-
-#     # ---- Options ------------------------------------------------------------
-#     options = y.get("options") or []
-
-#     # ---- Usage --------------------------------------------------------------
-#     usage = y.get("usage") or []
-
-#     # -----------------------------------------------------------------------
-#     # Anchor (safe to keep; does not affect TOC)
-#     # -----------------------------------------------------------------------
-#     out = []
-#     out.append(f".. _{class_name}:\n")
-
-#     # -----------------------------------------------------------------------
-#     # Class declaration (THIS replaces the ===== title)
-#     # -----------------------------------------------------------------------
-#     out.append(f".. cpp:class:: {class_name}\n")
-
-#     # Everything that follows must be indented to belong to the class
-#     indent = "   "
-
-#     # ---- Description -------------------------------------------------------
-#     if summary.strip():
-#         for line in summary.splitlines():
-#             out.append(indent + line)
-#         out.append("")
-
-#     # ---- Admonitions --------------------------------------------------------
-#     for adm in admonitions:
-#         rst = _rst_admonition(adm.get("kind", "note"), adm.get("body", ""))
-#         for line in rst.splitlines():
-#             out.append(indent + line)
-#         out.append("")
-
-#     # ---- Options ------------------------------------------------------------
-#     if options:
-#         out.append(indent + ".. rubric:: Options\n")
-#         table = _rst_options_list_table(options)
-#         for line in table.splitlines():
-#             out.append(indent + line)
-#         out.append("")
-
-#     # ---- Usage --------------------------------------------------------------
-#     if usage:
-#         out.append(indent + ".. rubric:: Usage\n")
-#         usage_rst = _rst_usage(usage)
-#         for line in usage_rst.splitlines():
-#             out.append(indent + line)
-#         out.append("")
-
-#     # ---- Links --------------------------------------------------------------
-#     out.append(indent + ".. rubric:: Links\n")
-#     out.append(indent + f"- `Doxygen doc <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H.html>`_")
-#     out.append(indent + f"- `{class_name}.H <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H_source.html>`_")
-#     out.append(indent + f"- `{class_name}.C <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8C_source.html>`_")
-#     out.append("")
-
-#     return "\n".join(out)
-
-def render_rst_from_yaml(y: dict, class_name: str) -> str:
+def render_rst_from_yaml(y: dict, class_name: str, type_name: str | None = None) -> str:
     """
     Build an RST page from the YAML dict using canonical Sphinx API style.
 
@@ -380,6 +330,8 @@ def render_rst_from_yaml(y: dict, class_name: str) -> str:
     # ---- Usage --------------------------------------------------------------
     usage = y.get("usage") or []
 
+    page_title = type_name or class_name
+
     out = []
 
     # -----------------------------------------------------------------------
@@ -390,8 +342,8 @@ def render_rst_from_yaml(y: dict, class_name: str) -> str:
     # -----------------------------------------------------------------------
     # 2️⃣ Document title (first heading in page)
     # -----------------------------------------------------------------------
-    out.append(class_name)
-    out.append("=" * len(class_name))
+    out.append(page_title)
+    out.append("=" * len(page_title))
     out.append("")
 
     # -----------------------------------------------------------------------
@@ -503,7 +455,11 @@ def generate_class_rst_files(ffn_lib_dirs: list[str], rst_output_dir: str) -> di
 
             class_name = yaml_path.stem.replace(".doc", "")
             spec = load_yaml_doc(yaml_path)
-            rst_text = render_rst_from_yaml(spec, class_name)
+
+            h_path = yaml_path.with_suffix(".H")
+            type_name = extract_type_name_from_header(str(h_path)) if h_path.exists() else None
+
+            rst_text = render_rst_from_yaml(spec, class_name, type_name)
 
             relative_dir = yaml_path.parent.relative_to(src_root)
             output_dir = out_root.joinpath(relative_dir)
