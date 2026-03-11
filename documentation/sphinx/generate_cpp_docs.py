@@ -406,58 +406,51 @@ def render_rst_from_yaml(y: dict, class_name: str, type_name: str | None = None)
     # -----------------------------------------------------------------------
     # 3️⃣ API object declaration
     # -----------------------------------------------------------------------
-    out.append(f".. cpp:class:: {class_name}\n")
-    indent = "   "
-
     # ---- Description -------------------------------------------------------
     if description.strip():
-        for line in description.splitlines():
-            out.append(indent + line)
+        out.extend(description.splitlines())
         out.append("")
 
     # ---- Formulation -------------------------------------------------------
     if formulation.strip():
-        out.append(indent + ".. rubric:: Formulation\n")
-        for line in formulation.splitlines():
-            out.append(indent + line)
+        out.append(".. rubric:: Formulation")
+        out.append("")
+        out.extend(formulation.splitlines())
         out.append("")
 
     # ---- Admonitions -------------------------------------------------------
     for adm in admonitions:
         rst = _rst_admonition(adm.get("kind", "note"), adm.get("body", ""))
-        for line in rst.splitlines():
-            out.append(indent + line)
+        out.extend(rst.splitlines())
         out.append("")
 
     # ---- Options -----------------------------------------------------------
     if options:
-        out.append(indent + ".. rubric:: Options\n")
-        table = _rst_options_list_table(options)
-        for line in table.splitlines():
-            out.append(indent + line)
+        out.append(".. rubric:: Options")
+        out.append("")
+        out.extend(_rst_options_list_table(options).splitlines())
         out.append("")
 
     # ---- External options --------------------------------------------------
     if external_options:
-        out.append(indent + ".. rubric:: Options (external)\n")
-        table = _rst_options_list_table(external_options, include_path=True)
-        for line in table.splitlines():
-            out.append(indent + line)
+        out.append(".. rubric:: Options (external)")
+        out.append("")
+        out.extend(_rst_options_list_table(external_options, include_path=True).splitlines())
         out.append("")
 
     # ---- Usage -------------------------------------------------------------
     if usage:
-        out.append(indent + ".. rubric:: Usage\n")
-        usage_rst = _rst_usage(usage)
-        for line in usage_rst.splitlines():
-            out.append(indent + line)
+        out.append(".. rubric:: Usage")
+        out.append("")
+        out.extend(_rst_usage(usage).splitlines())
         out.append("")
 
     # ---- Links -------------------------------------------------------------
-    out.append(indent + ".. rubric:: Links\n")
-    out.append(indent + f"- `Doxygen doc <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H.html>`_")
-    out.append(indent + f"- `{class_name}.H <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H_source.html>`_")
-    out.append(indent + f"- `{class_name}.C <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8C_source.html>`_")
+    out.append(".. rubric:: Links")
+    out.append("")
+    out.append(f"- `Doxygen doc <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H.html>`_")
+    out.append(f"- `{class_name}.H <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H_source.html>`_")
+    out.append(f"- `{class_name}.C <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8C_source.html>`_")
     out.append("")
 
     return "\n".join(out)
