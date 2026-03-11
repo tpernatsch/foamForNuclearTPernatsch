@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import foamForNuclear as ffn
 import foamForNuclear.boundaryConditions as bc
 import foamForNuclear.mesh as mesh
-import foamForNuclear.thermophysicalProperty as thermo
+import foamForNuclear.thermo as thermo
 
 
 

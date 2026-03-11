@@ -15,14 +15,14 @@ For a slab reactor with two energy groups (fast and thermal), the steady-state d
 
 **Fast Group (g=0):**
 
-$$-\nabla \cdot D_0 \nabla \phi_0
+$${-\nabla} \cdot D_0 \nabla \phi_0
 + \left( \Sigma_{a,0} + \Sigma_{s}^{0\rightarrow1} \right)\phi_0
 = \frac{1}{k}\left( \nu \Sigma_{f,0}\phi_0 + \nu \Sigma_{f,1}\phi_1 \right)
 $$
 
 **Thermal Group (g=1):**
 
-$$-\nabla \cdot D_1 \nabla \phi_1
+$${-\nabla} \cdot D_1 \nabla \phi_1
 + \Sigma_{a,1}\phi_1
 = \Sigma_{s}^{0\rightarrow1}\phi_0
 $$
