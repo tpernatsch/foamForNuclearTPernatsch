@@ -6,11 +6,14 @@ Now reads per-class YAML docs placed next to the .H/.C files:
 
 YAML fields (all optional except type_name is recommended):
   type_name: str
-  summary: str (can be multiline with | )
+  description: str (can be multiline with | )
+  formulation: str (can be multiline with | )
   admonitions:
     - { kind: warning|note|info|tip|..., body: str }
   options:
     - { key: str, type: str, required: bool, default: any, description: str }
+  externalOptions:
+    - { key: str, type: str, required: bool, default: any, description: str, path?: str }
   usage:
     - { title?: str, comment?: str, snippet: str }
 
@@ -234,27 +237,35 @@ def _rst_admonition(kind: str, body: str) -> str:
     return "\n".join(lines)
 
 
-def _rst_options_list_table(options: list) -> str:
+def _rst_options_list_table(options: list, include_path: bool = False) -> str:
     """Render options (key/type/required/default/description) as a list-table."""
     if not options:
         return "No options list available.\n\n"
     out = []
     out.append(".. list-table::")
-    out.append("   :widths: 18 12 8 12 50")
+    if include_path:
+        out.append("   :widths: 16 16 10 8 10 40")
+    else:
+        out.append("   :widths: 18 12 8 12 50")
     out.append("   :header-rows: 1")
     out.append("")
     out.append("   * - Key")
+    if include_path:
+        out.append("     - Path")
     out.append("     - Type")
     out.append("     - Req'd")
     out.append("     - Default")
     out.append("     - Description")
     for o in options:
         key = o.get("key","")
+        path = o.get("path","")
         typ = o.get("type","")
         req = "Yes" if o.get("required", False) else "No"
         dft = "" if o.get("default", None) is None else str(o.get("default"))
         desc = o.get("description","")
         out.append(f"   * - ``{key}``")
+        if include_path:
+            out.append(f"     - ``{path}``" if path else "     - ")
         out.append(f"     - ``{typ}``")
         out.append(f"     - {req}")
         out.append(f"     - ``{dft}``" if dft != "" else "     - ")
@@ -287,6 +298,21 @@ def _rst_usage(examples: list) -> str:
     return "\n".join(out)
 
 
+def _opts_to_list(x) -> list[dict]:
+    if not x:
+        return []
+    if isinstance(x, list):
+        return [o for o in x if isinstance(o, dict)]
+    if isinstance(x, dict):
+        out = []
+        for k, v in x.items():
+            v = dict(v or {})
+            v.setdefault("key", k)
+            out.append(v)
+        return out
+    return []
+
+
 def load_yaml_doc(yaml_path: Path) -> dict:
     """Read a *.yaml file and normalize keys."""
     raw = yaml_path.read_text(encoding="utf-8")
@@ -295,10 +321,33 @@ def load_yaml_doc(yaml_path: Path) -> dict:
 
     data = yaml.safe_load(raw) or {}
 
+    usage = data.get("usage", [])
+    if isinstance(usage, str):
+        data["usage"] = [{"snippet": usage}] if usage.strip() else []
+    elif isinstance(usage, list):
+        new_usage = []
+        for item in usage:
+            if isinstance(item, str):
+                new_usage.append({"snippet": item})
+            elif isinstance(item, dict):
+                new_usage.append(item)
+        data["usage"] = new_usage
+    else:
+        data["usage"] = []
+
+    data["options"] = _opts_to_list(data.get("options"))
+
+    ext = data.get("externalOptions", None)
+    if ext is None:
+        ext = data.get("additionalOptions", None)
+    data["externalOptions"] = _opts_to_list(ext)
+
     data.setdefault("type_name", yaml_path.stem.replace(".doc",""))
     data.setdefault("description", "")
+    data.setdefault("formulation", "")
     data.setdefault("admonitions", [])
     data.setdefault("options", [])
+    data.setdefault("externalOptions", [])
     data.setdefault("usage", [])
     return data
 
@@ -315,17 +364,25 @@ def render_rst_from_yaml(y: dict, class_name: str, type_name: str | None = None)
     """
 
     # ---- Description block -------------------------------------------------
-    summary = y.get("description", "")
-    summary = format_equation_for_rst(summary)
-    summary = format_table_for_rst(summary)
-    summary = format_code_for_rst(summary)
-    summary = replaceInlineMath(replaceInlineReference(summary))
+    description = y.get("description", "")
+    description = format_equation_for_rst(description)
+    description = format_table_for_rst(description)
+    description = format_code_for_rst(description)
+    description = replaceInlineMath(replaceInlineReference(description))
+
+    # ---- Formulation block -------------------------------------------------
+    formulation = y.get("formulation", "")
+    formulation = format_equation_for_rst(formulation)
+    formulation = format_table_for_rst(formulation)
+    formulation = format_code_for_rst(formulation)
+    formulation = replaceInlineMath(replaceInlineReference(formulation))
 
     # ---- Admonitions --------------------------------------------------------
     admonitions = y.get("admonitions") or []
 
     # ---- Options ------------------------------------------------------------
     options = y.get("options") or []
+    external_options = y.get("externalOptions") or []
 
     # ---- Usage --------------------------------------------------------------
     usage = y.get("usage") or []
@@ -353,8 +410,15 @@ def render_rst_from_yaml(y: dict, class_name: str, type_name: str | None = None)
     indent = "   "
 
     # ---- Description -------------------------------------------------------
-    if summary.strip():
-        for line in summary.splitlines():
+    if description.strip():
+        for line in description.splitlines():
+            out.append(indent + line)
+        out.append("")
+
+    # ---- Formulation -------------------------------------------------------
+    if formulation.strip():
+        out.append(indent + ".. rubric:: Formulation\n")
+        for line in formulation.splitlines():
             out.append(indent + line)
         out.append("")
 
@@ -369,6 +433,14 @@ def render_rst_from_yaml(y: dict, class_name: str, type_name: str | None = None)
     if options:
         out.append(indent + ".. rubric:: Options\n")
         table = _rst_options_list_table(options)
+        for line in table.splitlines():
+            out.append(indent + line)
+        out.append("")
+
+    # ---- External options --------------------------------------------------
+    if external_options:
+        out.append(indent + ".. rubric:: Options (external)\n")
+        table = _rst_options_list_table(external_options, include_path=True)
         for line in table.splitlines():
             out.append(indent + line)
         out.append("")
