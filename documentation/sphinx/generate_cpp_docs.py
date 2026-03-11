@@ -225,6 +225,131 @@ def extract_type_name_from_header(header_path: str) -> str | None:
 # NEW: YAML-based generation (replaces .H parsing in practice)
 # ============================================================
 
+CLASS_NAME_PAT = re.compile(r"\bclass\s+(?P<cls>[A-Za-z_]\w*)\b")
+
+
+def extract_declared_class_name_from_header(header_path: str) -> str:
+    txt = Path(header_path).read_text(encoding="utf-8", errors="ignore")
+    txt = re.sub(r"/\*.*?\*/", "", txt, flags=re.DOTALL)
+    m = CLASS_NAME_PAT.search(txt)
+    return m.group("cls") if m else Path(header_path).stem
+
+
+def extract_first_base_from_h(header_path: str, cpp_class: str) -> str | None:
+    txt = Path(header_path).read_text(encoding="utf-8", errors="ignore")
+    txt = re.sub(r"/\*.*?\*/", "", txt, flags=re.DOTALL)
+
+    for m in CLASS_NAME_PAT.finditer(txt):
+        if m.group("cls") != cpp_class:
+            continue
+
+        tail = txt[m.end():]
+        end_brace = tail.find("{")
+        end_semi = tail.find(";")
+        if end_brace == -1 and end_semi == -1:
+            head = tail
+        else:
+            head = tail[:min(i for i in (end_brace, end_semi) if i != -1)]
+
+        if ":" not in head:
+            return None
+
+        after = head.split(":", 1)[1]
+        after = re.sub(r"//.*", "", after)
+        after = re.sub(r"\b(public|protected|private|virtual)\b", "", after)
+        after = " ".join(after.split())
+
+        first = after.split(",", 1)[0].strip()
+        if "::" in first:
+            first = first.split("::")[-1]
+        first = re.sub(r"<.*?>", "", first).strip()
+        return first or None
+
+    return None
+
+
+def find_yaml_doc_for_header(header_path: str) -> Path | None:
+    hpath = Path(header_path)
+    stem = hpath.stem
+    candidates = [
+        hpath.with_name(f"{stem}.doc.yaml"),
+        hpath.with_name(f"{stem}.yaml"),
+    ]
+    for c in candidates:
+        if c.exists() and c.is_file():
+            return c
+    return None
+
+
+def _opts_by_key(opts: list[dict]) -> dict[str, dict]:
+    out = {}
+    for o in opts:
+        k = (o.get("key") or "").strip()
+        if k:
+            out[k] = o
+    return out
+
+
+def build_yaml_cache_and_mothers(ffn_lib_dirs: list[str]):
+    yaml_cache = {}
+    header_for_class = {}
+
+    for ffn_lib_dir in ffn_lib_dirs:
+        src_root = Path(ffn_lib_dir).resolve()
+
+        for h_path in src_root.rglob("*.H"):
+            if any(p in {"lnInclude", "Make"} for p in h_path.parts):
+                continue
+
+            yaml_path = find_yaml_doc_for_header(str(h_path))
+            if yaml_path is None:
+                continue
+
+            cpp_class = extract_declared_class_name_from_header(str(h_path))
+            yaml_cache[cpp_class] = load_yaml_doc(yaml_path)
+            header_for_class[cpp_class] = h_path
+
+    mother_map = {}
+    for cls, h_path in header_for_class.items():
+        base = extract_first_base_from_h(str(h_path), cls)
+        mother_map[cls] = base if (base in yaml_cache) else None
+
+    return yaml_cache, mother_map
+
+
+def compute_inherited_only_options(
+    cls: str,
+    yaml_cache: dict[str, dict],
+    mother_map: dict[str, str | None],
+) -> list[dict]:
+    local_opts = yaml_cache.get(cls, {}).get("options") or []
+    local_keys = set(_opts_by_key(local_opts).keys())
+
+    merged = {}
+    order = []
+
+    cur = mother_map.get(cls)
+    seen = {cls}
+    chain = []
+
+    while cur and cur not in seen:
+        chain.append(cur)
+        seen.add(cur)
+        cur = mother_map.get(cur)
+
+    for anc in reversed(chain):
+        for o in (yaml_cache.get(anc, {}).get("options") or []):
+            k = (o.get("key") or "").strip()
+            if not k:
+                continue
+            merged[k] = o
+            if k not in order:
+                order.append(k)
+
+    inherited_keys = [k for k in order if k not in local_keys]
+    return [merged[k] for k in inherited_keys]
+
+
 def _rst_admonition(kind: str, body: str) -> str:
     """Render a Sphinx admonition."""
     kind = (kind or "note").lower().strip()
@@ -241,6 +366,19 @@ def _rst_options_list_table(options: list, include_path: bool = False) -> str:
     """Render options (key/type/required/default/description) as a list-table."""
     if not options:
         return "No options list available.\n\n"
+
+    def _append_cell(out_list: list[str], value: str, first_prefix: str, cont_prefix: str):
+        text = "" if value is None else str(value)
+        lines = text.splitlines()
+
+        if not lines:
+            out_list.append(first_prefix)
+            return
+
+        out_list.append(f"{first_prefix}{lines[0]}")
+        for line in lines[1:]:
+            out_list.append(f"{cont_prefix}{line}")
+
     out = []
     out.append(".. list-table::")
     if include_path:
@@ -256,20 +394,23 @@ def _rst_options_list_table(options: list, include_path: bool = False) -> str:
     out.append("     - Req'd")
     out.append("     - Default")
     out.append("     - Description")
+
     for o in options:
-        key = o.get("key","")
-        path = o.get("path","")
-        typ = o.get("type","")
+        key = o.get("key", "")
+        path = o.get("path", "")
+        typ = o.get("type", "")
         req = "Yes" if o.get("required", False) else "No"
         dft = "" if o.get("default", None) is None else str(o.get("default"))
-        desc = o.get("description","")
-        out.append(f"   * - ``{key}``")
+        desc = o.get("description", "")
+
+        _append_cell(out, f"``{key}``", "   * - ", "       ")
         if include_path:
-            out.append(f"     - ``{path}``" if path else "     - ")
-        out.append(f"     - ``{typ}``")
-        out.append(f"     - {req}")
-        out.append(f"     - ``{dft}``" if dft != "" else "     - ")
-        out.append(f"     - {desc}")
+            _append_cell(out, f"``{path}``" if path else "", "     - ", "       ")
+        _append_cell(out, f"``{typ}``", "     - ", "       ")
+        _append_cell(out, req, "     - ", "       ")
+        _append_cell(out, f"``{dft}``" if dft != "" else "", "     - ", "       ")
+        _append_cell(out, desc, "     - ", "       ")
+
     out.append("")
     return "\n".join(out)
 
@@ -347,6 +488,7 @@ def load_yaml_doc(yaml_path: Path) -> dict:
     data.setdefault("formulation", "")
     data.setdefault("admonitions", [])
     data.setdefault("options", [])
+    data.setdefault("inheritedOptions", [])
     data.setdefault("externalOptions", [])
     data.setdefault("usage", [])
     return data
@@ -381,6 +523,7 @@ def render_rst_from_yaml(y: dict, class_name: str, type_name: str | None = None)
     admonitions = y.get("admonitions") or []
 
     # ---- Options ------------------------------------------------------------
+    inherited_options = y.get("inheritedOptions") or []
     options = y.get("options") or []
     external_options = y.get("externalOptions") or []
 
@@ -422,6 +565,13 @@ def render_rst_from_yaml(y: dict, class_name: str, type_name: str | None = None)
     for adm in admonitions:
         rst = _rst_admonition(adm.get("kind", "note"), adm.get("body", ""))
         out.extend(rst.splitlines())
+        out.append("")
+
+    # ---- Inherited options --------------------------------------------------
+    if inherited_options:
+        out.append(".. rubric:: Options (inherited)")
+        out.append("")
+        out.extend(_rst_options_list_table(inherited_options).splitlines())
         out.append("")
 
     # ---- Options -----------------------------------------------------------
@@ -510,6 +660,8 @@ def generate_class_rst_files(ffn_lib_dirs: list[str], rst_output_dir: str) -> di
     class_entries = {}
     out_root = Path(rst_output_dir).resolve()
 
+    yaml_cache, mother_map = build_yaml_cache_and_mothers(ffn_lib_dirs)
+
     for ffn_lib_dir in ffn_lib_dirs:
         src_root = Path(ffn_lib_dir).resolve()
 
@@ -524,6 +676,13 @@ def generate_class_rst_files(ffn_lib_dirs: list[str], rst_output_dir: str) -> di
             h_path = yaml_path.with_suffix(".H")
             type_name = extract_type_name_from_header(str(h_path)) if h_path.exists() else None
 
+            cpp_class = extract_declared_class_name_from_header(str(h_path)) if h_path.exists() else class_name
+            spec["inheritedOptions"] = compute_inherited_only_options(
+                cpp_class,
+                yaml_cache,
+                mother_map
+            )
+
             rst_text = render_rst_from_yaml(spec, class_name, type_name)
 
             relative_dir = yaml_path.parent.relative_to(src_root)
@@ -533,36 +692,6 @@ def generate_class_rst_files(ffn_lib_dirs: list[str], rst_output_dir: str) -> di
             rst_file_path = output_dir / f"{class_name}.rst"
             rst_file_path.write_text(rst_text, encoding="utf-8")
             class_entries[class_name] = str(rst_file_path)
-
-        # # 2) For any .H without a YAML sibling, fall back to legacy parsing
-        # for h_path in src_root.rglob("*.H"):
-        #     if any(p in {"lnInclude", "Make"} for p in h_path.parts):
-        #         continue
-
-        #     # Skip if RST already generated from YAML for this class
-        #     class_name = h_path.stem
-        #     if class_name in class_entries:
-        #         continue
-
-        #     # Look for sidecar YAML (.yaml or .doc.yaml); if found, it would have been handled above
-        #     yaml_sidecars = [
-        #         h_path.with_suffix(".yaml"),
-        #         h_path.with_suffix(".doc.yaml"),
-        #     ]
-        #     if any(y.exists() for y in yaml_sidecars):
-        #         continue
-
-        #     # Legacy .H parsing
-        #     description, options, usage, vartable = extract_descriptions_and_usage(str(h_path))
-        #     rst_text = render_rst_from_H(class_name, description, options, usage, vartable)
-
-        #     relative_dir = h_path.parent.relative_to(src_root)
-        #     output_dir = out_root.joinpath(relative_dir)
-        #     output_dir.mkdir(parents=True, exist_ok=True)
-
-        #     rst_file_path = output_dir / f"{class_name}.rst"
-        #     rst_file_path.write_text(rst_text, encoding="utf-8")
-        #     class_entries[class_name] = str(rst_file_path)
 
     return class_entries
 
