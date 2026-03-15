@@ -356,55 +356,56 @@ class OffbeatSolver(Solver):
 
 
     def export_properties_to_openfoam(self):
-        # pick filename
+        # Pick filename
+        # and everything we might write, in the order we want it to appear
         if self.is_offbeat_solver:
             filename = "solverDict"
+
+            candidates = {
+                "globalOptions":     self.globalOptions,
+                "thermalSolver":     self.thermalSolver,
+                "mechanicsSolver":   self.mechanicsSolver,
+                "neutronicsSolver":  self.neutronicsSolver,
+                "elementTransport":  self.elementTransportSolver,
+                "corrosion":         self.corrosion,
+                "rheology":          self.rheology,
+                "fissionGasRelease": self.fissionGasRelease,
+                "gapGas":            self.gapGasModel,
+                "heatSource":        self.heatSource,
+                "fastFlux":          self.fastFlux,
+                "burnup":            self.burnup,
+                "sliceMapper":       self.sliceMapper,
+            }
+
         elif self.is_extended_thermomechanics_solver:
             filename = "thermoMechanicalProperties"
+
+            candidates = {
+                "couplingOptions":   self.couplingOptions,
+                "globalOptions":     self.globalOptions,
+                "thermalSolver":     self.thermalSolver,
+                "mechanicsSolver":   self.mechanicsSolver,
+                "heatSource":        self.heatSource,
+                "sliceMapper":       self.sliceMapper,
+            }
+
         else:
             raise ValueError("Unknown solver type")
 
-        # everything we might write, in the order we want it to appear
-        candidates = {
-            "globalOptions":     self.globalOptions,
-            "thermalSolver":     self.thermalSolver,
-            "mechanicsSolver":   self.mechanicsSolver,
-            "neutronicsSolver":  self.neutronicsSolver,
-            "elementTransport":  self.elementTransportSolver,
-            "corrosion":         self.corrosion,
-            "rheology":          self.rheology,
-            "fissionGasRelease": self.fissionGasRelease,
-            "gapGas":            self.gapGasModel,
-            "heatSource":        self.heatSource,
-            "fastFlux":          self.fastFlux,
-            "burnup":            self.burnup,
-            "sliceMapper":       self.sliceMapper,
-        }
 
-        # writer
+        # Writer
         buf = StringIO()
 
-        # header
+        # Header
         buf.write(openfoamHeader)
         buf.write(openfoamFileHeader(filename))
 
-        if self.is_extended_thermomechanics_solver:
-            buf.write(addParameter('thermalSolver', self.thermalSolver.TYPE, isAddExtraLine=True))
-            buf.write(addParameter('mechanicsSolver', self.mechanicsSolver.TYPE, isAddExtraLine=True))
-            buf.write(addParameter('heatSource', self.heatSource.TYPE, isAddExtraLine=True))
-            buf.write(addParameter('sliceMapper', self.sliceMapper.TYPE, isAddExtraLine=True))
+        # Dynamic blocks (skip empties, keep order)
+        for key, val in candidates.items():
+            if (val is not None and not val.is_empty):
+                buf.write(f"{key}{val!r}\n")
 
-            buf.write(f"couplingOptions{self.couplingOptions!r}\n")
-            buf.write(f"globalOptions{self.globalOptions!r}\n")
-            buf.write(f"thermalSolverOptions{self.thermalSolver!r}\n")
-            buf.write(f"mechanicsSolverOptions{self.mechanicsSolver!r}\n")
-        elif self.is_offbeat_solver:
-            # dynamic blocks (skip empties, keep order)
-            for key, val in candidates.items():
-                if (val is not None and not val.is_empty):
-                    buf.write(f"{key}{val!r}\n")
-
-        # materials block
+        # Materials block
         materials_dict = OpenFOAMListDict(
             name="materials",
             expected_type=materials.Material,
@@ -412,10 +413,10 @@ class OffbeatSolver(Solver):
         )
         buf.write(f"{materials_dict.__repr__(depth=0)}\n")
 
-        # footer
+        # Footer
         buf.write(openfoamFooterLine)
 
-        # write file
+        # Write file
         out_path = f"constant/{self.region}/{filename}"
         with open(out_path, "w", encoding="utf-8") as f:
             f.write(buf.getvalue())

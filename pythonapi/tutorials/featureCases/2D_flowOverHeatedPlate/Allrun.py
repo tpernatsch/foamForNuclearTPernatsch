@@ -477,14 +477,14 @@ lastTime = model.settings.endTime
 T_norm = (data[lastTime] - 300) / 10
 
 # Get expected values for comparison
-numerical = pd.read_csv('benchmark/expected_numerical.csv', header=None, names=['x', 'y'])
-analytical = pd.read_csv('benchmark/expected_analytical.csv', header=None, names=['x', 'y'])
+# numerical = pd.read_csv('benchmark/expected_numerical.csv', header=None, names=['x', 'y'])
+# analytical = pd.read_csv('benchmark/expected_analytical.csv', header=None, names=['x', 'y'])
 
 # Plot
 plt.figure(figsize=(8, 4))
 plt.plot(xRange, T_norm, marker='o', label='foamForNuclear')
-plt.plot(numerical['x'], numerical['y'], label='Expected Numerical', linestyle='--')
-plt.plot(analytical['x'], analytical['y'], label='Expected Analytical', linestyle='-.')
+# plt.plot(numerical['x'], numerical['y'], label='Expected Numerical', linestyle='--')
+# plt.plot(analytical['x'], analytical['y'], label='Expected Analytical', linestyle='-.')
 plt.xlabel('Probe Index')
 plt.ylabel(r'Normalized Temperature $\frac{T - 300}{T_s - 300}$')
 plt.title(f'Normalized Temperature at t = {lastTime}s')
