@@ -59,7 +59,7 @@ class OffbeatSolver(Solver):
     rheology : Rheology
 
     heatSource : HeatSource
-
+        (default `Constant`).
     burnup : Burnup
 
     fastFlux : FastFlux
@@ -71,7 +71,7 @@ class OffbeatSolver(Solver):
     fissionGasRelease : FissionGasRelease
 
     sliceMapper : SliceMapper
-
+        (default `AutoAxialSlices`).
     globalOptions: GlobalOptions
 
     couplingOptions: ThermoMechanicsCouplingOptions
@@ -120,13 +120,13 @@ class OffbeatSolver(Solver):
     elementTransportSolver: ElementTransportSolver | None = None
     materials: list[materials.Material] = field(factory=list)
     rheology: rheology.Rheology | None = None
-    heatSource: heat_source.HeatSource | None = None
+    heatSource: heat_source.HeatSource | None = field(factory=heat_source.Constant)
     burnup: burnup.Burnup | None = None
     fastFlux: fast_flux.FastFlux | None = None
     corrosion: corrosion.Corrosion | None = None
     gapGasModel: gap_gas.GapGasModel | None = None
     fissionGasRelease: fgr.FissionGasRelease | None = None
-    sliceMapper: slice_mapper.SliceMapper | None = None
+    sliceMapper: slice_mapper.SliceMapper | None = field(factory=slice_mapper.AutoAxialSlices)
     globalOptions: GlobalOptions | None = field(factory=GlobalOptions)
     couplingOptions: ThermoMechanicsCouplingOptions | None = None
     removeBaffles: bool = False
@@ -389,6 +389,11 @@ class OffbeatSolver(Solver):
         buf.write(openfoamFileHeader(filename))
 
         if self.is_extended_thermomechanics_solver:
+            buf.write(addParameter('thermalSolver', self.thermalSolver.TYPE, isAddExtraLine=True))
+            buf.write(addParameter('mechanicsSolver', self.mechanicsSolver.TYPE, isAddExtraLine=True))
+            buf.write(addParameter('heatSource', self.heatSource.TYPE, isAddExtraLine=True))
+            buf.write(addParameter('sliceMapper', self.sliceMapper.TYPE, isAddExtraLine=True))
+
             buf.write(f"couplingOptions{self.couplingOptions!r}\n")
             buf.write(f"globalOptions{self.globalOptions!r}\n")
             buf.write(f"thermalSolverOptions{self.thermalSolver!r}\n")

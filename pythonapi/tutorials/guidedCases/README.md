@@ -14,4 +14,4 @@ The folder groups simple GeN-Foam cases.
     1. Cylinder reactor in 1 group ([link](./2_1_reactorCylinder_2D_1Gr_neutronicDiffusion))
 
 3. **2D neutronics and thermomechanics**
-    1. **coming soon** Cylinder pulsed reactor in 1 group with thermomechanics feedback ([link](./3_1_reactorCylinder_2D_1Gr_neutronicPK_thermomech))
+    1. Cylinder pulsed reactor in 1 group with thermomechanics feedback ([link](./3_1_reactorCylinder_2D_1Gr_neutronicPK_thermomech))

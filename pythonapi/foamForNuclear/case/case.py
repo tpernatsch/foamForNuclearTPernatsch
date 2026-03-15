@@ -834,7 +834,7 @@ class Case:
 
     def plot_mesh(
             self,
-            region: str | Mesh,
+            region: str | Mesh | list[str] | list[Mesh],
             time: float=0,
             fieldName: str=None,
             cmap: str=None,
