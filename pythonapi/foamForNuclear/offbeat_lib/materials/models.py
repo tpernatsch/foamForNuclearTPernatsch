@@ -137,21 +137,63 @@ def _to_const_alpha(value):
 
 @ffn_define
 class Constant(Material):
+    """
+    Constant thermomechanical properties material.
+
+    Parameters
+    ----------
+    name : str
+        Name of the material.
+    TYPE : str
+        Type of material property (default `constant`).
+    density : float | properties.density.Density
+        Density of the material in kg/m3.
+    conductivity : float | properties.conductivity.Conductivity
+        Thermal conductivity of the material in W/m/K.
+    heatCapacity : float | properties.heat_capacity.HeatCapacity
+        Specific heat capacity of the material in J/kg/K.
+    emissivity : float | properties.emissivity.Emissivity
+        Emissivity of the material.
+    YoungModulus : float | properties.young_modulus.YoungModulus
+        Young modulus of the material.
+    PoissonRatio : float | properties.poisson_ratio.PoissonRatio
+        Poisson ratio of the material.
+    thermalExpansion : float | properties.thermal_expansion.ThermalExpansion
+        Thermal expansion coefficient of the material.
+    TFuelRef : float | int | None
+        Optional fuel reference temperature used in the extended
+        thermomechanical solver for GeN-Foam (default `None`).
+    alphaFuel : float | int | None
+        Optional fuel thermal expansion coefficient used in the extended
+        thermomechanical solver for GeN-Foam (default `None`).
+    TCRRef : float | int | None
+        Optional control rod reference temperature used in the extended
+        thermomechanical solver for GeN-Foam (default `None`).
+    alphaCR : float | int | None
+        Optional control rod thermal expansion coefficient used in the extended
+        thermomechanical solver for GeN-Foam (default `None`).
+    """
     TYPE: ClassVar[str] = "constant"
 
     # override fields to add converters (types stay the same)
     density: float | properties.density.Density = field(
-        default=1000, converter=_to_const_density)
+        default=1000, converter=_to_const_density
+    )
     conductivity: float | properties.conductivity.Conductivity = field(
-        default=20, converter=_to_const_conductivity)
+        default=20, converter=_to_const_conductivity
+    )
     heatCapacity: float | properties.heat_capacity.HeatCapacity = field(
-        default=200, converter=_to_const_heat_capacity)
+        default=200, converter=_to_const_heat_capacity
+    )
     emissivity: float | properties.emissivity.Emissivity = field(
-        default=0.8, converter=_to_const_emissivity)
+        default=0.8, converter=_to_const_emissivity
+    )
     YoungModulus: float | properties.young_modulus.YoungModulus = field(
-        default=100e9, converter=_to_const_E)
+        default=100e9, converter=_to_const_E
+    )
     PoissonRatio: float | properties.poisson_ratio.PoissonRatio = field(
-        default=0.3, converter=_to_const_nu)
+        default=0.3, converter=_to_const_nu
+    )
     thermalExpansion: float | properties.thermal_expansion.ThermalExpansion = field(
         default=1e-5,
         converter=_to_const_alpha,
@@ -160,6 +202,10 @@ class Constant(Material):
             _sync_Tref_and_alpha_hook,
         ),
     )
+    TFuelRef: float | int | None = None
+    alphaFuel: float | int | None = None
+    TCRRef: float | int | None = None
+    alphaCR: float | int | None = None
 
 
 

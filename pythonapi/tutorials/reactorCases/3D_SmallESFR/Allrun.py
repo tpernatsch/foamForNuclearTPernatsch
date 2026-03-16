@@ -732,8 +732,8 @@ baseMat = ffn.offbeat_lib.materials.Constant(
 innerCoreMat = deepcopy(baseMat)
 innerCoreMat.name = "innerCore"
 innerCoreMat.thermalExpansion = 1.1e-5 # should be alphaFuel, not thermalExpansion
-# innerCoreMat.alphaFuel = 1.1e-5
-# innerCoreMat.TFuelRef = inletTemperature
+innerCoreMat.alphaFuel = 1.1e-5
+innerCoreMat.TFuelRef = inletTemperature
 
 outerCoreMat = deepcopy(innerCoreMat)
 outerCoreMat.name = "outerCore"
@@ -744,8 +744,8 @@ followerMat.name = "follower"
 controlRodMat = deepcopy(baseMat)
 controlRodMat.name = "controlRod"
 controlRodMat.thermalExpansion = 5.4e-5 # should be alphaCR, not thermalExpansion
-# controlRodMat.alphaCR = 5.4e-5
-# controlRodMat.TCRRef = inletTemperature
+controlRodMat.alphaCR = 5.4e-5
+controlRodMat.TCRRef = inletTemperature
 
 diagridMat = deepcopy(baseMat)
 diagridMat.name = "diagrid"
@@ -776,9 +776,9 @@ tmSolver.add_material(softStructureMat)
 
 solvers = ffn.solvers.Solvers([neutronicsSolver, thSolver, tmSolver])
 
-# for solver in solvers:
-#     solver.decomposeParDict.numberOfSubdomains = 8
-#     solver.decomposeParDict.method = "scotch"
+for solver in solvers:
+    solver.decomposeParDict.numberOfSubdomains = 8
+    solver.decomposeParDict.method = "scotch"
 
 
 #==============================================================================*
@@ -873,6 +873,9 @@ if (True):
 
 #==============================================================================*
 # Post-processing
+
+if (model.is_parallel):
+    ffn.run_reconstruction(model, isLatestTime=True)
 
 model.plot_residuals(
     parameters=['fluxStar0'],
