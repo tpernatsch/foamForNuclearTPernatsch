@@ -26,7 +26,7 @@ threshold = 0.05  # Threshold for error calculation (fraction of max flux)
 
 # Nuclear data
 lambda_0 = jn_zeros(0, 1)[0]  # First zero of J₀: λ₀ ≈ 2.4048
-nuSigmaf = 7.80108  # m⁻¹
+nuSigmaf = 7.8024  # m⁻¹
 Sigmar = 5.0082  # m⁻¹
 D = 0.1275  # m
 keff_anal = nuSigmaf / (Sigmar + D * ((lambda_0/rOut)**2 + (np.pi/fuelHeight)**2))
@@ -84,7 +84,7 @@ nMesh, wedgeFaces = createMesh(nr=nr, nz=nz)
 #==============================================================================*
 # Fields
 
-timeFolder0 = ffn.timeFolder.TimeFolder(0)
+timeFolder0 = ffn.TimeFolder(0)
 
 defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
 defaultFlux.dimensions = ffn.fields.Dimension(default='flux')
@@ -148,7 +148,7 @@ nuclearData.add_state(refState)
 #==============================================================================*
 # Settings
 
-model = ffn.case.Case()
+model = ffn.Case()
 
 model.solvers.append(neutronicsSolver)
 model.timeFolders = [timeFolder0]
@@ -171,7 +171,6 @@ if __name__ == "__main__":
     print(model)
 
     # Export to OpenFOAM
-    ffn.allclean()
     model.export_to_openfoam()
 
     ffn.run(model, is_preprocessing=True)

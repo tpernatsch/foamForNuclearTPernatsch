@@ -315,7 +315,7 @@ solver = ffn.solvers.NeutronicsSolver(
 )
 
 
-model = ffn.case.Case()
+model = ffn.Case()
 model.settings.application = 'dummy'
 
 model.solvers.append(solver)

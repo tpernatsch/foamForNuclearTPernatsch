@@ -446,7 +446,7 @@ tmMesh = mesh.PolyMesh(region="thermoMechanicalRegion", srcpath="./meshes/polyMe
 
 inletTemperature = 668
 
-timeFolder0 = ffn.timeFolder.TimeFolder(time=0)
+timeFolder0 = ffn.TimeFolder(time=0)
 
 # Neutronics
 defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
@@ -807,7 +807,7 @@ coupling.add_field_transfer(thSolver, tmSolver, "T.fuelAvForNeutronics", "TFuel"
 # Settings
 
 
-model = ffn.case.Case(
+model = ffn.Case(
     solvers=solvers,
     coupling=coupling,
     timeFolders=[timeFolder0]

@@ -77,7 +77,7 @@ nMesh.add_right_face_edge_polyline(
 solver = ffn.solvers.NeutronicsSolver(region=nMesh.region, mesh=nMesh, solver='diffusionNeutronics')
 
 
-model = ffn.case.Case()
+model = ffn.Case()
 model.settings.application = 'dummy'
 
 model.solvers.append(solver)

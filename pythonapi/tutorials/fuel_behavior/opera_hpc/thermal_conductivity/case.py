@@ -25,7 +25,7 @@ def build_case(
     - probe at the center to extract k
     """
     # 1) Mesh: unit cube, 1 cell
-    mesh = ffn.mesh.BlockMesh()    
+    mesh = ffn.mesh.BlockMesh()
     mesh.create_cube(
         name="fuel",
         lowX=0, lowY=0, lowZ=0,
@@ -33,7 +33,7 @@ def build_case(
         nx=1, ny=1, nz=1,
         isAddAllBC=True
     )
-    
+
     # 2) Fields
     T = ffn.fields.Temperature(internalField=T_value)
     Bu = ffn.fields.Burnup(internalField=Bu_value)
@@ -46,7 +46,7 @@ def build_case(
             massNumbers = [235, 238],
             weightFractions = [0.045, 0.955]
     )})
-    
+
     fuel.relocation = ffn.offbeat_lib.materials.behaviour.relocation.Relocation()
     fuel.densification = ffn.offbeat_lib.materials.behaviour.densification.Densification()
     fuel.swelling = ffn.offbeat_lib.materials.behaviour.swelling.Swelling()
@@ -112,14 +112,14 @@ def run_case(T_value: float, Bu_value: float, case_name: str | None = None):
     """Build, clean, run, and return model."""
     case, mesh = build_case(T_value=T_value, Bu_value=Bu_value,
                               case_name=case_name)
-    
+
     case.clean()
     case.export_to_openfoam()
     case.run()
 
     return case, mesh
 
-def run_point(case: ffn.case.Case, T, Bu):
+def run_point(case: ffn.Case, T, Bu):
     case_name = Path(case.caseFolder) if hasattr(case, "caseFolder") else CASE_ROOT
 
     # clean runtime outputs, but keep mesh/dicts
@@ -128,7 +128,7 @@ def run_point(case: ffn.case.Case, T, Bu):
     # patch fields
     T_field = foamlib.FoamFieldFile(case_name / "0" / "T")
     T_field.internal_field = T
-    
+
     Bu_field = foamlib.FoamFieldFile(case_name / "0" / "Bu")
     Bu_field.internal_field = Bu
 

@@ -151,7 +151,7 @@ tmMesh = createMesh(region="thermoMechanicalRegion")
 #==============================================================================*
 # Fields
 
-timeFolder0 = ffn.timeFolder.TimeFolder(time=0)
+timeFolder0 = ffn.TimeFolder(time=0)
 
 # Neutronics
 defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
@@ -227,7 +227,7 @@ refState = ffn.nuclearData.NuclearDataState(
             "zone0",
             fuelFraction=1,
             removalXS=[45.1082],
-            nuFissionXS=[2555.8375],
+            nuFissionXS=[2554.13],
             powerXS=[1],
             scatteringMatrixP0=[[0.1]],
             discFactor=[1],
@@ -326,7 +326,7 @@ coupling.add_field_transfer(tmSolver, neutronicsSolver, "T", "TFuel")
 #==============================================================================*
 # Settings
 
-model = ffn.case.Case(
+model = ffn.Case(
     solvers=solvers,
     coupling=coupling,
     timeFolders=[timeFolder0],
@@ -368,7 +368,7 @@ volumeFuel = np.pi * (outerRadius**2 - innerRadius**2) * fuelHeight
 massFuel = fuelMat.density.value * volumeFuel * numberOfElements
 gamma = np.abs(pointKineticsData.feedbackCoeffTFuel / (fuelMat.heatCapacity.value * massFuel))
 
-pointKineticsData.externalReactivityTimeProfile = ffn.timeProfile.TimeProfile(
+pointKineticsData.externalReactivityTimeProfile = ffn.TimeProfile(
     'table',
     startTime=tStartReactitivity,
     table=[
@@ -387,7 +387,6 @@ if __name__ == "__main__":
     print(model)
 
     # Export to OpenFOAM
-    ffn.allclean()
     model.export_to_openfoam()
 
     coupling.plot_coupling_graph()
@@ -421,16 +420,18 @@ if __name__ == "__main__":
 #==============================================================================*
 # Restart for transient
 
-if __name__ == "__main__":
+def run_transient(model):
     newFolderName = 'transient'
 
     ffn.duplicateFolder(model.caseFolder, newFolderName)
 
     model.caseFolder = newFolderName
 
-    settings.endTime = 45
-    settings.maxPowerVariation = 0.01
-    settings.maxDeltaT = 3e-3
+    model.settings.endTime = 45
+    model.settings.maxPowerVariation = 0.01
+    model.settings.maxDeltaT = 3e-3
+
+    neutronicsSolver = [solver for solver in model.solvers if isinstance(solver, ffn.solvers.NeutronicsSolver)][0]
 
     neutronicsSolver.nuclearData = pointKineticsData
     neutronicsSolver.solver = "pointKinetics"
@@ -441,11 +442,33 @@ if __name__ == "__main__":
 
     ffn.run(model)
 
+    return(model)
 
-#==============================================================================*
-# Post-processing
+
+def getMaxPowerRelErr(model):
+    """
+    Used for integration testing
+    """
+    res = model.get_parameters_from_point_kinetics()
+
+    time = res['time']
+    power = res['totalPower']
+
+    powerScaled = [p * 1e-6 * scalingPower for p in power]
+
+    metrics = calculate_metrics(
+        time,
+        powerScaled,
+        promptGenerationTime, beta_total, reactivityInsertion, gamma, initialPowerScaled,
+        wedgeAngle
+    )
+
+    return(metrics['Pmax_rel_error'])
+
 
 if __name__ == "__main__":
+    model = run_transient(model)
+
     # Extract transient data
 
     res = model.get_parameters_from_point_kinetics()

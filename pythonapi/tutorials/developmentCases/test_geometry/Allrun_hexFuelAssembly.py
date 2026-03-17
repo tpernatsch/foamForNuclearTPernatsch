@@ -75,7 +75,7 @@ nMesh.merge_patches_with_name(name='wall', includeFacename=['Wall'])
 solver = ffn.solvers.NeutronicsSolver(region=nMesh.region, mesh=nMesh, solver='diffusionNeutronics')
 
 
-model = ffn.case.Case()
+model = ffn.Case()
 model.settings.application = 'dummy'
 
 model.solvers.append(solver)

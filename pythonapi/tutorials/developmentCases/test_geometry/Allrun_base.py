@@ -10,7 +10,7 @@ def createDummyCase(nMesh: mesh.Mesh):
         solver='diffusionNeutronics'
     )
 
-    model = ffn.case.Case()
+    model = ffn.Case()
     model.settings.application = 'dummy'
 
     model.solvers.append(solver)

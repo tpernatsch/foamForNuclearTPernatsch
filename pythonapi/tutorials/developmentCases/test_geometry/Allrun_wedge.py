@@ -30,7 +30,7 @@ mesh.BlockMesh.extrude_right(nMesh, [block33], 'new', 1.3, 10)
 solver = ffn.solvers.NeutronicsSolver(region=nMesh.region, mesh=nMesh, solver='diffusionNeutronics')
 
 
-model = ffn.case.Case()
+model = ffn.Case()
 model.settings.application = 'dummy'
 
 model.solvers.append(solver)

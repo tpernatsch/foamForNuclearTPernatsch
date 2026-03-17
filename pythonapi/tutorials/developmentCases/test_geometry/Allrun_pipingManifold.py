@@ -86,7 +86,7 @@ thMesh.add_boundary(hotLegOutlet)
 #==============================================================================*
 # Time folder
 
-timeFolder0 = ffn.timeFolder.TimeFolder(0)
+timeFolder0 = ffn.TimeFolder(0)
 
 T = ffn.fields.Field("T", region=thMesh.region)
 T.dimensions = ffn.fields.Dimension(default='T')
@@ -202,7 +202,7 @@ thSolver.fvSchemes.divSchemes['div(alphaRhoPhiNu,U)'] = "Gauss linear"
 #==============================================================================*
 # Model
 
-model = ffn.case.Case(timeFolders=[timeFolder0])
+model = ffn.Case(timeFolders=[timeFolder0])
 model.settings.application = "GeN-Foam"
 model.settings.endTime = 1000
 model.settings.deltaT = 0.001

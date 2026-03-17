@@ -40,7 +40,7 @@ The case is configured with the following parameters:
 - Height: $H = 1.3$ m
 - Diffusion coefficient: $D = 0.1275$ m
 - Removal cross section: $\Sigma_r = 5.0082$ m⁻¹
-- Nu-fission cross section: $\nu\Sigma_f = 7.80108$ m⁻¹
+- Nu-fission cross section: $\nu\Sigma_f = 7.8024$ m⁻¹
 
 This gives $k_\mathrm{eff,analytical} \approx 1.000009$.
 

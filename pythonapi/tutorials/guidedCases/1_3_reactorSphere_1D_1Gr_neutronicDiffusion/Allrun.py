@@ -14,10 +14,6 @@ import fluidfoam  # type: ignore
 
 
 #==============================================================================*
-
-ffn.allclean()
-
-#==============================================================================*
 # Mesh
 
 def createMesh(dr: float, nr: int):
@@ -65,7 +61,7 @@ nMesh, wedgeFaces = createMesh(dr=dr, nr=101)
 #==============================================================================*
 # Fields
 
-timeFolder0 = ffn.timeFolder.TimeFolder(0)
+timeFolder0 = ffn.TimeFolder(0)
 
 defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
 defaultFlux.dimensions = ffn.fields.Dimension(default='flux')
@@ -107,7 +103,7 @@ refState = ffn.nuclearData.NuclearDataState(
             "sph1",
             fuelFraction=0.4,
             removalXS=[4.612608],
-            nuFissionXS=[4.81],
+            nuFissionXS=[4.8101],
             powerXS=[1],
             scatteringMatrixP0=[[0.1]],
             discFactor=[1],
@@ -134,7 +130,7 @@ neutronicsSolver.nuclearData.add_state(refState)
 #==============================================================================*
 # Settings
 
-model = ffn.case.Case(timeFolders=[timeFolder0])
+model = ffn.Case(timeFolders=[timeFolder0])
 
 model.solvers.append(neutronicsSolver)
 

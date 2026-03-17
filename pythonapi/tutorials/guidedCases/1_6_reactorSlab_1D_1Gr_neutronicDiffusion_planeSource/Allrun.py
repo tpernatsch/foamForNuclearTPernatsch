@@ -9,11 +9,6 @@ import foamForNuclear.mesh as mesh
 
 
 #==============================================================================*
-
-ffn.allclean()
-
-
-#==============================================================================*
 # Mesh
 
 def createMesh(nz: int):
@@ -61,7 +56,7 @@ fluxGradient = externalSourceCurrent / D
 #==============================================================================*
 # Time folder
 
-timeFolder0 = ffn.timeFolder.TimeFolder(0)
+timeFolder0 = ffn.TimeFolder(0)
 
 defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
 defaultFlux.dimensions = ffn.fields.Dimension(default='flux')
@@ -129,7 +124,7 @@ nuclearData.add_state(refState)
 #==============================================================================*
 # Settings
 
-model = ffn.case.Case()
+model = ffn.Case()
 model.solvers.append(neutronicsSolver)
 model.timeFolders = [timeFolder0]
 

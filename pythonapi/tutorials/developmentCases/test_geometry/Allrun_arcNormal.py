@@ -86,7 +86,7 @@ else:
 solver = ffn.ThermalHydraulicsSolver(region=thMesh.region, mesh=thMesh, solver='onePhase')
 
 
-model = ffn.case.Case()
+model = ffn.Case()
 model.settings.application = 'dummy'
 
 model.solvers.append(solver)

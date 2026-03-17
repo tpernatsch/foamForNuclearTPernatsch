@@ -235,7 +235,7 @@ else:
 
 inletT = 300
 
-timeFolder0 = ffn.timeFolder.TimeFolder(0)
+timeFolder0 = ffn.TimeFolder(0)
 
 defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
 defaultFlux.dimensions = ffn.fields.Dimension(default='neutronFlux')
@@ -658,7 +658,7 @@ TBulkOutletFO = ffn.functions.TBulk(
 #==============================================================================*
 # Model
 
-model = ffn.case.Case(
+model = ffn.Case(
     solvers=solvers,
     coupling=coupling,
     timeFolders=[timeFolder0],

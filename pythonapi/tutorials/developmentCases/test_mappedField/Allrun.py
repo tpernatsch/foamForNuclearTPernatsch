@@ -94,7 +94,7 @@ th2Mesh.add_boundary(frontAndBack2)
 # - 1->2: zeroGrad U and   mapped p_rgh
 # - 2->1:   mapped U and zeroGrad p_rgh
 
-timeFolder0 = ffn.timeFolder.TimeFolder(0)
+timeFolder0 = ffn.TimeFolder(0)
 
 # --- Region 1
 
@@ -363,7 +363,7 @@ coupling.plot_solving_graph()
 #==============================================================================*
 # Model
 
-model = ffn.case.Case(
+model = ffn.Case(
     solvers=solvers,
     coupling=coupling,
     timeFolders=[timeFolder0]

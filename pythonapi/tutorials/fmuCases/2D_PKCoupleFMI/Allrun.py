@@ -53,7 +53,7 @@ thMesh = create_mesh(region="fluidRegion")
 #==============================================================================*
 # Time folder
 
-timeFolder0 = ffn.timeFolder.TimeFolder(0)
+timeFolder0 = ffn.TimeFolder(0)
 
 defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
 defaultFlux.dimensions = ffn.fields.Dimension(default='neutronFlux')
@@ -293,7 +293,7 @@ FMUSimulator.plot_coupling_graph()
 #==============================================================================*
 # Model
 
-model = ffn.case.Case(
+model = ffn.Case(
     solvers=solvers,
     coupling=coupling,
     timeFolders=[timeFolder0],
@@ -377,7 +377,7 @@ pointKineticsData.controlRodReactivityMap = [
     ( -0.1,  0.01 ),
 ]
 
-pointKineticsData.externalReactivityTimeProfile = ffn.timeProfile.TimeProfile(
+pointKineticsData.externalReactivityTimeProfile = ffn.TimeProfile(
     type='fmi',
     nameFromFMU='gfExtReact',
     initialValue=0

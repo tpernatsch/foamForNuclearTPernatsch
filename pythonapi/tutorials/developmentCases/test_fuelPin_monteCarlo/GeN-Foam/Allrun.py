@@ -64,7 +64,7 @@ nMesh.merge_patches_with_name('walls', includeFacename=['Wall'])
 #==============================================================================*
 # Fields
 
-timeFolder0 = ffn.timeFolder.TimeFolder(time=0)
+timeFolder0 = ffn.TimeFolder(time=0)
 
 defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
 defaultFlux.dimensions = ffn.fields.Dimension(default='flux')
@@ -150,7 +150,7 @@ fig.savefig("fig_xs.png")
 
 solvers = ffn.solvers.Solvers([neutronicsSolver])
 
-model = ffn.case.Case(solvers=solvers, timeFolders=[timeFolder0])
+model = ffn.Case(solvers=solvers, timeFolders=[timeFolder0])
 
 settings: ffn.ControlDict = model.settings
 

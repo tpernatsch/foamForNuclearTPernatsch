@@ -39,7 +39,7 @@ def generate_model():
     #==========================================================================*
     # Fields
 
-    timeFolder0 = ffn.timeFolder.TimeFolder(0)
+    timeFolder0 = ffn.TimeFolder(0)
 
     defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
     defaultFlux.dimensions = ffn.fields.Dimension(default='flux')
@@ -68,7 +68,7 @@ def generate_model():
         mesh=nMesh
     )
 
-    neutronicsSolver.quadratureSet = ffn.quadratureSet.QuadratureSet(
+    neutronicsSolver.quadratureSet = ffn.QuadratureSet(
         region=nMesh.region,
         default=4
     )
@@ -138,7 +138,7 @@ def generate_model():
     #==========================================================================*
     # Settings
 
-    model = ffn.case.Case()
+    model = ffn.Case()
 
     model.solvers.append(neutronicsSolver)
     model.timeFolders = [timeFolder0]

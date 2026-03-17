@@ -157,7 +157,7 @@ nMesh.generate_mesh_from_voronoi_points(
 # plt.show()
 
 
-timeFolder0 = ffn.timeFolder.TimeFolder(time=0)
+timeFolder0 = ffn.TimeFolder(time=0)
 
 defaultFlux = ffn.fields.Field(
     name="defaultFlux",
@@ -178,7 +178,7 @@ solver = ffn.solvers.NeutronicsSolver(
 )
 
 
-model = ffn.case.Case(timeFolders=[timeFolder0])
+model = ffn.Case(timeFolders=[timeFolder0])
 model.settings.application = 'dummy'
 
 model.solvers.append(solver)

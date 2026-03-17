@@ -67,7 +67,7 @@ B_m^2 = B_g^2
 $$
 
 If we assume the following values for:
-- $\nu \Sigma_f$ = 4.81
+- $\nu \Sigma_f$ = 4.8101
 - $\Sigma_a$ = 4.612608
 - $D$ = 0.02 [m]
 

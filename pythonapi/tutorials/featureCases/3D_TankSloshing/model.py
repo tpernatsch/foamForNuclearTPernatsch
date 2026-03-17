@@ -38,7 +38,7 @@ thMesh.add_boundary(wall)
 #==============================================================================*
 # Time folder
 
-timeFolder0 = ffn.timeFolder.TimeFolder(0)
+timeFolder0 = ffn.TimeFolder(0)
 
 U = ffn.fields.Field('U', region=thMesh.region)
 U.dimensions = ffn.fields.Dimension('U')
@@ -134,7 +134,7 @@ thSolver.dynamicMeshDict.add_oscillating_linear_motion('motion21', ffn.common.Ve
 
 solvers = ffn.solvers.Solvers([thSolver])
 
-model = ffn.case.Case(
+model = ffn.Case(
     solvers=solvers,
     timeFolders=[timeFolder0]
 )

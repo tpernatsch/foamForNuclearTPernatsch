@@ -372,7 +372,7 @@ else:
 #==============================================================================*
 # Time folder
 
-timeFolder0 = ffn.timeFolder.TimeFolder(0)
+timeFolder0 = ffn.TimeFolder(0)
 
 defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
 defaultFlux.dimensions = ffn.fields.Dimension(default='neutronFlux')
@@ -630,7 +630,7 @@ neutronicsSolver.externalSource.isExternalSource = True
 neutronicsSolver.externalSource.externalSourceMode = "transient"
 neutronicsSolver.externalSource.beamEnergy = 1.28160e-10
 neutronicsSolver.externalSource.nuSource = 17.3
-neutronicsSolver.externalSource.externalSourceModulationTimeProfile = ffn.timeProfile.TimeProfile(
+neutronicsSolver.externalSource.externalSourceModulationTimeProfile = ffn.TimeProfile(
     type='table',
     startTime=100,
     table=[
@@ -670,7 +670,7 @@ coupling.add_field_transfer(thSolver, neutronicsSolver, 'T.passiveStructure', 'T
 
 endTime = 200
 
-model = ffn.case.Case(
+model = ffn.Case(
     solvers=solvers,
     coupling=coupling,
     timeFolders=[timeFolder0],

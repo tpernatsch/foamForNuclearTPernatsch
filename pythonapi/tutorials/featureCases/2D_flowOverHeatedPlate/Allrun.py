@@ -91,7 +91,7 @@ solidMesh.add_boundary(solidBottom)
 #==============================================================================*
 # Fields
 
-timeFolder0 = ffn.timeFolder.TimeFolder(0)
+timeFolder0 = ffn.TimeFolder(0)
 
 
 Tfluid = ffn.fields.Field("T", region=fluidMesh.region)
@@ -344,7 +344,7 @@ coupling = ffn.coupling.Coupling(solvers=[chtLoop])
 #==============================================================================*
 # Settings
 
-model = ffn.case.Case(
+model = ffn.Case(
     timeFolders=[timeFolder0],
     solvers=solvers,
     coupling=coupling

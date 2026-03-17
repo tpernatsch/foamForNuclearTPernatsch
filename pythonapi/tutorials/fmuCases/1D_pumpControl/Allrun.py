@@ -66,7 +66,7 @@ thMesh.add_boundary(walls)
 #==============================================================================*
 # Time folder
 
-timeFolder0 = ffn.timeFolder.TimeFolder(0)
+timeFolder0 = ffn.TimeFolder(0)
 
 T = ffn.fields.Field("T", region=thMesh.region)
 T.dimensions = ffn.fields.Dimension(default='T')
@@ -114,7 +114,7 @@ pumpModel = ffn.porous_medium.Pump(
     volumeFraction=0.2,
     Dh=0.1,
     momentumSource=ffn.common.Vector(1e7, 0, 0),
-    momentumSourceTimeProfile=ffn.timeProfile.TimeProfile(
+    momentumSourceTimeProfile=ffn.TimeProfile(
         type='fmi',
         nameFromFMU="gfMomentumSource",
         initialValue=0
@@ -244,7 +244,7 @@ FMUSimulator.plot_coupling_graph()
 #==============================================================================*
 # Model
 
-model = ffn.case.Case(
+model = ffn.Case(
     solvers=solvers,
     timeFolders=[timeFolder0],
     externalCouplingDict=externalCouplingDict

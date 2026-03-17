@@ -67,7 +67,7 @@ nMesh = createMesh(nz=nz)
 #==============================================================================*
 # Fields
 
-timeFolder0 = ffn.timeFolder.TimeFolder(0)
+timeFolder0 = ffn.TimeFolder(0)
 
 defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
 defaultFlux.dimensions = ffn.fields.Dimension(default='flux')
@@ -106,7 +106,7 @@ fluxSolution.relTol = 1e-10
 print(f"List of require fields: {neutronicsSolver.get_required_fields()}")
 
 # External source modulation time profile (table)
-source_table = ffn.timeProfile.TimeProfile( 'table',
+source_table = ffn.TimeProfile( 'table',
     startTime=0,
     table=[
         (0, 0.01),
@@ -157,7 +157,7 @@ nuclearData.add_state(refState)
 #==============================================================================*
 # Settings
 
-model = ffn.case.Case()
+model = ffn.Case()
 
 model.solvers.append(neutronicsSolver)
 model.timeFolders = [timeFolder0]
@@ -221,7 +221,6 @@ if __name__ == '__main__':
     #==========================================================================*
     # Clean, export and run
 
-    ffn.allclean()
     model.export_to_openfoam()
 
     ffn.run(model, is_preprocessing=True)

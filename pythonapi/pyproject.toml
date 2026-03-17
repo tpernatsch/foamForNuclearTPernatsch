@@ -40,7 +40,9 @@ dependencies = [
     "requests",
     "imageio",
     "tqdm",
-    "tabulate"
+    "tabulate",
+    "pytest",
+    "pytest-xdist"
 ]
 
 [project.optional-dependencies]

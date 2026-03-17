@@ -17,7 +17,7 @@ solver.export_to_openfoam()
 
 
 
-# model = ffn.case.Case()
+# model = ffn.Case()
 # model.import_from_openfoam()
 
 # print(model)

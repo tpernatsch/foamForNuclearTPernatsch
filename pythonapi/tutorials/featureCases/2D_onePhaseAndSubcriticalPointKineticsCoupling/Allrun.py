@@ -51,7 +51,7 @@ thMesh = createMesh(region="fluidRegion")
 #==============================================================================*
 # Time folder
 
-timeFolder0 = ffn.timeFolder.TimeFolder(0)
+timeFolder0 = ffn.TimeFolder(0)
 
 defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
 defaultFlux.dimensions = ffn.fields.Dimension(default='neutronFlux')
@@ -269,7 +269,7 @@ coupling.add_field_transfer(thSolver, neutronicsSolver, 'T.passiveStructure', 'T
 
 transientStartTime = 150
 
-model = ffn.case.Case(
+model = ffn.Case(
     solvers=solvers,
     coupling=coupling,
     timeFolders=[timeFolder0],
@@ -341,7 +341,7 @@ neutronicsSolver.fastNeutrons = True
 neutronicsSolver.externalSource.nuSource = 15.5 # [neutron/proton]
 neutronicsSolver.externalSource.beamEnergy = 1.28160e-10 # [J/proton], 800 MeV/proton
 
-neutronicsSolver.externalSource.externalSourceModulationTimeProfile = ffn.timeProfile.TimeProfile(
+neutronicsSolver.externalSource.externalSourceModulationTimeProfile = ffn.TimeProfile(
     type="table",
     startTime=transientStartTime,
     table=[
@@ -358,7 +358,7 @@ pointKineticsData = ffn.nuclearData.PointKineticsData(
     decayConstants=[1e-5],
     # feedbackCoeffTFuel=-3e-06
 )
-pointKineticsData.externalReactivityTimeProfile = ffn.timeProfile.TimeProfile(
+pointKineticsData.externalReactivityTimeProfile = ffn.TimeProfile(
     'table',
     startTime=1000000000,
     table=[

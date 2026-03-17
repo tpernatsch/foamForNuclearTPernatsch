@@ -205,7 +205,7 @@ waterConstThermo = thermo.WaterConst(T=T_inlet)
 # print(massFlowRate, rho_inlet, Sp, D, u_inlet, epsilon_inlet, k_inlet, Reynolds, waterConstThermo.mu)
 
 
-timeFolder0 = ffn.timeFolder.TimeFolder(0)
+timeFolder0 = ffn.TimeFolder(0)
 
 T = ffn.fields.Field("T", region=primaryMesh.region)
 T.dimensions = ffn.fields.Dimension(default='T')
@@ -447,7 +447,7 @@ totalPower = ffn.VolFieldValue(
 #==============================================================================*
 # Model
 
-model = ffn.case.Case(timeFolders=[timeFolder0])
+model = ffn.Case(timeFolders=[timeFolder0])
 model.settings.application = "GeN-Foam"
 model.settings.endTime = 200
 model.settings.deltaT = 0.1

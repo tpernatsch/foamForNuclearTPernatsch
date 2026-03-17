@@ -4,13 +4,13 @@
 #==============================================================================*
 # Imports
 
+import os
+import sys
+
 import foamForNuclear as ffn
 import foamForNuclear.boundaryConditions as bc
 import foamForNuclear.mesh as mesh
 
-#==============================================================================*
-
-ffn.allclean()
 
 #==============================================================================*
 # Mesh
@@ -18,7 +18,7 @@ ffn.allclean()
 nMesh = mesh.BlockMesh(region='neutroRegion')
 
 side = 0.1
-lCore = 1.197
+lCore = 1.1969
 lRefl = 0.5
 
 reflBot = nMesh.create_cube('reflector', 0, 0, -lCore/2-lRefl, side, side, -lCore/2, 1, 1, 150)
@@ -46,7 +46,7 @@ nMesh.add_boundary(bottom)
 #==============================================================================*
 # Fields
 
-timeFolder0 = ffn.timeFolder.TimeFolder(0)
+timeFolder0 = ffn.TimeFolder(0)
 
 defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
 defaultFlux.dimensions = ffn.fields.Dimension(default='flux')
@@ -119,12 +119,12 @@ timeFolder0.append(idxField)
 #==============================================================================*
 # Settings
 
-model = ffn.case.Case()
+model = ffn.Case()
 
 model.solvers.append(neutronicsSolver)
 model.timeFolders = [timeFolder0]
 
-settings: ffn.control.ControlDict = model.settings
+settings = model.settings
 
 settings.application = 'GeN-Foam'
 settings.endTime = 1
@@ -143,7 +143,7 @@ model.export_to_openfoam()
 #==============================================================================*
 # Run
 
-ffn.run(case=model, is_preprocessing=True)
+ffn.run(model, is_preprocessing=True)
 
 model.plot_mesh(nMesh, fieldName=idxField.name)
 
@@ -151,27 +151,33 @@ model.plot_mesh(nMesh, fieldName=idxField.name)
 #==============================================================================*
 # Post-processing
 
-print(f"keff = {model.keff()}")
+keff = model.keff()
 
-model.plot_mesh(region=nMesh.region)
-model.plot_boundary(region=nMesh.region, boundaryName=walls.name)
+print(f"keff = {keff}")
 
-model.plot_slice(
-    region=nMesh.region,
-    time=settings.endTime,
-    fieldName="flux0",
-    show_edges=False,
-    cmap='Blues',
-    unit="n/m2/s"
-)
 
-model.plot_mesh(
-    region=nMesh.region,
-    time=settings.endTime,
-    fieldName="flux0",
-    cmap="Blues",
-    show_edges=False
-)
+# Only executed when >>> python3 Allrun.py
+if __name__ == "__main__":
+
+    model.plot_mesh(region=nMesh.region)
+    model.plot_boundary(region=nMesh.region, boundaryName=walls.name)
+
+    model.plot_slice(
+        region=nMesh.region,
+        time=settings.endTime,
+        fieldName="flux0",
+        show_edges=False,
+        cmap='Blues_r',
+        unit="n/m2/s"
+    )
+
+    model.plot_mesh(
+        region=nMesh.region,
+        time=settings.endTime,
+        fieldName="flux0",
+        cmap="Blues_r",
+        show_edges=False
+    )
 
 
 #==============================================================================*

@@ -56,7 +56,7 @@ thMesh.add_boundary(walls)
 #==============================================================================*
 # Fields
 
-timeFolder0 = ffn.timeFolder.TimeFolder(0)
+timeFolder0 = ffn.TimeFolder(0)
 
 
 Tliquid = ffn.fields.Field("T.liquid", region="fluidRegion")
@@ -325,7 +325,7 @@ thSolver.add_relaxation_on_field('"dmdt.*"', 0.125)
 #==============================================================================*
 # Settings
 
-model = ffn.case.Case()
+model = ffn.Case()
 
 model.solvers.append(thSolver)
 model.timeFolders = [timeFolder0]

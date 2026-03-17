@@ -10,7 +10,7 @@ solver.fvSchemes.import_from_openfoam()
 print(solver.fvSchemes.ddtSchemes)
 
 
-model2 = ffn.case.Case()
+model2 = ffn.Case()
 
 model2.settings.import_from_openfoam()
 

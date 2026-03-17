@@ -128,7 +128,7 @@ thSolver = ffn.ThermalHydraulicsSolver(
 #==============================================================================*
 # Model
 
-model = ffn.case.Case()
+model = ffn.Case()
 model.settings.application = "dummy"
 
 model.add_solver(thSolver)
