@@ -5,9 +5,9 @@ import os
 def test_1_1_reactorSlab_1D_1Gr_neutronicDiffusion(tmp_path):
     os.chdir(tmp_path)
 
-    module = importlib.import_module("1_1_reactorSlab_1D_1Gr_neutronicDiffusion.Allrun", package=None)
+    Allrun = importlib.import_module("1_1_reactorSlab_1D_1Gr_neutronicDiffusion.Allrun", package=None)
 
-    keff = module.keff
+    keff = Allrun.keff
 
     keffRef = 1
     eps = 1e-5
@@ -18,9 +18,9 @@ def test_1_1_reactorSlab_1D_1Gr_neutronicDiffusion(tmp_path):
 def test_1_2_reactorSlabReflected_1D_1Gr_neutronicDiffusion(tmp_path):
     os.chdir(tmp_path)
 
-    module = importlib.import_module("1_2_reactorSlabReflected_1D_1Gr_neutronicDiffusion.Allrun", package=None)
+    Allrun = importlib.import_module("1_2_reactorSlabReflected_1D_1Gr_neutronicDiffusion.Allrun", package=None)
 
-    keff = module.keff
+    keff = Allrun.keff
 
     keffRef = 1
     eps = 1e-5
@@ -143,4 +143,4 @@ def test_3_1_reactorCylinder_2D_1Gr_neutronicPK_thermomech(tmp_path):
     model = Allrun.run_transient(Allrun.model)
     relErrPower = Allrun.getMaxPowerRelErr(model)
 
-    assert abs(relErrPower) < 5
+    assert abs(relErrPower) < 5 # %
