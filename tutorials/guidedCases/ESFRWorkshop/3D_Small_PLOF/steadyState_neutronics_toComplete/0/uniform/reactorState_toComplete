@@ -22,6 +22,6 @@ keff            ...;
 
 // This is the target value for eignevalue calculations 
 // Power is 800 MWth
-pTarget         ...; // 
+power         ...; // 
 
 // ************************************************************************* //

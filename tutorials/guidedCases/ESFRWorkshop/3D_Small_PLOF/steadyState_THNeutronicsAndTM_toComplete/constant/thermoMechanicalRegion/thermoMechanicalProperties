@@ -15,61 +15,25 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-// The thermomechanics dictionary has the same structure as the solverDict of OFFBEAT
-// Differences and/or new additions are explained and commented
+//Options to turn on physics. Both defaulted to "on"
 
-//- Thermal and Mechanical solver selection: other OFFBEAT cards not needed
+thermalSolver       on; // Option to turn on/off the thermal solution. Might be not needed as TStruct from TH can be mapped
+mechanicsSolver     on; // Option to turn on/off mechanics solution
 
-thermalSolver           solidConduction;
-mechanicsSolver         smallStrain;
-
-//- Same as OFFBEAT 
-
-materialProperties      byZone;
-rheology                byMaterial;
-
-heatSource              fromLatestTime;
-sliceMapper             autoAxialSlices;
+// To mantain continuity with OFFBEAT, in globalOptions general simulation parameters are set. Both entries needed
 
 globalOptions
 {
-    pinDirection            (0 0 1);
-    reactorType             "LWR";
-    angularFraction 1;
-    linkedFuel false;
+    linkedFuel      false;
+    pinDirection    (0 0 1);
 }
 
-thermalSolverOptions
+// To mantain continuity with OFFBEAT. Only rheology option to set is planeStress. Defaulted to off
+
+rheologyOption
 {
-    heatFluxSummary     on;
-    averageFieldsForMappings true;
-    patchForAverage "fuelOuter";
+    planeStress     no;
 }
-
-mechanicsSolverOptions
-{
-    forceSummary        off;  
-    cylindricalStress   on;  
-}
-
-// - In order to couple the thermomechanics solution to the other physics, some changes might need to be made
-//
-// - 1) Since GeN-Foam is mostly used for porous media, the thermal solution on the porous zones might not be
-//      accurate. The user has then to options: if the thermomechanical and thermohydraulics meshes are perf-
-//      ectly overlapping, then the T.passiveStructure field (TH) can be mapped onto T (TM) and decativate t-
-//      he thermal solution; if instead there are regions that are non-porous, the thermal solution might be
-//      still needed. The temperature is then obtained from solid conduction and the porous cells are correc-
-//      ted with the TStructFromTH field. The user will then map T.passiveStructure onto TStructFromTH and s-
-//      et the "correctTFromTH" option on 
-//
-// - 2) In order to take into account the deformation feedback on the neutronics, the displacement field mig-
-//      ht need to be corrected. While the radial component is computed by the selected mechanics solver, as 
-//      this is driven by the structural materials (e.g. diagrid of SFR), the axial component needs to take 
-//      into account the fuel and control rods expansions. For this reason, a different field "meshDisp" is 
-//      present and is updated by computing the fuel and CR expansion separately if the user sets the "corre-
-//      ctDispForNeutro" keyword on.
-//
-// 	Both options are defaulted to false if not found or if the couplingOptions dict is not found entirely
 
 couplingOptions
 {
@@ -77,14 +41,12 @@ couplingOptions
     correctDispForNeutro on;
 }
 
-//- Same as OFFBEAT
+// What "zones" used to be. Structure changed to be compatible with OFFBEAT. Possible extension to non-constant materials
+
 materials
 {
-
-
     innerCore
     {
-        material        constant;
         rho         rho     [1 -3 0 0 0]    1000;
         Cp          Cp      [0 2 -2 -1 0]   200;
         k           k       [1 1 3 -1 0]    5;
@@ -96,8 +58,6 @@ materials
         Tref        Tref    [0 0 0 1 0]     668;
         alphaFuel   alphaFuel   [0 0 0 0 0]     1.1e-5;
         TFuelRef    TFuelRef    [0 0 0 1 0]     668;
-
-        rheologyModel elasticity;
     }
     outerCore
     {
@@ -113,8 +73,6 @@ materials
         Tref        Tref    [0 0 0 1 0]     668;
         alphaFuel   alphaFuel   [0 0 0 0 0]     1.1e-5;
         TFuelRef    TFuelRef    [0 0 0 1 0]     668;
-
-        rheologyModel elasticity;
     }
     follower
     {
@@ -128,8 +86,6 @@ materials
         G           G       [1 -1 -2 0 0]   0.0;
         alpha       alpha   [0 0 0 0 0]     1.8e-5;
         Tref        Tref    [0 0 0 1 0]     668;
-
-        rheologyModel elasticity;
     }
     controlRod
     {
@@ -145,8 +101,6 @@ materials
         Tref        Tref    [0 0 0 1 0]     668;
         TCRRef      TCRRef  [0 0 0 1 0]     668;
         alphaCR     alphaCR   [0 0 0 0 0]   5.4e-5;
-
-        rheologyModel elasticity;
     }
     diagrid
     {
@@ -160,8 +114,6 @@ materials
         G           G       [1 -1 -2 0 0]   0.0;
         alpha       alpha   [0 0 0 0 0]     1.8e-5;
         Tref        Tref    [0 0 0 1 0]     668;
-
-        rheologyModel elasticity;
     }
     radialReflector
     {
@@ -175,8 +127,6 @@ materials
         G           G       [1 -1 -2 0 0]   0.0;
         alpha       alpha   [0 0 0 0 0]     1.8e-5;
         Tref        Tref    [0 0 0 1 0]     668;
-
-        rheologyModel elasticity;
     }
     rest
     {
@@ -190,8 +140,6 @@ materials
         G           G       [1 -1 -2 0 0]   0.0;
         alpha       alpha   [0 0 0 0 0]     1.8e-5;
         Tref        Tref    [0 0 0 1 0]     668;
-
-        rheologyModel elasticity;
     }
     softStructure
     {
@@ -205,10 +153,7 @@ materials
         G           G       [1 -1 -2 0 0]   0.0;
         alpha       alpha   [0 0 0 0 0]     1.8e-5;
         Tref        Tref    [0 0 0 1 0]     668;
-
-        rheologyModel elasticity;
     }
-
 }
 
 // ************************************************************************* //

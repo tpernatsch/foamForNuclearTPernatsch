@@ -1,37 +1,39 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-| =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.3.0                                 |
-|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
-|    \\/     M anipulation  |                                                 |
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
     version     2.0;
     format      ascii;
     class       dictionary;
-    location    "system";
     object      fvSolution;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 solvers
 {
-    porosity
-    {
-        solver          PBiCG;
-        preconditioner  	DILU;
-        tolerance       1e-10;
-        relTol          0.01;
-        smoother        GaussSeidel;
-    }
-
-    D
+    ".*"
     {
         solver          PCG;
-        preconditioner  FDIC;
-        tolerance       1e-10;
-        relTol          0.1;
+        preconditioner  DIC;
+        tolerance       1e-06;
+        relTol          0.001;
+/*
+        solver          GAMG;
+        tolerance       1e-06;
+        relTol          0.001;
+        smoother        GaussSeidel;
+        cacheAgglomeration true;
+        nCellsInCoarsestLevel 50;
+        agglomerator    faceAreaPair;
+        mergeLevels     1;
+	processorAgglomerator masterCoarsest;
+*/
     }
     "fuelDisp"
     {
@@ -49,52 +51,31 @@ solvers
         tolerance       1e-5;
         relTol          0.01;
     }
-    T
+    "TStruct"
     {
-        solver          PCG;
-        preconditioner  FDIC;
-        tolerance       1e-10;
-        relTol          0.1;
-    }
-
-    neutronFlux0
-    {
-        solver          PCG;
-        preconditioner  FDIC;
-        tolerance       1e-10;
-        relTol          0.1;
+        solver          GAMG;
+        tolerance       1e-06;
+        relTol          0.001;
+        smoother        GaussSeidel;
+        cacheAgglomeration true;
+        nCellsInCoarsestLevel 50;
+        agglomerator    faceAreaPair;
+        mergeLevels     1;
+	processorAgglomerator masterCoarsest;
     }
 }
-
 stressAnalysis
 {
-    nCorrectors     20;
-    maxOuterIter    100;
-
-    referencePairs  ();
-
-    D               (1e-5 1 1e-5);
-    T               1e-5;
-
-    relD            1e-5;
-    relT            1e-5;
+    compactNormalStress yes;
+    nCorrectors     3;
+    D               1e-06;
 }
-
 relaxationFactors
 {
     fields
     {
-        D   0.7;
-        // T   0.8;
-        // neutronFlux0   0.9;
-    }
-    /*
-    equations
-    {
-        D   0.7;
-        T   0.7;
-    }
-    */
-}
+	Disp 0.99;
 
+    }
+}
 // ************************************************************************* //

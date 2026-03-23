@@ -11,7 +11,7 @@ In this case, a steady-state fully coupled neutronics,nthermalhydraulics and the
    - `decomposePar -allRegions`
    - `mpirun -np 4 GeN-Foam -parallel | tee log.GeN-Foam`
 3. **Plot Results** Run the "plotResults.py" file to study the convergence of k-eff and fuel and coolant temperatures. Compare the results to those in which core expansions were not included
-4. **(Optional) TIghlty couple the physics** In constant/regionsDict modify the *regionSolvers* entry as follows
+4. **(Optional) TIghlty couple the physics** In system/regionsDict modify the *regionSolvers* entry as follows
 ```
 regionSolvers
 {
@@ -25,7 +25,7 @@ regionSolvers
       {
          fluidRegion             onePhase;
          neutroRegion            diffusionNeutronics;
-         thermoMechanicalRegion  extendedThermoMechanics;
+         thermoMechanicalRegion  legacyThermoMechanics;
       }
 
       minResidual    1e-5;

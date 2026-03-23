@@ -11,7 +11,7 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      nuclearData;
+    object      neutronicsProperties;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -21,33 +21,11 @@ FoamFile
 // folder of the GeN-Foam repository. The same script has been used to obtained
 // the perturbed XS files.
 
-// If true interpolates cross section with logarithmic temp for fuel
-// (otherwise, square root)
-fastNeutrons            true;
-
-// Polyharmonic spline function
-// - 1: phi(r) = |r|  -> linear interpolation
-// - 2: phi(r) = r^2 ln(r)
-// - 3: phi(r) = |r^3|
-// - 4: phi(r) = r^4 ln(r)
-polyharmonicSplineMode  1;
-
-// Highly specialized flag. Please refer to Fiorina et al., Annals of Nuclear
-// Energy 96O (2016)
-adjustDiscFactors       false;
-
-// Use homogeneous discontinuity factors provided below. Please refer to
-// Fiorina et al., Annals of Nuclear Energy 96O (2016)
-useGivenDiscFactors     false;
-
 // Number of energy groups. Can be any, but consistent with the data below
 energyGroups        1;
 
 // Number of precursors groups. Can be any, but consistent with the data below
 precGroups          8;
-
-// Fuel axial orientation vector
-axialOrientation    (0 0 1);
 
 // Here below, the cross-sections (and few other parameters) are specified for
 // each cellZone in the neutronics mesh. ALL cellZones must be specified in
