@@ -3,7 +3,7 @@ volScalarField::Internal Sp
     IOobject
     (
         "Sp",
-        runTime.timeName(),
+        runTime().timeName(),
         mesh_
     ),
     mesh_,
@@ -15,7 +15,7 @@ volScalarField::Internal Su
     IOobject
     (
         "Su",
-        runTime.timeName(),
+        runTime().timeName(),
         mesh_
     ),
     mesh_,

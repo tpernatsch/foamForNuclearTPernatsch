@@ -75,7 +75,6 @@ Foam::solvers::neutronics::neutronics
             IOobject::NO_WRITE
         )
     ),
-    mesh_(mesh),
     reactorState_
     (
         IOobject
@@ -279,8 +278,8 @@ void Foam::solvers::neutronics::correctBaffleLessFields()
                 IOobject
                 (
                     "regionsDict",
-                    runTime.time().system(),
-                    runTime.db(),
+                    runTime().time().system(),
+                    runTime().db(),
                     IOobject::MUST_READ,
                     IOobject::NO_WRITE
                 )
@@ -356,8 +355,8 @@ void Foam::solvers::neutronics::deformMesh()
         IOobject
         (
             "regionsDict",
-            runTime.time().system(),
-            runTime.db(),
+            runTime().time().system(),
+            runTime().db(),
             IOobject::READ_IF_PRESENT,
             IOobject::NO_WRITE
         )

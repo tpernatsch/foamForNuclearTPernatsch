@@ -9,8 +9,8 @@
         (
             fv::ddtScheme<scalar>::New
             (
-                mesh,
-                mesh.ddtScheme("ddt(alpha)")
+                mesh(),
+                mesh().ddtScheme("ddt(alpha)")
             )
         );
         const fv::ddtScheme<scalar>& ddtAlpha = tddtAlpha();
@@ -36,7 +36,7 @@
             if
             (
                 alphaRestart
-             || mesh.time().timeIndex() > mesh.time().startTimeIndex() + 1
+             || mesh().time().timeIndex() > mesh().time().startTimeIndex() + 1
             )
             {
                 ocCoeff =
@@ -56,7 +56,7 @@
     scalar cnCoeff = 1.0/(1.0 + ocCoeff);
 
     // Standard face-flux compression coefficient
-    surfaceScalarField phic(mixture_.cAlpha()*mag(phi_/mesh.magSf()));
+    surfaceScalarField phic(mixture_.cAlpha()*mag(phi_/mesh().magSf()));
 
     // Add the optional isotropic compression contribution
     if (icAlpha > 0)
@@ -69,7 +69,7 @@
     if (scAlpha > 0)
     {
         phic +=
-            scAlpha*mag(mesh.delta() & fvc::interpolate(symm(fvc::grad(U_))));
+            scAlpha*mag(mesh().delta() & fvc::interpolate(symm(fvc::grad(U_))));
     }
 
 
@@ -103,17 +103,17 @@
         fvScalarMatrix alpha1Eqn
         (
             (
-                LTS
-              ? fv::localEulerDdtScheme<scalar>(mesh).fvmDdt(alpha1_)
-              : fv::EulerDdtScheme<scalar>(mesh).fvmDdt(alpha1_)
+                LTS_
+              ? fv::localEulerDdtScheme<scalar>(mesh()).fvmDdt(alpha1_)
+              : fv::EulerDdtScheme<scalar>(mesh()).fvmDdt(alpha1_)
             )
           + fv::gaussConvectionScheme<scalar>
             (
-                mesh,
+                mesh(),
                 phiCN,
-                upwind<scalar>(mesh, phiCN)
+                upwind<scalar>(mesh(), phiCN)
             ).fvmDiv(phiCN, alpha1_)
-       // - fvm::Sp(fvc::ddt(dimensionedScalar("1", dimless, 1), mesh)
+       // - fvm::Sp(fvc::ddt(dimensionedScalar("1", dimless, 1), mesh())
        //           + fvc::div(phiCN), alpha1_)
          ==
             Su + fvm::Sp(Sp + divU, alpha1_)
@@ -122,7 +122,7 @@
         alpha1Eqn.solve();
 
         Info<< "Phase-1 volume fraction = "
-            << alpha1_.weightedAverage(mesh.Vsc()).value()
+            << alpha1_.weightedAverage(mesh().Vsc()).value()
             << "  Min(" << alpha1_.name() << ") = " << min(alpha1_).value()
             << "  Max(" << alpha1_.name() << ") = " << max(alpha1_).value()
             << endl;
@@ -239,9 +239,9 @@
 
     if
     (
-        word(mesh.ddtScheme("ddt(rho,U_)"))
+        word(mesh().ddtScheme("ddt(rho,U_)"))
      == fv::EulerDdtScheme<vector>::typeName
-     || word(mesh.ddtScheme("ddt(rho,U_)"))
+     || word(mesh().ddtScheme("ddt(rho,U_)"))
      == fv::localEulerDdtScheme<vector>::typeName
     )
     {
@@ -261,7 +261,7 @@
     }
 
     Info<< "Phase-1 volume fraction = "
-        << alpha1_.weightedAverage(mesh.Vsc()).value()
+        << alpha1_.weightedAverage(mesh().Vsc()).value()
         << "  Min(" << alpha1_.name() << ") = " << min(alpha1_).value()
         << "  Max(" << alpha1_.name() << ") = " << max(alpha1_).value()
         << endl;

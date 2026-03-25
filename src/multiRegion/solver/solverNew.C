@@ -41,12 +41,6 @@ License
 
 // * * * * * * * * * * * * * * * * Selectors * * * * * * * * * * * * * * * * //
 
-// void Foam::solver::load(const word& solverName)
-// {
-//     libs.open("lib" + solverName + ".so");
-// }
-
-
 Foam::autoPtr<Foam::solver> Foam::solver::New
 (
     const word& solverName,
@@ -54,30 +48,6 @@ Foam::autoPtr<Foam::solver> Foam::solver::New
 )
 {
     Info<< "Selecting solver " << solverName << endl;
-
-    // load(solverName);
-
-    // if (!fvMeshConstructorTablePtr_)
-    // {
-    //     FatalErrorInFunction
-    //         << "solvers table is empty"
-    //         << exit(FatalError);
-    // }
-
-    // fvMeshConstructorTable::iterator cstrIter =
-    //     fvMeshConstructorTablePtr_->find(solverName);
-
-    // if (cstrIter == fvMeshConstructorTablePtr_->end())
-    // {
-    //     FatalErrorInFunction
-    //         << "Unknown solver type "
-    //         << solverName << nl << nl
-    //             << "Valid solvers are :" << endl
-    //             << fvMeshConstructorTablePtr_->sortedToc()
-    //             << exit(FatalError);
-    // }
-
-    // autoPtr<solver> solverPtr(cstrIter()(mesh));
 
 
     auto* ctorPtr = dynamicFvMeshConstructorTable(solverName);
@@ -97,12 +67,5 @@ Foam::autoPtr<Foam::solver> Foam::solver::New
             ctorPtr(mesh)
         );
 
-    // Ensure fvModels and fvConstraints are constructed
-    // // before time is incremented
-    // solverPtr->fvModels();
-    // solverPtr->fvConstraints();
-
-//     return solverPtr;
-// }
 }
 // ************************************************************************* //

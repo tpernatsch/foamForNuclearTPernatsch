@@ -117,12 +117,6 @@ public :
 protected:
 
     //-
-    const Time& runTime_;
-
-    //-
-    dynamicFvMesh& mesh_;
-
-    //-
     customPimpleControl pimple_;
 
     //-

@@ -89,7 +89,6 @@ class compressibleInterFoam
 {
 private:
 
-    fvMesh& mesh_;
     pimpleControl pimple_;
 
     //- Phases

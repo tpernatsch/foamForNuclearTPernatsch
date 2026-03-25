@@ -40,16 +40,16 @@ if (adjustTimeStep)
 
     scalar deltaTFact = min(min(maxDeltaTFact, 1.0 + 0.1*maxDeltaTFact), 1.2);
 
-    runTime.setDeltaT
+    runTime().setDeltaT
     (
         min
         (
-            deltaTFact*runTime.deltaTValue(),
+            deltaTFact*runTime().deltaTValue(),
             maxDeltaT
         )
     );
 
-    Info<< "deltaT = " <<  runTime.deltaTValue() << endl;
+    Info<< "deltaT = " <<  runTime().deltaTValue() << endl;
 }
 
 // ************************************************************************* //

@@ -1,19 +1,19 @@
 if (nAlphaSubCycles > 1)
 {
-    dimensionedScalar totalDeltaT = runTime.deltaT();
+    dimensionedScalar totalDeltaT = runTime().deltaT();
     surfaceScalarField rhoPhiSum
     (
-        mesh.newIOobject("rhoPhiSum"),
-        mesh,
+        mesh().newIOobject("rhoPhiSum"),
+        mesh(),
         dimensionedScalar(rhoPhi_.dimensions(), Zero)
     );
 
     tmp<volScalarField> trSubDeltaT;
 
-    if (LTS)
+    if (LTS_)
     {
         trSubDeltaT =
-            fv::localEulerDdt::localRSubDeltaT(mesh, nAlphaSubCycles);
+            fv::localEulerDdt::localRSubDeltaT(mesh(), nAlphaSubCycles);
     }
 
     for
@@ -23,7 +23,7 @@ if (nAlphaSubCycles > 1)
     )
     {
         #include "alphaEqn.H"
-        rhoPhiSum += (runTime.deltaT()/totalDeltaT)*rhoPhi_;
+        rhoPhiSum += (runTime().deltaT()/totalDeltaT)*rhoPhi_;
     }
 
     rhoPhi_ = rhoPhiSum;

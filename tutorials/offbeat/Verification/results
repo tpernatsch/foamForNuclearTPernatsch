@@ -2,7 +2,7 @@
 Verification cases results  
 ----------------------------
 Date :                      
-Tue Nov  4 23:28:08 CET 2025                      
+Mon Mar 23 16:56:57 CET 2026                      
 ============================
 
 NaCoolantChannelModel/:
@@ -10,14 +10,8 @@ RMSE (OFFBEAT vs Analytical) = 0.26 K
 RMSE (OFFBEAT vs TRACE) - Wall Temperature = 0.93 K
 
 actinidesRedistribution/:
-RMSE Pu Distribution @ 100 h : 4.94e-03 %
-RMSE Am Distribution @ 100 h : 3.38e-03 %
-beamBending/:
-x = 0.8, bending stress error norm = 0.27%, shear stress error norm = 0.11%
-x = 2.4, bending stress error norm = 0.24%, shear stress error norm = 0.08%
-x = 3.8, bending stress error norm = 0.064%, shear stress error norm = 0.33%
-Test passed...
-
+RMSE Pu Distribution @ 100 h : 5.40e-03 %
+RMSE Am Distribution @ 100 h : 3.22e-03 %
 
 burnupFBR/:
 Error Tot. [Pu] OFFBEAT/SERPENT: -4.03e-03 %
@@ -51,7 +45,7 @@ Expected volume: 1.44042E-07
 Relative error: -0.020133%
 
 gapVolumeHeatedFuel/:
-Gap volume: 3.03227e-08
+Gap volume: 3.03234e-08
 Top plenum volume: 7.19627e-08
 Bottom plenum volume: 3.54392e-08
 Total volume: 1.37725e-07
@@ -59,7 +53,7 @@ Expected volume: 1.37734E-07
 Relative error: -0.00653433%
 
 gapVolumeHeatedFuel1D/:
-Gap volume: 3.02693e-08
+Gap volume: 3.02694e-08
 Top plenum volume: 7.31254e-08
 Bottom plenum volume: 3.45553e-08
 Total volume: 1.3795e-07
@@ -83,60 +77,9 @@ hydrogenTransport/laCroixBenchmark:
 hydrogenTransport/sawatzky:
 
 
-multiMaterial/:
-multiMaterial/biMaterialBlock1:
-sigma_xx, maximum relative error: 0 %
-sigma_yy, maximum relative error: 0.0001 %
-Test passed
-
-
-multiMaterial/biMaterialBlock2:
-sigma_xx, maximum relative error: -1.87562e-08 %
-sigma_xy, maximum relative error: -0 %
-sigma_yy, maximum relative error: -2.46775e-08 %
-Test passed
-
-
-multiMaterial/biMaterialCylinder1:
-Radial stress, maximum relative error: 0.0434598 %
-Hoop stress, maximum relative error: 0.0659214 %
-Test passed
-
-
-multiMaterial/biMaterialCylinder2:
-Shear stress, maximum relative error: 0.161681 %
-Displacement, maximum relative error: 0.0640732 %
-Test passed
-
-
-multiMaterial/biMaterialSkewBlock1:
-sigma_xx, maximum relative error: 0.0001 %
-sigma_yy, maximum relative error: 0.0003 %
-Test passed
-
-
-multiMaterial/biMaterialSkewBlock2:
-sigma_xx, maximum relative error: -1.32852e-07 %
-sigma_xy, maximum relative error: -0 %
-sigma_yy, maximum relative error: -1.69278e-07 %
-Test passed
-
-
-
-neutronics/:
-Max Rel diff for cylindricalPellet/testDifferentEnrichments : 0.0107 %
-Max Rel diff for cylindricalPellet/testDifferentRadii : 0.0331 %
-Max Rel diff for hollowPellet/testDifferentEnrichments : 0.0107 %
-Max Rel diff for hollowPellet/testDifferentRadii : 0.1630 %
-
-plateHole/:
+mechanics/:
+mechanics/plateHole:
 Testing smallStrain with rhieChow
-Analytical Kc, 2.662
-Kc predicted by OFFBEAT, 2.684
-Maximum relative error: 0.816757 %
-Test passed
-
-Testing smallStrainIncrementalUpdated with rhieChow
 Analytical Kc, 2.662
 Kc predicted by OFFBEAT, 2.684
 Maximum relative error: 0.816757 %
@@ -145,22 +88,10 @@ Test passed
 Testing largeStrainTotLag with rhieChow
 Analytical Kc, 2.662
 Kc predicted by OFFBEAT, 2.684
-Maximum relative error: 0.816099 %
-Test passed
-
-Testing largeStrainUpdLag with rhieChow
-Analytical Kc, 2.662
-Kc predicted by OFFBEAT, 2.684
-Maximum relative error: 0.816099 %
+Maximum relative error: 0.816428 %
 Test passed
 
 Testing smallStrain with multiMaterial
-Analytical Kc, 2.662
-Kc predicted by OFFBEAT, 2.660
-Maximum relative error: 0.0737543 %
-Test passed
-
-Testing smallStrainIncrementalUpdated with multiMaterial
 Analytical Kc, 2.662
 Kc predicted by OFFBEAT, 2.660
 Maximum relative error: 0.0737543 %
@@ -172,12 +103,80 @@ Kc predicted by OFFBEAT, 2.660
 Maximum relative error: 0.0744118 %
 Test passed
 
-Testing largeStrainUpdLag with multiMaterial
-Analytical Kc, 2.662
-Kc predicted by OFFBEAT, 2.660
-Maximum relative error: 0.0744118 %
+
+mechanics/beamBending:
+x = 0.8, bending stress error norm = 0.14%, shear stress error norm = 0.072%
+x = 2.4, bending stress error norm = 0.13%, shear stress error norm = 0.058%
+x = 3.8, bending stress error norm = 0.04%, shear stress error norm = 0.21%
+Test passed...
+
+
+mechanics/contact:
+mechanics/forceConservation:
+top:	[    0.   -1118.03     0.  ]
+bottom:	[ 5.52711e-05  1.11802e+03 -1.65321e-26]
+contact1:	[-1.83285e-03 -1.11802e+03 -1.53997e-26]
+contact2:	[-1.44255e-04  1.11802e+03  6.00474e-22]
+Test Successful
+
+
+
+mechanics/multiMaterial:
+mechanics/biMaterialBlock1:
+sigma_xx, maximum relative error: 0 %
+sigma_yy, maximum relative error: 0.0001 %
 Test passed
 
+
+mechanics/biMaterialBlock2:
+sigma_xx, maximum relative error: -5.45462e-08 %
+sigma_xy, maximum relative error: -0 %
+sigma_yy, maximum relative error: -2.90492e-08 %
+Test passed
+
+
+mechanics/biMaterialCylinder1:
+Radial stress, maximum relative error: 0.0434598 %
+Hoop stress, maximum relative error: 0.0659214 %
+Test passed
+
+neutronics/:
+Max Rel diff for cylindricalPellet/testDifferentEnrichments : 0.0107 %
+Max Rel diff for cylindricalPellet/testDifferentRadii : 0.0331 %
+Max Rel diff for hollowPellet/testDifferentEnrichments : 0.0107 %
+Max Rel diff for hollowPellet/testDifferentRadii : 0.1630 %
+
+mechanics/biMaterialCylinder2:
+Shear stress, maximum relative error: 0.161681 %
+Displacement, maximum relative error: 0.0649244 %
+Test passed
+
+
+mechanics/biMaterialSkewBlock1:
+sigma_xx, maximum relative error: 0.0002 %
+sigma_yy, maximum relative error: 0.0003 %
+Test passed
+
+
+mechanics/biMaterialSkewBlock2:
+sigma_xx, maximum relative error: -5.90572e-07 %
+sigma_xy, maximum relative error: -0 %
+sigma_yy, maximum relative error: -6.45964e-07 %
+Test passed
+
+
+
+mechanics/thickCylinderExpansion:
+Maximum relative error on inner radius stress wrt analytical solution:
+Small strain solver, RhieChow: 1.10 %
+Small strain solver, multiMaterial: 1.02 %
+Large strain UpdLag solver, RhieChow: 17.90 %
+Large strain UpdLag solver, multiMaterial: 1.46 %
+
+mechanics/volumeConservationLargeStrain:
+Relative error on volume conservation:
+Small strain solver : -24.4529 %
+Large strain UpdLag solver : 0.270131 %
 
 porosity/:
 Percentage root-mean-square deviation:
@@ -201,12 +200,6 @@ Expected result perturb. 1.25: 1040.01 K
 Relative error: -6.730704512450489e-05
 Test passed
 
-thickCylinderExpansion/:
-Maximum relative error on inner radius stress wrt analytical solution:
-Small strain solver, RhieChow: 1.10 %
-Small strain solver, multiMaterial: 1.02 %
-Large strain UpdLag solver, RhieChow: 17.90 %
-Large strain UpdLag solver, multiMaterial: 1.46 %
 
 trisoBenchmarks/:
 trisoBenchmarks/case_1:
@@ -265,31 +258,31 @@ trisoBenchmarks/case_5:
 Tangential stress at inner surface of IPyC: 4.31405e+07
 Previous value: 4.34138e+07
 Range of other codes: [40e6, 58e6]
-Tangential stress at inner surface of SiC: -4.52547e+07
+Tangential stress at inner surface of SiC: -4.5254e+07
 Previous value: -4.53027e+07
 Range of other codes: [-56e6, -28e6]
-Relative change for IPyC: -0.629523%
-Relative change for SiC: -0.105954%
+Relative change for IPyC: -0.630675%
+Relative change for SiC: -0.107499%
 
 trisoBenchmarks/case_6:
-Tangential stress at inner surface of IPyC: 3.03922e+07
+Tangential stress at inner surface of IPyC: 3.03911e+07
 Previous value: 3.06036e+07
 Range of other codes: [27e6, 38e6]
-Tangential stress at inner surface of SiC: 3.15873e+07
+Tangential stress at inner surface of SiC: 3.1589e+07
 Previous value: 3.15488e+07
 Range of other codes: [28e6, 48e6]
-Relative change for IPyC: -0.690768%
-Relative change for SiC: 0.122033%
+Relative change for IPyC: -0.694363%
+Relative change for SiC: 0.127422%
 
 trisoBenchmarks/case_7:
-Tangential stress at inner surface of IPyC: 3.93569e+07
+Tangential stress at inner surface of IPyC: 3.93567e+07
 Previous value: 3.95923e+07
 Range of other codes: [37e6, 50e6]
-Tangential stress at inner surface of SiC: 9.04093e+06
+Tangential stress at inner surface of SiC: 9.041e+06
 Previous value: 9.0048e+06
 Range of other codes: [10e6, 25e6]
-Relative change for IPyC: -0.59456%
-Relative change for SiC: 0.40123%
+Relative change for IPyC: -0.595065%
+Relative change for SiC: 0.402008%
 
 trisoBenchmarks/case_8:
 Tangential stress at inner surface of IPyC: 5.8533e+07
@@ -433,13 +426,13 @@ Relative change for Cs: 0.000894302%
 Relative change for Ag: 0.000109187%
 
 trisoFpDiffusion/case_4d:
-Released Cs fraction: 0.999867
+Released Cs fraction: 0.999866
 Codes range: [1.00, 1.00]
 Expected value: 0.999866
 Released Kr fraction: 0.988044
 Codes range: [0.98, 1.00]
 Expected value: 0.988044
-Relative change for Cs: 0.000100013%
+Relative change for Cs: 0%
 Relative change for Kr: 0%
 
 trisoFpDiffusion/case_5a:
@@ -527,9 +520,9 @@ Expected value: 459.66666667
 Relative error for center temperature: -0.180928%
 
 trisoBenchmarks/testBuffer_alpha:
-Displacement: 7.9557e-06
+Displacement: 7.95502e-06
 Expected value: 7.95535714285714E-06
-Relative error for Displacement: 0.00430976%
+Relative error for Displacement: -0.00423793%
 
 trisoBenchmarks/testBuffer_creep:
 Creep strain: 0.203875
@@ -558,12 +551,12 @@ Relative error for swelling strain at  623.15K: -0.471788%
 Relative error for swelling strain at  1623.15K: -1.1363%
 
 trisoBenchmarks/testPyC_alpha:
-Displacement x: 9.24034e-06
+Displacement x: 9.23697e-06
 Expected value: 9.2403E-06
-Displacement y: 7.55321e-06
+Displacement y: 7.54984e-06
 Expected value: 7.5532E-06
-Relative error for Displacement x: 0.000432886%
-Relative error for Displacement y: 0.000132394%
+Relative error for Displacement x: -0.0360378%
+Relative error for Displacement y: -0.0444845%
 
 trisoBenchmarks/testPyC_alpha_spherical:
 Displacement x: 6.50366e-07
@@ -571,9 +564,9 @@ Expected value: 6.50359458925978E-07
 Relative error for Displacement x: 0.00100576%
 
 trisoBenchmarks/testPyC_creep:
-Creep strain: -5.96801e-05
+Creep strain: -5.968e-05
 Expected value: -5.9683304085564E-05
-Relative error for creep strain: -0.00536848%
+Relative error for creep strain: -0.00553603%
 
 trisoBenchmarks/testPyC_E_nu:
 Young's modulus under 673.15K: 3.31534e+10
@@ -628,19 +621,14 @@ Relative error for Specific heat under 1673.15K: -0.137553%
 Relative error for Thermal strain under 673.15K: 2.15835%
 Relative error for Thermal strain under 1673.15K: -1.04044%
 
-trisoBenchmarks/testSwellingMATPRO:
+trisoBenchmarks/testSwellingMatpro:
 Swelling strain: 0.00319583
 Expected value: 0.00319785483012979
 Relative error for swelling strain: -0.0633184%
 
 
-volumeConservationLargeStrain/:
-Relative error on volume conservation:
-Small strain solver : -24.4529 %
-Large strain UpdLag solver : 0.270131 %
-
 waterCoolantChannel/:
-Case_ABWR/ - Maximum difference OFFBEAT vs TRACE: 1.24 K
+Case_ABWR/ - Maximum difference OFFBEAT vs TRACE: 1.26 K
 Case_AP1000/ - Maximum difference OFFBEAT vs TRACE: 3.58 K
 Case_BWR4/ - Maximum difference OFFBEAT vs TRACE: 0.87 K
 Case_VVER440/ - Maximum difference OFFBEAT vs TRACE: 3.76 K

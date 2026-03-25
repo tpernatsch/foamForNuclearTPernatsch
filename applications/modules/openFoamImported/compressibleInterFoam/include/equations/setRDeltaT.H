@@ -60,7 +60,7 @@
     (
         1/dimensionedScalar("maxDeltaT", dimTime, maxDeltaT),
         fvc::surfaceSum(mag(rhoPhi_))()()
-       /((2*maxCo)*mesh.V()*rho())
+       /((2*maxCo)*mesh().V()*rho())
     );
 
     if (maxAlphaCo < maxCo)
@@ -76,7 +76,7 @@
             pos0(alpha1Bar() - alphaSpreadMin)
            *pos0(alphaSpreadMax - alpha1Bar())
            *fvc::surfaceSum(mag(phi))()()
-           /((2*maxAlphaCo)*mesh.V())
+           /((2*maxAlphaCo)*mesh().V())
         );
     }
 
@@ -120,7 +120,7 @@
     if
     (
         rDeltaTDampingCoeff < 1.0
-     && runTime.timeIndex() > runTime.startTimeIndex() + 1
+     && runTime().timeIndex() > runTime().startTimeIndex() + 1
     )
     {
         rDeltaT = max

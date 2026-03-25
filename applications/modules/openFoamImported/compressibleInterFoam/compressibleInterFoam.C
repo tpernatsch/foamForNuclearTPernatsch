@@ -62,11 +62,10 @@ namespace solvers
 
 Foam::solvers::compressibleInterFoam::compressibleInterFoam
 (
-    dynamicFvMesh& mesh_
+    dynamicFvMesh& mesh
 )
 :
-    solver(mesh_),
-    mesh_(mesh_),
+    solver(mesh),
     pimple_(mesh_),
     p_rgh_
     (
