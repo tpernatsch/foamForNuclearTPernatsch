@@ -20,7 +20,7 @@ if [[ $WM_PROJECT_VERSION == *v* ]]
 then    
     runApplication -o postProcess -func xyGraph_ESI
     gnuplot plots.gnuplot > log.gnuplot 
-    python3 test_ESI.py | tee -a results
+    python3 test.py | tee -a results
 else
     runApplication -o postProcess -func xyGraph 
     gnuplot plots.gnuplot > log.gnuplot 

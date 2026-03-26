@@ -320,6 +320,7 @@ void Foam::largeStrainTotLag::correct()
 
         // Correct constitutive material laws
         rheo_.correct(sigma(), epsilon(), D());
+        sigmaEq_ = sqrt((3.0/2.0)*magSqr(dev(sigma_)));
 
         // Calculate a different residual based on the relative change of D
         scalar denom = gMax

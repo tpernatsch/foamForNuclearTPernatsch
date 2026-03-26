@@ -156,7 +156,7 @@ void Foam::smallStrain::correct()
 
         // Store fields for under-relaxation and residual calculation
         D_.storePrevIter();
-
+        
         // Update explicit component of the stress
         sigmaExp_ = 
         mechanicsSubSolver::correctedSigmaExp(sigma_, twoMuLambda, gradD_);
@@ -219,6 +219,7 @@ void Foam::smallStrain::correct()
         
         // Update stress
         rheo_.correct(sigma(), epsilon(), D());
+        sigmaEq_ = sqrt((3.0/2.0)*magSqr(dev(sigma_)));
 
         // Calculate a different residual based on the relative change of D
         scalar denom = gMax

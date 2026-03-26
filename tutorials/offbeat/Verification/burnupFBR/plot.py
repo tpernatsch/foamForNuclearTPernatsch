@@ -98,6 +98,8 @@ with open("results","w") as f:
     f.write(f"Error Tot. [Pu] OFFBEAT/SERPENT: {error:.2e} %\n")
     if error*100 < 0.5:
         f.write(f"Test passed")
+        f.write("\n")
     else:
         f.write(f"Test failed")
+        f.write("\n")
 

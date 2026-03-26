@@ -15,18 +15,6 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-uo2 = materials.UO2(name='fuel')
-uo2.composition.elements = dict(
-    U: 0.8,
-    Pu: 0.2,
-    O: 2
-)
-uo2.composition.isotopes = dict(
-    U: ((235, 238), (0.05, 0.95)),
-    Pu: ((235, 238), (0.05, 0.95)),,
-    O: ((16), (1))
-)
-
 composition
 {
     // Either normalized or not, we normalize internally
@@ -41,8 +29,8 @@ composition
     {
         Pu
         {
-            massNumbers(239 240 241);
-            fractions(0.8 0.1 0.1);
+            massNumbers (239 240 241);
+            fractions (0.8 0.1 0.1);
         }
     }
 }

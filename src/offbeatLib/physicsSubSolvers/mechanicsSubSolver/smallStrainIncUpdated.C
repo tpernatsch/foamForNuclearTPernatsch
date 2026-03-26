@@ -352,6 +352,7 @@ void Foam::smallStrainIncUpdated::correct()
         // Update stress
         volSymmTensorField sigma0 = sigma_.oldTime();
         rheo_.correct(sigma(), epsilon(), DD());
+        sigmaEq_ = sqrt((3.0/2.0)*magSqr(dev(sigma_)));
         DSigma_ = sigma() - sigma0;
         
         // Calculate a different residual based on the relative change of D

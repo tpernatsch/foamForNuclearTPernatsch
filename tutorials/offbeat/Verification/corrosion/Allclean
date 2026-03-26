@@ -1,11 +1,11 @@
 #!/bin/bash
 
 cases="fixedInnerHeatFlux
-       fixedInterfaceTemperature
-       kineticsModels_highT_01
-       kineticsModels_highT_02
-       kineticsModels_lowT_01
-       kineticsModels_lowT_02"
+       fixedInterfaceTemperature"
+    #    kineticsModels_highT_01
+    #    kineticsModels_highT_02
+    #    kineticsModels_lowT_01
+    #    kineticsModels_lowT_02"
 
 echo $cases
 for case in $cases

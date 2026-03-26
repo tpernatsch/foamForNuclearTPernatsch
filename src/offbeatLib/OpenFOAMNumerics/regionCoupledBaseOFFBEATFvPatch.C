@@ -50,73 +50,126 @@ namespace Foam
 
 void Foam::regionCoupledBaseOFFBEATFvPatch::updateAMI() const
 {
-  // - Access next section only if owner
-  // - Next section will update the AMI addressing
-    if (owner() and regionCoupledPatch().updateAMI()) 
+    // Only owner updates AMI
+    if (!owner())
     {
-        //- Take a reference to source and target polypatch
-        const polyPatch& srcPatch
-            = refCast<const polyPatch>(regionCoupledPatch());
-
-        const polyPatch& tgtPatch
-            = refCast<const polyPatch>(nbrPatch().regionCoupledPatch());
-
-        //- Take a reference to displacement field and interpolate to mesh points
-        const volVectorField disp = 
-        patch_.boundaryMesh().mesh().foundObject<fvMesh>("referenceMesh") ?
-        patch_.boundaryMesh().mesh().lookupObject<volVectorField>("DD")
-        :
-        patch_.boundaryMesh().mesh().lookupObject<volVectorField>("D");
-
-        const volPointInterpolation& meshPointInterpolation = volPointInterpolation::New( patch_.boundaryMesh().mesh());
-
-        pointVectorField pointsDisplacement = meshPointInterpolation.interpolate(disp);
-
-        pointField srcPoints = srcPatch.points() + pointsDisplacement.internalField();
-
-        twoDPointCorrector twoDCorrectorSrc(patch_.boundaryMesh().mesh());
-        twoDCorrectorSrc.correctPoints(srcPoints);
-
-        //- Build source and target patch
-        //- The two patches require a list of faces and the (displaced) mesh points.
-        primitivePatch srcPatch0
-        (
-          SubList<face>
-          (
-              srcPatch,
-              srcPatch.size(),
-              0
-          ),
-          srcPoints
-        );
-
-        pointField tgtPoints = tgtPatch.points() + pointsDisplacement.internalField();
-
-        twoDPointCorrector twoDCorrectorTgt(patch_.boundaryMesh().mesh());
-        twoDCorrectorTgt.correctPoints(tgtPoints);
-
-        primitivePatch tgtPatch0
-        (
-          SubList<face>
-          (
-              tgtPatch,
-              tgtPatch.size(),
-              0
-          ),
-          tgtPoints
-        );
-
-        //- Take a reference to AMI. 
-        //- const_cast is necessary to access update() function
-        AMIInterpolation& ami(const_cast<AMIInterpolation&>(regionCoupledPatch().AMI()));
-        Info << "update AMI addressing" << endl;
-#ifdef OPENFOAMFOUNDATION
-        ami.update(srcPatch0, tgtPatch0, true);
-#elif OPENFOAMESI  
-        ami.upToDate(false);
-        ami.calculate(srcPatch0, tgtPatch0, regionCoupledBaseOFFBEAT_.surfPtr());
-#endif        
+        return;
     }
+
+    // External switch (e.g. solver-level control)
+    if (!regionCoupledPatch().updateAMI())
+    {
+        return;
+    }
+
+    const fvMesh& mesh = patch_.boundaryMesh().mesh();
+
+    // Moving frame → incremental field
+    const bool movingFrame = mesh.foundObject<fvMesh>("referenceMesh");
+    const word dispName = movingFrame ? "DD" : "D";
+    const scalar timeValue = mesh.time().value();
+
+    // Access patches
+    const polyPatch& srcPatch =
+        refCast<const polyPatch>(regionCoupledPatch());
+
+    const polyPatch& tgtPatch =
+        refCast<const polyPatch>(nbrPatch().regionCoupledPatch());
+
+    // Displacement field
+    const volVectorField& disp =
+        mesh.lookupObject<volVectorField>(dispName);
+
+    const fvPatchField<vector>& dispSrc =
+        patch_.lookupPatchField<volVectorField, vector>(dispName);
+
+    const vectorField dispTgt =
+        regionCoupledPatch().interpolate
+        (
+            nbrPatch().patch().lookupPatchField<volVectorField, vector>(dispName)
+        );
+
+    // Relative motion across interface
+    const vectorField slip = dispSrc - dispTgt;
+    const scalarField slipNormal = slip & patch_.nf();
+    const vectorField slipTangential = slip - patch_.nf()*slipNormal;
+
+    // --- Initialize reference (first call)
+    if (!slipReferenceInitialized_)
+    {
+        slipNormal0_ = slipNormal;
+        slipTangential0_ = slipTangential;
+        slipReferenceTimeValue_ = timeValue;
+        slipReferenceInitialized_ = true;
+        return;
+    }
+
+    // --- New time step in moving-frame mode → reset baseline
+    if (movingFrame && timeValue != slipReferenceTimeValue_)
+    {
+        slipNormal0_ = slipNormal;
+        slipTangential0_ = slipTangential;
+        slipReferenceTimeValue_ = timeValue;
+        return;
+    }
+
+    // --- Check drift since last AMI build
+    const bool updateNormal =
+        gMax(mag(slipNormal - slipNormal0_)) > regionCoupledPatch().updateAMINormalTol();
+
+    const bool updateTangential =
+        gMax(mag(slipTangential - slipTangential0_)) > regionCoupledPatch().updateAMITangentialTol();
+
+    if (!(updateNormal || updateTangential))
+    {
+        return;
+    }
+
+    // --- Build displaced patches
+    const volPointInterpolation& pointInterpolator =
+        volPointInterpolation::New(mesh);
+
+    const pointVectorField pointsDisp =
+        pointInterpolator.interpolate(disp);
+
+    pointField srcPoints(srcPatch.points() + pointsDisp.internalField());
+    pointField tgtPoints(tgtPatch.points() + pointsDisp.internalField());
+
+    twoDPointCorrector twoDCorrectorSrc(mesh);
+    twoDCorrectorSrc.correctPoints(srcPoints);
+
+    twoDPointCorrector twoDCorrectorTgt(mesh);
+    twoDCorrectorTgt.correctPoints(tgtPoints);
+
+    primitivePatch srcPatch0
+    (
+        SubList<face>(srcPatch, srcPatch.size(), 0),
+        srcPoints
+    );
+
+    primitivePatch tgtPatch0
+    (
+        SubList<face>(tgtPatch, tgtPatch.size(), 0),
+        tgtPoints
+    );
+
+    // --- Update AMI addressing
+    AMIInterpolation& ami =
+        const_cast<AMIInterpolation&>(regionCoupledPatch().AMI());
+
+    Info<< "Updating AMI addressing on patch " << patch_.name() << nl;
+
+#ifdef OPENFOAMFOUNDATION
+    ami.update(srcPatch0, tgtPatch0, true);
+#elif OPENFOAMESI
+    ami.upToDate(false);
+    ami.calculate(srcPatch0, tgtPatch0, regionCoupledBaseOFFBEAT_.surfPtr());
+#endif
+
+    // --- Refresh reference state
+    slipNormal0_ = slipNormal;
+    slipTangential0_ = slipTangential;
+    slipReferenceTimeValue_ = timeValue;
 }
 
 // ************************************************************************* //

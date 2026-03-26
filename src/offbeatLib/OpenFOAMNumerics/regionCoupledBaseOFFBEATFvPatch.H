@@ -79,6 +79,18 @@ protected:
         //- Reference to fvPatch
         const fvPatch& patch_;
 
+        //- Stored normal slip reference at last AMI update
+        mutable scalarField slipNormal0_;
+
+        //- Stored tangential slip reference at last AMI update
+        mutable vectorField slipTangential0_;
+
+        //- Initialization for AMI update
+        mutable bool slipReferenceInitialized_;
+        
+        //- Time tracking for AMI update (for moving meshes)
+        mutable scalar slipReferenceTimeValue_;
+
 
     // Protected members
 
@@ -115,7 +127,9 @@ public:
             (
                 refCast<const regionCoupledBaseOFFBEAT>(pp)
             ),
-            patch_(patch)
+            patch_(patch),
+            slipReferenceInitialized_(false),
+            slipReferenceTimeValue_(-GREAT)
         {}
 
 

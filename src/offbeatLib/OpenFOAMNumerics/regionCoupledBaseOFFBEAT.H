@@ -97,6 +97,12 @@ private:
         //- Update AMI weights or not
         const bool updateAMI_;
 
+        //- Normal slip tolerance for AMI update trigger
+        scalar updateAMINormalTol_;
+
+        //- Tangential slip tolerance for AMI update trigger
+        scalar updateAMITangentialTol_;
+
         //- AMI method
         const word methodName_;
 
@@ -174,6 +180,24 @@ public:
             //- Return a reference to the AMI interpolator
             const AMIInterpolation& AMI() const;
 
+            //- Return updateAMI bool
+            bool updateAMI() const
+            {
+                return updateAMI_;
+            };
+
+            //- Return updateAMI normal tolerance
+            scalar updateAMINormalTol() const
+            {
+                return updateAMINormalTol_;
+            };
+
+            //- Return updateAMI tangential tolerance
+            scalar updateAMITangentialTol() const
+            {
+                return updateAMITangentialTol_;
+            };
+
 
             // Interpolations
 
@@ -218,11 +242,6 @@ public:
         //- Write the polyPatch data as a dictionary
         virtual void write(Ostream&) const;
 
-        //- Update AMI weights
-        bool updateAMI() const
-        {
-            return updateAMI_;
-        };
 };
 
 

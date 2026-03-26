@@ -28,7 +28,7 @@ rheology                byMaterial;
 heatSource              timeDependentLhgr;
 burnup                  constant;
 fastFlux                constant;
-gapGas                  FRAPCON;
+gapGas                  Frapcon;
 fgr                     none;
 sliceMapper             byMaterial;
 corrosion               byPatch;
@@ -83,7 +83,7 @@ corrosionOptions
         cladOuter
         {
             corrosionModel ZircaloyOuterCorrosion;
-            oxidationKineticsModel  EPRI-KWU-CE|Cathcart-Pawel;
+            oxidationKineticsModel  EPRI-KWU-CE|Cathcart-Pawel-Prater-Courtright;
         }
     }
 }
@@ -95,9 +95,25 @@ materials
         material                    UO2;
         Tref                        Tref [ 0 0 0 1 0 ] 293;
 
-        densificationModel          UO2FRAPCON;
-        swellingModel               UO2FRAPCON;
-        relocationModel             UO2FRAPCON;
+        densification
+        {
+            type          UO2Frapcon;            
+            resinteringDensityChange    0.3;
+        }
+
+        swelling
+        {
+            type          UO2Frapcon;
+        }
+
+        relocation
+        {
+            type          UO2Frapcon;            
+            GapCold                     0.075e-3;
+            DiamCold                    9.0e-3;
+            recoveryFraction            0.5;
+            outerPatch                  "fuelOuter";
+        }
 
         enrichment                  0.045;
         rGrain                      2.8e-05;
@@ -106,14 +122,11 @@ materials
         densityFraction             0.95;
         dishFraction                0.0;
 
-        resinteringDensityChange    0.3;
-        GapCold                     0.075e-3;
-        DiamCold                    9.0e-3;
-        recoveryFraction            0.5;
-        outerPatch                  "fuelOuter";
-
-        isotropicCracking           on;
-        nCracksMax                  12;
+        damage
+        {
+            type isotropicCracking;
+            nCracksMax                  12;
+        }
 
         nSlices                     1;
 
@@ -122,23 +135,28 @@ materials
 
     cladding
     {
-        material                zircaloy;
+        material                Zircaloy;
         Tref                    Tref [ 0 0 0 1 0 ] 293;
         conductivityModel       constant;
         k                       k    [ 1 1 -3 -1 0] 16;
 
         nSlices                 1;
 
-        rheologyModel   misesPlasticCreep;
-        rheologyModelOptions
+        constitutiveLaw
         {
-            plasticStrainVsYieldStress table
-            (
-                (0    250e6)
-            );
+            type misesPlasticCreep;
 
-            creepModel LimbackCreepModel;
-            relax 1.0;
+            yieldStress
+            {
+                type constant;
+                sigmaY 250e6;
+            }
+
+            creep
+            {
+                type ZircaloyLimback;
+                relax 1.0;
+            }
         }
     }
 }

@@ -175,6 +175,9 @@ protected:
         //- TODO: it should be moved to rheology
         volSymmTensorField sigma_;
 
+        //- Equivalent or Von Mises stress
+        volScalarField sigmaEq_;
+
         //- Explicit component of the stress tensor
         //- TODO: it should be moved to rheology
         volTensorField sigmaExp_;
@@ -409,9 +412,6 @@ public:
         //- Update incremental fields at the end of time step
         virtual void updateIncrementalFields()
         {}
-
-        //- Calculate and write the stress field
-        virtual void writeStressFields();
 
         //- Return true if converged
         virtual bool converged

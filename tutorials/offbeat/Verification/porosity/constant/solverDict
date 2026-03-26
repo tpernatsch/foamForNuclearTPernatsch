@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2412                                  |
+|  \\    /   O peration     | Version:  2512                                  |
 |   \\  /    A nd           | Website:  www.openfoam.com                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -91,14 +91,14 @@ materials
             U
             {
                 ratioOverMetal  0.8;
-                massNumbers (235 238);
-                weightFractions (0.007 0.993);
+                massNumbers     ( 235 238 );
+                weightFractions ( 0.007 0.993 );
             }
             Pu
             {
                 ratioOverMetal  0.2;
-                massNumbers (238 239 240 241 242);
-                weightFractions (0.02332 0.56873 0.26997 0.06105 0.07693);
+                massNumbers     ( 238 239 240 241 242 );
+                weightFractions ( 0.02332 0.56873 0.26997 0.06105 0.07693 );
             }
         }
         poreVelocityModel constant;
