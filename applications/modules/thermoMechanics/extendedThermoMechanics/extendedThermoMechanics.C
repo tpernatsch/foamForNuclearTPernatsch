@@ -45,8 +45,70 @@ namespace solvers
 }
 }
 
-// * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
+Foam::IOdictionary
+Foam::solvers::extendedThermoMechanics::readInputDict(const fvMesh& mesh)
+{
+    const Time& runTime = mesh.time();
+
+    // Try solverDict first
+    IOobject solverDictIO
+    (
+        "solverDict",
+        runTime.constant(),
+        mesh,
+        IOobject::READ_IF_PRESENT,
+        IOobject::NO_WRITE
+    );
+
+    if (solverDictIO.typeHeaderOk<IOdictionary>())
+    {
+        Info << "Loaded solverDict\n";
+        return IOdictionary(solverDictIO);
+    }
+
+    Info << "solverDict not found, trying thermoMechanicalProperties\n";
+
+    // Try thermoMechanicalProperties
+    IOobject thermoPropsIO
+    (
+        "thermoMechanicalProperties",
+        runTime.constant(),
+        mesh,
+        IOobject::READ_IF_PRESENT,   // changed: READ_IF_PRESENT
+        IOobject::NO_WRITE
+    );
+
+    if (thermoPropsIO.typeHeaderOk<IOdictionary>())
+    {
+        Info << "Loaded thermoMechanicalProperties\n";
+        return IOdictionary(thermoPropsIO);
+    }
+
+    // If neither dictionary is found → throw a clear error
+    FatalErrorInFunction
+        << "No input dictionary found!\n"
+        << "Expected one of the following files in constant/:\n"
+        << "  - solverDict (first choice) or\n"
+        << "  - thermoMechanicalProperties\n"
+        << "Please provide at least one input dictionary.\n"
+        << exit(FatalError);
+
+    // Not reached, but required to satisfy compiler warning
+    return IOdictionary
+    (
+        IOobject
+        (
+            "dummyDict",
+            mesh.time().constant(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        )
+    );
+}
+
+// * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 Foam::solvers::extendedThermoMechanics::extendedThermoMechanics
 (
@@ -54,18 +116,8 @@ Foam::solvers::extendedThermoMechanics::extendedThermoMechanics
 )
 :
     solver(mesh),
-    runTime_(refCast<const offbeatTime>(mesh.time())),
-    solverDict_
-    (
-        IOobject
-        (
-            "solverDict",
-            mesh_.time().constant(),
-            mesh_,
-            IOobject::MUST_READ,
-            IOobject::NO_WRITE
-        )
-    ),
+    runTime_(static_cast<const offbeatTime&>(mesh.time())),
+    solverDict_(readInputDict(mesh)),
     globalOpt_(mesh, solverDict_),
     mat_(materials::New(mesh, solverDict_)),
     mapper_(sliceMapper::New(mesh, mat_(), solverDict_)),

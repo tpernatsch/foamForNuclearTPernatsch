@@ -84,6 +84,11 @@ class extendedThermoMechanics
 :
     public solver
 {
+    // Private function
+    
+        //- Static function to read input dict with correct name
+        static IOdictionary readInputDict(const fvMesh& mesh);
+
     // Private data
 
         //- Vustom time

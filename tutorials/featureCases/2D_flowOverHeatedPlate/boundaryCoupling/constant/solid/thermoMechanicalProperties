@@ -21,27 +21,19 @@ FoamFile
 
 //- Thermal and Mechanical solver selection: other OFFBEAT cards not needed
 
-thermalSolver           solidConduction;
-mechanicsSolver         constant;
-
-//- Same as OFFBEAT 
-
-materialProperties      byZone;
-
-heatSource              fromLatestTime;
-sliceMapper             autoAxialSlices;
-
-globalOptions
+thermalSolver           
 {
-    pinDirection            (0 0 1);
-    linkedFuel false;
-    reactorType "LWR";
+    type solidConduction;
 }
 
-couplingOptions
+mechanicsSolver         
 {
-    correctTFromTH off;
-    correctDispForNeutro off;
+    type constant;
+}
+
+heatSource              
+{
+    type constant;
 }
 
 materials
@@ -60,7 +52,10 @@ materials
         Tref            Tref    [0 0 0 0 0]         0;
         emissivity      emissivity [0 0 0 0 0]      0.0; // emissivity
 
-        rheologyModel elasticity;
+        constitutiveLaw
+        {
+            type elasticity;
+        }
     }
 
 };
