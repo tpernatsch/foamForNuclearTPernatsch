@@ -327,6 +327,11 @@ class Field(OpenFOAMFile):
         Dictionary grouping all the boundary conditions attached to the field
     region : str
         Name of the region (default to `""`).
+    default_bc : Patch
+        Type of the default patch (default to ZeroGradient). 
+        Used for non-setted and non-constraint patches.
+    time : float | int
+        Starting time for the field (default to 0.0)
     """
     def __init__(
             self,
@@ -335,7 +340,8 @@ class Field(OpenFOAMFile):
             internalField: int | float | list[float] | np.ndarray[float] | Vector=None,
             boundaryField: dict | OpenFOAMDict=None,
             region: str="",
-            default_bc: Patch = ZeroGradient()
+            default_bc: Patch = ZeroGradient(),
+            time: int | float = 0.0
         ):
         super().__init__(name, region=region)
 
@@ -344,6 +350,7 @@ class Field(OpenFOAMFile):
         self.internalField = internalField
         self.boundaryField = boundaryField
         self.default_bc = default_bc
+        self.time = time
         self._explicit_bc_keys: set[str] = set()
 
     @property
@@ -407,7 +414,15 @@ class Field(OpenFOAMFile):
             return(ZeroGradient())
         # To be continued
         return(Empty())
+    
+    @property
+    def time(self):
+        return self._time
 
+    @time.setter
+    def time(self, time) -> None:
+        check_type("time", time, (float, int), none_ok=True)
+        self._time = time
 
     def setFieldType(self):
         if (isinstance(self.internalField, (int, float))):
@@ -691,9 +706,10 @@ class GapGas(OpenFOAMFile):
             gasPressureType="fromModel",
             gasPressure=None,
             # gapPressureList=None,
-            region = ""
+            region = "",
+            time: int | float = 0.0
         ):
-        super().__init__("gapGas", region=region)
+        super().__init__("gapGas", region=region, time=time)
 
         self.gasPressureType = gasPressureType
         self.gasPressure = gasPressure
@@ -765,7 +781,8 @@ class Temperature(Field):
             internalField: int | float =None,
             boundaryField: dict | OpenFOAMDict=None,
             region: str="",
-            default_bc: Patch = ZeroGradient()
+            default_bc: Patch = ZeroGradient(),
+            time: int | float = 0.0
         ):
         super().__init__(
             name="T",
@@ -773,7 +790,8 @@ class Temperature(Field):
             internalField=internalField,
             boundaryField=boundaryField,
             region=region,
-            default_bc=default_bc
+            default_bc=default_bc,
+            time=time
         )
 
 
@@ -783,7 +801,8 @@ class NeutronFlux0(Field):
             internalField: int | float =None,
             boundaryField: dict | OpenFOAMDict=None,
             region: str="",
-            default_bc: Patch = ZeroGradient()
+            default_bc: Patch = ZeroGradient(),
+            time: int | float = 0.0
         ):
         super().__init__(
             name="neutronFlux0",
@@ -791,7 +810,8 @@ class NeutronFlux0(Field):
             internalField=internalField,
             boundaryField=boundaryField,
             region=region,
-            default_bc=default_bc
+            default_bc=default_bc,
+            time=time
         )
 
 class Burnup(Field):
@@ -800,7 +820,8 @@ class Burnup(Field):
             internalField: int | float =None,
             boundaryField: dict | OpenFOAMDict=None,
             region: str="",
-            default_bc: Patch = ZeroGradient()
+            default_bc: Patch = ZeroGradient(),
+            time: int | float = 0.0
         ):
         super().__init__(
             name="Bu",
@@ -808,7 +829,8 @@ class Burnup(Field):
             internalField=internalField,
             boundaryField=boundaryField,
             region=region,
-            default_bc=default_bc
+            default_bc=default_bc,
+            time=time
         )
 
 
@@ -818,7 +840,8 @@ class Displacement(Field):
             internalField: Vector=None,
             boundaryField: dict | OpenFOAMDict=None,
             region: str="",
-            default_bc: Patch = ZeroGradient()
+            default_bc: Patch = ZeroGradient(),
+            time: int | float = 0.0
         ):
         super().__init__(
             name="D",
@@ -826,7 +849,8 @@ class Displacement(Field):
             internalField=internalField,
             boundaryField=boundaryField,
             region=region,
-            default_bc=default_bc
+            default_bc=default_bc,
+            time=time
         )
 
 
@@ -837,7 +861,8 @@ class Tliquid(Field):
             internalField: int | float =None,
             boundaryField: dict | OpenFOAMDict=None,
             region: str="",
-            default_bc: Patch = ZeroGradient()
+            default_bc: Patch = ZeroGradient(),
+            time: int | float = 0.0
         ):
         super().__init__(
             name="T.liquid",
@@ -845,7 +870,8 @@ class Tliquid(Field):
             internalField=internalField,
             boundaryField=boundaryField,
             region=region,
-            default_bc=default_bc
+            default_bc=default_bc,
+            time=time
         )
 
 class Tstructure(Field):
@@ -854,7 +880,8 @@ class Tstructure(Field):
             internalField: int | float =None,
             boundaryField: dict | OpenFOAMDict=None,
             region: str="",
-            default_bc: Patch = ZeroGradient()
+            default_bc: Patch = ZeroGradient(),
+            time: int | float = 0.0
         ):
         super().__init__(
             name="T.structure",
@@ -862,7 +889,8 @@ class Tstructure(Field):
             internalField=internalField,
             boundaryField=boundaryField,
             region=region,
-            default_bc=default_bc
+            default_bc=default_bc,
+            time=time
         )
 
 class Tvapour(Field):
@@ -871,7 +899,8 @@ class Tvapour(Field):
             internalField: int | float =None,
             boundaryField: dict | OpenFOAMDict=None,
             region: str="",
-            default_bc: Patch = ZeroGradient()
+            default_bc: Patch = ZeroGradient(),
+            time: int | float = 0.0
         ):
         super().__init__(
             name="T.vapour",
@@ -879,7 +908,27 @@ class Tvapour(Field):
             internalField=internalField,
             boundaryField=boundaryField,
             region=region,
-            default_bc=default_bc
+            default_bc=default_bc,
+            time=time
+        )
+
+class U(Field):
+    def __init__(
+            self,
+            internalField: Vector  =None,
+            boundaryField: dict | OpenFOAMDict=None,
+            region: str="",
+            default_bc: Patch = ZeroGradient(),
+            time: int | float = 0.0
+        ):
+        super().__init__(
+            name="U",
+            dimensions=Dimension(default="U"),
+            internalField=internalField,
+            boundaryField=boundaryField,
+            region=region,
+            default_bc=default_bc,
+            time=time
         )
 
 class Uliquid(Field):
@@ -888,7 +937,8 @@ class Uliquid(Field):
             internalField: Vector  =None,
             boundaryField: dict | OpenFOAMDict=None,
             region: str="",
-            default_bc: Patch = ZeroGradient()
+            default_bc: Patch = ZeroGradient(),
+            time: int | float = 0.0
         ):
         super().__init__(
             name="U.liquid",
@@ -896,7 +946,8 @@ class Uliquid(Field):
             internalField=internalField,
             boundaryField=boundaryField,
             region=region,
-            default_bc=default_bc
+            default_bc=default_bc,
+            time=time
         )
 
 class Uvapour(Field):
@@ -905,7 +956,8 @@ class Uvapour(Field):
             internalField: Vector =None,
             boundaryField: dict | OpenFOAMDict=None,
             region: str="",
-            default_bc: Patch = ZeroGradient()
+            default_bc: Patch = ZeroGradient(),
+            time: int | float = 0.0
         ):
         super().__init__(
             name="U.vapour",
@@ -913,7 +965,8 @@ class Uvapour(Field):
             internalField=internalField,
             boundaryField=boundaryField,
             region=region,
-            default_bc=default_bc
+            default_bc=default_bc,
+            time=time
         )
 
 class alphaLiquid(Field):
@@ -922,14 +975,16 @@ class alphaLiquid(Field):
             internalField: int | float =None,
             boundaryField: dict | OpenFOAMDict=None,
             region: str="",
-            default_bc: Patch = ZeroGradient()
+            default_bc: Patch = ZeroGradient(),
+            time: int | float = 0.0
         ):
         super().__init__(
             name="alpha.liquid",
             internalField=internalField,
             boundaryField=boundaryField,
             region=region,
-            default_bc=default_bc
+            default_bc=default_bc,
+            time=time
         )
 
 class alphaVapour(Field):
@@ -938,14 +993,16 @@ class alphaVapour(Field):
             internalField: int | float =None,
             boundaryField: dict | OpenFOAMDict=None,
             region: str="",
-            default_bc: Patch = ZeroGradient()
+            default_bc: Patch = ZeroGradient(),
+            time: int | float = 0.0
         ):
         super().__init__(
             name="alpha.vapour",
             internalField=internalField,
             boundaryField=boundaryField,
             region=region,
-            default_bc=default_bc
+            default_bc=default_bc,
+            time=time
         )
 
 class p(Field):
@@ -954,7 +1011,8 @@ class p(Field):
             internalField: int | float =None,
             boundaryField: dict | OpenFOAMDict=None,
             region: str="",
-            default_bc: Patch = ZeroGradient()
+            default_bc: Patch = ZeroGradient(),
+            time: int | float = 0.0
         ):
         super().__init__(
             name="p",
@@ -962,7 +1020,8 @@ class p(Field):
             internalField=internalField,
             boundaryField=boundaryField,
             region=region,
-            default_bc=default_bc
+            default_bc=default_bc,
+            time=time
         )
 
 class p_rgh(Field):
@@ -971,7 +1030,8 @@ class p_rgh(Field):
             internalField: int | float =None,
             boundaryField: dict | OpenFOAMDict=None,
             region: str="",
-            default_bc: Patch = ZeroGradient()
+            default_bc: Patch = ZeroGradient(),
+            time: int | float = 0.0
         ):
         super().__init__(
             name="p_rgh",
@@ -979,5 +1039,6 @@ class p_rgh(Field):
             internalField=internalField,
             boundaryField=boundaryField,
             region=region,
-            default_bc=default_bc
+            default_bc=default_bc,
+            time=time
         )

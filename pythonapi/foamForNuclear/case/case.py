@@ -19,8 +19,11 @@ from foamForNuclear.solvers import Solver, Solvers
 from foamForNuclear.control import ControlDict
 from foamForNuclear.timeFolder import TimeFolder
 from foamForNuclear.fields import Field
-from foamForNuclear.solvers.offbeat import OffbeatSolver
+from foamForNuclear.solvers.offbeat import Offbeat
 from foamForNuclear import executor
+
+from typing import TypeVar
+TSolver = TypeVar("TSolver", bound=Solver)
 
 
 class Residuals:
@@ -165,6 +168,8 @@ class Case:
 
     def __init__(
             self,
+            caseFolder: str = "./",
+            *,
             settings: ControlDict=None,
             functions: FunctionObjects | list[FunctionObject] | None = None,
             solvers: Solvers=None,
@@ -172,8 +177,8 @@ class Case:
             timeFolders: list[TimeFolder] | None = None,
             coupling: Coupling=None,
             externalCouplingDict: ExternalCouplingDict=None,
-            caseFolder: str="./"
         ):
+        self.caseFolder: str = caseFolder
         self.settings: ControlDict = ControlDictFfn() if settings is None else settings
         self._functions: FunctionObjects = FunctionObjects(owner=self)
         self.solvers: Solvers = Solvers() if solvers is None else solvers
@@ -181,7 +186,6 @@ class Case:
         self.fields: list[Field] = CheckedList(Field, "fields") if fields is None else CheckedList(fields)
         self.timeFolders: list[TimeFolder] = [] if timeFolders is None else list(timeFolders)
         self.externalCouplingDict: ExternalCouplingDict = externalCouplingDict
-        self.caseFolder: str = caseFolder
 
         # ensure at least a time folder at t = 0 exists
         if not self.timeFolders:
@@ -191,30 +195,44 @@ class Case:
         if functions is not None:
             self.functions = functions
 
-
     def __repr__(self):
         isParallel = self.is_parallel
         maxSubdomains = self.get_number_processors
 
         text = f"{self.settings}"
         text += underline('Solvers:') + "\n"
+
         if (len(self.solvers) > 0):
             for solver in self.solvers:
-                text += f"{solver.__repr__(depth = 1)}"
+                text += f"{solver.__repr__(depth=1)}"
 
                 if (isParallel and solver.decomposeParDict.numberOfSubdomains != maxSubdomains):
-                    text += f"{tab}  {Keyword.WARNING}: Number of subdomains is different than the max subdomains ({maxSubdomains})\n"
+                    text += (
+                        f"{tab}  {Keyword.WARNING}: Number of subdomains is different "
+                        f"than the max subdomains ({maxSubdomains})\n"
+                    )
 
-                # Check fields are present
+                # Check required fields are present
                 if (solver.solver == "twoPhase"):
                     continue
 
                 requiredFields = solver.get_required_fields()
-                createdFields = [field.name for field in self.timeFolders[0]]
+
+                createdFields = set()
+
+                # Legacy case-level fields/timeFolders
+                if self.timeFolders:
+                    createdFields.update(field.name for field in self.timeFolders[0])
+
+                # New solver-owned fields
+                if hasattr(solver, "fields") and solver.fields is not None:
+                    createdFields.update(field.name for field in solver.fields)
+
                 for field in requiredFields:
                     if (field not in createdFields):
-                        text += f"{tab}  {Keyword.WARNING}: Field '{field}' has NOT been declared in the time folder.\n"
-
+                        text += (
+                            f"{tab}  {Keyword.WARNING}: Field '{field}' has NOT been declared.\n"
+                        )
         else:
             text += f"{tab}None\n"
 
@@ -223,14 +241,16 @@ class Case:
             text += f"{self.coupling}"
 
             if (len(self.solvers) != len(self.coupling.get_unique_regions(self.coupling))):
-                text += f"{Keyword.WARNING}: Mismatch number of regions in 'Solvers' and 'Coupling' objects\n"
+                text += (
+                    f"{Keyword.WARNING}: Mismatch number of regions in 'Solvers' "
+                    f"and 'Coupling' objects\n"
+                )
 
-        # Add FMU simulator info is present
+        # Add FMU simulator info if present
         FMUSimulator = self.get_FMU_simulator()
         if (FMUSimulator is not None):
             text += underline("FMU simulation:") + "\n"
             text += f"{tab}Found {FMUSimulator.name} functionObject\n"
-
             text += FMUSimulator.get_coupling_mapping_as_text(depth=1)
 
         return(text)
@@ -291,11 +311,11 @@ class Case:
         check_type("caseFolder", caseFolder, str, none_ok=True)
         self._caseFolder = caseFolder
 
-
-    def add_solver(self, solver: Solver):
+    def add_solver(self, solver: TSolver) -> TSolver:
         if solver is not None:
             check_type('solver', solver, Solver)
             self.solvers.append(solver)
+            return solver
 
 
     def add_time_folder(self, timeFolder: TimeFolder):
@@ -397,7 +417,7 @@ class Case:
         # Read solver. This includes any property/options dict in constant/
         # as well as fvSchemes and fvSolution files
         if case.control_dict["application"] == "offbeat":
-            solver = OffbeatSolver()
+            solver = Offbeat()
             solver.import_from_openfoam(path)
             self.add_solver(solver)
 
@@ -409,7 +429,7 @@ class Case:
             if (not os.path.exists(folder)):
                 os.mkdir(folder)
 
-        # Change directory to avoid manipulating all the file genration
+        # Change directory to avoid manipulating all the file generation
         cwd = os.getcwd()
         os.chdir(self.caseFolder)
 
@@ -423,18 +443,18 @@ class Case:
 
         if (self.coupling is not None and self.settings.application == "GeN-Foam"):
             self.coupling.export_to_openfoam()
-            # self.settings.coupling = self.coupling
             self.settings.solvers = self.solvers
 
         # External coupling dict for FMI
         if (self.externalCouplingDict is not None):
             self.externalCouplingDict.export_to_openfoam()
-        elif (hasattr(self.settings, "solveFMI") and self.settings.solveFMI is not None and self.settings.solveFMI):
+        elif (
+            hasattr(self.settings, "solveFMI")
+            and self.settings.solveFMI is not None
+            and self.settings.solveFMI
+        ):
             self.externalCouplingDict = ExternalCouplingDict()
             self.externalCouplingDict.export_to_openfoam()
-
-        if (len(self.timeFolders) == 1):
-            self.solvers.set_time_folder(self.timeFolders[0])
 
         if (self.functions is not None):
             for function in self.functions:
@@ -443,40 +463,42 @@ class Case:
                     break
 
         self.settings.export_to_openfoam()
-
         self.functions.export_to_openfoam(self.settings)
 
+        # Export solvers (each solver is now responsible for exporting its own fields)
         self.solvers.export_to_openfoam()
 
-        # build region → mesh mapping from solvers
-        region_meshes: dict[str | None, Mesh] = {}
-        for solver in self.solvers:
-            region_name = getattr(solver, "region", None)
-            mesh = getattr(solver, "mesh", None)
-            if mesh is not None:
-                region_meshes[region_name] = mesh
+        # Legacy support: still export case-level time folders if they are used
+        if self.timeFolders:
+            # build region → mesh mapping from solvers
+            region_meshes: dict[str | None, Mesh] = {}
+            for solver in self.solvers:
+                region_name = getattr(solver, "region", None)
+                mesh = getattr(solver, "mesh", None)
+                if mesh is not None:
+                    region_meshes[region_name] = mesh
 
-        # Sync self.fields -> timeFolders (typically t=0)
-        if self.fields:
-            # make sure there is at least one folder
-            if not self.timeFolders:
-                self.timeFolders.append(TimeFolder(0.0))
+            # Sync self.fields -> timeFolders (legacy path, typically t=0)
+            if self.fields:
+                # make sure there is at least one folder
+                if not self.timeFolders:
+                    self.timeFolders.append(TimeFolder(0.0))
 
-            # choose where to put initial fields: earliest time folder
-            t0_folder = min(self.timeFolders, key=lambda tf: tf.time)
+                # choose where to put initial fields: earliest time folder
+                t0_folder = min(self.timeFolders, key=lambda tf: tf.time)
 
-            # avoid duplicates if fields were already added via add_field
-            existing = {fld.name for fld in t0_folder}
+                # avoid duplicates if fields were already added via add_field
+                existing = {(fld.name, getattr(fld, "region", "")) for fld in t0_folder}
 
-            for fld in self.fields:
-                if fld.name not in existing:
-                    # reuse your existing logic, but force time=t0
-                    self.add_field(fld, time=t0_folder.time)
-                    existing.add(fld.name)
+                for fld in self.fields:
+                    key = (fld.name, getattr(fld, "region", ""))
+                    if key not in existing:
+                        self.add_field(fld, time=t0_folder.time)
+                        existing.add(key)
 
-        # export time folders, passing region_meshes
-        for timeFolder in self.timeFolders:
-            timeFolder.export_to_openfoam(region_meshes=region_meshes)
+            # export legacy case-level time folders
+            for timeFolder in self.timeFolders:
+                timeFolder.export_to_openfoam(region_meshes=region_meshes)
 
         # Return to the current directory
         os.chdir(cwd)
@@ -1218,16 +1240,16 @@ class Case:
 class OffbeatCase(Case):
     def __init__(
         self,
+        caseFolder: str = "./",
         *,
-        solver: OffbeatSolver | None = None,
+        solver: Offbeat | None = None,
         mesh=None,
         settings: ControlDictOffbeat | None = ControlDictOffbeat(),
-        caseFolder: str = "./",
     ):
         super().__init__(settings=settings, caseFolder=caseFolder)
 
         if solver is None:
-            solver = OffbeatSolver(mesh=mesh)
+            solver = Offbeat(mesh=mesh)
         self.add_solver(solver)
 
         if isinstance(mesh, (Rod1DBlockMesh, Rod2DRZBlockMesh)):
@@ -1236,7 +1258,7 @@ class OffbeatCase(Case):
         settings.application = "offbeat"
 
     @property
-    def solver(self) -> OffbeatSolver:
+    def solver(self) -> Offbeat:
         if len(self.solvers) != 1:
             raise RuntimeError("OffbeatCase expects exactly one solver.")
         return self.solvers[0]

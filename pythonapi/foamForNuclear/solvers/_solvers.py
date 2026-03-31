@@ -17,6 +17,7 @@ from foamForNuclear.numerics import fvSchemes, fvSolution
 from foamForNuclear.mesh.mesh import Mesh
 from foamForNuclear.preprocessing import SetFieldRegion, SetFieldsDict
 from foamForNuclear.timeFolder import TimeFolder
+    
 
 @define(
     slots=True,
@@ -36,8 +37,8 @@ class Solver:
     removeBaffles : bool
         Flag to remove baffles. Create a ghost region without baffles. Can help
         if solving using thermal-hydraulics with porous media. (default `False`)
-    timeFolder : TimeFolder
-        Object representing the time folder
+    fields : list[Field]
+        List of fields attached to the solver
     mesh : Mesh
         Mesh object
     isMeshDeformation : bool
@@ -77,6 +78,7 @@ class Solver:
     region: str = field(default="")
     solver: str = field(default="none")
     removeBaffles: bool = False
+    fields: list[Field] = field(factory=list)
     timeFolder: TimeFolder | None = None
     mesh: Mesh | None = None
     isMeshDeformation: bool = False
@@ -95,13 +97,58 @@ class Solver:
         _propagate_region_to(self, new_value, "fvSchemes", "fvSolution")
 
     def __attrs_post_init__(self):
+        if self.mesh is not None:
+            mesh_region = getattr(self.mesh, "region", None)
+
+            if not self.region:
+                self.region = mesh_region or ""
+            elif mesh_region and self.region != mesh_region:
+                raise ValueError(
+                    f"Solver region '{self.region}' does not match mesh region '{mesh_region}'."
+                )
+
         _propagate_region_to(self, self.region, "fvSchemes", "fvSolution")
 
     # @region.on_setattr
     # def _on_region_change(self, _attr, _value):
     #     propagate_region_to(self, "fvSchemes", "fvSolution")
 
-    def __repr__(self, depth = 0):
+    def _build_time_folders_from_fields(self) -> list[TimeFolder]:
+        time_folders: dict[float, TimeFolder] = {}
+
+        for fld in self.fields:
+            # Ensure field region matches solver region
+            if not getattr(fld, "region", ""):
+                fld.region = self.region
+            elif fld.region != self.region:
+                raise ValueError(
+                    f"Field region '{fld.region}' does not match solver region '{self.region}'."
+                )
+
+            time_value = getattr(fld, "time", 0.0)
+
+            if time_value not in time_folders:
+                time_folders[time_value] = TimeFolder(time_value)
+
+            time_folders[time_value].add_field(fld)
+
+        return [time_folders[t] for t in sorted(time_folders)]
+    
+    def _get_fields_by_time_as_text(self, depth: int = 0) -> str:
+        if not self.fields:
+            return ""
+
+        text = ""
+        time_folders = self._build_time_folders_from_fields()
+
+        text += f"{(depth)*tab}Fields by time:\n"
+        for time_folder in time_folders:
+            field_names = ", ".join(field.name for field in time_folder)
+            text += f"{(depth+1)*tab}{time_folder.time}: {field_names}\n"
+
+        return text
+
+    def __repr__(self, depth=0):
         text = ""
         text += f"{depth * tab}{type(self).__name__}\n"
         text += f"{(depth+1)*tab}Solver: {self.solver}\n"
@@ -117,6 +164,13 @@ class Solver:
             text += f"{type(self.mesh).__name__}\n"
         else:
             text += "unknown\n"
+
+        if self.fields:
+            time_folders = self._build_time_folders_from_fields()
+            text += f"{(depth+1)*tab}Fields by time:\n"
+            for time_folder in time_folders:
+                field_names = ", ".join(field.name for field in time_folder)
+                text += f"{(depth+2)*tab}{time_folder.time}: {field_names}\n"
 
         if (self.removeBaffles):
             text += f"{(depth+1)*tab}Remove baffles\n"
@@ -135,7 +189,6 @@ class Solver:
             text += f"{self.dynamicMeshDict.__repr__(depth=depth+2)}"
 
         return(text)
-
 
     # @property
     # def region(self):
@@ -174,6 +227,24 @@ class Solver:
     #     self._fvSolution.region = self.region
 
 
+    def add_field(self, field: Field | list[Field]) -> None:
+        if isinstance(field, Field):
+            items = [field]
+        else:
+            items = field
+
+        for fld in items:
+            check_type("field", fld, Field)
+
+            if not getattr(fld, "region", ""):
+                fld.region = self.region
+            elif fld.region != self.region:
+                raise ValueError(
+                    f"Field region '{fld.region}' does not match solver region '{self.region}'."
+                )
+
+            self.fields.append(fld)
+    
     def create_folders(self) -> None:
         if (self.region is not None and self.region != ""):
             if (not os.path.exists(f"constant/{self.region}")):
@@ -247,7 +318,7 @@ class Solver:
         self.fvSolution.region = self.region
         self.decomposeParDict.region = self.region
 
-        if (self.mesh is not None): # and isinstance(self.mesh, (BlockMesh, PolyMesh))):
+        if (self.mesh is not None):
             self.mesh.region = self.region
             self.mesh.export_to_openfoam()
 
@@ -264,6 +335,13 @@ class Solver:
         if (self.dynamicMeshDict is not None and not self.dynamicMeshDict.is_empty):
             self.dynamicMeshDict.region = self.region
             self.dynamicMeshDict.export_to_openfoam()
+
+        # Export fields owned directly by the solver
+        if self.fields:
+            region_meshes = {self.region: self.mesh} if self.mesh is not None else None
+
+            for time_folder in self._build_time_folders_from_fields():
+                time_folder.export_to_openfoam(region_meshes=region_meshes)
 
 
 
