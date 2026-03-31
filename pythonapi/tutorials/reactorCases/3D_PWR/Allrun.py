@@ -194,7 +194,7 @@ neutronicsSolver.nuclearData.import_from_openfoam("XS/nuclearData")
 #==============================================================================*
 # Thermal-hydraulics solver
 
-thSolver = ffn.solvers.thermal_hydraulics.OnePhaseThermalHydraulicsSolver(
+thSolver = ffn.solvers.thermal_hydraulics.OnePhase(
     region="fluidRegion",
     removeBaffles=True,
     mesh=thMesh,

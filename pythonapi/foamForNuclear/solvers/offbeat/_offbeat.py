@@ -33,7 +33,7 @@ import foamlib
     field_transformer=auto_type_validator,
     repr=False
 )
-class OffbeatSolver(Solver):
+class Offbeat(Solver):
     """
     OFFBEAT solver parameter object.
 

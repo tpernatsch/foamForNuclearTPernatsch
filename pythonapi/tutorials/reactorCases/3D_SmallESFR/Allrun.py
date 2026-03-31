@@ -567,7 +567,7 @@ neutronicsSolver = ffn.solvers.NeutronicsSolver(
 #==============================================================================*
 # Thermal-hydraulics solver
 
-thSolver = ffn.solvers.thermal_hydraulics.OnePhaseThermalHydraulicsSolver(
+thSolver = ffn.solvers.thermal_hydraulics.OnePhase(
     region=thMesh.region,
     removeBaffles=True,
     mesh=thMesh,
@@ -702,7 +702,7 @@ thSolver.pimpleOptions.solveFluidMechanics = True
 #==============================================================================*
 # Thermomechanics solver
 
-tmSolver = ffn.solvers.OffbeatSolver(
+tmSolver = ffn.solvers.Offbeat(
     region=tmMesh.region,
     solver="extendedThermoMechanics",
     mesh=tmMesh,

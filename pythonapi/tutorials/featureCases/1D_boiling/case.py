@@ -59,7 +59,7 @@ def build_case(region: str = "fluidRegion"):
         "outlet": bc.FixedValue(value=p_rgh.internalField)}
 
     # %% 3) Solver (two-phase)
-    solver = ffn.solvers.thermal_hydraulics.TwoPhaseThermalHydraulicsSolver(
+    solver = ffn.solvers.thermal_hydraulics.TwoPhase(
         region=region,
         mesh=th_mesh
     )

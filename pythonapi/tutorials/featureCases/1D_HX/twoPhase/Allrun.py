@@ -126,7 +126,7 @@ timeFolder0.append(p_rgh)
 #==============================================================================*
 # Solvers
 
-thSolver = ffn.solvers.thermal_hydraulics.TwoPhaseThermalHydraulicsSolver(
+thSolver = ffn.solvers.thermal_hydraulics.TwoPhase(
     region=thMesh.region,
     removeBaffles=False,
     mesh=thMesh

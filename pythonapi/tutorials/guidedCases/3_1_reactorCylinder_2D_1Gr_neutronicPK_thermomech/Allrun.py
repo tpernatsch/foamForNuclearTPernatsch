@@ -253,7 +253,7 @@ nuclearData.add_state(refState)
 #==============================================================================*
 # Thermomechanics solver
 
-tmSolver = ffn.solvers.OffbeatSolver(
+tmSolver = ffn.solvers.Offbeat(
     region=tmMesh.region,
     solver="extendedThermoMechanics",
     mesh=tmMesh,

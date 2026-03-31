@@ -1,3 +1,3 @@
-from ._offbeat import OffbeatSolver
+from ._offbeat import Offbeat
 
-__all__ = ("OffbeatSolver")
+__all__ = ("Offbeat")

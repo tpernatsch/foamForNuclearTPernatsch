@@ -1,7 +1,7 @@
 import foamForNuclear.boundaryConditions as bc
 from foamForNuclear.fields import Dimension, Field, GapGas
 from foamForNuclear.mesh.blockMesh import BlockMesh, Face
-from foamForNuclear.solvers.offbeat import OffbeatSolver
+from foamForNuclear.solvers.offbeat import Offbeat
 from foamForNuclear.timeFolder import TimeFolder
 from .case import Case
 
@@ -194,7 +194,7 @@ class FuelPin1D(Case):
 
 
     def create_solver(self):
-        mechSolver = OffbeatSolver(
+        mechSolver = Offbeat(
             solver="offbeat",
             mesh=self.mesh
         )

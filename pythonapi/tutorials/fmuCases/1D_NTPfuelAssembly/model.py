@@ -397,7 +397,7 @@ neutronicsSolver.neutronTransportOptions.maxNeutronIterations = 50
 #==============================================================================*
 # Thermal-hydraulics solver
 
-thSolver = ffn.solvers.thermal_hydraulics.OnePhaseThermalHydraulicsSolver(
+thSolver = ffn.solvers.thermal_hydraulics.OnePhase(
     region=thMesh.region,
     solver="onePhase",
     mesh=thMesh,
