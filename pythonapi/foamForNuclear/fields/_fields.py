@@ -709,7 +709,7 @@ class GapGas(OpenFOAMFile):
             region = "",
             time: int | float = 0.0
         ):
-        super().__init__("gapGas", region=region, time=time)
+        super().__init__("gapGas", region=region)
 
         self.gasPressureType = gasPressureType
         self.gasPressure = gasPressure

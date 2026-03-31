@@ -112,7 +112,7 @@ class Offbeat(Solver):
     stressAnalysis : StressAnalysis
     """
 
-    solver: str = "offbeat"
+    solver: str = "extendedThermoMechanics"
     region: str = ""
     thermalSolver: thermal_solver.ThermalSolver | None = None
     mechanicsSolver: mechanics_solver.MechanicsSolver | None = None
