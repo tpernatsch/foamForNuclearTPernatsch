@@ -438,8 +438,9 @@ class Case:
         if (not os.path.exists("system")):
             os.mkdir("system")
 
-        if (len(self.solvers) == 1):
-            self.coupling = Coupling(self.solvers)
+        if (self.coupling is None and self.settings.application == "GeN-Foam"):
+            if (len(self.solvers) == 1):
+                self.coupling = Coupling(self.solvers)
 
         if (self.coupling is not None and self.settings.application == "GeN-Foam"):
             self.coupling.export_to_openfoam()
@@ -537,6 +538,11 @@ class Case:
 
         if preprocess:
             executor.run_preprocessing(case=self)
+
+        if (self.coupling is not None and len(self.solvers) > 1):
+            self.coupling.plot_solving_flowchart()
+            self.coupling.plot_solving_graph()
+
 
         executor.run(case=self)
 
@@ -649,7 +655,8 @@ class Case:
             self,
             parameters: list[str],
             title: str='',
-            nLastIter: int=100
+            nLastIter: int=100,
+            fig_dir: str=""
         ):
         t1 = timePack.time()
 
@@ -681,13 +688,15 @@ class Case:
             ax.legend()
 
         # Save figures
+        if (fig_dir != ""):
+            fig_dir += "/"
+
         fig.tight_layout()
-        fig.savefig(f"fig_results_residuals_{'-'.join(parameters)}.png")
+        fig.savefig(f"{fig_dir}fig_results_residuals_{'-'.join(parameters)}.png")
 
         t2 = timePack.time()
 
         print(f"Processing time for plotting residuals = {t2-t1:.6g} s")
-
 
     def get_time_steps(self):
         """
@@ -807,7 +816,8 @@ class Case:
             show_edges: bool=False,
             unit: str='-',
             isVerticalLegend: bool=True,
-            limits: list[float]=None
+            limits: list[float]=None,
+            fig_dir: str=""
         ):
         """
         Parameters
@@ -836,6 +846,8 @@ class Case:
             If true, the color bar is vertical, else it is horizontal
         limits : list[float]
             Limit the colormap range (default `None`).
+        fig_dir : str, default ""
+            Directory where plot figure is saved
         """
         self.plot_mesh(
             region=region,
@@ -850,7 +862,8 @@ class Case:
             unit=unit,
             isVerticalLegend=isVerticalLegend,
             limits=limits,
-            isSlice=True
+            isSlice=True,
+            fig_dir=fig_dir
         )
 
 
@@ -1005,7 +1018,6 @@ class Case:
         if (offset[2] != 0):
             ext = f"{ext}_z{offset[2]:g}"
 
-        plotter.screenshot(f"fig_{figType}_{'_'.join(regionNames)}_{time}{ext}.png")
         if (fig_dir != ""):
             fig_dir += "/"
 
@@ -1085,7 +1097,8 @@ class Case:
             thresholdFieldName: str=None,
             fps: int=None,
             offset: tuple=(0, 0, 0),
-            limits: list[float]=None
+            limits: list[float]=None,
+            fig_dir: str=""
         ):
         """
         Plot animation over all time steps. A uniform time stepping is
@@ -1222,8 +1235,11 @@ class Case:
                 camera_position = 'xy'
             ext += "_" + camera_position
 
-        # Open a gif
-        plotter.open_gif(f'fig_results_{regionName}_{fieldName}{ext}.gif', fps=fps)
+        # Open a gif        
+        if (fig_dir != ""):
+            fig_dir += "/"
+
+        plotter.open_gif(f'{fig_dir}fig_results_{regionName}_{fieldName}{ext}.gif', fps=fps)
 
         for time in tqdm.tqdm(reader.time_values, desc=f"Render {fieldName}{ext}", unit='frame'):
             try:
@@ -1249,7 +1265,7 @@ class OffbeatCase(Case):
         super().__init__(settings=settings, caseFolder=caseFolder)
 
         if solver is None:
-            solver = Offbeat(mesh=mesh)
+            solver = Offbeat(mesh=mesh, solver="offbeat")
         self.add_solver(solver)
 
         if isinstance(mesh, (Rod1DBlockMesh, Rod2DRZBlockMesh)):
