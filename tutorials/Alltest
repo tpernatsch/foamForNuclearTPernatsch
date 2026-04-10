@@ -138,7 +138,7 @@ tutorials=(
     "reactorCases/2D_MSFR                                           0.3"
     "reactorCases/3D_genericParticleBedNTP                          1.5"
     "reactorCases/3D_gFHR                                           1.5"
-    "reactorCases/3D_HTR-10                                         1.0"
+    "reactorCases/3D_HTR-10                                         1.5"
     "reactorCases/3D_KIWI-B-4E                                      1.5"
     "reactorCases/3D_NTPfuelAssembly                                0.2"
     "reactorCases/3D_SmallESFR                                      1.0"

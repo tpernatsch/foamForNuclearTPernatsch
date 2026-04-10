@@ -24,7 +24,6 @@ echo -e "Run tutorial 3D_SmallESFR ...\n" | tee -a $resFile
 echo -e "Done running tutorial 3D_SmallESFR ...\n" | tee -a $resFile
 
 # --- Check it ran
-
 isConverge()
 {
     folder=$1
@@ -38,17 +37,13 @@ isConverge()
     fi
 }
 
-isConverge legacyThermoMechanics "Steady state - Legacy"
-isConverge extendedThermoMechanics "Steady state - Extended"
+isConverge . "Steady state"
 
 # --- Recover the results
 export LC_NUMERIC="en_US.UTF-8"
-keffLeg=$(foamDictionary ./legacyThermoMechanics/processor0/200/uniform/reactorState -entry keff -value)
-keffNew=$(foamDictionary ./extendedThermoMechanics/processor0/200/uniform/reactorState -entry keff -value)
-
+keff=$(foamDictionary ./processor0/200/uniform/reactorState -entry keff -value)
 
 expectedKeff=0.936827
-
 
 # --- Check that results are correct
 isInRange()
@@ -69,20 +64,17 @@ isInRange()
 
 error=0.001
 echo "keff test with $error relative error" | tee -a $resFile
-if  [ $(isInRange $expectedKeff $keffLeg $error) -eq 0 ] &&
-    [ $(isInRange $expectedKeff $keffNew $error) -eq 0 ]
+if  [ $(isInRange $expectedKeff $keff $error) -eq 0 ]
 then
     echo "Perfect match:" | tee -a $resFile
-    echo "|                 | Simulated | Expected |" | tee -a $resFile
-    echo "|:--------------- |:---------:|:--------:|" | tee -a $resFile
-    echo "| keff - Legacy   | $keffLeg  | $expectedKeff |" | tee -a $resFile
-    echo "| keff - Extended | $keffNew  | $expectedKeff |" | tee -a $resFile
+    echo "|       | Simulated | Expected |" | tee -a $resFile
+    echo "|:------|:---------:|:--------:|" | tee -a $resFile
+    echo "| keff  | $keff  | $expectedKeff |" | tee -a $resFile
 else
     echo "Divergent results:" | tee -a $resFile
-    echo "|                 | Simulated | Expected |" | tee -a $resFile
-    echo "|:--------------- |:---------:|:--------:|" | tee -a $resFile
-    echo "| keff - Legacy   | $keffLeg  | $expectedKeff |" | tee -a $resFile
-    echo "| keff - Extended | $keffNew  | $expectedKeff |" | tee -a $resFile
+    echo "|       | Simulated | Expected |" | tee -a $resFile
+    echo "|:------|:---------:|:--------:|" | tee -a $resFile
+    echo "| keff  | $keff  | $expectedKeff |" | tee -a $resFile
     exit 1
 fi
 

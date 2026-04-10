@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2506                                  |
+|  \\    /   O peration     | Version:  2512                                  |
 |   \\  /    A nd           | Website:  www.openfoam.com                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -15,13 +15,14 @@ FoamFile
     object      cellZones;
     meta
     {
-        names           1 ( zone0 );
+        names           ( zone0 );
     }
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 1
-(zone0
+(
+zone0
 {
     type            cellZone;
     cellLabels      List<label> 

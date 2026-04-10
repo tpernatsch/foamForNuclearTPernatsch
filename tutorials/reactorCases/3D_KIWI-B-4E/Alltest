@@ -306,8 +306,8 @@ totalPowerNeutro=$(extract "Target power =" "steadyStateTH/log.GeN-Foam")
 totalPowerFluid=$(extract "volIntegrate(fluidRegion) of powerDensityStructure" "steadyStateTH/log.postProcess.functions")
 Tout=$(extract "areaAverage(outlet) of T" "steadyStateTH/log.postProcess.functions")
 
-scaledPowerNeutro=$(python -c "print(float($totalPowerNeutro) * 1e-6)")
-scaledPowerFluid=$(python -c "print(float($totalPowerFluid) * 1e-6)")
+scaledPowerNeutro=$(python3 -c "print(float($totalPowerNeutro) * 1e-6)")
+scaledPowerFluid=$(python3 -c "print(float($totalPowerFluid) * 1e-6)")
 
 echo "$totalPowerNeutro $totalPowerFluid $scaledPowerNeutro $scaledPowerFluid"
 
