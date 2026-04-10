@@ -1098,7 +1098,12 @@ class Case:
             fps: int=None,
             offset: tuple=(0, 0, 0),
             limits: list[float]=None,
-            fig_dir: str=""
+            fig_dir: str="",
+            timeScale: float=1,
+            timeOffset: float=0,
+            timeUnit: str="s",
+            minTime: float=None,
+            maxTime: float=None,
         ):
         """
         Plot animation over all time steps. A uniform time stepping is
@@ -1131,6 +1136,19 @@ class Case:
             will be computed to as `1/(timeStep[1] - timeStep[0])`
         limits : list[float]
             Limit the colormap range (default `None`).
+        timeScale : float
+            Scale the text time by a factor `timeScale`. E.g,
+            `timeScale = 1/3600` converts in hours Default `1`.
+        timeOffset : float
+            Offset the text time by `timeOffset` seconds. Default `0`.
+        timeUnit : str
+            Unit of time printed next to the text. Default `s`.
+        minTime : float
+            Time stamp at which the render starts. Default `None`, which is the
+            minimum in the case folder.
+        maxTime : float
+            Time stamp at which the render ends. Default `None`, which is the
+            maximum in the case folder.
         """
         regionName = region
         if (isinstance(region, Mesh)):
@@ -1193,7 +1211,7 @@ class Case:
                 clim=limits
             )
             plotter.add_text(
-                f"{time} s",
+                f"{(time - timeOffset)*timeScale} {timeUnit}",
                 position='upper_left',
             )
 
@@ -1242,6 +1260,11 @@ class Case:
         plotter.open_gif(f'{fig_dir}fig_results_{regionName}_{fieldName}{ext}.gif', fps=fps)
 
         for time in tqdm.tqdm(reader.time_values, desc=f"Render {fieldName}{ext}", unit='frame'):
+            if (minTime is not None and minTime > time):
+                continue
+            if (maxTime is not None and time > maxTime):
+                continue
+
             try:
                 render(time, limits=limits)
                 # Write a frame. This triggers a render.
