@@ -1,0 +1,43 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      neutronicsProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+eigenvalueNeutronics    true; // transient calculation if set to false
+
+// If true interpolates cross section with logarithmic temp for fuel
+// (otherwise, square root)
+fastNeutrons            true;
+
+// Highly specialized flag. Please refer to Fiorina et al., Annals of Nuclear
+// Energy 96O (2016)
+adjustDiscFactors       false;
+
+// Use homogeneous discontinuity factors provided below. Please refer to
+// Fiorina et al., Annals of Nuclear Energy 96O (2016)
+useGivenDiscFactors     false;
+
+// Fuel axial orientation vector
+axialOrientation    (0 0 1);
+
+// Polyharmonic spline function
+// - 1: phi(r) = |r|  -> linear interpolation
+// - 2: phi(r) = r^2 ln(r)
+// - 3: phi(r) = |r^3|
+// - 4: phi(r) = r^4 ln(r)
+polyharmonicSplineMode  1;
+
+
+// ************************************************************************* //

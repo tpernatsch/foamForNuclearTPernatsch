@@ -1,0 +1,65 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      regionsDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+// Select two solvers
+regionSolvers
+{
+    Level_0
+    {
+        fluidRegion     onePhase;
+        neutroRegion    diffusionNeutronics;
+    }
+}
+
+// Mappings structure will be
+
+//Neutronics --> Fluid : 
+    // powerDensity --> powerDensityStructure  
+    // secondaryPowerDensity --> powerDensityLiquid
+
+//Fluid --> Neutronics : 
+    // thermo:rho --> rhoCool
+    // T.fuelAvForNeutronics --> TFuel
+    // T.cladAvForNeutronics --> TClad
+
+// For field names use
+// https://foamfornuclear.gitlab.io/foamForNuclear/usersguide/GeN-Foam/coupling.html
+
+mappings
+{
+    fluidRegion
+    {
+        neutroRegion
+        {
+            sourceFields     ( powerDensity secondaryPowerDensity );
+            targetFields     ( powerDensityStructure powerDensityLiquid );
+        }
+    }
+    neutroRegion
+    {
+        fluidRegion
+        {
+            sourceFields     ( T thermo:rho T.fuelAvForNeutronics T.cladAvForNeutronics );
+            targetFields     ( TCool rhoCool TFuel TClad);
+        }
+    }
+}
+
+
+// ************************************************************************* //

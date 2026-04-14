@@ -1,0 +1,157 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//--------------------------------------//
+//-----------LINEAR SOLVERS-------------//
+//--------------------------------------//
+
+// Linear solvers are selected here. These are the same as OpenFOAM, complete list is available at
+// https://www.openfoam.com/documentation/user-guide/6-solving/6.3-solution-and-algorithm-control
+
+// For the sake of the workshop, do not change
+
+
+solvers
+{
+    p_rgh
+    {
+        solver          GAMG;
+        smoother        DIC;
+        tolerance       1e-07;
+        relTol          0;
+    }
+    p_rghFinal
+    {
+        solver          GAMG;
+        smoother        DIC;
+        tolerance       1e-07;
+        relTol          0;
+    }
+    "e"
+    {
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-07;
+        relTol          0;
+        minIter         0;
+    }
+    "h"
+    {
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-07;
+        relTol          0;
+        minIter         0;
+    }
+    ".*"
+    {
+        solver          PBiCGStab;
+        preconditioner  diagonal;
+        tolerance       1e-07;
+        relTol          0.001;
+    }
+}
+
+//--------------------------------------//
+//-------PIMPLE LOOP SOLUTION-----------//
+//--------------------------------------//
+
+// The TH solution is solved using a PIMPLE loop.
+// The PIMPLE loop merges the SIMPLE and PISO loops
+// The general workflow goes as follow
+
+                                                                                 
+//                           ┌──────────────────────────────┐                       
+//                           │                              │                       
+//                           │                              │                       
+//                           │   Correct Momentum for U     ◄─────────────┐         
+//                           │                              │             │         
+//                           │                              │             │         
+//                           └──────────────────────────────┘             │         
+//                                          |                             │         
+//                                          |                             │         
+//                                          |                             │         
+//                                          |                             │         
+//                           ┌──────────────────────────────┐             │         
+//                           │                              │             │         
+//                           │                              │             │         
+//         ┌─────────────────►    Solve U without grad(p)   │             │         
+//         │                 │                              │             │         
+//         │                 │                              │             │         
+//         │                 └──────────────────────────────┘             │         
+//         │                                |                             │         
+//         │                                |                        Outer Corrector 
+//         │                                |                             │         
+//         │                                |                             │         
+//         │                 ┌──────────────────────────────┐             │         
+//         │                 │                              │             │         
+//         │                 │                              │             │         
+//   Inner Corrector         │   Solve Pressure Equation    │             │         
+//         │                 │                              │             │         
+//         │                 │                              │             │         
+//         │                 └──────────────────────────────┘             │         
+//         │                                |                             │         
+//         │                                |                             │         
+//         │                                |                             │         
+//         │                                |                             │         
+//         │                 ┌──────────────────────────────┐             │         
+//         │                 │                              │             │         
+//         │                 │                              │             │         
+//         │                 │  Re-compute U explicitly     │             │         
+//         └─────────────────┼                              ┼─────────────┘         
+//                           │                              │                       
+//                           └──────────────────────────────┘                       
+
+// For the sake of this exercise, please select 
+//  2 inner correctors (nCorrectors)
+//  6 outer correctors (nOuterCorrectors)
+
+// With solveEnergy and solveFluidMechanics one
+// can specify if energy and momentum need to be solved or not
+// they are bools (true/false). Please enable solution of both
+
+PIMPLE
+{
+    nCorrectors     ...;
+    nOuterCorrectors ...;
+    solveEnergy     ...;
+    solveFluidMechanics ...;
+
+    // Do not change
+    momentumMode            faceCentered;
+    pMin                    10000;
+    pRefCell                0;
+    pRefValue               100000;
+}
+
+
+//--------------------------------------//
+//-------RELAXATION FACTORS-------------//
+//--------------------------------------//
+
+//Here the user can specify relaxation factors for the equations
+// In this exercise no relaxation will be used
+relaxationFactors
+{
+    equations
+    {
+        ".*"            1;
+    }
+}
+
+
+// ************************************************************************* //

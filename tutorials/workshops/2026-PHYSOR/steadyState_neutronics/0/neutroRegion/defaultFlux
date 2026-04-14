@@ -1,0 +1,65 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      defaultFlux;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [ 0 -2 -1 0 0 0 0 ];
+
+internalField   uniform 1;
+
+// Dirichlet BC--> 
+// type fixedValue;
+// value uniform *value*
+
+// Neumann BC --> 
+// type zeroGradient (if grad = 0)
+// type fixedGradient; 
+// value uniform *gradientValue* (if grad!=0) 
+
+// Robin BC --> 
+// type mixed;
+// refValue uniform *refValue*
+// refGradient uniform *refGrad*
+// valueFraction uniform *valueFraction*
+//where
+// phi_wall = valueFraction * refValue + (1-valueFraction)* (refGrad + cellValue)
+
+//For more details about the standard BC, please refer to 
+// https://www.openfoam.com/documentation/user-guide/a-reference/a.4-standard-boundary-conditions
+
+boundaryField
+{
+    ".*" // this means "on all the boundaries"
+    {
+        type            fixedValue;
+        value           uniform 0;
+    }
+}
+
+
+// If you want to use a different BC for the flux, you can use the "albedoSP3" BC below.
+// Note gamma = 0.5 --> alpha = 0
+//      gamma = 0   --> alpha = 1
+
+/*
+    type            albedoSP3;
+    gamma           0.5; // defined as (1-alpha)/(1+alpha)/2, alpha being the albedo coefficient
+    diffCoeffName   Dalbedo;  //not to be changed
+    fluxStarAlbedo  fluxStarAlbedo; //not to be changed
+    forSecondMoment false;  //true in case it is a condition for a second moment flux (for SP3 calculations)
+    value           uniform 1;
+*/
+
+// ************************************************************************* //

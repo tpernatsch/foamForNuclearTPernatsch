@@ -1,0 +1,33 @@
+innerCore
+{
+    IV nonuniform List<scalar> 1 (3.81796e-07);
+    D nonuniform List<scalar> 1 (1.34502e-02);
+    nuSigmaEff nonuniform List<scalar> 1 (7.4386651e-01  );
+    sigmaPow nonuniform List<scalar> 1 (8.05023e-11);
+    scatteringMatrixP0 1 1
+    (
+        (3.07553e+01)
+    );
+    sigmaRemoval nonuniform List<scalar> 1 (6.28624e-01);
+    chiPrompt nonuniform List<scalar> 1 (1.000000e+00);
+    chiDelayed nonuniform List<scalar> 1 (1.000000e+00);
+    Beta nonuniform List<scalar> 8 (8.02177e-05 7.38194e-04 2.96443e-04 7.03977e-04 1.50184e-03 6.71296e-04 5.63490e-04 2.75376e-04);
+    lambda nonuniform List<scalar> 8 (1.22819e-02 2.82917e-02 4.25244e-02 1.33042e-01 2.92467e-01 6.66488e-01 1.63478e+00 3.55460e+00);
+}
+
+outerCore
+{
+    IV nonuniform List<scalar> 1 (3.59967e-07);
+    D nonuniform List<scalar> 1 (1.36991e-02);
+    nuSigmaEff nonuniform List<scalar> 1 (8.4812279e-01  );
+    sigmaPow nonuniform List<scalar> 1 (9.14973e-11);
+    scatteringMatrixP0 1 1
+    (
+        (3.03245e+01)
+    );
+    sigmaRemoval nonuniform List<scalar> 1 (6.46509e-01);
+    chiPrompt nonuniform List<scalar> 1 (1.000000e+00);
+    chiDelayed nonuniform List<scalar> 1 (1.000000e+00);
+    Beta nonuniform List<scalar> 8 (8.02177e-05 7.38194e-04 2.96443e-04 7.03977e-04 1.50184e-03 6.71296e-04 5.63490e-04 2.75376e-04);
+    lambda nonuniform List<scalar> 8 (1.22819e-02 2.82917e-02 4.25244e-02 1.33042e-01 2.92467e-01 6.66488e-01 1.63478e+00 3.55460e+00);
+}
