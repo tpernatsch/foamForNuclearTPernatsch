@@ -398,9 +398,21 @@ fvPatchFields/convectiveHTC/timeDependentAxialProfileHTCfvPatchScalarField.C
 fvPatchFields/convectiveHTC/fmiAxialProfileHTCfvPatchScalarField.C
 fvPatchFields/convectiveHTC/convectiveFromFluidFvPatchScalarField.C
 fvPatchFields/radiativeConvectiveSink/radiativeConvectiveSinkFvPatchScalarField.C
-fvPatchFields/coolantChannel/coolantChannelfvPatchScalarFieldESI.C
 fvPatchFields/solidDirectionMixed/solidDirectionMixedFvPatchVectorField.C
 
+htcCorrelations = fvPatchFields/coolantChannel/htcCorrelations
+$(htcCorrelations)/chfModel.C
+$(htcCorrelations)/filmBoilingHTCModel.C
+$(htcCorrelations)/leidenfrostModel.C
+$(htcCorrelations)/onbModel.C
+$(htcCorrelations)/saturatedBoilingHTCModel.C
+$(htcCorrelations)/singlePhaseHTCModel.C
+$(htcCorrelations)/subcooledBoilingHTCModel.C
+$(htcCorrelations)/transitionBoilingHTCModel.C
+
+fvPatchFields/coolantChannel/coolantChannelModel/coolantChannelModel.C
+fvPatchFields/coolantChannel/coolantChannelfvPatchScalarFieldESI.C
+fvPatchFields/coolantChannel/coolantChannelRIAfvPatchScalarField.C
 fvPatchFields/coolantChannel/NaCoolantChannelfvPatchScalarField.C
 
 fvPatchFields/fixedDisplacement/fixedDisplacementFvPatchVectorField.C

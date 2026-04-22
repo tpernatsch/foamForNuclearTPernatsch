@@ -77,11 +77,11 @@ boundaryField
         };
         correlations
         {
-            ONB                 Basu;
-            CHF                 lookuptableGroeneveld;
-            SubcooledBoiling    Rohsenow;
-            SaturatedBoiling    Rohsenow;
-            FilmBoiling         BishopSandbergTong;
+            onb                 Basu;
+            chf                 GroeneveldTable;
+            subcooledBoiling    Rohsenow;
+            saturatedBoiling    Rohsenow;
+            filmBoiling         BishopSandbergTong;
         }
     }
 }

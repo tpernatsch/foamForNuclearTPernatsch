@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2013 OpenFOAM Foundation
+    \\  /    A nd           |
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -19,165 +19,65 @@ License
     for more details.
 
     You should have received a copy of the GNU General Public License
-    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+    along with OpenFOAM. If not, see <http://www.gnu.org/licenses/>.
 
 Class
     Foam::coolantChannelfvPatchScalarField
 
 Description
-    Coolant subchannel module to provide thermal boundary condition.
-    
-    The module can be used in two modes. Either the time-dependent axial bulk
-    coolant temperature profile is provided or the enthalpy model must be
-    enabled and the constant or time-dependent inlet coolant temperature, 
-    mass flow rate and pressure data must be supplied. The former mode can 
-    model natural and forced flow as well, while the latter, by principle,
-    can only be used in the case of forced coolant flow.
+    Coolant channel boundary condition for thermal coupling between a solid wall
+    and a 1D coolant stream represented through a patch.
 
-    The enthalpy model uses the closed channel assumption. Only the mass 
-    and energy conservation equations are effectively solved. Pressure drop
-    and other inlet/outlet effects are neglected. Futhermore, the model uses
-    the homogeneous equilibrium model (HEM; i.e. the slip ratio is unity).
-    
-    At its current state, the coolantChannel module can only be used for 
-    light-water as coolant. The material properties are obtained from the
-    CoolProp IF97 C++ functions of (c) Ian Bell and the CoolProp team.
-    The original implementation rely on the IF97 formulation by IAPWS. 
-    The actually used material library was further extended with additional 
-    material property functions.
-    
-    **Verification**:
+    The model computes:
+    - wall heat flux from the solid side,
+    - axial bulk coolant temperature/enthalpy,
+    - derived coolant state quantities,
+    - heat transfer coefficients using selected correlations for different
+      regimes,
+    - mixed boundary coefficients for the wall temperature.
 
-    The module was compared against the U.S. NRC system code TRACE for
-    various simplified 1D rod cases. The investigated pins included 
-    traditional and novel PWR and BWR designs with forced coolant flow. 
-    The test scenarios were designed to cover the whole range of the
-    boiling curve with the exception of transition boiling and single phase
-    vapor flow. The module is considered to be successfully verified until
-    departure from nucleate boiling (DNB) occurs. Post-DNB wall temperatures
-    (especially for PWR cases) showed larger than expected deviations from
-    the reference TRACE results.
-________________________________________________________________________________
-\par Options
-    The `coolantChannel` fvPatchField can be selected in the patch subdictionary
-    inside the `boundaryField` subdictionary of the temperature field.
-
-    In case CHF model `lookuptableGroeneveld` is selected, the user must provide
-    CHF table as IOdictionary in `constant/chfTableDict`.
-
-    The dictionary `constant/chfTableDict` should look like:
-    \verbatim
-        pressureValues 
-        (
-            100.0   300.0  ... 21000.0
-        );
-
-        massFluxValues 
-        (
-            0.0    50.0 ... 8000.0
-        );
-
-        qualityValues
-        (
-            -0.50 -0.40 ... 1.0
-        ); 
-
-        data 
-        (
-            // For p = 100.0                                                                                         
-            (                                                                                           
-                (8111      7252    ...      0)       // For G = 0.0
-                (44338     36803   ...     0)        // For G = 8000.0
-            )                                                                                           
-            // For p = 300.0                                                                                            
-            (
-                ...                                                                              
-            )                                                                                           
-            ...                                                                                           
-            // For p = 21000.0                                                                                          
-            (
-                ...                                                                                           
-            )                                                                                           
-        );
-    \endverbatim
-________________________________________________________________________________
 Usage
-    **Case 1 :** Enthalpy model disabled, bulk coolant temperature provided.
+    Example:
     \verbatim
         cladOuter
         {
-            type                coolantChannel;
-            value               uniform 300.0;
-            hydraulicDiameter   0.01;
-            enthalpyModel       0;
-            axialProfileDict
-            {
-                timePoints      ( 0.0 3600.0 64000.0 );
-                axialLocations  ( 0 0.5 1.0 1.5 );
-                T0Data          ( ( 293.0 293.0 293.0 293.0 ) 
-                                ( 440.0 450.0 460.0 460.0 ) 
-                                ( 475.0 490.0 500.0 510.0 ) );
-            }
-            relaxHTC            0.7;
-            flowArea            0.0001;
+            type                    coolantChannel;
+            value                   uniform 560;
+
+            kappa                   k;
+            hydraulicDiameter       0.01;
+            flowArea                1e-4;
+            flowDirection           1.0;
+            enthalpyModel           true;
+            relax                   0.15;
+
             correlations
             {
-                ONB                 Basu;
-                CHF                 EPRI;
-                Leidenfrost         GroeneveldStewartCorrected;
-                SinglePhase         Gnielinski;
-                SubcooledBoiling    Rohsenow;
-                SaturatedBoiling    Rohsenow;
-                TransitionBoiling   McDonoughMilichKing;
-                FilmBoiling         GroeneveldTubular;
+                singlePhase         Gnielinski;
+                onb                 Basu;
+                chf                 EPRI;
+                subcooledBoiling    Chen;
+                saturatedBoiling    Chen;
+                transitionBoiling   McDonoughMilichKing;
+                filmBoiling         Frederking;
+                leidenfrost         GroeneveldStewartCorrected;
             }
-            coolantPressure         uniform 1e7;
-            massFlowRate            uniform 0.25;
-        }
 
-    \endverbatim
-
-    **Case 2 :** Enthalpy model enabled, inlet temperature provided.
-    \verbatim
-        cladOuter
-        {
-            type                coolantChannel;
-            value               uniform 300.0;
-            hydraulicDiameter   0.01;
-            enthalpyModel       1;
-            relaxHTC            0.7;
-            flowArea            0.0001;
-            flowDirection       1.0;
-            correlations
-            {
-                ONB                 Basu;
-                CHF                 lookuptableGroeneveld;
-                Leidenfrost         GroeneveldStewartCorrected;
-                SinglePhase         Gnielinski;
-                SubcooledBoiling    Rohsenow;
-                SaturatedBoiling    Rohsenow;
-                TransitionBoiling   McDonoughMilichKing;
-                FilmBoiling         GroeneveldTubular;
-            }
-            inletTemperature        300;
-            coolantPressure         uniform 101325;
+            inletTemperature        560;
+            coolantPressure         uniform 1.55e7;
             massFlowRate            uniform 0.25;
         }
     \endverbatim
+
+    Time-dependent inlet data can also be provided with:
+    - inletTemperatureList
+    - coolantPressureList
+    - massFlowRateList
+
+    If enthalpyModel is false, an axialProfileDict can be provided instead.
 
 SourceFiles
     coolantChannelfvPatchScalarField.C
-
-\mainauthor
-    A. Sz. Vanyi - EPFL (ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, 
-    Switzerland, Laboratory for Reactor Physics and Systems Behaviour)
-
-\contribution
-    A. Scolaro, E. Brunetto - EPFL (ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, 
-    Switzerland, Laboratory for Reactor Physics and Systems Behaviour)
-
-\date 
-    July 2024
 
 \*---------------------------------------------------------------------------*/
 
@@ -185,213 +85,107 @@ SourceFiles
 #define coolantChannelfvPatchScalarField_H
 
 #include "fixedValueFvPatchFields.H"
-#include "axialProfile.H"
-#include "InterpolateTables.H"
-#ifdef OPENFOAMESI
-    #include "Function1.H"
-#endif     
-#include "Table.H"
-#include "sliceMapper.H"
-#include "PtrListScalarFieldFieldINew.H"
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+#include "sliceMapper.H"
+
+#include "coolantChannelModel/coolantChannelModel.H"
+#include "singlePhaseHTCModel.H"
+#include "onbModel.H"
+#include "subcooledBoilingHTCModel.H"
+#include "saturatedBoilingHTCModel.H"
+#include "filmBoilingHTCModel.H"
+#include "chfModel.H"
+#include "leidenfrostModel.H"
+#include "transitionBoilingHTCModel.H"
 
 namespace Foam
 {
 
-/*---------------------------------------------------------------------------*\
-           Class coolantChannelfvPatchScalarField Declaration
-\*---------------------------------------------------------------------------*/
 class coolantChannelfvPatchScalarField
 :
     public fvPatchField<scalar>
 {
+private:
+
     // Private data
-        //- Name of thermal conductivity field
+
+        //- Name of thermal conductivity field in the solid region
         word kappaName_;
 
-        //- Dictionary with user-defined correlations
+        //- Correlation selection dictionary
         dictionary correlations_;
 
-        //- List of HTC correlations for the axial slices
-        List<word> correlationRegimeList_;
-        
-        //- T0 patch profile @ current timestep - working variable
-        scalarField T0_;
+        // Heat transfer regime models
+        singlePhaseHTCModel    singlePhase_;
+        onbModel               onb_;
+        subcooledBoilingHTCModel subcooledBoiling_;
+        saturatedBoilingHTCModel saturatedBoiling_;
+        filmBoilingHTCModel    filmBoiling_;
+        chfModel               chf_;
+        leidenfrostModel       leidenfrost_;
+        transitionBoilingHTCModel transitionBoiling_;
 
-        //- h patch profile @ current timestep - for write()
+        //- Coolant channel properties and state
+        coolantChannelModel coolant_;
+
+        //- Heat transfer coefficient at patch faces
         scalarField h_;
-        
-        //- Boundary heat transfer factor - working variable
+
+        //- Mixed BC coefficient
         scalarField alpha_;
 
-        //- Subchannel flow area
-        scalar A_;
+        //- Relaxation factor for HTC update
+        scalar relax_;
 
-         //- Direction of the forced flow
-        scalar flowDirection_;
-
-        //- Relaxation factor of the HTC
-        scalar relaxHTC_;
-
-        //- Film boiling correction factor for RIA transients
-        scalar filmBoilingRIACorrection_;
-        
-        //- Transition boiling correction factor for RIA transients
-        scalar transitionBoilingRIACorrection_;
-
-        //- Temperature increment to define the rewetting temperature for RIA transients 
-        scalar leidenfrostdTBessiron_;
-        
-        //- Water layer thickness to be vaporized for RIA transients
-        scalar thicknessBessironRIA_;
-
-        //- Auxiliary variable for controlling vaporization in case of RIA transients
+        //- Auxiliary time marker used to control updates
         scalar timeCheck_;
-
-        //- Hydraulic diameter
-        scalar DH_;
-
-        //- Critical heat flux
-        scalarField qCHF_;
-
-        //- Vaporized thickness for RIA transients
-        scalarField vaporizedThickness_;
 
         //- Wall heat flux
         scalarField heatFlux_;
 
-        //- Steam quality
-        scalarField Q_;
-
-        //- Void fraction
-        scalarField X_;
-
-        //- Reynolds number
-        scalarField Re_;
-
-        //- Prandtl number
-        scalarField Pr_;
-
         //- Wall temperature
         scalarField Twall_;
 
-        //- Film temperature
-        scalarField Tfilm_;
-
-        //- Coolant thermal conductivity
-        scalarField coolantk_;
-
-        //- Coolant enthalpy
-        scalarField coolantEnthalpy_;
-
-        //- Coolant pressure
-        scalarField coolantPressure_;
-
-#ifdef OPENFOAMFOUNDATION
-        //- Coolant pressure time-dependent list
-        autoPtr<Function1s::Table<scalar>> coolantPressureList_;
-#elif OPENFOAMESI
-        typedef Foam::Function1Types::Table<scalar> scalarTable;
-        //- Coolant pressure time-dependent list
-        autoPtr<scalarTable> coolantPressureList_;
-#endif
-
-        //- Coolant mass flow rate
-        scalarField massFlowRate_;
-
-#ifdef OPENFOAMFOUNDATION
-        //- Coolant mass flow rate time-dependent list
-        autoPtr<Function1s::Table<scalar>> massFlowRateList_;
-#elif OPENFOAMESI
-        //- Coolant mass flow rate time-dependent list
-        autoPtr<scalarTable> massFlowRateList_;
-#endif     
-
-        //- Inlet temperature
-        scalar inletTemperature_;
-
-#ifdef OPENFOAMFOUNDATION
-        //- Inlet temperature time-dependent list
-        autoPtr<Function1s::Table<scalar>> inletTemperatureList_;
-#elif OPENFOAMESI
-        //- Inlet temperature time-dependent list
-        autoPtr<scalarTable> inletTemperatureList_;
-#endif 
-
-        //- Flag for enthalpy model
-        bool enthalpyModel_;
-        
-        //- Tabulated CHF data
-        PtrList<FieldField<Field, scalar>> chfData_;
-        
-        //- Optional P/D to CHF correction
-        scalar chfPitchToDiameter_;
-        
-        //- Pressure list for CHF tables
-        scalarField chfPressureValues_;
-        
-        //- Mass flux list for CHF tables
-        scalarField chfMassFluxValues_;
-        
-        //- Quality list for CHF tables
-        scalarField chfQualityValues_;
-        
-        //- Interpolation method for CHF table (pressure)
-        interpolateTableBase::interpolationMethod chfPressureMethod_;
-        
-        //- Interpolation method for CHF table (mass flux)
-        interpolateTableBase::interpolationMethod chfMassFluxMethod_;
-        
-        //- Interpolation method for CHF table (quality)
-        interpolateTableBase::interpolationMethod chfQualityMethod_;
-        
-        //- 3D interpolation table for pressure interpolation
-        autoPtr<scalarFieldFieldInterpolateTable> chfPressureTable_;
-
-        //- Tabulated axial locations
-        scalarField zValues_;
-
-        //- Tabulated time values
-        scalarField timeValues_;
-
-        //- Tabulated Coolant Profile data
-        FieldField<Field, scalar> T0ProfileData_;
-
-        //- Axial location interpolation method
-        interpolateTableBase::interpolationMethod zMethod_;
-        
-        //- Time interpolation method
-        interpolateTableBase::interpolationMethod tMethod_;
-
-        //- T0 Interpolation table
-        autoPtr<scalarFieldInterpolateTable> T0Table_;
-
-        //- Axial profile dict
-        dictionary dict_;
-
-        //- Face heights
+        //- Face heights used for axial integration of the coolant energy balance
         scalarField faceHeights_;
 
-        //- Unit conversion factors
-        const scalar PsiToPa_;
-        const scalar BtuToJ_;
-        const scalar FeetToMeters_;
-        const scalar LbToKg_;
-        const scalar HrToSec_;
-        const scalar g_;
 
-   // Private functions
+    // Private Member Functions
 
-        //- Calculate face heights
-        virtual scalarField calculateFaceHeights();
+        //- Compute patch face heights projected along the pin direction
+        scalarField calculateFaceHeights() const;
 
-        //- Initialize correlations dict
-        virtual dictionary initCorrelationsDict(const dictionary& dict);
+        //- Validate geometry and required user inputs
+        void validateGeometry() const;
+
+        //- Update face heights when needed
+        void updateFaceHeightsIfNeeded();
+
+        //- Compute solid-side conductance alphaP
+        scalarField computeSolidSideConductance() const;
+
+        //- Compute wall heat flux from current wall temperature estimate
+        void computeHeatFlux(const scalarField& alphaP);
+
+        //- Solve pre-CHF wall temperature for a target heat flux.
+        //  Self-consistent: finds T_w such that q_SB(T_w) = qTarget.
+        scalar solvePreCHFTemperature
+        (
+            const label faceI,
+            const scalar qTarget
+        ) const;
+
+        //- Solve film-boiling wall temperature for a target heat flux.
+        //  Self-consistent: finds T_w such that q_FB(T_w) = qTarget.
+        scalar solveFilmBoilingTemperature
+        (
+            const label faceI,
+            const scalar qTarget
+        ) const;
+
 
 public:
 
-    //- Runtime type information
     TypeName("coolantChannel");
 
 
@@ -410,18 +204,17 @@ public:
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
             const dictionary&,
-            const bool valueRequired=true
+            const bool valueRequired = true
         );
 
-        //- Construct by mapping given coolantChannelfvPatchScalarField
-        //  onto a new patch
+        //- Construct by mapping given field onto a new patch
         coolantChannelfvPatchScalarField
         (
             const coolantChannelfvPatchScalarField&,
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
             const fvPatchFieldMapper&,
-            const bool mappingRequired=true
+            const bool mappingRequired = true
         );
 
         //- Construct as copy setting internal field reference
@@ -431,7 +224,16 @@ public:
             const DimensionedField<scalar, volMesh>&
         );
 
-        //- Construct and return a clone setting internal field reference
+        //- Clone
+        virtual tmp<fvPatchScalarField> clone() const
+        {
+            return tmp<fvPatchScalarField>
+            (
+                new coolantChannelfvPatchScalarField(*this)
+            );
+        }
+
+        //- Clone setting internal field reference
         virtual tmp<fvPatchScalarField> clone
         (
             const DimensionedField<scalar, volMesh>& iF
@@ -444,55 +246,38 @@ public:
         }
 
 
-    // Member functions
-    
-        //- Return true if this patch field fixes a value.
-        //  Needed to check if a level has to be specified while solving
-        //  Poissons equations.
+    // Member Functions
+
         virtual bool fixesValue() const
         {
             return true;
         }
 
-        // Mapping functions
-        
-        //- Update the coefficients associated with the patch field
         virtual void updateCoeffs();
 
-        //- Evaluate the patch field
         virtual void evaluate
         (
-            const Pstream::commsTypes commsType=Pstream::commsTypes::blocking
+            const Pstream::commsTypes commsType = Pstream::commsTypes::blocking
         );
 
-        //- Return the matrix diagonal coefficients corresponding to the evaluation of the value of this patchField
-        virtual tmp<Field<scalar> > valueInternalCoeffs
+        virtual tmp<Field<scalar>> valueInternalCoeffs
         (
             const tmp<scalarField>&
         ) const;
 
-        //- Return the matrix source coefficients corresponding to the evaluation of the value of this patchField,
-        virtual tmp<Field<scalar> > valueBoundaryCoeffs
+        virtual tmp<Field<scalar>> valueBoundaryCoeffs
         (
             const tmp<scalarField>&
         ) const;
 
-        //- Return the matrix diagonal coefficients corresponding to the evaluation of the gradient of this patchField
-        virtual tmp<Field<scalar> > gradientInternalCoeffs() const;
+        virtual tmp<Field<scalar>> gradientInternalCoeffs() const;
 
-        //- Return the matrix source coefficients corresponding to the evaluation of the gradient of this patchField
-        virtual tmp<Field<scalar> > gradientBoundaryCoeffs() const;
-        
-        //- Write to an output stream
+        virtual tmp<Field<scalar>> gradientBoundaryCoeffs() const;
+
         virtual void write(Ostream&) const;
 };
 
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
 } // End namespace Foam
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #endif
 

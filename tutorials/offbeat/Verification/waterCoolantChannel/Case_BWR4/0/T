@@ -55,11 +55,13 @@ boundaryField
     {
         type            coolantChannel;
         value           uniform 300.0;
+            kappa                   k;
         hydraulicDiameter 0.012011;
         massFlowRate    uniform 0.2214;
         relaxHTC 0.1;
         enthalpyModel 1;
         flowArea 1.03308e-4;
+            flowDirection           1.0;
         enthalpyModel 1;
         inletTemperatureList    
         {
@@ -73,12 +75,12 @@ boundaryField
         };
         correlations
         {
-            ONB                 Basu;
-            CHF                 lookuptableGroeneveld;
-            SubcooledBoiling    Rohsenow;
-            SaturatedBoiling    Rohsenow;
-            Leidenfrost         GroeneveldStewartCorrected;
-            FilmBoiling         GroeneveldAnnular; 
+            onb                 Basu;
+            chf                 GroeneveldTable;
+            subcooledBoiling    Rohsenow;
+            saturatedBoiling    Rohsenow;
+            leidenfrost         GroeneveldStewartCorrected;
+            filmBoiling         GroeneveldAnnular; 
         }
     }
 }
