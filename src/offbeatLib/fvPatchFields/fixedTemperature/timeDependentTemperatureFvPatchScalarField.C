@@ -55,7 +55,7 @@ timeDependentTemperatureFvPatchScalarField
 :
     fixedTemperatureFvPatchScalarField(p, iF, dict, valueRequired),    
     tempSeries_()
-{          
+{    
 #ifdef OPENFOAMFOUNDATION 
     tempSeries_.set
     ( 
@@ -65,11 +65,16 @@ timeDependentTemperatureFvPatchScalarField
         )
     );
 #elif OPENFOAMESI
+    word listCoeffsName = "temperatureSeries";
+    if(dict.found("temperatureSeriesCoeffs"))
+    {
+        listCoeffsName = "temperatureSeriesCoeffs";
+    }
     tempSeries_.reset
-    ( 
-        new Table
+    (
+        new scalarTable
         (
-            "temperatureSeries", dict.subDict("temperatureSeries")
+            "temperatureSeries", dict.subDict(listCoeffsName)
         )
     );
 #endif
@@ -141,14 +146,11 @@ void Foam::timeDependentTemperatureFvPatchScalarField::write(Ostream& os) const
 
     if (tempSeries_.valid())
     {
-        os.writeKeyword("temperatureSeries") << nl;
-        os << token::BEGIN_BLOCK << nl;
-#ifdef OPENFOAMFOUNDATION  
+#ifdef OPENFOAMFOUNDATION
         tempSeries_->write(os);
 #elif OPENFOAMESI
         tempSeries_->writeData(os);
 #endif
-        os << token::END_BLOCK << nl;
     }
 }
 
