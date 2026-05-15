@@ -411,6 +411,8 @@ void Foam::rheologyByMaterial::correctModifiedPlaneStrain
     // forces depend on the axial displacement (and displacement depends on epsZ),
     // we iterate with relaxation until the average axial force converges.
 
+    const scalar pi = Foam::constant::mathematical::pi;
+
     if (!mesh_.foundObject<sliceMapper>("sliceMapper"))
     {
         return;
@@ -933,8 +935,7 @@ void Foam::rheologyByMaterial::correctModifiedPlaneStrain
         {
             if (gapWidth_1D[sliceID] < 0.0)
             {
-                const scalar sliceA =
-                    volumePerSlice[sliceID]/(angularFraction*sliceHeights[sliceID]);
+                const scalar sliceA = 2*pi*fuelTopMaxR*sliceHeights[sliceID];
 
                 const scalar muEff = min(muOwn_1D[sliceID], muNbr_1D[sliceID]);
 
@@ -950,7 +951,7 @@ void Foam::rheologyByMaterial::correctModifiedPlaneStrain
                   + (dispOwn_1D[sliceID] - dispOldOwn_1D[sliceID])
                   - (dispNbr_1D[sliceID] - dispOldNbr_1D[sliceID]);
 
-                const scalar frictionTrial = stiffness*slip_()[sliceID];
+                const scalar frictionTrial = stiffness*slip_()[sliceID] / sliceHeights[sliceID];
 
                 // Optional scaling for the fitting/transition (kept as you intended)
                 const scalar fittingPenaltyCoeff =
@@ -986,8 +987,6 @@ void Foam::rheologyByMaterial::correctModifiedPlaneStrain
             );
         }
 #endif
-
-        const scalar pi = Foam::constant::mathematical::pi;
 
         // Total spring elongation (fuel relative to clad)
         const scalar springDisp =
