@@ -298,6 +298,49 @@ coolantChannelModel::coolantChannelModel
         initializeAxialProfile(dict);
     }
 
+    // Seed coolant state from stored values (restart) or inlet conditions so
+    // that the first write() before any updateCoeffs() emits meaningful values.
+    if (dict.found("T0"))
+    {
+        T0_ = scalarField("T0", dict, nFaces);
+    }
+    else if (inletTemperature_ > 0)
+    {
+        T0_ = inletTemperature_;
+    }
+
+    if (enthalpyModel_ && inletTemperature_ > 0)
+    {
+        if (dict.found("coolantEnthalpy"))
+        {
+            coolantEnthalpy_ = scalarField("coolantEnthalpy", dict, nFaces);
+            hOld_ = coolantEnthalpy_;
+        }
+        else
+        {
+            // Use uniform inlet enthalpy as first-write placeholder.
+            // First-call detection in updateBulkState will re-initialise
+            // properly on the first solve.
+            const scalar hInlet =
+                IF97::hmass_Tp(inletTemperature_, coolantPressure_[0]);
+            coolantEnthalpy_ = hInlet;
+            hOld_            = hInlet;
+        }
+
+        if (dict.found("rho"))
+        {
+            rho_    = scalarField("rho", dict, nFaces);
+            rhoOld_ = rho_;
+        }
+        else
+        {
+            const scalar rhoInlet =
+                IF97::rhomass_phmass(coolantPressure_[0], coolantEnthalpy_[0]);
+            rho_    = rhoInlet;
+            rhoOld_ = rhoInlet;
+        }
+    }
+
     validate();
 }
 

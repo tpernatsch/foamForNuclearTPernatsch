@@ -150,9 +150,6 @@ private:
         //- Wall heat flux
         scalarField heatFlux_;
 
-        //- Wall temperature
-        scalarField Twall_;
-
         //- Face heights used for axial coolant temperature interpolation
         scalarField faceHeights_;
 

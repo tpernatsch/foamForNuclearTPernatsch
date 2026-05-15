@@ -159,8 +159,7 @@ void coolantChannelRIAfvPatchScalarField::computeHeatFlux
     const scalarField& alphaP
 )
 {
-    Twall_ = *this;
-    heatFlux_ = (patchInternalField() - Twall_) * alphaP;
+    heatFlux_ = (patchInternalField() - *this) * alphaP;
 }
 
 
@@ -261,7 +260,6 @@ coolantChannelRIAfvPatchScalarField::coolantChannelRIAfvPatchScalarField
     relax_(1.0),
     timeCheck_(0.0),
     heatFlux_(p.size(), 0.0),
-    Twall_(p.size(), 0.0),
     faceHeights_(p.size(), 0.0),
     filmBoilingRIACorrection_(5.0),
     filmBoilingRIACorrectionDuration_(15.0),
@@ -307,7 +305,6 @@ coolantChannelRIAfvPatchScalarField::coolantChannelRIAfvPatchScalarField
     relax_(dict.lookupOrDefault<scalar>("relax", 1)),
     timeCheck_(0.0),
     heatFlux_(p.size(), 0.0),
-    Twall_(p.size(), 0.0),
     faceHeights_(p.size(), 0.0),
     filmBoilingRIACorrection_
     (
@@ -421,7 +418,6 @@ coolantChannelRIAfvPatchScalarField::coolantChannelRIAfvPatchScalarField
     relax_(ptf.relax_),
     timeCheck_(ptf.timeCheck_),
     heatFlux_(ptf.heatFlux_),
-    Twall_(ptf.Twall_),
     faceHeights_(ptf.faceHeights_),
     filmBoilingRIACorrection_(ptf.filmBoilingRIACorrection_),
     filmBoilingRIACorrectionDuration_(ptf.filmBoilingRIACorrectionDuration_),
@@ -459,7 +455,6 @@ coolantChannelRIAfvPatchScalarField::coolantChannelRIAfvPatchScalarField
     relax_(ptf.relax_),
     timeCheck_(ptf.timeCheck_),
     heatFlux_(ptf.heatFlux_),
-    Twall_(ptf.Twall_),
     faceHeights_(ptf.faceHeights_),
     filmBoilingRIACorrection_(ptf.filmBoilingRIACorrection_),
     filmBoilingRIACorrectionDuration_(ptf.filmBoilingRIACorrectionDuration_),
@@ -488,7 +483,7 @@ void coolantChannelRIAfvPatchScalarField::updateCoeffs()
     {
         return;
     }
-
+    
     updateFaceHeightsIfNeeded();
 
     const scalar userTime =
@@ -499,25 +494,18 @@ void coolantChannelRIAfvPatchScalarField::updateCoeffs()
 
     coolant_.updateBoundaryInputs(userTime);
 
-    const globalOptions& globalOpt
-    (
-        patch().boundaryMesh().mesh().lookupObject<globalOptions>("globalOptions")
+    const fvPatch& p = this->patch();
+    const vector pinDir(
+        p.patch().boundaryMesh().mesh().foundObject<globalOptions>("globalOptions")?
+        p.patch().boundaryMesh().mesh().lookupObject<globalOptions>("globalOptions").pinDirection() :
+        vector(0, 0, 1) // Default pin direction if globalOptions or pinDirection is not found
     );
-    const vector pinDir(globalOpt.pinDirection());
 
     const scalarField zetas = patch().Cf() & pinDir;
     const scalarField radii = mag(patch().Cf() - zetas*pinDir);
 
     const scalarField alphaP = computeSolidSideConductance();
     computeHeatFlux(alphaP);
-
-    Info << "Updating coolant bulk state with:" << endl
-         << "  time = " << this->db().time().value() << endl
-         << "  userTime = " << userTime << endl
-         << "  zetas = " << zetas << endl
-         << "  radii = " << radii << endl
-         << "  faceHeights = " << faceHeights_ << endl
-         << "  heatFlux = " << heatFlux_ << endl;
 
     const scalar deltaT =
         patch().boundaryMesh().mesh().time().deltaTValue();
@@ -532,8 +520,6 @@ void coolantChannelRIAfvPatchScalarField::updateCoeffs()
         deltaT
     );
 
-    Info << " finished updating coolant bulk state." << endl;
-
     // Advance per-face flags and vaporized thickness at new timestep
     advanceTimeStep();
 
@@ -546,7 +532,7 @@ void coolantChannelRIAfvPatchScalarField::updateCoeffs()
     {
         const scalar p  = coolant_.coolantPressure()[i];
         const scalar T0 = coolant_.T0()[i];
-        const scalar Tw = Twall_[i];
+        const scalar Tw = (*this)[i];
 
         const scalar Tsat         = IF97::Tsat97(p);
         const scalar TCHF         = Tsat + onbdTBessiron_;
@@ -763,8 +749,6 @@ void coolantChannelRIAfvPatchScalarField::updateCoeffs()
         h_[i] = max(h_[i], SMALL);
     }
 
-    Twall_ = alpha_*patchInternalField() + (1.0 - alpha_)*coolant_.T0();
-
     fvPatchField<scalar>::updateCoeffs();
 }
 
@@ -845,8 +829,8 @@ void coolantChannelRIAfvPatchScalarField::write(Ostream& os) const
     conductionTime_.writeEntry("conductionTime", os);
     filmBoilingTime_.writeEntry("filmBoilingTime", os);
     heatFlux_.writeEntry("heatFlux", os);
-    Twall_.writeEntry("value", os);
     h_.writeEntry("h", os);
+    writeValueEntry(os);
 }
 
 

@@ -143,9 +143,6 @@ private:
         //- Wall heat flux
         scalarField heatFlux_;
 
-        //- Wall temperature
-        scalarField Twall_;
-
         //- Face heights used for axial integration of the coolant energy balance
         scalarField faceHeights_;
 

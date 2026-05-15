@@ -42,12 +42,11 @@ scalarField coolantChannelfvPatchScalarField::calculateFaceHeights() const
     const fvPatch& p = this->patch();
     const pointField& localPoints = p.patch().localPoints();
 
-    const globalOptions& globalOpt
-    (
-        p.patch().boundaryMesh().mesh().lookupObject<globalOptions>("globalOptions")
+    const vector pinDir(
+        p.patch().boundaryMesh().mesh().foundObject<globalOptions>("globalOptions")?
+        p.patch().boundaryMesh().mesh().lookupObject<globalOptions>("globalOptions").pinDirection() :
+        vector(0, 0, 1) // Default pin direction if globalOptions or pinDirection is not found
     );
-
-    const vector pinDir(globalOpt.pinDirection());
 
     scalarField faceHeights(p.size(), 0.0);
 
@@ -161,8 +160,7 @@ void coolantChannelfvPatchScalarField::computeHeatFlux
     const scalarField& alphaP
 )
 {
-    Twall_ = *this;
-    heatFlux_ = (patchInternalField() - Twall_) * alphaP;
+    heatFlux_ = (patchInternalField() - *this) * alphaP;
 }
 
 
@@ -287,7 +285,6 @@ coolantChannelfvPatchScalarField::coolantChannelfvPatchScalarField
     relax_(1.0),
     timeCheck_(0.0),
     heatFlux_(p.size(), 0.0),
-    Twall_(p.size(), 0.0),
     faceHeights_(p.size(), 0.0)
 {}
 
@@ -317,7 +314,6 @@ coolantChannelfvPatchScalarField::coolantChannelfvPatchScalarField
     relax_(dict.lookupOrDefault<scalar>("relax", 1.0)),
     timeCheck_(0.0),
     heatFlux_(p.size(), 0.0),
-    Twall_(p.size(), 0.0),
     faceHeights_(p.size(), 0.0)
 {
     if (chf_.model() == chfModel::Model::GroeneveldTable)
@@ -363,7 +359,6 @@ coolantChannelfvPatchScalarField::coolantChannelfvPatchScalarField
     relax_(ptf.relax_),
     timeCheck_(ptf.timeCheck_),
     heatFlux_(ptf.heatFlux_),
-    Twall_(ptf.Twall_),
     faceHeights_(ptf.faceHeights_)
 {}
 
@@ -391,7 +386,6 @@ coolantChannelfvPatchScalarField::coolantChannelfvPatchScalarField
     relax_(ptf.relax_),
     timeCheck_(ptf.timeCheck_),
     heatFlux_(ptf.heatFlux_),
-    Twall_(ptf.Twall_),
     faceHeights_(ptf.faceHeights_)
 {}
 
@@ -415,12 +409,12 @@ void coolantChannelfvPatchScalarField::updateCoeffs()
 
     coolant_.updateBoundaryInputs(userTime);
 
-    const globalOptions& globalOpt
-    (
-        patch().boundaryMesh().mesh().lookupObject<globalOptions>("globalOptions")
+    const fvPatch& p = this->patch();
+    const vector pinDir(
+        p.patch().boundaryMesh().mesh().foundObject<globalOptions>("globalOptions")?
+        p.patch().boundaryMesh().mesh().lookupObject<globalOptions>("globalOptions").pinDirection() :
+        vector(0, 0, 1) // Default pin direction if globalOptions or pinDirection is not found
     );
-
-    const vector pinDir(globalOpt.pinDirection());
 
     const scalarField zetas = patch().Cf() & pinDir;
     const scalarField radii = mag(patch().Cf() - zetas*pinDir);
@@ -443,7 +437,7 @@ void coolantChannelfvPatchScalarField::updateCoeffs()
         deltaT
     );
 
-    coolant_.updateDerivedState(Twall_);
+    coolant_.updateDerivedState(*this);
 
     // Pre-compute non-local patch quantities for CHF (no-op for non-EPRI models)
     chf_.precompute
@@ -462,7 +456,7 @@ void coolantChannelfvPatchScalarField::updateCoeffs()
     {
         const scalar p  = coolant_.coolantPressure()[i];
         const scalar T0 = coolant_.T0()[i];
-        const scalar Tw = Twall_[i];
+        const scalar Tw = (*this)[i];
         const scalar G  = coolant_.massFlowRate()[i] / coolant_.A();
         const scalar Q  = coolant_.Q()[i];
 
@@ -571,7 +565,6 @@ void coolantChannelfvPatchScalarField::updateCoeffs()
     }
 
     alpha_ = alphaP/(alphaP + h_);
-    Twall_ = alpha_*patchInternalField() + (1.0 - alpha_)*coolant_.T0();
 
     timeCheck_ = this->db().time().value();
 
@@ -638,8 +631,8 @@ void coolantChannelfvPatchScalarField::write(Ostream& os) const
     os.writeEntry("correlations", correlations_);
 
     heatFlux_.writeEntry("heatFlux", os);
-    Twall_.writeEntry("value", os);
     h_.writeEntry("h", os);
+    writeValueEntry(os);
 }
 
 
