@@ -71,7 +71,7 @@ Foam::HastelloyN::HastelloyN
 )
 :
     materialModel(mesh, materialModelDict, addr),
-    swelling_(swellingModel::New(mesh, materialModelDict, "WrightShamHastelloyN"))
+    swelling_(swellingModel::New(mesh, materialModelDict, "none"))
 {
     density_ =
     densityModel::New(mesh, materialModelDict, "constant");

@@ -22,12 +22,12 @@ options:
     description: |
       Conversion factor applied to the flux/fluence input.
   - key: radialCoefficients
-    type: dict
+    type: list[scalar]
     required: true
     description: |
       Model data table.
   - key: tangentialCoefficients
-    type: dict
+    type: list[scalar]
     required: true
     description: |
       Model data table.

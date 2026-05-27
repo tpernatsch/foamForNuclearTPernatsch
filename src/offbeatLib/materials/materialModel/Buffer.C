@@ -94,7 +94,7 @@ Foam::Buffer::Buffer
     thermalExpansionModel::New(mesh, materialModelDict, "BufferParfume");
 
     swelling_ =
-    (swellingModel::New(mesh, materialModelDict, "BufferParfume"));
+    (swellingModel::New(mesh, materialModelDict, "none"));
 }
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //

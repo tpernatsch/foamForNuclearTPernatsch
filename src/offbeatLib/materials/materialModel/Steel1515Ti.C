@@ -71,7 +71,7 @@ Foam::Steel1515Ti::Steel1515Ti
 )
 :
     materialModel(mesh, materialModelDict, addr),
-    swelling_(swellingModel::New(mesh, materialModelDict, "Steel1515TiGeneralized"))
+    swelling_(swellingModel::New(mesh, materialModelDict, "none"))
 {
     density_ =
         densityModel::New(mesh, materialModelDict, "Steel1515TiSchumann");

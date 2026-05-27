@@ -60,7 +60,7 @@ options:
   - key: swellingModel
     type: word
     required: false
-    default: Steel1515TiGeneralized
+    default: none
     description: |
       Selects the swelling (irradiation-induced strain) model used by the
       `Steel1515Ti` material.

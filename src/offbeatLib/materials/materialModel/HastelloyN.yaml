@@ -59,7 +59,7 @@ options:
   - key: swellingModel
     type: word
     required: false
-    default: WrightShamHastelloyN
+    default: none
     description: |
       Selects the irradiation-induced swelling model used by the `HastelloyN`
       material.
