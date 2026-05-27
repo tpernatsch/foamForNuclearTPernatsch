@@ -55,7 +55,7 @@ class MechanicsSubSolver(FoamForNuclearDict):
     sphericalStress: bool = False
     RhieChowCorrection: bool = True
     RhieChowScaleFactor: float | int = 1.0
-    multiMaterialCorrection: multi_material.MultiMaterialInterface = field(factory=lambda: multi_material.Uniform(defaultWeights=1, defaultWeightsGrad=0))
+    multiMaterialCorrection: multi_material.MultiMaterialInterface = field(factory=lambda: multi_material.Uniform(defaultWeights=1, defaultWeightsGrad=1))
 
 Constant = MechanicsSubSolver  # alias
 

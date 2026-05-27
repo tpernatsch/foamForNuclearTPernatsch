@@ -103,3 +103,15 @@ tutorials/**/*.baffleLess/polyMesh
 
 # Tools
 tools/**/build
+
+# TRISO benchmark reference figures — SVGs are TECDOC-derived (copyright); commit only the extracted Excel
+pythonapi/tutorials/fuel_behavior/triso_benchmarks/reference_figures/*.svg
+pythonapi/tutorials/fuel_behavior/triso_benchmarks/reference_figures/*.png
+pythonapi/tutorials/fuel_behavior/triso_fp_diffusion/reference_figures/*.svg
+pythonapi/tutorials/fuel_behavior/triso_fp_diffusion/reference_figures/*.png
+
+# Generated output figures in benchmark case folders
+pythonapi/tutorials/fuel_behavior/triso_benchmarks/**/figures/*.png
+pythonapi/tutorials/fuel_behavior/triso_benchmarks/**/figures/*.svg
+pythonapi/tutorials/fuel_behavior/triso_fp_diffusion/**/figures/*.png
+pythonapi/tutorials/fuel_behavior/triso_fp_diffusion/**/figures/*.svg

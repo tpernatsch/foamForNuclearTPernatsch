@@ -258,21 +258,34 @@ elementTransport = physicsSubSolvers/elementTransport
 $(elementTransport)/elementTransport.C
 $(elementTransport)/elementTransportByList.C
 $(elementTransport)/transportSolvers/transportSolver.C
-$(elementTransport)/transportSolvers/AmRedistributionSolver.C
-$(elementTransport)/transportSolvers/PuRedistributionSolver.C
-$(elementTransport)/transportSolvers/porosityTransportSolver.C
-$(elementTransport)/transportSolvers/porosityTransportDynMeshSolver.C
-$(elementTransport)/transportSolvers/fissionProductsDiffusionSolver.C
 
-diffusionCoefficient = physicsSubSolvers/elementTransport/diffusionCoefficient
+diffusionCoefficient = $(elementTransport)/diffusionCoefficient
 $(diffusionCoefficient)/diffCoefModel.C
-$(diffusionCoefficient)/diffCoefKernel.C
+$(diffusionCoefficient)/diffCoefUO2.C
 $(diffusionCoefficient)/diffCoefPyC.C
 $(diffusionCoefficient)/diffCoefSiC.C
 $(diffusionCoefficient)/diffCoefGraphite.C
 $(diffusionCoefficient)/diffCoefArrhenius.C
 
-poreVelocityModels = $(elementTransport)/transportSolvers/poreVelocityModel
+fissionProductsDiffusion = $(elementTransport)/transportSolvers/fissionProductsDiffusion
+$(fissionProductsDiffusion)/fissionProductsDiffusionSolver.C
+
+yieldModels = $(fissionProductsDiffusion)/yieldModels
+$(yieldModels)/fpYieldModel.C
+$(yieldModels)/fpYieldConstant.C
+$(yieldModels)/fpYieldEnrichmentDependent.C
+$(yieldModels)/fpYieldBurnupDependent.C
+$(yieldModels)/fpYieldUO2.C
+
+actinideRedistribution = $(elementTransport)/transportSolvers/actinideRedistribution
+$(actinideRedistribution)/AmRedistributionSolver.C
+$(actinideRedistribution)/PuRedistributionSolver.C
+
+porosityTransport = $(elementTransport)/transportSolvers/porosityTransport
+$(porosityTransport)/porosityTransportSolver.C
+$(porosityTransport)/porosityTransportDynMeshSolver.C
+
+poreVelocityModels = $(porosityTransport)/poreVelocityModel
 $(poreVelocityModels)/poreVelocityModel.C
 $(poreVelocityModels)/poreVelocityConstant.C
 $(poreVelocityModels)/poreVelocityMOXLackey.C

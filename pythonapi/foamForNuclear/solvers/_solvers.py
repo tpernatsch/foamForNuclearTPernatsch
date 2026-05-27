@@ -12,7 +12,7 @@ from foamForNuclear.common import *
 from foamForNuclear.checkvalue import check_type, CheckedList
 from foamForNuclear.mesh.dicts import DecomposeParDict
 from foamForNuclear.mesh.dicts import DynamicMeshDict
-from foamForNuclear.fields import Field
+from foamForNuclear.fields import Field, GapGas
 from foamForNuclear.numerics import fvSchemes, fvSolution
 from foamForNuclear.mesh.mesh import Mesh
 from foamForNuclear.preprocessing import SetFieldRegion, SetFieldsDict
@@ -78,7 +78,7 @@ class Solver:
     region: str = field(default="")
     solver: str = field(default="none")
     removeBaffles: bool = False
-    fields: list[Field] = field(factory=list)
+    fields: list[Field | GapGas] = field(factory=list)
     timeFolder: TimeFolder | None = None
     mesh: Mesh | None = None
     isMeshDeformation: bool = False

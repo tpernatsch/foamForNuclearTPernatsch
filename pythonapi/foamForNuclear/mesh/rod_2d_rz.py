@@ -253,6 +253,11 @@ def rod_2d_rz(
         bc_fuel_outer.add_sub_face(fuel_block.rightFace())
         bm.add_boundary(bc_fuel_outer)
 
+        if fuel_ri > 0:
+            bc_fuel_inner = mesh.Face(name="fuelInner")
+            bc_fuel_inner.add_sub_face(fuel_block.leftFace())
+            bm.add_boundary(bc_fuel_inner)
+
     elif has_clad and not has_fuel:
         bc_clad_inner = mesh.Face(name="cladInner")
         bc_clad_inner.add_sub_face(clad_block.leftFace())

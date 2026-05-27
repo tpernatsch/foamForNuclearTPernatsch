@@ -208,7 +208,7 @@ void Foam::diffCoefPyC::updateCoef
 {
   //1. If the material is considered broken, then the diffCoefs for all the species
   //are set to 1e-6. //For Iaea benchmark Cases;
-  if (crackFp_)
+  if (isCracked())
   {
     forAll(addr, i)
     {

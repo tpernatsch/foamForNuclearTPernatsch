@@ -23,6 +23,22 @@ from io import StringIO
 
 import foamlib
 
+def _register_fp_fvSolution(inst, value):
+    """Add N_.* solver entry to fvSolution when FpDiffusion is assigned."""
+    from foamForNuclear.offbeat_lib.element_transport.models import FpDiffusion
+    from copy import copy
+    if not isinstance(value, FpDiffusion):
+        return
+    try:
+        fvSol = inst.fvSolution
+    except AttributeError:
+        return  # fvSolution not yet initialised (constructor path; __attrs_post_init__ handles it)
+    if fvSol is None or "N_.*" in fvSol.solvers:
+        return
+    fvSol.solvers["N_.*"] = copy(fvSol.solvers["T"])
+    inst.add_relaxation_on_field("N_.*", 0.9)
+
+
 #==============================================================================*
 # OFFBEAT Main Solver
 
@@ -117,7 +133,14 @@ class Offbeat(Solver):
     thermalSolver: thermal_solver.ThermalSolver | None = None
     mechanicsSolver: mechanics_solver.MechanicsSolver | None = None
     neutronicsSolver: neutronics_solver.NeutronicsSolver | None = None
-    elementTransportSolver: ElementTransportSolver | None = None
+    elementTransportSolver: ElementTransportSolver | None = field(
+        default=None,
+        on_setattr=attr.setters.pipe(
+            attr.setters.convert,
+            attr.setters.validate,
+            lambda inst, attrib, value: _register_fp_fvSolution(inst, value) or value,
+        ),
+    )
     materials: list[materials.Material] = field(factory=list)
     rheology: rheology.Rheology | None = None
     heatSource: heat_source.HeatSource | None = field(factory=heat_source.Constant)
@@ -144,6 +167,9 @@ class Offbeat(Solver):
             self.set_fvSolution_default()
         if self.isSetFvSchemesToDefault:
             self.set_fvSchemes_default()
+
+        # Construction-time path: on_setattr fired before fvSolution existed
+        _register_fp_fvSolution(self, self.elementTransportSolver)
 
         super().__attrs_post_init__()
 
@@ -206,8 +232,8 @@ class Offbeat(Solver):
         self.stressAnalysis.useRelResT = False
         # self.stressAnalysis.relD = 1e-5
         # self.stressAnalysis.relT = 1e-5
-        self.stressAnalysis.absErrD = 0
-        self.stressAnalysis.absErrT = 0
+        self.stressAnalysis.absErrD = 1e-9
+        self.stressAnalysis.absErrT = 1e-4
 
         self.add_relaxation_on_field('D', 0.9)
         self.add_relaxation_on_field('T', 0.9)

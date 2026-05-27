@@ -183,7 +183,7 @@ class Case:
         self._functions: FunctionObjects = FunctionObjects(owner=self)
         self.solvers: Solvers = Solvers() if solvers is None else solvers
         self.coupling: Coupling = coupling
-        self.fields: list[Field] = CheckedList(Field, "fields") if fields is None else CheckedList(fields)
+        # self.fields: list[Field] = CheckedList(Field, "fields") if fields is None else CheckedList(fields)
         self.timeFolders: list[TimeFolder] = [] if timeFolders is None else list(timeFolders)
         self.externalCouplingDict: ExternalCouplingDict = externalCouplingDict
 
@@ -423,6 +423,9 @@ class Case:
 
 
     def export_to_openfoam(self):
+        """
+        Export the case to an OpenFOAM-compatible directory structure.
+        """
         # Create case folder
         for i, folder in enumerate(self.caseFolder.split("/")):
             folder = '/'.join(self.caseFolder.split('/')[:i+1])
@@ -469,37 +472,37 @@ class Case:
         # Export solvers (each solver is now responsible for exporting its own fields)
         self.solvers.export_to_openfoam()
 
-        # Legacy support: still export case-level time folders if they are used
-        if self.timeFolders:
-            # build region → mesh mapping from solvers
-            region_meshes: dict[str | None, Mesh] = {}
-            for solver in self.solvers:
-                region_name = getattr(solver, "region", None)
-                mesh = getattr(solver, "mesh", None)
-                if mesh is not None:
-                    region_meshes[region_name] = mesh
+        # # Legacy support: still export case-level time folders if they are used
+        # if self.timeFolders:
+        #     # build region → mesh mapping from solvers
+        #     region_meshes: dict[str | None, Mesh] = {}
+        #     for solver in self.solvers:
+        #         region_name = getattr(solver, "region", None)
+        #         mesh = getattr(solver, "mesh", None)
+        #         if mesh is not None:
+        #             region_meshes[region_name] = mesh
 
-            # Sync self.fields -> timeFolders (legacy path, typically t=0)
-            if self.fields:
-                # make sure there is at least one folder
-                if not self.timeFolders:
-                    self.timeFolders.append(TimeFolder(0.0))
+        #     # Sync self.fields -> timeFolders (legacy path, typically t=0)
+        #     if self.fields:
+        #         # make sure there is at least one folder
+        #         if not self.timeFolders:
+        #             self.timeFolders.append(TimeFolder(0.0))
 
-                # choose where to put initial fields: earliest time folder
-                t0_folder = min(self.timeFolders, key=lambda tf: tf.time)
+        #         # choose where to put initial fields: earliest time folder
+        #         t0_folder = min(self.timeFolders, key=lambda tf: tf.time)
 
-                # avoid duplicates if fields were already added via add_field
-                existing = {(fld.name, getattr(fld, "region", "")) for fld in t0_folder}
+        #         # avoid duplicates if fields were already added via add_field
+        #         existing = {(fld.name, getattr(fld, "region", "")) for fld in t0_folder}
 
-                for fld in self.fields:
-                    key = (fld.name, getattr(fld, "region", ""))
-                    if key not in existing:
-                        self.add_field(fld, time=t0_folder.time)
-                        existing.add(key)
+        #         for fld in self.fields:
+        #             key = (fld.name, getattr(fld, "region", ""))
+        #             if key not in existing:
+        #                 self.add_field(fld, time=t0_folder.time)
+        #                 existing.add(key)
 
-            # export legacy case-level time folders
-            for timeFolder in self.timeFolders:
-                timeFolder.export_to_openfoam(region_meshes=region_meshes)
+        #     # export legacy case-level time folders
+        #     for timeFolder in self.timeFolders:
+        #         timeFolder.export_to_openfoam(region_meshes=region_meshes)
 
         # Return to the current directory
         os.chdir(cwd)
@@ -1098,57 +1101,45 @@ class Case:
             fps: int=None,
             offset: tuple=(0, 0, 0),
             limits: list[float]=None,
-            fig_dir: str="",
-            timeScale: float=1,
-            timeOffset: float=0,
-            timeUnit: str="s",
-            minTime: float=None,
-            maxTime: float=None,
+            fig_dir: str=""
         ):
         """
-        Plot animation over all time steps. A uniform time stepping is
-        recommanded for a nice render.
+        Plot an animation over all available time steps.
+
+        A uniform time stepping is recommended for a smooth animation.
 
         Parameters
         ----------
         region : str | Mesh
-            Name of the region
-        fieldName : str
-            Field name to color the mesh
-        cmap : str
-            Colormap name based on the values of the `fieldName`
-        normal : str
-            Change camera view along the specified axis (`x`, `y`, or `z`)
-        lighting : bool
-            Use light on the mesh (default `True`)
+            Region name, or mesh object from which the region name is taken.
+        fieldName : str, optional
+            Field used to color the mesh.
+        cmap : str, optional
+            Colormap used for `fieldName`.
+        normal : str, optional
+            Camera direction (`x`, `y`, or `z`). If provided, a slice is shown.
+        lighting : bool, default True
+            Whether lighting is enabled.
         show_edges : bool, default False
-            Show mesh edges
-        unit : str, default '-'
-            Add unit to the color
+            Whether mesh edges are shown.
+        unit : str, default "-"
+            Unit displayed in the color bar title.
         isVerticalLegend : bool, default True
-            If true, the color bar is vertical, else it is horizontal
-        threshold : list, default None
-            If provided, apply a threshold onto the mesh (e.g `[0.9, 1.1]`)
-        thresholdFieldName : str, default None
-            Name of the threshold field, can be different from `fieldName`
-        fps : int, default None
-            Number of frame per second in the gif. If default to `None`, the fps
-            will be computed to as `1/(timeStep[1] - timeStep[0])`
-        limits : list[float]
-            Limit the colormap range (default `None`).
-        timeScale : float
-            Scale the text time by a factor `timeScale`. E.g,
-            `timeScale = 1/3600` converts in hours Default `1`.
-        timeOffset : float
-            Offset the text time by `timeOffset` seconds. Default `0`.
-        timeUnit : str
-            Unit of time printed next to the text. Default `s`.
-        minTime : float
-            Time stamp at which the render starts. Default `None`, which is the
-            minimum in the case folder.
-        maxTime : float
-            Time stamp at which the render ends. Default `None`, which is the
-            maximum in the case folder.
+            Whether the color bar is vertical.
+        threshold : list, optional
+            Threshold interval applied to the mesh, for example `[0.9, 1.1]`.
+        thresholdFieldName : str, optional
+            Field used for the threshold operation. It can be different from
+            `fieldName`.
+        fps : int, optional
+            Frames per second of the GIF. If None, it is estimated from the time
+            step spacing.
+        offset : tuple, default (0, 0, 0)
+            Translation applied to the displayed slice.
+        limits : list[float], optional
+            Color limits. Use `None` for automatic bounds.
+        fig_dir : str, default ""
+            Directory where the GIF is saved.
         """
         regionName = region
         if (isinstance(region, Mesh)):
@@ -1211,7 +1202,7 @@ class Case:
                 clim=limits
             )
             plotter.add_text(
-                f"{(time - timeOffset)*timeScale} {timeUnit}",
+                f"{time} s",
                 position='upper_left',
             )
 
@@ -1253,18 +1244,13 @@ class Case:
                 camera_position = 'xy'
             ext += "_" + camera_position
 
-        # Open a gif        
+        # Open a gif
         if (fig_dir != ""):
             fig_dir += "/"
 
         plotter.open_gif(f'{fig_dir}fig_results_{regionName}_{fieldName}{ext}.gif', fps=fps)
 
         for time in tqdm.tqdm(reader.time_values, desc=f"Render {fieldName}{ext}", unit='frame'):
-            if (minTime is not None and minTime > time):
-                continue
-            if (maxTime is not None and time > maxTime):
-                continue
-
             try:
                 render(time, limits=limits)
                 # Write a frame. This triggers a render.
@@ -1303,6 +1289,14 @@ class OffbeatCase(Case):
         return self.solvers[0]
 
     # Optional convenience forwards
+    @property
+    def fields(self):
+        return self.solver.fields
+
+    @fields.setter
+    def fields(self, value):
+        self.solver.fields = value
+
     @property
     def burnup(self):
         return self.solver.burnup
@@ -1411,7 +1405,7 @@ class OffbeatCase(Case):
     def rheology(self):
         return self.solver.rheology
 
-    @materials.setter
+    @rheology.setter
     def rheology(self, value):
         self.solver.rheology = value
 
@@ -1422,11 +1416,3 @@ class OffbeatCase(Case):
     @stressAnalysis.setter
     def stressAnalysis(self, value):
         self.solver.stressAnalysis = value
-
-    @property
-    def globalOptions(self):
-        return self.solver.globalOptions
-
-    @globalOptions.setter
-    def globalOptions(self, value):
-        self.solver.globalOptions = value

@@ -82,6 +82,12 @@ protected:
 
         // Protected data
         const bool crackFp_;
+        const scalar failureTime_;
+
+        bool isCracked() const
+        {
+            return crackFp_ || mesh_.time().value() >= failureTime_;
+        }
 
         wordList FpNamesMat_;
 

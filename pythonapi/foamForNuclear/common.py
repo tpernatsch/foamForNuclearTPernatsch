@@ -108,7 +108,7 @@ class OpenFOAMDict(dict):
     def __repr__(self, depth: int = 0) -> str:
         text = ""
         if self.name is not None:
-            text += f"{self.name}"
+            text += format_to_openfoam_regex(self.name)
         text += self.export_body_to_foam(depth=depth)
         return text
 
@@ -591,7 +591,7 @@ class List(list):
 
         if (noBreak or len(self) <= 3):
             if (all([isinstance(item, (float, int)) for item in self])):
-                return(f"{textLength} ({' '.join([f'{e:.6g}' for e in self])})")
+                return(f"{textLength} ({' '.join([f'{e:.12g}' for e in self])})")
             else:
                 return(f"{textLength} ({' '.join([f'{e}' for e in self])})")
 
@@ -602,7 +602,7 @@ class List(list):
                 text += (depth+1)*tab
 
             if (all([isinstance(item, (float, int)) for item in self])):
-                text += f"{value:.6g}"
+                text += f"{value:.12g}"
             else:
                 text += f"{value}"
 

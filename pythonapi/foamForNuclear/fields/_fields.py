@@ -290,26 +290,6 @@ class Dimension:
         self.time = -1
 
 
-class ReducedDimension(Dimension):
-    """
-    Reduced dimension object used for material declaration in thermo-mechanics
-    solver.
-    """
-    def __init__(
-            self,
-            default: str='',
-            mass: int=0,
-            length: int=0,
-            time: int=0,
-            temperature: int=0,
-            moles: int=0
-        ):
-        super().__init__(default, mass, length, time, temperature, moles)
-
-    def __repr__(self):
-        return(f"[{self.mass} {self.length} {self.time} {self.temperature} {self.moles}]")
-
-
 class Field(OpenFOAMFile):
     """
     Field object collecting the internal value per cell and the boundary

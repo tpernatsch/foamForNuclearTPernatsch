@@ -26,7 +26,8 @@ _FUNCTION_OBJECT_TYPES = {
     'multiply', 'subtract', 'divide', 'limitFields',
     'massFlow', 'TBulk',
     'FMUSimulator',
-    'fgr'
+    'fgr',
+    'fpRelease',
 }
 _FUNCTION_OBJECT_LIBS = {
     "fieldFunctionObjects", "libfieldFunctionObjects.so", "libsampling.so",
@@ -962,7 +963,7 @@ class Graph(FunctionObject):
     nPoints: float | int = 100
     interpolationScheme: str = "cellPoint"
     writeControl: str = "writeTime"
-    writeInterval: str | None = None
+    writeInterval: float | int | None = None
     setFormat: str = "csv"
     writeFields: bool | None = None
     log: bool | None = None
@@ -996,6 +997,8 @@ class Graph(FunctionObject):
 
         self.__setitem__('fields', self.fields)
         self.__setitem__('writeControl', self.writeControl)
+        if self.writeInterval is not None:
+            self.__setitem__('writeInterval', self.writeInterval)
         self.__setitem__('interpolationScheme',  self.interpolationScheme)
         self.__setitem__('setFormat',  self.setFormat)
         self.__setitem__('sets', sets)
@@ -1166,7 +1169,7 @@ class FGR(FunctionObject):
 
     # keep the usual FO “meta” options optional
     writeControl: str | None = None
-    writeInterval: str | None = None
+    writeInterval: float | int | None = None
     writeFields: bool | None = None
     log: bool | None = None
     region: str | None = None
@@ -1233,6 +1236,110 @@ class FGR(FunctionObject):
 
         return data
 
+
+
+@define(
+    slots=True,
+    on_setattr=[attr.setters.convert, attr.setters.validate],
+    field_transformer=auto_type_validator,
+    repr=False,
+    kw_only=True,
+)
+class FpRelease(FunctionObject):
+    """
+    fpRelease functionObject — writes fission-product release fractions vs time.
+
+    Reads all ``fpRelease_<species>`` scalars registered by
+    ``fissionProductsDiffusionSolver`` and writes a single space-separated
+    ``.dat`` file per simulation start-time under::
+
+        postProcessing/fpRelease/<startTime>/<name>.dat
+
+    Header line:  ``# Time <species1> <species2> ...``
+    Data lines:   ``<time> <fraction1> <fraction2> ...``
+    """
+    name: str
+
+    writeControl: str | None = None
+    writeInterval: float | int | None = None
+    writeFields: bool | None = None
+    log: bool | None = None
+    region: str | None = None
+
+    def __attrs_post_init__(self):
+        super().__init__(
+            self.name,
+            "fpRelease",
+            "libFFNFunctionObjects.so",
+            self.log,
+            self.writeFields,
+            self.writeControl,
+            self.writeInterval,
+            self.region,
+            regionType=None,
+            regionName=None,
+            scaleFactor=None,
+        )
+        # slots=True prevents the parent property setter from being called for
+        # attrs-defined fields, so they never reach __setitem__. Fix them here.
+        if self.region is not None:
+            self["region"] = self.region
+        if self.writeControl is not None:
+            self["writeControl"] = self.writeControl
+        if self.writeInterval is not None:
+            self["writeInterval"] = self.writeInterval
+
+    def read_from_case(
+            self,
+            startTime: float,
+            caseFolder: str | None = None,
+            filename: str | None = None,
+    ):
+        """
+        Read FP release fractions from the ``.dat`` file written by this
+        function object.
+
+        Returns
+        -------
+        data : dict[str, dict[float, float]]
+            ``data[species][time] = release_fraction``
+        """
+        if caseFolder is None:
+            caseFolder = getattr(self, "caseFolder", None)
+        if caseFolder is None:
+            raise ValueError("Need caseFolder or a bound caseFolder on this functionObject.")
+
+        fname = filename if filename is not None else self.name
+        fpath = os.path.join(
+            caseFolder, "postProcessing", "fpRelease", str(startTime), f"{fname}.dat"
+        )
+
+        species: list[str] = []
+        data: dict[str, dict[float, float]] = {}
+
+        with open(fpath, "r") as f:
+            for line in f:
+                s = line.strip()
+                if not s:
+                    continue
+
+                if s.startswith("#"):
+                    # header: "# Time Cs Xe ..."
+                    parts = s.lstrip("#").split()
+                    if parts and parts[0] == "Time":
+                        species = parts[1:]
+                        data = {sp: {} for sp in species}
+                    continue
+
+                parts = s.split()
+                if len(parts) < 2:
+                    continue
+
+                t = float(parts[0])
+                for sp, val in zip(species, parts[1:]):
+                    data[sp][t] = float(val)
+
+        return data
 
 
 class MassFlow(FunctionObject):

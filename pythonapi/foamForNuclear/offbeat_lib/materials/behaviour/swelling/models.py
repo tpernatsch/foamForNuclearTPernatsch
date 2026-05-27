@@ -2,7 +2,7 @@
 # Generated from OFFBEAT/OpenFOAM YAML docs + C++ TypeName/inheritance.
 
 from __future__ import annotations
-from typing import Any, ClassVar
+from typing import ClassVar
 from attrs import field
 from foamForNuclear._attrs_tools import ffn_define
 from foamForNuclear.common import FoamForNuclearDict
@@ -79,8 +79,8 @@ class PyCCorrelation(Swelling):
     fastFluenceName: str = 'fastFluence'
     sphereCoordinate: bool = True
     fluxConversionFactor: float | int = 1.0
-    radialCoefficients: dict[str, Any]
-    tangentialCoefficients: dict[str, Any]
+    radialCoefficients: list[float]
+    tangentialCoefficients: list[float]
 
 @ffn_define
 class UPuO2Fbr(Swelling):
