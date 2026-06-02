@@ -40,4 +40,4 @@ One can find detailed, commented examples in most tutorials. See for instance
  
     The parameter *model* used to define what type of simulation needs to be
     performed has been replaced by the selection of model in the *system/regionsDict*
-    (see :ref:`Coupling solvers <userguide_coupling>`).
+    (see :ref:`Coupling solvers <couplingGF>`).

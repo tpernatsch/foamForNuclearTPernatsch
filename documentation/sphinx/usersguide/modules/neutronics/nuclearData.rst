@@ -81,7 +81,7 @@ It is possible to assign the law through the ``xsVariables`` sub dictionary in
 *nuclearData* with the name of the field. If one or several fields provided in
 ``xsVariables`` are not default to the solver (e.g ``Tmatrix``), the code will
 automatically create it in the neutronics region and can be used for additional
-coupling with other solvers (see the :ref:`coupling page <userguide_coupling>`).
+coupling with other solvers (see the :ref:`coupling page <couplingGF>`).
 
 .. code :: cpp
 

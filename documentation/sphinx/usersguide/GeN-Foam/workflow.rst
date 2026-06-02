@@ -67,7 +67,7 @@ After meshing, configure:
 Running the Code
 ~~~~~~~~~~~~~~~~
 
-- **``GeN-Foam``**: Executes the multiphysics solver. Monitor output in the terminal or redirect to a log file:
+- ``GeN-Foam``: Executes the multiphysics solver. Monitor output in the terminal or redirect to a log file:
 
   - ``GeN-Foam | tee log.genFoam``: Output to terminal and log file.
   - ``GeN-Foam > log.genFoam``: Output only to log file.
@@ -84,7 +84,7 @@ Post-Processing
 
 Visualization and data extraction options:
 
-- `paraFoam``: Launches ParaView for visualization of written time steps (requires ParaView).
+- ``paraFoam``: Launches ParaView for visualization of written time steps (requires `ParaView <https://www.paraview.org/>`_).
 - ``touch para.foam`` followed by ``paraview para.foam``: Launches ParaView for visualization of written time steps in case paraFoam was not installed (requires ParaView).
 - ``postProcess -func sampleDict``: Samples fields based on ``system/sampleDict``; results stored in ``postProcessing/``.
 - **Python scripts**: Automate plotting of quantities like temperature profiles or power distribution.
@@ -96,7 +96,7 @@ Visualization and data extraction options:
 Case Cleaning
 ~~~~~~~~~~~~~
 
-- **``foamListTimes -rm``**: Removes all time-step folders except ``0/``.
-- **``Allclean``**: This bash script typically provided with eacch tutorial. It deletes time folders and auxiliary files (logs, PNGs, etc.).
+- ``foamListTimes -rm``: Removes all time-step folders except ``0/``.
+- ``Allclean``: This bash script typically provided with eacch tutorial. It deletes time folders and auxiliary files (logs, PNGs, etc.).
 
 
