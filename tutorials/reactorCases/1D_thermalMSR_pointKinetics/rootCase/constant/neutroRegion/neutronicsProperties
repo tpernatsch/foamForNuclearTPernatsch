@@ -19,6 +19,8 @@ eigenvalueNeutronics    false;
 
 liquidFuel              true;
 
+initPrecursorsLiquidFuel true;
+
 fastNeutrons            true;
 
 

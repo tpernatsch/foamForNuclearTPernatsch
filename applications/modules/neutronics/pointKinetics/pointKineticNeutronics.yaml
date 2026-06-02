@@ -37,7 +37,7 @@ description: |-
   $$
 
   \table
-      Parameter   | Description
+      Parameter     | Description
       $P$           | Core power
       $C_i$         | Precursor power
       $S$           | Optional external source power
@@ -58,7 +58,21 @@ description: |-
       $\rho_{boron}$         | Boron concentration reactivity contribution
       $\rho_{ext}$           | External reactivity contribution
       $\rho_{ext}^{FMU}$     | External reactivity contribution from an FMU
+      $\bold u$     | Velocity field (liquid fuel)
+      $D_i$         | Precursor diffusion coefficient (liquid fuel)
   \endtable
+
+
+  For liquid fuel reactors, the point-kinetics equations becomes [@HABTEMARIAM2024110237]:
+
+  $$
+  \begin{align}
+      \frac{dP(t)}{dt} & = \frac{\rho_{tot} - \zeta - \beta_{tot}}{\Lambda} P(t)
+          + \sum_{i=1}^N \lambda_i \hat C_i(t) \\
+      \frac{d \tilde c_i(r,t)}{dt} + \bold u \cdot \nabla \tilde c_i(r,t) & = \nabla \cdot D_i \nabla \tilde c_i(r,t) + \frac{\beta_i}{\Lambda} P(t)
+          - \lambda_i \tilde c_i(r,t) \quad \forall i \in [1; N]
+  \end{align}
+  $$
 
   A correct evaluation of the reactivity worth of delayed neutron precursors in
   MSRs, as well as of the impact of temperatures on reactivities, normally
@@ -72,7 +86,7 @@ description: |-
 
   - If calculated fluxes are available in *neutroRegion*, these will be user to recalculate and overwrite *oneGroupFlux*.
   - If no fluxes are available, the neutronics sub-solver will use the provided *oneGroupFlux*
-  - If the ``initialOneGroupFluxByZone`` keyword is used in *nuclearData*, this will be used to overwrite *oneGroupFlux*
+  - If the ``initialOneGroupFluxByZone`` keyword is used in *neutronicsProperties*, this will be used to overwrite *oneGroupFlux*
 
 admonitions:
   - kind: warning
@@ -84,77 +98,87 @@ options:
     type: boolean
     required: true
     default:
-    description: <description>
+    description: Flag to activate reactivity feedback for fast spectrum reactors. If true, use the ``-coeffDoppler * log(TFuel/TFuelRef)``, else use ``coeffDoppler * (sqrt(TFuel) - sqrt(TFuelRef))``
+  - key: initPrecursorsLiquidFuel
+    type: boolean
+    required: false
+    default: false
+    description: Flag to initialize the concentration of precursors to their equilibrium value at the beginning of the simulation. Only used for liquid fuel
+  - key: ScNo
+    type: boolean
+    required: false
+    default: 1.0
+    description: Schmidt number. Only used for liquid fuel
   - key: promptGenerationTime
     type: scalar
     required: true
     default:
-    description: <description>
+    description: Prompt generation time
   - key: Beta
     type: list[scalar]
     required: true
     default:
-    description: <description>
+    description: Belayed neutron fraction per precursor groups
   - key: lambda
     type: list[scalar]
     required: true
     default:
-    description: <description>
+    description: Decay constant per precursor groups
   - key: feedbackCoeffTFuel
     type: scalar
     required: true
     default:
-    description: <description>
+    description: Fuel temperature reactivity feedback coefficient
   - key: feedbackCoeffTClad
     type: scalar
     required: true
     default:
-    description: <description>
+    description: Cladding temperature reactivity feedback coefficient
   - key: feedbackCoeffTCool
     type: scalar
     required: true
     default:
-    description: <description>
+    description: Coolant temperature reactivity feedback coefficient
   - key: feedbackCoeffRhoCool
     type: scalar
     required: true
     default:
-    description: <description>
+    description: Coolant density reactivity feedback coefficient
   - key: feedbackCoeffDoppler
     type: scalar
     required: true
     default:
-    description: <description>
+    description: Fuel Doppler reactivity feedback coefficient
   - key: feedbackCoeffTStruct
     type: scalar
     required: true
     default:
-    description: <description>
+    description: Structure temperature reactivity feedback coefficient
   - key: feedbackCoeffTStructMech
     type: scalar
     required: true
     default:
-    description: <description>
+    description: Mechanical structure temperature reactivity feedback coefficient
   - key: fuelFeedbackZones
     type: list[word]
     required: true
     default:
-    description: <description>
+    description: List of fuel cellZone names for which the fuel reactivity feedback is applied
   - key: coolantFeedbackZones
     type: list[word]
     required: true
     default:
-    description: <description>
+    description: List of coolant cellZone names for which the coolant reactivity feedback is applied
   - key: structFeedbackZones
     type: list[word]
     required: true
     default:
-    description: <description>
+    description: List of structure cellZone names for which the structure reactivity feedback is applied
   - key: drivelineFeedbackZones
     type: list[word]
     required: true
     default:
-    description: <description>
+    description: List of driveline cellZone names for which the driveline reactivity feedback is applied
   - key: GEMSodiumLevelRef
     type: scalar
     required: false

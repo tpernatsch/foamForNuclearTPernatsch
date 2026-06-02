@@ -39,8 +39,6 @@ absoluteDrivelineExpansionCoeff 0;
 
 controlRodReactivityMap ( ( 0.1 -0.01 ) ( 0 0 ) ( -0.1 0.01 ) );
 
-initPrecursorsLiquidFuel true;
-
 initialOneGroupFluxByZone
 {
     "core"      1.0;

@@ -409,7 +409,7 @@ protected:
     scalar ScNo_;
 
     //- Flag to initialize the concentration of precursors to their
-    //  equilibtium value at the beginning of the simulation
+    //  equilibrium value at the beginning of the simulation
     bool initPrecursorsLiquidFuel_;
 
     //- GEM related

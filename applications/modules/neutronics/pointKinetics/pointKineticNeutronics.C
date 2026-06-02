@@ -226,7 +226,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
     (
         IOobject
         (
-        "Dalbedo",
+            "Dalbedo",
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
@@ -237,7 +237,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
         zeroGradientFvPatchScalarField::typeName
     ),
     fluxStarAlbedo_
-        (
+    (
         IOobject
         (
             "fluxStarAlbedo",
@@ -363,11 +363,11 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
     ),
     ScNo_
     (
-        nuclearData_.lookupOrDefault<scalar>("ScNo",1.0)
+        this->lookupOrDefault<scalar>("ScNo", 1.0)
     ),
     initPrecursorsLiquidFuel_
     (
-        nuclearData_.lookupOrDefault<bool>("initPrecursorsLiquidFuel",false)
+        this->lookupOrDefault<bool>("initPrecursorsLiquidFuel", false)
     ),
     GEMReactivityMap_
     (
@@ -401,6 +401,11 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
 
     if (liquidFuel_)
     {
+        Info<< "Point kinetics with liquid fuel:" << nl
+            << tab << "Schmidt number: " << ScNo_ << nl
+            << tab << "Initialize precursor: " << (initPrecursorsLiquidFuel_ ? "true" : "false") << nl
+            << endl;
+
         UPtr_.reset
         (
             new volVectorField
