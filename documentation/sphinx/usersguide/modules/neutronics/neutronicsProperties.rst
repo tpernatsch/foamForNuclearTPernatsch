@@ -17,12 +17,11 @@ and is used to set the type of neutronics simulation by using the following keyw
 :adjustDiscFactors: when set to ``true``, the neutronics solver will try to
                     automatically adjust the discontinuity factors based on the
                     ``integralFlux`` provided in the ``nuclearData`` dictionary.
-                    Please refer to Fiorina et al., Annals of Nuclear Energy
-                    960 (2016)
+                    Please refer to :ref:`FIORINA2016212 <FIORINA2016212>`.
 :useGivenDiscFactors: when set to ``true``, the neutronics solver uses the
                       homogeneous discontinuity factors provided in the
-                      ``nuclearData`` dictionary. Please refer to Fiorina et
-                      al., Annals of Nuclear Energy 960 (2016)
+                      ``nuclearData`` dictionary. Please refer to 
+                      :ref:`FIORINA2016212 <FIORINA2016212>`.
 :axialOrientation: fuel axial orientation vector used for thermomechanical
                    expansion.
 :ScNo: Schmidt number.
@@ -31,11 +30,14 @@ and is used to set the type of neutronics simulation by using the following keyw
 :doNotParametrize: List of energy groups that are not parametrized.
 :isLowMemory: Prepare low memory consumption for XS, useful for SN calculations.
 :isReadXS: Is read XS flag.
-:isWriteXS: Is read XS flag.
+:isWriteXS: Is write XS flag.
 
 One can find detailed, commented examples in most tutorials. See for instance
 `3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/neutroRegion/neutronicsProperties>`_ (single phase).
 
-N.B: The parameter *model* used to define what type of simulation needs to be
-performed has been replaced by the selection of model in the *system/regionsDict*
-(see :ref:`Coupling solvers <userguide_coupling>`).
+
+.. note ::
+ 
+    The parameter *model* used to define what type of simulation needs to be
+    performed has been replaced by the selection of model in the *system/regionsDict*
+    (see :ref:`Coupling solvers <userguide_coupling>`).

@@ -36,9 +36,9 @@ two external tools for Serpent and OpenMC.
     Python package provided with GeN-Foam automatically converts OpenMC output
     into nuclear data files.
 
-These tools have also been implemented in the `Python API <https://foamfornuclear.gitlab.io/foamForNuclear/pythonapi/base.html#nuclear-data-and-neutronics-dictionaries>`_
+These tools have also been implemented in the `Python API <https://foamfornuclear.gitlab.io/foamForNuclear/pythonapi/base.html#nuclear-data-and-neutronics-dictionaries>`_.
 A tutorial is provided to show the usage of the data extraction with the API (see
-`test_fuelPin_monteCarlo <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/docs/pythonapi/tutorials/tests/test_fuelPin_monteCarlo?ref_type=heads>`_).
+`test_fuelPin_monteCarlo <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/docs/pythonapi/tutorials/developmentCases/test_fuelPin_monteCarlo?ref_type=heads>`_).
 
 The entry ``discFactor`` is used only if discontinuity factors have to be used.
 The term ``integralFlux``, is used only if the automatic adjustment of
@@ -50,7 +50,7 @@ XS parametrization
 ~~~~~~~~~~~~~~~~~~
 
 The neutronics module features XS parametrization using the Radial Basis Function (RBF)
-interpolation scheme on any field provided by the solver. This method allows to
+interpolation scheme on any field found in the neutronics region. This method allows to
 interpolate the XS using multiple parameters/perturbations (see example below).
 
 It is possible to select different radial basis function based on the
@@ -200,7 +200,7 @@ groups, which must be equal to ``energyGroups``:
 :chiPrompt: Prompt fission emission spectrum
 :chiDelayed: Delayed fission spectrum
 :discFactor: Discontinuity factors
-:integralFlux: Integral flux for adapting disc factors
+:integralFlux: Integral flux for adapting discontinuity factors
 
 And as a ``nonuniform List<scalar> nd`` with ``nd`` the number of delayed
 neutron groups, which must be equal to ``precGroups``:
@@ -217,13 +217,15 @@ pre-process nuclear data from the output of external tools such as Serpent
 or OpenMC.
 
 A tutorial is provided to show the usage of the data extraction with the API (see
-`test_fuelPin_monteCarlo <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/docs/pythonapi/tutorials/tests/test_fuelPin_monteCarlo?ref_type=heads>`_).
+`test_fuelPin_monteCarlo <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/docs/pythonapi/tutorials/developmentCases/test_fuelPin_monteCarlo?ref_type=heads>`_).
 
 Here follows an example of usage using Serpent:
 
 .. code :: python
 
-    referenceState = ffn.NuclearDataState('reference')
+    import foamForNuclear as ffn
+
+    referenceState = ffn.nuclearData.NuclearDataState('reference')
     referenceState.read_from_serpent(
         outputFilename="path/to/serpent/main_res.m",
         universes=[
@@ -246,21 +248,23 @@ One can also parametrize multiple external code results in the API as follow:
 
 .. code :: python
 
-    refState = NuclearDataState(
+    import foamForNuclear as ffn
+
+    refState = ffn.nuclearData.NuclearDataState(
         "reference",
         parameters={'Tfuel': 1000, 'rhoCool': 1000},
         zones=[...]
     )
     refState.read_from_serpent(...)
 
-    Tfuel1200K = NuclearDataState(
+    Tfuel1200K = ffn.nuclearData.NuclearDataState(
         "Tfuel1200K",
         parameters={'Tfuel': 1200}, # Assume by default that rhoCool is not perturb and uses rhoCool = 1000
         zones=[...]
     )
     Tfuel1200K.read_from_serpent(...)
 
-    TfuelAndRhoHot = NuclearDataState(
+    TfuelAndRhoHot = ffn.nuclearData.NuclearDataState(
         "TfuelAndRhoHot",
         parameters={'Tfuel': 1200, 'rhoCool': 900},
         zones=[...]

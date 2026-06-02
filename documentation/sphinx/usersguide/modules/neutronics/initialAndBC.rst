@@ -4,10 +4,10 @@
 Initial and boundary conditions
 -------------------------------
 
-Initial and boundary conditions adopt the usual OpenFOAM logic for one- and two-phase solvers. 
+Initial and boundary conditions (IC and BC) adopt the usual OpenFOAM logic. 
 OpenFOAM provides most of the boundary conditions one may need for
-thermal-hydraulics models. In addition, a few boundary conditions have been
-included in the thermal-hydraulics module of foamForNuclear:
+neutronics models. In addition, a few boundary conditions have been
+included in the neutronics module of foamForNuclear:
 
 .. toctree::
    :maxdepth: 1
@@ -28,11 +28,12 @@ provide the same IC and BC to all fluxes by using the *defaultFlux* field. In
 the case of SP3 calculations, the IC and BC for the second moment can be imposed
 either for each energy (using fields named *fluxStar20*, *fluxStar21*, etc…),
 or to all energies by using the *defaultFlux2* field. When both *defaultFlux*
-and *fluxStar...* are present, the solver gives priority to *fluxStar...*. In
+and *fluxStar...* are present, the solver gives priority to *fluxStar<g>*. In
 the case of SN calculations, it is suggested not to modify the boundary
 conditions and to use the *defaultFlux* file (an example is provided in the
-Godiva_SN tutorial). When employing the adjoint solver, the user will have to add the
-fields *adjointDefaultPrec* and *adjointDefaultFlux* in the  initial time.
+`Godiva_SN <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/Godiva_SN/0/neutroRegion/defaultFlux>`_ tutorial). 
+When employing the adjoint solver, the user will have to add the
+fields *adjointDefaultPrec* and *adjointDefaultFlux* in the initial time.
 
 
 IC and BC for precursors do not have to be specified for standard reactors. On
@@ -44,9 +45,9 @@ provided for different precursor groups.
 
 .. note ::
 
-    Boundary conditions must be applied to ``fluxStar...`` and not to ``flux...``
-    since GeN-Foam solves for these variables. ``fluxStar...`` represent continuous
-    fluxes, while ``flux...`` represent the real fluxes. They differ only in case
+    Boundary conditions must be applied to ``fluxStar<g>`` and not to ``flux<g>``
+    since the neutronics module solves for these variables. ``fluxStar<g>`` represent continuous
+    fluxes, while ``flux<g>`` represent the real fluxes. They differ only in case
     discontinuity factors are employed (see :ref:`FIORINA2016212 <FIORINA2016212>`).
 
 

@@ -3,8 +3,8 @@
 The *CRMove* dictionary
 -----------------------
 
-The *CRMove* dictionary can be found under *constant/neutroRegion/*. It is optinal 
-and contains input data for control rod movement in spatial neutronics solvers. 
+The *CRMove* dictionary can be found under *constant/neutroRegion/*. It is optional 
+and contains input data for control rod movement in spatial neutronics sub-solvers. 
 Control rods can be moved from the initial position to a new one by selecting the 
 initial and final time of the insertion/extraction and the speed of 
 insertion/extraction (positive speed for insertion).
@@ -33,7 +33,7 @@ Here is the list of keywords that can be used to set a control rod movement:
         {
             startTime       1001;
             endTime         1003;
-            speed           0; // positive entering the core
+            speed           0.5; // positive entering the core
             initialDistanceFromMeshCR 0.0; // distance from the position defined in the mesh (postive towards the core)
             followerName    follower; // name of the cellZone representing the follower
         }
