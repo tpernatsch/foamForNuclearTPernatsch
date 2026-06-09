@@ -88,6 +88,33 @@ description: |-
   - If no fluxes are available, the neutronics sub-solver will use the provided *oneGroupFlux*
   - If the ``initialOneGroupFluxByZone`` keyword is used in *neutronicsProperties*, this will be used to overwrite *oneGroupFlux*
 
+  **Liquid-fuel precursor initialization**
+
+  When `liquidFuel true` is set in *neutronicsProperties* and
+  `initPrecursorsLiquidFuel true` is set in *nuclearData*, the precursor
+  spatial distribution is initialized at the first time step of a transient
+  run. Two initialization modes are available:
+
+  *Standard steady-state solve* (default when `pseudoTimeSteps` is absent or
+  zero): the precursor transport equation is solved once in steady state, i.e.
+  $\partial C_i / \partial t = 0$, giving the equilibrium distribution for the
+  initial flow and power field.
+
+  *Pseudo-time-stepping* (activated by setting `pseudoTimeSteps > 0`): a
+  backward-Euler pseudo-time loop advances the precursor equation over
+  $N \times \Delta\tau$ seconds of pseudo-time. The scheme converges when
+  $N \Delta\tau \gg 1/\lambda_{min}$. This approach handles stiff cases where
+  the direct steady-state solve is ill-conditioned (e.g. very slow flows or
+  high diffusion).
+
+  **Fission source restriction**
+
+  `fuelZones` lists the cell zones in which fission source terms for the
+  delayed neutron precursors are active. Cells outside these zones contribute
+  no precursor production, which is physically correct for loop-type MSRs
+  where only part of the circuit is fissile. If `fuelZones` is absent, all
+  cells are treated as fuel (backward-compatible default).
+
 admonitions:
   - kind: warning
     body: |-
@@ -204,6 +231,63 @@ options:
     required: false
     default:
     description: <description>
+  - key: liquidFuel
+    type: boolean
+    required: false
+    default: false
+    description: |-
+      If true, enables liquid-fuel point-kinetics mode. Delayed neutron
+      precursors are advected and diffused with the flowing fuel rather than
+      being fixed in place. Must also be set in *neutronicsProperties*.
+  - key: initPrecursorsLiquidFuel
+    type: boolean
+    required: false
+    default: false
+    description: |-
+      If true, the precursor spatial distribution is initialized at the first
+      time step of a transient run (i.e. when
+      `timeIndex == startTimeIndex + 1`). The initialization mode depends on
+      `pseudoTimeSteps`: if zero or absent a standard steady-state solve is
+      performed; if positive, pseudo-time-stepping is used instead.
+  - key: fuelZones
+    type: list[word]
+    required: false
+    default: (all cells)
+    description: |-
+      List of cell zone names in which the fission source term for delayed
+      neutron precursors is active. Only cells inside these zones contribute
+      to precursor production. Cells outside (e.g. heat exchanger, pump,
+      piping) correctly produce no precursors. If absent, all cells are
+      treated as fuel, preserving backward compatibility with cases that do
+      not distinguish fissile and non-fissile regions.
+  - key: pseudoTimeSteps
+    type: scalar or list[scalar]
+    required: false
+    default: 0
+    description: |-
+      Number of backward-Euler pseudo-time iterations used to initialize the
+      precursor spatial distribution when `initPrecursorsLiquidFuel true`.
+      A scalar applies the same count to all precursor groups; a list of
+      length N assigns a per-group count. Set to 0 (or omit) to fall back to
+      the standard steady-state solve. For convergence, the total pseudo-time
+      $N \times \Delta\tau$ should satisfy $N \Delta\tau \gg 1/\lambda_{min}$.
+  - key: pseudoTimeStepSize
+    type: scalar or list[scalar]
+    required: false
+    default:
+    description: |-
+      Pseudo-time step size $\Delta\tau$ in seconds for the precursor
+      initialization loop. A scalar applies to all groups; a list of length N
+      gives per-group values. Required when `pseudoTimeSteps > 0`.
+  - key: pseudoTimeRelaxation
+    type: scalar or list[scalar]
+    required: false
+    default: 1.0
+    description: |-
+      Under-relaxation factor applied after each pseudo-time step:
+      $C_i^{new} = \omega \, C_i^{solved} + (1-\omega) \, C_i^{old}$.
+      A scalar applies to all groups; a list of length N gives per-group
+      values. Use values less than 1 if the pseudo-time iterations oscillate.
 
 usage:
   - comment: |-

@@ -380,6 +380,10 @@ protected:
     //- Doppler constant if doing fastNeutrons
     scalar coeffDoppler_;
 
+
+    //- Field to mark where PRKEs should be produced
+    volScalarField isFuel_;
+
     //- Fields to mark which cells are part of X and which aren't, used for
     //  computing the 0-D feedback values (TFuel, TStructures, etc...).
     //  Indeed, the spatial extent of these marker fields should reflect
@@ -411,6 +415,13 @@ protected:
     //- Flag to initialize the concentration of precursors to their
     //  equilibrium value at the beginning of the simulation
     bool initPrecursorsLiquidFuel_;
+
+    //- Pseudo time stepping parameters for precursor initialization
+    //  Use per-precursor pseudo time stepping to improve numerical
+    //  stability when initializing the precursor distribution
+    labelList pseudoTimeSteps_;
+    scalarList pseudoTimeStepSizes_;
+    scalarList pseudoTimeRelaxations_;
 
     //- GEM related
 
@@ -470,7 +481,7 @@ public:
         void setInitOneGroupFlux();
 
         //- Used to set the *FeedbackCellField fields
-        void setFeedbackCellField
+        void setCellField
         (
             volScalarField& feedbackCellField,
             const word& keyword

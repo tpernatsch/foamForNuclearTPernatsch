@@ -125,7 +125,7 @@ Foam::solvers::neutronics::neutronics
             "oneGroupFlux",
             mesh.time().timeName(),
             mesh,
-            IOobject::NO_READ,
+            IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         ),
         mesh,
@@ -181,7 +181,7 @@ Foam::solvers::neutronics::neutronics
             "rhoCool",
             mesh.time().timeName(),
             mesh,
-            IOobject::NO_READ,
+            IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         ),
         mesh,

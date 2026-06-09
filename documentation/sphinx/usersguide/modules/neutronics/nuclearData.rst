@@ -284,3 +284,166 @@ using the API as follow:
 .. code :: python
 
     neutronicsSolver.nuclearData.import_from_openfoam("path/to/nuclearData")
+
+
+Point-kinetics specific entries
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When the ``pointKinetics`` model is selected in *neutronicsProperties*, the
+*nuclearData* dictionary accepts additional entries that control the
+point-kinetics equations and, for liquid-fuel reactors, the transport and
+initialization of delayed neutron precursors.
+
+**Core point-kinetics parameters**
+
+:``promptGenerationTime``: Prompt neutron generation time :math:`\Lambda` [s].
+:``Beta``: List of delayed neutron fractions :math:`\beta_i` for each precursor
+           group (dimensionless).
+:``lambda``: List of precursor decay constants :math:`\lambda_i` [1/s].
+:``feedbackCoeffDoppler``: Doppler feedback coefficient :math:`\alpha_D`.
+:``feedbackCoeffTFuel``: Fuel temperature feedback coefficient
+                          :math:`\alpha_{fuel}`.
+:``feedbackCoeffTClad``: Cladding temperature feedback coefficient
+                          :math:`\alpha_{clad}`.
+:``feedbackCoeffTCool``: Coolant temperature feedback coefficient
+                          :math:`\alpha_{cool}^T`.
+:``feedbackCoeffRhoCool``: Coolant density feedback coefficient
+                            :math:`\alpha_{cool}^\rho`.
+:``feedbackCoeffTStruct``: Structural temperature feedback coefficient
+                            :math:`\alpha_{struct}`.
+:``initialOneGroupFluxByZone``: (Optional) Sub-dictionary mapping cell-zone
+    names to initial one-group flux values. Used to set the spatial flux
+    shape when no spatial neutronics calculation is available.
+
+
+Liquid-fuel (MSR) entries
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For Molten Salt Reactors (MSRs) with flowing liquid fuel, delayed
+neutron precursors are advected and diffused with the salt rather than
+remaining fixed in the core. The following additional keywords control
+this behaviour.
+
+.. warning ::
+
+    **The neutronics and fluid meshes must be identical when using
+    liquid-fuel point-kinetics.**
+
+    The precursor transport equation contains an advection term driven by
+    the volumetric flux :math:`\phi = \mathbf{U} \cdot \mathbf{S}_f`
+    interpolated onto cell faces.  A solenoidal (divergence-free) face-flux
+    field is a prerequisite for a well-posed advection problem: it ensures
+    global conservation of the precursor concentration and prevents spurious
+    numerical sources or sinks.
+
+    When the neutronics and fluid regions are defined on *different* meshes,
+    GeN-Foam maps field data between them via a cell-volume-weighted
+    interpolation.  This projection does **not** preserve the divergence-free
+    constraint: the interpolated velocity field will in general satisfy
+    :math:`\nabla \cdot \mathbf{U} \neq 0` on the neutronics mesh, leading
+    to non-conservative precursor transport and unphysical results.
+
+    To avoid this issue, define a single mesh that serves as both the
+    neutronics region (``neutroRegion``) and the fluid region
+    (``fluidRegion``), or ensure the two meshes are topologically identical
+    so that the mapping reduces to an exact bijection.
+
+:``mu``: (Optional) Molecular dynamic viscosity of the fuel salt
+    [:math:`\text{kg/(m·s)}`]. Used in the precursor diffusion coefficient
+
+    .. math::
+
+        D_{prec} = \frac{\mu_t + \mu}{\rho_{cool} \, Sc}
+
+    where :math:`\mu_t` is the turbulent dynamic viscosity and :math:`Sc` is
+    the turbulent Schmidt number. Defaults to zero; relevant when modelling
+    laminar or transitional flows.
+
+:``initPrecursorsLiquidFuel``: (Optional, default ``false``) If ``true``,
+    the precursor spatial distribution is initialized at the first time step
+    of a transient run. Two modes are available depending on the value of
+    ``pseudoTimeSteps`` (see below).
+
+:``fuelZones``: (Optional) List of cell-zone names in which the fission
+    source term for delayed neutron precursors is active. Cells outside
+    these zones (e.g. graphite) contribute no
+    precursor production.
+    If absent, all cells are treated as fuel (backward-compatible default).
+
+    .. code :: cpp
+
+        fuelZones
+        (
+            core
+        );
+
+**Pseudo-time-stepping precursor initialization**
+
+When ``initPrecursorsLiquidFuel true`` is set, the precursor distribution
+can be initialized either by a direct steady-state solve or by the
+pseudo-time-stepping method described below.
+
+*Standard steady-state solve* (default when ``pseudoTimeSteps`` is absent
+or zero): the precursor transport equation is solved once with
+:math:`\partial C_i/\partial t = 0`. This is fast but can be
+ill-conditioned for very slow flows or high diffusion coefficients.
+
+*Pseudo-time-stepping*: a backward-Euler pseudo-time loop advances the
+precursor equation over :math:`N \times \Delta\tau` seconds of pseudo-time
+before physical time-stepping begins. The scheme converges when
+:math:`N \Delta\tau \gg 1/\lambda_{min}`. For typical MSR delayed groups
+:math:`1/\lambda_{min} \approx 80\,\text{s}`, so :math:`N = 100` steps of
+:math:`\Delta\tau = 10\,\text{s}` (giving 1000 s total) is sufficient.
+
+:``pseudoTimeSteps``: Number of pseudo-time iterations. A single scalar
+    applies the same count to all precursor groups; a list of length
+    :math:`N_{groups}` gives a per-group count. Set to ``0`` or omit to
+    use the steady-state fallback.
+
+:``pseudoTimeStepSize``: Pseudo-time step size :math:`\Delta\tau` [s].
+    A scalar or per-group list. Required when ``pseudoTimeSteps > 0``.
+
+:``pseudoTimeRelaxation``: (Optional, default ``1.0``) Under-relaxation
+    factor :math:`\omega` applied after each pseudo-time step:
+
+    .. math::
+
+        C_i^{new} = \omega \, C_i^{solved} + (1-\omega) \, C_i^{old}
+
+    A scalar or per-group list. Use values below 1 if iterations oscillate.
+
+Example *nuclearData* fragment for a liquid-fuel MSR with pseudo-time-stepping:
+
+.. code :: cpp
+
+    promptGenerationTime  1.26e-6;
+
+    Beta    ( 2.11e-4  4.23e-4  3.74e-4  5.79e-4  8.93e-4  1.43e-4  1.93e-4  3.74e-5 );
+    lambda  ( 1.25e-2  2.83e-2  4.25e-2  1.33e-1  2.92e-1  6.66e-1  1.63e+0  3.10e+0 );
+
+    initPrecursorsLiquidFuel    true;
+
+    fuelZones
+    (
+        core
+    );
+
+    pseudoTimeSteps     100;
+    pseudoTimeStepSize  10.0;
+    pseudoTimeRelaxation 1.0;
+
+.. note ::
+
+    ``pseudoTimeSteps``, ``pseudoTimeStepSize``, and ``pseudoTimeRelaxation``
+    are ignored when ``initPrecursorsLiquidFuel false`` or when the run is a
+    continuation (i.e. not the first time step). In continuation cases, set
+    ``initPrecursorsLiquidFuel false`` to preserve the precursor state read
+    from the restart folder.
+
+.. seealso ::
+
+    Tutorials `1D_thermalMSR_pointKinetics
+    <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/1D_thermalMSR_pointKinetics>`_
+    and `2D_MSFR_ULOF_diffusion_and_pk
+    <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/2D_MSFR_ULOF_diffusion_and_pk>`_
+    for complete examples of liquid-fuel point-kinetics *nuclearData* files.
