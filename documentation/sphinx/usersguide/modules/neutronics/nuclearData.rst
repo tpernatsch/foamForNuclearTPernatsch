@@ -327,7 +327,7 @@ this behaviour.
 .. warning ::
 
     **The neutronics and fluid meshes must be identical when using
-    liquid-fuel point-kinetics.**
+    liquid-fuel features.**
 
     The precursor transport equation contains an advection term driven by
     the volumetric flux :math:`\phi = \mathbf{U} \cdot \mathbf{S}_f`
