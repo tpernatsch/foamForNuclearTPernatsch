@@ -401,14 +401,14 @@ void unilateralContactFvPatchVectorField::updateCoeffs()
     };
 
 
-    // // Include the gap gas pressure
-    // if(patch().boundaryMesh().mesh().foundObject<gapGasModel>("gapGas"))
-    // {
-    //     const gapGasModel& gapGas
-    //     = patch().boundaryMesh().mesh().lookupObject<gapGasModel>("gapGas");
+    // Include the gap gas pressure
+    if(patch().boundaryMesh().mesh().foundObject<gapGasModel>("gapGas"))
+    {
+        const gapGasModel& gapGas
+        = patch().boundaryMesh().mesh().lookupObject<gapGasModel>("gapGas");
 
-    //     pressure_ = gapGas.p();
-    // }
+        pressure_ = gapGas.p();
+    }
 
     totalTraction_ = traction_ - pressure_*nCurrent;
     vectorField deltaTraction(patch().size(), vector::zero);

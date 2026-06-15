@@ -43,13 +43,14 @@ class UnilateralContact(Patch):
         If not specified, the code interprets this as a small value.
         (required: False)
 
-    penaltyFactor : scalar
+    penaltyScaleFactor : scalar
         Penalty scale factor controlling the contact stiffness.
         (default: 1.0; required: False)
 
     planeNormal : list | Vector
-        Normal vector to the contact plane (direction along which penetration
-        is not allowed). If not specified, the patch normal is used.
+        Normal vector to the contact plane pointing OUTWARD from the solid
+        (the direction of potential opening / contact approach). If not
+        specified, the outward patch normal is used.
         (required: False)
 
     planePoint : list | Vector
@@ -69,7 +70,7 @@ class UnilateralContact(Patch):
             pressure: float=None,
             contactRelRampWidth: float=None,
             contactRelOffset: float=None,
-            penaltyFactor: float=1.0,
+            penaltyScaleFactor: float=1.0,
             planeNormal: list|Vector=None,
             planePoint: list|Vector=None,
             relax: float=1.0,
@@ -80,7 +81,7 @@ class UnilateralContact(Patch):
         self.pressure = pressure
         self.contactRelRampWidth = contactRelRampWidth
         self.contactRelOffset = contactRelOffset
-        self.penaltyFactor = penaltyFactor
+        self.penaltyScaleFactor = penaltyScaleFactor
         self.planeNormal = planeNormal
         self.planePoint = planePoint
         self.relax = relax
@@ -133,15 +134,15 @@ class UnilateralContact(Patch):
 
 
     @property
-    def penaltyFactor(self):
-        return self._penaltyFactor
+    def penaltyScaleFactor(self):
+        return self._penaltyScaleFactor
 
-    @penaltyFactor.setter
-    def penaltyFactor(self, penaltyFactor) -> None:
-        check_type("penaltyFactor", penaltyFactor, (int, float), none_ok=True)
-        self._penaltyFactor = penaltyFactor
-        if penaltyFactor is not None:
-            self.__setitem__('penaltyFactor', penaltyFactor)
+    @penaltyScaleFactor.setter
+    def penaltyScaleFactor(self, penaltyScaleFactor) -> None:
+        check_type("penaltyScaleFactor", penaltyScaleFactor, (int, float), none_ok=True)
+        self._penaltyScaleFactor = penaltyScaleFactor
+        if penaltyScaleFactor is not None:
+            self.__setitem__('penaltyScaleFactor', penaltyScaleFactor)
 
 
     @property

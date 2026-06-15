@@ -73,8 +73,9 @@ Foam::MatproCreepModel::MatproCreepModel
     timeIndex_(-1),
     relax_(lawDict.lookupOrDefault<scalar>("relax", 1.0 )),
     NewtonRaphsonMethod_(lawDict.lookupOrDefault<bool>("NewtonRaphsonMethod", false)),
-    NewtonRaphsonTolerance_(NewtonRaphsonMethod_ ? 
-        lawDict.lookupOrDefault<scalar>("NewtonRaphsonTolerance", 1e-6) : 1.0)
+    NewtonRaphsonTolerance_(NewtonRaphsonMethod_ ?
+        lawDict.lookupOrDefault<scalar>("NewtonRaphsonTolerance", 1e-6) : 1.0),
+    NewtonRaphsonMaxIter_(lawDict.lookupOrDefault<label>("NewtonRaphsonMaxIter", 50))
 {}
 
 
@@ -100,6 +101,7 @@ void Foam::MatproCreepModel::correctCreep
     const volScalarField& Temp(mesh_.lookupObject<volScalarField>("T"));
 
     scalar tol(1.0);
+    label iter(0);
     //- Irradiation time step [s]
     scalar deltaT(0);
     
@@ -173,8 +175,10 @@ void Foam::MatproCreepModel::correctCreep
         //     }
         // }
 
+        iter = 0;
         do
         {
+            tol = scalar(0);
             scalar averageCreepEq(0);
             scalar averageRate(0);
             scalar maxRate(0);
@@ -325,7 +329,7 @@ void Foam::MatproCreepModel::correctCreep
 
                 const scalar tolTr = min(1, mag( (DepsilonCreepEq_.ref()[cellI] - DepsilonCreepEqPrev)/ (max(DepsilonCreepEqPrev , VSMALL))));
 
-                tol = min(tol, tolTr );                
+                tol = max(tol, tolTr );                
 
                 const cell& c = mesh_.cells()[cellI];  
 
@@ -448,7 +452,7 @@ void Foam::MatproCreepModel::correctCreep
                             if (NewtonRaphsonMethod_)
                             {
                                 fTrialDev = (creepIncrementPrime1 + creepIncrementPrime2 + creepIncrementPrime3);
-                                deltaCreep = (DepsilonCreepEqP[faceID] - (DepsilonCreepEqP[faceID] - deltaT*fTrial)/(1 + 3*mu[faceID]*fTrialDev*deltaT));
+                                deltaCreep = (DepsilonCreepEqP[faceID] - (DepsilonCreepEqP[faceID] - deltaT*fTrial)/(1 + 3*muP[faceID]*fTrialDev*deltaT));
                             }
                             else
                             {
@@ -473,10 +477,20 @@ void Foam::MatproCreepModel::correctCreep
                 
                             const scalar tolTr = min(1, mag( (DepsilonCreepEqP[faceID] - DepsilonCreepEqPPrev)/ (max(DepsilonCreepEqPPrev , VSMALL))));
 
-                            tol = min(tol, tolTr );
+                            tol = max(tol, tolTr );
                         }
                     }
                 }
+            }
+
+            ++iter;
+
+            if (iter >= NewtonRaphsonMaxIter_ && tol > NewtonRaphsonTolerance_)
+            {
+                WarningInFunction
+                    << "Newton-Raphson did not converge after " << NewtonRaphsonMaxIter_
+                    << " iterations. Residual: " << tol << endl;
+                break;
             }
 
         }while(tol > NewtonRaphsonTolerance_);

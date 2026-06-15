@@ -4,6 +4,21 @@ from foamForNuclear.common import Table, Vector
 from foamForNuclear.timeProfile import OffbeatTimeProfile
 
 
+def _to_time_profile(values):
+    """Wrap a plain list in an OffbeatTimeProfile; return OffbeatTimeProfile unchanged.
+
+    Each entry is (time, value) where value may be a list [x,y,z] (converted to
+    Vector) or a scalar — as required by Table.
+    """
+    if isinstance(values, OffbeatTimeProfile):
+        return values
+    converted = [
+        (t, Vector(v[0], v[1], v[2]) if isinstance(v, list) else v)
+        for t, v in values
+    ]
+    return OffbeatTimeProfile('table', values=converted)
+
+
 class TractionDisplacement(Patch):
     """
     Boundary condition that applies **traction and/or pressure** loading to the
@@ -98,8 +113,9 @@ class TractionDisplacement(Patch):
 
     @tractionList.setter
     def tractionList(self, tractionList) -> None:
-        if (tractionList is not None):
-            check_type("tractionList", tractionList, OffbeatTimeProfile)
+        if tractionList is not None:
+            check_type("tractionList", tractionList, (list, OffbeatTimeProfile))
+            tractionList = _to_time_profile(tractionList)
             self.__setitem__('tractionList', tractionList)
         self._tractionList = tractionList
 
@@ -109,9 +125,11 @@ class TractionDisplacement(Patch):
 
     @traction.setter
     def traction(self, traction) -> None:
-        check_type("traction", traction, Vector, none_ok=True)
+        check_type("traction", traction, (list, Vector), none_ok=True)
+        if isinstance(traction, list):
+            traction = Vector(traction[0], traction[1], traction[2])
         self._traction = traction
-        if (traction is not None):
+        if traction is not None:
             self.__setitem__('traction', f"uniform {traction}")
 
     @property
@@ -120,8 +138,9 @@ class TractionDisplacement(Patch):
 
     @pressureList.setter
     def pressureList(self, pressureList) -> None:
-        if (pressureList is not None):
-            check_type("pressureList", pressureList, OffbeatTimeProfile)
+        if pressureList is not None:
+            check_type("pressureList", pressureList, (list, OffbeatTimeProfile))
+            pressureList = _to_time_profile(pressureList)
             self.__setitem__('pressureList', pressureList)
         self._pressureList = pressureList
 

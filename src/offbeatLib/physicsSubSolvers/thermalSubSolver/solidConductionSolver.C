@@ -133,32 +133,26 @@ void Foam::solidConductionSolver::correct()
             calcEnthalpy();
         }
        
-        // Store initial residual if in first inner iteration
-        if(nInnerIter==0)
-        {
-            initialResidual_ = residual_; 
-        }
-        
         // Relax T field
         T_.relax();
 
         if (heatFluxSummary_)
         {
             calcHeatFlux(TEqn.flux());
-        }        
+        }
 
         // Calculate a different residual based on the relative change of T
-        scalar denom = 
+        scalar denom =
         gMax(mag(T_.primitiveField() - T_.oldTime().primitiveField()));
 
-        absErr_ = 
+        absErr_ =
         gMax(mag(T_.primitiveField() - T_.prevIter().internalField()));
 
         if (denom < SMALL)
         {
             denom = max(gMax(mag(T_.primitiveField())), SMALL);
         }
-        
+
         relResidual_ = absErr_/denom;
 
         if(denom < 1e-5)
@@ -169,9 +163,15 @@ void Foam::solidConductionSolver::correct()
         Info << "relResidualT is " << relResidual_ << endl;
         Info << "absErrT is " << absErr_ << endl;
 
-        nInnerIter++;
+        convergedInner = converged(residual_, relResidual_, absErr_);
 
-        convergedInner = converged();
+        // Store initial residual after first inner iteration
+        if(nInnerIter==0)
+        {
+            initialResidual_ = residual_;
+        }
+
+        nInnerIter++;
 
     } while 
     (

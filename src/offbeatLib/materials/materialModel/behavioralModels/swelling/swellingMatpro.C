@@ -141,8 +141,10 @@ void Foam::swellingMatpro::correct
         const scalar rho = rhoI[cellI];
 
         const scalar solidSwellIncrement = par1*rho*(Bu-BuOld);
-        const scalar gasSwellIncrement = par2*rho*(Bu-BuOld)*pow(par3-T[cellI],par4)
-                                        *exp(par5*(par3-T[cellI]))*exp(par6*rho*Bu);
+        const scalar deltaTExp = max(par3 - T[cellI], SMALL);
+        
+        const scalar gasSwellIncrement = par2*rho*(Bu-BuOld)*pow(deltaTExp,par4)
+                                        *exp(par5*deltaTExp)*exp(par6*rho*Bu);
 
         scalar nominalValue = (solidSwellIncrement+gasSwellIncrement)/3.0;
 

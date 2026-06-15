@@ -425,7 +425,7 @@ void tractionDisplacementFvPatchVectorField::updateCoeffs()
     if (updated())
     {
         return;
-    }    
+    } 
     
     // Find whether or not the simulation usese a small-strain incremental
     // solver with mesh update, to apply a special treatement
