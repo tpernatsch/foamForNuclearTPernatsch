@@ -138,6 +138,7 @@ void Foam::solvers::FSILoop::createSolvers(word name)
     thermalCoupling_ = FSIProperties_.getOrDefault<bool>("thermalCoupling",false);
     maxResidual_ = multiPhysicsDict_.get<scalar>("maxResidual");
     maxIterations_ = multiPhysicsDict_.get<label>("maxIterations");
+    minIterations_ = multiPhysicsDict_.getOrDefault<label>("minIterations", 1);
 
 
     // Get indices of solvers
@@ -271,19 +272,19 @@ void Foam::solvers::FSILoop::correctPhysics()
             fromSolidToFluid();
 
 
-        if(meshHandler_->returnMesh(solidRegionName_).time().value()>2)
+        if(meshHandler_->returnMesh(solidRegionName_).time().value()>couplingStartTime_)
             residual = calcFSIResidual();
 
         ++iterN;
 
-        if (residual < maxResidual_)
+        if (residual < maxResidual_ && iterN >= minIterations_)
             Info<< nl
                 << "Multiphysics loop converged after " << iterN
                 << " iterations"
                 << nl
                 << endl;
     }
-    while (residual > maxResidual_ && iterN < maxIterations_);
+    while ((residual > maxResidual_ || iterN < minIterations_) && iterN < maxIterations_);
 }
 
 
@@ -562,36 +563,41 @@ void Foam::solvers::FSILoop::fromSolidToFluid()
     solidMesh.movePoints(displacementPoints);
 
     // Step 4 - Update the dynamicFvMesh solver
+    // Guarded: skipped when the fluid uses staticFvMesh (pointMotionU is not
+    // registered in the object registry). Traction transfer in Step 2 is
+    // independent and still operates correctly with a static fluid mesh.
 
-    pointVectorField& motionU = const_cast<pointVectorField&>
-    (
-        fluidMesh.objectRegistry::lookupObject<pointVectorField>("pointMotionU")
-    );
+    if (fluidMesh.objectRegistry::foundObject<pointVectorField>("pointMotionU"))
+    {
+        pointVectorField& motionU = const_cast<pointVectorField&>
+        (
+            fluidMesh.objectRegistry::lookupObject<pointVectorField>("pointMotionU")
+        );
 
-    fixedValuePointPatchVectorField& motionUFluidPatch = refCast<fixedValuePointPatchVectorField>
-    (
-        motionU.boundaryFieldRef()[fluidPatchID_]
-    );
+        fixedValuePointPatchVectorField& motionUFluidPatch = refCast<fixedValuePointPatchVectorField>
+        (
+            motionU.boundaryFieldRef()[fluidPatchID_]
+        );
 
-    // Get patch interpolator
+        // Get patch interpolator
 
-    primitivePatchInterpolation patchInterpolator
-    (
-        fluidMesh.boundaryMesh()[fluidPatchID_]
-    );
+        primitivePatchInterpolation patchInterpolator
+        (
+            fluidMesh.boundaryMesh()[fluidPatchID_]
+        );
 
-    displacementAtFaces = displacementAtFaces *underRelaxation_ + oldDisplacementAtFaces_()*(1-underRelaxation_);
+        displacementAtFaces = displacementAtFaces *underRelaxation_ + oldDisplacementAtFaces_()*(1-underRelaxation_);
 
-    vectorField deltaDAtPoints =
-    patchInterpolator.faceToPointInterpolate
-    (
-        displacementAtFaces - oldDisplacementAtFaces_()
-    );
+        vectorField deltaDAtPoints =
+        patchInterpolator.faceToPointInterpolate
+        (
+            displacementAtFaces - oldDisplacementAtFaces_()
+        );
 
+        motionUFluidPatch == deltaDAtPoints /fluidMesh.time().deltaT().value();
 
-    motionUFluidPatch == deltaDAtPoints /fluidMesh.time().deltaT().value();
-
-    fluidMesh.update();
+        fluidMesh.update();
+    }
 
     // Step 5 - Update displacements
 

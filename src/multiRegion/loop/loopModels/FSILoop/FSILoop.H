@@ -152,6 +152,7 @@ protected:
         scalar couplingStartTime_;
         scalar maxResidual_;
         label maxIterations_;
+        label minIterations_;
         bool thermalCoupling_;
 
         autoPtr<volPointInterpolation> solidInterpolator_;

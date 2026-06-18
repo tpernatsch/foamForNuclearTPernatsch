@@ -71,9 +71,9 @@ tractionDisplacementFvPatchVectorField
 )
 :
     solidDirectionMixedFvPatchVectorField(tdpvf, p, iF, mapper),
-    traction_(p.size()),
-    pressure_(p.size()),
-    totalTraction_(p.size()),
+    traction_(tdpvf.traction_, mapper),
+    pressure_(tdpvf.pressure_, mapper),
+    totalTraction_(tdpvf.totalTraction_, mapper),
     totalTraction0_(),
     relax_(tdpvf.relax_),
     stressName_(tdpvf.stressName_),
@@ -93,14 +93,13 @@ tractionDisplacementFvPatchVectorField
         {
             traction_ = vector::zero;
             pressure_ = 0.0;
+            totalTraction_ = vector::zero;
         }
 
     #ifdef OPENFOAMFOUNDATION
         mapper(traction_, tdpvf.traction_);
         mapper(pressure_, tdpvf.pressure_);
-    #elif OPENFOAMESI
-        traction_.autoMap(mapper);
-        pressure_.autoMap(mapper);
+        mapper(totalTraction_, tdpvf.totalTraction_);
     #endif
     }
  }
@@ -342,9 +341,11 @@ void tractionDisplacementFvPatchVectorField::autoMap
 #ifdef OPENFOAMFOUNDATION
     m(traction_, traction_);
     m(pressure_, pressure_);
+    m(totalTraction_, totalTraction_);
 #elif OPENFOAMESI
     traction_.autoMap(m);
     pressure_.autoMap(m);
+    totalTraction_.autoMap(m);
 #endif
 }
 
@@ -362,6 +363,7 @@ void tractionDisplacementFvPatchVectorField::rmap
 
     traction_.rmap(dmptf.traction_, addr);
     pressure_.rmap(dmptf.pressure_, addr);
+    totalTraction_.rmap(dmptf.totalTraction_, addr);
 }
 
 
