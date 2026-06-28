@@ -1,0 +1,61 @@
+description: |-
+  Engel correlation for pressure drop.
+
+  Engel, F. C., Markley, R. A., & Bishop, A. A. (1979). Laminar, Transition, and Turbulent Parallel Flow Pressure Drop Across Wire-Wrap-Spaced Rod Bundles. Nuclear Science and Engineering, 69(2), 290–296. https://doi.org/10.13182/NSE79-A20618
+options: []
+usage:
+- comment: |
+    The drag model is specified via the ``type`` entry in the ``physicsModels/dragModels/<zoneName>`` subdictionary of the ``phaseProperties`` file.
+    (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g.
+    ``constant/fluidRegion``).
+
+    Here is a snippet of a ``phaseProperties`` file enabling the Engel fluid–structure drag model:
+  snippet: |-
+    // ... other phaseProperties subdictionaries
+
+    physicsModels
+    {
+      dragModels
+      {
+        "<zoneName>"
+        {
+          type    Engel;
+        }
+
+        // ... other zone subdictionaries
+
+      }
+
+      // ... other physicsModels subdictionaries
+    }
+
+    // ... other subdictionaries
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - usage
+  formulation_added: true
+formulation: |-
+  The model provides a friction-factor-based closure for the fluid–structure drag coefficient in wire-wrapped rod bundles by using the Engel correlation for parallel-flow pressure drop across the bundle. The drag coefficient is obtained by converting the bundle friction factor into an interfacial momentum sink consistent with the FS drag formulation used in GeN-Foam (see Duderstadt & Hamilton; Todreas & Kazimi for rod-bundle pressure-drop background).
+
+  The Engel correlation is expressed in terms of the Reynolds number $Re$ and a continuous transition description via an intermittency factor $\gamma(Re)$:
+  $$ f(Re) = (1-\gamma)\,f_L(Re) + \gamma\,f_T(Re) $$
+  $$ f_L(Re) = \frac{110}{Re}, \qquad f_T(Re) = \frac{0.55}{Re^{0.25}} $$
+  $$ \gamma(Re) \in [0,1] \quad \text{(transition blending between laminar and turbulent ranges)} $$
+
+  The pressure drop per unit length is then related to the friction factor in the usual Darcy–Weisbach form,
+  $$ \frac{\Delta p}{L} = f(Re)\,\frac{\rho\,U^2}{2D_h} $$
+  and the corresponding drag coefficient is mapped to the FS momentum sink used by the solver (i.e., a coefficient multiplying the relative velocity between fluid and structure).
+
+  - $f$ is the Darcy friction factor for the rod bundle
+  - $Re$ is the Reynolds number based on the bundle hydraulic diameter and bulk velocity
+  - $\gamma(Re)$ is the intermittency factor controlling the laminar–turbulent transition blending
+  - $f_L(Re)$ is the laminar friction factor branch
+  - $f_T(Re)$ is the turbulent friction factor branch
+  - $\Delta p$ is the pressure drop across length $L$
+  - $L$ is the axial length scale for the pressure drop
+  - $\rho$ is the fluid density (OpenFOAM field: $\rho$)
+  - $U$ is the characteristic bundle velocity magnitude (often from the local relative/axial flow, depending on FS coupling)
+  - $D_h$ is the hydraulic diameter used in the Darcy–Weisbach relation
+  - $T$ is not used explicitly in this correlation (thermophysical effects enter through $\rho$ and viscosity in $Re$)

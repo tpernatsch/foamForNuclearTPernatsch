@@ -1,0 +1,101 @@
+description: |
+  Phase change model that computes interfacial mass transfer based on interfacial heat fluxes.
+
+  The model supports three heat-driven modes selected via the ``mode`` entry:
+
+  -   ``conductionLimited``: computes ``dmdt_`` to conserve total energy transfer across the interface when the interfacial heat fluxes do not balance. If $q_{1i}$ and $q_{2i}$ are the heat fluxes from the bulk of phase 1/2 to the interface, then
+      $$
+      \dot{m} = \frac{q_{1i}+q_{2i}}{L}
+      $$
+      where $L$ is the latent heat. This approach is found in TRACE, but it can be unstable and fail to converge when the phases have a large difference in volumetric heat capacity (e.g. sodium, due to a density difference of order $\\sim 2000$).
+
+  -   ``twoPhaseDriven``: evaporation is driven uniquely by liquid superheat and condensation is driven uniquely by vapor undercooling. The phase identification (liquid vs vapour) is not required in the ``phaseProperties`` dictionary; it is inferred from the sign of the latent heat $L$ (positive if phase 1 is liquid and phase 2 is vapour, negative otherwise).
+
+  -   ``onePhaseDriven``: evaporation and condensation are both driven uniquely by one phase's superheat or cooling. This is implemented as a counterpart to ``twoPhaseDriven``.
+
+  The latent heat $L$ is computed as the difference of the enthalpies of formation specified in each phase's ``thermoPhysicalProperties`` under the ``Hf`` keyword. The vapour phase is the phase with the highest enthalpy of formation.
+
+  The latent heat can be adjusted following the TRACE theory manual to avoid thermal run-aways in particular scenarios. This feature can be enabled via the ``correctLatentHeat`` flag in the ``phaseChangeModel`` sub-dictionary, but it is not recommended for phases with low volumetric heat capacity (e.g. sodium), as noted above.
+
+  Example dictionary:
+  \verbatim
+  phaseChangeModel
+  {
+      type            heatDriven;
+      mode            onePhaseDriven; //- conductionLimited;//twoPhaseDriven;
+      drivingPhase    "phaseName";    //- (required only for onePhaseDriven)
+      correctLatentHeat   false;      //- defaults to false
+
+      saturationModel                 //- Unrelated to the heatDriven model
+      {
+          type       "BrowningPotter";
+      }
+  }
+  \endverbatim
+formulation: |
+  The model determines the interfacial mass transfer rate ``dmdt_`` from the local interfacial heat fluxes and the latent heat $L$.
+
+  In the ``conductionLimited`` mode, energy conservation across the interface is enforced by computing:
+  $$
+  \dot{m} = \frac{q_{1i}+q_{2i}}{L}
+  $$
+  where $q_{1i}$ and $q_{2i}$ are the interfacial heat fluxes coming from the bulk of phase 1 and phase 2, respectively.
+
+  In the ``twoPhaseDriven`` mode, the direction and magnitude of phase change are driven by the thermal state of each phase: evaporation depends on liquid superheat and condensation depends on vapour undercooling.
+
+  In the ``onePhaseDriven`` mode, both evaporation and condensation are driven by the thermal state of a single user-selected phase.
+
+  The latent heat $L$ is computed from the difference of the enthalpies of formation (``Hf``) provided in each phase's ``thermoPhysicalProperties``; the vapour phase corresponds to the phase with the highest ``Hf``. Optionally, $L$ may be corrected (TRACE-based) to mitigate thermal run-aways.
+
+  - $\\dot{m}$ is the interfacial mass transfer rate (``dmdt_``)
+  - $q_{1i}$ is the interfacial heat flux from phase 1 to the interface
+  - $q_{2i}$ is the interfacial heat flux from phase 2 to the interface
+  - $L$ is the latent heat computed from ``Hf`` (and optionally corrected)
+options:
+- key: mode
+  type: word
+  required: true
+  description: |
+    Selects the heat-driven phase change mode. Supported values are:
+
+    - ``conductionLimited``
+    - ``twoPhaseDriven``
+    - ``onePhaseDriven``
+- key: drivingPhase
+  type: word
+  required: false
+  description: |
+    Name of the phase used to drive both evaporation and condensation in ``onePhaseDriven`` mode.
+    This entry is required only when ``mode`` is ``onePhaseDriven``.
+- key: correctLatentHeat
+  type: bool
+  required: false
+  default: false
+  description: |
+    Enables TRACE-based latent heat correction to reduce the risk of thermal run-aways.
+    Not recommended for phases with low volumetric heat capacity (e.g. sodium).
+usage:
+- comment: |
+    The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``). Here is a snippet enabling the model:
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type heatDrivenPhaseChange;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - options
+  stub_improved: true

@@ -1,0 +1,40 @@
+description: |
+  Fixed-temperature fvPatchField that imposes a prescribed axial scalar
+  profile (constant in time) on a patch.
+
+  The axial locations provided to this boundary condition are absolute
+  coordinates in meters (they are NOT normalized).
+
+  The runtime type name is ``axialProfileT``.
+formulation: |
+  This boundary condition evaluates the patch scalar value as an
+  interpolation of tabulated data along an axial coordinate.
+
+  Let $z$ be the axial coordinate of a patch face center projected onto the
+  configured pin direction, and let $z_i$ and $T_i$ be the user-provided
+  tabulated axial locations and corresponding profile values.
+
+  The imposed patch value $T(z)$ is obtained by interpolating the table
+  using the selected interpolation method (e.g. ``linear`` or ``step``):
+
+  $$
+  T(z) = \mathcal{I}(z; \{z_i\}, \{T_i\})
+  $$
+
+  where $\mathcal{I}$ is the interpolation operator defined by
+  ``axialInterpolationMethod``.
+
+  - $z$ is the axial coordinate of each patch face center projected onto the
+    pin direction (from ``globalOptions``)
+  - $z_i$ are the tabulated axial locations from ``axialProfileDict.axialLocations``
+  - $T_i$ are the tabulated profile values from ``axialProfileDict.data``
+  - $T(z)$ is the imposed patch scalar value (temperature in the intended use)
+options: []
+externalOptions: []
+admonitions: []
+dictionary: neutronicsProperties
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

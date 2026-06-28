@@ -1,0 +1,36 @@
+description: |
+  fvPatchScalarField that applies a thermal “resistive layer” correction to a
+  boundary value by accounting for a thin resistive layer (e.g. oxide or
+  crud) on the outer surface.
+
+  This boundary condition is intended to be used for temperature-related
+  fields where the effective boundary heat transfer is modified by an
+  additional surface resistance.
+formulation: |
+  The resistive layer modifies the effective boundary heat transfer by
+  introducing a surface heat transfer coefficient ``alpha`` (W/m$^2$K).
+  The boundary value is treated as a fixed-value condition, while the
+  patch update applies the correction associated with the resistive layer.
+
+  $$ q'' = \alpha \left(T_{\mathrm{wall}} - T_{\mathrm{ext}}\right) $$
+
+  where:
+
+  - $q''$ is the surface heat flux (W/m$^2$)
+  - $T_{\mathrm{wall}}$ is the temperature at the patch (field value)
+  - $T_{\mathrm{ext}}$ is the external/adjacent temperature used by the
+    underlying fixed-value formulation
+  - $\alpha$ is the outer layer heat transfer coefficient set by ``alpha``
+
+  The implementation stores ``alpha`` as a per-face scalar field ``alpha_`` and
+  applies the correction during ``updateCoeffs()``.
+dictionary: neutronicsProperties
+options: []
+optionsLocations: []
+externalOptions: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

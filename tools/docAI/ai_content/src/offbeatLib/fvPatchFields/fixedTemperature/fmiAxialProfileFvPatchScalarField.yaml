@@ -1,0 +1,72 @@
+description: |
+  Boundary condition that imposes a fixed axial temperature profile on a patch
+  using an FMI-provided axial profile.
+
+  The profile is interpolated along the axial coordinate using the
+  ``axialInterpolationMethod`` specified in ``axialProfileDict``. If an oxide
+  layer is present in the coupled thermal model, an additional thermal
+  resistance corresponding to the oxide can be accounted for when computing
+  the patch temperature (handled in the implementation).
+formulation: |
+  This boundary condition prescribes a temperature $T(z)$ on the patch faces
+  by interpolating an FMI-provided axial profile along the axial coordinate.
+
+  The axial coordinate is computed from the face-centre locations projected onto
+  the main pin direction (set by ``globalOptions``). The interpolated profile
+  value is then used as the target patch temperature (with any additional
+  oxide-related thermal resistance handled by the implementation).
+
+  $$
+  T(z) = T_{\mathrm{FMI}}(z)
+  $$
+
+  where:
+
+  - $z$ is the axial coordinate of a patch face (computed from face centres
+    projected onto the pin direction from ``globalOptions``)
+  - $T_{\mathrm{FMI}}(z)$ is the axial temperature profile obtained from the
+    FMI ports ``axialLocationsNameFromFMU`` and ``axialProfileNameFromFMU``
+  - $T(z)$ is the resulting patch temperature imposed by this
+    ``fmiAxialProfileFvPatchScalarField``
+dictionary: neutronicsProperties
+options:
+- key: axialLocationsNameFromFMU
+  type: word
+  required: true
+  location: axialProfileDict
+  description: |
+    FMI port name providing the axial locations used to define the profile.
+- key: axialProfileNameFromFMU
+  type: word
+  required: true
+  location: axialProfileDict
+  description: |
+    FMI port name providing the axial temperature profile values.
+- key: axialInterpolationMethod
+  type: word
+  required: false
+  default: linear
+  location: axialProfileDict
+  description: |
+    Interpolation method used to evaluate the axial profile at the patch
+    face axial coordinates.
+- key: initialData
+  type: list[scalar]
+  required: false
+  location: axialProfileDict
+  description: |
+    Initial axial profile data used before FMI data are available. If
+    ``initialAxialLocations`` is not provided, the implementation constructs
+    a default set of axial locations.
+- key: initialAxialLocations
+  type: list[scalar]
+  required: false
+  location: axialProfileDict
+  description: |
+    Initial axial locations corresponding to ``initialData``. Note that axial
+    locations are not normalized.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

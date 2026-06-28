@@ -1,0 +1,104 @@
+description: |
+  Limback creep model for Zircaloy cladding, including irradiation creep and
+  thermal creep contributions, with separate tracking of equivalent creep
+  strains and their increments.
+
+  The model updates the creep strain tensors ``epsilonCreepIrr_``,
+  ``epsilonCreepTh_``, and ``epsilonCreepPrim_`` through the virtual function
+  ``correctCreep``.
+formulation: |
+  The Limback-type rheology model decomposes the total creep into
+  irradiation, thermal (secondary), and primary creep components, each
+  represented by a symmetric second-order strain tensor. Equivalent scalar
+  measures and their increments are also tracked for use in the constitutive
+  correlations.
+
+  The model uses the local fast flux and fast fluence fields to drive the
+  irradiation creep contribution, and the local temperature field to drive the
+  thermal creep contribution. The irradiation creep rate depends on the
+  irradiation time step and on Arrhenius-type temperature dependence via the
+  activation energy $Q$ and gas constant $R$.
+
+  $$ \dot{\varepsilon}_{\mathrm{irr}} = f\!\left(\phi,\,F,\,T,\,\Delta t;\,C_0,C_1,C_2,A,Q,n\right) $$
+  $$ \dot{\varepsilon}_{\mathrm{th}}  = g\!\left(T,\,\sigma_{\mathrm{eq}};\,A_1,a,A_3,A_2\right) $$
+  $$ \dot{\varepsilon}_{\mathrm{prim}} = h\!\left(T,\,\sigma_{\mathrm{eq}};\,C,b,d,B,D\right) $$
+
+  where:
+
+  - $\dot{\varepsilon}_{\mathrm{irr}}$ is the irradiation creep equivalent strain rate
+  - $\dot{\varepsilon}_{\mathrm{th}}$ is the thermal (secondary) creep equivalent strain rate
+  - $\dot{\varepsilon}_{\mathrm{prim}}$ is the primary creep equivalent strain rate
+  - $\phi$ is the fast flux field (set by ``fastFluxName``)
+  - $F$ is the fast fluence field (set by ``fastFluenceName``)
+  - $T$ is the local temperature field ``T`` (looked up from the mesh registry)
+  - $\Delta t$ is the irradiation time step in hours (computed internally from the time index)
+  - $R$ is the gas constant (fixed to 8.314 in the implementation)
+  - $Q$ is the activation energy per mol (set by ``cladType``)
+  - $C_0,C_1,C_2,A,n$ are irradiation creep correlation constants (set by ``cladType``)
+  - $A_1,a,A_3,A_2$ are thermal creep constants (set by ``cladType``)
+  - $C,b,d,B,D$ are primary creep constants (set by ``cladType``)
+  - $\sigma_{\mathrm{eq}}$ is the equivalent stress measure used by the creep correlations
+    (computed internally from the rheology state)
+
+  The model updates the tensorial creep strains and stores equivalent creep
+  strains ``epsilonCreepIrrEq_``, ``epsilonCreepThEq_``, ``epsilonCreepPrimEq_``
+  and their increments ``DepsilonCreepIrrEq_``, ``DepsilonCreepThEq_``,
+  ``DepsilonCreepPrimEq_`` each time ``correctCreep`` is called.
+dictionary: neutronicsProperties
+options:
+- key: fastFluenceName
+  type: word
+  required: false
+  default: fastFluence
+  description: |
+    Name of the fast fluence field (a ``volScalarField``) to be retrieved
+    from the mesh object registry.
+- key: fastFluxName
+  type: word
+  required: false
+  default: fastFlux
+  description: |
+    Name of the fast flux field (a ``volScalarField``) to be retrieved
+    from the mesh object registry.
+- key: relax
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Relaxation factor applied to the creep strain update in ``correctCreep``.
+- key: cladType
+  type: word
+  required: false
+  default: SRA
+  description: |
+    Cladding material type used to select the Limback correlation constants.
+    If ``cladType`` is not provided, ``SRA`` is used.
+usage:
+- comment: |
+    Use the ZircaloyLimback creep model with default relaxation.
+  snippet: |
+    creep
+            {
+                type ZircaloyLimback;
+                relax 1.0;
+            }
+- comment: |
+    Use the ZircaloyLimback creep model with a custom relaxation factor.
+  snippet: |
+    creep
+            {
+                type            ZircaloyLimback;
+                relax           0.9;
+            }
+- comment: |
+    Use the ZircaloyLimback creep model (with relaxation specified).
+  snippet: |-
+    creep
+            {
+                type ZircaloyLimback;
+                relax 0.9;
+            }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

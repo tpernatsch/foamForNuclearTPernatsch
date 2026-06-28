@@ -1,0 +1,39 @@
+description: |
+  Base class with common functionality for plenum spring patch fields.
+
+  The class provides shared storage and dictionary-driven initialization for
+  spring stiffness, initial spring loading, and patch connectivity used to
+  compute the total spring elongation from a displacement field.
+formulation: |
+  The spring elongation is computed from the displacement field by aggregating
+  the relative displacement between the patch sets connected to the bottom and
+  top of the spring.
+
+  Let $D$ be the displacement vector field (name set by ``displacementName``),
+  and let $\hat{p}$ be the pin direction (from ``globalOptions``). The scalar
+  elongation is obtained by projecting the displacement onto $\hat{p}$ and
+  taking the difference between the averaged projected displacement at the
+  top and at the bottom patch sets.
+
+  $$ \delta = \left(\overline{ \hat{p}\cdot D } \right)_{\text{top}} -
+               \left(\overline{ \hat{p}\cdot D } \right)_{\text{bottom}} $$
+
+  where:
+
+  - $\delta$ is the total spring elongation, in m
+  - $D$ is the displacement vector field ``displacementName_``
+  - $\hat{p}$ is the pin direction vector from ``globalOptions.pinDirection()``
+  - $\overline{(\cdot)}$ denotes the patch-averaged value over the selected
+    patch IDs (top and bottom sets)
+
+  The spring force law (e.g. $F=k(\delta+\delta_0)$) is not implemented in
+  this base class; only the elongation and common initialization are provided.
+options: []
+optionsLocations: []
+externalOptions: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

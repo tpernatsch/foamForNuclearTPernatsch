@@ -1,0 +1,38 @@
+description: |
+  byRegimeModels is a runtime-selectable wrapper that instantiates a set of
+  two-phase interfacial/drag/heat-transfer sub-models using the
+  `byRegimeModel<scalar, ...>` mechanism.
+
+  The class registers multiple `byRegimeModel` specializations for different
+  physical closures (dispersion, interfacial area, drag coefficients, virtual
+  mass, heat-transfer coefficients, etc.) so that the appropriate closure can
+  be selected by `type` at run time.
+admonitions:
+- kind: note
+  body: This model is selected solely by its runtime ``typeName`` and defines no additional options.
+options: []
+usage:
+- comment: 'The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the
+    ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``).
+    Here is a snippet enabling the model:'
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type byRegimeModels;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - admonitions
+  stub_improved: true

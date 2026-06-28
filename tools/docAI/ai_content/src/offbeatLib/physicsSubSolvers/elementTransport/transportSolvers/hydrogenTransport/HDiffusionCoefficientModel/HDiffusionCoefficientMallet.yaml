@@ -1,0 +1,37 @@
+description: |
+  Hydrogen diffusion coefficient model based on an Arrhenius-type temperature
+  dependence, with optional correction of an effective diffusion
+  coefficient.
+
+  The model updates the OpenFOAM field `diffH` (internal and boundary
+  values) using the local temperature field `T`.
+formulation: |
+  The hydrogen diffusion coefficient is modeled with an Arrhenius law
+  (see e.g. standard diffusion kinetics treatments used in fuel
+  performance models):
+
+  $$
+  D_H(T) = D_0 \exp\left(-\frac{E_d}{R\,T}\right)
+  $$
+
+  where the temperature $T$ is taken from the OpenFOAM field `T` at each cell
+  and boundary face.
+
+  - $D_H$ is the hydrogen diffusion coefficient (field `diffH`)
+  - $D_0$ is the pre-exponential factor
+  - $E_d$ is the activation energy for diffusion
+  - $R$ is the universal gas constant (8.31446 J/mol/K)
+  - $T$ is the local temperature (field `T`)
+
+  After updating `diffH`, the model may additionally call
+  `correctEffectiveDiffusionCoefficient(addr)` when the base class enables
+  an effective diffusion coefficient correction.
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

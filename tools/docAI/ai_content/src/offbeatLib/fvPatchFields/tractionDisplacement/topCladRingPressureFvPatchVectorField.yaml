@@ -1,0 +1,179 @@
+description: |
+  Boundary condition for the top cladding annular ring pressure when the top cap
+  is not explicitly modeled.
+
+  The `topCladRingPressure` condition enforces force equilibrium for the remaining
+  cladding ring by balancing contributions from:
+  - the outer coolant pressure acting downward,
+  - the gap gas pressure acting upward,
+  - the plenum spring pressure acting upward.
+
+  Since the coolant and the gap gas/spring act on different cap surfaces in the
+  real rod, the pressure contributions are scaled by the ratio of the corresponding
+  surface areas before being applied uniformly to the top cladding ring surface.
+  Therefore, the user must provide the top cap internal and external radii.
+
+  This boundary condition inherits from the `tractionDisplacement` family, enabling
+  optional plane strain approximation and a spring-dashpot system.
+admonitions:
+- kind: warning
+  body: |
+    This boundary condition must be used together with a `plenumSpringPressure`
+    boundary condition on the corresponding patch (typically the fuel top patch).
+    In the `plenumSpringPressure` dictionary, the `topCapInnerPatches` list must
+    reference the patch using `topCladRingPressure`.
+dictionary: neutronicsProperties
+options:
+- key: topCapOuterRadius
+  type: scalar
+  required: true
+  description: |
+    Radius of the top cap on the fluid side (outer radius) in meters.
+- key: topCapInnerRadius
+  type: scalar
+  required: true
+  description: |
+    Radius of the top cap on the plenum side (inner radius) in meters.
+- key: coolantPressureList
+  type: table
+  required: false
+  description: |
+    Time-dependent coolant pressure table. Each entry consists of a time value
+    (using the time unit defined in `solverDict`) followed by the pressure value
+    in Pa.
+- key: coolantPressure
+  type: scalar
+  required: false
+  description: |
+    Fixed coolant pressure in Pa. Used only if `coolantPressureList` is not provided.
+- key: tractionList
+  type: table
+  required: false
+  description: |
+    Time-dependent traction table. Each entry consists of a time value and a
+    corresponding traction vector value in Pa.
+- key: planeStrain
+  type: bool
+  required: false
+  default: false
+  description: |
+    Activates the plane strain approximation for the normal stress at the boundary.
+    When enabled, the normal strain is assumed constant across the last layer of
+    cells.
+- key: fixedSpring
+  type: bool
+  required: false
+  default: false
+  description: |
+    Activates a fixed spring-dashpot system for additional stability.
+- key: fixedSpringModulus
+  type: scalar
+  required: false
+  description: |
+    Spring modulus in N/m. Required when `fixedSpring` is `true`.
+- key: dashpotModulus
+  type: scalar
+  required: false
+  description: |
+    Dashpot modulus in N/m. Required when `fixedSpring` is `true`.
+- key: relax
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Relaxation factor for gradient updates.
+- key: value
+  type: vector
+  required: true
+  description: |
+    Initial displacement value (not stress).
+- key: displacementName
+  type: word
+  required: false
+  default: D
+  description: |
+    Name of the total displacement field used by the boundary condition.
+usage:
+- comment: |
+    Apply `topCladRingPressure` to the `cladTop` patch and provide the top cap
+    radii and coolant pressure history. The `value` entry is set to the
+    internal field.
+  snippet: |
+    cladTop
+    {
+        type            topCladRingPressure;
+
+        topCapRadius       0.00525;
+        topCapPlenumRadius 0.0045;
+
+        coolantPressureList
+        {
+            type                table;
+
+            file                "$FOAM_CASE/constant/lists/topCladdingRingPressureCoolantList";
+
+            format              foam;
+            outOfBounds         clamp;
+            interpolationScheme linear;
+        }
+
+        planeStrain     false;
+
+        relax           1.0;
+
+        value           $internalField;
+    }
+- comment: |
+    Accompanying `plenumSpringPressure` BC definition for the `fuelTop` patch,
+    referencing the `cladTop` patch via `topCapInnerPatches`.
+  snippet: |
+    fuelTop
+    {
+        type            plenumSpringPressure;
+
+        springModulus           1e4;
+        initialSpringLoading    0;
+
+        fuelTopPatches          (fuelTop);
+        topCapInnerPatches      (cladTop);
+
+        planeStrain     false;
+
+        relax           1.0;
+
+        value           $internalField;
+    }
+formulation: |-
+  This boundary condition approximates the net force balance on the top cladding annular
+  ring when the top cap is not explicitly modeled. It distributes the equivalent pressure
+  contributions uniformly over the top cladding ring surface by scaling each pressure
+  term with the ratio of the corresponding cap surface areas.
+
+  Let the applied traction/normal stress on the patch be driven by three pressure
+  contributions: outer coolant pressure (downward), gap gas pressure (upward), and
+  plenum spring pressure (upward). The coolant pressure is prescribed either as a
+  fixed value or via a time table; the gap gas pressure is obtained from the
+  `gapGasModel`; and the plenum spring pressure is obtained from the coupled
+  `plenumSpringBase` boundary condition on the fuel top patch.
+
+  $$ p_\text{app}(t) = -\alpha_c\,p_c(t) + \alpha_g\,p_g(t) + \alpha_s\,p_s(t) $$
+
+  where:
+
+  - $p_\text{app}(t)$ is the equivalent applied pressure/traction driving the boundary
+    displacement on the top cladding ring patch
+  - $p_c(t)$ is the outer coolant pressure (set by `coolantPressure` or `coolantPressureList`)
+  - $p_g(t)$ is the gap gas pressure (obtained from the `gapGasModel` named `gapGas`)
+  - $p_s(t)$ is the plenum spring pressure (read from the coupled `plenumSpringBase`
+    boundary condition on the fuel top patch)
+  - $\alpha_c$, $\alpha_g$, $\alpha_s$ are area-scaling factors based on the top cap
+    internal/external radii provided by `topCapOuterRadius` and `topCapInnerRadius`
+
+  The resulting traction is applied through the inherited `tractionDisplacement`
+  mechanism, optionally using a plane strain approximation (`planeStrain`) and an
+  optional fixed spring-dashpot stabilization (`fixedSpring`, `fixedSpringModulus`,
+  `dashpotModulus`).
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,43 @@
+description: |-
+  Linear contact-partition model returning a precomputed normalized
+  contact fraction proportional to the phase fraction.
+
+  The model reads the normalized field `alphaN` from the associated
+  `FSPair` object (`pair.fluidRef().normalized()`) and returns its value
+  cell-by-cell. No additional numerics or dictionary coefficients are
+  introduced here; the model is purely algebraic.
+options: []
+usage:
+- comment: |
+    The dispersion model is specified via the ``type`` entry in the ``physicsModels/pairGeometryModels/[pair]/contactPartitionModel`` subdictionary of the ``phaseProperties`` file.
+    (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g.
+    ``constant/fluidRegion``).
+
+    Here is a snippet :
+  snippet: |-
+    pairGeometryModels
+    {
+        "liquid.structure"
+        {
+            dispersionModel
+            {
+                type        byRegime;
+                regimeMap   "slugMist";
+                "slug"
+                {
+                    type            constant;
+                    dispersedPhase  "vapour";
+                }
+                "mist"
+                {
+                    type            constant;
+                    dispersedPhase  "liquid";
+                }
+            }
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description

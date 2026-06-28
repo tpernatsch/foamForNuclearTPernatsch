@@ -1,0 +1,50 @@
+description: |
+  Base corrosion model class. It provides the infrastructure for corrosion-related
+  fields and (optionally) mesh updates driven by oxide-layer growth.
+
+  The user selects the corrosion model by specifying the keyword ``corrosion`` in
+  the solver dictionary (``solverDict``). The default runtime type is ``constant``,
+  for which corrosion does not evolve in time, but the oxide fields are still
+  created and written.
+
+  If initial-time field files are present, the internal field and boundary
+  conditions are read from disk. Otherwise, the oxide thickness fields are set
+  to 0 m everywhere, with ``zeroGradient`` boundary conditions on all non-empty
+  (non-wedge) patches.
+formulation: |
+  For the ``constant`` corrosion model, no time evolution is applied by the
+  corrosion model itself (``correct()`` is a no-op). The oxide-layer thickness
+  fields are therefore treated as prescribed/constant in time.
+
+  The model still maintains and writes the following surface fields:
+  - ``oxideThickness``: oxide-layer thickness (m)
+  - ``DOxideThickness``: increment in oxide-layer thickness over the last step (m)
+  - ``DMetalThickness``: change in base metal thickness (m), allocated but not
+    written by this base class
+
+  The optional mesh motion is controlled by ``updateMesh``. When enabled, the
+  mesh update is triggered via ``updateMesh()`` (implementation details depend
+  on derived/overridden behavior).
+
+  Variables:
+  - $h_{\mathrm{ox}}$ is the oxide layer thickness field ``oxideThickness`` (m)
+  - $\Delta h_{\mathrm{ox}}$ is the oxide thickness increment field ``DOxideThickness`` (m)
+  - $\Delta h_{\mathrm{m}}$ is the metal thickness change field ``DMetalThickness`` (m)
+  - $t$ is the simulation time (from ``mesh.time().timeName()``)
+optionsLocations:
+- name: corrosionOptions
+  in: solverDict
+options:
+- key: updateMesh
+  type: bool
+  required: false
+  default: false
+  description: |
+    Switch controlling whether the corrosion model should activate mesh updates
+    driven by oxide-layer thickness. The value is read from the
+    ``corrosionOptions`` sub-dictionary.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

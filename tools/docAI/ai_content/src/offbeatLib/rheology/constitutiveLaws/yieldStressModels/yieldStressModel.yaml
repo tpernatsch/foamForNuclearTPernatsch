@@ -1,0 +1,29 @@
+description: |
+  Mother class for all yield-stress models implemented in OFFBEAT.
+
+  This abstraction is intended to be used together with the `misesPlasticity`
+  constitutive mechanical behaviour law, providing the evolving yield
+  stress field $\sigma_Y$ and a hardening modulus field $H_p$.
+formulation: |
+  The specific evolution law for the yield stress is delegated to derived
+  classes via the pure virtual function `correctYieldStress(addr)`. In
+  general, the yield stress $\sigma_Y$ and the hardening modulus $H_p$ are
+  updated consistently with the plasticity model (e.g. von Mises plasticity)
+  to represent isotropic hardening/softening behaviour.
+
+  $$ \sigma_Y = \sigma_Y(\text{state variables}) $$
+  $$ H_p = H_p(\text{state variables}) $$
+
+  - $\sigma_Y$ is the local yield stress field (OpenFOAM: `sigmaY`, units of pressure)
+  - $H_p$ is the local hardening modulus field (OpenFOAM: `Hp`, dimensionless as declared here)
+  - `addr` is the list of addressing indices for the material points/cells
+    whose yield stress must be updated
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,41 @@
+description: |
+  Class modelling Young Modulus of Molybdenum from Bison manual.
+options:
+- key: par1
+  type: scalar
+  required: false
+  default: 334900000000.0
+  description: |
+    Parameter $a$ in the Young's modulus model, where the nominal value is
+    $E(T)=a-b\,T$. Set by the ``par1`` entry in the ``YoungModulus`` sub-dictionary
+    (or directly in the provided dictionary if no ``YoungModulus`` sub-dictionary is present).
+- key: par2
+  type: scalar
+  required: false
+  default: 51010000.0
+  description: |
+    Parameter $b$ in the Young's modulus model, where the nominal value is
+    $E(T)=a-b\,T$. Set by the ``par2`` entry in the ``YoungModulus`` sub-dictionary
+    (or directly in the provided dictionary if no ``YoungModulus`` sub-dictionary is present).
+usage:
+- comment: |
+    Example selection of the `Molybdenum` thermalExpansion model.
+  snippet: |-
+    materials
+    {
+      structure
+      {
+        type Molybdenum;
+        thermalExpansion
+        {
+          type Molybdenum;
+          // par1 3.349E+11;
+          // par2 5.101E+07;
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options

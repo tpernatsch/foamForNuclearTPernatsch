@@ -1,0 +1,90 @@
+description: |
+  Fixed heat-flux boundary condition that prescribes an axial (z-dependent)
+  heat-flux profile on a patch, with optional time dependence via
+  interpolation tables.
+
+  The boundary heat flux is computed by interpolating:
+  (1) time-dependent average heat flux, and
+  (2) an axial shape profile defined over axial locations,
+  then combining them consistently to obtain the final patch heat flux.
+formulation: |
+  The model prescribes a boundary heat flux $q''(z,t)$ as the product of a
+  time-dependent average heat flux and an axial shape function.
+
+  $$
+  q''(z,t) = \bar{q}''(t)\, s(z)
+  $$
+
+  where:
+
+  - $q''(z,t)$ is the prescribed patch heat flux at axial location $z$ and time $t$
+  - $\bar{q}''(t)$ is the time-dependent average heat flux from ``averageData`` and ``timePoints``
+  - $s(z)$ is the axial shape function from ``axialData`` and ``axialLocations``
+  - $t$ is time, interpolated using ``timeInterpolationMethod`` (default: ``linear``)
+  - $z$ is the axial coordinate of each boundary face, computed using the pin direction ``zAxis`` (or ``globalOptions``)
+
+  Axial coordinates are computed for each patch face by projecting the face
+  location onto the specified axis direction, using the reference mesh patch
+  if available.
+dictionary: neutronicsProperties
+options:
+- key: timePoints
+  type: list[scalar]
+  required: true
+  description: |
+    List of time points defining the interpolation grid for the time-dependent
+    average heat flux and the time-dependent axial profile data.
+- key: axialLocations
+  type: list[scalar]
+  required: true
+  description: |
+    List of axial locations defining the interpolation grid for the axial
+    shape/profile.
+- key: averageData
+  type: list[scalar]
+  required: true
+  description: |
+    Average heat-flux values corresponding to ``timePoints``. These values
+    are interpolated in time using ``timeInterpolationMethod``.
+- key: axialData
+  type: table
+  required: true
+  description: |
+    Axial profile data corresponding to ``axialLocations`` and ``timePoints``.
+    The implementation stores this as a list of scalar fields (one per time
+    point), and interpolates it in time and along the axial coordinate using
+    ``timeInterpolationMethod`` and ``axialInterpolationMethod``.
+- key: timeInterpolationMethod
+  type: word
+  required: false
+  default: linear
+  description: |
+    Interpolation method used in time for both the average heat flux and the
+    axial profile data. Supported values are those available in
+    ``interpolateTableBase::interpolationMethodNames_``.
+- key: axialInterpolationMethod
+  type: word
+  required: false
+  default: linear
+  description: |
+    Interpolation method used along the axial coordinate for the axial profile
+    shape. Supported values are those available in
+    ``interpolateTableBase::interpolationMethodNames_``.
+- key: zAxis
+  type: vector
+  required: false
+  description: |
+    Direction vector defining the pin/axial axis used to compute the axial
+    coordinate of each boundary face. If not provided, the implementation
+    falls back to ``globalOptions`` (``pinDirection``) when available.
+optionsLocations:
+- name: timeDependentProfile
+  in: boundaryField
+- name: timeDependentProfile
+  in: patchField
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

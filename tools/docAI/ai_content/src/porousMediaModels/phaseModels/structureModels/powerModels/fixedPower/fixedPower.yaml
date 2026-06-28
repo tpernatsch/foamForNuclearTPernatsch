@@ -1,0 +1,116 @@
+description: |-
+  Describes a generic structure with a constant or time dependent internal
+  power production.
+  Solves an energy equation for the structure, updating the average
+  structure temperature (assumed equal to the structure surface temperature
+  for fluid heat transfer purposes).
+
+  If the ``powerTimeProfile`` is provided, the new power density $q'''$ at
+  position $r$ and time $t+dt$ is computed as follow with the time profile $P$:
+
+  $$
+  q'''(r, t+dt) = q'''(r, t) \times \frac{P(t+dt)}{P(t)}
+  $$
+options:
+- key: volumetricArea
+  type: scalar
+  required: true
+  default: null
+  description: Volumetric area of structure in m2/m3
+- key: volumeFraction
+  type: scalar
+  required: false
+  default: null
+  description: Volume fraction of structure
+- key: Cp
+  type: scalar
+  required: true
+  default: null
+  description: Specific heat capacity in J/kg/K
+- key: rho
+  type: scalar
+  required: true
+  default: null
+  description: Density in kg/m3
+- key: rhoCp
+  type: scalar
+  required: false
+  default: null
+  description: Product of the density and specific heat capacity in J/m3/K if Cp and rho are not provided
+- key: powerDensity
+  type: scalar
+  required: true
+  default: null
+  description: Initial power density value in W/m3 applied to the ``powerDensity`` field
+- key: T
+  type: scalar
+  required: true
+  default: null
+  description: Initial temperature value in K applied to the ``T`` field
+- key: powerTimeProfile
+  type: timeProfile
+  required: false
+  default: null
+  description: Power density time profile as a table or via FMI
+usage:
+- comment: 'Usage using a time table:'
+  snippet: |-
+    powerModel
+    {
+        type                fixedPower;
+        volumetricArea      100;
+        T                   652.15;
+        Cp                  500;
+        rho                 7700;
+        powerDensity        4.5e8;
+        powerTimeProfile // Optional
+        {
+            type        table;
+            startTime   0;
+            table       table
+            (
+                (   0   4.5e8   )
+                ( 100   4.5e7   )
+            );
+        }
+    }
+- comment: 'Usage using an FMI input:'
+  snippet: |-
+    powerModel
+    {
+        type                fixedPower;
+        volumetricArea      100;
+        T                   652.15;
+        Cp                  500;
+        rho                 7700;
+        powerDensity        4.5e8;
+        powerTimeProfile // Optional
+        {
+            type            fmi;
+            nameFromFMU     powerCoupled;
+            initialValue    4.5e8;
+        }
+    }
+- comment: 'The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the
+    ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``).
+    Here is a snippet enabling the model:'
+  snippet: |-
+    phaseProperties
+    {
+        structureProperties
+        {
+            "<zoneName>"
+            {
+                powerModel
+                {
+                    type fixedPower;
+                }
+            }
+        }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - dictionary

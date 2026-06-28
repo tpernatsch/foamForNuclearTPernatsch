@@ -1,0 +1,80 @@
+description: |
+  Class to handle dimensionless numbers that characterise the system, e.g.
+  Reynolds, etc. While some can (rightfully) think that some of these numbers
+  should be directly members of other classes (e.g., Reynolds of fluids
+  should be in the fluid class), in general these numbers depend on a
+  multitude of parameters. You cannot define a Reynolds for a fluid by
+  itself: it needs to be geometrically constrained in a certain domain
+  (so that a hydraulic diameter can be defined), so it is not properly
+  "just" of the fluid. While this logic can of course be debate, the goal is
+  to keep it simple and avoid dispersing dimensionless numbers randomly
+  around the code.
+
+  The class couples a ``fluid`` and a ``structure`` and computes:
+  - a (possibly local-frame) Reynolds number field,
+  - a drag-factor tensor field,
+  - a heat-transfer coefficient field,
+  - and a fluid-structure contact fraction via a ``contactPartitionModel``.
+
+  Author:
+    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+formulation: |
+  This class provides the closure quantities used by fluid-structure
+  interaction (FSI) models: Reynolds number, drag factors, and heat-transfer
+  coefficients, all as OpenFOAM fields.
+
+  The exact correlations are delegated to the selected sub-models:
+  ``FSDragFactor`` and ``FSHeatTransferCoefficientModel``. The class also
+  supports a ``contactPartitionModel`` to compute the fluid-structure
+  contact fraction.
+
+  The computed fields are stored as:
+  - $Re$ as a volume scalar field ``Re_``,
+  - local-frame Reynolds components ``lRe_``,
+  - drag-factor tensor ``Kd_``,
+  - heat-transfer coefficient ``htc_``,
+  - and contact fraction ``f`` (via ``fPtr_``).
+
+  Variables:
+  - $Re$ is the Reynolds number field ``Re_`` (dimensionless)
+  - $lRe$ is the Reynolds number components in the local reference frame ``lRe_``
+  - $K_d$ is the total drag-factor tensor ``Kd_``
+  - $h$ is the total heat-transfer coefficient ``htc_``
+  - $f$ is the fluid-structure contact fraction ``fPtr_()``
+admonitions: []
+dictionary: neutronicsProperties
+options:
+- key: minKdFS
+  type: scalar
+  required: false
+  default: '0'
+  description: ''
+optionsLocations: []
+usage:
+- comment: 'The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the
+    ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``).
+    Here is a snippet enabling the model:'
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type FSPair;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - dictionary
+  - optionsLocations
+  stub_improved: true

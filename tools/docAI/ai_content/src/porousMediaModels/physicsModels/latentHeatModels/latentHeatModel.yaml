@@ -1,0 +1,115 @@
+description: |-
+  Latent heat model for a two-phase fluid undergoing phase change.
+
+  The model provides the latent heat value as a function of the local thermodynamic
+  state, and can optionally apply an ``adjust`` correction to ensure consistency
+  between how mass-transfer enthalpy is added to the energy equations and how
+  latent heat is evaluated.
+
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./**
+formulation: |
+  The latent heat of vaporization is computed from the selected implementation
+  (via the runtime-selected ``latentHeatModel`` type). When the optional
+  ``adjust`` feature is enabled, the latent heat is modified to remain consistent
+  with the enthalpy at which mass is transferred between phases.
+
+  The adjustment follows the sign convention that the mass transfer rate field
+  ``dmdt`` represents transfer from ``fluid1`` to ``fluid2``; the latent heat
+  is decreased during evaporation and increased during condensation based on
+  the difference between the current phase enthalpy and the corresponding
+  saturation enthalpy.
+
+  $$ L = L(T,p) + \Delta L $$
+
+  where:
+
+  - $L$ is the latent heat value returned by ``value(celli)``
+  - $\Delta L$ is the optional correction applied by ``adjust(L)``
+  - $T$ is the relevant system temperature (e.g. saturation/interfacial temperature)
+  - $p$ is the system pressure from the ``p`` field
+  - $dmdt$ is the local mass transfer rate used to determine evaporation vs condensation
+admonitions: []
+dictionary: neutronicsProperties
+options:
+- key: adjust
+  type: bool
+  required: false
+  default: false
+  description: |
+    If ``true``, adjust the latent heat of vaporization/condensation so that it
+    is consistent with the enthalpy at which mass transfer is applied in the
+    energy equations. In particular:
+    - during evaporation, latent heat is decreased by the difference between
+      the current liquid enthalpy and the saturation liquid enthalpy;
+    - during condensation, latent heat is increased by the difference between
+      the current vapour enthalpy and the saturation vapour enthalpy.
+usage:
+- comment: |
+    Select a water latent heat model (no adjustment) in the ``latentHeatModel``
+    sub-dictionary.
+  snippet: |
+    phaseChangeModel
+    {
+        type                        heatDriven;
+        mode                        conductionLimited;
+        residualInterfacialArea     1e-3;
+        latentHeatModel
+        {
+            type                    water;
+        }
+        saturationModel
+        {
+            type                    waterTRACE;
+        }
+    }
+- comment: |
+    Select the ``FinkLeibowitz`` latent heat model and enable the enthalpy-consistent
+    correction via ``adjust true``.
+  snippet: |
+    phaseChangeModel
+    {
+        type                heatDriven;
+        mode                conductionLimited;
+        latentHeatModel
+        {
+            type            FinkLeibowitz;
+            adjust          true;
+        }
+        saturationModel
+        {
+            type            BrowningPotter;
+        }
+    }
+- comment: |
+    Select a water latent heat model in a phase-change setup where the saturation
+    model is also ``water``.
+  snippet: |-
+    phaseChangeModel
+    {
+        type                        heatDriven;
+        mode                        conductionLimited;
+        residualInterfacialArea     1e-3;
+        latentHeatModel
+        {
+            type                    water;
+        }
+        saturationModel
+        {
+            type                    water;
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - dictionary
+  - options
+  - usage
+  stub_improved: true

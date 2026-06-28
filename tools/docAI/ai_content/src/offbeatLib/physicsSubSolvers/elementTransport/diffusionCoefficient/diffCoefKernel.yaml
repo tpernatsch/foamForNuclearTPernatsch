@@ -1,0 +1,39 @@
+description: |
+  Diffusion coefficient model for kernel material, providing temperature-dependent
+  diffusion coefficients for Cs, Kr, Ag, and Sr.
+
+  The implementation uses Arrhenius-type expressions (and a piecewise temperature
+  dependence for Kr) as reported in the Parfume manual and INL report.
+formulation: |
+  The diffusion coefficient is computed locally as a function of the temperature
+  field $T$ using Arrhenius correlations of the form
+  $$ D(T) = A \exp\left(-\frac{E}{R\,T}\right) $$
+  where $R$ is the universal gas constant.
+
+  For Kr, the model is piecewise in temperature:
+  $$ D_{\mathrm{Kr}}(T) =
+  \begin{cases}
+  1.3\times 10^{-12}\exp\left(-\dfrac{126\,000}{R\,T}\right), & T < 1773.15 \\
+  8.8\times 10^{-15}\exp\left(-\dfrac{54\,000}{R\,T}\right)
+  + 6.0\times 10^{-1}\exp\left(-\dfrac{480\,000}{R\,T}\right), & T \ge 1773.15
+  \end{cases} $$
+  For Cs, Ag, and Sr, the model uses the corresponding Arrhenius sums implemented
+  in the code.
+
+  The diffusion coefficient is updated for the selected cells given by $addr$,
+  and the same temperature dependence is applied on boundary patches that are
+  associated with faces of those cells.
+
+  - $D(T)$ is the diffusion coefficient (written to the OpenFOAM field $sf$)
+  - $T$ is the local temperature field ($volScalarField$)
+  - $R$ is the gas constant, taken as $8.31446$ J/(mol·K)
+  - $addr$ is the list of cell indices whose coefficients are updated
+  - $sf$ is the diffusion coefficient field to be updated
+  - $Tp$ is the boundary temperature field on a given patch
+admonitions: []
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

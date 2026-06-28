@@ -1,0 +1,38 @@
+description: |-
+  Abstract base class for fluid-structure interfacial contact partitioning.
+
+  A selected derived model provides the local fraction of the structure
+  interfacial area that is in contact with the surrounding fluid, and can
+  update a given OpenFOAM scalar field accordingly.
+
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./**
+formulation: |
+  This class defines the interface for contact-partition models used in
+  fluid–structure interaction (FSI) coupling.
+
+  For each mesh cell $i$, the model returns a scalar contact fraction
+  $c_i$ representing the portion of the structure–fluid interfacial area
+  that is effectively wetted by the fluid.
+
+  The field update performed by the base implementation is:
+  $$
+  f_i \leftarrow c_i
+  $$
+  where:
+  - $f_i$ is the value of the OpenFOAM scalar field `f` in cell $i$
+  - $c_i$ is the contact fraction returned by `value(i)`
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - options
+  - usage
+  stub_improved: true

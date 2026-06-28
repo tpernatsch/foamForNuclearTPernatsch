@@ -1,0 +1,125 @@
+description: "Mechanics solver class that solves for total displacement `D` in a total \nLagrangian framework (i.e. the mesh\
+  \ is NOT updated), and employs the \nsmall-strain approximation.\n"
+formulation: |
+  This mechanics sub-solver uses a total-Lagrangian, small-strain linear elasticity model in which the displacement field is the primary unknown and the mesh is not updated. The strain is computed from the displacement gradient using the infinitesimal strain tensor, and the Cauchy stress is related to strain through a linear constitutive law (Hooke’s law) with spatially varying Lamé parameters.
+
+  Let $D$ be the total displacement field (OpenFOAM field name ``D``). The infinitesimal strain tensor $\epsilon$ is
+  $$
+  \epsilon_{ij}=\frac{1}{2}\left(\frac{\partial D_i}{\partial x_j}+\frac{\partial D_j}{\partial x_i}\right).
+  $$
+  In compact tensor form this is $\epsilon=\tfrac{1}{2}\left(\nabla D+(\nabla D)^{T}\right)$.
+
+  The linear isotropic constitutive relation (with Lamé parameters) is
+  $$
+  \sigma_{ij}=2\mu\,\epsilon_{ij}+\lambda\,\epsilon_{kk}\,\delta_{ij},
+  $$
+  where $\mu$ and $\lambda$ are taken as fields from the material model (OpenFOAM ``mat_.mu()`` and ``mat_.lambda()``).
+
+  Substituting into the static equilibrium equation in the reference configuration yields the Navier form
+  $$
+  -\frac{\partial \sigma_{ij}}{\partial x_j}=b_i,
+  $$
+  where $b$ is the body-force density (if present in the mechanics setup). In terms of $D$, this can be written as
+  $$
+  -\mu\nabla^2 D-(\mu+\lambda)\nabla(\nabla\cdot D)=b,
+  $$
+  with the understanding that $\mu$ and $\lambda$ may vary spatially (piecewise-constant or smoothly varying across cells).
+
+  The solver is formulated in a total-Lagrangian sense: the differential operators are evaluated with respect to the reference coordinates, and there is no geometric non-linearity (no distinction between reference and updated configurations). Consequently, the strain-displacement kinematics are linearized and the stress depends linearly on $D$.
+
+  Assumptions and validity range:
+  - small displacement gradients: $\|\nabla D\|\ll 1$, so that higher-order terms in the strain measure are neglected;
+  - small strains: $\|\epsilon\|\ll 1$, so linear elasticity is appropriate;
+  - geometric linearity: rotations and large deformations are not captured; for large rotations or large strain, a finite-strain formulation (e.g. total/updated Lagrangian with Green–Lagrange strain) is required;
+  - linear constitutive behavior: stress is linear in strain; plasticity, viscoelasticity, and other nonlinear rheologies are not represented by this small-strain kinematics alone (though the material model may add additional physics elsewhere).
+
+  Discretization and stabilization notes (as implemented by this class):
+  - the momentum equation is solved iteratively for ``D``; the class supports a stabilization option that modifies the explicit part of the stress divergence (``RhieChowCorrection``), analogous in spirit to Rhie & Chow pressure-velocity decoupling fixes used in incompressible flow (see OpenFOAM mechanics documentation);
+  - for multi-material interfaces, an optional ``multiMaterialCorrection`` can override the default stabilization and apply specialized discretization to improve coupling across material discontinuities.
+
+  Variable definitions:
+  - $D_i$ is the $i$-th component of the total displacement field ``D``;
+  - $x_j$ is the $j$-th spatial coordinate in the reference configuration;
+  - $\epsilon_{ij}$ is the infinitesimal strain tensor;
+  - $\sigma_{ij}$ is the Cauchy stress tensor in the linear-elastic model;
+  - $\mu$ is the shear modulus (Lamé parameter) field from ``mat_.mu()``;
+  - $\lambda$ is the first Lamé parameter field from ``mat_.lambda()``;
+  - $\epsilon_{kk}$ is the trace of the strain tensor (summation over $k$);
+  - $\delta_{ij}$ is the Kronecker delta;
+  - $b_i$ is the body-force density component (if specified in the mechanics setup);
+  - $\nabla^2$ is the Laplacian operator acting on each displacement component.
+
+  Standard references (for notation and theory):
+  - Duderstadt & Hamilton, ``Nuclear Reactor Analysis'' (background on continuum mechanics used in reactor-physics-coupled structural models);
+  - Todreas & Kazimi, ``Design of Nuclear Fuel Facilities'' (context for coupled thermo-mechanics and structural response modeling);
+  - classical linear elasticity texts (e.g. Timoshenko & Goodier) for the infinitesimal strain tensor and Hooke’s law in Lamé form.
+options:
+- key: forceSummary
+  type: bool
+  location: mechanicsOptions
+  required: false
+  default: false
+  description: |
+    Print a summary of boundary-forces at each iteration.
+- key: cylindricalStress
+  type: bool
+  location: mechanicsOptions
+  required: false
+  default: false
+  description: |
+    Create cylindrical stress, strain and displacement fields for visualization and data-analysis.
+- key: sphericalStress
+  type: bool
+  location: mechanicsOptions
+  required: false
+  default: false
+  description: |
+    Create spherical stress, strain and displacement fields for visualization and data-analysis.
+- key: RhieChowCorrection
+  type: bool
+  location: mechanicsOptions
+  required: false
+  default: true
+  description: |
+    Apply a correction to the explicit component of the divergence of the stress, similar to a Rhie & Chow correction, to stabilize the momentum equation.
+    It is set to true by default unless `multiMaterialCorrection` is activated.
+- key: RhieChowScaleFactor
+  type: scalar
+  location: mechanicsOptions
+  required: false
+  default: 1
+  description: |
+    Scaling factor for the `RhieChowCorrection`. A value of 1 applies the full correction; a value of 0 applies no correction.
+- key: multiMaterialCorrection
+  type: table
+  location: mechanicsOptions
+  required: false
+  description: |
+    Additional subdictionary that applies a custom discretization scheme for both the implicit and explicit components of the stress divergence.
+    When activated, the correction is not activated by default and it has priority over `RhieChowCorrection`.
+usage:
+- comment: |
+    Code snippet of the `solverDict` to activate the `smallStrain`
+    mechanics solver.
+  snippet: |-
+    mechanicsSolver smallStrain;
+
+    mechanicsOptions
+    {
+        forceSummary false;
+        cylindricalStress false;
+        sphericalStress false;
+        RhieChowCorrection true;
+
+        multiMaterialCorrection
+        {
+            type none;
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - formulation
+  - options
+  formulation_extended: true

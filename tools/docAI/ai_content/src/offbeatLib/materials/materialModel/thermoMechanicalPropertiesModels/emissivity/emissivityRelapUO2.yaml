@@ -1,0 +1,63 @@
+description: |
+  UO2 emissivity model derived from Relap.
+options:
+- key: par1
+  type: scalar
+  required: false
+  default: 0.7856
+  description: |
+    Correlation parameter $p_1$ used in the emissivity relation.
+- key: par2
+  type: scalar
+  required: false
+  default: 1.5263e-05
+  description: |
+    Correlation parameter $p_2$ used in the emissivity relation.
+usage:
+- comment: |
+    Example selection of the RELAP-based UO2 emissivity correlation.
+  snippet: "materials\n{\n    fuel\n    {\n        material UO2;\n        \n        emissivity\n        {\n            type\
+    \ UO2Relap;\n        \n            // Optional overrides\n            // par1 0.7856;\n            // par2 1.5263e-5;\n\
+    \        }\n    }\n}"
+formulation: |
+  The model implemented in ``emissivityRelapUO2`` is a local, algebraic temperature correlation for the effective hemispherical emissivity of UO2, evaluated independently in each computational cell (no spatial coupling and no radiation-transport closure is solved). It is “derived from Relap” in the sense that the functional form and parameterization follow the RELAP-style linear-in-temperature fit used for UO2 emissivity.
+
+  For each cell addressed by ``addr``, the emissivity is computed as
+  $$\varepsilon = p_1 + p_2\,T,$$
+  where the correlation parameters $p_1$ and $p_2$ are read from the input dictionary entries ``par1`` and ``par2`` (or their defaults), and $T$ is the local temperature field passed to ``correct`` (OpenFOAM field ``T``).
+
+  In OpenFOAM terms, the update performed by ``correct(scalarField& sf, const scalarField& T, const labelList& addr)`` can be interpreted as:
+  $$\varepsilon_i = p_1 + p_2\,T_i \qquad \forall i \in \texttt{addr},$$
+  with ``sf`` holding the emissivity values $\varepsilon_i$ for the selected cells.
+
+  The model is intentionally simple and relies on the following assumptions/interpretation:
+
+  - The emissivity is treated as a function of temperature only (no explicit dependence on oxygen stoichiometry, burnup, surface roughness, porosity, grain size, or atmosphere composition).
+  - The correlation is applied locally, i.e. the cell-averaged temperature is assumed representative of the radiating surface temperature (typical of lumped fuel/solid radiation models in system codes).
+  - The emissivity is assumed to be the effective hemispherical emissivity used in radiation heat-transfer closures (as in standard RELAP-style formulations; see Duderstadt & Hamilton for radiation fundamentals and Todreas & Kazimi for fuel thermal/radiation modeling conventions).
+  - No bounds are enforced in the code: if the linear correlation is extrapolated beyond its intended range, the computed $\varepsilon$ may become non-physical (negative or excessively large). Users should therefore apply the correlation only within the temperature interval for which the RELAP fit is valid.
+
+  Variable definitions (consistent with the implementation and notation above):
+  - $i$ is the cell index
+  - $\varepsilon$ is the UO2 effective hemispherical emissivity (dimensionless)
+  - $p_1$ is the correlation constant set by ``par1``
+  - $p_2$ is the temperature-slope parameter set by ``par2``
+  - $T$ is the local temperature in the same units expected by the correlation (taken from the OpenFOAM input field ``T``)
+  - $\texttt{addr}$ is the list of cell addresses over which ``correct`` updates ``sf``
+
+  Validity range:
+  - Because the implemented form is linear in $T$ and the code does not clip values, the practical validity is limited to the temperature range over which the original RELAP UO2 emissivity correlation was calibrated. Outside that range, the user should expect reduced accuracy and potential non-physical emissivity values.
+
+  References:
+  - Duderstadt & Hamilton, ``Nuclear Reactor Analysis'', radiation heat transfer background and emissivity usage in thermal models.
+  - Todreas & Kazimi, ``Fuel Design and Technology'', discussion of fuel thermal behavior and radiation modeling conventions.
+  - RELAP-style UO2 emissivity correlations (as the source inspiration for the parameterized linear form used here).
+dictionary: emissivity
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - formulation
+  - dictionary
+  formulation_extended: true

@@ -1,0 +1,47 @@
+description: |
+  Yield stress model based on the WGFS RIA fuel codes benchmark Phase II
+  specifications.
+
+  This implementation follows the yield stress formulation from the
+  Fraptran fuel code and the Matpro database. The yield stress depends on
+  temperature, fast neutron fluence, cold work (CW), and strain rate.
+
+  Runtime type name: ``Fraptran``.
+formulation: |
+  The model updates the local yield stress field using a temperature-,
+  fluence-, cold-work-, and strain-rate-dependent correlation (as implemented
+  in the original Fraptran/Matpro formulation).
+
+  The update is performed cell-wise over the provided address list ``addr``.
+  The implementation reads the local elastic modulus ``E``, temperature
+  ``T``, strain ``epsilon``, its previous-time value ``epsilonOld``, and
+  the stress ``sigma`` from the mesh database, and uses the strain-rate
+  information derived from ``epsilon`` and ``epsilonOld`` together with the
+  model parameters ``phiValue_``, ``CWValue_``, and the internal fields
+  ``Kcoeff_``, ``m_``, and ``n_``.
+
+  $$ \phi = \phiValue_ \times 10^{25} $$
+  $$ CW = CWValue_ $$
+  $$ \dot{\varepsilon} \;\; \text{is derived from } \epsilon \text{ and } \epsilonOld $$
+  $$ \sigma_y = \sigma_y(T,\phi,CW,\dot{\varepsilon}) $$
+
+  where:
+
+  - $\phi$ is the fast neutron fluence scaling used by the model (set by
+    ``phi`` in the input dictionary; internally multiplied by $10^{25}$)
+  - $CW$ is the cold work amount (set by ``CW`` in the input dictionary)
+  - $T$ is the local temperature field ``T``
+  - $\dot{\varepsilon}$ is the local strain-rate measure derived from
+    ``epsilon`` and ``epsilon.oldTime()``
+  - $\sigma_y$ is the updated yield stress computed by the model
+  - $E$ is the local elastic modulus field ``E``
+  - $\sigma$ is the local stress field ``sigma`` (used by the implementation)
+dictionary: neutronicsProperties
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

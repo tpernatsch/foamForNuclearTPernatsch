@@ -1,0 +1,37 @@
+description: |
+  Flow solver based on the PIMPLE algorithm. This sub-solver provides the
+  coupled solution of the incompressible momentum equation and a pressure
+  correction step, including continuity error reporting.
+
+  The solver is implemented as a ``flowSubSolver`` specialization with
+  on-demand creation of ``fvModels`` and ``fvConstraints`` objects.
+formulation: |
+  The PIMPLE algorithm combines outer iterations (PISO-like) with inner
+  pressure-velocity coupling iterations to improve robustness for
+  transient flows.
+
+  The momentum predictor solves a discretized form of the incompressible
+  momentum equation for the velocity field ``U_`` and then applies a pressure
+  correction to enforce continuity for the pressure field ``p_`` and the
+  surface flux ``phi_``.
+
+  $$ \frac{\partial \mathbf{U}}{\partial t} + \nabla \cdot (\mathbf{U}\mathbf{U}) - \nabla \cdot (\nu_{\mathrm{eff}} \nabla \mathbf{U}) = -\nabla p + \mathbf{S} $$
+  $$ \nabla \cdot \phi = 0 $$
+
+  where:
+
+  - $\mathbf{U}$ is the velocity field (OpenFOAM field ``U_``)
+  - $p$ is the pressure field (OpenFOAM field ``p_``)
+  - $\phi$ is the surface mass flux (OpenFOAM field ``phi_``)
+  - $\nu_{\mathrm{eff}}$ is the effective kinematic viscosity from the selected
+    transport/turbulence models (``laminarTransport_`` and ``turbulence_``)
+  - $\mathbf{S}$ is the collection of source terms assembled by the framework
+    (e.g. from ``fvModels`` / ``fvConstraints``)
+
+  Continuity errors are accumulated and reported via ``continuityErrors()``.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

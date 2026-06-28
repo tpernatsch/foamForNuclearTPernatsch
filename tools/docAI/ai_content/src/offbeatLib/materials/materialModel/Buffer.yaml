@@ -1,0 +1,79 @@
+description: |
+  The `Buffer` material model represents the porous buffer layer used in TRISO
+  fuel particles.
+
+  The class selects thermophysical and mechanical property models together with
+  a swelling model, primarily based on PARFUME correlations.
+options:
+- key: densityModel
+  type: word
+  required: false
+  default: constant
+  description: |
+    Selects the density model used by the `Buffer` material.
+- key: heatCapacityModel
+  type: word
+  required: false
+  default: constant
+  description: |
+    Selects the heat capacity model used by the `Buffer` material.
+- key: conductivityModel
+  type: word
+  required: false
+  default: BufferParfume
+  description: |
+    Selects the thermal conductivity correlation used by the `Buffer` material.
+- key: emissivityModel
+  type: word
+  required: false
+  default: '- missing -'
+  description: |
+    Selects the emissivity model used by the `Buffer` material.
+- key: YoungModulusModel
+  type: word
+  required: false
+  default: BufferParfume
+  description: |
+    Selects the Young's modulus correlation used by the `Buffer` material.
+- key: PoissonRatioModel
+  type: word
+  required: false
+  default: constant
+  description: |
+    Selects the Poisson's ratio model used by the `Buffer` material.
+- key: thermalExpansionModel
+  type: word
+  required: false
+  default: BufferParfume
+  description: |
+    Selects the thermal expansion correlation used by the `Buffer` material.
+- key: swellingModel
+  type: word
+  required: false
+  default: none
+  description: |
+    Selects the irradiation-induced swelling model used by the `Buffer`
+    material.
+usage:
+- comment: |
+    Example of a `solverDict` materials entry using the `Buffer` material
+    model.
+  snippet: |-
+    materials
+    {
+        buffer
+        {
+            material Buffer;
+
+            conductivityModel       BufferParfume;
+            YoungModulusModel       BufferParfume;
+            thermalExpansionModel   BufferParfume;
+            swellingModel           BufferParfume;
+        }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - dictionary

@@ -1,0 +1,54 @@
+description: |
+  Diffusion coefficient model for Pyrolytic Carbon (PyC) based on correlations
+  reported in the Parfume manual and an INL report.
+
+  The model provides temperature-dependent diffusion coefficients for
+  multiple species (Cs, Kr, Ag, Sr) and updates both internal-cell values and
+  (when present) boundary patch values using the local boundary temperature.
+formulation: |
+  The PyC diffusion coefficients are modeled with Arrhenius-type temperature
+  dependence, evaluated locally at each cell (and at each boundary face for
+  patch fields).
+
+  For each species, the diffusion coefficient $D(T)$ is computed as a sum of
+  Arrhenius terms of the form:
+  $$
+  D(T) = D_0 \exp\!\left(-\frac{E_a}{R\,T}\right)
+  $$
+  where $T$ is the local temperature.
+
+  The implementation updates:
+  - the volume field values $sf[cellI]$ for the provided cell addresses
+  - the boundary field values $sf.boundaryField()[patchID][faceID]$ using the
+    corresponding boundary temperature $T.boundaryField()[patchID][faceID]$
+    when the patch exists and has a non-empty boundary field.
+
+  Species-specific correlations used in this class are:
+
+  - Cesium (Cs):
+    $$
+    D_{\mathrm{Cs}}(T)=6.3\times 10^{-8}\exp\!\left(-\frac{222\times 10^3}{8.31446\,T}\right)
+    $$
+  - Krypton (Kr):
+    $$
+    D_{\mathrm{Kr}}(T)=2.9\times 10^{-8}\exp\!\left(-\frac{291\times 10^3}{8.31446\,T}\right)
+    +2.0\times 10^{5}\exp\!\left(-\frac{923\times 10^3}{8.31446\,T}\right)
+    $$
+  - Silver (Ag): (not shown in the provided source excerpt)
+  - Strontium (Sr): (not shown in the provided source excerpt)
+
+  Variables:
+  - $sf$ is the OpenFOAM scalar diffusion-coefficient field being updated
+  - $T$ is the OpenFOAM scalar temperature field (volumetric and boundary)
+  - $cellI$ is a cell index from the provided address list $addr$
+  - $patchID$ is the boundary patch index associated with a cell face
+  - $faceID$ is the boundary face index within a patch
+  - $D_0$ is the pre-exponential factor (species-specific constant)
+  - $E_a$ is the activation energy (species-specific constant, in J/mol)
+  - $R$ is the universal gas constant, $8.31446$ J/(mol·K)
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

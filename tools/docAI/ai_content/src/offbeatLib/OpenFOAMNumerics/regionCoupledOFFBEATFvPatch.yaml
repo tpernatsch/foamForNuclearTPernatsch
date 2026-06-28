@@ -1,0 +1,35 @@
+description: |
+  Region-coupled finite-volume patch implementing OFFBEAT-specific interface
+  transfer for coupled regions.
+
+  This class provides common functionality for OFFBEAT-style coupled patches
+  (used by [@regionCoupledFvPatch] and [@regionCoupledWallFvPatch]) by
+  delegating interface coupling behavior to the underlying
+  `regionCoupledOFFBEATPolyPatch` and the base `regionCoupledBaseOFFBEATFvPatch`.
+formulation: |
+  This class does not implement a standalone physical model. Instead, it
+  defines how discrete interface data are transferred between coupled regions
+  for the OpenFOAM `lduInterface` infrastructure.
+
+  For a given internal-data vector `internalData` adjacent to the patch,
+  the interface field is obtained by applying the patch-local mapping:
+  $$ \phi_{\Gamma} = \texttt{patchInternalField}(internalData) $$
+  where $\phi_{\Gamma}$ is the label field returned by `interfaceInternalField`.
+
+  For neighbour transfer, the implementation distinguishes whether the
+  neighbouring patch belongs to the same region:
+  $$ \phi_{\Gamma}^{(n)} =
+  \begin{cases}
+    \texttt{neighbFvPatch().patchInternalField}(iF), & \text{if sameRegion}\\
+    0, & \text{otherwise}
+  \end{cases} $$
+  where:
+  - $\phi_{\Gamma}$ is the interface-adjacent internal label field
+  - $iF$ is the face-addressing list (`labelUList`) used for transfer
+  - $\phi_{\Gamma}^{(n)}$ is the neighbour interface-adjacent internal label field
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

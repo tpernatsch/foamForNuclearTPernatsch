@@ -1,0 +1,18 @@
+description: |
+  Cyclic AMI point patch placeholder.
+
+  This class is a thin wrapper around OpenFOAM's `facePointPatch` and is
+  registered in the runtime selection table under the patch type name of
+  `regionCoupledOFFBEATPolyPatch`.
+formulation: |
+  This class does not implement any physical model or numerical coupling.
+  It exists as a placeholder point-patch type for use with region-coupled
+  OFFBEAT patch infrastructure.
+
+  No governing equations are defined here.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

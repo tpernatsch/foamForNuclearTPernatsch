@@ -1,0 +1,110 @@
+description: |
+  Correlation for Zircaloy heat capacity from Iaea.
+  <a href="https://www-pub.iaea.org/MTCD/publications/PDF/te_1496_web.pdf">Click here</a>
+  for the related Iaea publication.
+options:
+- key: par1
+  type: scalar
+  required: false
+  default: 255.66
+  description: |
+    Model parameter $p_1$.
+- key: par2
+  type: scalar
+  required: false
+  default: 0.1024
+  description: |
+    Model parameter $p_2$.
+- key: par3
+  type: scalar
+  required: false
+  default: 597.1
+  description: |
+    Model parameter $p_3$.
+- key: par4
+  type: scalar
+  required: false
+  default: 0.4088
+  description: |
+    Model parameter $p_4$.
+- key: par5
+  type: scalar
+  required: false
+  default: 0.0001565
+  description: |
+    Model parameter $p_5$.
+- key: par6
+  type: scalar
+  required: false
+  default: 1058.4
+  description: |
+    Model parameter $p_6$.
+- key: par7
+  type: scalar
+  required: false
+  default: 1213.8
+  description: |
+    Model parameter $p_7$.
+- key: par8
+  type: scalar
+  required: false
+  default: 2.0
+  description: |
+    Model parameter $p_8$ (exponent in $(T-p_7)^{p_8}$).
+- key: par9
+  type: scalar
+  required: false
+  default: 719.61
+  description: |
+    Model parameter $p_9$.
+usage:
+- comment: |
+    Example selection of the `ZircaloyIaea` heat capacity model.
+  snippet: |-
+    materials
+    {
+        cladding
+        {
+            type Zircaloy;
+
+            heatCapacity
+            {
+                type ZircaloyIaea;
+                // par1 255.66;
+                // par2 0.1024;
+                // par3 597.1;
+                // par4 0.4088;
+                // par5 1.565E-4;
+                // par6 1058.4;
+                // par7 1213.8;
+                // par8 2.0;
+            }
+        }
+    }
+formulation: |
+  The model computes the heat capacity $C_p$ as a piecewise function of temperature $T$:
+  \n
+  $$C_{p,1} = p_1 + p_2 \, T$$
+  $$C_{p,2} = p_3 - p_4 \, T + p_5 \, T^2$$
+  $$f = p_6 \, \exp\!\left(-\frac{(T - p_7)^{p_8}}{p_9}\right)$$
+  \n
+  with
+  $$C_p(T) =
+  \begin{cases}
+  C_{p,1}, & T < 1100 \\
+  C_{p,1} + f, & 1100 \le T < 1213.8 \\
+  C_{p,2} + f, & 1213.8 \le T < 1320 \\
+  C_{p,2}, & T \ge 1320
+  \end{cases}$$
+  \n
+  where the parameters $p_1$--$p_9$ are set by the input dictionary entries ``par1``--``par9``.
+  A warning is issued if $T$ is outside the range $273 < T < 2000$ K.
+dictionary: heatCapacity
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options
+  - formulation
+  - dictionary

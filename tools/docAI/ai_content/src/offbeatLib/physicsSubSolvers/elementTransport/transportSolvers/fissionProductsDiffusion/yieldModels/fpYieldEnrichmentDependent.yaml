@@ -1,0 +1,43 @@
+description: |
+  Enrichment-dependent fission-product yield model (e.g. Cs-137).
+
+  The model selects a constant yield value based on the fuel enrichment:
+  it uses `yieldLEU` when enrichment is below `enrichmentThreshold`, and
+  `yieldHEU` otherwise.
+
+  Example configuration:
+  \verbatim
+  yield
+  {
+      type                 enrichmentDependent;
+      yieldLEU             0.14;
+      yieldHEU             0.16;
+      enrichmentThreshold  0.175;   // optional, default 0.175
+  }
+  \endverbatim
+formulation: |
+  This model provides an enrichment-dependent but burnup-independent
+  fission-product yield. The yield is resolved once at construction from the
+  scalar `enrichment` and then assigned uniformly to the yield field `Y`.
+
+  $$ Y = y_{\mathrm{LEU}} \quad \text{if } e < e_{\mathrm{th}}, \qquad
+     Y = y_{\mathrm{HEU}} \quad \text{otherwise} $$
+
+  where:
+
+  - $Y$ is the fission-product yield field (OpenFOAM: `scalarField& Y`)
+  - $e$ is the fuel enrichment passed to the constructor (OpenFOAM: `enrichment`)
+  - $e_{\mathrm{th}}$ is the enrichment threshold (OpenFOAM: `enrichmentThreshold`)
+  - $y_{\mathrm{LEU}}$ is the yield for low enrichment (OpenFOAM: `yieldLEU`)
+  - $y_{\mathrm{HEU}}$ is the yield for high enrichment (OpenFOAM: `yieldHEU`)
+
+  The burnup input `Bu` is not used in `updateYield()` for this model.
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

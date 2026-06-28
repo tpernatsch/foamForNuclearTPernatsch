@@ -1,0 +1,38 @@
+description: |
+  Hydride reorientation model using the approach of Desquines et al. [1].
+
+  The model computes a stress-driven transition of hydrides toward a radial
+  orientation and updates the associated fractional hydride change based on
+  the local hoop stress and temperature history.
+
+  [1] J. Desquines et al., “Influence of temperature and hydrogen content on stress-induced radial hydride precipitation in Zircaloy-4 cladding”, *Journal of Nuclear Materials*, 453(1), 2014.
+formulation: |
+  The model uses a stress threshold formulation to determine the fraction of
+  hydrides that reorient radially as the local hoop stress increases, while
+  accounting for hydride dissolution during heatup through a temperature
+  criterion.
+
+  The reorientation is driven by the local hoop stress field ``sigmaHoop_`` and
+  is bounded between a threshold stress ``sigma0_`` and a higher stress
+  ``sigma100_`` corresponding to full radial reorientation.
+
+  $$ f(\sigma) = \mathrm{clamp}\left(\frac{\sigma - \sigma_0}{\sigma_{100} - \sigma_0},\,0,\,1\right) $$
+
+  The fractional hydride change ``fractionalHydridesChange_`` is then modulated
+  by the temperature required to dissolve the total hydride content ``T_tssd_``.
+  (The exact functional form is implemented in ``correctReorientation``.)
+
+  - $\sigma$ is the local hoop stress, taken as the ``YY`` component of the
+    symmetric tensor field ``sigmaCyl`` (i.e. ``sigmaCyl.component(symmTensor::YY)``)
+  - $\sigma_0$ is the stress threshold for the onset of radial reorientation (field ``sigma0``)
+  - $\sigma_{100}$ is the stress level corresponding to 100% radial hydrides (field ``sigma100``)
+  - $f(\sigma)$ is the stress-driven reorientation fraction (dimensionless)
+  - $T_\mathrm{tssd}$ is the temperature required to dissolve ``Ctot`` during heatup (field ``T_tssd``)
+  - ``fractionalHydridesChange_`` is the computed fractional change in hydrides (field ``fractionalHydridesChange``)
+dictionary: neutronicsProperties
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

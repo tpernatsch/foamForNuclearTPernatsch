@@ -1,0 +1,202 @@
+description: |-
+  Model for representing a nuclear fuel pin with constant material
+  properties. Models fuel, gap, cladding and solves for the heat equation. Only
+  radial heat diffusion is considered.
+
+  The model is affecting two fields that can be used for neutronics feedback:
+
+  - The fuel average temperature ``T.fuelAvForNeutronics``
+  - The cladding average temperature ``T.cladAvForNeutronics``
+options:
+- key: powerDensity
+  type: scalar
+  required: true
+  default: null
+  description: Initial power density value in W/m3 applied to the ``powerDensity`` field. Put to 0 if provided by the neutronics
+    solver.
+- key: fuelInnerRadius
+  type: scalar
+  required: true
+  default: null
+  description: Fuel inner radius in m
+- key: fuelOuterRadius
+  type: scalar
+  required: true
+  default: null
+  description: Fuel outer radius in m
+- key: cladInnerRadius
+  type: scalar
+  required: true
+  default: null
+  description: Cladding inner radius in m
+- key: cladOuterRadius
+  type: scalar
+  required: true
+  default: null
+  description: Cladding outer radius in m
+- key: fuelMeshSize
+  type: int
+  required: true
+  default: null
+  description: Number of cells for the fuel sub-mesh.
+- key: cladMeshSize
+  type: int
+  required: true
+  default: null
+  description: Number of cells for the cladding sub-mesh.
+- key: fuelCp
+  type: scalar
+  required: true
+  default: null
+  description: Specific heat capacity of the fuel in J/kg/K
+- key: cladCp
+  type: scalar
+  required: true
+  default: null
+  description: Specific heat capacity of the cladding in J/kg/K
+- key: fuelK
+  type: scalar
+  required: true
+  default: null
+  description: Thermal conductivity of the fuel in W/m/K
+- key: cladK
+  type: scalar
+  required: true
+  default: null
+  description: Thermal conductivity of the cladding in W/m/K
+- key: fuelRho
+  type: scalar
+  required: true
+  default: null
+  description: Density of the fuel in kg/m3
+- key: cladRho
+  type: scalar
+  required: true
+  default: null
+  description: Density of the cladding in kg/m3
+- key: fuelRhoCp
+  type: scalar
+  required: false
+  default: null
+  description: Product of the density and specific heat capacity in J/m3/K of the fuel if ``fuelCp`` and ``fuelRho`` are not
+    provided
+- key: cladRhoCp
+  type: scalar
+  required: false
+  default: null
+  description: Product of the density and specific heat capacity in J/m3/K of the cladding if ``cladCp`` and ``cladRho`` are
+    not provided
+- key: fuelT
+  type: scalar
+  required: true
+  default: null
+  description: Initial fuel temperature in K
+- key: cladT
+  type: scalar
+  required: true
+  default: null
+  description: Initial cladding temperature in K
+- key: fractionOfPowerFromNeutronics
+  type: scalar
+  required: false
+  default: '1.0'
+  description: Fraction of the power coming from neutronics
+- key: gapH
+  type: scalar
+  required: true
+  default: null
+  description: Gap gas heat transfer coefficient
+- key: gapHPowerDensity
+  type: table
+  required: false
+  default: null
+  description: Power-dependent gap gas heat transfer coefficient. Replace ``gapH``
+usage:
+- comment: 'Example of usage:'
+  snippet: |-
+    powerModel
+    {
+        type                nuclearFuelPin;
+
+        // Initial power density if not computed by the neutronics sub-solver
+        powerDensity        0;
+
+        // Fuel pin dimensions in m
+        fuelInnerRadius     0.0012;
+        fuelOuterRadius     0.004715;
+        cladInnerRadius     0.004865;
+        cladOuterRadius     0.005365;
+
+        // Fuel pin radial mesh
+        fuelMeshSize        16;
+        cladMeshSize        4;
+
+        // Fuel constant thermophysical properties
+        fuelRho             10480; // kg/m3
+        fuelCp              250; // J/kg/K
+        fuelK               3; // W/m/K
+
+        // Cladding constant thermophysical properties
+        cladRho             7500;
+        cladCp              500;
+        cladK               20;
+
+        // Gap gas heat transfer coefficient
+        gapH                3000;
+
+        // Initial fuel and cladding temperatures
+        fuelT               600;
+        cladT               600;
+    }
+- comment: 'Usage from the FFTF tutorial:'
+  snippet: |-
+    powerModel
+    {
+        //- This volume fraction accounts for the pins only
+        type                nuclearFuelPin;
+        volumeFraction      0.5539729557;
+        fuelInnerRadius     0.0;
+        fuelOuterRadius     0.002470;
+        cladInnerRadius     0.002540;
+        cladOuterRadius     0.002921;
+        fuelMeshSize        10;
+        cladMeshSize        5;
+        cladK               20;
+        fuelK               3;
+        cladRho             7870;
+        fuelRho             10480;
+        cladCp              500;
+        fuelCp              250;
+        fuelT               574.56;
+        cladT               574.56;
+
+        // Optional power-dependent heat transfer coefficient
+        gapHPowerDensity    table
+        (
+            (   0               528.4782467867  )
+            (   795443280.75916 3170.8694807204 )
+        );
+    }
+- comment: 'The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the
+    ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``).
+    Here is a snippet enabling the model:'
+  snippet: |-
+    phaseProperties
+    {
+        structureProperties
+        {
+            "<zoneName>"
+            {
+                powerModel
+                {
+                    type nuclearFuelPin;
+                }
+            }
+        }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - dictionary

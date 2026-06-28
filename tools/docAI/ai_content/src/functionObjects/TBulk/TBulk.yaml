@@ -1,0 +1,57 @@
+description: |-
+  Calculates TBulk at a faceSet, faceZone or  patch.
+
+  See also
+      Foam::functionObjects::fvMeshFunctionObject
+      Foam::functionObjects::writeFile
+options:
+- key: alphaRhoPhiName
+  type: word
+  required: true
+  description: name of the alphaRhoPhi field in the solver
+- key: regionName
+  type: word
+  required: true
+  description: name of the patch, faceSet or faceZone
+- key: regionType
+  type: word
+  required: true
+  description: patch, faceSet or faceZone
+- key: thermoName
+  type: word
+  required: true
+  description: name of the thermo model (usually thermophysicalProperties)
+usage:
+- comment: 'A functionObject is normally specified via the ``type`` entry in the ``functionObjects`` subdictionary of the
+    ``controlDict`` file (located in ``system/``. Here is a snippet enabling a functionObject:'
+  snippet: |
+    functions
+    {
+        <functionObject1>
+        {
+            type fieldDiffExtents;
+        }
+    }
+- comment: This is a detailed example of use of this specific function object.
+  snippet: |-
+    functions
+    {
+      yourTBulkName
+      {
+          type            TBulk;
+          libs            ( "libFFNFunctionObjects.so" );
+          log             true;
+          writeFields     false;
+          region          "fluidRegion";
+          regionType      faceZone;
+          regionName      "coreInlet";
+          thermoName      "thermophysicalProperties";
+          alphaRhoPhiName "alphaRhoPhi";
+      }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - dictionary

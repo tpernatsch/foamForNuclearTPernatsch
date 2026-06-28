@@ -1,0 +1,70 @@
+description: |
+  Derived class for adjoint diffusion neutronics using a multigroup diffusion
+  approximation. The class stores adjoint fluxes and precursor-related
+  quantities and provides accessors for the adjoint neutron fluxes and
+  adjoint precursor fields.
+
+  The implementation also computes the adjoint-weighted quantities needed
+  by coupled sensitivity workflows (e.g. power and precursor-related
+  responses) and updates the adjoint fields via ``correctPhysics()``.
+formulation: |
+  This class is intended to solve the adjoint form of the multigroup
+  diffusion eigenvalue problem (and its delayed-neutron precursor coupling)
+  in a steady or quasi-steady manner, consistent with the underlying
+  ``neutronics`` base model.
+
+  The adjoint multigroup diffusion operator is of the form:
+
+  $$
+  -\nabla \cdot \left(D_g \nabla \phi_g^\ast\right)
+  + \Sigma_{r,g}\phi_g^\ast
+  - \sum_{g' \neq g}\Sigma_{s,g \rightarrow g'}\phi_{g'}^\ast
+  = \frac{1}{k_{eff}} \nu \Sigma_{f,g}\phi_g^\ast
+  $$
+
+  where:
+
+  - $g$ is the energy-group index
+  - $\phi_g^\ast$ is the adjoint neutron flux for group $g$ (stored in ``fluxStar_``)
+  - $D_g$ is the diffusion coefficient for group $g$ (from ``XS``)
+  - $\Sigma_{r,g}$ is the removal cross section for group $g$ (from ``XS``)
+  - $\Sigma_{s,g \rightarrow g'}$ is the scattering transfer from group $g$ to $g'$ (from ``XS``)
+  - $k_{eff}$ is the effective multiplication factor
+  - $\nu$ is the average neutrons per fission (from ``XS``)
+  - $\Sigma_{f,g}$ is the fission cross section for group $g$ (from ``XS``)
+
+  Delayed neutron precursor coupling is represented through precursor
+  fields (adjoint precursor concentrations stored in ``precStar_``), with
+  precursor decay and production terms consistent with the delayed-neutron
+  model used by the underlying ``neutronics`` framework.
+admonitions:
+- kind: warning
+  body: This sub-solver has not been validated and has undergone limited testing. Use with caution!
+dictionary: neutronicsProperties
+options:
+- key: eigenvalueNeutronics
+  type: boolean
+  required: true
+  description: Must be true. Enable eigenvalue mode for the adjoint diffusion solver.
+- key: energyGroups
+  type: integer
+  required: true
+  description: Number of energy groups for the adjoint calculation.
+- key: precGroups
+  type: integer
+  required: true
+  description: Number of delayed neutron precursor groups.
+usage:
+- comment: |
+    In the ``constant/neutronicsProperties`` file, for keff calculation in a
+    critical reactor
+  snippet: eigenvalueNeutronics        true;
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - dictionary
+  stub_improved: true

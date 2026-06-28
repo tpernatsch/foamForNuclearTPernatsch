@@ -1,0 +1,8 @@
+{% extends "!layout.html" %}
+
+{% block extrahead %}
+{{ super() }}
+<script>
+  window.FFN_DOC_VARIANT = {{ "\"ai\"" if ai_enhanced else "\"standard\"" }};
+</script>
+{% endblock %}

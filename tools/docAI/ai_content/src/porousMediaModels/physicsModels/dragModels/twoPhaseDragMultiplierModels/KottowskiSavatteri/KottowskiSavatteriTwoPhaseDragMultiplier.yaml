@@ -1,0 +1,38 @@
+description: |-
+  Model by Kottowski and Savatteri for the multiplier, specifically for
+  sodium two-phase flows:
+
+  $$\phi^2 = 10^{\,2\left(0.1046\,(\log_{10} X)^2 - 0.5098\,\log_{10} X + 0.6252\right)}$$
+
+  $\log_{10}$ is the base-10 logarithm, while $X$ is related to the
+  Lockhart-Martinelli parameter $X^2$:
+
+  $$X^2 = \left(\frac{\mu_I}{\mu_O}\right)^{0.2}\left(\frac{\text{flowQuality}_I}{\text{flowQuality}_O}\right)^{1.8}\left(\frac{\rho_O}{\rho_I}\right)$$
+
+  Please note that the $X$ used in $\phi^2$ is $X=\sqrt{X^2}$. The correlation
+  is derived for the data range $7\times 10^{-2} < X < 30$.
+
+  For further info see H.M. Kottowski, C. Savatteri, "Fundamentals of Liquid
+  Metal Boiling Thermohydraulics", Nucl. Eng. Des. vol. 82, pp. 281-304, 1984
+options: []
+usage:
+- comment: |
+    The two-phase drag multiplier model is specified via the ``type`` entry in the ``physicsModels/twoPhaseDragMultiplierModel/<zoneName>`` subdictionary of the ``phaseProperties`` file.
+    (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g.
+    ``constant/fluidRegion``).
+
+    Here is a snippet of a ``phaseProperties`` file enabling the KottowskiSavatteri drag multiplier model drag model:
+  snippet: |-
+    physicsModels
+    {
+        twoPhaseDragMultiplierModel
+        {
+            type                KottowskiSavatteri;
+            multiplierFluid     "liquid";
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description

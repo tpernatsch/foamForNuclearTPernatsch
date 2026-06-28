@@ -1,0 +1,146 @@
+description: |
+  Derived class for linear elastic thermoMechanics.
+
+  Reference publications [@FIORINA201524] [@FIORINA201515226].
+formulation: |
+  This class provides the coupling infrastructure for a linear elastic
+  thermo-mechanical model, including optional solution of the displacement
+  and thermal fields and support for plane-stress rheology.
+
+  The implementation is organized around the following coupled fields:
+  - displacement field ``disp_``
+  - structural temperature field ``TStruct_``
+  - stress-related fields ``sigmaD_`` and ``divSigmaExp_``
+
+  The model supports multiple material zones via the ``materials`` sub-dictionary,
+  where zone-wise properties (e.g. ``rho``, ``E``, ``nu``, ``Cp``, ``k``, ``alpha``,
+  and ``Tref``) are read and mapped to internal fields.
+admonitions: []
+dictionary: neutronicsProperties
+optionsLocations: []
+options:
+- key: mechanicsSolver
+  type: bool
+  required: false
+  default: true
+  description: |
+    Switch controlling whether the mechanics (displacement) part is solved.
+- key: thermalSolver
+  type: bool
+  required: false
+  default: true
+  description: |
+    Switch controlling whether the thermal (structural temperature) part is solved.
+- key: rheologyOption
+  type: table
+  required: false
+  description: |
+    Sub-dictionary containing rheology options for the thermo-mechanical model.
+- key: planeStress
+  type: bool
+  required: false
+  default: false
+  location: rheologyOption
+  description: |
+    If ``true``, use a plane-stress rheology option.
+- key: linkedFuel
+  type: bool
+  required: true
+  location: globalOptions
+  description: |
+    Switch indicating whether the thermo-mechanics model is linked to the fuel
+    model (used to control coupling behavior).
+- key: materials
+  type: table
+  required: true
+  description: |
+    Sub-dictionary defining material properties per zone. Each zone entry is
+    expected to provide (at least) the OFFBEAT-compatible material parameters.
+- key: rho
+  type: scalar
+  required: false
+  default: 1
+  location: materials
+  description: |
+    Material density for a given zone (read as a ``dimensionedScalar``).
+- key: E
+  type: scalar
+  required: false
+  default: 1
+  location: materials
+  description: |
+    Young's modulus for a given zone (read as a ``dimensionedScalar``).
+- key: nu
+  type: scalar
+  required: false
+  default: 1
+  location: materials
+  description: |
+    Poisson's ratio for a given zone (read as a ``dimensionedScalar``).
+- key: Cp
+  type: scalar
+  required: false
+  default: 1
+  location: materials
+  description: |
+    Specific heat capacity for a given zone (read as a ``dimensionedScalar``).
+- key: k
+  type: scalar
+  required: false
+  default: 1
+  location: materials
+  description: |
+    Thermal conductivity for a given zone (read as a ``dimensionedScalar``).
+- key: alpha
+  type: scalar
+  required: false
+  default: 1
+  location: materials
+  description: |
+    Thermal expansion coefficient for a given zone (read as a ``dimensionedScalar``).
+- key: Tref
+  type: scalar
+  required: false
+  default: 0
+  location: materials
+  description: |
+    Reference temperature for a given zone (read as a ``dimensionedScalar``).
+- key: nCorrectors
+  type: int
+  required: false
+  default: 1
+  location: stressAnalysis
+  description: |
+    Number of corrector iterations for the stress analysis.
+- key: D
+  type: scalar
+  required: true
+  location: stressAnalysis
+  description: |
+    Convergence tolerance used by the stress analysis.
+- key: compactNormalStress
+  type: bool
+  required: true
+  location: stressAnalysis
+  description: |
+    If ``true``, use a compact form for the normal stress treatment.
+- key: <parameter>
+  type: word
+  required: true
+  default: null
+  description: <description>
+externalOptions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - dictionary
+  - optionsLocations
+  - options
+  - externalOptions
+  - usage
+  stub_improved: true

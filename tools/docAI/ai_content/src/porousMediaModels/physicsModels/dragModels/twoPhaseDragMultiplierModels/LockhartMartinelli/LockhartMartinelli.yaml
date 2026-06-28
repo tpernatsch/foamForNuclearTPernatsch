@@ -1,0 +1,67 @@
+description: Model by Lockhart-Martinelli for the multiplier. Designed for water.
+options:
+- key: C
+  type: scalar
+  required: false
+  default: 20
+  description: Model constant used in $\phi^2 = 1 + C/X + 1/X^2$.
+usage:
+- comment: |
+    The two-phase drag multiplier model is specified via the ``type`` entry in the ``physicsModels/twoPhaseDragMultiplierModel/<zoneName>`` subdictionary of the ``phaseProperties`` file.
+    (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g.
+    ``constant/fluidRegion``).
+
+    Here is a snippet of a ``phaseProperties`` file enabling the LockhartMartinelli drag multiplier model drag model:
+  snippet: |-
+    physicsModels
+    {
+        twoPhaseDragMultiplierModel
+        {
+            type                LockhartMartinelli;
+            multiplierFluid     "liquid";
+        }
+    }
+formulation: "This model provides an algebraic closure for the two-phase friction/drag multiplier $\\phi^2$ using the Lockhart-Martinelli\
+  \ approach for two-phase pressure-drop correlations (see Lockhart and Martinelli, 1949; also Duderstadt & Hamilton, and\
+  \ Todreas & Kazimi for two-phase momentum/pressure-drop modeling context). In the implementation, $\\phi^2$ is computed\
+  \ from the Lockhart-Martinelli parameter $X$ and a single constant $C$, then limited to user-provided bounds to avoid unphysical\
+  \ extremes in cells with very low or very high quality.\n\nThe multiplier is defined as\n$$\n\\phi^2 = \\min\\left(\\max\\\
+  left(\\,1 + \\frac{C}{X} + \\frac{1}{X^2}\\,,\\, \\phi^2_{\\min}\\right),\\, \\phi^2_{\\max}\\right),\n$$\nwhere $X$ is\
+  \ the Lockhart-Martinelli parameter and $C$ is the model constant read from ``C`` (default $20$). The bounding values $\\\
+  phi^2_{\\min}$ and $\\phi^2_{\\max}$ are supplied by the surrounding two-phase drag-multiplier framework (to ensure numerical\
+  \ stability and enforce physically reasonable limits).\n\nIn the one-phase limit for a given cell (e.g., when the secondary\
+  \ phase volume fraction is effectively zero or the framework classifies the cell as single-phase), the model returns\n$$\n\
+  \\phi^2 = 1,\n$$\nso that the two-phase drag reduces to the underlying single-phase friction/drag model.\n\nThe Lockhart-Martinelli\
+  \ parameter $X$ is the standard ratio used in two-phase pressure-drop theory, typically expressed in terms of the liquid\
+  \ and vapor (or gas) mass fluxes and viscosities through a form like\n$$\nX = \\left(\\frac{\\Delta p/\\Delta z|_{\\ell}}{\\\
+  Delta p/\\Delta z|_{g}}\\right)^{1/2},\n$$\nwith the exact mapping to local flow variables (mass fluxes, densities, viscosities,\
+  \ and phase fractions) performed by the parent ``twoPhaseDragMultiplierModel`` infrastructure. In other words, this class\
+  \ supplies only the functional dependence $\\phi^2(X)$, while the framework provides $X$ consistently with the selected\
+  \ flow-regime assumptions.\n\nThe functional form\n$$\n\\phi^2 = 1 + \\frac{C}{X} + \\frac{1}{X^2}\n$$\ncorresponds to a\
+  \ Lockhart-Martinelli-type combination of liquid-only and vapor-only friction contributions, with $C$ acting as an empirical\
+  \ coefficient capturing the relative influence of cross-phase momentum coupling under the assumed regime (commonly associated\
+  \ with turbulent/turbulent or broadly turbulent behavior in the original correlation development; see Lockhart and Martinelli,\
+  \ 1949). The use of $1/X$ and $1/X^2$ terms ensures the correct asymptotic trends as the relative phase contributions vary.\n\
+  \nAssumptions and validity range (as typically used with Lockhart-Martinelli closures):\n- The correlation is empirical\
+  \ and most reliable for separated or stratified/turbulent regimes where pressure-drop can be related to single-phase friction\
+  \ factors.\n- The closure is intended for engineering two-phase flow where the momentum exchange can be represented by an\
+  \ effective multiplier of a baseline friction/drag law.\n- Strong deviations may occur for highly intermittent regimes,\
+  \ near critical conditions, very low Reynolds number, or flows dominated by non-frictional mechanisms (e.g., strong acceleration,\
+  \ strong buoyancy-driven transitions) not captured by a simple $\\phi^2(X)$ form.\n- The bounds $\\phi^2_{\\min}$ and $\\\
+  phi^2_{\\max}$ are numerical/robustness constraints rather than physical limits; they should be chosen to reflect expected\
+  \ operating conditions.\n\nVariable definitions (local to the multiplier evaluation):\n- $X$ is the Lockhart-Martinelli\
+  \ parameter provided by the surrounding two-phase drag-multiplier framework from local phase properties and flow rates.\n\
+  - $C$ is the model constant read from the dictionary entry ``C``.\n- $\\phi^2$ is the two-phase drag/friction multiplier\
+  \ squared returned by ``phi2(celli)``.\n- $\\phi^2_{\\min}$ is the minimum allowed value of $\\phi^2$ enforced by the framework.\n\
+  - $\\phi^2_{\\max}$ is the maximum allowed value of $\\phi^2$ enforced by the framework.\n\nReferences:\n- Lockhart, R.\
+  \ W., and Martinelli, R. C., 1949, “Proposed correlation of data for isothermal two-phase, two-component flow in pipes.”\n\
+  - Duderstadt & Hamilton, “Nuclear Reactor Analysis” (two-phase momentum/pressure-drop modeling background).\n- Todreas &\
+  \ Kazimi, “Nuclear Systems Volume II” (two-phase flow correlations and engineering treatment). "
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options
+  - formulation
+  formulation_extended: true

@@ -1,0 +1,33 @@
+description: |
+  Parent class for all material models in foamForNuclear. It provides the
+  common interface and infrastructure to compute thermo-mechanical material
+  properties (density, heat capacity, thermal conductivity, emissivity, elastic
+  modulus, Poisson ratio, thermal expansion) and to optionally apply a damage
+  (softening) model.
+
+  Concrete material models are selected at runtime via the OpenFOAM run-time
+  selection mechanism.
+formulation: |
+  This base class does not implement a specific physical model. It defines
+  the interface used by derived classes to compute temperature-dependent
+  material properties and to apply damage/softening effects.
+
+  The derived classes are expected to provide the constitutive relations for
+  the following fields as functions of temperature $T$:
+
+  - $\rho(T)$ is the density [kg/m$^3$]
+  - $C_p(T)$ is the specific heat capacity [J/(kg.K)]
+  - $k(T)$ is the thermal conductivity [W/(m.K)]
+  - $\epsilon(T)$ is the emissivity [-]
+  - $E(T)$ is the elastic Young's modulus [Pa]
+  - $\nu(T)$ is the Poisson ratio [-]
+  - $\alpha_T(T)$ is the linear thermal expansion measure [-]
+
+  A damage model may further modify (soften) $E$ and $\nu$ through the
+  ``soften`` function.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

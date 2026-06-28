@@ -1,0 +1,57 @@
+description: |
+  Base fission gas release (FGR) model class. It disables fission gas production and
+  release, and therefore also disables any FGR-related gaseous swelling.
+
+  With this selection, **no additional fission-gas fields** (e.g. concentrations,
+  release fractions) are created or evolved.
+
+  Physically, the “none” option corresponds to a zero source/release model for fission
+  gas, i.e. the incremental released moles are set to zero each time step and the
+  auxiliary swelling fields are not updated by any transport/release kinetics.
+admonitions:
+- kind: warning
+  body: |
+    Even when selecting `none`, the *base* FGR infrastructure currently still
+    creates a set of auxiliary fields:
+    `grainRadius`, `oxygenMetalRatio`, `intragranularGasSwelling`,
+    `intergranularGasSwelling`.
+
+    At the moment these fields are created and remain constant during the
+    simulation. This behavior may change in future OFFBEAT versions.
+optionsLocations:
+- name: solverDict
+  in: solverDict
+options: []
+usage:
+- comment: |
+    Disable fission gas release models.
+  snippet: fgr none;
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - formulation
+  - usage
+  formulation_added: true
+formulation: |
+  The “none” FGR selection is implemented as a null model: fission gas production,
+  retention/release kinetics, and associated swelling source terms are not evaluated.
+  Consequently, the released-mole increments are identically zero and the swelling
+  fields remain at their initial values (or are simply carried as constant auxiliary
+  fields created by the base infrastructure).
+
+  $$ \Delta n_{\mathrm{FGR}} = 0,\qquad \Delta n_{\mathrm{He}} = 0 $$
+
+  - $\Delta n_{\mathrm{FGR}}$ is the additional moles of Xe+Kr released during the current time step (molFGR_).
+  - $\Delta n_{\mathrm{He}}$ is the additional moles of He released during the current time step (molHe_).
+
+  The model also implies a zero evolution of the local FGR fraction:
+
+  $$ \Delta f_{\mathrm{FGR}} = 0,\qquad f_{\mathrm{FGR}}(t)=f_{\mathrm{FGR}}(t_0) $$
+
+  - $\Delta f_{\mathrm{FGR}}$ is the local change in fission gas release fraction over the current time step (fgr_ - fgr0_).
+  - $f_{\mathrm{FGR}}$ is the local FGR fraction in percent (fgr_).
+
+  Any swelling update that would normally be driven by $\Delta n_{\mathrm{FGR}}$ is therefore
+  suppressed, so the auxiliary swelling tensors are not advanced by FGR kinetics.
+  (For non-trivial FGR formulations, see Duderstadt & Hamilton and Todreas & Kazimi.)

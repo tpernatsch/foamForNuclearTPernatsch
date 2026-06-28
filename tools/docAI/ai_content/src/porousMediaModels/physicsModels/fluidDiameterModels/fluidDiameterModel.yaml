@@ -1,0 +1,44 @@
+description: |-
+  Class to handle fluid diameter models
+
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./**
+options: []
+usage:
+- comment: "The fluid diameter model is constructed at run-time via the\ndispersedDiameterModel subdictionary of the fluid1\
+    \ or fluid2 Properties subdictionary. "
+  snippet: |-
+    fluid1 "liquid";
+    fluid2 "vapour";
+
+    liquidProperties
+    {
+        stateOfMatter   liquid;
+        dispersedDiameterModel
+        {
+            type    constant;
+            value   0.001;
+        }
+        thermoResidualAlpha 1e-6;
+    }
+
+    vapourProperties
+    {
+        stateOfMatter   gas;
+
+        dispersedDiameterModel
+        {
+            type    constant;
+            value   0.001;
+        }
+        thermoResidualAlpha 1e-2;
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - dictionary

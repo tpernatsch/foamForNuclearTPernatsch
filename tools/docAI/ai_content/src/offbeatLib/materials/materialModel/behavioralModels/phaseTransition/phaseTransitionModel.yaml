@@ -1,0 +1,40 @@
+description: |
+  Parent class for phase transition models.
+
+  The parent class typeName is "none". If selected, phase transition is not
+  considered, but the field `betaFraction` is created and added to the
+  registry.
+
+  If the `betaFraction` file is present in the starting time folder, the
+  internal field and boundary conditions are set according to the file.
+  Otherwise, the field is set to 0 in each cell, with zeroGradient BCs in all
+  non-empty/-wedge patches.
+admonitions:
+- kind: warning
+  body: |
+    The keyword `phaseTransitionModel` is deprecated. Prefer a `phaseTransition`
+    dictionary with a `type` entry.
+options: []
+usage:
+- comment: |
+    Recommended selection via the `phaseTransition` dictionary.
+  snippet: |-
+    materials
+    {
+        cladding
+        {
+            material Zircaloy;
+
+            phaseTransition
+            {
+                type none;
+            }
+        }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - dictionary

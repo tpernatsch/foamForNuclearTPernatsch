@@ -1,0 +1,114 @@
+description: |
+  Hydrogen-transport boundary condition for use on hydrogen concentration fields
+  (the ``C`` field in the hydrogen transport solver).
+
+  By default, this patch field applies a zero-current (no net diffusive flux)
+  boundary condition. Optionally, it can also impose an inward hydrogen flux
+  associated with waterside corrosion (hydrogen pick-up) of the cladding.
+
+  This boundary condition is intended to be used on the ``C`` field; for
+  related total/partial concentration fields (e.g. ``Ctot``/``Cpp``), use
+  ``zeroGradient`` instead.
+formulation: |
+  The patch field represents a hydrogen boundary condition combining (i) a
+  zero-current diffusive boundary contribution and (ii) optional imposed
+  inward hydrogen pick-up flux. The implementation builds the patch
+  coefficients for the hydrogen transport equation using the local
+  diffusion coefficient field and the patch geometry.
+
+  The boundary condition uses:
+  - a constant ingress rate (hydrogen pick-up) to represent an imposed
+    inward flux at the boundary, and
+  - a diffusion-related term assembled from the diffusion coefficient and
+    patch ``deltaCoeffs`` to couple the boundary value to the interior.
+
+  The Soret/stress-driven contributions are represented in the code via a
+  patch flux field ``phiH`` (looked up as a surface flux) and converted to a
+  per-area contribution by dividing by the patch face area magnitude.
+
+  $$ \delta_D = D_H \, \deltaCoeffs $$
+  $$ \phi = \frac{\phi_H}{|S_f|} $$
+  $$ \text{(boundary current)} \;\; \sim \;\; \text{(zero-current by default)} \;+\; \text{(optional ingress)} $$
+
+  where:
+  - $D_H$ is the hydrogen diffusion coefficient field (read from the
+    ``hydrogenTransportSolver`` via ``diffH()``)
+  - $\deltaCoeffs$ is the OpenFOAM patch coefficient (from ``patch().deltaCoeffs()``)
+  - $\phi_H$ is the surface hydrogen flux field (looked up as patch field ``phiH``)
+  - $|S_f|$ is the patch face area magnitude (from ``patch().magSf()``)
+  - the optional ingress term is controlled by ``HPickUp`` and related inputs
+options:
+- key: Q
+  type: scalar
+  required: false
+  description: |
+    Heat of transport (optional). The header comment states that this value
+    must correspond to the value used in the hydrogen transport solver.
+
+    Note: In the provided source excerpt, the Soret-term construction is
+    commented out; the actual boundary flux assembly relies on the patch
+    flux field ``phiH``.
+- key: HPickUp
+  type: bool
+  required: false
+  default: false
+  description: |
+    If ``true``, activates hydrogen pick-up due to waterside corrosion and
+    applies an inward hydrogen ingress flux at the patch.
+- key: volFactor
+  type: bool
+  required: false
+  default: false
+  description: |
+    If ``true`` together with ``HPickUp true``, uses a volume-factor
+    correction based on the cladding inner/outer radii to account for the
+    reduced effective volume of the cladding versus the growing oxide layer.
+- key: rinner
+  type: scalar
+  required: false
+  description: |
+    Cladding inner radius in meters. Required if ``volFactor true``.
+- key: router
+  type: scalar
+  required: false
+  description: |
+    Cladding outer radius in meters. Required if ``volFactor true``.
+- key: fH
+  type: scalar
+  required: false
+  default: 0.15
+  description: |
+    Hydrogen pick-up fraction used to scale the ingress flux when
+    ``HPickUp true``. Default is 0.15.
+
+    The header provides guidance:
+    - Zircaloy-4: 0.15 to 0.2
+    - ZIRLO: 0.25
+    - Optimized ZIRLO: 0.25
+    - M5: 0.15
+usage:
+- comment: |
+    Example boundary condition on a cladding patch named ``cladOuter``.
+  snippet: |-
+    boundaryField
+    {
+        ...
+        cladOuter
+        {
+            type hydrogenTransport;
+
+            Q 25500; // Optional. Heat of transport (must match solver usage).
+
+            HPickUp true; // Optional. Default is false.
+
+            volFactor true; // Optional. Default is false.
+            rinner 0.004565; // Required if volFactor is true.
+            router 0.005125; // Required if volFactor is true.
+
+            fH 0.15; // Optional. Default is 0.15.
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

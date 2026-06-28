@@ -1,0 +1,109 @@
+description: |
+  Fast flux model that allows prescribing a **time-dependent rod-average
+  fast neutron flux**, optionally combined with a **time- and space-dependent
+  axial profile**.
+
+  The fast fluence evolves in time according to the local value of the fast flux.
+  Even if the rod-average fast neutron flux is constant, the axial profile may vary in
+  time depending on the selected profile model.
+formulation: |
+  The local fast flux is computed as:
+
+  $$
+  \begin{aligned}
+  fastFlux(t, z) = \phi(t) \cdot g(z, t)
+  \end{aligned}
+  $$
+
+  where:
+
+  - $z$ is the relative axial position (0–1)
+  - $t$ is the current simulation time
+  - $\phi(t)$ is the rod-average fast flux in n/cm²/s
+  - $g(z,t)$ is the axial profile, expected to be normalized to 1
+
+  The fast fluence is then updated locally using the time-integrated fast flux.
+admonitions:
+- kind: note
+  body: |
+    This model extends the `constant` fast flux model by allowing both the
+    rod-average fast flux and the axial profile to vary in time.
+- kind: warning
+  body: |
+    The axial profile if used is expected be normalized to unity.
+optionsLocations:
+- name: fastFluxOptions
+  in: solverDict
+options:
+- key: timePoints
+  type: list[scalar]
+  required: true
+  description: |
+    List of time points at which the rod-average fast flux values are provided.
+    The time unit depends on the `userTime` setting (seconds by default).
+- key: fastFlux
+  type: list[scalar]
+  required: true
+  description: |
+    List of rod-average fast flux values (n/cm²/s), one per entry in
+    `timePoints`.
+- key: timeInterpolationMethod
+  type: word
+  required: false
+  default: linear
+  description: |
+    Time interpolation method used between entries in `timePoints`.
+    Typical options are `linear` or `step`.
+- key: materials
+  type: list[word]
+  required: false
+  description: |
+    List of materials or cellZones where the fast flux model is applied.
+    If omitted, the model is applied everywhere.
+- key: axialProfile
+  type: axialProfile
+  required: true
+  description: |
+    Sub-dictionary defining the axial profile model.
+
+    The profile may be time-independent (e.g. `flat`) or time-dependent
+    (e.g. `timeDependentTabulated`). Refer to the `axialProfile` class documentation
+    for available models and required parameters.
+usage:
+- comment: |
+    Example `solverDict` snippet defining a time-dependent fast flux with a
+    flat axial profile. The fast flux ramps up, remains constant, and then
+    ramps down.
+  snippet: |
+    fastFlux timeDependentAxialProfile;
+
+    fastFluxOptions
+    {
+        //           t0   1h        1y         1y+1h
+        timePoints  ( 0    3600     31536000   31539600 );
+        fastFlux    ( 0    1e13     1e13       0        );
+
+        timeInterpolationMethod linear;
+
+        materials ( fuel cladding );
+
+        axialProfile
+        {
+            type flat;
+        }
+    }
+- comment: |
+    Example of a time-dependent axial profile using tabulated data.
+  snippet: "fastFluxOptions\n{\n    // .. as above\n    \n    axialProfile\n    {\n        type timeDependentTabulated;\n\n\
+    \        timePoints     ( 0 3600 31539600 );\n        axialLocations ( 0.0 0.5 1.0 );\n\n        data\n        (\n   \
+    \         ( 1.0 1.0 1.0 )\n            ( 0.5 1.0 1.5 )\n            ( 0.8 1.1 1.0 )\n        );\n\n        axialInterpolationMethod\
+    \ linear;\n        timeInterpolationMethod  linear;\n    }\n}"
+dictionary: fastFluxOptions
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - options
+  - dictionary

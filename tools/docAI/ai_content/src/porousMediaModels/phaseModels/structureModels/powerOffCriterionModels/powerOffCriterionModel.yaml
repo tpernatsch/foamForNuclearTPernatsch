@@ -1,0 +1,59 @@
+description: |-
+  Used to turn off structure power sources if a certain criterion is met. Beside ``type``, the other keywords depend on the model selected. Available models listed below.
+  Available power models include:
+
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./**
+
+  .. raw:: html
+
+    <br><br>
+options:
+- key: type
+  type: word
+  required: true
+  description: Run-time selectable model
+usage:
+- comment: 'The model is specified via the ``type`` entry in the ``powerOffCriterionModel`` subdictionary, within the ``powerModel``
+    subdictionary, within the ``structureProperties`` subdictionary  of the ``phaseProperties`` file (located in ``constant/``,
+    or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``). Here below is a snippet enabling
+    the model. All keywords except for ``type`` depends on the specific power model selected. '
+  snippet: |-
+    structureProperties
+    {
+      "lowOut:topOut"
+      {
+          volumeFraction  0.373586;
+          Dh              0.01230525;
+          localTortuosity (0.6366197724 0.6366197724 1.0);
+
+          powerModel
+          {
+              type            heatedPin;
+              innerRadius     0;
+              outerRadius     0.003;
+              k               20;
+              meshSize        6;
+              T               653.15;
+              Cp              500;
+              rho             7700;
+
+              powerOffCriterionModel
+              {
+                  type            timeThreshold;
+                  time            12.475;
+              }
+          }
+      }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options
+  - dictionary

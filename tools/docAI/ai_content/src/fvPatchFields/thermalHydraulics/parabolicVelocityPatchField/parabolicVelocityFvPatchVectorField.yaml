@@ -1,0 +1,95 @@
+description: |-
+  Boundary condition specifies a parabolic velocity inlet profile
+  (fixed value), given maximum velocity value (peak of the parabola),
+  flow direction n and direction of the parabolic coordinate y
+options:
+- key: maxValue
+  type: scalar
+  required: true
+  description: |-
+    Peak velocity magnitude (``maxValue_``). The instantaneous maximum
+    value is ramped from 0 to ``maxValue`` over ``transitionPeriod``.
+- key: n
+  type: vector
+  required: true
+  description: Fluid direction vector. It is normalised internally.
+- key: y
+  type: vector
+  required: true
+  description: |-
+    Direction of the parabolic coordinate (used to construct the local
+    1-D coordinate $\xi$ from patch face-centres). It is normalised
+    internally.
+- key: transitionPeriod
+  type: scalar
+  required: true
+  description: |-
+    Transition period $T$ for the temporal ramp-up. If a non-positive
+    value is provided, it is internally reset to ``SMALL``.
+- key: boundBoxMin
+  type: vector
+  required: true
+  description: |-
+    Minimum corner of the axis-aligned bounding box used to define the
+    centre and span for the local coordinate $\xi$ (must be specified
+    due to a parallel-run bug).
+- key: boundBoxMax
+  type: vector
+  required: true
+  description: |-
+    Maximum corner of the axis-aligned bounding box used to define the
+    centre and span for the local coordinate $\xi$ (must be specified
+    due to a parallel-run bug).
+usage:
+- comment: Example of usage
+  snippet: |-
+    inlet
+    {
+        type            parabolicVelocity;
+        maxValue        3;
+        n               ( 1 0 0 );
+        y               ( 0 1 0 );
+        transitionPeriod 0;
+        boundBoxMin     ( 0 0 -0.025334 );
+        boundBoxMax     ( 0 0.41 0.025334 );
+        value           uniform (0 0 0);
+    }
+notes:
+- |-
+  The bounding box is not computed from the patch geometry at run-time in
+  this implementation; instead, the user must provide ``boundBoxMin`` and
+  ``boundBoxMax`` explicitly in the dictionary.
+- |-
+  The directions ``n`` and ``y`` must both be non-zero; otherwise, a
+  FatalError is raised in the dictionary constructor.
+formulation: |-
+  The imposed patch velocity is a fixedValue field of the form
+  $$
+  \mathbf{U}(\mathbf{x},t)=\mathbf{n}\,U_{\max}(t)\left(1-\xi^2\right),
+  $$
+  where $\mathbf{n}$ is the (unit) flow direction and $\xi$ is a local
+  1-D coordinate constructed from the face-centre positions $\mathbf{c}$
+  along the direction $\mathbf{y}$:
+  $$
+  \xi = \frac{2\left((\mathbf{c}-\mathbf{c}_\mathrm{ctr})\cdot \mathbf{\hat y}\right)}
+  {\left((\mathbf{b}_\mathrm{max}-\mathbf{b}_\mathrm{min})\cdot \mathbf{\hat y}\right)},
+  \qquad
+  \mathbf{c}_\mathrm{ctr}=\frac{\mathbf{b}_\mathrm{max}+\mathbf{b}_\mathrm{min}}{2}.
+  $$
+  The maximum value is ramped in time using a half-cosine function for
+  $t<T$:
+  $$
+  U_{\max}(t)=U_{\max}\,\frac{1}{2}\left(1-\cos\left(\pi t/T\right)\right),
+  \qquad t<T,
+  $$
+  and $U_{\max}(t)=U_{\max}$ for $t\ge T$, where $T$ is
+  ``transitionPeriod``.
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options
+  - formulation
+  - dictionary

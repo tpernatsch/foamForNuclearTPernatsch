@@ -1,0 +1,41 @@
+description: |
+  Axial profile defined using a constant interpolation table as a function of
+  the axial position.
+
+  Supports both "step" and "linear" interpolation methods (via
+  Foam::InterpolateTable). The supplied profile must be normalised to 1.
+formulation: |
+  This model provides an axial shape function $f(z)$ (stored in the
+  OpenFOAM field `profile_`) and an optional axial scaling factor
+  $s(z)$ (stored in `scalingFactorProfile_`) by interpolating tabulated
+  data over the normalized axial coordinate $z \in [0,1]$.
+
+  The tabulated values are interpolated using the selected interpolation
+  method (step or linear) to obtain:
+  $$
+  f(z) = \mathcal{I}\big(z;\; z_i,\; f_i\big), \qquad
+  s(z) = \mathcal{I}\big(z;\; z_i,\; s_i\big)
+  $$
+  where $\mathcal{I}$ denotes the interpolation operator.
+
+  - $z$ is the normalized axial coordinate, $z \in [0,1]$
+  - $z_i$ are the tabulated axial locations read from `axialLocations`
+  - $f_i$ are the tabulated profile values read from `data`
+  - $s_i$ are the tabulated scaling factor values read from `axialScalingFactors`
+  - $f(z)$ is the axial profile shape function (must satisfy $\int_0^1 f(z)\,dz = 1$)
+  - $s(z)$ is the axial scaling factor function (must be non-negative)
+
+  The implementation enforces:
+  - `axialLocations` are normalized such that $z_0=0$ and $z_{N-1}=1$
+  - the supplied profile is normalized to 1 (within a tolerance of $10^{-4}$)
+  - the profile values are non-negative
+  - the scaling factor values are non-negative
+admonitions: []
+options: []
+externalOptions: []
+optionsLocations: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

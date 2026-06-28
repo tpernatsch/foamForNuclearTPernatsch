@@ -1,0 +1,98 @@
+description: |
+  Reads and stores global simulation options from the main solver dictionary.
+
+  The class expects a sub-dictionary named ``globalOptions`` inside the provided
+  solver dictionary. It provides access to reactor-wide configuration such as
+  ``reactorType``, the main axial direction (``pinDirection``), the main radial
+  direction (``radialDirection``), and the modeled angular fraction
+  (``angularFraction``).
+
+  The angular fraction can be either directly specified by the user or
+  computed from the geometry definition (e.g. wedge/sector modeling).
+formulation: |
+  The class does not solve governing PDEs. It provides a geometry scaling
+  factor, the modeled angular fraction, used by other models to account for
+  reduced (wedge/sector) representations.
+
+  The angular fraction $f$ is obtained as follows:
+
+  $$
+  f = f_{\text{user}} \quad \text{if } f_{\text{user}} > 0
+  $$
+
+  where $f_{\text{user}}$ is read from ``angularFraction`` in the
+  ``globalOptions`` sub-dictionary.
+
+  Otherwise, $f$ is computed by ``calcAngularFraction`` from the provided
+  dictionary and the mesh/patch configuration (e.g. wedge/sector patches).
+
+  - $f$ is the modeled angular fraction of the geometry (dimensionless),
+    stored in ``angularFraction_``
+  - $f_{\text{user}}$ is the user-provided value from ``angularFraction``
+optionsLocations:
+- name: globalOptions
+  in: solverDict
+options:
+- key: reactorType
+  type: word
+  required: false
+  default: LWR
+  description: |
+    Reactor type identifier (e.g. ``"LWR"`` or ``"SFR"``). Used by other parts of the
+    framework to select reactor-specific correlations and defaults.
+- key: pinDirection
+  type: vector
+  required: false
+  default: (0 0 1)
+  description: |
+    Main axial direction of the pin/rod. The vector is normalized internally.
+- key: radialDirection
+  type: vector
+  required: false
+  default: (1 0 0)
+  description: |
+    Main radial direction used to define the geometry orientation. The vector is
+    normalized internally.
+- key: angularFraction
+  type: scalar
+  required: false
+  default: 0.0
+  description: |
+    Modeled angular fraction of the geometry.
+
+    Typical meanings:
+    - ``0.25`` for a quarter of a pin
+    - ``2/360`` for a 2 degree wedge
+
+    If this value is positive, it is used directly. If it is not positive,
+    ``calcAngularFraction`` computes the fraction from the geometry/mesh setup.
+usage:
+- comment: |
+    Provide basic reactor type and geometry directions.
+  snippet: |
+    globalOptions
+    {
+        pinDirection            (0 0 1);
+        reactorType             "LWR";
+    }
+- comment: |
+    Example with additional linked-fuel flag (other keys may exist in the same
+    solver dictionary); globalOptions sets directions.
+  snippet: |
+    globalOptions
+    {
+        linkedFuel      false;
+        pinDirection    (0 0 1);
+    }
+- comment: |
+    Example for an SFR case.
+  snippet: |-
+    globalOptions
+    {
+        pinDirection            (0 0 1);
+        reactorType             "SFR";
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

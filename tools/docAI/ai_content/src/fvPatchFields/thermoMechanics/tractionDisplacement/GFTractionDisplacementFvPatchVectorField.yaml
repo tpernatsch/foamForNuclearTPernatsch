@@ -1,0 +1,87 @@
+description: |
+  Fixed traction boundary condition for the standard linear elastic,
+  fixed-coefficient displacement equation.
+
+  This patch field computes the displacement gradient from an imposed
+  traction vector and an associated pressure term, using the local elastic
+  properties. The implementation is modified to allow a user-selected
+  reference temperature for the thermal-stress contribution.
+formulation: |
+  The boundary condition is implemented as a fixed-gradient condition for the
+  displacement field, where the displacement gradient is derived from the
+  traction and pressure terms through the linear-elastic constitutive
+  relations, with an additional thermal-stress correction based on the
+  difference between the current structural temperature and a reference
+  structural temperature.
+
+  The displacement gradient on the patch is computed as:
+
+  $$
+  \nabla \mathbf{u}
+  =
+  \frac{1}{2\mu+\lambda}
+  \left[
+    \left(\frac{\mathbf{t}-p\,\mathbf{n}}{\rho}\right)
+    + (2\mu+\lambda)\,\nabla_n \mathbf{u}
+    - \left(\mathbf{n}:\boldsymbol{\sigma}^D\right)
+  \right]
+  +
+  \frac{\mathbf{n}\,k_3\alpha\,(T-T_{\mathrm{ref}})}{2\mu+\lambda}
+  $$
+
+  where:
+
+  - $\mathbf{t}$ is the imposed traction vector field ``traction_``
+  - $p$ is the imposed pressure scalar field ``pressure_``
+  - $\mathbf{n}$ is the patch face normal vector ``n``
+  - $\rho$ is the density field on the patch (computed from ``rhoE``/``rho``)
+  - $\mu$ is the shear modulus computed from ``E`` and ``nu``
+  - $\lambda$ is the first Lamé parameter computed from ``E`` and ``nu``
+  - $2\mu+\lambda$ is the combination ``twoMuLambda``
+  - $\nabla_n \mathbf{u}$ is the normal gradient contribution from the base
+    ``fixedGradientFvPatchVectorField`` (via ``fvPatchField<vector>::snGrad()``)
+  - $\boldsymbol{\sigma}^D$ is the deviatoric stress tensor field ``sigmaD``
+  - $k_3$ is the bulk-related coefficient ``threeK`` (computed from ``E`` and ``nu``)
+  - $\alpha$ is the thermal expansion-related coefficient ``threeKalpha``
+  - $T$ is the current structural temperature field ``TStruct``
+  - $T_{\mathrm{ref}}$ is the reference structural temperature field
+    ``TStructRef``
+
+  The elastic moduli are computed assuming isotropic linear elasticity from
+  the patch fields ``rho``, ``E`` (via ``rhoE``/``rho``), and ``nu``. The
+  thermal-stress term uses the temperature difference $(T-T_{\mathrm{ref}})$.
+dictionary: neutronicsProperties
+options:
+- key: planeStress
+  type: bool
+  required: true
+  default: null
+  description: ''
+optionsLocations: []
+admonitions: []
+usage:
+- comment: |
+    The boundary condition is specified via the ``type`` entry in the
+    ``boundaryField/<patchName>`` subdictionary of the ``<fieldName>`` file
+    (located in ``<timeFolder>/``, or ``<timeFolder>/<regionName>/`` for
+    multi-region cases, e.g. ``0/neutroRegion``). Here is a snippet enabling
+    the boundary condition:
+  snippet: |-
+    boundaryField
+    {
+        <patch1>
+        {
+            type GFTractionDisplacement;
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - dictionary
+  - optionsLocations
+  - admonitions
+  - usage
+  stub_improved: true

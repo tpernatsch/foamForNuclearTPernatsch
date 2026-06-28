@@ -1,0 +1,61 @@
+description: |
+  Coupled resistive (thermal) gap boundary condition for modeling a fixed gap
+  (or contact) resistance between two bodies.
+
+  This boundary condition is intended to be used on a pair of
+  `regionCoupledOFFBEAT` patches that are coupled via the AMI mapping
+  algorithm, and it enforces a heat-transfer coefficient across the interface.
+formulation: |
+  The interface is modeled as a thermal resistance characterized by an
+  interfacial heat transfer coefficient (gap conductance) $\alpha$.
+
+  The patch field temperature on each side is coupled through the underlying
+  `temperatureCoupledFvPatchScalarField` mechanism, while this class provides
+  the interface coefficient $\alpha$ as a face-wise field (possibly varying
+  across faces).
+
+  $$ q'' = \alpha \, (T_1 - T_2) $$
+
+  where:
+
+  - $q''$ is the interfacial heat flux in W/m$^2$
+  - $\alpha$ is the interface heat transfer coefficient (gap conductance) in
+    W/K/m$^2$, provided by ``alpha`` (stored internally as ``alpha_gap_``)
+  - $T_1$ and $T_2$ are the coupled patch temperatures on the two sides
+
+  The coefficient $\alpha$ is obtained from the neighboring coupled patch and
+  interpolated onto the local patch faces using the AMI mapping.
+dictionary: neutronicsProperties
+options:
+- key: patchType
+  type: word
+  required: true
+  description: |
+    Type of the underlying fvPatch. Must be set to `regionCoupledOFFBEAT`.
+- key: kappa
+  type: word
+  required: false
+  default: k
+  description: |
+    Name of the conductivity field used by the coupled temperature formulation.
+    By default, it is set to `k`, i.e. the field name for conductivity used by
+    the OFFBEAT material class.
+- key: alpha
+  type: scalar
+  required: true
+  description: |
+    Gap conductance field in W/K/m$^2$.
+
+    It can be specified as either:
+    - a `uniform` value applied to all faces, or
+    - a `nonUniformList<scalar>` with one value per face.
+- key: value
+  type: scalar
+  required: true
+  description: |
+    Initial value of the patch temperature field.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

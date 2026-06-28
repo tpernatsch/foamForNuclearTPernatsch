@@ -1,0 +1,162 @@
+description: |
+  Rheology/constitutive-law dispatcher that applies rheology models on a
+  per-material basis. The rheology laws are specified on each material
+  sub-dictionary within the ``solverDict``.
+
+  This class also provides optional simplified 1.5D/plane-stress style
+  approximations (e.g. for fuel r-theta discretizations) and related
+  auxiliary force-balance logic.
+formulation: |
+  This class does not implement a single constitutive law by itself; instead
+  it selects and applies the rheology models specified for each material
+  sub-dictionary (e.g. elasticity, plasticity) and optionally modifies the
+  strain representation for reduced-dimensional approximations.
+
+  When the modified-plane-strain option is enabled, the out-of-plane
+  deformation is treated through an additional spring-like contribution
+  (plenum spring) characterized by a spring modulus, a pre-compression, and
+  optional frictional effects. The spring parameters are read from the
+  ``rheologyOptions`` sub-dictionary.
+
+  When thermal strains are enabled, the model uses the material-provided
+  thermal expansion to compute the thermal strain contribution and adds it
+  to the total strain used by the selected rheology laws.
+
+  When the pressure-smoothing option is enabled, an additional hydrostatic
+  stress field ``sigmaHyd`` is solved to reduce oscillations in the stress
+  field.
+
+  - $E_s$ is the spring modulus (set by ``springModulus``), in N/m
+  - $u_0$ is the spring pre-compression (set by ``springPreCompression``), in m
+  - $\mu$ is the friction coefficient (set by ``frictionCoefficient``)
+  - $p_{sat}$ is the friction saturation pressure (set by ``frictionSaturationPressure``), in Pa
+  - $\Delta \epsilon_{th}$ is the thermal strain contribution (enabled by ``thermalExpansion``)
+dictionary: rheologyOptions
+optionsLocations:
+- name: rheologyOptions
+  in: solverDict
+options:
+- key: planeStress
+  type: bool
+  required: false
+  default: false
+  description: |
+    Activate the plane-stress approximation by modifying the z-component of the
+    strain tensor. Valid only for models with empty boundary conditions along
+    the z-direction.
+- key: modifiedPlaneStrain
+  type: bool
+  required: false
+  default: false
+  description: |
+    Activate the modified-plane-strain approximation typical of standard fuel
+    performance models. Valid only for models with empty boundary conditions
+    along the z-direction.
+
+    If both ``planeStress`` and ``modifiedPlaneStrain`` are activated, the
+    plane-stress option takes priority (``modifiedPlaneStrain`` is effectively
+    ignored).
+- key: precisionSpring
+  type: scalar
+  required: false
+  default: 1e-6
+  description: |
+    Convergence criterion for the modified-plane-strain spring force balance
+    iteration. Only used if ``modifiedPlaneStrain`` is enabled.
+- key: springModulus
+  type: scalar
+  required: false
+  default: 3.5e3
+  description: |
+    Spring modulus in N/m for the plenum spring. Only used if
+    ``modifiedPlaneStrain`` is enabled.
+- key: springPreCompression
+  type: scalar
+  required: false
+  default: 0.0
+  description: |
+    Pre-compression in m for the plenum spring (positive in [m]). Only used
+    if ``modifiedPlaneStrain`` is enabled.
+- key: coolantPressureList
+  type: table
+  required: false
+  description: |
+    Coolant pressure acting on the top cladding cap. The value is provided as
+    a table (typically via a ``file`` entry pointing to a case constant list).
+- key: thermalExpansion
+  type: bool
+  required: false
+  default: true
+  description: |
+    Activate thermal strains. When enabled, the model uses the material thermal
+    expansion to compute the thermal strain contribution.
+- key: solvePressureEqn
+  type: bool
+  required: false
+  default: false
+  description: |
+    If enabled, solve an additional equation for the hydrostatic stress
+    field ``sigmaHyd`` to smooth/quell oscillations in the stress field.
+- key: pressureSmoothingFactor
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Smoothing scale factor for the ``sigmaHyd`` equation. Only used if
+    ``solvePressureEqn`` is enabled.
+- key: frictionCoefficient
+  type: scalar
+  required: false
+  default: 0.0
+  description: |
+    Friction coefficient used by the modified-plane-strain spring/friction
+    contribution. Only used if ``modifiedPlaneStrain`` is enabled.
+- key: penaltyFriction
+  type: scalar
+  required: false
+  default: 0.001
+  description: |
+    Penalty scale factor for friction. Only used if ``modifiedPlaneStrain``
+    is enabled.
+- key: frictionSaturationPressure
+  type: scalar
+  required: false
+  default: 1e6
+  description: |
+    Friction saturation pressure. Only used if ``modifiedPlaneStrain`` is
+    enabled.
+- key: relax
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Relaxation factor used in the modified-plane-strain iteration. Only used
+    if ``modifiedPlaneStrain`` is enabled.
+admonitions:
+- kind: warning
+  body: |
+    When ``solvePressureEqn`` is enabled, an additional equation is solved for
+    the field ``sigmaHyd``. This requires:
+    - a linear solver entry for ``sigmaHyd`` in ``system/fvSolution``
+    - an initial ``sigmaHyd`` field in the initial time directory (e.g. ``0/``)
+    - boundary conditions for all non-empty or non-wedge patches of type
+      ``extrapolatedFixedValue``.
+
+    For standard fuel performance simulations, it is not suggested to use
+    pressure smoothing; if stress oscillations appear, prefer mesh refinement,
+    appropriate relaxation factors, or the ``multiMaterialCorrection`` in
+    the settings of ``mechanicsSolver``.
+- kind: warning
+  body: |
+    The ``planeStress`` and ``modifiedPlaneStrain`` options are valid only for
+    models with empty boundary conditions along the z-direction.
+- kind: warning
+  body: |
+    ``planeStress`` has priority over ``modifiedPlaneStrain``. If
+    ``planeStress`` is activated, ``modifiedPlaneStrain`` can be activated only
+    if ``planeStress`` is not activated.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

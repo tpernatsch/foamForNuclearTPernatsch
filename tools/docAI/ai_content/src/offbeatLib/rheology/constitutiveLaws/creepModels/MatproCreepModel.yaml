@@ -1,0 +1,108 @@
+description: |
+  Matpro creep model for UO$_2$ fuel, derived from the BISON manual and the
+  SCDAP/RELAP5/MOD 3.3 Code Manual.
+
+  The model updates the creep strain rate/strain contribution through
+  temperature- and irradiation-dependent constitutive relations, and
+  optionally applies the Sakai correction.
+formulation: |
+  The Matpro creep model computes the creep strain evolution by evaluating a
+  temperature- and irradiation-dependent creep law and updating the creep
+  strain tensor ``epsilonCreep_`` (and its equivalent scalar form
+  ``epsilonCreepEq_``) during ``correctCreep``.
+
+  The implementation supports an optional Sakai correction (affecting the
+  Arrhenius-type prefactor/parameter set) and can solve the constitutive
+  update using an inner Newton-Raphson loop for improved convergence.
+
+  $$ \dot{\varepsilon}_{\mathrm{cr}} = f(T,\,t,\,\text{grain size},\,\text{chemistry}) $$
+  $$ \varepsilon_{\mathrm{cr}}^{n+1} = \varepsilon_{\mathrm{cr}}^{n} + \dot{\varepsilon}_{\mathrm{cr}}\,\Delta t $$
+
+  where:
+
+  - $T$ is the local temperature field ``T`` (mesh field name ``T``)
+  - $t$ is the irradiation time (tracked internally via ``timeIndex_``)
+  - $\Delta t$ is the time step ``mesh_.time().deltaTValue()``
+  - grain size is represented by the local field ``grainRadius`` (mesh field
+    name set by ``grainRadiusName``)
+  - chemistry is represented by the local field ``oxygenMetalRatio`` (mesh
+    field name set by ``oxygenMetalRatioName``)
+  - irradiation/heat coupling is represented through the local field
+    ``heatSource`` (mesh field name set by ``heatSourceName``)
+  - $f(\cdot)$ is the Matpro constitutive function using the fitted constants
+    ``A1``, ``A2``, ``A3``, ``A4``, ``A6``, and ``A7`` and the universal gas
+    constant ``R``
+
+  The Sakai correction modifies the parameter ``A7``:
+  - if ``SakaiCorrection`` is enabled, ``A7`` uses the Sakai-corrected value
+  - otherwise, ``A7`` uses the non-Sakai value
+
+  When enabled, the Newton-Raphson method iterates the constitutive update
+  until ``NewtonRaphsonTolerance`` or until ``NewtonRaphsonMaxIter`` is
+  reached.
+dictionary: neutronicsProperties
+options:
+- key: heatSourceName
+  type: word
+  required: false
+  default: Q
+  description: |
+    Name of the mesh ``volScalarField`` used as the irradiation/heat source
+    term (looked up as ``mesh_.lookupObject<volScalarField>(heatSourceName_)``).
+- key: densityName
+  type: word
+  required: false
+  default: rho
+  description: |
+    Name of the mesh ``volScalarField`` used as the local density (looked
+    up as ``mesh_.lookupObject<volScalarField>(densityName_)``).
+- key: grainRadiusName
+  type: word
+  required: false
+  default: grainRadius
+  description: |
+    Name of the mesh ``volScalarField`` representing the grain radius (looked
+    up as ``mesh_.lookupObject<volScalarField>(grainRadiusName_)``).
+- key: oxygenMetalRatioName
+  type: word
+  required: false
+  default: oxygenMetalRatio
+  description: |
+    Name of the mesh ``volScalarField`` representing the oxygen-to-metal ratio
+    (looked up as ``mesh_.lookupObject<volScalarField>(oxygenMetalRatioName_)``).
+- key: SakaiCorrection
+  type: bool
+  required: false
+  default: true
+  description: |
+    Enable the Sakai correction (affects the internal parameter ``A7``).
+- key: relax
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Relaxation factor ``relax_`` applied in the creep update.
+- key: NewtonRaphsonMethod
+  type: bool
+  required: false
+  default: false
+  description: |
+    Activate the inner Newton-Raphson method for the constitutive update.
+- key: NewtonRaphsonTolerance
+  type: scalar
+  required: false
+  default: 1e-6
+  description: |
+    Inner convergence tolerance for the Newton-Raphson loop. Only used when
+    ``NewtonRaphsonMethod`` is enabled.
+- key: NewtonRaphsonMaxIter
+  type: label
+  required: false
+  default: 50
+  description: |
+    Maximum number of iterations for the Newton-Raphson loop.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

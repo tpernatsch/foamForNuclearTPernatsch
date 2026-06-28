@@ -1,0 +1,45 @@
+description: |-
+  This boundary condition provides a simplified black body radiation condition
+  calculated as:
+
+  $$
+      T_{mat} = \sqrt[4]{\frac{q''}{\sigma \epsilon} + T_a^4}
+  $$
+
+  The heat flux is approximated using the Fourier law with the cells at the
+  boundary:
+
+  $$
+      q'' = \kappa \frac{T_{cell} - T_{patch face}}{d}
+  $$
+options:
+- key: Ta
+  type: scalar
+  required: true
+  description: Ambient temperature
+- key: emissivity
+  type: scalar
+  required: true
+  description: Emissivity of the material surface
+- key: kappa
+  type: scalar
+  required: true
+  description: Thermal conductivity of the material
+usage:
+- comment: 'Example of the boundary condition specification:'
+  snippet: |-
+    <patchName>
+    {
+        type            blackBodyRadiation;
+        emissivity      0.78;
+        kappa           10;
+        Ta              10;
+        value           uniform 300; // Surface temperature
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

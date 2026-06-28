@@ -1,0 +1,54 @@
+description: |
+  Object for a single nuclear quantity handling at a specific energy.
+
+  The interpolation scheme used is based on the polyharmonic spline radial basis
+  function (RBF). This class can interpolate a nuclear data value for any
+  number of perturbed states and any number of parameters. It is mainly used
+  by the ``XS`` object.
+
+  The class stores:
+  - the reference/perturbed data values at a fixed energy,
+  - the corresponding parameter vectors for each perturbed state,
+  - and the RBF interpolation weights computed during :cpp:`build()`.
+formulation: |
+  The class constructs a polyharmonic-spline RBF interpolant for a scalar nuclear
+  quantity (e.g. a cross section at a fixed energy) as a function of a parameter
+  vector $\mathbf{x}$.
+
+  The interpolant is written in the standard RBF form with a polynomial tail:
+  $$
+  s(\mathbf{x}) = \sum_{i=1}^{N} w_i\,\phi\!\left(\|\mathbf{x}-\mathbf{c}_i\|\right)
+  + v_0 + \sum_{k=1}^{N_{\text{param}}} v_k\,x_k
+  $$
+  where the basis function $\phi(r)$ is selected by ``polyharmonicSplineMode_``.
+
+  - $s(\mathbf{x})$ is the interpolated nuclear data value (scalar) at parameter
+    vector $\mathbf{x}$.
+  - $N$ is the number of *used* perturbed states (only those whose parameter
+    vectors are not constant across the dataset).
+  - $w_i$ are the RBF weights stored in ``weights_``.
+  - $\phi(r)$ is the polyharmonic spline radial basis function.
+  - $\mathbf{c}_i$ is the parameter vector (a “center”) associated with the $i$-th
+    used perturbed state; these are assembled into ``pointList_``.
+  - $v_0$ and $v_k$ are coefficients of the polynomial tail (handled implicitly by
+    the underlying RBF interpolation routine).
+  - $x_k$ is the $k$-th component of the input parameter vector.
+
+  The interpolation weights are computed by solving the linear system implied by
+  the polyharmonic spline RBF interpolation formulation (as implemented by
+  ``radialBasisFunctionInterpolation::sol``), using the reduced set of perturbed
+  points and the corresponding reduced parameter vector.
+
+  The class also supports the case where some parameters are constant across all
+  perturbed states: those parameters are removed from the interpolation space
+  (see ``reducedParamIdx_`` and ``currValueReduced_``), reducing the effective
+  dimensionality and avoiding useless interpolation directions.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  stub_improved: true

@@ -1,0 +1,37 @@
+description: |-
+  Implements an isothermal bubble diameter model. The diameter is scaled from a
+  reference value ``d0`` using the ratio of ``p0/p`` evaluated in each cell,
+  taking the cubic root. This produces a pressure-based bubble diameter for
+  multiphase flows under isothermal conditions.
+options:
+- key: value
+  type: scalar
+  required: true
+  description: Reference bubble/droplet diameter ``d0``.
+- key: p0
+  type: scalar
+  required: true
+  description: Reference pressure ``p0``.
+usage:
+- comment: 'The isothermal fluid diameter model is selected at run-time as: '
+  snippet: |-
+    fluid1 "liquid";
+    fluid2 "vapour";
+
+    liquidProperties
+    {
+        stateOfMatter   liquid;
+        dispersedDiameterModel
+        {
+            type    isothermal;
+            p0      1e5;
+            value   1e-3;
+        }
+        thermoResidualAlpha 1e-6;
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options

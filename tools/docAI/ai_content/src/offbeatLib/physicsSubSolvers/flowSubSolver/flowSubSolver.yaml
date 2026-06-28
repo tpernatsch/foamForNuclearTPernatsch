@@ -1,0 +1,27 @@
+description: |
+  Base class for flow sub-solvers in foamForNuclear.
+
+  This class provides a common interface for flow-related sub-models that are
+  selected at run-time via OpenFOAM's run-time selection mechanism. Derived
+  classes are expected to override the lifecycle methods (e.g. `init()`,
+  `correct()`, `finalise()`) and optionally provide convergence and time-step
+  control via `converged()` and `nextDeltaT()`.
+formulation: |
+  This is an abstract base class that does not implement any specific flow
+  physics. It defines the interface used by derived flow solvers to:
+  - initialize model state at the beginning of a time step,
+  - advance/solve the sub-solver equations during the time step,
+  - finalize model state at the end of the time step,
+  - report convergence status and propose a next time-step size.
+
+  The actual governing equations (e.g. continuity, momentum, energy) are
+  implemented in derived classes, not in this base class.
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

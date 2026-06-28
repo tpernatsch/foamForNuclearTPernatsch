@@ -1,0 +1,44 @@
+description: |
+  Burnup-dependent radial profile defined by a user-supplied 2D lookup table
+  $g(Bu,r)$, where $r$ is the (normalized) radial location and $Bu$ is the
+  fuel average burnup (no axial dependence is included).
+
+  The profile is tabulated on user-provided arrays of radial locations and
+  burnup points, and evaluated by interpolation in both dimensions using
+  ``InterpolateTable``. The tabulated radial profiles must be normalized to 1
+  (with the appropriate cylindrical-coordinate weighting).
+
+  The class maps the tabulated profile onto the addressed mesh entities
+  provided by the base ``radialProfile`` class, and exposes the resulting
+  profile through the profile function interface.
+formulation: |
+  The model provides a burnup-dependent radial shape function $g(Bu,r)$
+  obtained from a 2D interpolation table.
+
+  The interpolation is performed independently in the radial and burnup
+  dimensions using the user-selected interpolation methods.
+
+  $$ g(Bu,r) = \mathrm{Interp}\_{Bu}\left(\mathrm{Interp}\_{r}\left(g(Bu_i,r_j)\right)\right) $$
+
+  where:
+
+  - $g(Bu,r)$ is the tabulated radial profile value at burnup $Bu$ and radius $r$
+  - $Bu_i$ are the tabulated burnup points from ``burnupPoints``
+  - $r_j$ are the tabulated radial locations from ``radialLocations``
+  - $\mathrm{Interp}\_{r}$ is the interpolation in the radial direction, set by
+    ``radialInterpolationMethod``
+  - $\mathrm{Interp}\_{Bu}$ is the interpolation in the burnup direction, set by
+    ``burnupInterpolationMethod``
+
+  The class assumes the burnup is the fuel average burnup (computed from the
+  mesh field ``Bu`` over the addressed region), i.e. no axial effects are
+  included.
+options: []
+optionsLocations: []
+externalOptions: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

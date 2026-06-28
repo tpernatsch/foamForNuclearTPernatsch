@@ -1,0 +1,58 @@
+description: |-
+  Class to manage the fluid-structure (i.e. fluid-wall) heat transfer coefficient models. Available runtime selectable models include:
+
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./*/*
+
+  .. raw:: html
+
+    <br><br>
+
+  Sub-models include:
+
+  .. toctree::
+     :maxdepth: 1
+
+     ./subModels/CHFModels/criticalHeatFluxModels/CHFModel
+     ./subModels/CHFModels/LeidenFrostTemperatureModels/TLFModel
+     ./subModels/flowEnhancementFactorModels/flowEnhancementFactorModel
+     Post-CHF models for liquid <./subModels/postCHFModels/CachardLiquid/CachardLiquidFSHeatTransferCoefficient>
+     Post-CHF models for vapour <./subModels/postCHFModels/CachardVapour/CachardVapourFSHeatTransferCoefficient>
+     ./subModels/subCooledBoilingFractionModels/subCooledBoilingFractionModel
+     ./subModels/superpositionNucleateBoiling/superpositionNucleateBoilingFSHeatTransferCoefficient
+     ./subModels/suppressionFactorModels/suppressionFactorModel
+     Temperature of onset of nucleate boiling <./subModels/TONBModels/TONBModel>
+
+  .. raw:: html
+
+    <br><br>
+usage:
+- comment: "The fluid-structure drag coefficient model is constructed at run-time via the\nheatTransferModels subdictionary\
+    \ of the physicsModel subdictionary of the phaseProperties dictionary. "
+  snippet: |-
+    physicsModels
+    {
+      heatTransferModels
+      {
+        "vapour.structure"
+        {
+            "heated"
+            {
+                type    multiRegimeBoilingVapourTRACE;
+                annularFlowModel
+                {
+                    type                CachardVapour;
+                }
+            }
+        }
+      }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - dictionary

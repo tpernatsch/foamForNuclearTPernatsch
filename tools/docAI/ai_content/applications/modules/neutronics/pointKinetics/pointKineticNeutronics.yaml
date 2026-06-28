@@ -1,0 +1,304 @@
+description: |
+  Point-kinetic based neutronics solver for foamForNuclear.
+
+  The solver advances core power and delayed-neutron precursor groups using
+  a point-kinetics model with optional reactivity feedback from thermal-
+  hydraulics and thermo-mechanics fields, and optional external reactivity
+  and external neutron source terms.
+
+  For solid-fuel point kinetics, the governing equations are:
+
+  $$
+  \begin{align}
+      \frac{dP}{dt} & = \frac{\rho_{tot} - \zeta - \beta_{tot}}{\Lambda} P
+          + \sum_{i=1}^N \lambda_i C_i + \frac{S}{\Lambda} \\
+      \frac{dC_i}{dt} & = \frac{\beta_i}{\Lambda} P
+          - \lambda_i C_i \quad \forall i \in [1; N]
+  \end{align}
+  $$
+
+  where $\rho_{tot}$ is the total reactivity, which can be decomposed into
+  temperature/expansion feedback contributions (Doppler, fuel/clad/coolant/structure),
+  driveline and other physics contributions, plus external reactivity terms.
+
+  For liquid-fuel point kinetics, delayed-neutron precursors are transported
+  with the flowing fuel (advection-diffusion form):
+
+  $$
+  \begin{align}
+      \frac{dP(t)}{dt} & = \frac{\rho_{tot} - \zeta - \beta_{tot}}{\Lambda} P(t)
+          + \sum_{i=1}^N \lambda_i \hat C_i(t) \\
+      \frac{d \tilde c_i(r,t)}{dt} + \mathbf u \cdot \nabla \tilde c_i(r,t)
+          & = \nabla \cdot D_i \nabla \tilde c_i(r,t) + \frac{\beta_i}{\Lambda} P(t)
+          - \lambda_i \tilde c_i(r,t) \quad \forall i \in [1; N]
+  \end{align}
+  $$
+
+  The solver also supports precursor initialization for liquid fuel using either
+  a steady-state equilibrium solve or a pseudo-time-stepping loop.
+formulation: "The model is a point-kinetics system for the reactor power $P$ coupled to\ndelayed-neutron precursor groups\
+  \ $C_i$ (precursor powers are used internally).\n\nThe prompt generation time is $\\Lambda$ and the delayed neutron parameters\n\
+  are given by $\\beta_i$ and $\\lambda_i$ (read from ``nuclearData``).\n\nThe reactivity $\\rho_{tot}$ is assembled from\
+  \ intrinsic feedback coefficients\n(read from ``nuclearData``) and optional external reactivity terms, including\ntime-dependent\
+  \ profiles and FMU-provided inputs.\n\n$$ \n\\frac{dP}{dt} = \\frac{\\rho_{tot} - \\zeta - \\beta_{tot}}{\\Lambda} P\n+\
+  \ \\sum_{i=1}^N \\lambda_i C_i + \\frac{S}{\\Lambda}\n$$\n\n$$ \n\\frac{dC_i}{dt} = \\frac{\\beta_i}{\\Lambda} P - \\lambda_i\
+  \ C_i\n\\quad \\forall i \\in [1; N]\n$$\n\n- $P$ is the core power (from ``reactorState_`` field ``power``)\n- $C_i$ is\
+  \ the precursor power/contribution for delayed group $i$\n- $\\rho_{tot}$ is the total reactivity assembled from feedback\
+  \ and external terms\n- $\\zeta$ is the optional subcritical index (from ``reactorState_`` key ``subcriticalIndex``)\n-\
+  \ $\\beta_{tot}$ is the sum of delayed fractions $\\beta_i$ (from ``nuclearData`` key ``Beta``)\n- $\\beta_i$ is the delayed\
+  \ neutron fraction for group $i$ (from ``nuclearData`` key ``Beta``)\n- $\\lambda_i$ is the precursor decay constant for\
+  \ group $i$ (from ``nuclearData`` key ``lambda``)\n- $\\Lambda$ is the prompt generation time (from ``nuclearData`` key\
+  \ ``promptGenerationTime``)\n- $S$ is an optional external source power term (enabled by external source settings)\n\nFor\
+  \ liquid fuel, precursor groups are transported with the flowing fuel\nusing an advection-diffusion form; the liquid-fuel\
+  \ mode is enabled by\n``liquidFuel`` in ``neutronicsProperties`` and uses additional liquid-fuel\nprecursor initialization\
+  \ options.\n"
+admonitions: []
+dictionary: neutronicsProperties
+options:
+- key: fastNeutrons
+  type: boolean
+  required: true
+  default: null
+  description: Flag to activate reactivity feedback for fast spectrum reactors. If true, use the ``-coeffDoppler * log(TFuel/TFuelRef)``,
+    else use ``coeffDoppler * (sqrt(TFuel) - sqrt(TFuelRef))``
+- key: initPrecursorsLiquidFuel
+  type: boolean
+  required: false
+  default: false
+  description: Flag to initialize the concentration of precursors to their equilibrium value at the beginning of the simulation.
+    Only used for liquid fuel
+- key: ScNo
+  type: boolean
+  required: false
+  default: 1.0
+  description: Schmidt number. Only used for liquid fuel
+- key: promptGenerationTime
+  type: scalar
+  required: true
+  default: null
+  description: Prompt generation time
+- key: Beta
+  type: list[scalar]
+  required: true
+  default: null
+  description: Belayed neutron fraction per precursor groups
+- key: lambda
+  type: list[scalar]
+  required: true
+  default: null
+  description: Decay constant per precursor groups
+- key: feedbackCoeffTFuel
+  type: scalar
+  required: true
+  default: null
+  description: Fuel temperature reactivity feedback coefficient
+- key: feedbackCoeffTClad
+  type: scalar
+  required: true
+  default: null
+  description: Cladding temperature reactivity feedback coefficient
+- key: feedbackCoeffTCool
+  type: scalar
+  required: true
+  default: null
+  description: Coolant temperature reactivity feedback coefficient
+- key: feedbackCoeffRhoCool
+  type: scalar
+  required: true
+  default: null
+  description: Coolant density reactivity feedback coefficient
+- key: feedbackCoeffDoppler
+  type: scalar
+  required: true
+  default: null
+  description: Fuel Doppler reactivity feedback coefficient
+- key: feedbackCoeffTStruct
+  type: scalar
+  required: true
+  default: null
+  description: Structure temperature reactivity feedback coefficient
+- key: feedbackCoeffTStructMech
+  type: scalar
+  required: true
+  default: null
+  description: Mechanical structure temperature reactivity feedback coefficient
+- key: fuelFeedbackZones
+  type: list[word]
+  required: true
+  default: null
+  description: List of fuel cellZone names for which the fuel reactivity feedback is applied
+- key: coolantFeedbackZones
+  type: list[word]
+  required: true
+  default: null
+  description: List of coolant cellZone names for which the coolant reactivity feedback is applied
+- key: structFeedbackZones
+  type: list[word]
+  required: true
+  default: null
+  description: List of structure cellZone names for which the structure reactivity feedback is applied
+- key: drivelineFeedbackZones
+  type: list[word]
+  required: true
+  default: null
+  description: List of driveline cellZone names for which the driveline reactivity feedback is applied
+- key: GEMSodiumLevelRef
+  type: scalar
+  required: false
+  default: null
+  description: <description>
+- key: GEMFlowFaceZone
+  type: word
+  required: false
+  default: null
+  description: <description>
+- key: GEMReactivityMap
+  type: list[scalar, scalar]
+  required: false
+  default: null
+  description: <description>
+- key: absoluteDrivelineExpansionCoeff
+  type: scalar
+  required: false
+  default: null
+  description: <description>
+- key: controlRodReactivityMap
+  type: list[scalar, scalar]
+  required: false
+  default: null
+  description: <description>
+- key: liquidFuel
+  type: boolean
+  required: false
+  default: false
+  description: |-
+    If true, enables liquid-fuel point-kinetics mode. Delayed neutron
+    precursors are advected and diffused with the flowing fuel rather than
+    being fixed in place. Must also be set in *neutronicsProperties*.
+- key: initPrecursorsLiquidFuel
+  type: boolean
+  required: false
+  default: false
+  description: |-
+    If true, the precursor spatial distribution is initialized at the first
+    time step of a transient run (i.e. when
+    `timeIndex == startTimeIndex + 1`). The initialization mode depends on
+    `pseudoTimeSteps`: if zero or absent a standard steady-state solve is
+    performed; if positive, pseudo-time-stepping is used instead.
+- key: fuelZones
+  type: list[word]
+  required: false
+  default: (all cells)
+  description: |-
+    List of cell zone names in which the fission source term for delayed
+    neutron precursors is active. Only cells inside these zones contribute
+    to precursor production. Cells outside (e.g. heat exchanger, pump,
+    piping) correctly produce no precursors. If absent, all cells are
+    treated as fuel, preserving backward compatibility with cases that do
+    not distinguish fissile and non-fissile regions.
+- key: pseudoTimeSteps
+  type: scalar or list[scalar]
+  required: false
+  default: 0
+  description: |-
+    Number of backward-Euler pseudo-time iterations used to initialize the
+    precursor spatial distribution when `initPrecursorsLiquidFuel true`.
+    A scalar applies the same count to all precursor groups; a list of
+    length N assigns a per-group count. Set to 0 (or omit) to fall back to
+    the standard steady-state solve. For convergence, the total pseudo-time
+    $N \times \Delta\tau$ should satisfy $N \Delta\tau \gg 1/\lambda_{min}$.
+- key: pseudoTimeStepSize
+  type: scalar or list[scalar]
+  required: false
+  default: null
+  description: |-
+    Pseudo-time step size $\Delta\tau$ in seconds for the precursor
+    initialization loop. A scalar applies to all groups; a list of length N
+    gives per-group values. Required when `pseudoTimeSteps > 0`.
+- key: pseudoTimeRelaxation
+  type: scalar or list[scalar]
+  required: false
+  default: 1.0
+  description: |-
+    Under-relaxation factor applied after each pseudo-time step:
+    $C_i^{new} = \omega \, C_i^{solved} + (1-\omega) \, C_i^{old}$.
+    A scalar applies to all groups; a list of length N gives per-group
+    values. Use values less than 1 if the pseudo-time iterations oscillate.
+optionsLocations: []
+usage:
+- comment: |
+    Example of time dependant source entries
+  snippet: |
+    //- Optional time dependant external reactivity time profile
+    externalReactivityTimeProfile
+    {
+        type        table;
+        startTime   100;
+        table       table
+        (
+            (   0   0)
+            (   1   0.0005767131    ) //- i.e. 57.67131 pcm
+        );
+    }
+
+    //- Optional time dependant boron reactivity time profile
+    boronReactivityTimeProfile
+    {
+        type        table;
+        table       table
+        (
+            (   100   0   )
+            (   101   1e-5   )
+        );
+    }
+- comment: |
+    Optional external reactivity input from FMU in ``nuclearData`` file.
+    The default initial value is 0.
+  snippet: |
+    externalReactivityTimeProfile
+    {
+        type            fmi;
+        nameFromFMU     gfExtReact;
+        initialValue    0.0;
+    }
+- comment: |
+    Optional external neutron source file ``externalSource``
+  snippet: |-
+    //- If true, add the external source to the point-kinetics equations
+    isExternalSource    true;
+
+    //- External source mode
+    externalSourceMode  transient; // powerMonitoring // transient
+
+    //- Beam energy per source particle
+    beamEnergy          1.28160e-10; // [J/proton], 800 MeV/proton
+
+    //- Neutron yield of the spallation of proton on heavy metal
+    nuSource            15.5; // [neutron/proton]
+
+    //- Optional external source input from FMU in externalSource file.
+    //- The externalSourceMode must be set to transient. The default initial value
+    //-is 1.
+    externalSourceModulationNameFromFMU     gfExternalSourceMod;
+
+    //- External modulation time profile (time, modulation factor)
+    externalSourceModulationTimeProfile
+    {
+        type        table;
+        startTime   150;
+        table       table
+        (
+            (0      1)
+            (20     2)
+        );
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - dictionary
+  - optionsLocations
+  stub_improved: true

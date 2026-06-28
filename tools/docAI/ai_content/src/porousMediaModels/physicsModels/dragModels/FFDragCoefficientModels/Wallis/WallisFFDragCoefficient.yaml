@@ -1,0 +1,64 @@
+description: |
+  Wallis correlation for interfacial liquid-vapour sodium friction.
+
+  Reference: H. Ninokata, T. Okano, "SABENA: subassembly boiling evolution numerical
+  analysis", Nucl. Eng. Des., 120 (1990), pp. 349-367
+admonitions:
+- kind: warning
+  body: |
+    Applicable **only** to liquid–gas systems. Ensure ``stateOfMatter`` is set
+    correctly in ``phaseProperties.<phaseName>Properties`` to distinguish gas and liquid.
+- kind: note
+  body: |
+    This model is selected solely by its runtime ``typeName`` and defines no additional options.
+options: []
+usage:
+- comment: |
+    The drag model is specified via the ``type`` entry in the ``physicsModels/dragModels/<zoneName>`` subdictionary of the ``phaseProperties`` file.
+    (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g.
+    ``constant/fluidRegion``).
+
+    Here is a snippet of a ``phaseProperties`` file enabling the Wallis fluid–fluid drag model:
+  snippet: |-
+    // ... other phaseProperties subdictionaries
+
+    physicsModels
+    {
+      dragModels
+      {
+        "<zoneName>"
+        {
+          type Wallis;
+        }
+
+        // ... other zone subdictionaries
+
+      }
+
+      // ... other physicsModels subdictionaries
+    }
+
+    // ... other subdictionaries
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - description
+  - formulation
+  - usage
+  formulation_added: true
+formulation: |
+  The Wallis model provides an empirical interfacial friction (drag) coefficient between a liquid and a vapour phase based on the relative velocity and fluid properties, as used in two-fluid boiling/separation closures (see Duderstadt & Hamilton; Todreas & Kazimi for general two-phase momentum-transfer context). In OpenFOAM/GeN-Foam, this enters the interfacial momentum exchange term through a scalar drag coefficient $K_{lv}$ evaluated per cell.
+
+  The interfacial momentum source for the liquid phase is typically written in the form
+  $$ \mathbf{S}_{m,l} = K_{lv}\,(\mathbf{U}_v-\mathbf{U}_l), $$
+  where $K_{lv}$ is the Wallis drag coefficient returned by $value(celli)$.
+
+  The Wallis correlation expresses $K_{lv}$ as a function of the vapour properties (stored in the model as $vapour_`) and the local relative speed magnitude $|\mathbf{U}_v-\mathbf{U}_l|$, together with liquid/vapour density and viscosity ratios, following Ninokata & Okano (1990). The exact algebraic form is implemented in $WallisFFDragCoefficient.C$ in the $value(const label& celli)$ method.
+
+  - $K_{lv}$ is the interfacial liquid–vapour drag coefficient (units depend on the momentum-source convention used in GeN-Foam).
+  - $\mathbf{S}_{m,l}$ is the momentum source term added to the liquid phase due to interfacial drag.
+  - $\mathbf{U}_l$ is the OpenFOAM velocity field of the liquid phase (e.g. $U_l$).
+  - $\mathbf{U}_v$ is the OpenFOAM velocity field of the vapour phase (e.g. $U_v$).
+  - $|\mathbf{U}_v-\mathbf{U}_l|$ is the local interfacial relative speed magnitude.
+  - $vapour_ $ is the referenced vapour phase object used to obtain vapour properties required by the correlation.

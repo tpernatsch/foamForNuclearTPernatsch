@@ -1,0 +1,15 @@
+description: |
+  Mother class for conductivity models.
+
+  This class provides the run-time selection interface for specific
+  conductivity implementations. Derived classes must implement
+  ``correct(scalarField& sf, const scalarField& T, const labelList& addr)``
+  to update the conductivity field based on the local temperature.
+admonitions: []
+dictionary: neutronicsProperties
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

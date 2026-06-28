@@ -1,0 +1,37 @@
+description: |
+  GAMG agglomerated interface field for a discontinuous cyclic AMI (Arbitrary
+  Mesh Interface). It wraps a ``discontinuousCyclicAMIGAMGInterface`` and
+  provides the required GAMG interface-matrix update operations, including
+  optional face transformation for cyclic coupling.
+formulation: |
+  This class provides the interface-matrix contribution for a GAMG
+  coarse-grid operator when the fine-grid interface is a discontinuous cyclic
+  AMI.
+
+  The interface couples the coarse-grid scalar unknowns across a patch using
+  the neighbour mapping defined by the underlying cyclic AMI. When enabled,
+  a tensor transformation is applied to account for the cyclic geometry.
+
+  $$ \mathbf{A}_{\Gamma} \, \psi = \mathbf{b}_{\Gamma} $$
+
+  where the interface contribution $\mathbf{A}_{\Gamma}$ is assembled by
+  ``initInterfaceMatrixUpdate`` and completed by ``updateInterfaceMatrix``.
+  The mapping and (optional) transformation are provided by
+  ``discontinuousCyclicAMIInterface_``.
+
+  - $\psi$ is the scalar unknown field on the interface-coupled degrees of
+    freedom (``psiInternal``)
+  - $\mathbf{A}_{\Gamma}$ is the interface-coupling part of the GAMG matrix
+    assembled into ``result``
+  - $\Gamma$ is the cyclic AMI patch (``patchId``)
+  - $\mathbf{T}_f$ and $\mathbf{T}_r$ are the forward and reverse face/cell
+    transformation tensors (from ``forwardT()`` and ``reverseT()``)
+  - $c$ is the coefficient vector (``coeffs``) used during assembly
+  - $\Delta$ is the component direction (``cmpt``)
+dictionary: neutronicsProperties
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

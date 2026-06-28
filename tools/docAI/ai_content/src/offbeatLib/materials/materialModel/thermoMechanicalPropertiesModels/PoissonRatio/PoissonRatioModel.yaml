@@ -1,0 +1,21 @@
+description: |
+  Mother's class for Poisson's ratio models.
+formulation: |
+  This is an abstract base class that defines the interface for updating
+  Poisson's ratio as a function of temperature.
+
+  Derived models implement the ``correct`` method, which updates the Poisson
+  ratio field ``sf`` using the temperature field ``T`` over the provided
+  addressing list ``addr``.
+
+  - $s$ is the Poisson ratio value stored in the scalar field ``sf``
+  - $T$ is the temperature field ``T`` used by the specific model
+  - $a$ is the addressing list ``addr`` selecting which entries are updated
+admonitions: []
+dictionary: neutronicsProperties
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

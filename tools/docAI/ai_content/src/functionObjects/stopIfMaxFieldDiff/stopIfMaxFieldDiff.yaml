@@ -1,0 +1,49 @@
+description: |-
+  Stops the simulation when $\max\!\left(\phi_1-\phi_2\right) > 0$ and prints out the simulation time. Both $\phi_1$ and $\phi_2$ are ``volScalarField`` objects selected by the ``field1`` and ``field2`` parameters, respectively.
+
+  See also
+      Foam::functionObjects::fvMeshFunctionObject
+      Foam::functionObjects::writeFile
+options:
+- key: field1
+  type: word
+  required: true
+  description: |
+    Name of the first ``volScalarField`` ($\phi_1$) to compare.
+- key: field2
+  type: word
+  required: true
+  description: |
+    Name of the second ``volScalarField`` ($\phi_2$) to compare.
+usage:
+- comment: 'A functionObject is normally specified via the ``type`` entry in the ``functionObjects`` subdictionary of the
+    ``controlDict`` file (located in ``system/``. Here is a snippet enabling a functionObject:'
+  snippet: |
+    functions
+    {
+        <functionObject1>
+        {
+            type fieldDiffExtents;
+        }
+    }
+- comment: This is a detailed example of use of this specific function object.
+  snippet: |-
+    functions
+    {
+      stopIfMaxFieldDiff1
+      {
+          type          stopIfMaxFieldDiff;
+          libs          ("libFFNFunctionObjects.so");
+          ...
+          writeToFile   yes;
+          log           yes;
+          field1        fieldName;
+          field2        fieldName;
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options

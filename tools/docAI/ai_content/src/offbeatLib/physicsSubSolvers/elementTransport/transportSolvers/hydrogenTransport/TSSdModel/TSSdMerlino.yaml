@@ -1,0 +1,30 @@
+description: |
+  Temperature-dependent TSSd model that updates the yield-stress-like field
+  $TSSd$ using an Arrhenius-type dependence on the local temperature $T$.
+
+  Despite the class name, the implementation shown here does not read a
+  plastic-strain-to-yield-stress table; instead it computes $TSSd$ directly
+  from $T$.
+formulation: |
+  The model assumes an Arrhenius-type temperature dependence for the
+  $TSSd$ field:
+  $$ TSSd(T) = TSSd_0 \exp\left(-\frac{Q_d}{R\,T}\right) $$
+  where $T$ is taken locally in each cell and on boundary faces.
+
+  - $TSSd(T)$ is the updated TSSd value (field $TSSd_`) at temperature $T$
+  - $TSSd_0$ is the pre-exponential factor (constant in this implementation)
+  - $Q_d$ is an activation energy (constant in this implementation)
+  - $R$ is the universal gas constant ($8.31446$ J/mol/K)
+  - $T$ is the local temperature field (OpenFOAM field name: `T`)
+
+  The update is performed for the provided cell addresses (`addr`) and the
+  corresponding boundary faces, after which boundary conditions are corrected.
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

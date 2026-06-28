@@ -1,0 +1,68 @@
+description: NoKazimi correlation for fluid-structure pressure drop
+options:
+- key: pinPitch
+  type: scalar
+  required: true
+  description: ''
+- key: pinDiameter
+  type: scalar
+  required: true
+  description: ''
+- key: wireDiameter
+  type: scalar
+  required: true
+  description: ''
+- key: wireLeadLen
+  type: scalar
+  required: true
+  description: ''
+usage:
+- comment: |
+    The drag model is specified via the ``type`` entry in the ``physicsModels/dragModels/<zoneName>`` subdictionary of the ``phaseProperties`` file.
+    (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g.
+    ``constant/fluidRegion``).
+
+    Here is a snippet of a ``phaseProperties`` file enabling the NoKazimi fluid–structure drag model:
+  snippet: |-
+    // ... other phaseProperties subdictionaries
+
+    physicsModels
+    {
+      dragModels
+      {
+        "<zoneName>"
+        {
+          type    NoKazimi;
+          pinDiameter     0.0076;
+          wireDiameter    0.0016;
+          wireLeadLen     0.2;
+        }
+
+        // ... other zone subdictionaries
+
+      }
+
+      // ... other physicsModels subdictionaries
+    }
+
+    // ... other subdictionaries
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - description
+  - formulation
+  - options
+  formulation_added: true
+formulation: |
+  The NoKazimi model provides a correlation for the fluid–structure drag coefficient (pressure-drop contribution) in wire-wrapped bundles by mapping bundle geometry to an effective drag coefficient used in two-phase/porous-style momentum exchange. In the implementation, the coefficients are pre-computed (A_, B_, C_) from the dictionary inputs and then evaluated per cell via a closed-form expression for the drag coefficient.
+
+  $$ K_{\mathrm{FS}} = A_\,\left(\frac{D_w}{D_p}\right)^{B_}\,\left(\frac{L_w}{D_p}\right)^{C_} $$
+
+  - $K_{\mathrm{FS}}$ is the fluid–structure drag coefficient returned by `value(celli)` (units depend on the momentum-exchange formulation used in GeN-Foam/OpenFOAM).
+  - $D_p$ is the pin pitch (`pinPitch`), the characteristic lattice spacing between pins.
+  - $D_w$ is the wire diameter (`wireDiameter`).
+  - $L_w$ is the wire lead length (`wireLeadLen`).
+  - $A_$, $B_$, $C_ $ are correlation constants computed in the constructor from the input geometry and the NoKazimi reference correlation.
+
+  This is a geometry-based empirical correlation (no transport PDEs are solved inside this class); it is consistent with the way drag/pressure-drop correlations are typically used in wire-wrap and bundle subchannel/porous momentum models (see e.g. Duderstadt & Hamilton; Todreas & Kazimi for bundle/wire-wrap pressure-drop modeling context).

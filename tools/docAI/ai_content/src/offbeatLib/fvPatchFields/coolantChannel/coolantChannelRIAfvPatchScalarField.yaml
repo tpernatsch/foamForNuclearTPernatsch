@@ -1,0 +1,185 @@
+description: |
+  Coolant channel boundary condition for Reactivity Initiated Accident (RIA)
+  transients.
+
+  The model applies the Bessiron (2007) criterion for boiling crisis: the
+  crisis is triggered when the vaporized water layer thickness exceeds a
+  threshold, rather than when the wall heat flux exceeds a critical value.
+
+  The bulk coolant temperature is prescribed as a time/space-dependent axial
+  profile (the ``enthalpyModel`` is always disabled for RIA scenarios).
+
+  The boiling curve is divided into four regimes driven by the vaporized
+  layer thickness:
+
+  - Pre-crisis heat conduction: vaporized thickness below threshold and
+    $T_w < T_{CHF}$; transient heat conduction in stagnant water.
+  - Vaporizing: vaporized thickness below threshold and $T_w \ge T_{CHF}$;
+    the effective wall temperature is held at $T_{CHF}$ and the vaporized
+    layer thickness is integrated until it exceeds ``thicknessBessironRIA``,
+    at which point the thickness is capped and $q_{CHF}$ is frozen.
+  - Transition boiling: vaporized thickness at threshold and $T_{sat} < T_w$;
+    Bessiron exponential formula for the heat flux.
+  - Natural convection after liquid contact: vaporized thickness at threshold
+    and $T_w \le T_{sat}$; natural convection is used and the vaporized layer
+    and conduction clock are reset only after the wall cools close to the
+    coolant temperature.
+formulation: |
+  This boundary condition couples a wall heat-transfer model to a RIA-specific
+  boiling-crisis criterion based on the growth of a vaporized water layer.
+
+  The boiling crisis is triggered when the vaporized layer thickness reaches
+  ``thicknessBessironRIA``; at that moment, the critical heat flux is frozen
+  and subsequent heat transfer follows the Bessiron transition-boiling curve
+  until liquid contact occurs.
+
+  The transition-boiling heat flux is computed using a Bessiron exponential
+  form (with parameters derived from the Sakurai curve and the user-provided
+  Bessiron temperature increments):
+
+  $$
+  q_{TB} = q_{film} + (q_{CHF}-q_{film})\exp\left(-c\,(T_w-T_{CHF})^2\right)
+  $$
+
+  where:
+
+  - $q_{TB}$ is the transition-boiling heat flux at the wall (W/m$^2$)
+  - $q_{film}$ is the film-boiling heat flux (W/m$^2$), from the selected
+    ``filmBoiling`` correlation
+  - $q_{CHF}$ is the critical heat flux frozen at boiling crisis (W/m$^2$)
+  - $T_w$ is the effective wall temperature (K)
+  - $T_{CHF}$ is the wall temperature at the onset of the crisis (K)
+  - $c$ is the Bessiron decay constant (K$^{-2}$), stored as ``kBessiron_``
+    and frozen at crisis
+
+  The four-regime logic is driven by the vaporized layer thickness and the
+  comparisons between $T_w$, $T_{CHF}$, and $T_{sat}$.
+optionsLocations:
+- name: axialProfileDict
+  in: boundaryField
+- name: correlations
+  in: boundaryField
+options:
+- key: kappa
+  type: word
+  required: false
+  default: k
+  description: |
+    Name of the thermal conductivity field in the solid region used to
+    compute the mixed boundary coefficient ``alpha_``.
+- key: correlations
+  type: table
+  required: true
+  description: |
+    Sub-dictionary selecting the heat-transfer correlations used by the
+    boundary condition.
+- key: correlations.singlePhase
+  type: word
+  required: false
+  default: ChurchillChu
+  description: |
+    Name of the single-phase heat transfer correlation.
+- key: correlations.filmBoiling
+  type: word
+  required: false
+  default: Sakurai
+  description: |
+    Name of the film boiling heat transfer correlation.
+- key: relax
+  type: scalar
+  required: false
+  default: 1
+  description: |
+    Relaxation factor for updating the heat transfer coefficient.
+- key: filmBoilingRIACorrection
+  type: scalar
+  required: false
+  default: 5.0
+  description: |
+    Film boiling heat transfer coefficient multiplier at the moment of
+    boiling crisis. It linearly decreases to 1 over
+    ``filmBoilingRIACorrectionDuration`` seconds of cumulative film boiling
+    time.
+- key: filmBoilingRIACorrectionDuration
+  type: scalar
+  required: false
+  default: 15.0
+  description: |
+    Time over which ``filmBoilingRIACorrection`` decays from its initial
+    value to 1 (seconds).
+- key: leidenfrostdTBessiron
+  type: scalar
+  required: false
+  default: 450.0
+  description: |
+    Temperature increment above $T_{sat}$ defining the Leidenfrost point
+    (K).
+- key: onbdTBessiron
+  type: scalar
+  required: false
+  default: 20.0
+  description: |
+    Temperature increment above $T_{sat}$ defining $T_{CHF}$ (K).
+- key: thicknessBessironRIA
+  type: scalar
+  required: false
+  default: 3e-5
+  description: |
+    Vaporized water layer thickness that triggers boiling crisis (m).
+- key: resetDeltaTBessiron
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Temperature margin above the coolant temperature used to reset the
+    vaporized layer and conduction clock after liquid contact (K).
+- key: pulseStartTime
+  type: scalar
+  required: false
+  default: 0.0
+  description: |
+    User time at which the RIA pulse starts. The transient conduction clock
+    begins advancing from this moment; before it, single-phase natural
+    convection is used (seconds).
+- key: vaporizedThickness
+  type: scalar
+  required: false
+  description: |
+    Optional restart/initial value for the vaporized water layer thickness
+    field (m). If not provided, it is initialized to 0 on the patch.
+- key: qCHF
+  type: scalar
+  required: false
+  description: |
+    Optional restart/initial value for the frozen critical heat flux field
+    (W/m$^2$). If not provided, it is initialized to 0 on the patch.
+- key: qLeidenfrost
+  type: scalar
+  required: false
+  description: |
+    Optional restart/initial value for the heat flux at the Leidenfrost point
+    (W/m$^2$). If not provided, it is initialized to 0 on the patch.
+- key: kBessiron
+  type: scalar
+  required: false
+  description: |
+    Optional restart/initial value for the Bessiron decay constant
+    (K$^{-2}$). If not provided, it is initialized to 0 on the patch.
+- key: conductionTime
+  type: scalar
+  required: false
+  description: |
+    Optional restart/initial value for the pre-crisis conduction time (s).
+    If not provided, it is initialized to 0 on the patch.
+- key: filmBoilingTime
+  type: scalar
+  required: false
+  description: |
+    Optional restart/initial value for the cumulative post-crisis
+    film/transition boiling time (s). If not provided, it is initialized to 0
+    on the patch.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

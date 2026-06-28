@@ -1,0 +1,39 @@
+description: |
+  Model to check failure of UO2 based on a limit melting temperature from
+  Matpro v11.
+options:
+- key: Tmelt
+  type: scalar
+  required: false
+  default: 3113.0
+  description: |
+    Melting temperature threshold [K]. If the local fuel temperature exceeds
+    this value, the material is considered failed.
+usage:
+- comment: |
+    Example selection of the UO2 melting-temperature failure model.
+  snippet: "materials\n{\n    fuel\n    {\n        ...\n\n        failureModel \n        {\n            type UO2Matpro;\n\
+    \            \n            Tmelt 3113;\n        }\n    }\n}"
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - usage
+  formulation_added: true
+formulation: |
+  This failure model implements a local, threshold-based criterion: UO2 is considered failed in a cell when the computed fuel temperature exceeds a prescribed melting-temperature limit. No additional transport, kinetics, or constitutive relations are solved within this class; it only evaluates the inequality using the OpenFOAM temperature field.
+
+  $$ T(\mathbf{x}_i) \ge T_{\mathrm{melt}} \;\;\Rightarrow\;\; \text{failedMaterial}(\mathbf{x}_i)=1 $$
+
+  $$ \text{failed}_i =
+  \begin{cases}
+  1, & T_i \ge T_{\mathrm{melt}} \\
+  0, & T_i < T_{\mathrm{melt}}
+  \end{cases} $$
+
+  - $T_i$ is the local temperature in cell $i$ (from OpenFOAM field $T$ = `volScalarField` named `"T"`).
+  - $T_{\mathrm{melt}}$ is the prescribed melting-temperature threshold (dictionary option `Tmelt`, in K).
+  - $\text{failedMaterial}(\mathbf{x}_i)$ is the per-cell failure indicator field (set to 1 when the criterion is met).
+  - $\text{failed}_i$ is the boolean failure state for cell $i$ (drives the global `failed_` flag).
+
+  Such a simple melting-limit criterion is a standard “instantaneous failure” assumption used in fuel performance codes (see, e.g., Duderstadt & Hamilton for qualitative fuel failure thresholds and Todreas & Kazimi for fuel thermal limits).

@@ -1,0 +1,59 @@
+description: |
+  Class modelling thermal expansion of UO2 fuel derived from Relap.
+options:
+- key: ED
+  type: scalar
+  required: false
+  default: 1.32e-19
+  description: |
+    Option read by the model.
+- key: K1
+  type: scalar
+  required: false
+  default: 9.8e-06
+  description: |
+    Option read by the model.
+- key: K2
+  type: scalar
+  required: false
+  default: 0.00261
+  description: |
+    Option read by the model.
+- key: K3
+  type: scalar
+  required: false
+  default: 0.316
+  description: |
+    Option read by the model.
+- key: k
+  type: scalar
+  required: false
+  default: 1.38e-23
+  description: |
+    Option read by the model.
+usage:
+- comment: |
+    Example selection of the `UO2Relap` thermalExpansion model.
+  snippet: |-
+    materials
+    {
+      fuel
+      {
+        type UO2;
+        thermalExpansion
+        {
+          type UO2Relap;
+          // ED 1.32e-19;
+          // K1 9.8e-6;
+          // K2 2.61e-3;
+          // K3 3.16e-1;
+          // k 1.38e-23;
+        }
+      }
+    }
+dictionary: thermalExpansion
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - dictionary

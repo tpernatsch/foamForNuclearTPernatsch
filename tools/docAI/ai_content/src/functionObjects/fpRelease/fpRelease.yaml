@@ -1,0 +1,36 @@
+description: |
+  Function object that writes fission product release fractions versus time.
+
+  Each fission-product species solved by ``fissionProductsDiffusionSolver`` registers a
+  ``uniformDimensionedScalarField`` in the mesh registry named ``fpRelease_<species>``.
+  This function object auto-detects all such fields and writes a single CSV file:
+
+  \verbatim
+  postProcessing/fpRelease/<startTime>/fpRelease.dat
+  \endverbatim
+formulation: |
+  This function object performs post-processing only: it detects the registered
+  release-fraction fields ``fpRelease_<species>`` and writes their current values
+  at each execution time.
+
+  For each detected species $s$, the written value is the field value:
+
+  $$
+  r_s(t) = \mathrm{value}\left(\texttt{fpRelease\_} + s\right)
+  $$
+
+  where:
+
+  - $r_s(t)$ is the fission product release fraction for species $s$ at time $t$
+  - $s$ is the species name detected from the mesh registry
+  - $t$ is the current simulation time when ``execute()`` is called
+admonitions: []
+dictionary: neutronicsProperties
+options: []
+optionsLocations: []
+externalOptions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

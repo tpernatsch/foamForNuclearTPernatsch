@@ -1,0 +1,42 @@
+description: |
+  Generic hydrogen diffusion coefficient model for fuel thermo-mechanics/creep
+  calculations. It computes the (effective) diffusion coefficient as an Arrhenius
+  function of temperature for both internal cells and boundary patches, and
+  optionally applies an additional effective-diffusivity correction.
+formulation: |
+  The hydrogen diffusion coefficient is modeled with an Arrhenius dependence on
+  the local temperature, consistent with standard diffusion kinetics
+  (e.g., Duderstadt & Hamilton for thermally activated transport concepts).
+
+  $$ D_H(T) = D_0 \exp\left(-\frac{E_d}{R\,T}\right) $$
+
+  where:
+
+  - $D_H(T)$ is the hydrogen diffusion coefficient (field `diffH_`)
+  - $D_0$ is the pre-exponential factor (dictionary entry `D0`)
+  - $E_d$ is the activation energy (dictionary entry `Ed`)
+  - $R$ is the universal gas constant, taken as $8.31446$ (J/mol/K)
+  - $T$ is the local temperature (OpenFOAM field `T`), in K
+
+  The model updates `diffH_` for the provided cell addresses `addr` and sets
+  boundary values using the corresponding boundary temperature field values.
+  If `effectiveDiffCoeff_` is enabled in the base class, the model further calls
+  `correctEffectiveDiffusionCoefficient(addr)` to apply an additional correction.
+options:
+- key: D0
+  type: scalar
+  required: true
+  description: |
+    Arrhenius pre-exponential factor $D_0$ used to compute the hydrogen diffusion
+    coefficient.
+- key: Ed
+  type: scalar
+  required: true
+  description: |
+    Arrhenius activation energy $E_d$ used to compute the hydrogen diffusion
+    coefficient.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

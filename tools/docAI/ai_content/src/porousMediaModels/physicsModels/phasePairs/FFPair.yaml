@@ -1,0 +1,64 @@
+description: |
+  FFPair couples two ``fluid`` phases in a dispersed/continuous two-phase framework.
+  It manages interfacial fields (e.g. dispersed/continuous volume fractions and
+  interfacial geometry), and instantiates/coordinates sub-models for momentum
+  exchange (drag, virtual mass), mass transfer (phase change), heat transfer
+  (heat-transfer coefficient models), and dispersion/geometry closures.
+
+  The class is configured through the ``physicsModels`` sub-dictionary and uses
+  unordered-pair logic so that model configuration can be provided for either
+  ordering of the two fluids.
+formulation: |
+  FFPair provides the coupling infrastructure for two-phase transport by
+  instantiating and correcting sub-models that contribute source terms and
+  closure fields. In particular, it constructs and updates:
+
+  - interfacial volume-fraction fields ``alphaDispersed`` and ``alphaContinuous``
+  - interfacial geometry/dispersion closures (e.g. dispersion model and
+    interfacial area model)
+  - momentum-exchange factors for drag (``FFDragFactor``) and virtual mass
+  - heat-transfer coefficient models for each fluid side
+  - optional phase-change model for mass/energy transfer
+
+  The exact governing equations for each contribution are implemented in the
+  corresponding sub-model classes (e.g. drag, virtual mass, heat transfer,
+  phase change). FFPair itself acts as the orchestrator that:
+  (i) reads the model selection dictionaries,
+  (ii) creates the appropriate model objects, and
+  (iii) calls their ``correctField``/update routines during the coupling step.
+
+  Variables and fields created/managed by FFPair include:
+
+  - ``alphaDispersed`` is the dispersed-phase volume fraction field
+  - ``alphaContinuous`` is the continuous-phase volume fraction field
+  - ``Kd`` is the drag-related factor field (updated via the drag model)
+  - ``DhDispersed`` is a dispersed-phase characteristic length/diameter field
+  - ``heSources`` is a heat/enthalpy source matrix field associated with
+    ``fluid2_.thermo().he()``
+dictionary: neutronicsProperties
+options:
+- key: maxAlphaKdFF
+  type: scalar
+  required: false
+  default: '0'
+  description: ''
+- key: maxKdFF
+  type: scalar
+  required: true
+  default: null
+  description: ''
+- key: minKdFF
+  type: scalar
+  required: false
+  default: '1'
+  description: ''
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - dictionary
+  - usage
+  stub_improved: true

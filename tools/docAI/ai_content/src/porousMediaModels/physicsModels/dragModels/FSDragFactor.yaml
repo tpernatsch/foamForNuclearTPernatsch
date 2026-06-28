@@ -1,0 +1,138 @@
+description: |
+  Base class to represent a FSDragFactor with basing name access
+  functionality.
+
+  This class computes the fluid-structure drag coefficient tensor ``Kd``
+  used in the momentum equations for fluid-structure interaction.
+formulation: |
+  The model provides a drag coefficient tensor ``Kd`` such that the
+  fluid-structure interaction term in the momentum equation can be written
+  in the form of a linear drag proportional to the fluid velocity.
+
+  For an isotropic drag factor, the tensor is diagonal and identical in all
+  directions; for an anisotropic drag factor, the diagonal components are
+  computed independently from sub-models.
+
+  The implementation uses a normalized fluid phase fraction ``alphaN_``,
+  the fluid density ``rho_``, the magnitude of the fluid velocity ``magU_``,
+  and the hydraulic diameter/characteristic dimension ``Dh_`` to form an
+  intermediate factor (stored internally as ``halfAlphaRhoMagUByDh_``), which is
+  then multiplied by a direction-dependent drag coefficient model.
+
+  The momentum source term is conceptually of the form:
+
+  $$
+  \mathbf{S}_d = -\mathbf{K}_d \cdot \mathbf{U}
+  $$
+
+  where:
+
+  - $\mathbf{S}_d$ is the drag contribution to the momentum equation
+  - $\mathbf{K}_d$ is the drag coefficient tensor assembled by ``correctField``
+  - $\mathbf{U}$ is the fluid velocity field ``U_``
+
+  The diagonal structure of ``Kd`` is controlled by ``isotropic_`` and by the
+  presence of ``localX``, ``localY``, and/or ``localZ`` sub-dictionaries.
+admonitions:
+- kind: note
+  body: This model is selected solely by its runtime ``typeName`` and defines no additional options.
+dictionary: neutronicsProperties
+options: []
+usage:
+- comment: |
+    The following sub-dictionary should be included as a powerModel
+    in phaseProperties.
+
+    Example for isotropic:
+    \verbatim
+    physicsModels
+    {
+        dragModels
+        {
+            [nameOfCellZone]
+            {
+            type    ReynoldsPower;
+            coeff   1.84;
+            exp     -0.2;
+            }
+        }
+    }
+
+    \endverbatim
+
+    Example for anisotropic:
+    \verbatim
+    physicsModels
+    {
+        dragModels
+        {
+            [nameOfCellZone]
+            {
+                localX
+                {
+                    type    ReynoldsPower;
+                    coeff   1.84;
+                    exp     -0.2;
+                }
+                localY
+                {
+                    type    ReynoldsPower;
+                    coeff   1.84;
+                    exp     -0.2;
+                }
+                localZ
+                {
+                    type    ReynoldsPower;
+                    coeff   0.184;
+                    exp     -0.2;
+                }
+            }
+        }
+    }
+    \endverbatim
+- comment: |
+    The model is selected via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>``
+    subdictionary of the ``phaseProperties`` file (typically under ``constant/``,
+    or ``constant/<regionName>`` for multi-region cases). The drag coefficient
+    is provided by a runtime-selected ``FSDragCoefficientModel`` implementation
+    (e.g. ``ReynoldsPower``), either isotropically or per direction.
+
+    Example enabling an isotropic drag model:
+  snippet: |-
+    physicsModels
+    {
+      dragModels
+      {
+        <zoneName>
+        {
+          localX
+          {
+            type  ReynoldsPower;
+            coeff 1.84;
+            exp   -0.2;
+          }
+          localY
+          {
+            type  ReynoldsPower;
+            coeff 1.84;
+            exp   -0.2;
+          }
+          localZ
+          {
+            type  ReynoldsPower;
+            coeff 0.184;
+            exp   -0.2;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - dictionary
+  - usage
+  stub_improved: true

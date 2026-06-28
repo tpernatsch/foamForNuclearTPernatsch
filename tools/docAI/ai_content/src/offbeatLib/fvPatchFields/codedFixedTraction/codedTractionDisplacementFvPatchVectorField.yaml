@@ -1,0 +1,52 @@
+description: |
+  Fixed traction boundary condition for the standard linear elastic,
+  fixed-coefficient displacement equation.
+
+  This coded patch field computes and applies a traction vector on a
+  boundary by using the current displacement/gradient information and the
+  local linear-elastic material parameters.
+formulation: |
+  The boundary condition enforces a traction vector $\mathbf{t}$ consistent
+  with linear elasticity, using the local Lamé parameters and the stress
+  field name provided by the user.
+
+  In the implementation, the traction is updated from the on-the-fly coded
+  fixed-gradient boundary condition (via the inherited ``codedFixedGradientFvPatchVectorField``)
+  and then used to set the patch field coefficients.
+
+  The traction vector is stored as ``traction_`` and can be accessed through
+  ``traction()``.
+
+  - $\mathbf{t}$ is the surface traction vector on the patch (stored in
+    ``traction_``)
+  - $\mu$ is the shear modulus field on the patch (looked up as ``mu``)
+  - $\lambda$ is the first Lamé parameter field on the patch (looked up as ``lambda``)
+  - $\sigma$ is the stress tensor field used by name (looked up as ``stressName_``)
+admonitions: []
+dictionary: neutronicsProperties
+options:
+- key: relax
+  type: scalar
+  required: false
+  default: 1
+  description: |
+    Relaxation factor used when updating the patch coefficients/traction.
+- key: stressName
+  type: word
+  required: false
+  default: sigma
+  description: |
+    Name of the stress field to be looked up on the patch. The code looks
+    for a ``volSymmTensorField`` with this name.
+- key: value
+  type: vectorField
+  required: false
+  description: |
+    Optional initial/explicit patch value. If present, the patch field is
+    initialized from ``value``; otherwise it is initialized from the
+    internal field.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

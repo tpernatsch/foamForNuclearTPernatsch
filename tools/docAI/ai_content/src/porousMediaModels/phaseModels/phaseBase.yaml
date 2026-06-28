@@ -1,0 +1,28 @@
+description: |
+  Base class for phase-related models (e.g., fluid and structure phases) in foamForNuclear/GeN-Foam.
+
+  It provides a shared storage for the phase volume fraction field $\alpha$ (a `volScalarField`) and common phase metadata read from a user dictionary, including a small stabilization value used when $\alpha \to 0$.
+formulation: |
+  This class does not implement a standalone physical transport model; instead, it defines the common phase-fraction field and a stabilization parameter used by derived phase momentum/transport models.
+
+  The phase volume fraction field is represented in OpenFOAM as a dimensionless scalar field:
+  $$
+  \alpha(\mathbf{x},t) \in [0,1]
+  $$
+  and is stored as a `volScalarField` named `alpha` under the phase group `alpha/<phaseName>`.
+
+  Derived classes are expected to use the residual stabilization value to avoid numerical issues when $\alpha$ becomes very small (e.g., in phase momentum terms that involve division by $\alpha$).
+
+  - $\alpha$ is the phase volume fraction field (dimensionless), stored as `alpha` for the given phase name
+  - $\mathbf{x}$ is the spatial coordinate
+  - $t$ is time
+  - $\alpha_{\mathrm{res}}$ is the residual phase-fraction used for stabilization when $\alpha \to 0$ (dimensionless)
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

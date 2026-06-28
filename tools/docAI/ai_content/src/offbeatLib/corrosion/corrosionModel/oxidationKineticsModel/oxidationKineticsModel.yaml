@@ -1,0 +1,32 @@
+description: |
+  Base class for oxidation kinetics models. Provides a common interface for
+  updating the oxide layer thickness based on local thermal and flow
+  conditions.
+formulation: |
+  Oxidation kinetics models implement the evolution of the oxide layer
+  thickness $S$ (in m) as a function of time and local operating conditions.
+  Concrete derived classes supply the specific kinetic law (e.g. Arrhenius
+  temperature dependence and/or mass-transfer limitations).
+
+  The interface updates $S$ using the current oxide thickness $S$ and a
+  reference/initial thickness $S0$, together with local temperatures and a
+  transport/flow-related scalar $\phi$ over a time increment $\Delta t$.
+
+  $$ S \leftarrow f(S, S0, T_i, T_b, \phi, \Delta t) $$
+
+  where:
+
+  - $S$ is the oxide layer thickness field to be corrected (m)
+  - $S0$ is the reference/initial oxide thickness field (m)
+  - $T_i$ is the local inner temperature field (K)
+  - $T_b$ is the local boundary/outer temperature field (K)
+  - $\phi$ is a model-dependent transport/flow scalar (units depend on the
+    derived model)
+  - $\Delta t$ is the time step (s)
+admonitions: []
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

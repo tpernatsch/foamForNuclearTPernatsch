@@ -1,0 +1,39 @@
+description: |
+  Fixed heat flux boundary condition for a scalar field.
+
+  This patch field prescribes a heat flux $q$ (stored internally as ``heatFlux``)
+  and converts it into the corresponding normal temperature gradient using the
+  thermal conductivity field specified by ``kappa``.
+formulation: |
+  The boundary condition enforces a prescribed normal heat flux at the patch.
+  For a scalar temperature-like field $T$, the conductive heat flux is related
+  to the temperature gradient through the (possibly anisotropic) thermal
+  conductivity.
+
+  $$ \mathbf{q} = -\boldsymbol{\kappa}\,\nabla T $$
+
+  For a patch with outward unit normal $\mathbf{n}$, the prescribed heat flux
+  magnitude $q$ is applied as:
+
+  $$ q = -\mathbf{n}\cdot\boldsymbol{\kappa}\,\nabla T $$
+
+  The implementation sets the patch normal gradient as:
+
+  $$ \nabla T\cdot\mathbf{n} = -\frac{q}{\mathbf{n}\cdot\boldsymbol{\kappa}\,\mathbf{n}} $$
+
+  If ``kappa`` is provided as a scalar field, $\boldsymbol{\kappa}=\kappa$ and
+  the denominator reduces to $\kappa$.
+
+  - $q$ is the prescribed heat flux magnitude (set by the patch entry ``heatFlux``)
+  - $\mathbf{n}$ is the patch unit normal $\mathbf{n}=\mathbf{S_f}/|\mathbf{S_f}|$
+  - $\boldsymbol{\kappa}$ is the thermal conductivity field named by ``kappa``
+  - $T$ is the scalar field to which this patch condition is applied
+  - $\nabla T$ is the temperature gradient at the patch
+options: []
+admonitions: []
+dictionary: neutronicsProperties
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

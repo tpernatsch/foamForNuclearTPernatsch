@@ -1,0 +1,35 @@
+description: |
+  IOFieldFields is a runtime-selectable alias for an OpenFOAM `IOFieldField` holding
+  scalar values, i.e. it corresponds to the `scalarFieldField` type name.
+
+  In practice, this class provides the `typeName`/debug registration for the
+  `scalarIOFieldField` template instantiation and does not introduce additional
+  physical modeling or numerical options.
+admonitions:
+- kind: note
+  body: This model is selected solely by its runtime ``typeName`` and defines no additional options.
+options: []
+usage:
+- comment: |
+    The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``). Here is a snippet enabling the model:
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type IOFieldFields;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - admonitions
+  stub_improved: true

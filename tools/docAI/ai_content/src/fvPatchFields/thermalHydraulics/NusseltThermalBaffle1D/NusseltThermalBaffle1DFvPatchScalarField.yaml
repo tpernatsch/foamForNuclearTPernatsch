@@ -1,0 +1,81 @@
+description: |-
+  This BC models heat conduction through a thin 1-D baffle thermally coupling
+  two parts of a mesh modeled as porous media (for non-porous media, please see the standrard OpenFOAM 1D baffle BC). By 'thin' we mean that the thermal inertia of the
+  baffle is neglected and that baffle wall temperatures on both sides are
+  predicted via an instantaneous heat flux balance. The fluid-baffle heat
+  transfer coefficients for wall-fluid (and the other wall-fluid pair if
+  doing twoPhase simulations) are calculated starting from the Nusselt number
+  calculated in a form $Nu = C + a \times Re^{n} Pr^{m}$ with user
+  provided coefficients. The update for the fields on both sides of the
+  baffle is implicit, meaning that the owner patchField also sets the
+  valueFraction/refValue/refGradient of the nbrPatch. In two-phase scenarios,
+  the owner of the patchField associated with the first instantiation of a
+  fluid type object also sets the aforementioned fields for the owner
+  and nbr patchFields of the other fluid temperature. This is done to
+  preserve the implicitness of the method and to avoid useless extra
+  caculations.
+  This approach weakens encapsulation, but it is required here to maintain
+  a stable and fully implicit coupling across the baffle.
+options:
+- key: coeff
+  type: scalar
+  required: true
+  description: $a$ in $Nu = C + a \times Re^{n} Pr^{m}$, where $a$ is set by the ``coeff`` parameter.
+- key: const
+  type: scalar
+  required: true
+  description: $C$ in $Nu = C + a \times Re^{n} Pr^{m}$, where $C$ is set by the ``const`` parameter.
+- key: expPr
+  type: scalar
+  required: true
+  description: $m$ in $Nu = C + a \times Re^{n} Pr^{m}$, where $m$ is set by the ``expPr`` parameter.
+- key: expRe
+  type: scalar
+  required: true
+  description: $n$ in $Nu = C + a \times Re^{n} Pr^{m}$, where $n$ is set by the ``expRe`` parameter.
+- key: kappa
+  type: scalar
+  required: true
+  description: Baffle thermal conductivity ($k$), used to compute the wall heat transfer coefficient.
+- key: thickness
+  type: scalar
+  required: true
+  description: Baffle thickness ($\delta$), used to compute the wall heat transfer coefficient.
+usage:
+- comment: |-
+    The mapping
+    must be defined in constant/polyMesh/boundary for both regions using a
+    ``mappedPatch`` or ``mappedWall`` patch type.
+    Example of usage:
+  snippet: |-
+    <masterPatchName>
+    {
+        type            NusseltThermalBaffle1D;
+        value           $internalField;
+        samplePatch     <slavePatchName>;
+
+        thickness       0.005;  //- Required, baffle thickness
+        kappa           20;     //- Required, baffle thermal conductivity
+        const           4;      //- Required
+        coeff           0.018;  //- Required
+        expRe           0.8;    //- Required
+        expPr           0.8;    //- Required
+    }
+
+    <slavePatchName>
+    {
+        type            NusseltThermalBaffle1D;
+        value           $internalField;
+        samplePatch     <masterPatchName>;
+
+        const           4;      //- If not provided, defaults to master value
+        coeff           0.018;  //- If not provided, defaults to master value
+        expRe           0.8;    //- If not provided, defaults to master value
+        expPr           0.8;    //- If not provided, defaults to master value
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options

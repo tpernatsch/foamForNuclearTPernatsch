@@ -1,0 +1,67 @@
+description: |-
+  Calculates pressure drops between two patches of face sets
+
+  See also
+      Foam::functionObjects::fvMeshFunctionObject
+      Foam::functionObjects::writeFile
+options:
+- key: pressure
+  type: word
+  required: false
+  default: p_rgh
+  description: name of the pressure field
+- key: region1
+  type: word
+  required: true
+  default: null
+  description: name of patch or faceSet for first boundary
+- key: region1Type
+  type: word
+  required: true
+  default: null
+  description: patch or faceSet
+- key: region2
+  type: word
+  required: true
+  default: null
+  description: name of patch or faceSet for second boundary
+- key: region2Type
+  type: word
+  required: true
+  default: null
+  description: patch or faceSet
+usage:
+- comment: 'A functionObject is normally specified via the ``type`` entry in the ``functionObjects`` subdictionary of the
+    ``controlDict`` file (located in ``system/``. Here is a snippet enabling a functionObject:'
+  snippet: |
+    functions
+    {
+        <functionObject1>
+        {
+            type fieldDiffExtents;
+        }
+    }
+- comment: This is a detailed example of use of this specific function object.
+  snippet: |-
+    functions
+    {
+      yourPressureDropName
+      {
+          type           pressureDrop;
+          libs            ("libFFNFunctionObjects.so");
+          ...
+          writeToFile    yes;
+          log            yes;
+          region2Type    patch;
+          region2        inlet;
+          region1Type    faceSet;
+          region1        outlet;
+          pressure       p_rgh;
+      }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - dictionary

@@ -1,0 +1,134 @@
+description: |
+  The `Zircaloy` material model represents Zircaloy cladding.
+
+  The class selects thermophysical and mechanical property models as well as
+  behavioral models for swelling, phase transition, and failure. If not
+  specified in the material dictionary, default models are used.
+options:
+- key: densityModel
+  type: word
+  required: false
+  default: ZircaloyIaea
+  description: |
+    Selects the density correlation used by the `Zircaloy` material.
+- key: heatCapacityModel
+  type: word
+  required: false
+  default: ZircaloyIaea
+  description: |
+    Selects the heat capacity correlation used by the `Zircaloy` material.
+- key: conductivityModel
+  type: word
+  required: false
+  default: ZircaloyRelap
+  description: |
+    Selects the thermal conductivity correlation used by the `Zircaloy` material.
+- key: emissivityModel
+  type: word
+  required: false
+  default: ZircaloyConstant
+  description: |
+    Selects the emissivity correlation used by the `Zircaloy` material.
+- key: YoungModulusModel
+  type: word
+  required: false
+  default: ZircaloyMatpro
+  description: |
+    Selects the Young's modulus correlation used by the `Zircaloy` material.
+- key: PoissonRatioModel
+  type: word
+  required: false
+  default: ZircaloyConstant
+  description: |
+    Selects the Poisson's ratio correlation used by the `Zircaloy` material.
+- key: thermalExpansionModel
+  type: word
+  required: false
+  default: ZircaloyMatpro
+  description: |
+    Selects the thermal expansion correlation used by the `Zircaloy` material.
+- key: swellingModel
+  type: word
+  required: false
+  default: none
+  description: |
+    Selects the swelling (irradiation-induced strain) model used by the
+    `Zircaloy` material.
+- key: phaseTransitionModel
+  type: word
+  required: false
+  default: none
+  description: |
+    Selects the phase transition model used by the `Zircaloy` material.
+- key: failureModel
+  type: word
+  required: false
+  default: none
+  description: |
+    Selects the failure model used by the `Zircaloy` material.
+usage:
+- comment: |
+    Example of a `solverDict` materials entry using the `Zircaloy` material
+    model with its default sub-model selections.
+  snippet: |-
+    materials
+    {
+        cladding
+        {
+            material Zircaloy;
+
+            // Optional overrides (defaults shown)
+            densityModel            ZircaloyIaea;
+            heatCapacityModel       ZircaloyIaea;
+            conductivityModel       ZircaloyRelap;
+            emissivityModel         ZircaloyConstant;
+            YoungModulusModel       ZircaloyMatpro;
+            PoissonRatioModel       ZircaloyConstant;
+            thermalExpansionModel   ZircaloyMatpro;
+
+            swellingModel           ZircaloyBison;
+            phaseTransitionModel    ZircaloyDynamic;
+            failureModel            none;
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - usage
+  formulation_added: true
+formulation: |
+  The `Zircaloy` model is a composite material model: it does not solve new PDEs itself, but it provides temperature-dependent constitutive properties and irradiation/thermomechanical state updates through sub-models (swelling, phase transition, failure). The governing relations are therefore expressed as constitutive closures for the OpenFOAM fields (e.g., $T$, and derived properties such as $\rho(T)$, $c_p(T)$, $k(T)$, $\epsilon(T)$, $E(T)$, $\nu(T)$, and $\alpha(T)$) and as evolution laws for irradiation-induced strain/state variables handled by the selected sub-models (see Duderstadt & Hamilton; Todreas & Kazimi for irradiation/thermomechanics context, and the specific Matpro/Bison/IAEA correlations used by the sub-models).
+
+  Property scaling/offsets implemented by this class (applied to the selected sub-model outputs):
+  $$ \rho(T) = F_{\rho}\,\rho_{\text{base}}(T) + \Delta\rho, $$
+  $$ c_p(T) = F_{c_p}\,c_{p,\text{base}}(T) + \Delta c_p, $$
+  $$ k(T) = F_{k}\,k_{\text{base}}(T) + \Delta k, $$
+  $$ \epsilon(T) = F_{\epsilon}\,\epsilon_{\text{base}}(T) + \Delta\epsilon, $$
+  $$ E(T) = F_{E}\,E_{\text{base}}(T) + \Delta E, $$
+  $$ \nu(T) = F_{\nu}\,\nu_{\text{base}}(T) + \Delta\nu, $$
+  $$ \alpha(T) = \alpha_{\text{base}}(T) + \Delta\alpha \quad \text{with} \quad \Delta\alpha \equiv F_{\alpha T}\,\alpha_{\text{base}}(T)\ \text{(as configured)}. $$
+
+  Irradiation swelling and phase-transition/failure are delegated to the selected sub-models, which typically follow state evolution of the form:
+  $$ \frac{d\eta}{dt} = \mathcal{S}\!\left(T,\ \phi,\ t,\ \ldots\right), \qquad \eta \in \{\text{swelling strain},\ \text{transformation fraction},\ \text{damage}\}, $$
+  where the source term $\mathcal{S}$ is provided by the chosen `swellingModel`, `phaseTransitionModel`, and `failureModel` implementations (e.g., Bison/IAEA-inspired kinetics). The `correctBehavioralModels(T)` hook updates these state variables consistently with the current temperature field $T$.
+
+  - $T$ is the temperature field (OpenFOAM scalar field passed to `correctBehavioralModels`).
+  - $\rho(T)$ is the Zircaloy density used by the solver.
+  - $\rho_{\text{base}}(T)$ is the density from the selected `densityModel` correlation.
+  - $c_p(T)$ is the specific heat capacity.
+  - $c_{p,\text{base}}(T)$ is the specific heat from the selected `heatCapacityModel`.
+  - $k(T)$ is the thermal conductivity.
+  - $k_{\text{base}}(T)$ is the thermal conductivity from the selected `conductivityModel`.
+  - $\epsilon(T)$ is the emissivity.
+  - $\epsilon_{\text{base}}(T)$ is the emissivity from the selected `emissivityModel`.
+  - $E(T)$ is Young’s modulus.
+  - $E_{\text{base}}(T)$ is Young’s modulus from the selected `YoungModulusModel`.
+  - $\nu(T)$ is Poisson’s ratio.
+  - $\nu_{\text{base}}(T)$ is Poisson’s ratio from the selected `PoissonRatioModel`.
+  - $\alpha(T)$ is the thermal expansion coefficient (or the effective $\alpha\Delta T$ contribution as configured).
+  - $\alpha_{\text{base}}(T)$ is the thermal expansion from the selected `thermalExpansionModel`.
+  - $F_{\rho},F_{c_p},F_k,F_{\epsilon},F_E,F_{\nu},F_{\alpha T}$ are the dimensionless scaling parameters declared in this class.
+  - $\Delta\rho,\Delta c_p,\Delta k,\Delta\epsilon,\Delta E,\Delta\nu,\Delta\alpha$ are the offsets declared in this class.
+  - $\eta$ is a generic internal state variable (swelling strain, transformation fraction, or damage) updated by sub-models.
+  - $\phi$ is the neutron flux (used by irradiation-based sub-models; exact definition depends on the sub-model interface).

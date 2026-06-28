@@ -1,0 +1,53 @@
+description: |
+  Onset of Nucleate Boiling (ONB) temperature model.
+
+  Computes the wall temperature at which nucleate boiling is initiated,
+  based on the local bulk coolant temperature and pressure and on
+  single-phase heat-transfer information.
+
+  Supported ONB correlations:
+  - Basu: Basu (2002) physics-based ONB criterion
+  - BerglesRohsenow: Bergles and Rohsenow (1964) iterative empirical criterion
+formulation: |
+  The model returns an ONB wall temperature $T_\mathrm{ONB}$ such that
+  nucleate boiling is predicted to start when the wall superheat reaches
+  the correlation-dependent threshold.
+
+  Basu (2002) criterion:
+  $$ dT_\mathrm{ONB} =
+     \frac{2 h_\mathrm{SP} T_\mathrm{sat}\, \sigma_\mathrm{vap}}
+          {F_\phi^2\, \rho_\mathrm{vap}\, h_{fg}\, k_\mathrm{cool}}
+  $$
+  $$ dT_\mathrm{sub} = T_\mathrm{sat} - T_0 $$
+  $$ T_\mathrm{ONB} = T_0 + 0.25\left(\sqrt{dT_\mathrm{ONB}} +
+     \sqrt{dT_\mathrm{ONB}+4 dT_\mathrm{sub}}\right)^2 $$
+  where:
+  - $T_0$ is the bulk coolant temperature [K]
+  - $p$ is the local pressure [Pa]
+  - $T_\mathrm{sat}$ is the saturation temperature at pressure $p$ [K]
+  - $h_\mathrm{SP}$ is the local single-phase heat-transfer coefficient [W/(m$^2\cdot$K)]
+  - $k_\mathrm{cool}$ is the coolant thermal conductivity at film temperature [W/(m$\cdot$K)]
+  - $\sigma_\mathrm{vap}$ is the vapor surface tension at $p$ [N/m]
+  - $\rho_\mathrm{vap}$ is the vapor density at $p$ [kg/m$^3$]
+  - $h_{fg}$ is the latent heat of vaporization at $p$ [J/kg]
+  - $F_\phi$ is a subcooled-flow factor computed from a fixed contact-angle parameter
+    (implemented as $F_\phi = 1 - \exp(-\phi^3 - 0.5\phi)$ with $\phi=0.663$)
+
+  Bergles & Rohsenow (1964) criterion:
+  $$ f(T_\mathrm{ONB}) =
+     a\,( \Delta T_\mathrm{imp})^n\, \mathrm{unitConv}
+     - h_\mathrm{SP}(T_\mathrm{ONB}-T_0) = 0 $$
+  with:
+  - $\Delta T_\mathrm{imp} = 1.8\,(T_\mathrm{ONB}-T_\mathrm{sat})$ (with a small lower bound)
+  - $a = 15.6\,(p/\Psi_\mathrm{toPa})^{1.156}$
+  - $n = 2.3\,(p/\Psi_\mathrm{toPa})^{-0.0234}$
+  - $\Psi_\mathrm{toPa}$ is the US pressure-unit conversion constant (PsiToPa)
+  - $\mathrm{unitConv}$ is the US-to-SI conversion factor (BtuToJ/3600 divided by FeetToMeters$^2$)
+  The solver iterates up to 50 times using a Newton update (as implemented in
+  the source) and returns $T_\mathrm{ONB}$ when $|f|$ is below a relative tolerance.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

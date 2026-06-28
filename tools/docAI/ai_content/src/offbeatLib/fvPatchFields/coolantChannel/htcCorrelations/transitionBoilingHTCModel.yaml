@@ -1,0 +1,45 @@
+description: |
+  Transition boiling heat transfer correlation selector that computes an
+  effective transition-boiling heat transfer coefficient between CHF and
+  the Leidenfrost point.
+
+  Supported models:
+  - McDonoughMilichKing : McDonough–Milich–King (1961)
+  - None                : Falls back to the film boiling HTC (lower bound)
+formulation: |
+  The model computes a transition-boiling heat transfer coefficient $h_{TB}$
+  as a function of pressure, wall heat flux, and CHF-related quantities.
+  The returned value is always constrained to be no smaller than the film
+  boiling HTC $h_{FB}$.
+
+  For the McDonough–Milich–King correlation:
+  $$
+  h_{TB} =
+  \frac{q_{wall}}
+       {\left(\frac{q_{CHF}-q_{wall}}{4150\,\exp(3.97\times 10^6/p)}\right)
+        + (T_{CHF}-T_{sat})}
+  $$
+  where $T_{sat}=T_{sat}(p)$ is the saturation temperature.
+
+  For the None model:
+  $$
+  h_{TB} = h_{FB}
+  $$
+
+  Final output:
+  $$
+  h = \max(h_{TB},\,h_{FB})
+  $$
+
+  - $p$ is the pressure [Pa]
+  - $q_{wall}$ is the wall heat flux magnitude [W/m$^2$]
+  - $T_{CHF}$ is the CHF wall temperature [K]
+  - $q_{CHF}$ is the critical heat flux [W/m$^2$]
+  - $h_{FB}$ is the film boiling HTC [W/(m$^2\cdot$K)]
+  - $T_{sat}$ is the saturation temperature at pressure $p$ [K]
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

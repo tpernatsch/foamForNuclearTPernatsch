@@ -1,0 +1,27 @@
+description: |
+  Class for linear elasticity constitutive law.
+options: []
+usage:
+- comment: |
+    Example of the `solverDict` configuration to activate the
+    `elasticity` constitutive law.
+  snippet: "materials\n{\n  fuel\n  {\n    type UO2;\n    \n    // other material options/models\n    \n    constitutiveLaw\n\
+    \    {\n      type elasticity;\n    }\n  }\n\n  // other materials subdict\n}"
+formulation: |
+  Implements the linear Hooke-type constitutive relations in terms of the
+  bulk modulus $K$ and shear modulus $\mu$:
+  \f[
+    \sigma_\mathrm{hyd} = K \, \mathrm{tr}(\varepsilon), \qquad
+    \sigma_\mathrm{dev} = 2 \mu \, \mathrm{dev}(\varepsilon),
+  \f]
+  where $\varepsilon$ is the elastic strain tensor, $\mathrm{tr}(\cdot)$ is
+  the trace, and $\mathrm{dev}(\cdot)$ is the deviatoric part.
+  The bulk modulus is computed from the field ``threeK`` as
+  $K = \tfrac{1}{3}\,\texttt{threeK}$.
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - formulation
+  - dictionary

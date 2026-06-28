@@ -1,0 +1,56 @@
+description: |
+  Thermal conductivity correlation for 15-15Ti steel based on the formulation
+  by Tobbe.
+
+  The model provides a temperature-dependent thermal conductivity for
+  austenitic 15-15Ti steel.
+options:
+- key: par1
+  type: scalar
+  required: false
+  default: 13.95
+  description: |
+    Correlation constant term.
+- key: par2
+  type: scalar
+  required: false
+  default: 0.01163
+  description: |
+    Linear temperature coefficient of the correlation.
+usage:
+- comment: |
+    Example selection of the Tobbe conductivity correlation for 15-15Ti steel
+    in the `solverDict`.
+  snippet: "materials\n{\n    cladding\n    {\n        type Steel1515Ti;\n        \n        conductivity\n        {\n    \
+    \        type Steel1515TiTobbe;\n\n            // Optional overrides\n            // par1 13.95;\n            // par2\
+    \ 1.163e-2;\n        }\n    }\n}"
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - usage
+  formulation_added: true
+formulation: |
+  The model computes the effective thermal conductivity of 15-15Ti steel as a
+  temperature-dependent correlation of Tobbe (1975), implemented in the
+  `correct()` method by updating the OpenFOAM field `sf` from the local
+  temperature field `T`. The correlation is expressed as a linear function of
+  temperature with user-tunable coefficients `par1` and `par2`.
+
+  $$ k(T) = \texttt{par1} + \texttt{par2}\,T $$
+
+  where the conductivity is assumed to be homogeneous within each control
+  volume and depends only on the local temperature (no explicit dependence on
+  strain, porosity, or burnup is included in this class).
+
+  - $k(T)$ is the thermal conductivity (assigned to `sf`, units consistent with
+    the solver’s material model),
+  - $T$ is the temperature (the input scalar field `T`, i.e., `T[cell]`),
+  - $\texttt{par1}$ is the correlation constant term (default 13.95),
+  - $\texttt{par2}$ is the linear temperature coefficient (default $1.163\times10^{-2}$).
+
+  This is a standard engineering material-property closure used in reactor
+  thermal-hydraulics and conjugate heat transfer; see e.g. Duderstadt &
+  Hamilton and Todreas & Kazimi for the role of temperature-dependent
+  conductivity in energy conservation, while the specific Tobbe correlation is
+  given in Tobbe (1975).

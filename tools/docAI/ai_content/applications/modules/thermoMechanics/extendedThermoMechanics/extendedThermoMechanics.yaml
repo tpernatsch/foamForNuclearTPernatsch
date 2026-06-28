@@ -1,0 +1,55 @@
+description: |
+  Coupled multi-physics solver that advances the extended thermo-mechanics system by
+  orchestrating dedicated sub-solvers for neutronics, heat source, thermal response,
+  and mechanical stress/strain evolution.
+
+  The solver is implemented as an OpenFOAM runtime-selectable class named
+  ``extendedThermoMechanics`` and is intended to be driven by a case dictionary
+  that configures the coupled physics and iteration controls.
+formulation: |
+  This class is a coupling/orchestration layer that delegates the governing
+  physics to specialized sub-solvers (neutronics, heat source, thermal,
+  mechanics, burnup, fission gas release, gap gas, corrosion, and element
+  transport). As such, it does not implement a single monolithic set of
+  governing equations in this class.
+
+  The overall coupling strategy is performed in ``correctPhysics()``, which
+  iterates outer loops (controlled by ``nOuterIter_`` and ``maxOuterIter``)
+  and advances the coupled fields by calling the corresponding sub-solvers.
+
+  The specific PDEs/constitutive relations are defined in the respective
+  sub-model implementations:
+  - neutronics: neutron transport / flux solution and derived source terms
+  - heatSource: conversion of neutronics results into volumetric heat sources
+  - thermalSubSolver: energy equation and thermal material response
+  - mechanicsSubSolver: stress/strain evolution and thermo-mechanical coupling
+  - burnup, fissionGasRelease, gapGasModel, corrosion, elementTransport: fuel
+    performance and material property evolution.
+
+  Variables and controls handled directly here:
+  - $N_\mathrm{outer}$ is the number of outer iterations per time step
+    (tracked by ``nOuterIter_`` and limited by ``maxOuterIter`` from the
+    ``stressAnalysis`` sub-dictionary).
+admonitions: []
+dictionary: neutronicsProperties
+optionsLocations: []
+options:
+- key: <parameter>
+  type: word
+  required: true
+  default: null
+  description: <description>
+externalOptions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - dictionary
+  - optionsLocations
+  - externalOptions
+  - usage
+  stub_improved: true

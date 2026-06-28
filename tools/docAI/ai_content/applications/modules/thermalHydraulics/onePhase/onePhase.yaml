@@ -1,0 +1,74 @@
+description: |-
+  This class encapsulates a single fluid + 1 stationary structure (Eulerian solver).
+  The pressure field being solves for is *p_rgh* (pressure minus the gravitational head).
+  U (or U.(name of fluid)) are the real velocities, not the Darcy velocities. In a porous structure, they represent the actual velocity of the fluid, and not the velocity multiplied by the fluid fraction. For instance, U will increase when transiting from a high- to a low-porosity region.
+  Note that the solver makes use of the :doc:`customPimpleControl <../../../solutionControl/customPimpleControl/customPimpleControl>`, and is further with the options below.
+options:
+- key: momentumMode
+  type: word
+  required: false
+  default: null
+  description: 'Influences computation of pressure-equation momentum fluxes; affects all partialEliminationModes. Modes: cellCentered
+    (traditional, may cause oscillations with sharp porosity gradients); faceCentered       (recommended; face-based evaluation
+    with Euler-forward derivative, slightly more diffusive but reduces       oscillations depending on oscillationLimiterFraction);
+    cellCenteredFaceReconstruction (hybrid,       experimental, not recommended).'
+- key: solveEnergy
+  type: bool
+  required: true
+  default: null
+  description: Solve energy equation. Read from the ``PIMPLE`` sub-dictionary in ``fvSolution``.
+- key: solveFluidMechanics
+  type: bool
+  required: true
+  default: null
+  description: Solve for fluid mechanics (pressure and velocity). Read from the ``PIMPLE`` sub-dictionary in ``fvSolution``.
+- key: oscillationLimiterFraction
+  type: scalar
+  required: false
+  default: null
+  description: Weight controlling removal of velocity oscillations or smearing in main flow direction for face-momentum-based
+    algorithms; may induce perpendicular oscillations for large porosity or drag-tensor gradients; 0 gives traditional faceMomentum
+    reconstruction.
+- key: pMin
+  type: scalar
+  required: false
+  default: null
+  description: Lower limit for pressure
+- key: pRefCell
+  type: label
+  required: true
+  default: null
+  description: Index of the cell where pressure is fixed in closes domains. Required only for closed domains.
+- key: pRefValue
+  type: scalar
+  required: true
+  default: null
+  description: Pressure value at the pRefCell. Required only for closed domains.
+usage:
+- comment: |-
+    ``customPimpleControl`` is used internally by a PIMPLE-based solver in
+    the same way as ``pimpleControl``, with configuration provided via the
+    ``PIMPLE`` sub-dictionary in ``fvSolution``.      Here is a minimal example showing the additional options
+  snippet: |-
+    PIMPLE
+    {
+        nOuterCorrectors    6;
+        nCorrectors         12;
+        correctUntilConvergence true;
+        nNonOrthogonalCorrectors 0;
+        momentumMode        faceCentered;
+        oscillationLimiterFraction 0;
+        solveEnergy         true;
+        solveFluidMechanics true;
+        pMin                    10000;
+        pRefCell                780;
+        pRefValue               100000;
+    }
+dictionary: fvSolution
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options
+  - dictionary

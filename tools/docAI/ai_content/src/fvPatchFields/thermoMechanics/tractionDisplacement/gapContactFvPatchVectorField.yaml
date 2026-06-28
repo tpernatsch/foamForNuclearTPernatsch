@@ -1,0 +1,76 @@
+description: |
+  Fixed traction boundary condition for the standard linear elastic,
+  fixed-coefficient displacement equation, augmented with a gap-contact
+  traction model.
+
+  The patch traction is computed using a penalty formulation based on the
+  current gap width between coupled regions, and an interface pressure field
+  that can be optionally provided.
+formulation: |
+  The gap-contact traction is evaluated with a penalty method. The
+  interface pressure is computed from the penalty factor and the gap width,
+  while a minimum effective boundary stiffness is used to regularize the
+  traction evaluation.
+
+  $$ p_\mathrm{int} = \min\left( p_\mathrm{max},\; k_b \, \delta \right) $$
+
+  where the effective boundary stiffness $k_b$ is computed from the local
+  Lamé parameters and the patch delta coefficients.
+
+  $$ k_b = \min\left( 2(2\mu+\lambda)\,\Delta \right) $$
+
+  - $p_\mathrm{int}$ is the interface pressure applied as patch traction
+    (field ``interfaceP``)
+  - $k_b$ is the minimum patch stiffness used for interface pressure
+    evaluation (computed from ``mu``, ``lambda``, and ``patch.deltaCoeffs()``)
+  - $\mu$ is the shear modulus field ``mu`` on the coupled patch
+  - $\lambda$ is the first Lamé parameter field ``lambda`` on the coupled patch
+  - $\Delta$ is the patch delta coefficient ``patch.deltaCoeffs()``
+  - $\delta$ is the effective gap displacement/closure measure (gap width
+    computed internally and regularized by ``offset``)
+admonitions: []
+dictionary: neutronicsProperties
+options:
+- key: penaltyFactor
+  type: scalar
+  required: false
+  default: 1e-2
+  description: |
+    Penalty factor used in the gap-contact traction/interface pressure
+    evaluation. Only applied when the coupled patch is the owner side.
+- key: offset
+  type: scalar
+  required: false
+  default: 0.0
+  description: |
+    Offset added to the gap width/closure measure to regularize the contact
+    response.
+- key: interfaceP
+  type: scalar
+  required: false
+  description: |
+    Optional initial/interface pressure values. If present, it is read into
+    the patch field ``interfaceP`` as a scalar field of size equal to the
+    patch.
+usage:
+- comment: 'The boundary condition is specified via the ``type`` entry in the ``boundaryField/<patchName>`` subdictionary
+    of the ``<fieldName>`` file (located in ``<timeFolder>/``, or ``<timeFolder>/<regionName>/`` for multi-region cases, e.g.
+    ``0/neutroRegion``). Here is a snippet enabling the boundary condition:'
+  snippet: |-
+    boundaryField
+    {
+        <patch1>
+        {
+            type gapContact;
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - dictionary
+  - options
+  stub_improved: true

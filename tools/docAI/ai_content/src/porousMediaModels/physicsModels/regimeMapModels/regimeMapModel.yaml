@@ -1,0 +1,69 @@
+description: |-
+  Run-time selectable class to handle flow regime map models.
+
+  This class provides the common infrastructure for regime-map based flow
+  correlations: it stores the mapping between regime names and internal
+  labels, and it holds per-cell regime coefficients used by derived
+  implementations.
+
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./**
+formulation: |
+  This base class does not implement a specific physical correlation.
+  Derived regime-map models implement the `correct()` method to update
+  regime-dependent fields and to compute regime coefficients for each mesh
+  cell.
+
+  The data managed by this class can be summarized as:
+
+  $$ \text{regimeLabelCoeffs\_}(cell) = \{(r_i, a_i)\}_{i=1}^{N_{\text{regimes}}(cell)} $$
+
+  where:
+  - $cell$ is a mesh cell index
+  - $r_i$ is the internal integer label of regime $i$
+  - $a_i$ is the scalar coefficient associated with regime $i$
+  - $N_{\text{regimes}}(cell)$ is the number of regimes present in that cell
+admonitions:
+- kind: note
+  body: This model is selected solely by its runtime ``typeName`` and defines no additional options.
+options: []
+usage:
+- comment: |
+    Select the (no-op) regime map model in the `regimeMapModel` subdictionary
+    of `constant/<regionName>/fluidRegion/phaseProperties` (single-region
+    example).
+  snippet: |
+    regimeMapModel
+    {
+        type                none;
+    }
+- comment: |
+    Select the (no-op) regime map model in the `regimeMapModel` subdictionary
+    of `constant/<regionName>/fluidRegion/phaseProperties` (single-region
+    example).
+  snippet: |
+    regimeMapModel
+    {
+        type    none;
+    }
+- comment: |
+    Select the (no-op) regime map model in the `regimeMapModel` subdictionary
+    of `constant/<regionName>/fluidRegion/phaseProperties` (single-region
+    example).
+  snippet: |-
+    regimeMapModel
+    {
+        type            none;
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - usage
+  stub_improved: true

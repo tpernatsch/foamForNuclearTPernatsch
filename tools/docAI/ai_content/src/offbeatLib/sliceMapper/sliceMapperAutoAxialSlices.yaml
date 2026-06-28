@@ -1,0 +1,38 @@
+description: |
+  Slice mapper class where slices are automaticaly created for each material.
+formulation: |
+  First, the cell centers and IDs are saved in a HashTable according to their
+  axial location (i.e. the HashTable will have as many entries as there are
+  different axial locations in the material mesh).
+
+  Then the ID lists for each axial location in the HashTable are passed in
+  the sliceAddrList pointer list, making sure that the labelLists are passed in
+  ascending axial location order (from bottom to top).
+options:
+- key: precision
+  type: scalar
+  required: false
+  default: 1e-06
+  description: |
+    Precision used to group cell-center axial coordinates when building slices.
+    The axial coordinate is rounded to multiples of ``precision``.
+externalOptions:
+- key: pinDirection
+  path: solverDict.globalOptions
+  type: vector
+  required: false
+  description: |
+    Direction of the pin central axis used to compute the axial coordinate
+    $C_z = \mathbf{C}\cdot \mathbf{p}$, where $\mathbf{p}$ is set by ``pinDirection``.
+usage:
+- comment: |
+    Example of `solverDict` configuration for the `autoAxialSlices` slice mapper.
+  snippet: "sliceMapper     \n{\n  type autoAxialSlices;\n}"
+dictionary: solverDict
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - externalOptions
+  - dictionary

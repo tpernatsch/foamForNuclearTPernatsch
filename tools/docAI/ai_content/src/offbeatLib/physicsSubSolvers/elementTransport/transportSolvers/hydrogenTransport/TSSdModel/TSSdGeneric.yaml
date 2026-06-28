@@ -1,0 +1,39 @@
+description: |
+  Generic total stress saturation (TSSd) model with yield-stress-like dependence
+  on temperature through an Arrhenius-type exponential law.
+
+  The model updates the internal and boundary values of the OpenFOAM field
+  $TSSd$ based on the local temperature field $T$.
+formulation: |
+  The TSSd field is computed from an Arrhenius-type expression of the form
+  used for thermally activated processes (e.g., in creep/yield-stress
+  parametrizations consistent with standard rate-theory forms).
+
+  $$ TSSd(T) = TSSd_0 \exp\left(-\frac{Q_d}{R\,T}\right) $$
+
+  where:
+
+  - $TSSd(T)$ is the updated TSSd value at temperature $T$
+  - $TSSd_0$ is the pre-exponential factor (input parameter `TSSd0`)
+  - $Q_d$ is the activation energy (input parameter `Qd`)
+  - $R$ is the universal gas constant, taken as $8.31446$ J/mol/K in the code
+  - $T$ is the local temperature (OpenFOAM field `T`, in K)
+
+  Boundary values are computed consistently using the boundary temperature
+  field values and then the boundary conditions are corrected.
+options:
+- key: TSSd0
+  type: scalar
+  required: true
+  description: |
+    Pre-exponential factor $TSSd_0$ used in the Arrhenius expression for $TSSd$.
+- key: Qd
+  type: scalar
+  required: true
+  description: |
+    Activation energy $Q_d$ used in the Arrhenius expression for $TSSd$.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

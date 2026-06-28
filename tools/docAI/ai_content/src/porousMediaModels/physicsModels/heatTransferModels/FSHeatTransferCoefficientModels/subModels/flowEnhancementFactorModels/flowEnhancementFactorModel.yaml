@@ -1,0 +1,74 @@
+description: |
+  Abstract base class for flow enhancement factor models used in boiling heat
+  transfer correlations.
+
+  The class provides a common interface to compute a local, cell-wise
+  enhancement factor via the pure virtual function $f_{\mathrm{enh}}(i)$
+  (implemented by derived models). The enhancement factor is internally
+  constrained by a user-provided maximum value.
+formulation: |
+  This class defines the interface for the flow enhancement factor used in
+  boiling heat transfer models. Derived classes implement the specific
+  correlation for the enhancement factor as a function of the local flow and
+  thermodynamic state.
+
+  The enhancement factor returned by the derived implementation is limited by
+  a maximum value to ensure numerical stability:
+  $$
+  f_{\mathrm{enh}}(i) = \min\left(f_{\mathrm{enh,raw}}(i), f_{\max}\right)
+  $$
+  where:
+
+  - $f_{\mathrm{enh}}(i)$ is the flow enhancement factor in cell $i$ (dimensionless)
+  - $f_{\mathrm{enh,raw}}(i)$ is the raw enhancement factor computed by the
+    selected derived correlation (dimensionless)
+  - $f_{\max}$ is the maximum allowable enhancement factor (dimensionless)
+  - $i$ is the OpenFOAM cell index (label)
+admonitions:
+- kind: note
+  body: This model is selected solely by its runtime ``typeName`` and defines no additional options.
+options:
+- key: maxValue
+  type: scalar
+  required: false
+  default: 50
+  description: |
+    Maximum allowable value for the flow enhancement factor. The value
+    returned by derived models is constrained to not exceed this limit.
+usage:
+- comment: |
+    Select a flow enhancement factor model (example: RezkallahSims) in the
+    `flowEnhancementFactorModel` subdictionary of `phaseProperties`.
+  snippet: "\"heated\"\n        {\n            type    multiRegimeBoilingTRACECHF;\n            forcedConvectionModel\n  \
+    \          {\n            \ttype    NusseltReynoldsPrandtlPower;\n            \tconst   0.0;\n            \tcoeff   0.023;//0.023;\n\
+    \            \texpRe   0.8;\n            \texpPr   0.4;\n            }\n            poolBoilingModel\n            {\n\
+    \              type    Gorenflo;\n            }\n            flowEnhancementFactorModel\n            {\n             \
+    \ type    RezkallahSims;\n              exp     0.8;\n            }\n            suppressionFactorModel\n            {\n\
+    \              type    Chen;\n            }\n            nucleateBoilingOnsetModel\n            {\n              type\
+    \            Basu;\n              surfaceTension  8e-3;//8e-3;   //- In N/m\n              contactAngle    38;     //-\
+    \ In degrees\n            }\n// ...\n"
+- comment: |
+    Select the `RezkallahSims` flow enhancement factor model in `phaseProperties`.
+  snippet: |
+    flowEnhancementFactorModel
+                {
+                  type    RezkallahSims;
+                  exp     0.8;
+                }
+- comment: |
+    Example of selecting `flowEnhancementFactorModel` within a multi-region
+    boiling setup (zone name shown as a composite key).
+  snippet: "\"heatedcorner:heatedside:heatedcenter\"\n        {\n            type    multiRegimeBoilingTRACECHF;\n       \
+    \     forcedConvectionModel\n            {\n            \ttype    NusseltReynoldsPrandtlPower;\n            \tconst  \
+    \ 0.0;\n            \tcoeff   0.023;\n            \texpRe   0.8;\n            \texpPr   0.4;\n            }\n        \
+    \    poolBoilingModel\n            {\n              type    Gorenflo;\n            }\n            flowEnhancementFactorModel"
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - options
+  - usage
+  stub_improved: true

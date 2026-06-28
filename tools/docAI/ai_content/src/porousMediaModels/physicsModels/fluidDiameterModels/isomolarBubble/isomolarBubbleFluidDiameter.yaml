@@ -1,0 +1,52 @@
+description: |-
+  Implements an isomolar bubble diameter model. The diameter is scaled from an
+  initial reference value `d0` using the ratio of $(p_0\,T)/(p\,T_0)$ evaluated in
+  each cell, taking the cubic root. This produces a thermodynamic-based bubble
+  diameter for multiphase flows.
+options:
+- key: value
+  type: scalar
+  required: true
+  description: Reference bubble diameter $d_0$.
+- key: p0
+  type: scalar
+  required: true
+  description: Reference pressure $p_0$.
+- key: T0
+  type: scalar
+  required: true
+  description: Reference temperature $T_0$.
+usage:
+- comment: 'The isomolarBubble fluid diameter model is selected at run-time as: '
+  snippet: |-
+    fluid1 "liquid";
+    fluid2 "vapour";
+
+    liquidProperties
+    {
+        stateOfMatter   liquid;
+        dispersedDiameterModel
+        {
+            type    isomolarBubble;
+            T0      300;
+            p0      1e5;
+            value   1e-3;
+        }
+        thermoResidualAlpha 1e-6;
+    }
+formulation: |-
+  Assuming constant moles within the bubble/droplet and ideal-gas behavior,
+  the bubble diameter is scaled as
+  $$ d = d_0 \left(\frac{p_0\,T}{p\,T_0}\right)^{1/3}, $$
+  where $d_0$ is set by the ``value`` parameter, $p_0$ by ``p0``, and $T_0$ by
+  ``T0``. The local fields are $p$ and $T$ (pressure and temperature) evaluated
+  per cell.
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options
+  - formulation
+  - dictionary

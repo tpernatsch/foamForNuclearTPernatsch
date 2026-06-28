@@ -1,0 +1,61 @@
+description: |
+  Class modelling the Young's modulus of (U,Pu)O2 MOX fuel.
+options:
+- key: densityFraction
+  type: scalar
+  required: false
+  description: |
+    Fraction of theoretical density.
+    Optional override. If not provided here, the value is read from the
+    material base dictionary (preferred).
+- key: oxygenMetalRatio
+  type: scalar
+  required: false
+  description: |
+    Oxygen to metal ratio.
+    Optional override. If not provided here, the value is read from the
+    material base dictionary (preferred).
+- key: par1
+  type: scalar
+  required: false
+  default: 2.334e11
+  description: |
+    Matpro parameter $p_1$ (set by the ``par1`` entry, or by the legacy ``YoungModulus`` sub-dictionary).
+- key: par2
+  type: scalar
+  required: false
+  default: 2.752
+  description: |
+    Matpro parameter $p_2$ (set by the ``par2`` entry, or by the legacy ``YoungModulus`` sub-dictionary).
+- key: par3
+  type: scalar
+  required: false
+  default: 0.00010915
+  description: |
+    Matpro parameter $p_3$ (set by the ``par3`` entry, or by the legacy ``YoungModulus`` sub-dictionary).
+usage:
+- comment: "\tExample selection of the `UPuO2Matpro` thermalExpansion model.\n"
+  snippet: |-
+    materials
+    {
+      fuel
+      {
+        type UPuO2;
+        thermalExpansion
+        {
+          type UPuO2Matpro;
+          // densityFraction 0.945;
+          // oxygenMetalRatio 2.0;
+          // par1 2.334e11;
+          // par2 2.752;
+          // par3 1.0915e-4;
+        }
+      }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

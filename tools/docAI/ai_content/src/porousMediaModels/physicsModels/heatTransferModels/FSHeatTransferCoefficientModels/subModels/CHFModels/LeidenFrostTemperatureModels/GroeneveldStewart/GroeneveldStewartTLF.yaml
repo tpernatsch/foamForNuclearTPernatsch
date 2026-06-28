@@ -1,0 +1,27 @@
+description: |
+  Calculate the Leidenfrost Temperature at which the heat flux is minimal in the
+  hysteresis after the CHF using the Groeneveld–Stewart correlation (as used
+  in TRACE).
+
+  Note: the implementation is marked as incomplete in the source comments
+  (“it lack the term due to quality”).
+
+  The model is implemented in the class
+  [@Foam::LeidenFrostTemperatureModels::GroeneveldStewart].
+options:
+- key: criticalPressure
+  type: scalar
+  required: true
+  description: |
+    Critical pressure of the liquid (Pa). Used to ramp the correlation up to
+    the critical point when the local pressure exceeds the nominal validity
+    limit of the correlation.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options
+  - usage
+  stub_improved: true

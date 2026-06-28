@@ -1,0 +1,46 @@
+description: |
+  Coupled boundary condition that enforces continuity for the temperature field
+  between two regions with different material properties.
+
+  This boundary condition assumes that the same boundary condition is applied to a
+  pair of `regionCoupledOFFBEAT` patches, which are coupled using the AMI
+  (Arbitrary Mesh Interface) mapping algorithm.
+formulation: |
+  This patch field provides the coupling weights used by the underlying
+  `regionCoupledFvPatchScalarField` mechanism to enforce temperature continuity
+  across a coupled interface.
+
+  The coupling is based on a conductivity-like quantity (`kappa`) and an
+  effective distance (`deltas`) normal to the patch, so that the interface
+  weighting is proportional to a local conductance.
+
+  $$ \alpha = \frac{\kappa}{\delta} $$
+
+  where:
+
+  - $\alpha$ is the local weight (as a function of patch face)
+  - $\kappa$ is the conductivity field named by ``kappa`` (default: ``k``)
+  - $\delta$ is the effective patch distance (``deltas`` from the coupled patch geometry)
+
+  The neighbor-side values of $\kappa$ and $\delta$ are obtained by AMI
+  interpolation from the coupled patch, and the base class uses these weights
+  to assemble the coupled boundary condition.
+options:
+- key: kappa
+  type: word
+  required: false
+  default: k
+  description: |
+    Name of the conductivity field used to compute the coupling weights.
+    By default, it is set to ``k``, which is the field name for conductivity
+    used by the OFFBEAT material class.
+- key: value
+  type: scalar
+  required: false
+  description: |
+    Initial value of the patch temperature field.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

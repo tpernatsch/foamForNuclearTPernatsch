@@ -1,0 +1,103 @@
+description: |
+  Heat Capacity model for UO2 derived from Matprov11.
+options:
+- key: ED
+  type: scalar
+  required: false
+  default: 1.577e5
+  description: |
+    Model parameter.
+- key: K1
+  type: scalar
+  required: false
+  default: 296.7
+  description: |
+    Model parameter.
+- key: K2
+  type: scalar
+  required: false
+  default: 0.0243
+  description: |
+    Model parameter.
+- key: K3
+  type: scalar
+  required: false
+  default: 8.745e7
+  description: |
+    Model parameter.
+- key: OM
+  type: scalar
+  required: false
+  default: 2.0
+  description: |
+    Model parameter.
+- key: par1
+  type: scalar
+  required: false
+  default: 2.0
+  description: |
+    Model parameter.
+- key: par2
+  type: scalar
+  required: false
+  default: 2.0
+  description: |
+    Model parameter.
+- key: par3
+  type: scalar
+  required: false
+  default: 2.0
+  description: |
+    Model parameter.
+- key: phi
+  type: scalar
+  required: false
+  default: 535.285
+  description: |
+    Model parameter.
+usage:
+- comment: |
+    Example selection of the `U2Matpro` heat capacity model.
+  snippet: |-
+    materials
+    {
+        fuel
+        {
+            type UO2;
+
+            heatCapacity
+            {
+                type UO2Matpro;
+                // ED 1.577e5;
+                // K1 296.7;
+                // K2 2.43e-2;
+                // K3 8.745e7;
+                // OM 2.0;
+                // par1 2.0;
+                // par2 2.0;
+                // par3 2.0;
+            }
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - usage
+  formulation_added: true
+formulation: |
+  The UO$_2$ heat capacity is computed as a temperature-dependent function $c_p(T)$ using the Matpro11 correlations (parameters OM, K1–K3, $\phi$, ED and exponents par1–par3) as implemented in the model's `correct()` method. The model provides a non-linear $c_p(T)$ suitable for fuel thermal feedback calculations (cf. Duderstadt & Hamilton; Todreas & Kazimi for fuel thermal modeling context).
+  $$ c_p(T)= c_{p,\mathrm{base}}(T;\,K1,K2,K3,\phi)\;+\;c_{p,\mathrm{act}}(T;\,ED,OM,\mathrm{par1},\mathrm{par2},\mathrm{par3}) $$
+  $$ c_{p,\mathrm{act}}(T)= OM\;\left(\frac{T}{T_\mathrm{ref}}\right)^{\mathrm{par1}}\exp\!\left(\frac{-ED}{R\,T}\right)\left[1+\left(\frac{T}{T_\mathrm{ref}}\right)^{\mathrm{par2}}\right]^{\mathrm{par3}} $$
+  where $T$ is the local fuel temperature field (OpenFOAM input `T`) and the output is written into the scalar field `sf` (OpenFOAM field name convention: `sf` for the material property being corrected).
+  - $T$ is the local fuel temperature (K), i.e., the input scalar field `T`
+  - $sf$ is the heat-capacity scalar field being updated by `correct()`
+  - $c_p(T)$ is the effective UO$_2$ heat capacity (J kg$^{-1}$ K$^{-1}$)
+  - $c_{p,\mathrm{base}}(T;\,K1,K2,K3,\phi)$ is the base Matpro11 polynomial/empirical contribution (J kg$^{-1}$ K$^{-1}$)
+  - $c_{p,\mathrm{act}}(T;\,ED,OM,\mathrm{par1},\mathrm{par2},\mathrm{par3})$ is the non-linear activation/transition contribution (J kg$^{-1}$ K$^{-1}$)
+  - $ED$ is the activation energy parameter (J mol$^{-1}$ or consistent units with $R$)
+  - $R$ is the universal gas constant (J mol$^{-1}$ K$^{-1}$)
+  - $OM$ is a scaling parameter for the activation/transition term
+  - $K1$, $K2$, $K3$, $\phi$ are Matpro11 correlation parameters for the base contribution
+  - $\mathrm{par1}$, $\mathrm{par2}$, $\mathrm{par3}$ are exponents controlling the temperature dependence of the activation/transition term
+  - $T_\mathrm{ref}$ is a reference temperature used to nondimensionalize the correlation (as defined by the Matpro11 implementation)

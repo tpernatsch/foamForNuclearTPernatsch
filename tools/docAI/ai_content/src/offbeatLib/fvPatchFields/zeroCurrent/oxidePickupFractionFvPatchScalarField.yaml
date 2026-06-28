@@ -1,0 +1,103 @@
+description: |
+  Boundary condition for hydrogen transport that prescribes the hydrogen pick-up
+  fraction at the cladding surface due to waterside corrosion/oxide growth.
+
+  By default, this patch field applies a zero hydrogen current (no imposed
+  ingress flux). If ``HPickUp`` is enabled in the underlying hydrogen transport
+  model, an inward hydrogen flux is applied that is proportional to the oxide
+  thickness growth rate and scaled by the hydrogen pick-up fraction.
+
+  Optionally, a volumetric scaling can be enabled via ``volFactor`` to account
+  for the reduced effective cladding volume compared to the growing oxide
+  layer, using the inner/outer cladding radii.
+formulation: |
+  The boundary condition computes an inward hydrogen ingress flux from the
+  oxide thickness growth rate, and scales it by a user-specified hydrogen
+  pick-up fraction.
+
+  The oxide thickness growth rate is estimated from the time derivative of the
+  patch field ``oxideThickness`` using the patch field ``DOxideThickness``:
+
+  $$
+  g = \frac{d\delta_{\mathrm{ox}}}{dt} \approx \frac{D_{\mathrm{OxideThickness}}}{\Delta t}
+  $$
+
+  The hydrogen pick-up fraction ``pickupFraction`` sets the fraction of the
+  oxidized material that results in hydrogen ingress.
+
+  When ``volFactor`` is enabled, the ingress is further scaled using the
+  cladding inner and outer radii ($r_{\mathrm{in}}$, $r_{\mathrm{out}}$) to
+  account for the reduced effective volume available for hydrogen transport
+  compared to the oxide layer.
+
+  - $g$ is the oxide thickness growth rate (set by ``DOxideThickness`` and the
+    current time step $\Delta t$)
+  - $\Delta t$ is the simulation time step (from the OpenFOAM database)
+  - $r_{\mathrm{in}}$ is the cladding inner radius (from ``rinner``/``rInner``)
+  - $r_{\mathrm{out}}$ is the cladding outer radius (from ``router``/``rOuter``)
+  - ``pickupFraction`` is the hydrogen pick-up fraction (set by ``pickupFraction``)
+dictionary: neutronicsProperties
+options:
+- key: volFactor
+  type: bool
+  required: false
+  default: false
+  description: |
+    Enable volumetric scaling of the hydrogen ingress flux using the cladding
+    inner/outer radii.
+- key: rinner
+  type: scalar
+  required: false
+  description: |
+    Cladding inner radius in meters. Used only if ``volFactor`` is set to
+    true (tutorial spelling). In the implementation, the code may also accept
+    ``rInner`` depending on OpenFOAM variant.
+- key: router
+  type: scalar
+  required: false
+  description: |
+    Cladding outer radius in meters. Used only if ``volFactor`` is set to
+    true (tutorial spelling). In the implementation, the code may also accept
+    ``rOuter`` depending on OpenFOAM variant.
+- key: rInner
+  type: scalar
+  required: false
+  description: |
+    Cladding inner radius in meters (implementation spelling). Used only if
+    ``volFactor`` is set to true.
+- key: rOuter
+  type: scalar
+  required: false
+  description: |
+    Cladding outer radius in meters (implementation spelling). Used only if
+    ``volFactor`` is set to true.
+- key: pickupFraction
+  type: scalar
+  required: false
+  default: 0.15
+  description: |
+    Hydrogen pick-up fraction used to scale the inward hydrogen flux induced
+    by oxide growth. Default is 0.15.
+usage:
+- comment: |
+    Apply the oxide pick-up fraction boundary condition on the cladding outer
+    surface.
+  snippet: |-
+    boundaryField
+    {
+        ...
+        cladOuter
+        {
+            type oxidePickupFraction;
+
+            volFactor true;     // Optional. Default is false.
+            rinner 0.004565;    // Required if volFactor is set to true. Clad inner radius (m)
+            router 0.005125;    // Required if volFactor is set to true. Clad outer radius (m)
+
+            pickupFraction 0.15;// Optional. Default is 0.15. Hydrogen pick up fraction.
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,79 @@
+description: |
+  Class modelling Young Modulus of Bufffer from Parfume.
+options:
+- key: densityName
+  type: word
+  required: false
+  default: rho
+  description: |
+    Name of the density field to be looked up from the mesh.
+- key: fastFluenceName
+  type: word
+  required: false
+  default: fastFluence
+  description: |
+    Name of the fast fluence field to be looked up from the mesh.
+- key: par1
+  type: scalar
+  required: false
+  default: 25.5
+  description: |
+    Parfume model parameter $p_1$.
+- key: par2
+  type: scalar
+  required: false
+  default: 0.384
+  description: |
+    Parfume model parameter $p_2$.
+- key: par3
+  type: scalar
+  required: false
+  default: 0.000324
+  description: |
+    Parfume model parameter $p_3$.
+- key: par4
+  type: scalar
+  required: false
+  default: 0.23
+  description: |
+    Parfume model parameter $p_4$.
+- key: par5
+  type: scalar
+  required: false
+  default: 0.00015
+  description: |
+    Parfume model parameter $p_5$.
+- key: par6
+  type: scalar
+  required: false
+  default: 20.0
+  description: |
+    Parfume model parameter $p_6$.
+usage:
+- comment: |
+    Example selection of the `BufferParfume` thermalExpansion model.
+  snippet: |-
+    materials
+    {
+      Buffer
+      {
+        type Buffer;
+        thermalExpansion
+        {
+          type BufferParfume;
+          // densityName "rho";
+          // fastFluenceName "fastFluence";
+          // par1 25.5;
+          // par2 0.384;
+          // par3 0.324e-3;
+          // par4 0.23;
+          // par5 1.5e-4;
+          // par6 20.0;
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options

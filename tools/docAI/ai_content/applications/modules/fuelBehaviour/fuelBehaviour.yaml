@@ -1,0 +1,26 @@
+description: |
+  Fuel behavior sub-solver.
+
+  This class acts as a top-level orchestrator for the coupled fuel physics
+  sub-models (materials, heat source, burnup, neutronics feedback, fission gas
+  release, gap gas, thermal and mechanical sub-solvers, corrosion, and element
+  transport). It advances the coupled fuel state and provides utility
+  functions such as the maximum outer cladding temperature extraction.
+admonitions: []
+dictionary: neutronicsProperties
+options:
+- key: <parameter>
+  type: word
+  required: true
+  default: null
+  description: <description>
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - admonitions
+  - dictionary
+  - usage
+  stub_improved: true

@@ -1,0 +1,31 @@
+description: |
+  Abstract base class for yield-stress (TSSp) rheology models.
+
+  This class provides the common storage for the cell-wise yield stress field
+  $TSSp$ and the run-time selection mechanism for concrete implementations
+  (e.g. models based on von Mises rheology).
+formulation: |
+  The class defines a generic yield-stress field $TSSp$ (OpenFOAM: `TSSp_`)
+  over the computational mesh. Concrete derived classes must implement the
+  model-specific update of $TSSp$ through the pure virtual function
+  `correctTSSp(addr)`.
+
+  $$ TSSp = TSSp(\mathbf{x}, t) $$
+
+  where:
+  - $TSSp$ is the local yield stress field (OpenFOAM: `TSSp_`)
+  - $\mathbf{x}$ is the spatial coordinate in the mesh
+  - $t$ is time
+
+  The specific constitutive law (e.g. von Mises-based rheology) is not
+  contained in this base class; it is implemented in derived classes selected
+  at run time.
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

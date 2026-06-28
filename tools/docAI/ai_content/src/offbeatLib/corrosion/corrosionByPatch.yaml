@@ -1,0 +1,96 @@
+description: |
+  Corrosion model that applies a dedicated corrosion sub-model to each patch
+  listed in the ``corrosionOptions`` dictionary, and updates the mesh
+  topology/layering accordingly.
+
+  For every patch entry, a ``polyTopoChanger`` based on
+  ``layerAdditionRemovalPolyTopoChanger`` is created to add/remove a cell
+  layer when required. At each correction step, the patch corrosion models
+  are updated, the patch face points are moved according to the accumulated
+  metal thickness change, and (on the first outer iteration of the current
+  time step) the topology is updated by adding/removing a cell layer.
+formulation: |
+  This class orchestrates per-patch corrosion sub-models and couples them to
+  a mesh layer addition/removal mechanism.
+
+  Let $i$ index a patch listed in ``corrosionOptions.patches``. Each patch
+  has its own corrosion sub-model that provides the local metal thickness
+  change $\Delta \delta_i$ over the current correction interval.
+
+  The mesh is then updated by moving the patch face points to reflect the
+  thickness change and, when the topology update criterion is met, by
+  adding/removing a cell layer using ``layerAdditionRemovalPolyTopoChanger``.
+
+  $$ \Delta \delta_i = \Delta \delta_i(t,\Delta t) $$
+
+  $$ \mathbf{x}_{f,i}^{\,new} = \mathbf{x}_{f,i}^{\,old} + \Delta \delta_i \, \mathbf{n}_{f,i} $$
+
+  where:
+
+  - $\Delta \delta_i$ is the metal thickness change for patch $i$ as
+    computed by the selected ``corrosionModel`` sub-model
+  - $\mathbf{x}_{f,i}$ is the position of patch face points on patch $i$
+  - $\mathbf{n}_{f,i}$ is the local outward face normal direction used to
+    displace the face points
+  - $t$ is the current simulation time
+  - $\Delta t$ is the time step size
+
+  The actual kinetics/transport laws for $\Delta \delta_i$ are implemented
+  inside the selected patch-level ``corrosionModel`` implementations.
+dictionary: corrosionOptions
+optionsLocations:
+- name: patches
+  in: corrosionOptions
+options:
+- key: updateMesh
+  type: bool
+  required: false
+  default: true
+  description: |
+    Switch controlling whether the mesh topology is updated (cell layer
+    addition/removal) as corrosion progresses.
+- key: patches
+  type: table
+  required: true
+  description: |
+    Sub-dictionary containing one entry per patch name. Each entry selects
+    a patch-level ``corrosionModel`` and provides its required parameters.
+- key: corrosionModel
+  type: word
+  required: true
+  description: |
+    Name of the corrosion sub-model type to instantiate for the given patch
+    (e.g. ``zircaloyOuterCorrosion``).
+- key: oxidationKineticsModel
+  type: word
+  required: false
+  description: |
+    Oxidation kinetics model selector for the chosen corrosion sub-model.
+    The exact meaning and required parameters depend on the selected
+    ``corrosionModel``.
+usage:
+- comment: |
+    Select the ``byPatch`` corrosion model in ``solverDict`` and provide a
+    ``corrosionOptions`` dictionary with per-patch corrosion sub-models.
+  snippet: |-
+    corrosion byPatch;
+
+    corrosionOptions
+    {
+        // The updateMesh switch is set to true by default
+        updateMesh     true;
+
+        // The subdictionary must contain at least one patch
+        patches
+        {
+            cladOuter
+            {
+                corrosionModel          zircaloyOuterCorrosion;
+                oxidationKineticsModel  EPRI-KWU-CE|Cathcart-Pawel;
+            }
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -20,8 +20,6 @@ been implemented that allows to correct the turbulent intensity using a term
 that is proportional to the fraction of the other phase (see
 :ref:`porousKEpsilon2PhaseCorrected <porousKEpsilon2PhaseCorrected>`).
 
-toctreeHere
-
 
 .. raw:: html
 

@@ -1,0 +1,135 @@
+description: |
+  The `UO2Matpro` conductivity model implements a UO$_2$ thermal conductivity
+  correlation inspired by MATPRO v11.
+
+  The model depends on the local temperature and burnup field. It also accounts
+  for porosity effects using the `densityFraction` read from the base material
+  dictionary (and may additionally correct for porosity evolution if a `porosity`
+  field is present), as well as for the presence of Gadolinium.
+options:
+- key: burnupName
+  type: word
+  required: false
+  default: Bu
+  description: |
+    Name of the burnup field looked up in the mesh.
+- key: GdContent
+  type: scalar
+  required: false
+  description: |
+    Initial gadolinium content used by the correlation.
+    Optional override. If not provided here, the value is read from the
+    material base dictionary (preferred).
+- key: densityFraction
+  type: scalar
+  required: false
+  description: |
+    Fraction of theoretical density.
+    Optional override. If not provided here, the value is read from the
+    material base dictionary (preferred).
+- key: par1
+  type: scalar
+  required: false
+  default: 0.0452
+  description: |
+    Optional correlation parameter override (retro-compatibility).
+- key: par2
+  type: scalar
+  required: false
+  default: 0.000246
+  description: |
+    Optional correlation parameter override (retro-compatibility).
+- key: par3
+  type: scalar
+  required: false
+  default: 0.00187
+  description: |
+    Optional correlation parameter override (retro-compatibility).
+- key: par4
+  type: scalar
+  required: false
+  default: 1.1599
+  description: |
+    Optional correlation parameter override (retro-compatibility).
+- key: par5
+  type: scalar
+  required: false
+  default: 0.9
+  description: |
+    Optional correlation parameter override (retro-compatibility).
+- key: par6
+  type: scalar
+  required: false
+  default: 0.04
+  description: |
+    Optional correlation parameter override (retro-compatibility).
+- key: par7
+  type: scalar
+  required: false
+  default: 0.038
+  description: |
+    Optional correlation parameter override (retro-compatibility).
+- key: par8
+  type: scalar
+  required: false
+  default: 0.28
+  description: |
+    Optional correlation parameter override (retro-compatibility).
+- key: par9
+  type: scalar
+  required: false
+  default: 396.0
+  description: |
+    Optional correlation parameter override (retro-compatibility).
+- key: par10
+  type: scalar
+  required: false
+  default: 6380.0
+  description: |
+    Optional correlation parameter override (retro-compatibility).
+- key: par11
+  type: scalar
+  required: false
+  default: 3.5e9
+  description: |
+    Optional correlation parameter override (retro-compatibility).
+- key: par12
+  type: scalar
+  required: false
+  default: 2.0
+  description: |
+    Optional correlation parameter override (retro-compatibility).
+- key: par13
+  type: scalar
+  required: false
+  default: 16360.0
+  description: |
+    Optional correlation parameter override (retro-compatibility).
+usage:
+- comment: |
+    Typical selection in a fuel material dictionary in the `solverDict`.
+  snippet: "materials\n{\n    fuel\n    {\n        material UO2;\n\n        // Typically required by the model (read from\
+    \ base dictionary)\n        densityFraction 0.95;\n        GdContent  0.0;\n\n        conductivity\n        {\n      \
+    \      type UO2Matpro;\n\n            // Optional\n            burnupName Bu;\n            \n            // Optional override\
+    \ of base values\n            densityFraction 0.95;\n            GdContent  0.0;\n        }\n    }\n}\n"
+- comment: |
+    Legacy selection (deprecated).
+  snippet: |-
+    materials
+    {
+        fuel
+        {
+            material UO2;
+
+            densityFraction 0.95;
+
+            conductivityModel UO2Matpro;
+        }
+    }
+dictionary: conductivityMatproUO2
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

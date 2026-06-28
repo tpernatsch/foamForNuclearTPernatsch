@@ -1,0 +1,65 @@
+description: |
+  Class handling irradiation-induced dimensional change eigenstrain phenomenon
+  for PyC with the correlation below for both radial and tangential directions.
+options:
+- key: fastFluenceName
+  type: word
+  required: false
+  default: fastFluence
+  description: |
+    Name of the fast neutron fluence field to be used by the swelling correlation.
+- key: sphereCoordinate
+  type: bool
+  required: false
+  default: true
+  description: |
+    If true, apply the eigenstrain directly in spherical coordinates (radial and tangential components).
+    If false, compute the spherical-coordinate eigenstrain and convert it to the mesh coordinate system.
+- key: fluxConversionFactor
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Flux conversion factor applied to the input fast fluence.
+- key: radialCoefficients
+  type: list[scalar]
+  required: true
+  description: |
+    Radial polynomial coefficients $A_r$ used to compute the radial swelling strain as a function of the (converted) fast fluence.
+    The code uses 6 coefficients: $\\epsilon_r = A_r[0] \\phi + \\frac{A_r[1]}{2} \\phi^2 + \\frac{A_r[2]}{3} \\phi^3 + \\frac{A_r[3]}{4} \\phi^4 + \\frac{A_r[4]}{5} \\phi^5 + \\frac{A_r[5]}{6} \\phi^6$,
+    where $\\phi$ is the converted fast fluence.
+- key: tangentialCoefficients
+  type: list[scalar]
+  required: true
+  description: |
+    Tangential polynomial coefficients $A_t$ used to compute the tangential swelling strain as a function of the (converted) fast fluence.
+    The code uses 6 coefficients: $\\epsilon_t = A_t[0] \\phi + \\frac{A_t[1]}{2} \\phi^2 + \\frac{A_t[2]}{3} \\phi^3 + \\frac{A_t[3]}{4} \\phi^4 + \\frac{A_t[4]}{5} \\phi^5 + \\frac{A_t[5]}{6} \\phi^6$,
+    where $\\phi$ is the converted fast fluence.
+usage:
+- comment: |
+    Example selection of `PyCCorrelation`.
+  snippet: |-
+    materials
+    {
+        PyC
+        {
+            type PyC;
+
+            swelling
+            {
+                type PyCCorrelation;
+                // fastFluenceName fastFluence;
+                // sphereCoordinate true;
+                // fluxConversionFactor 1.0;
+                radialCoefficients <required>;
+                tangentialCoefficients <required>;
+            }
+        }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

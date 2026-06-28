@@ -1,0 +1,56 @@
+description: |
+  Azimuthal temperature profile boundary condition for OpenFOAM patch scalar
+  fields.
+
+  This boundary condition imposes a fixed-temperature value that varies with
+  the azimuthal angle $\theta$ (in degrees) according to tabulated data, and
+  remains constant in time.
+formulation: |
+  The patch scalar value is prescribed as a function of the azimuthal angle
+  $\theta$ using a 1D interpolation of tabulated profile data.
+
+  $$ T(\theta) = f(\theta) $$
+
+  where:
+
+  - $T(\theta)$ is the imposed patch scalar value (e.g. temperature) at a
+    patch face
+  - $\theta$ is the azimuthal location of the patch face, in degrees
+  - $f(\theta)$ is obtained by interpolating the tabulated data provided in
+    ``azimuthalProfileDict``
+
+  The interpolation uses the interpolation method selected by
+  ``azimuthalInterpolationMethod`` and is evaluated via an
+  ``InterpolateTables``-based table constructed from the input
+  ``azimuthalLocations`` and ``data``.
+options:
+- key: azimuthalLocations
+  type: list[scalar]
+  location: azimuthalProfileDict
+  required: true
+  description: |
+    Tabulated azimuthal locations, in degrees, used as the independent
+    variable for the interpolation.
+- key: data
+  type: list[scalar]
+  location: azimuthalProfileDict
+  required: true
+  description: |
+    Tabulated profile values corresponding to ``azimuthalLocations``.
+    The imposed patch scalar is obtained by interpolating these values.
+- key: azimuthalInterpolationMethod
+  type: word
+  location: azimuthalProfileDict
+  required: false
+  default: linear
+  description: |
+    Interpolation method name used to interpolate the tabulated profile
+    data. If not specified, ``linear`` is used.
+optionsLocations:
+- name: azimuthalProfileDict
+  in: neutronicsProperties
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,52 @@
+description: |
+  Hydrogen transport solver for solid solution diffusion in the cladding and
+  for hydrogen precipitation/dissolution into solid hydrides.
+
+  The model evolves three hydrogen-related fields:
+  - ``Css``: hydrogen concentration in solid solution (wt.ppm)
+  - ``Cpp``: hydrogen concentration in precipitates (wt.ppm)
+  - ``Ctot``: total hydrogen concentration (wt.ppm)
+
+  The solver enforces hydrogen phase behavior in zirconium alloys using a
+  supersolubility limit and a solubility limit, leading to three regimes:
+  precipitation, dissolution, or phase equilibrium. Precipitation kinetics can
+  be enabled/disabled to support diffusion-driven studies where kinetic effects
+  are negligible.
+formulation: |
+  The solver updates diffusion and phase-change source terms for hydrogen
+  between solid solution and hydride precipitates, based on temperature-
+  and concentration-dependent solubility limits.
+
+  The precipitation kinetics are optionally included through a kinetic
+  parameter (Kammenzind et al. approach), otherwise the precipitation/dissolution
+  rate is treated as diffusion-driven (kinetics neglected).
+
+  $$ \frac{\partial C}{\partial t} = \nabla \cdot \left(D \nabla C\right) + R(C,T) $$
+  where $C$ is the hydrogen concentration in the relevant phase and $R(C,T)$
+  is the precipitation/dissolution rate term.
+
+  - $C$ is the hydrogen concentration field (``Css`` or ``Cpp``), in wt.ppm
+  - $D$ is the hydrogen diffusion coefficient updated by ``updateCoefficients()``
+  - $R(C,T)$ is the precipitation/dissolution rate updated by ``updateRateTerms()``
+  - $T$ is the local temperature field used to determine solubility limits
+  - the kinetic contribution is controlled by ``kineticParameter`` (set in ``HSolverOptions``)
+
+  The precipitation/dissolution regime (precipitation, dissolution, or phase
+  equilibrium) is determined by comparing the local state against the
+  supersolubility and solubility limits for hydrogen in zirconium alloy.
+dictionary: neutronicsProperties
+optionsLocations: []
+options:
+- key: kineticParameter
+  type: scalar
+  required: false
+  default: 0
+  description: |
+    Kinetic parameter controlling the precipitation kinetics (Kammenzind et al.
+    formulation). Set to 0 to effectively switch off precipitation kinetics for
+    diffusion-driven problems.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

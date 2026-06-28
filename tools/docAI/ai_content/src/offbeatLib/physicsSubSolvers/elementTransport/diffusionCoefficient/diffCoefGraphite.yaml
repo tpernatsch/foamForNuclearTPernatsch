@@ -1,0 +1,34 @@
+description: |
+  Diffusion coefficient model for PyC (pyrolytic carbon) material in graphite,
+  based on correlations reported in the Parfume manual and an INL report.
+
+  The model provides temperature-dependent diffusion coefficients for
+  multiple nuclide species through the methods:
+  `updateCsCoef`, `updateKrCoef`, `updateAgCoef`, and `updateSrCoef`.
+formulation: |
+  The diffusion coefficient is computed locally as a function of the
+  temperature field $T$ (OpenFOAM field name: `T`) and assigned to the target
+  diffusion coefficient field $sf$ (species-dependent).
+
+  For Cs, the model uses an Arrhenius-type correlation:
+  $$
+  D_{Cs}(T) = 3.6\times 10^{-3}\,\exp\left(-\frac{189\times 10^{3}}{R\,T}\right)
+  $$
+  where $R = 8.31446$ J/mol/K.
+
+  For Kr, Ag, and Sr, the implementation uses constant values (independent
+  of $T$) for the requested species.
+
+  - $D_{Cs}(T)$ is the Cs diffusion coefficient (assigned to `sf`)
+  - $T$ is the local temperature in K (from the `T` volScalarField)
+  - $R$ is the universal gas constant, 8.31446 J/mol/K
+  - $sf$ is the diffusion coefficient field being updated
+  - $addr$ is the list of cell indices to update
+  - Boundary values are also updated consistently on patches that are
+    associated with the cells in `addr`
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

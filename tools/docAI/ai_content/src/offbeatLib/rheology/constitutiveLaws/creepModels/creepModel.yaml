@@ -1,0 +1,34 @@
+description: |
+  Creep model mother (base) class.
+
+  This class provides the common interface and storage for creep strain
+  fields and their increments, and supports run-time selection of a specific
+  creep law implementation via a dictionary.
+formulation: |
+  The base class defines the data structures and the update interface for
+  creep. The specific constitutive law (e.g. Norton-Bailey, time-dependent
+  viscoplasticity, irradiation-assisted creep, etc.) is implemented in derived
+  classes overriding ``correctCreep`` and, when needed, ``correctAxialStrain``.
+
+  The fields managed by this base class are:
+  - $\boldsymbol{\varepsilon}^c$ is the creep strain tensor field stored as
+    ``epsilonCreep_``
+  - $\Delta\boldsymbol{\varepsilon}^c$ is the creep strain increment stored as
+    ``DepsilonCreep_``
+  - $\varepsilon^c_{eq}$ is the equivalent creep strain stored as
+    ``epsilonCreepEq_``
+  - $\Delta\varepsilon^c_{eq}$ is the equivalent creep strain increment stored as
+    ``DepsilonCreepEq_``
+
+  Derived classes are responsible for computing these quantities consistently
+  with the selected creep law and the provided mesh and dictionary settings.
+admonitions: []
+dictionary: neutronicsProperties
+options: []
+optionsLocations: []
+externalOptions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

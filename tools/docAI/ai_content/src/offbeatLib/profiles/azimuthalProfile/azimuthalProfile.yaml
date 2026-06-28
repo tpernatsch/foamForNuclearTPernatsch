@@ -1,0 +1,34 @@
+description: |
+  Base class for a general azimuthal profile. The base implementation
+  represents a uniform, “flat” profile in the azimuthal direction.
+
+  The class is constructed with a mesh and an addressing list, and it maps
+  the profile onto the addressed locations. The addressed azimuthal
+  locations can be queried via ``azimuthalLocations()``.
+formulation: |
+  The azimuthal profile provides a dimensionless weighting function
+  $p(\theta)$ over the addressed azimuthal locations, normalized such that
+  the volume-weighted integral over the addressed region equals 1.
+
+  $$ \int_{\Omega} p(\theta)\, dV = 1 $$
+
+  where:
+
+  - $p(\theta)$ is the dimensionless azimuthal weighting stored in
+    ``profile_`` (set by the selected run-time profile type, default ``flat``)
+  - $\Omega$ is the addressed control-volume region corresponding to
+    ``addr_``
+  - $dV$ is the local cell/control-volume volume from ``referenceMesh`` (if
+    present) or ``mesh_``
+
+  The method ``checkNormalization()`` verifies that the profile is normalized
+  with respect to the volume of the addressed region.
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

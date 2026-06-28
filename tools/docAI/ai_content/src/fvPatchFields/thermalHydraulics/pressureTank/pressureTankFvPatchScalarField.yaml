@@ -1,0 +1,36 @@
+description: |
+  Fixed-value scalar boundary condition implementing a pressure “tank” on a
+  patch.
+
+  The boundary condition updates the tank level (and thus the effective
+  pressure) using the mass balance over the patch, based on the local
+  density field ``thermo:rho`` and the patch mass flux derived from the
+  ``alphaRhoPhi`` surface flux field. It also accounts for gravity via the
+  ``ghf`` field.
+formulation: |
+  The tank level is updated from the mass balance over the patch area.
+  The density is taken from the patch field ``thermo:rho`` and the mass
+  increment is computed from the patch-integrated mass flux.
+
+  $$ M^{n+1} = M^n + \Delta t \int_{A_p} \phi_p \, dA $$
+  $$ \ell^{n+1} = \frac{M^{n+1}}{\bar{\rho}\,A} $$
+  $$ p^{n+1} = p_0 + \rho\,g\,\ell \;+\; \text{(gravity-head contribution from ``ghf``)} $$
+
+  where:
+
+  - $M$ is the tank mass stored in the patch control volume
+  - $\Delta t$ is the time step size
+  - $\phi_p$ is the patch mass-flux integrand obtained from the ``alphaRhoPhi`` field
+  - $\ell$ is the tank level (stored as ``level_``)
+  - $\bar{\rho}$ is the patch-averaged density from ``thermo:rho``
+  - $A$ is the tank cross-sectional area (stored as ``area_``)
+  - $p_0$ is the reference pressure (stored as ``p0_``)
+  - $g$ is the gravitational acceleration from the ``g`` field
+  - the gravity-head contribution is taken from the ``ghf`` field evaluated on the patch
+admonitions: []
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

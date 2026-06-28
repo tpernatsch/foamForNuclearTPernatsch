@@ -1,0 +1,71 @@
+description: |-
+  Similar to OpenFOAM's flowRateInletVelocity, but renormalizes the
+  velocity to account for the porosity at the patch.
+
+  The ``flowRate`` entry is a ``Function1`` of time, see Foam::Function1Types.
+admonitions:
+- kind: note
+  body: |-
+    - ``rhoInlet`` is required for the case of a mass flow rate, where the
+      density field is not available at start-up
+    - The value is positive into the domain (as an inlet)
+    - May not work correctly for transonic inlets
+options:
+- key: type
+  type: word
+  required: true
+  default: null
+  description: 'Type name: ``flowRateInletVelocity``'
+- key: volumetricFlowRate
+  type: Function1<scalar>
+  required: choice
+  default: null
+  description: Volumetric flow rate
+- key: massFlowRate
+  type: Function1<scalar>
+  required: choice
+  default: null
+  description: Mass flow rate
+- key: rho
+  type: word
+  required: false
+  default: rho
+  description: Name of density field
+- key: rhoInlet
+  type: scalar
+  required: false
+  default: -VGREAT
+  description: Inlet density value used when the density field is not available
+- key: extrapolateProfile
+  type: bool
+  required: false
+  default: false
+  description: Flag to extrapolate the velocity profile from the interior
+usage:
+- comment: 'Example of the boundary condition specification for a volumetric flow rate:'
+  snippet: |-
+    <patchName>
+    {
+        type                fixedMassFlowRate;
+        volumetricFlowRate  0.2;
+        extrapolateProfile  yes;
+        value               uniform (0 0 0);
+    }
+- comment: 'Example of the boundary condition specification for a volumetmassric flow rate:'
+  snippet: |-
+    <patchName>
+    {
+        type                fixedMassFlowRate;
+        massFlowRate        0.2;
+        extrapolateProfile  yes;
+        rho                 rho;
+        rhoInlet            1.0;
+        value               uniform (0 0 0);
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

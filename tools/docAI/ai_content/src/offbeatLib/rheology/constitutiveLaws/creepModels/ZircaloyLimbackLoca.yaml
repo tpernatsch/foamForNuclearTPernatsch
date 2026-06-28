@@ -1,0 +1,139 @@
+description: |
+  Limback creep model extended to LOCA conditions using the Erbacher
+  correlation.
+
+  This rheology model computes and updates the irradiation creep, thermal
+  creep, and primary creep strain contributions, including LOCA-specific
+  thermal creep above a temperature threshold.
+formulation: |
+  The model updates the creep strain tensor components by computing
+  irradiation and thermal creep rates and then combining them into a
+  primary creep contribution. In LOCA conditions, the thermal creep rate is
+  replaced by a LOCA-specific correlation.
+
+  The implementation supports optional Newton-Raphson iterations for the
+  coupled primary creep update.
+
+  $$ \Delta \varepsilon^{\mathrm{I}} = \dot{\varepsilon}^{\mathrm{I}} \, \Delta t $$
+  $$ \Delta \varepsilon^{\mathrm{Th}} = \dot{\varepsilon}^{\mathrm{Th}} \, \Delta t $$
+  $$ \Delta \varepsilon^{\mathrm{Prim}} = \dot{\varepsilon}^{\mathrm{Prim}} \, \Delta t $$
+
+  where:
+
+  - $\Delta \varepsilon^{\mathrm{I}}$ is the increment of irradiation creep strain (stored in ``DepsilonCreepIrrEq_`` and ``epsilonCreepIrr_``)
+  - $\dot{\varepsilon}^{\mathrm{I}}$ is the irradiation creep rate (computed from ``fastFlux`` and ``sigmaEff``)
+  - $\Delta \varepsilon^{\mathrm{Th}}$ is the increment of secondary thermal creep strain (stored in ``DepsilonCreepThEq_`` and ``epsilonCreepTh_``)
+  - $\dot{\varepsilon}^{\mathrm{Th}}$ is the thermal creep rate (computed from ``fastFluence``, temperature ``T``, and ``sigmaEff``)
+  - $\Delta \varepsilon^{\mathrm{Prim}}$ is the increment of equivalent primary creep strain (stored in ``DepsilonCreepPrimEq_`` and ``epsilonCreepPrim_``)
+  - $\dot{\varepsilon}^{\mathrm{Prim}}$ is the primary creep rate (computed from irradiation and thermal creep rates and the previous equivalent primary creep strain)
+  - $\Delta t$ is the time step used by the creep update (internal to ``correctCreep``)
+
+  LOCA activation is controlled by ``LOCACreep_`` and the model switches to a
+  LOCA thermal creep rate correlation when enabled.
+dictionary: neutronicsProperties
+options:
+- key: fastFluenceName
+  type: word
+  required: false
+  default: fastFluence
+  description: |
+    Name of the fast fluence field to be looked up in the OpenFOAM object
+    registry.
+- key: fastFluxName
+  type: word
+  required: false
+  default: fastFlux
+  description: |
+    Name of the fast flux field to be looked up in the OpenFOAM object
+    registry.
+- key: relax
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Relaxation factor applied in the creep update.
+- key: irradiationCreep
+  type: bool
+  required: false
+  default: true
+  description: |
+    Switch to activate irradiation creep.
+- key: primaryCreep
+  type: bool
+  required: false
+  default: true
+  description: |
+    Switch to activate primary creep.
+- key: primaryCreepAbove700K
+  type: bool
+  required: false
+  default: true
+  description: |
+    Switch controlling whether primary creep is active above 700 K.
+- key: LOCACreep
+  type: bool
+  required: false
+  default: true
+  description: |
+    Switch to activate LOCA creep behavior (LOCA thermal creep correlation).
+- key: NewtonRaphsonMethod
+  type: bool
+  required: false
+  default: false
+  description: |
+    If enabled, use a Newton-Raphson method for the coupled primary creep
+    update.
+- key: NewtonRaphsonTolerance
+  type: scalar
+  required: false
+  default: 1e-6
+  description: |
+    Tolerance for the inner convergence loop of the Newton-Raphson method.
+    Used only when ``NewtonRaphsonMethod`` is enabled.
+- key: F_DepsilonCreepIrrEq
+  type: scalar
+  required: false
+  description: |
+    Irradiation creep increment scaling factor for the equivalent irradiation
+    creep strain increment ``DepsilonCreepIrrEq_`` (UQ/SA parameter).
+- key: delta_DepsilonCreepIrrEq
+  type: scalar
+  required: false
+  description: |
+    Irradiation creep increment offset for the equivalent irradiation creep
+    strain increment ``DepsilonCreepIrrEq_`` (UQ/SA parameter).
+- key: F_DepsilonCreepThEq
+  type: scalar
+  required: false
+  description: |
+    Thermal creep increment scaling factor for the equivalent thermal creep
+    strain increment ``DepsilonCreepThEq_`` (UQ/SA parameter).
+- key: delta_DepsilonCreepThEq
+  type: scalar
+  required: false
+  description: |
+    Thermal creep increment offset for the equivalent thermal creep strain
+    increment ``DepsilonCreepThEq_`` (UQ/SA parameter).
+- key: F_DepsilonCreepPrimEq
+  type: scalar
+  required: false
+  description: |
+    Primary creep increment scaling factor for the equivalent primary creep
+    strain increment ``DepsilonCreepPrimEq_`` (UQ/SA parameter).
+- key: delta_DepsilonCreepPrimEq
+  type: scalar
+  required: false
+  description: |
+    Primary creep increment offset for the equivalent primary creep strain
+    increment ``DepsilonCreepPrimEq_`` (UQ/SA parameter).
+usage:
+- comment: |
+    Activate the `ZircaloyLimbackLoca` creep model and configure creep switches
+    and (optionally) the Newton-Raphson method.
+  snippet: "creep\n            {\n                type ZircaloyLimbackLoca;\n                relax 1;\n\n                primaryCreep\
+    \     off;\n                irradiationCreep off;\n    \n                NewtonRaphsonMethod on;\n                NewtonRaphsonTolerance\
+    \ 1e-6;\n            }"
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

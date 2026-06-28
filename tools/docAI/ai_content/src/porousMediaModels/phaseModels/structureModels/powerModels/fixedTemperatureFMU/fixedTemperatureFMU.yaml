@@ -1,0 +1,57 @@
+description: |
+  Describes a structure with a surface temperature taken from an external FMU
+  (Functional Mock-up Unit) via the ``commDataLayer`` communication layer.
+
+  The model stores a per-structure surface temperature field ``T_`` and updates
+  it each time step by reading the FMU-provided temperature value.
+
+  Authors:
+  Carlo Fiorina (carlo.fiorina@epfl.ch / carlo.fiorina@outlook.com)
+formulation: |
+  The model prescribes the structure surface temperature by directly
+  communicating with an external FMU.
+
+  For each region sub-dictionary, the FMU temperature is read as a scalar
+  value and then mapped onto the structure surface temperature field ``T_``
+  (via the model's internal surface/zone coupling).
+
+  $$ T = T_{\mathrm{FMU}} $$
+
+  where:
+
+  - $T$ is the structure surface temperature field (OpenFOAM field ``T_``)
+  - $T_{\mathrm{FMU}}$ is the scalar temperature value obtained from the FMU
+    using the name specified by ``temperatureNameFromFMU``
+admonitions: []
+dictionary: neutronicsProperties
+optionsLocations: []
+options:
+- key: T
+  type: scalar
+  required: true
+  default: null
+  description: ''
+externalOptions: []
+usage:
+- comment: |
+    Example from ``tutorials/fmuCases/2D_LFRpowerPlant/GeN-FoamAndModelica/rootCase/constant/fluidRegion/phaseProperties``.
+  snippet: |-
+    powerModel
+            {
+                type                    fixedTemperatureFMU;
+                temperatureNameFromFMU  "gfSteamGenTemperature1";
+                volumetricArea          $volumetricAreaSteamGen;
+                T                       631;
+            }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - dictionary
+  - optionsLocations
+  - externalOptions
+  - usage
+  stub_improved: true

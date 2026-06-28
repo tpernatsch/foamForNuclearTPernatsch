@@ -1,0 +1,44 @@
+description: |
+  Fixed displacement, zero-shear traction fvPatchVectorField.
+
+  This boundary condition fixes the displacement component normal to the patch
+  while enforcing zero shear traction on the patch, allowing tangential
+  sliding (unlike a fully fixed displacement condition).
+
+  Optionally, the fixed normal displacement can be prescribed as a time series.
+formulation: |
+  The patch field prescribes a displacement vector $\mathbf{u}$ such that the
+  normal component matches a prescribed value, while the tangential traction
+  is set to zero through a compatible normal gradient.
+
+  The prescribed displacement is applied as the patch reference value:
+  $$
+  \mathbf{u}|_{\Gamma} = \mathbf{u}_{n}(t)
+  $$
+  where $\mathbf{u}_{n}(t)$ is provided by ``displacementSeries`` or ``value``.
+  Only the component normal to the patch is physically enforced; tangential
+  components are allowed to slide.
+
+  Zero shear traction is enforced by setting the patch reference gradient
+  so that the tangential part of the (small-strain) stress contribution vanishes:
+  $$
+  \nabla \mathbf{u}\cdot \mathbf{n}
+  = -\frac{\mathbf{n}\cdot \boldsymbol{\sigma}_{\mathrm{exp}}}{2\mu+\lambda}
+  $$
+  where:
+  - $\mathbf{u}$ is the displacement vector field on the patch
+  - $\mathbf{u}_{n}(t)$ is the prescribed displacement vector from ``displacementSeries`` or ``value``
+  - $\mathbf{n}$ is the patch unit normal (from ``patch().nf()``)
+  - $\boldsymbol{\sigma}_{\mathrm{exp}}$ is the eigenstrain-related stress tensor field
+    (``sigmaExp`` or ``DSigmaExp`` depending on ``smallStrainIncUpdated``)
+  - $\mu$ is the shear modulus field ``mu`` on the patch
+  - $\lambda$ is the first Lamé parameter field ``lambda`` on the patch
+dictionary: neutronicsProperties
+options: []
+externalOptions: []
+optionsLocations: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

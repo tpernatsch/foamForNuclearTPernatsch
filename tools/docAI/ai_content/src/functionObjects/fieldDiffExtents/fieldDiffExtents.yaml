@@ -1,0 +1,91 @@
+description: |-
+  Calculates the spatial minimum and maximum extents of a difference between
+  two fields.
+
+  The extents are derived from the bound box limits after identifying the
+  locations where one field exceeds the maskField
+
+  See also
+      Foam::functionObjects::fvMeshFunctionObject
+      Foam::functionObjects::writeFile
+admonitions:
+- kind: note
+  body: |-
+    For non-scalar fields, the magnitude of the field is employed and compared
+    to the mask field magnitude
+- kind: note
+  body: Output data is written to the file \<timeDir\>/fieldDiffExtents.dat
+options:
+- key: type
+  type: word
+  required: true
+  description: type name fieldDiffExtents
+- key: internalField
+  type: bool
+  required: false
+  default: true
+  description: Process the internal field
+- key: referencePosition
+  type: vector
+  required: false
+  default: (0 0 0)
+  description: Reference position
+- key: patches
+  type: wordList
+  required: false
+  description: List of patches to process
+- key: fields
+  type: wordList
+  required: true
+  description: List of fields to process
+- key: maskFields
+  type: wordList
+  required: true
+  description: List of mask fields
+- key: writeToFile
+  type: bool
+  required: false
+  default: true
+  description: Write extents data to file
+- key: log
+  type: bool
+  required: false
+  default: true
+  description: Write extents data to standard output
+- key: threshold
+  type: scalar
+  required: true
+  default: null
+  description: Field value to identify extents boundary
+usage:
+- comment: 'A functionObject is normally specified via the ``type`` entry in the ``functionObjects`` subdictionary of the
+    ``controlDict`` file (located in ``system/``. Here is a snippet enabling a functionObject:'
+  snippet: |
+    functions
+    {
+        <functionObject1>
+        {
+            type fieldDiffExtents;
+        }
+    }
+- comment: This is a detailed example of use of this specific function object.
+  snippet: |-
+    functions
+    {
+      fieldDiffExtents1
+      {
+          type        fieldDiffExtents;
+          libs        ("libFFNFunctionObjects.so");
+          ...
+          writeToFile yes;
+          log         yes;
+          fields      (T.structure);
+          maskFields  (T.interface);
+          patches     ();
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options

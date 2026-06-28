@@ -1,0 +1,44 @@
+description: |
+  Regime-dependent wrapper model that delegates the evaluation of a generic
+  ``baseModel`` to sub-model instances selected by a regime map.
+
+  The class holds a reference to a ``regimeMapModel`` and constructs one
+  sub-model per regime label. For a given cell, the returned value is
+  computed by the sub-model corresponding to the regime active in that cell.
+formulation: |
+  This wrapper provides a regime-conditioned evaluation of a generic model
+  ``baseModel``. Let $r(c)$ be the regime label returned by the
+  ``regimeMapModel`` for cell $c$. The model evaluates the underlying
+  sub-model associated with regime $r(c)$:
+
+  $$
+  v(c) = v_{r(c)}(c)
+  $$
+
+  where:
+
+  - $v(c)$ is the returned quantity for cell $c$ (the ``valueType`` returned
+    by ``value(celli)``)
+  - $r(c)$ is the regime label for cell $c$ as provided by ``regimeMap_``
+  - $v_{r(c)}(c)$ is the value returned by the sub-model stored in
+    ``modelPtrs_`` at index ``r(c)``
+admonitions: []
+options:
+- key: regimeMap
+  type: word
+  required: true
+  description: |
+    Name of the regime map specification used to construct ``regimeMap_`` via
+    ``regimeMapModel::lookupRegimeMap(mesh, ...)`` (or the corresponding
+    constructor overload for the templated constructor).
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - options
+  - usage
+  stub_improved: true

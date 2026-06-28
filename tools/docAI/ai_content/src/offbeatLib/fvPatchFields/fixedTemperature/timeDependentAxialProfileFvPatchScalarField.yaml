@@ -1,0 +1,91 @@
+description: |
+  Time-dependent axial profile boundary condition for a scalar field on an OpenFOAM
+  patch.
+
+  This boundary condition imposes a temperature (via ``fixedTemperatureFvPatchScalarField``)
+  that varies with both time and axial position. The axial dependence is provided as a
+  tabulated profile along absolute axial coordinates (in meters), and the time dependence
+  is provided as a tabulated sequence of profile rows.
+
+  If an oxide layer is present (corrosion model), an additional thermal resistance
+  corresponding to the oxide is considered.
+
+  The axial locations provided to this boundary condition are **NOT normalized** but
+  absolute values expressed in $\f$m\f$.
+formulation: |
+  The boundary value is obtained by interpolating a tabulated temperature profile
+  $T(z,t)$ defined on axial locations $z_i$ and time points $t_j$.
+
+  For each boundary face, the axial coordinate $z$ is computed from the face location
+  projected onto an axis direction. The temperature is then evaluated by:
+  (i) interpolating in axial direction at the current time, and
+  (ii) interpolating in time between the two nearest tabulated time points.
+
+  $$ T(z,t) = \mathcal{I}_t\left(t;\ \mathcal{I}_z(z;\ T_{ij})\right) $$
+
+  where:
+
+  - $z$ is the axial coordinate of a boundary face (computed by ``calculateAxialLocations()``)
+  - $t$ is the current simulation time
+  - $T_{ij}$ is the tabulated temperature data from ``axialProfileDict`` entry ``data``
+    (one row per time point, one value per axial location)
+  - $\mathcal{I}_z$ is the axial interpolation operator selected by
+    ``axialInterpolationMethod`` (e.g. ``linear`` or ``step``)
+  - $\mathcal{I}_t$ is the time interpolation operator selected by
+    ``timeInterpolationMethod`` (e.g. ``linear`` or ``step``)
+  - $z$-axis direction is set by ``zAxis`` in ``axialProfileDict`` or falls back to
+    ``globalOptions`` ``pinDirection()``
+dictionary: neutronicsProperties
+options:
+- key: axialLocations
+  type: list[scalar]
+  location: axialProfileDict
+  required: true
+  description: |
+    Tabulated axial coordinates (absolute values in meters) at which profile values are given.
+- key: timePoints
+  type: list[scalar]
+  location: axialProfileDict
+  required: true
+  description: |
+    Tabulated time points corresponding to the rows of ``data``.
+- key: axialData
+  type: table
+  location: axialProfileDict
+  required: true
+  description: |
+    Tabulated axial profile data used to build the interpolation table.
+    The code reads this from ``axialProfileDict`` via ``axialData`` and constructs a 2D table
+    of scalar values (one row per time point; one value per axial location).
+- key: axialInterpolationMethod
+  type: word
+  location: axialProfileDict
+  required: false
+  default: linear
+  description: |
+    Axial interpolation method. Supported values include ``linear`` and ``step``.
+- key: timeInterpolationMethod
+  type: word
+  location: axialProfileDict
+  required: false
+  default: linear
+  description: |
+    Time interpolation method. Supported values include ``linear`` and ``step``.
+- key: zAxis
+  type: vector
+  location: axialProfileDict
+  required: false
+  description: |
+    Direction vector defining the axial axis used to compute the axial coordinate of each boundary face.
+    If not provided, the direction falls back to ``globalOptions`` ``pinDirection()``.
+    If neither is available, the default axis is $(0,0,1)$.
+optionsLocations:
+- name: axialProfileDict
+  in: boundaryField
+- name: axialProfileDict
+  in: patch subdictionary
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

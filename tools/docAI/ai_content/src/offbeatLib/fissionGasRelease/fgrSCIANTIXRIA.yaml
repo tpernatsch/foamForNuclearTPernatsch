@@ -1,0 +1,111 @@
+description: |
+  Fission gas release (FGR) model that is intended for **RIA or
+  transient simulations following a base irradiation phase**.
+
+  The expected workflow is:
+  1. Run the base irradiation using the `SCIANTIX` FGR model.
+  2. Restart the simulation from a written time step.
+  3. Switch the FGR model to `SCIANTIXRIA`.
+formulation: |
+  In contrast to `SCIANTIX`, this model **does not actively call the SCIANTIX code**.
+  Instead, it reads the SCIANTIX internal fields (grain and grain-boundary gas
+  inventories) stored during the base irradiation and applies **instantaneous
+  release rules** based on burnup, temperature, and damage criteria.
+
+  During each iteration, the model checks whether a fuel cell satisfies one of
+  the following conditions:
+
+  - **HBS-related release** (if enabled):
+    If the effective burnup $Bu_{\mathrm{eff}}$ exceeds the threshold set by
+    ``buReleaseThresholdHBS`` or if the local temperature $T$ exceeds the
+    threshold set by ``temperatureReleaseThresholdHBS``, both intra- and
+    inter-granular gases are released and the associated swelling terms are set
+    to zero.
+
+  - **Damage-driven release**:
+    If the local damage $D$ exceeds the threshold set by
+    ``damageReleaseThreshold``, only inter-granular gas is released and
+    inter-granular swelling is set to zero.
+admonitions:
+- kind: note
+  body: |
+    SCIANTIX input files or dictionaries are **not required**, as the SCIANTIX
+    solver is not executed.
+- kind: warning
+  body: |
+    This model assumes that SCIANTIX fields from a prior base irradiation
+    are available in the restart time folder.
+
+    Using `SCIANTIXRIA` without first running `SCIANTIX` will lead to
+    uninitialized gas inventories.
+- kind: note
+  body: |
+    As in the `SCIANTIX` model, SCIANTIX-related fields are stored by default
+    as standard fields to reduce memory usage. Optional registration of
+    volumetric fields is available for visualization or mapping purposes.
+optionsLocations:
+- name: fgrOptions
+  in: solverDict
+options:
+- key: relax
+  type: scalar
+  required: false
+  default: 1
+  description: |
+    Relaxation factor applied to released gas fractions and associated
+    swelling terms. Useful for improving numerical stability in strongly
+    coupled transient simulations.
+- key: releaseHBS
+  type: bool
+  required: false
+  default: true
+  description: |
+    Activate fission gas release associated with High Burnup Structure (HBS)
+    formation.
+
+    When enabled, both burnup- and temperature-based thresholds are evaluated.
+- key: buReleaseThresholdHBS
+  type: scalar
+  required: false
+  default: 80000
+  description: |
+    Burnup threshold for HBS-related gas release, expressed in MWd/t.
+- key: temperatureReleaseThresholdHBS
+  type: scalar
+  required: false
+  default: 1000
+  description: |
+    Temperature threshold for HBS-related gas release, expressed in Kelvin.
+- key: damageReleaseThreshold
+  type: scalar
+  required: false
+  default: 0.85
+  description: |
+    Damage threshold triggering inter-granular gas release.
+    The damage field is typically computed by the selected `damageModel`
+    in the constitutive law.
+usage:
+- comment: |
+    Activate the SCIANTIXRIA model for an RIA or restart simulation.
+  snippet: |-
+    fgr SCIANTIXRIA;
+
+    fgrOptions
+    {
+        relax 1;
+
+        releaseHBS true;
+
+        buReleaseThresholdHBS           80000;
+        temperatureReleaseThresholdHBS  1000;
+
+        damageReleaseThreshold 0.85;
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - dictionary

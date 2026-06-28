@@ -1,0 +1,117 @@
+description: |
+  Creep model for MOX fuel based on the Malygin formulation, accounting for
+  irradiation creep and thermal creep contributions.
+
+  The model maintains and updates the irradiation and thermal creep strain
+  tensors as well as their equivalent scalar measures, and adds the resulting
+  creep strain increment to the mechanical strain state.
+formulation: |
+  The total creep strain increment is composed of an irradiation creep part
+  and a thermal creep part. Each contribution is evaluated through a
+  temperature- and stress-dependent rate law, then accumulated in the creep
+  strain fields.
+
+  $$ \Delta \varepsilon^{eq}_{irr} = \dot{\varepsilon}^{eq}_{irr}\,\Delta t $$
+  $$ \Delta \varepsilon^{eq}_{th}  = \dot{\varepsilon}^{eq}_{th}\,\Delta t $$
+  $$ \Delta \boldsymbol{\varepsilon}_{cr} = \Delta \varepsilon^{eq}_{irr}\,\mathbf{n}_{irr}
+     + \Delta \varepsilon^{eq}_{th}\,\mathbf{n}_{th} $$
+
+  where:
+
+  - $\Delta t$ is the time step (set internally from the OpenFOAM time control)
+  - $\Delta \varepsilon^{eq}_{irr}$ is the increment of equivalent irradiation
+    creep strain (field ``DepsilonCreepIrrEq``)
+  - $\Delta \varepsilon^{eq}_{th}$ is the increment of equivalent secondary thermal
+    creep strain (field ``DepsilonCreepThEq``)
+  - $\Delta \boldsymbol{\varepsilon}_{cr}$ is the creep strain increment added to the
+    mechanical strain update (via ``correctCreep``)
+  - $\mathbf{n}_{irr}$ and $\mathbf{n}_{th}$ are direction tensors mapping the
+    equivalent scalar creep increments to the symmetric tensor creep strain
+    fields (fields ``epsilonCreepIrr`` and ``epsilonCreepTh``)
+
+  The model uses MOX-specific material/chemistry inputs (e.g. plutonium
+  concentration) and temperature-dependent activation terms consistent with
+  the cited Malygin MOX creep correlations.
+admonitions: []
+dictionary: neutronicsProperties
+optionsLocations: []
+options:
+- key: heatSourceName
+  type: word
+  required: false
+  default: Q
+  description: |
+    Name of the volumetric heat source field used by the creep correlations.
+    The field is looked up from the mesh using this name.
+- key: grainRadiusName
+  type: word
+  required: false
+  default: grainRadius
+  description: |
+    Name of the grain radius field used by the thermal/secondary creep
+    correlations.
+- key: oxygenMetalRatioName
+  type: word
+  required: false
+  default: oxygenMetalRatio
+  description: |
+    Name of the oxygen-to-metal ratio field used by the MOX creep model.
+- key: youngModulusName
+  type: word
+  required: false
+  default: E
+  description: |
+    Name of the Young's modulus field used by the creep correlations.
+- key: porosityName
+  type: word
+  required: false
+  default: porosity
+  description: |
+    Name of the porosity field used by the creep correlations.
+- key: PuConcentration
+  type: scalar
+  required: true
+  description: |
+    Plutonium concentration used by the MOX creep correlations.
+- key: irradiationCreep
+  type: bool
+  required: false
+  default: true
+  description: |
+    Switch to enable/disable irradiation creep contribution.
+- key: relax
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Relaxation factor applied to the creep update.
+- key: NewtonRaphsonMethod
+  type: bool
+  required: false
+  default: false
+  description: |
+    Activate the Newton-Raphson method for inner convergence of the creep
+    rate update.
+- key: NewtonRaphsonTolerance
+  type: scalar
+  required: false
+  description: |
+    Inner convergence tolerance for the Newton-Raphson method. This option
+    is only used when ``NewtonRaphsonMethod`` is enabled.
+- key: creepRateLimiter
+  type: bool
+  required: false
+  default: false
+  description: |
+    Enable a limiter on the computed creep rate.
+- key: creepRateLimit
+  type: scalar
+  required: false
+  default: 4.1e-06
+  description: |
+    Maximum allowed creep rate when ``creepRateLimiter`` is enabled.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

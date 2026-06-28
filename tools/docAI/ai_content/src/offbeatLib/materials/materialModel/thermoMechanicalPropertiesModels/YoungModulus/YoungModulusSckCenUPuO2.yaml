@@ -1,0 +1,71 @@
+description: |
+  Correlation for Young's modulus of (U,Pu)O2 MOX fuel from SCK-CEN
+  developed for TRANSURANUS.
+
+  Source: https://re.public.polimi.it/retrieve/handle/11311/1172415/619939/Technical%20Report_INSPYRE_WP7-D7.2_%282020%29.pdf
+options:
+- key: E1
+  type: scalar
+  required: false
+  default: 0.9796
+  description: |
+    Option read by the model (from the optional sub-dictionary `YoungModulus`).
+- key: E2
+  type: scalar
+  required: false
+  default: 3.1597e-05
+  description: |
+    Option read by the model (from the optional sub-dictionary `YoungModulus`).
+- key: E3
+  type: scalar
+  required: false
+  default: -7.6164e-08
+  description: |
+    Option read by the model (from the optional sub-dictionary `YoungModulus`).
+- key: EPuO2
+  type: scalar
+  required: false
+  default: 249.45
+  description: |
+    Option read by the model (from the optional sub-dictionary `YoungModulus`).
+- key: EUO2
+  type: scalar
+  required: false
+  default: 218.74
+  description: |
+    Option read by the model (from the optional sub-dictionary `YoungModulus`).
+- key: oxygenMetalRatio
+  type: scalar
+  required: false
+  default: 2.0
+  description: |
+    Oxygen-to-metal ratio. Used to compute the deviation from stoichiometry
+    $y = 2 - O/M$ (see `y_` in the source). If not provided, defaults to 2.0.
+usage:
+- comment: |
+    Example selection of the `UPuO2SckCen` thermalExpansion model.
+  snippet: |-
+    materials
+    {
+      fuel
+      {
+        type UPuO2;
+        thermalExpansion
+        {
+          type UPuO2SckCen;
+          // E1 0.9796;
+          // E2 3.1597e-5;
+          // E3 -7.6164e-8;
+          // EPuO2 249.45;
+          // EUO2 218.74;
+          // oxygenToMetalRatio 2.0;
+        }
+      }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

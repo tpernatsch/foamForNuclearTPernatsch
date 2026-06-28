@@ -1,0 +1,31 @@
+description: |
+  TSSd (temperature-dependent stress) model that computes a varying yield stress as an
+  Arrhenius-type function of the local temperature.
+
+  The model updates the internal and boundary values of the $TSSd$ field based on the
+  current temperature field $T$.
+formulation: |
+  The yield-stress-like quantity $TSSd$ is modeled with an Arrhenius dependence on the
+  local temperature, consistent with thermally activated processes (Arrhenius form as
+  commonly used in creep/yield-stress correlations; see e.g. Duderstadt & Hamilton for
+  thermally activated rate concepts).
+
+  $$ TSSd(T) = TSSd_0 \exp\left(-\frac{Q_d}{R\,T}\right) $$
+
+  where:
+
+  - $TSSd(T)$ is the updated $TSSd$ value (stress-like quantity) at temperature $T$
+  - $TSSd_0$ is the pre-exponential factor
+  - $Q_d$ is the activation energy parameter
+  - $R$ is the universal gas constant ($8.31446$ in the implementation)
+  - $T$ is the local temperature (OpenFOAM field $T$)
+
+  The implementation applies the same functional form to both:
+  - internal cells using $T_.internalField()$
+  - boundary faces using the temperature values on each patch
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

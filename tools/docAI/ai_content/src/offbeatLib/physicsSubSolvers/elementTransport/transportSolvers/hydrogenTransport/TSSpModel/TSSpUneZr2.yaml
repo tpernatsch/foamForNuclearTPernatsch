@@ -1,0 +1,30 @@
+description: |
+  TSSP (thermal stress strain parameter) model for the Zr-2 substrate used in
+  inner liner claddings, based on the correlation reported by Une et al.
+  (2009) \f$\left(\text{doi: }10.1016/j.jnucmat.2009.01.017\right)\f$.
+formulation: |
+  The model computes the local TSSp value as an Arrhenius-type function of
+  the local temperature $T$ and applies the same relation on boundary faces
+  using the boundary temperature field.
+
+  $$ TSSp(T) = TSSp_0 \exp\left(-\frac{Q_p}{R\,T}\right) $$
+
+  where:
+
+  - $TSSp(T)$ is the TSSp value (stored in the OpenFOAM field $TSSp_[$cell$]$)
+  - $TSSp_0$ is the pre-exponential factor ($3.27\times 10^4$)
+  - $Q_p$ is the activation energy ($25042$)
+  - $R$ is the universal gas constant ($8.31446$ J/mol/K)
+  - $T$ is the temperature in the current location (cell internal field $T$
+    or boundary field $T$)
+
+  The implementation updates:
+  - internal cells using $T$ from the volScalarField named `T`
+  - boundary faces using the corresponding boundary values of `T`
+  - then calls `TSSp_.correctBoundaryConditions()`.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

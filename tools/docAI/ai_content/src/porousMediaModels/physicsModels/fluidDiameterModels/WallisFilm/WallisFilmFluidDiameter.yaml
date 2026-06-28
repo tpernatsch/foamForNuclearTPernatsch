@@ -1,0 +1,48 @@
+description: |-
+  Correlation to be used in annular flow scenarios in which the phase of
+  interest to which this model is applied flows in a film along the
+  structures (e.g. pins) of interest. It assumes that the dimensionless
+  film thickness $d^+$ ($d^+ = d/D_h$, where $D_h$ is the structure hydraulic
+  diameter) is proportional to the Wallis interfacial drag coefficient so that:
+
+  $0.005 \, 75 \, \alpha_N = 0.005 \, 300 \, d^+$
+
+  with $\alpha_N$ being the normalized phase fraction of the phase of interest
+  and the film thickness is thus computed as:
+
+  $d = 0.25 \, \alpha_N \, D_h$
+
+  See TRACE theory manual (https://www.nrc.gov/docs/ML1200/ML120060218.pdf,
+  pp. 135-136, eqns. 4-37, 4-38) for further info
+options:
+- key: residualAlpha
+  type: scalar
+  required: false
+  default: 0.01
+  description: |
+    Minimum allowable value of the phase fraction to avoid null fluid
+    diameter. Used as a lower bound on the normalized phase fraction
+    $\alpha_N$ in the film diameter correlation.
+usage:
+- comment: 'The WallisFilm fluid diameter model is selected at run-time as: '
+  snippet: |-
+    fluid1 "liquid";
+    fluid2 "vapour";
+
+    liquidProperties
+    {
+        stateOfMatter   liquid;
+        dispersedDiameterModel
+        {
+            type    WallisFilm;
+        }
+        thermoResidualAlpha 1e-6;
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options
+  - dictionary

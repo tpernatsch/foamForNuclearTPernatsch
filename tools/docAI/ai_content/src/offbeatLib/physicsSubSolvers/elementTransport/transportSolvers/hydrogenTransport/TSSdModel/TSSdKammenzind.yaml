@@ -1,0 +1,33 @@
+description: |
+  Temperature-dependent TSSd (creep/strength) model where the yield stress is
+  updated according to an Arrhenius-type dependence on temperature.
+
+  The model computes the internal field `TSSd` from local temperature `T` and
+  applies the same relation on boundary patches using the corresponding
+  boundary temperature values.
+formulation: |
+  The model assumes an Arrhenius-type temperature dependence for the
+  temperature-sensitive strength parameter $TSSd$:
+  $$ TSSd(T) = TSSd_0 \exp\left(-\frac{Q_d}{R\,T}\right) $$
+  where $T$ is the local temperature.
+
+  The constants are taken as fixed material parameters in the implementation.
+
+  - $TSSd(T)$ is the computed TSSd value (field `TSSd_`)
+  - $TSSd_0$ is the pre-exponential factor (constant $66000$)
+  - $Q_d$ is the activation energy (constant $32144$)
+  - $R$ is the universal gas constant (constant $8.31446$)
+  - $T$ is the local temperature in the same units as used by the constants
+    (field `T`)
+
+  Boundary values are computed patch-wise using the boundary temperature
+  field `T` and then enforced via `correctBoundaryConditions()`.
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

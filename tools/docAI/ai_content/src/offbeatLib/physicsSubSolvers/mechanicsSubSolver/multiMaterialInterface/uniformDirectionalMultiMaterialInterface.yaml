@@ -1,0 +1,81 @@
+description: |
+  Multi-material correction class where the interfaces between materials are defined
+  using directionally-dependent correction weights.
+
+  The correction may optionally be defined in a rotated coordinate system,
+  allowing the user to specify principal material directions.
+options:
+- key: rotated
+  type: bool
+  required: true
+  description: |
+    If true, face normals are transformed to a rotated/local coordinate system
+    before applying directional weights.
+- key: rotation
+  type: dict
+  required: false
+  description: |
+    Coordinate rotation definition (required if `rotated` is true). Supports
+    standard OpenFOAM `coordinateRotation` types; may be spatially varying.
+- key: defaultWeights
+  type: vector
+  required: true
+  description: |
+    Directional weights applied to the strain-related correction term.
+    The per-face weight is computed as $|\mathbf{n}_f \odot \mathbf{w}_\varepsilon|$,
+    where $\mathbf{n}_f$ is the unit face normal (in rotated coordinates if `rotated` is true),
+    and $\mathbf{w}_\varepsilon$ is set by `defaultWeights`.
+- key: defaultWeightsGrad
+  type: vector
+  required: false
+  description: |
+    Directional weights applied to the gradient contribution in `sigmaExp`.
+    If not provided, it defaults to `defaultWeights`.
+    The per-face gradient weight is computed as $|\mathbf{n}_f \odot \mathbf{w}_{\nabla}|$,
+    where $\mathbf{w}_{\nabla}$ is set by `defaultWeightsGrad`.
+usage:
+- comment: |
+    Example of the `solverDict` configuration to activate the
+    uniform directional multi-material correction.
+  snippet: |-
+    mechanicsSolver
+    {
+      type smallStrain;
+      RhieChowCorrection false;
+
+      multiMaterialCorrection
+      {
+          type uniformDirectional;
+
+          rotate true;
+
+          rotation
+          {
+              type axes;
+              e1 (1 0 0);
+              e2 (0 1 0);
+          }
+
+          defaultWeightEps  (1 0.5 0.5);
+          defaultWeightGrad (1 0.5 0.5);
+      }
+    }
+formulation: |
+  The interface weights are computed from the (unit) face normal $\mathbf{n}_f$ and
+  the user-specified default weight vectors $\mathbf{w}_\varepsilon$ and $\mathbf{w}_{\nabla}$:
+  $$\left|\mathbf{n}_f \odot \mathbf{w}_\varepsilon\right|,\qquad
+    \left|\mathbf{n}_f \odot \mathbf{w}_{\nabla}\right|,$$
+  where $\odot$ denotes component-wise multiplication and $|\cdot|$ is the magnitude.
+  If rotation is enabled, $\mathbf{n}_f$ is transformed using the inverse rotation
+  before applying the component-wise products.
+
+  The gradient weights default to the strain weights if `defaultWeightsGrad` is not provided.
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options
+  - formulation
+  - dictionary

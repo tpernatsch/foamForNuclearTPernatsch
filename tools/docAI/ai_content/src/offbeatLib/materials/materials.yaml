@@ -1,0 +1,71 @@
+description: |
+  Parent class that handles the evolution of material properties and behavioral
+  models in foamForNuclear/OpenFOAM-based thermo-mechanical simulations.
+
+  The class manages the creation and updating of common thermomechanical fields
+  (e.g. density, heat capacity, conductivity, viscosity, elastic/thermal
+  parameters) and delegates material-specific behavior to a selected
+  ``materialModel`` implementation.
+formulation: |
+  This base class provides the infrastructure for evolving material properties
+  and related fields. The specific constitutive behavior is implemented by
+  derived material models (via the ``materialModel`` interface).
+
+  In general, the material properties are stored as OpenFOAM volume fields
+  (e.g. ``rho``, ``Cp``, ``k``, ``mu``, ``nu``, ``lambda``) and may be updated
+  each time step based on the selected model and the current state.
+
+  When a ``referenceMesh`` is present, density can be updated from reference
+  volumes on a per-cell-zone basis.
+
+  - $V_{\mathrm{ref}}$ is the reference cell volume field (from ``referenceMesh.V()``)
+  - $\rho$ is the material density field (stored in ``rho``)
+  - $\Delta t$ is the time step (used indirectly when time-step control is enabled)
+admonitions: []
+dictionary: neutronicsProperties
+optionsLocations: []
+options:
+- key: materialProperties
+  type: word
+  required: false
+  default: byZone
+  description: |
+    Selects the material model type to instantiate via the internal
+    ``dictionaryConstructorTable``. The chosen type determines how material
+    properties are created and updated.
+- key: writeMaterialProperties
+  type: bool
+  required: false
+  default: false
+  description: |
+    If true, forces automatic writing of the thermomechanical property fields
+    (e.g. ``rho``, ``Cp``, ``k``, ``emissivity``, ``E``, ``nu``, ``mu``, ``lambda``,
+    ``threeK``) by setting their ``writeOpt`` to ``IOobject::AUTO_WRITE``.
+- key: maxDeltaMatTol
+  type: scalar
+  required: false
+  description: |
+    Maximum allowed material-property update tolerance used when an adjustable
+    time step is enabled for material evolution. The value is read from
+    ``controlDict`` only when ``adjustableTimeStep`` (or ``adjustTimeStep``) is true.
+externalOptions: []
+usage:
+- comment: |
+    Select a material model type under the ``materials`` sub-dictionary in the
+    solver dictionary.
+  snippet: |
+    materials
+    {
+        materialProperties byZone;
+    }
+- comment: |
+    Enable writing of material property fields.
+  snippet: |-
+    materials
+    {
+        writeMaterialProperties true;
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

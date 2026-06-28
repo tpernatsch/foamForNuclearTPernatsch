@@ -1,0 +1,67 @@
+description: |
+  Fixed-temperature fvPatchField that imposes a prescribed temperature on a
+  patch.
+
+  It behaves similarly to OpenFOAM's standard ``fixedValue`` fvPatchField,
+  but when an oxide layer is present it accounts for an additional thermal
+  resistance associated with the oxide.
+formulation: |
+  The boundary condition enforces a temperature on the patch faces while
+  optionally including an oxide thermal resistance between the material
+  interface and the outer oxide surface.
+
+  The implementation updates an internal patch temperature field ``T_`` via
+  ``updateSurfaceTemperature()``, using the local patch temperature, the
+  oxide thickness field ``oxideThickness``, and the material conductivity
+  field identified by ``kappa``. The oxide conductivity is computed from the
+  current patch temperature using the MatPro-style correlation:
+
+  $$
+  k_{ox} = 0.835 + 1.81\times 10^{-4}\, T_p
+  $$
+
+  where:
+
+  - $T_p$ is the current patch temperature (from the patch field being
+    evaluated)
+  - $k_{ox}$ is the effective oxide thermal conductivity (W/m/K)
+  - ``oxideThickness`` is the oxide thickness field on the patch
+  - ``kappa`` is the name of the material conductivity field on the patch
+
+  The final imposed temperature ``T_`` corresponds to the requested
+  temperature location (oxide outer surface or metal-oxide interface),
+  depending on whether ``materialOxideInterfaceTemperature`` (or the
+  equivalent ``outerOxideTemperature`` input) is provided.
+options:
+- key: value
+  type: scalar
+  required: true
+  description: |
+    Initial temperature value.
+
+    - If an oxide/corrosion model is present, ``value`` is the initial
+      metal-oxide interface temperature (i.e. the temperature at the
+      interface between metal and oxide).
+    - If the oxide/corrosion model is not present, ``value`` is the initial
+      outer temperature.
+- key: outerOxideTemperature
+  type: scalar
+  required: false
+  description: |
+    Initial outer oxide temperature (i.e. the temperature outside the oxide
+    layer).
+
+    If this keyword is not present, the initial oxide outer temperature is
+    set equal to ``value``.
+optionsLocations: []
+dictionary: neutronicsProperties
+usage:
+- comment: |
+    Apply the ``fixedTemperature`` boundary condition to a patch.
+  snippet: "claddingOuterSurface\n{\n    type            fixedTemperature;\n\n    // \"value\" is:\n    // - the initial metal-oxide\
+    \ interface temperature, if the corrosion\n    // model is present\n    // - the initial outer temperature, if the corrosion\
+    \ is not present\n    value           uniform 300;\n        \n    outerOxideTemperature           uniform 300;\n}"
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

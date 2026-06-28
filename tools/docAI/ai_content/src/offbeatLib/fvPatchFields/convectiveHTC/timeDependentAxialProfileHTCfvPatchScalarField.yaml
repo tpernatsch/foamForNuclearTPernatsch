@@ -1,0 +1,119 @@
+description: |
+  Time-dependent axial profile heat-transfer-coefficient (HTC) boundary
+  condition for a scalar field.
+
+  This boundary condition models a heat sink using a convective heat transfer
+  coefficient $h$ and a sink temperature $T_0$ that vary axially and in time.
+  At each iteration, the patch temperature is computed using the classic
+  convective heat transfer relation as implemented in the parent
+  `convectiveHTC` boundary condition, but with axially and temporally varying
+  $h(z,t)$ and $T_0(z,t)$.
+
+  Axial locations provided to this boundary condition are absolute values in
+  meters (they are not normalized).
+formulation: |
+  The boundary condition enforces a convective heat exchange between the
+  patch temperature $T$ and a prescribed sink temperature $T_0$ with an
+  effective heat transfer coefficient $h$ that depends on axial position and
+  time.
+
+  $$ q''(z,t) = h(z,t)\,\big(T(z,t)-T_0(z,t)\big) $$
+
+  The resulting patch temperature is computed consistently with the
+  convectiveHTC formulation, using the local thermal conductivity field
+  (named by ``kappa``) and the patch geometry through the OpenFOAM
+  ``deltaCoeffs`` factor.
+
+  The axial and time dependence of $h$ and $T_0$ is obtained by interpolating
+  tabulated data:
+  - $h(z,t)$ is interpolated from ``hData`` using ``axialInterpolationMethod``
+    and ``timeInterpolationMethod``.
+  - $T_0(z,t)$ is interpolated from ``T0Data`` using the same interpolation
+    methods.
+
+  - $q''(z,t)$ is the heat flux at the patch, in W/m$^2$
+  - $h(z,t)$ is the convective heat transfer coefficient, in W/m$^2$/K
+  - $T(z,t)$ is the patch temperature field value, in K
+  - $T_0(z,t)$ is the prescribed sink temperature, in K
+  - $z$ is the axial coordinate in m (from ``axialLocations``)
+  - $t$ is time (from ``timePoints``)
+options:
+- key: axialProfileDict
+  type: table
+  required: true
+  description: |
+    Sub-dictionary containing the axial and time dependent tabulated profiles
+    for $T_0$ and $h$.
+- key: kappa
+  type: word
+  required: false
+  default: k
+  description: |
+    Name of the thermal conductivity field used by the boundary condition.
+    By default, it is set to ``k`` (the OFFBEAT material class conductivity
+    field name).
+- key: value
+  type: scalar
+  required: false
+  description: |
+    Initial value of the patch temperature field.
+- key: timePoints
+  type: list[scalar]
+  required: true
+  location: axialProfileDict
+  description: |
+    List of time values at which the axial profiles are provided.
+    The time unit depends on the user time settings (seconds by default).
+- key: axialLocations
+  type: list[scalar]
+  required: true
+  location: axialProfileDict
+  description: |
+    List of axial locations (in m) at which the sink temperature and heat
+    transfer coefficients are provided for each time point.
+    Axial locations are not normalized.
+- key: hData
+  type: table
+  required: true
+  location: axialProfileDict
+  description: |
+    2D table of the heat transfer coefficient axial profiles in
+    W/m$^2$/K.
+
+    - x-axis: axial locations (from ``axialLocations``)
+    - y-axis: time points (from ``timePoints``)
+    - each row provides the axial profile at a given time in
+      ``timePoints``.
+- key: T0Data
+  type: table
+  required: true
+  location: axialProfileDict
+  description: |
+    2D table of the sink temperature axial profiles in K.
+
+    - x-axis: axial locations (from ``axialLocations``)
+    - y-axis: time points (from ``timePoints``)
+    - each row provides the axial profile at a given time in
+      ``timePoints``.
+- key: timeInterpolationMethod
+  type: word
+  required: false
+  default: linear
+  location: axialProfileDict
+  description: |
+    Time interpolation method for time steps between the tabulated
+    ``timePoints``. Either ``step`` or ``linear``.
+- key: axialInterpolationMethod
+  type: word
+  required: false
+  default: linear
+  location: axialProfileDict
+  description: |
+    Axial interpolation method for axial positions between the tabulated
+    ``axialLocations``. Either ``step`` or ``linear``.
+dictionary: neutronicsProperties
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

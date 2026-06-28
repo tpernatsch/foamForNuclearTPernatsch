@@ -1,0 +1,88 @@
+description: |
+  Cconstitutive law for the `fastNeutron`-GPLS model (Guisson–Poussard–Le Saux)
+  for Zircaloy-4 under RIA loading conditions (also used in ALCYONE; not intended
+  for base irradiation).
+
+  Elastic behaviour is isotropic (Hooke’s law). Viscoplastic flow accounts for
+  the orthotropic nature of Zircaloy-4 using the Hill tensor / Hill equivalent
+  strain, with no stress threshold between elastic and viscoplastic regimes.
+
+  Irradiation effects are introduced via the fast neutron fluence `phi`, provided
+  in units of 1e25 n·m⁻² (i.e. set `phi=1` for 1e25 n·m⁻²). A second parameter `zeta`
+  (non-physical) corresponds to the normalised axial position along the full rod
+  (0 bottom, 1 top); it weakly affects the strength modulus K (default 0.5).
+options:
+- key: phi
+  type: scalar
+  required: true
+  description: |
+    Fast neutron fluence in units of 1e25 n·m⁻² (use 1 for 1e25).
+- key: zeta
+  type: scalar
+  required: false
+  default: 0.5
+  description: |
+    Non-physical normalised axial position along the full rod (0 bottom, 1 top).
+- key: error
+  type: scalar
+  required: false
+  default: 1e-8
+  description: |
+    Newton–Raphson tolerance.
+- key: max_iter
+  type: label
+  required: false
+  default: 2500
+  description: |
+    Maximum Newton–Raphson iterations.
+- key: relax
+  type: scalar
+  required: false
+  default: 0.1
+  description: |
+    Relaxation factor for Newton–Raphson iterations.
+- key: theta
+  type: scalar
+  required: false
+  default: 0.5
+  description: |
+    Integration scheme parameter (0..1):
+    0 explicit (Forward Euler), 1 implicit (Backward Euler), 0.5 midpoint / Crank–Nicolson.
+usage:
+- comment: |
+    Example of the `solverDict` configuration to activate the
+    `fastNeutronGPLS` constitutive law for a Zircaloy cladding material.
+  snippet: |-
+    materials
+    {
+      cladding
+      {
+        type Zircaloy;
+
+        // other material options/models
+
+        constitutiveLaw
+        {
+          type fastNeutronGPLS;
+
+          phi   1;
+          zeta  0.5;
+
+          // optional NR / integration controls
+          error    1e-8;
+          max_iter 2500;
+          relax    0.1;
+          theta    1;
+        }
+      }
+
+      // other materials subdict
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options
+  - dictionary

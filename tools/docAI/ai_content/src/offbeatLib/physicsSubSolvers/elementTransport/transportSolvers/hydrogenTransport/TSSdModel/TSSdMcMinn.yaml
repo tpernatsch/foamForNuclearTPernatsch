@@ -1,0 +1,28 @@
+description: |
+  TSSd model with a temperature-activated yield-stress/creep parameter that varies
+  with the local temperature field $T$.
+
+  The model computes the field `TSSd` using an Arrhenius-type dependence and
+  updates both internal cells and boundary patches.
+formulation: |
+  The model assumes an Arrhenius-type temperature dependence for the
+  temperature-shifted stress/strain-rate parameter `TSSd`:
+  $$ TSSd(T) = TSSd_0 \exp\left(-\frac{Q_d}{R\,T}\right) $$
+  where the temperature $T$ is taken from the OpenFOAM field `T` (cell-centered
+  for internal values and patch values for boundary values).
+
+  - $TSSd_0$ is the pre-exponential factor (constant, here $1.06\times 10^5$)
+  - $Q_d$ is the activation energy (constant, here $35990$)
+  - $R$ is the universal gas constant (here $8.31446$)
+  - $T$ is the local temperature from the OpenFOAM field `T` (K)
+  - $TSSd$ is the computed model output field `TSSd`
+
+  The implementation updates `TSSd` for the provided cell addresses `addr`
+  and applies the same relation on boundary faces using the patch temperature
+  values from `T`.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

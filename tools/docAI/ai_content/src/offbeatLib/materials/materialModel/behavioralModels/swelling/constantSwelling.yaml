@@ -1,0 +1,25 @@
+description: |
+  Class caculating the swelling with a provided constant swelling rate.
+options:
+- key: swellingRate
+  type: scalar
+  required: true
+  description: |
+    Constant swelling rate. Used to compute the nominal swelling from the fast neutron fluence.
+- key: fastFluenceName
+  type: word
+  required: false
+  default: fastFluence
+  description: |
+    Name of the fast neutron fluence field (looked up as a ``volScalarField``).
+usage:
+- comment: |
+    Example selection of `constantRate`.
+  snippet: "materials\n{\n    fuel\n    {\n        type UO2;\n                                    \n        swelling\n   \
+    \     {\n            type constantRate;\n            swellingRate 1e-6;\n            // fastFluenceName fastFluence;\n\
+    \        }\n    }\n}"
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options

@@ -1,0 +1,27 @@
+description: |
+  Placeholder cyclic AMI point patch type intended to represent a
+  *discontinuous* cyclic AMI point-patch in the OpenFOAM point-patch
+  infrastructure.
+
+  This class currently acts as a thin wrapper around
+  [@Foam::cyclicAMIPointPatch], with the constraint mechanism disabled for
+  discontinuous usage.
+formulation: |
+  This class does not introduce an independent physical model. It inherits
+  the geometric/coupling behavior from [@Foam::cyclicAMIPointPatch] and
+  disables the point-patch constraint interface by returning a null
+  constraint type.
+
+  The discontinuous behavior is therefore handled (if at all) by the
+  underlying AMI/coupling implementation rather than by additional
+  governing equations in this class.
+
+  - $\\text{constraintType}$ is the constraint identifier returned by
+    `constraintType()`. Here it is set to `word::null`, i.e. no constraint
+    is provided by this patch type.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

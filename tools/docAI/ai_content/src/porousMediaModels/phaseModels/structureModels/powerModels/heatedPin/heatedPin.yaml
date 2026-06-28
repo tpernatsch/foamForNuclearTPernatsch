@@ -1,0 +1,106 @@
+description: |
+  Model for representing a heated pin with constant material properties that
+  is coupled to the fluid(s) via a convective boundary condition. The
+  pin temperature profile is computed using a finite-volume discretization
+  in the radial direction with constant $\rho$, $C_p$, and $k$.
+formulation: |
+  The heated pin is modeled as a 1-D radial conduction problem across a
+  cylindrical solid (fuel/cladding regions) with volumetric heat generation
+  provided by the coupled neutronics/heat source through the local power
+  density. The resulting outer surface temperature is then used to impose
+  a convective boundary condition to the surrounding fluid.
+
+  For each computational cell, the radial temperature profile is updated by
+  solving the steady conduction equation with constant properties:
+
+  $$
+  \frac{1}{r}\frac{d}{dr}\left(r k \frac{dT}{dr}\right) + q''' = 0
+  $$
+
+  where:
+
+  - $r$ is the radial coordinate across the pin (set by ``innerRadius``, ``outerRadius``, and ``meshSize``)
+  - $T$ is the local pin temperature (stored in ``Trad_`` and region temperatures ``Ti_``/``To_``)
+  - $k$ is the pin thermal conductivity (set by ``k``)
+  - $q'''$ is the volumetric heat generation rate (provided via the coupled ``powerDensity_`` field)
+  - $\rho C_p$ is the volumetric heat capacity (set by either ``rho`` and ``Cp`` or directly by ``rhoCp``)
+
+  The model also computes a cell-averaged temperature ``Tav_`` and tracks
+  local min/max temperatures (``Tmin_``, ``Tmax_``) for consistency checks.
+dictionary: neutronicsProperties
+options:
+- key: Cp
+  type: scalar
+  required: true
+  default: null
+  description: ''
+- key: T
+  type: scalar
+  required: true
+  default: null
+  description: ''
+- key: innerRadius
+  type: scalar
+  required: true
+  default: null
+  description: ''
+- key: k
+  type: scalar
+  required: true
+  default: null
+  description: ''
+- key: meshSize
+  type: int
+  required: true
+  default: null
+  description: ''
+- key: outerRadius
+  type: scalar
+  required: true
+  default: null
+  description: ''
+- key: rho
+  type: scalar
+  required: true
+  default: null
+  description: ''
+- key: rhoCp
+  type: scalar
+  required: true
+  default: null
+  description: ''
+optionsLocations: []
+admonitions: []
+usage:
+- comment: |
+    Example configuration of the ``heatedPin`` power model (single region)
+    in ``constant/<fluidRegion>/phaseProperties``.
+  snippet: |-
+    powerModel
+            {
+                type            heatedPin;
+                innerRadius     0;
+                outerRadius     0.003;
+                k               20;
+                meshSize        6;
+                T               653.15;
+                Cp              500;
+                rho             7700;
+
+                powerOffCriterionModel
+                {
+                    type            timeThreshold;
+                    time            12.475;
+                }
+            }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - dictionary
+  - optionsLocations
+  - admonitions
+  - usage
+  stub_improved: true

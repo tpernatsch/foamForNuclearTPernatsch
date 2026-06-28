@@ -1,0 +1,125 @@
+description: |
+  Parent class that handles the evolution of rheological models in the
+  mechanics framework.
+
+  This class manages the constitutive-law objects (e.g. elasticity,
+  plasticity) and provides common infrastructure for updating the stress
+  tensor field through strain components, including thermal strain and
+  additional strain contributions from the associated ``materials`` model.
+
+  The parent class itself is not intended to be runTime selectable; concrete
+  rheology implementations are selected via the run-time selection mechanism.
+formulation: |
+  The rheology framework updates the stress tensor by combining elastic,
+  thermal, and model-specific additional strain contributions, and optionally
+  solving a hydrostatic-pressure correction to reduce oscillations.
+
+  The total strain input ``epsilon`` is conceptually decomposed as:
+  $$
+  \varepsilon = \varepsilon^{el} + \varepsilon^{th} + \varepsilon^{add}
+  $$
+  where the thermal strain $\varepsilon^{th}$ is controlled by the
+  ``thermalExpansion`` switch, and $\varepsilon^{add}$ is obtained from
+  ``mat_.additionalStrains()``.
+
+  The hydrostatic stress field ``sigmaHyd`` and its gradient ``gradSigmaHyd``
+  are used to form a deviatoric stress contribution ``sigmaDev``. If enabled,
+  a pressure equation is solved to compute/relax the hydrostatic component.
+
+  Plane-stress and modified plane-strain options control the kinematic
+  reduction applied by derived rheology implementations.
+
+  - $\varepsilon$ is the total symmetric strain field passed to ``correct``
+  - $\varepsilon^{el}$ is the elastic strain field ``epsEl_``
+  - $\varepsilon^{th}$ is the thermal strain field ``epsTh_``
+  - $\varepsilon^{add}$ is the additional strain field ``additionalStrain_``
+  - $\sigma_{hyd}$ is the hydrostatic stress field ``sigmaHyd_``
+  - $\nabla \sigma_{hyd}$ is the gradient ``gradSigmaHyd_``
+  - $\sigma_{dev}$ is the deviatoric stress field ``sigmaDev_``
+dictionary: neutronicsProperties
+optionsLocations:
+- name: rheologyOptions
+  in: solverDict
+options:
+- key: thermalExpansion
+  type: bool
+  required: false
+  default: true
+  description: |
+    Enable or disable thermal expansion effects in the rheology update.
+    When enabled, the thermal strain field ``epsTh`` is considered.
+- key: planeStress
+  type: bool
+  required: false
+  default: false
+  description: |
+    If true, the problem is treated as plane stress (kinematic reduction
+    handled by derived rheology implementations).
+- key: modifiedPlaneStrain
+  type: bool
+  required: false
+  default: false
+  description: |
+    If true (and ``planeStress`` is false), activates a modified plane strain
+    formulation in derived rheology implementations.
+- key: solvePressureEqn
+  type: bool
+  required: false
+  default: false
+  description: |
+    If true, solve a pressure equation to decrease oscillations in certain
+    cases by relaxing the hydrostatic stress component.
+- key: pressureSmoothingScaleFactor
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Smoothing coefficient scale factor used by the pressure equation
+    relaxation.
+externalOptions: []
+usage:
+- comment: |
+    Activate the `byMaterial` rheology type and enable thermal expansion.
+  snippet: |
+    rheology
+    {
+        type byMaterial;
+        thermalExpansion     on;
+    }
+- comment: |
+    Activate the `byMaterial` rheology type with modified plane strain and
+    enable pressure-equation smoothing via the selected stress analysis
+    controls (pressure equation itself is controlled by `solvePressureEqn`).
+  snippet: |
+    rheology
+    {
+        type byMaterial;
+        modifiedPlaneStrain on;
+        springModulus   3500;
+        coolantPressureList
+        {
+            file            "$FOAM_CASE/constant/systemPressure";
+            outOfBounds     clamp;
+        }
+    }
+- comment: |
+    Activate the `byMaterial` rheology type with plane-stress disabled and
+    modified plane strain enabled.
+  snippet: |-
+    rheology
+    {
+        type byMaterial;
+        thermalExpansion on;
+        modifiedPlaneStrain on;
+        springModulus   3500;
+        coolantPressureList
+        {
+            file            "$FOAM_CASE/constant/systemPressure";
+            outOfBounds     clamp;
+        }
+        planeStress     off;
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,50 @@
+description: "Conductivity correlation for MOX fuel Pu=0.25, U=0.75 from Brancheria et al.\nRef : \"Calibration of a fuel-to-cladding\
+  \ gap conductance model for fast \nreactor fuel pins\", Hanford Engineering Development Laboratory \nurl : https://www.osti.gov/servlets/purl/6863540\n"
+options:
+- key: densityFraction
+  type: scalar
+  required: false
+  default: 0.945
+  description: |
+    Initial fraction of theoretical density used to derive porosity when no
+    porosity field is available.
+usage:
+- comment: |
+    Example selection of the Brancheria conductivity correlation for MOX fuel.
+  snippet: |-
+    conductivity
+    {
+        type UPuO2Brancheria;
+
+        // Optional override
+        // densityFraction 0.945;
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - description
+  - formulation
+  - options
+  - usage
+  formulation_added: true
+formulation: |
+  The model provides an effective thermal conductivity for (U,Pu)O2 fuel as a function of temperature and fuel density/porosity, using the Brancheria et al. correlation (as implemented in the `correct()` method of this conductivity model). The correlation is applied pointwise on the scalar temperature field `T` and updates the conductivity field `sf` for the cells given by `addr`, consistent with standard fuel conductivity treatments (e.g., Duderstadt & Hamilton; Todreas & Kazimi).
+
+  In OpenFOAM form, the update can be represented generically as
+  $$ k_{\mathrm{eff}}(T,\rho) = k_{\mathrm{solid}}(T)\, f(\rho) $$
+  where the density dependence is expressed through a porosity/relative density factor derived from either an available porosity field (`p_`) or an initial density fraction (`densityFrac_`).
+
+  $$ f(\rho) = f\!\left(\varepsilon(\rho)\right), \qquad \varepsilon = 1-\frac{\rho}{\rho_{\mathrm{th}}} $$
+  with the porosity $\varepsilon$ computed from the local porosity field if present, otherwise inferred from `densityFraction` as the initial relative density.
+
+  Variables (OpenFOAM naming):
+  - $k_{\mathrm{eff}}$ is the effective thermal conductivity (updated in `sf`)
+  - $T$ is the temperature field (input `T`)
+  - $\rho$ is the local fuel density (implicit via porosity/relative density)
+  - $\rho_{\mathrm{th}}$ is the theoretical density of UO2/PuO2 mixture (correlation constant)
+  - $\varepsilon$ is the porosity (from `p_` if available, otherwise inferred using `densityFraction`)
+  - $f(\rho)$ is the density/porosity reduction factor for conductivity
+  - $k_{\mathrm{solid}}(T)$ is the temperature-dependent conductivity of the solid phase per Brancheria et al.
+
+  The specific functional forms and fitted coefficients are those reported by Brancheria et al. for MOX with Pu=0.25, U=0.75 and are evaluated in the implementation of `correct()`.

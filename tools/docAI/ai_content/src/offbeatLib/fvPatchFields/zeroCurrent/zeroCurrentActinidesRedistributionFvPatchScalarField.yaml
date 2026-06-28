@@ -1,0 +1,38 @@
+description: |
+  Fixed-gradient boundary condition for actinide redistribution that enforces a
+  “zero-current” condition by balancing diffusion and thermally driven
+  transport (Soret term) at the patch.
+
+  The boundary condition computes the patch gradient from the local
+  temperature field and its gradient, together with a diffusion coefficient
+  field whose name is derived from the transported scalar field name.
+formulation: |
+  The model assumes that the actinide species current normal to the patch
+  vanishes (“zero-current” condition). The thermally driven contribution is
+  represented through a Soret term proportional to the temperature gradient.
+
+  The Soret contribution is built as:
+  $$
+  \mathbf{S} = \frac{Q}{R\,T^2}\,\nabla T
+  $$
+
+  where $T$ is taken from the patch temperature field ``T`` and $\nabla T$
+  from the patch field ``gradT``.
+
+  The boundary condition then sets the scalar patch gradient so that the
+  net normal current is zero, using the diffusion coefficient field
+  ``diff<fieldNamePrefix>`` (see ``updateCoeffs()`` implementation).
+
+  - $T$ is the patch temperature field ``T`` (K)
+  - $\nabla T$ is the patch temperature gradient field ``gradT`` (K/m)
+  - $R$ is the universal gas constant ``R_`` (J/K/mol)
+  - $Q$ is the molar heat of transport ``Q_`` (J/mol)
+  - $\mathbf{S}$ is the Soret term vector (as assembled in ``updateCoeffs()``)
+  - $T$ and $\nabla T$ are evaluated on the boundary patch
+dictionary: neutronicsProperties
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

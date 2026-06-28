@@ -1,0 +1,224 @@
+description: |
+  Gap gas model class that computes gas composition, volume, temperature, and
+  pressure for TRISO fuel configurations.
+
+  The gap gas state at the initial time (presure and composition) must
+  be separately provided via the `gapGas` file.
+
+  The model is similar to the `Frapcon` gap gas model in terms of assumptions
+  and gap volume evaluation strategy (ideal gas, free volume decomposition,
+  and volume estimation from bounding surfaces). See `Frapcon` documentation
+  for details on the gap volume algorithm.
+formulation: |
+  The model is similar to the `Frapcon` gap gas model in terms of assumptions
+  and gap volume evaluation strategy (ideal gas, free volume decomposition,
+  and volume estimation from bounding surfaces). See `Frapcon` documentation
+  for details on the gap volume algorithm.
+
+  \warning
+  The volumes calculated and printed are in m$^3$ and refer to the modeled
+  geometry.
+
+  In addition, the model computes the production of CO in the gas using either
+  the `GA` or `Proksch` models.
+
+  **GA model**
+
+  $$
+  \begin{aligned}
+  CO_{\mathrm{prod}}=\min\left(0.625,\; 1.64e^{\frac{-3311}{T}}\right)
+  \end{aligned}
+  $$
+
+  where:
+  - $CO_{\mathrm{prod}}$ is produced CO per fission (atoms/fission),
+  - $T$ is temperature (K),
+  - $0.625$ is an upper limit (as in PARFUME).
+
+  **Proksch model**
+
+  $$
+  \begin{aligned}
+  \log\frac{O/F}{t^2}=-0.21-\frac{8500}{T}
+  \end{aligned}
+  $$
+
+  where:
+  - $O/F$ is oxygen release at end of irradiation (atoms/fission),
+  - $t$ is irradiation time (days),
+  - $T$ is time-averaged particle surface temperature (K).
+
+  The oxygen release is limited by:
+
+  $$
+  \begin{aligned}
+  (O/F)_{\max}=0.40f_U+0.85f_{Pu}
+  \end{aligned}
+  $$
+
+  where $f_U$ and $f_{Pu}$ are the fission fractions of $^{235}$U and
+  $^{239}$Pu + $^{241}$Pu, respectively.
+
+  All released oxygen is assumed to form carbon monoxide, hence
+  $CO_{\mathrm{prod}}=O/F$.
+admonitions:
+- kind: warning
+  body: |
+    The volumes reported by this model are in m^3 and correspond to the modeled
+    geometry. Interpret results consistently with the chosen TRISO representation
+    (2D vs 3D, scaling assumptions, etc.).
+options:
+- key: heatSourceName
+  location: solverDict
+  type: word
+  required: false
+  default: Q
+  description: |
+    Name of the volumetric heat source field used to infer fission rate / CO
+    production-related quantities.
+- key: COProductionModel
+  location: solverDict
+  type: word
+  required: false
+  default: Proksch
+  description: |
+    CO production model selection: `Proksch` (default) or `GA`.
+- key: model3D
+  location: solverDict
+  type: bool
+  required: false
+  default: false
+  description: |
+    If true, interpret the modeled configuration as 3D.
+- key: bufferPorosity
+  location: solverDict
+  type: scalar
+  required: true
+  description: |
+    Porosity of the buffer layer.
+- key: bufferZones
+  location: solverDict
+  type: list[word]
+  required: true
+  description: |
+    Names of the cellZones corresponding to the buffer material.
+- key: gapPatches
+  location: solverDict
+  type: list[word]
+  required: true
+  description: |
+    Patches defining the TRISO gap (e.g. `bufferOuter ipycInner`).
+- key: gapVolumeOffset
+  location: solverDict
+  type: scalar
+  required: false
+  default: 0.0
+  description: |
+    Offset applied to the initial gap volume.
+- key: gasReserveVolume
+  location: solverDict
+  type: scalar
+  required: false
+  default: 0.0
+  description: |
+    Initial volume of reserve gas for pressure calculation.
+- key: gasReserveTemperature
+  location: solverDict
+  type: scalar
+  required: false
+  default: 290
+  description: |
+    Initial temperature of reserve gas (K).
+- key: gasReserveTemperatureList
+  location: solverDict
+  type: table
+  required: false
+  py:
+    type: OffbeatTimeProfile
+    imports:
+    - from foamForNuclear.timeProfile import OffbeatTimeProfile
+  description: |
+    Optional time-dependent table for reserve gas temperature.
+    If present, it overrides `gasReserveTemperature`.
+
+    Expected structure:
+    - `type`: table
+    - `values`: list of (time, temperature)
+    - optional `outOfBounds` (default: clamp)
+    - optional `interpolationScheme` (e.g. linear)
+- key: includeCentralHole
+  location: solverDict
+  type: bool
+  required: false
+  default: true
+  description: |
+    Toggle inclusion of central hole volume in the free volume calculation.
+- key: includeDishes
+  location: solverDict
+  type: bool
+  required: false
+  default: true
+  description: |
+    Toggle inclusion of dish geometry in the free volume calculation.
+externalOptions:
+- key: massFractions
+  path: <timeDirectory>.uniform.gapGas
+  type: dictionary[str, scalar]
+  required: true
+  description: |
+    Initial gas mass fractions for:
+    `Ar`, `He`, `Kr`, `Ne`, `Rn`, `Xe`.
+- key: gasPressureType
+  path: <timeDirectory>.uniform.gapGas
+  type: word
+  required: false
+  default: fromModel
+  description: |
+    Pressure prescription method:
+    - `fromModel`: computed by the gap gas model (default)
+    - `fixed`: use `gasPressure`
+    - `fromList`: use `gapPressureList`
+- key: gasPressure
+  path: <timeDirectory>.uniform.gapGas
+  type: scalar
+  required: false
+  description: |
+    Fixed gas pressure (Pa), only used when `gasPressureType` is `fixed`.
+- key: gapPressureList
+  path: <timeDirectory>.uniform.gapGas
+  type: table
+  required: false
+  description: |
+    Time-dependent table for gap pressure (Pa), only used when
+    `gasPressureType` is `fromList`.
+
+    Expected structure:
+    - `type`: table
+    - `values`: list of (time, pressure)
+    - optional `outOfBounds` (default: clamp)
+    - optional `interpolationScheme` (e.g. linear)
+usage:
+- comment: |
+    Activate the TRISO gap gas model.
+  snippet: |-
+    gapGas TRISO;
+
+    gapGasOptions
+    {
+        gapPatches ( bufferOuter ipycInner );
+        bufferPorosity 0.4054;
+        bufferZones ( Buffer );
+
+        COProductionModel Proksch;
+        model3D false;
+
+        gapVolumeOffset 0.0;
+        gasReserveVolume 0.0;
+        gasReserveTemperature 290;
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation

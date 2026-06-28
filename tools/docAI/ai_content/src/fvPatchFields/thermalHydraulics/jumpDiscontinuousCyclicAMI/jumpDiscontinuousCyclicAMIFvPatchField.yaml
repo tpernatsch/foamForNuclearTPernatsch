@@ -1,0 +1,37 @@
+description: |
+  Base class for a *jump* (offset) cyclic boundary condition implemented with a
+  discontinuous cyclic AMI (arbitrary mesh interface) coupling.
+
+  It enforces a cyclic condition between a pair of patches, where the
+  communicated field values are shifted by a prescribed “jump” across the
+  interface. Communication is performed using AMI interpolation.
+
+  Identical to [@jumpCyclicAMIFvPatchField] but for discontinuous cyclic AMI
+  patches.
+formulation: |
+  This class provides the interface machinery for a discontinuous cyclic AMI
+  coupling with an additional jump/offset. The detailed jump definition is
+  delegated to derived classes via the pure virtual function `jump()`.
+
+  In general, the coupled (neighbor) patch field is obtained by:
+  $$
+  \phi_{\text{nbr}} = \mathcal{I}_{\text{AMI}}\left(\phi_{\text{src}}\right) + \Delta\phi_{\text{jump}}
+  $$
+  where $\mathcal{I}_{\text{AMI}}$ denotes the AMI interpolation operator and
+  $\Delta\phi_{\text{jump}}$ is the jump field returned by `jump()`.
+
+  - $\phi_{\text{src}}$ is the source patch field on the coupled side
+  - $\phi_{\text{nbr}}$ is the neighbor patch field used for coupling
+  - $\mathcal{I}_{\text{AMI}}$ is the AMI interpolation mapping between
+    non-conformal patch meshes
+  - $\Delta\phi_{\text{jump}}$ is the jump/offset across the cyclic interface
+    (type-dependent), provided by derived classes
+
+  The actual evaluation and interface-matrix update are handled through the
+  OpenFOAM coupled boundary condition infrastructure.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

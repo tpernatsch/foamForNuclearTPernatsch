@@ -1,0 +1,141 @@
+description: |-
+  Many multi-physics simulations require flexible control over the time
+  advancement procedure. While some physics must be tightly coupled, others
+  interact only weakly. This situation is common in multi-scale simulations:
+  physics are strongly coupled within a single scale but only loosely coupled
+  across scales.
+
+  To provide this flexibility, dedicated *loops* are introduced. A loop defines
+  a set of solvers that are iterated together using a prescribed convergence
+  strategy. For example, the ``picardLoop`` contains a list of solvers that
+  must be tightly coupled. During run-time, when any of the involved physics is
+  corrected, all solvers in the ``picardLoop`` are iteratively updated until a
+  user-specified convergence criterion is satisfied. At each iteration, both
+  volumetric and boundary field exchanges are performed to update the coupling
+  variables between regions.
+
+  In addition to the standard ``picardLoop``, other loop types exist, each
+  designed for specific coupling strategies. These may include additional field
+  manipulations, residual evaluations, or specialized update sequences tailored
+  to the physics being solved.
+
+  All *loops* are defined in the ``system/regionsDict`` file, within the
+  ``regionSolvers`` sub-dictionary. Each loop entry specifies:
+
+  - the list of sub-solvers that are tightly coupled,
+  - the convergence residual threshold,
+  - the maximum number of iterations, and
+  - any optional parameters associated with the chosen loop type.
+
+  Loops may also be nested, resulting in hierarchical or tree-like coupling
+  structures, as illustrated in the usage below.
+
+  Current loops available in *GeN-Foam* include:
+
+  .. toctree::
+    :maxdepth: 1
+    :glob:
+
+    ./**
+
+  .. raw:: html
+
+   <br><br>
+options:
+- key: fluidRegionName
+  type: word
+  required: true
+  default: null
+  description: ''
+- key: fluidSidePatchName
+  type: word
+  required: true
+  default: null
+  description: ''
+- key: solidRegionName
+  type: word
+  required: true
+  default: null
+  description: ''
+- key: solidSidePatchName
+  type: word
+  required: true
+  default: null
+  description: ''
+- key: underRelaxation
+  type: scalar
+  required: true
+  default: null
+  description: ''
+usage:
+- comment: 'General usage is as follow  '
+- snippet: |-
+    regionSolvers
+    {
+        multiPhysicsSolver1 //multiPhysicsSolverName
+        {
+            solvers // list of solvers
+            {
+                regionName              solverName;
+                fluidRegion             onePhase;
+                neutroRegion            diffusionNeutronics;
+                multiPhysicsSolver2     loop;
+            }
+            maxResidual 0.00005;   // residual after which the iteration is ended
+            maxIterations 3;       // maximum number of iterations before the loop is ended
+            includeFluidMechanicsInLoop  false; //defaulted to false
+        }
+        multiPhysicsSolver2
+        {
+            ...
+        }
+    }
+- comment: "A specific example of coupling is reported below  \n       .. mermaid::\n\n           graph TD\n             \
+    \  A[GeN-Foam] --> B[Solver 1]\n               A --> C[MultiPhysicsSolver 1]\n               C --> D[Solver 2]\n     \
+    \          C --> E[MultiPhysicsSolver 2]\n               E --> F[Solver 3]\n               E --> G[Solver 4]\n\n\n Which\
+    \ can be translated in *system/regionsDict*:\n\n .. code :: cpp\n\n     // In system/regionsDict\n\n     regionSolvers\n\
+    \     {\n         Level_0\n         {\n             Solver1                 physicsB;\n             MultiPhysicsSolver1\
+    \     picardLoop;\n         }\n         MultiPhysicsSolver1\n         {\n             subSolvers\n             {\n   \
+    \              Solver2                 physicsD;\n                 MultiPhysicsSolver2     picardLoop;\n             }\n\
+    \             maxResidual     0.00005;\n             maxIterations   3;\n         }\n         MultiPhysicsSolver2\n  \
+    \       {\n             subSolvers\n             {\n                 Solver3     physicsF;\n                 Solver4 \
+    \    physicsG;\n             }\n             maxResidual     0.00005;\n             maxIterations   3;\n         }\n \
+    \    }\n\n\n Note that all the physics that are specified in the ``Level_0`` of the ``regionSolvers`` dict are\n loosely\
+    \ coupled, whereas only those specified within a ``picardLoop`` are\n tightly coupled.\n\n The previous example would\
+    \ correspond to a time loop as shown below.\n\n .. mermaid::\n\n     graph TD\n         S@{ shape: sm-circ, label: \"\
+    Small start\" } --> A\n         A[New time step] --> B[Solver 1]\n         B --> C[Solver 2]\n         C --> D[Solver\
+    \ 3]\n         D --> E[Solver 4]\n         E --> F{Is MultiPhysicsSolver 2 converged?}\n         F -- No --> D\n     \
+    \    F -- Yes --> G{Is MultiPhysicsSolver 1 converged?}\n         G -- No --> C\n         G -- Yes --> A\n         G -->\
+    \ End@{ shape: framed-circle, label: \"Stop\" }"
+- comment: |-
+    If includeFluidMechanicsInLoop entry is set to false (default value), for the thermal-hydraulics
+    solvers only the energy is solved iteratively with the other physics, while the fluid-mechanics
+    is solved only once at the beginning of the iteration. This is done so that useless
+    fluid-mechanics iterations are solved.
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - options
+  formulation_added: true
+formulation: "This class implements a numerical coupling *iteration controller* that repeatedly calls the ``correct()``-like\
+  \ member functions of a user-provided set of sub-solvers until a convergence criterion is met. It does not itself discretize\
+  \ or solve any governing PDEs; the physical models (e.g., neutron diffusion, energy equation, momentum equations) are implemented\
+  \ in the underlying sub-solvers.\n\nLet the coupled physics state be represented abstractly by a vector of region/field\
+  \ unknowns $\\mathbf{u}$, partitioned by sub-solver blocks $\\mathbf{u}_i$. A loop iteration performs sequential (or hierarchical)\
+  \ updates of these blocks via the sub-solvers’ correction operators $\\mathcal{F}_i$:\n\n$$ \\mathbf{u}^{(k+1)} = \\mathcal{G}\\\
+  !\\left(\\mathbf{u}^{(k)}\\right), \\qquad \n   \\mathcal{G} = \\mathcal{F}_N \\circ \\cdots \\circ \\mathcal{F}_2 \\circ\
+  \ \\mathcal{F}_1, $$\n\nwhere the composition order corresponds to the order in which solvers are stored and called inside\
+  \ the loop. The iteration is terminated when a user-defined residual metric $r^{(k)}$ (computed by the loop via the sub-solvers’\
+  \ residual accessors) satisfies:\n\n$$ r^{(k)} \\le r_{\\text{max}}, \\qquad k \\le k_{\\text{max}}. $$\n\nVariables:\n\
+  - $k$ is the loop iteration index.\n- $\\mathbf{u}^{(k)}$ is the coupled state (all fields exchanged among regions) at iteration\
+  \ $k$.\n- $\\mathbf{u}_i$ is the subset of unknowns advanced by sub-solver $i$.\n- $\\mathcal{F}_i$ is the correction/update\
+  \ operator implemented by sub-solver $i$ (e.g., solving discretized PDEs for that physics).\n- $\\mathcal{G}$ is the overall\
+  \ loop update operator (composition of sub-solver updates).\n- $r^{(k)}$ is the loop residual measure evaluated at iteration\
+  \ $k$ (as returned/aggregated by the involved solvers).\n- $r_{\\text{max}}$ is the user-specified ``maxResidual`` threshold.\n\
+  - $k_{\\text{max}}$ is the user-specified ``maxIterations`` limit.\n\nThe “tightly coupled” vs “loosely coupled” behavior\
+  \ (e.g., optional inclusion of fluid-mechanics iterations) is realized by choosing which sub-solvers participate in the\
+  \ iterative fixed-point update $\\mathcal{G}$ versus being updated once per outer time step. This is consistent with standard\
+  \ fixed-point/Picard-style coupling strategies described in texts such as Duderstadt & Hamilton and Todreas & Kazimi (for\
+  \ coupled neutronics–thermal-hydraulics concepts), though the specific residual definition and exchange operators are delegated\
+  \ to the sub-solvers and coupling infrastructure rather than formulated here."

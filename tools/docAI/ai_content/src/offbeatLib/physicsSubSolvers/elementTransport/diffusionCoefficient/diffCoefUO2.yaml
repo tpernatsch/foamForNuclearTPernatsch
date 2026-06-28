@@ -1,0 +1,39 @@
+description: |
+  Built-in diffusion coefficient correlations for fission products in a UO$_2$
+  kernel. The class dispatches internally per species: Cs, Kr, Ag, and Sr.
+
+  Correlations are taken from the Parfume manual and an INL report.
+formulation: |
+  This model provides Arrhenius-type temperature-dependent diffusion
+  coefficients $D(T)$ for fission products in UO$_2$, evaluated cell-wise and
+  also mapped to boundary faces using the boundary temperature field $T_p$.
+
+  For each species, the diffusion coefficient is computed as a sum of
+  Arrhenius terms of the form $A \exp(-E/(R T))$, where $E$ is an activation
+  energy, $R$ is the universal gas constant, and $T$ is the local temperature.
+
+  $$ D_{\mathrm{Cs}}(T) = 5.6\times 10^{-8}\exp\!\left(-\frac{209\,000}{R\,T}\right)
+     + 5.2\times 10^{-4}\exp\!\left(-\frac{362\,000}{R\,T}\right) $$
+
+  $$ D_{\mathrm{Kr}}(T) =
+     \begin{cases}
+       1.3\times 10^{-12}\exp\!\left(-\frac{126\,000}{R\,T}\right), & T < 1773.15 \\
+       8.8\times 10^{-15}\exp\!\left(-\frac{54\,000}{R\,T}\right)
+       + 6.0\times 10^{-1}\exp\!\left(-\frac{480\,000}{R\,T}\right), & T \ge 1773.15
+     \end{cases} $$
+
+  - $D$ is the species diffusion coefficient (written into the OpenFOAM
+    field passed as `sf`)
+  - $T$ is the local temperature field (`T` argument, `volScalarField`)
+  - $T_p$ is the boundary temperature on a patch face (`T.boundaryField()`)
+  - $R$ is the universal gas constant, taken as $8.31446$ J/mol/K
+  - $1773.15$ K is the Kr correlation switching temperature
+
+  The implementation updates both internal cells and boundary faces for the
+  provided address list `addr` (cell indices).
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

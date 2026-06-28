@@ -1,0 +1,79 @@
+description: |
+  Class modelling the thermal expansion of SiC with a value from Snead. the mean
+  thermal expansion coefficient is calculated and the The method of Niffenegger and Reichlin (2012)
+  is employed to convert the mean thermal expansion values into instantaneous values.
+
+  Snead model was used for UN TRIOS by Collin(2014).
+
+  -M. Niffenegger and K. Reichlin. The proper use of thermal expansion coefficients
+  in finite element calculations. Nuclear Engineering and Design, 243:356–359, 2012.
+  -L. L. Snead, T. Nozawa, Y. Katoh, T.-S. Byun, S. Kondo, and D. A. Petti.
+  Handbook of sic properties for fuel performance modeling. Journal of Nuclear Materials,
+  371:329–377, 2007.
+  -Blaise P. Collin. Modeling and analysis of UN TRISO fuel for LWR application
+  using the Parfume code. Journal of Nuclear Materials, 451(1):65–77, 2014.
+options:
+- key: Treference
+  type: scalar
+  required: false
+  default: 298.15
+  description: |
+    Reference temperature $T_{\mathrm{ref}}$ used to determine the mean thermal expansion coefficient.
+- key: par1
+  type: scalar
+  required: false
+  default: -1.8276
+  description: |
+    Snead polynomial coefficient $p_1$ used in the mean thermal expansion model.
+- key: par2
+  type: scalar
+  required: false
+  default: 0.0178
+  description: |
+    Snead polynomial coefficient $p_2$ used in the mean thermal expansion model.
+- key: par3
+  type: scalar
+  required: false
+  default: -1.5544e-05
+  description: |
+    Snead polynomial coefficient $p_3$ used in the mean thermal expansion model.
+- key: par4
+  type: scalar
+  required: false
+  default: 4.5246e-09
+  description: |
+    Snead polynomial coefficient $p_4$ used in the mean thermal expansion model.
+- key: par5
+  type: scalar
+  required: false
+  default: 5e-6
+  description: |
+    High-temperature constant mean thermal expansion coefficient $p_5$ (used for $T \ge 1273.15\,\mathrm{K}$).
+usage:
+- comment: |
+    Example selection of the `SiCSnead` thermalExpansion model.
+  snippet: |-
+    materials
+    {
+      SiC
+      {
+        type SiC;
+        thermalExpansion
+        {
+          type SiCSnead;
+          // Treference 298.15;
+          // par1 -1.8276;
+          // par2 0.0178;
+          // par3 -1.5544e-5;
+          // par4 4.5246e-9;
+          // par5 5e-6;
+        }
+      }
+    }
+dictionary: thermalExpansion
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary
