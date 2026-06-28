@@ -1,0 +1,48 @@
+description: |
+  Subcooled nucleate boiling heat transfer (HTC) model providing the
+  subcooled boiling contribution to the wall heat transfer coefficient.
+
+  The model supports the following empirical correlations:
+  - Chen: Chen (1966) superposition model
+  - JensLottes: Jens-Lottes (1951) empirical correlation
+  - Thom: Thom et al. (1965) empirical correlation
+  - Rohsenow: Rohsenow (1952) pool-boiling correlation
+formulation: |
+  The total wall HTC is computed as the maximum of the single-phase HTC
+  contribution and the subcooled boiling HTC contribution, ensuring that the
+  boiling term does not reduce the overall heat transfer.
+
+  For each correlation, the subcooled boiling HTC $h_{SCB}$ is evaluated from
+  the bulk/surface thermodynamic state and the wall heat flux $qWall$.
+  In the Chen model, $h_{SCB}$ is obtained by superposing a convective term
+  and a nucleate boiling term:
+  $$
+  h_{SCB} = F\,h_c + S\,h_{NB}
+  $$
+  where $F$ is a suppression factor and $S$ is a boiling suppression factor.
+
+  The final HTC returned by this model is:
+  $$
+  h = \max(h_{SCB},\,h_{SP})
+  $$
+  where $h_{SP}$ is the provided single-phase HTC.
+
+  Variables:
+  - $T0$ is the bulk coolant temperature [K]
+  - $Tw$ is the wall temperature [K]
+  - $p$ is the pressure [Pa]
+  - $G$ is the mass flux [kg/(m$^2\cdot$s)]
+  - $DH$ is the hydraulic diameter [m]
+  - $qWall$ is the wall heat flux magnitude [W/m$^2$]
+  - $hSP$ is the single-phase HTC [W/(m$^2\cdot$K)]
+  - $h_{SCB}$ is the subcooled boiling HTC [W/(m$^2\cdot$K)]
+  - $h_{SP}$ is the single-phase HTC [W/(m$^2\cdot$K)]
+  - $h$ is the returned HTC [W/(m$^2\cdot$K)]
+  - $T_{film}$ is the film temperature $T_{film}=\tfrac{1}{2}(T0+Tw)$ [K]
+  - $T_{sat}$ is the saturation temperature at pressure $p$ [K]
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

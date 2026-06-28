@@ -1,0 +1,75 @@
+description: |
+  Heat capacity model for (U,Pu)O2 derived from MatproV11.
+options:
+- key: ED
+  type: scalar
+  required: false
+  default: 1.967e5
+  description: |
+    Model parameter used in the PuO2 contribution.
+- key: K1
+  type: scalar
+  required: false
+  default: 347.4
+  description: |
+    Model parameter used in the PuO2 contribution.
+- key: K2
+  type: scalar
+  required: false
+  default: 3.95e4
+  description: |
+    Model parameter used in the PuO2 contribution.
+- key: K3
+  type: scalar
+  required: false
+  default: 3.86e7
+  description: |
+    Model parameter used in the PuO2 contribution.
+- key: OM
+  type: scalar
+  required: false
+  default: 2.0
+  description: |
+    Oxygen-to-metal ratio used in both UO2 and PuO2 contributions (via the factor $\\frac{OM}{2}$).
+- key: oxygenMetalRatio
+  type: scalar
+  required: false
+  description: |
+    Optional override for the oxygen-to-metal ratio. Unless strictly necessary, it is suggested to define ``oxygenMetalRatio`` in the base/composition dictionary.
+- key: theta
+  type: scalar
+  required: false
+  default: 571
+  description: |
+    Model parameter used in the PuO2 contribution.
+usage:
+- comment: |
+    Example selection of the `UPuO2Matpro` heat capacity model.
+  snippet: |-
+    materials
+    {
+        fuel
+        {
+            material UPuO2;
+
+            heatCapacity
+            {
+                type UPuO2Matpro;
+                // ED 1.967e5;
+                // K1 347.4;
+                // K2 3.95e4;
+                // K3 3.86e7;
+                // OM 2.0;
+                // oxygenMetalRatio baseDict.lookupOrDefault<scalar>("oxygenMetalRatio", 2.0;
+                // theta 571;
+            }
+        }
+    }
+dictionary: heatCapacity
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options
+  - dictionary

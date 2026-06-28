@@ -1,0 +1,62 @@
+description: |
+  Constant saturation pressure and temperature.
+
+  This saturation model enforces a constant saturation temperature and takes the
+  saturation pressure directly from the local pressure field $p$.
+formulation: |
+  The model provides the saturation temperature $T_{\mathrm{sat}}$ and saturation
+  pressure $p_{\mathrm{sat}}$ used by the phase-change/boiling closure.
+
+  $$ T_{\mathrm{sat}}(i) = T_{\mathrm{sat}}^{\ast} $$
+  $$ p_{\mathrm{sat}}(i) = p(i) $$
+  $$ \ln p_{\mathrm{sat}}(i) = \ln\!\big(p(i)\big) $$
+  $$ \frac{d p_{\mathrm{sat}}}{d p}(i) = 0 $$
+
+  where:
+
+  - $i$ is the cell index (OpenFOAM `celli`)
+  - $T_{\mathrm{sat}}^{\ast}$ is the constant saturation temperature read from the
+    dictionary as `value`
+  - $p(i)$ is the local pressure from the OpenFOAM field `p` (a `volScalarField`)
+  - $p_{\mathrm{sat}}(i)$ is the saturation pressure returned by `valuePSat`
+  - $\ln p_{\mathrm{sat}}(i)$ is the natural logarithm returned by `valueLnPSat`
+admonitions: []
+options:
+- key: value
+  type: scalar
+  location: solverDict
+  required: true
+  description: |
+    Constant saturation temperature $T_{\mathrm{sat}}^{\ast}$.
+- key: value
+  type: scalar
+  required: true
+  default: null
+  description: ''
+usage:
+- comment: 'The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the
+    ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``).
+    Here is a snippet enabling the model:'
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type constantTemperature;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - options
+  stub_improved: true

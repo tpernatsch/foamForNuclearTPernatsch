@@ -1,0 +1,96 @@
+description: |
+  Transport solver for porosity redistribution on a moving (dynamic) mesh.
+  This class is a derived implementation of ``transportSolver`` that advances
+  the porosity field and, when enabled, updates the mesh geometry to represent
+  the evolution of a central hole (inner void) driven by pore transport and
+  coalescence.
+formulation: |
+  The solver advances a porosity transport equation with optional diffusive
+  and bounded-advection contributions, and can couple the porosity evolution
+  to a dynamic mesh motion (central hole expansion/coalescence).
+
+  $$ \frac{\partial \phi}{\partial t} + \nabla \cdot \left( \mathbf{u}_p \, \phi \right)
+     = \nabla \cdot \left( d \, \nabla \phi \right) $$
+
+  where:
+
+  - $\phi$ is the porosity field ``porosity_``
+  - $\mathbf{u}_p$ is the pore velocity field ``poreVelocity_`` (optionally used with a
+    direction convention controlled by ``useDirectionPV``)
+  - $d$ is the pore diffusion coefficient ``d_`` (set from material model dictionaries)
+  - $t$ is time
+
+  The diffusion coefficient $d$ is obtained from the material model dictionary
+  of the fuel material(s) via the key ``poreDiffusionCoeff`` (default
+  $1\times 10^{-12}$).
+
+  When ``updateMesh`` is enabled, the solver can move/expand a central hole
+  by using patch information from ``porosityOptions.patches`` and by computing
+  a coalescence velocity from parameters in ``vCoalescenceParameters``.
+dictionary: neutronicsProperties
+optionsLocations:
+- name: porosityOptions
+  in: solverDict
+options:
+- key: diffusiveTerm
+  type: bool
+  required: false
+  default: true
+  description: |
+    Enable/disable the diffusive contribution in the porosity transport equation.
+- key: boundedAdvectionTerm
+  type: bool
+  required: false
+  default: false
+  description: |
+    Enable/disable a bounded advection treatment for the porosity transport.
+- key: updateMesh
+  type: bool
+  required: false
+  default: true
+  description: |
+    If true, enable coupling to dynamic mesh updates for the central hole
+    representation.
+- key: moveHole
+  type: bool
+  required: false
+  default: true
+  description: |
+    If true, allow the initialized central hole to move/expand during the run.
+- key: holePosition
+  type: vector
+  required: false
+  default: (0 0 0)
+  description: |
+    Initial position of the central hole center.
+- key: useRiCorrection
+  type: bool
+  required: false
+  default: true
+  description: |
+    Enable correction for the increasing inner radius in lower-scale models.
+- key: useDirectionPV
+  type: bool
+  required: false
+  default: false
+  description: |
+    If true, use the pore velocity direction (inverse convention) for the
+    expansion of the central hole.
+- key: patches
+  type: list[word]
+  required: false
+  description: |
+    List of patch names corresponding to inner hole patches. Used to build
+    ``holePatchIDs_`` when ``updateMesh`` is activated.
+- key: vCoalescenceParameters
+  type: table
+  required: false
+  description: |
+    Sub-dictionary containing coalescence velocity parameters. The code expects
+    keys ``a``, ``b``, ``c``, ``d``, and ``k`` inside the ``vCoalescenceParameters``
+    sub-dictionary. This is required when ``updateMesh`` is activated.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

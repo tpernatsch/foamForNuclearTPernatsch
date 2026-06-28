@@ -1,0 +1,70 @@
+description: |
+  Heat transfer coefficient model covering multiple boiling and convection regimes,
+  from single-phase convection, to two-phase convection, sub-cooled boiling and
+  nucleate boiling, and finally film boiling (as applicable). The intent is to
+  replicate the multi-regime behavior of TRACE.
+
+  This class is implemented as a composition of sub-models:
+  forced convection, pool boiling, optional film condensation, nucleate boiling
+  onset, sub-cooled boiling fraction, plus flow enhancement and suppression
+  factors.
+formulation: |
+  The total wall heat transfer coefficient is assembled from regime-specific
+  contributions and modulated by flow enhancement and suppression factors.
+
+  $$ h = h_{FC} + F \, h_{PB} \, S $$
+
+  where:
+
+  - $h$ is the effective heat transfer coefficient returned by ``value()``
+  - $h_{FC}$ is the forced-convection heat transfer coefficient from
+    ``forcedConvectionModel``
+  - $h_{PB}$ is the pool-boiling heat transfer coefficient from
+    ``poolBoilingModel``
+  - $F$ is the flow enhancement factor from ``flowEnhancementFactorModel``
+  - $S$ is the suppression factor from ``suppressionFactorModel``
+
+  Optional components may be enabled if present in the input dictionary:
+  - ``filmCondensationModel`` provides a condensation-related coefficient
+    (used when the model logic requires it).
+  - ``nucleateBoilingOnsetModel`` provides the onset temperature/criterion for
+    nucleate boiling.
+  - ``subCooledBoilingFractionModel`` provides the fraction of sub-cooled
+    boiling that results in vapour generation, and is used to access/set the
+    wall mass-transfer field ``dmdtW.<FFPairName>``.
+
+  The model uses references to the wall and fluid temperature fields:
+  - ``Tw_`` is the wall temperature field
+  - ``Tf_`` is the fluid temperature field
+admonitions:
+- kind: note
+  body: This model is selected solely by its runtime ``typeName`` and defines no additional options.
+dictionary: neutronicsProperties
+options: []
+usage:
+- comment: 'The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the
+    ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``).
+    Here is a snippet enabling the model:'
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type multiRegimeBoilingTRACE;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - dictionary
+  stub_improved: true

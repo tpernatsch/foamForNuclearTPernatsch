@@ -1,0 +1,66 @@
+description: |
+  Class modelling the thermal expansion of Buffer through the code Parfume.
+options:
+- key: par1
+  type: scalar
+  required: false
+  default: 5.0
+  description: |
+    Parfume parameter $p_1$ used in the thermal expansion coefficient $\alpha$.
+    Read from the ``thermalExpansion`` sub-dictionary if present; otherwise defaults to 5.0.
+- key: par2
+  type: scalar
+  required: false
+  default: 0.11
+  description: |
+    Parfume parameter $p_2$ used in the thermal expansion coefficient $\alpha$.
+    Read from the ``thermalExpansion`` sub-dictionary if present; otherwise defaults to 0.11.
+- key: par3
+  type: scalar
+  required: false
+  default: 400.0
+  description: |
+    Parfume parameter $p_3$ used in the thermal expansion coefficient $\alpha$.
+    Read from the ``thermalExpansion`` sub-dictionary if present; otherwise defaults to 400.0.
+- key: par4
+  type: scalar
+  required: false
+  default: 700.0
+  description: |
+    Parfume parameter $p_4$ used in the thermal expansion coefficient $\alpha$.
+    Read from the ``thermalExpansion`` sub-dictionary if present; otherwise defaults to 700.0.
+usage:
+- comment: |
+    Example selection of the `BufferParfume` thermalExpansion model.
+  snippet: |-
+    materials
+    {
+      Buffer
+      {
+        type Buffer;
+        thermalExpansion
+        {
+          type BufferParfume;
+          // par1 5.0;
+          // par2 0.11;
+          // par3 400.0;
+          // par4 700.0;
+        }
+      }
+    }
+formulation: |
+  The thermal expansion model computes the symmetric tensor thermal expansion
+  coefficient $\alpha$ and sets the thermal expansion strain tensor as
+  $$\boldsymbol{\varepsilon}_{th} = \alpha \, (T - T_{ref}) \, \mathbf{I},$$
+  where $T$ is the cell temperature in degrees Celsius and $T_{ref}$ is the
+  reference temperature (both converted internally from Kelvin to °C).
+  The scalar coefficient is given by
+  $$\alpha = p_1 \left(1 + p_2 \frac{(T - p_3)}{p_4}\right)\,10^{-6},$$
+  with $p_1$, $p_2$, $p_3$, $p_4$ set by the input parameters ``par1``,
+  ``par2``, ``par3``, and ``par4`` respectively.
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - formulation

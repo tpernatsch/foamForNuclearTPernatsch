@@ -1,0 +1,33 @@
+description: |
+  Base sliceMapper class. It defines the strategy used to map mesh cells or regions
+  into axial or logical slices.
+
+  Slice mappers are used to aggregate field quantities (e.g. temperature,
+  power, burnup) over geometrically or logically defined virtual slices.
+
+  The base class provides the common interface and infrastructure, but if selected
+  it deactivates the creation of virtual axial slices, i.e. no
+  virtual slices are defined.
+admonitions:
+- kind: warning
+  body: |
+    The absence of a slice mapper may cause conflicts with other models that
+    partially or entirely depend on it (e.g. some of the behavioral models
+    for fuel performance such as the relocation model).
+options: []
+usage:
+- comment: |
+    Example of selecting a slice mapper in the `solverDict` file.
+  snippet: |-
+    sliceMapper
+    {
+      type none;
+    }
+dictionary: solverDict
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - admonitions
+  - dictionary

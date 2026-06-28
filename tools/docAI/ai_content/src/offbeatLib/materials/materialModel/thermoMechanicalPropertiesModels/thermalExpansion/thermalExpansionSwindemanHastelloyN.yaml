@@ -1,0 +1,44 @@
+description: |
+  Class modelling thermal expansion of H-N from Swinderman.
+options:
+- key: par1
+  type: scalar
+  required: false
+  default: 0.005291
+  description: |
+    Parameter for the Swindeman thermal expansion model. Read from the ``thermalExpansion`` sub-dictionary if present, otherwise from the top-level dictionary.
+- key: par2
+  type: scalar
+  required: false
+  default: 9.682
+  description: |
+    Parameter for the Swindeman thermal expansion model. Read from the ``thermalExpansion`` sub-dictionary if present, otherwise from the top-level dictionary.
+- key: par3
+  type: scalar
+  required: false
+  default: 107.8
+  description: |
+    Parameter for the Swindeman thermal expansion model. Read from the ``thermalExpansion`` sub-dictionary if present, otherwise from the top-level dictionary.
+usage:
+- comment: |
+    Example selection of the `HastelloyNSwindeman` thermalExpansion model.
+  snippet: |-
+    materials
+    {
+      cladding
+      {
+        type HastlloyN;
+        thermalExpansion
+        {
+          type HastelloyNSwindeman;
+          // par1 0.005291;
+          // par2 9.682;
+          // par3 107.8;
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options

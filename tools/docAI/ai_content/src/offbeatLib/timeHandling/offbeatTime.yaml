@@ -1,0 +1,53 @@
+description: |
+  OFFBEAT time controller that manages the simulation time unit in
+  days/hours/seconds as selected by the user in ``controlDict``.
+
+  The user must ensure that the chosen time unit is used consistently across
+  all time-dependent inputs (e.g. time tables in ``solverDict`` and
+  time-dependent boundary conditions). All such tables must be provided in
+  the same unit selected via ``controlDict``.
+formulation: |
+  This class provides a unit conversion layer between the OpenFOAM internal
+  time (real time in seconds) and a user-defined time unit.
+
+  Let $u$ be the user-selected time unit, and let $f(u)$ be the conversion
+  factor from user time to seconds. Then the mapping is:
+
+  $$
+  t_{\mathrm{s}} = f(u)\, t_{\mathrm{user}}
+  $$
+
+  and the inverse mapping is:
+
+  $$
+  t_{\mathrm{user}} = \frac{t_{\mathrm{s}}}{f(u)}
+  $$
+
+  where:
+
+  - $t_{\mathrm{s}}$ is the real simulation time in seconds (OpenFOAM time)
+  - $t_{\mathrm{user}}$ is the current time expressed in the user unit
+  - $u$ is the selected unit (set by ``controlDict`` entry ``userTime/type``)
+  - $f(u)$ is the conversion factor (seconds per user unit), with
+    $f(\mathrm{seconds})=1$, $f(\mathrm{hours})=3600$, and
+    $f(\mathrm{days})=86400$
+
+  The class also exposes the ratio between real-time and user-time as
+  $t_{\mathrm{s}}/t_{\mathrm{user}} = f(u)$.
+options: []
+optionsLocations: []
+admonitions: []
+usage:
+- comment: |
+    Select the OFFBEAT user time unit in ``controlDict`` via the ``userTime``
+    sub-dictionary. The default is seconds.
+  snippet: |-
+    userTime
+    {
+        // type is seconds by default
+        type seconds;//hours;//days;
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

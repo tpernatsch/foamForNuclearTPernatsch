@@ -1,0 +1,91 @@
+description: |
+  Boundary condition for enforcing a mass-conservation jump across non-conformal
+  cyclic AMI patch pairs using an arbitraryMeshInterface (AMI).
+
+  It is intended for 1D thermal-hydraulics (TH) simulations where the velocity
+  field is adjusted across the AMI according to porosity (``alpha``),
+  density (``thermo:rho``), and effective area ratios derived from the AMI
+  connectivity. The patch must use the custom underlying patch type
+  ``discontinuousCyclicAMI``.
+formulation: |
+  The boundary condition computes a mass-conservation coefficient on the
+  patch and uses it to derive flux correction factors for the neighbour
+  side of the cyclic AMI connection.
+
+  The mass-conservation coefficient is based on the local porosity,
+  density, and an effective patch area. Optionally, the effective area is
+  scaled by the number of connected branches.
+
+  $$ m = \alpha \, \rho \, A $$
+  $$ A = \sum_{f \in \text{patch}} |\mathbf{S}_f| \quad \text{(optionally } A \leftarrow n_b A \text{)} $$
+
+  where:
+
+  - $m$ is the mass-conservation coefficient returned by ``massConservationCoeffs()``
+  - $\alpha$ is the porosity field ``alpha`` on the patch
+  - $\rho$ is the density field ``thermo:rho`` on the patch
+  - $A$ is the effective patch area computed from ``magSf()``
+  - $n_b$ is the number of branches, taken as ``connectedPatches_.size()+1`` when
+    ``correctFluxAndAreas`` is enabled
+
+  When ``correctFluxAndAreas`` is enabled, the flux correction factor is computed
+  from the AMI neighbour flux and the remaining flux contribution:
+
+  $$ c = \frac{n_b \, F_n}{F_n + \sigma \, m + \epsilon} $$
+
+  where:
+
+  - $c$ is the flux correction factor returned by ``fluxCorrectionFactors()``
+  - $F_n$ is the neighbour-side flux from the field ``alphaRhoPhi`` on the
+    neighbour patch
+  - $\sigma$ is the patch field ``sigma``
+  - $m$ is the mass-conservation coefficient
+  - $\epsilon$ is ``VSMALL`` (a small positive number to avoid division by zero)
+  - $n_b$ is as defined above
+options:
+- key: connectedPatches
+  type: list[word]
+  required: false
+  default: []
+  description: |
+    List of patch names that are connected to the current patch through the
+    cyclic AMI, used to compute the remaining flux contribution. If not
+    provided, the list is empty.
+- key: correctFluxAndAreas
+  type: bool
+  required: false
+  default: false
+  description: |
+    If ``true``, scales the effective area by the number of branches
+    (``connectedPatches.size()+1``) and enables flux correction based on the
+    mass-conservation coefficient.
+- key: underRelaxation
+  type: scalar
+  required: false
+  default: 1
+  description: |
+    Under-relaxation factor applied to the computed jump update.
+- key: scalingFactors
+  type: scalar
+  required: false
+  description: |
+    Patch field ``scalingFactors`` read from the boundary dictionary (lazy read).
+    Used internally in the jump update.
+- key: sigma
+  type: scalar
+  required: false
+  description: |
+    Patch field ``sigma`` read from the boundary dictionary (lazy read).
+    Used internally in the flux correction computation.
+- key: fluxCorrectionFactors
+  type: scalar
+  required: false
+  description: |
+    Patch field ``fluxCorrectionFactors`` read from the boundary dictionary (lazy read).
+    Used internally in the jump update.
+dictionary: neutronicsProperties
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

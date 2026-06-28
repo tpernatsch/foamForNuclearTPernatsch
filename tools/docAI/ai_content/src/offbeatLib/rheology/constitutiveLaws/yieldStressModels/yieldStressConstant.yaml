@@ -1,0 +1,27 @@
+description: |
+  User-defined constant yield stress model.
+
+  When selected, the yield stress field is set to a single constant value
+  everywhere in the domain (internal cells and boundary faces).
+formulation: |
+  The model assumes a spatially uniform, time-independent yield stress
+  $\sigma_Y$:
+  $$
+  \sigma_Y(\mathbf{x}) = \sigmaYValue
+  $$
+  where the constant is applied to all addressed cells and boundary faces.
+
+  - $\sigma_Y(\mathbf{x})$ is the yield stress (Pa) at position $\mathbf{x}$
+  - $\sigmaYValue$ is the constant yield stress value read from the input
+    dictionary (Pa)
+options:
+- key: sigmaY
+  type: scalar
+  required: true
+  description: |
+    Constant yield stress value $\sigmaYValue$ in Pa.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

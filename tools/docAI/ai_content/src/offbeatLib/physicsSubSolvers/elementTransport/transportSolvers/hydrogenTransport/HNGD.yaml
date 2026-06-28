@@ -1,0 +1,66 @@
+description: |
+  Hydrides Nucleation Growth Dissolution (HNGD) model for hydrogen transport in
+  zirconium-based fuel materials.
+
+  The model couples hydrogen diffusion in solid solution (``Css`` field)
+  with temperature-driven and (optionally) stress-driven transport, and it
+  tracks the nucleation, growth, and dissolution of hydrogen precipitates
+  into solid hydrides (``Cpp`` field).
+
+  Kinetics parameters (diffusion coefficient, solubility limit, etc.) are
+  represented by internal fields (``KD``, ``KN``, ``KG``, ``Kss``) and are
+  updated by the model; their numerical values are controlled through the
+  ``HSolverOptions`` sub-dictionary and/or by the base
+  ``hydrogenTransportSolver`` implementation.
+formulation: |
+  The HNGD model assumes hydrogen transport in the solid phase is governed
+  by diffusion driven by concentration gradients and by temperature gradients.
+  Optionally, an additional stress-driven diffusion contribution is included.
+
+  The precipitation kinetics are represented through internal rate fields for
+  dissolution (``KD``), nucleation (``KN``), and growth (``KG``), together with
+  a solubility/precipitation limit field (``Kss``). The model updates these
+  coefficients and the associated source term (``S``) during ``correct()``.
+
+  The stress-driven diffusion term added to the hydrogen flux is:
+  $$
+  \phi \; \mathrel{-}= \; \left( \frac{D\,V_H}{R\,T} \right)\,\nabla\sigma_{\mathrm{Hyd}}
+  $$
+  where the stress-driven contribution is enabled by ``stressDrivenDiffusion``.
+
+  - $\phi$ is the hydrogen transport flux contribution assembled in ``correct()``
+  - $D$ is the effective hydrogen diffusion coefficient field ``diffH_`` (from the base solver)
+  - $V_H$ is the partial molar volume of hydrogen in Zr (set by ``V_H`` in ``HSolverOptions``)
+  - $R$ is the universal gas constant used in the base solver (appears as ``R`` in the code)
+  - $T$ is the temperature field ``T_``
+  - $\sigma_{\mathrm{Hyd}}$ is the hydride-related stress field ``sigmaHyd``
+
+  The precipitation limit is also made time-dependent during temperature holds
+  using a reference time ``t0`` (field ``t0_``), consistent with the model
+  description in the header.
+optionsLocations:
+- name: HSolverOptions
+  in: solverDict
+options:
+- key: stressDrivenDiffusion
+  type: bool
+  location: HSolverOptions
+  required: false
+  default: false
+  description: |
+    Enable stress-driven diffusion for hydrogen transport. When true, the
+    model looks up the ``sigmaHyd`` field and adds a stress-gradient-driven
+    contribution to the hydrogen flux.
+- key: V_H
+  type: scalar
+  location: HSolverOptions
+  required: false
+  default: 1.7e-06
+  description: |
+    Partial molar volume of hydrogen in Zr, $V_H$ in m$^3$/mol.
+    Used in the stress-driven diffusion term.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

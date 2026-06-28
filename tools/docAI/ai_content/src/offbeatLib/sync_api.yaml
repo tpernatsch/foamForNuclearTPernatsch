@@ -1,0 +1,23 @@
+description: |
+  Python API synchronization layer for foamForNuclear/offbeatLib.
+
+  The `sync_api` utility maps OFFBEAT/OpenFOAM model sub-dictionaries and
+  solver components from the C++ side into the corresponding Python package
+  structure (e.g. `models.py`) used by the foamForNuclear workflow.
+
+  This sidecar documents the configuration fields used by the synchronization
+  script (source/destination roots and folder mapping rules).
+formulation: |
+  This class does not implement a physical model. It provides a software
+  mapping between OFFBEAT model identifiers (as they appear in OpenFOAM
+  dictionaries) and the Python module/folder layout used to expose those
+  models.
+admonitions: []
+optionsLocations: []
+options: []
+externalOptions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,102 @@
+description: |
+  Class modelling thermal expansion of MOX fuel according to Martin
+  correlation.
+  Source : "The thermal expansion of solid UO2 and (U, Pu) mixed oxides — a
+  review and recommendations", D.G.Martin
+
+  url : https://doi.org/10.1016/0022-3115(88)90315-7
+options:
+- key: oxygenMetalRatio
+  type: scalar
+  required: false
+  description: |
+    Oxygen to metal ratio. Used to compute the deviation from stoichiometry
+    $x = 2 - \mathrm{oxygenMetalRatio}$. If not provided, it is read from
+    the material base dictionary (with a default of 2.0).
+- key: par1
+  type: scalar
+  required: false
+  default: 9.828e-06
+  description: |
+    Martin correlation parameter. Used in the low-temperature polynomial
+    for $\alpha(T)$ (for $T \le 923$ K).
+- key: par2
+  type: scalar
+  required: false
+  default: -6.39e-10
+  description: |
+    Martin correlation parameter. Used in the low-temperature polynomial
+    for $\alpha(T)$ (for $T \le 923$ K).
+- key: par3
+  type: scalar
+  required: false
+  default: 1.33e-12
+  description: |
+    Martin correlation parameter. Used in the low-temperature polynomial
+    for $\alpha(T)$ (for $T \le 923$ K).
+- key: par4
+  type: scalar
+  required: false
+  default: -1.757e-17
+  description: |
+    Martin correlation parameter. Used in the low-temperature polynomial
+    for $\alpha(T)$ (for $T \le 923$ K).
+- key: par5
+  type: scalar
+  required: false
+  default: 1.1833e-05
+  description: |
+    Martin correlation parameter. Used in the high-temperature polynomial
+    for $\alpha(T)$ (for $T > 923$ K).
+- key: par6
+  type: scalar
+  required: false
+  default: -5.013e-09
+  description: |
+    Martin correlation parameter. Used in the high-temperature polynomial
+    for $\alpha(T)$ (for $T > 923$ K).
+- key: par7
+  type: scalar
+  required: false
+  default: 3.756e-12
+  description: |
+    Martin correlation parameter. Used in the high-temperature polynomial
+    for $\alpha(T)$ (for $T > 923$ K).
+- key: par8
+  type: scalar
+  required: false
+  default: -6.125e-17
+  description: |
+    Martin correlation parameter. Used in the high-temperature polynomial
+    for $\alpha(T)$ (for $T > 923$ K).
+usage:
+- comment: |
+    Example selection of the `UPuO2Martin` thermalExpansion model.
+  snippet: |-
+    materials
+    {
+      fuel
+      {
+        type UPuO2:
+        thermalExpansion
+        {
+          type UPuO2Martin;
+          // oxygenMetalRatio 2.0;
+          // par1 9.828e-6;
+          // par2 -6.39e-10;
+          // par3 1.33e-12;
+          // par4 -1.757e-17;
+          // par5 1.1833e-5;
+          // par6 -5.013e-9;
+          // par7 3.756e-12;
+          // par8 -6.125e-17;
+        }
+      }
+    }
+dictionary: thermalExpansion
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

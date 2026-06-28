@@ -1,0 +1,32 @@
+description: |
+  Diffusion coefficient model evaluated in Arrhenius form.
+
+  The diffusion coefficient is computed as:
+  $$D = d_1 \exp\left(-\frac{q_1}{R\,T}\right) + d_2 \exp\left(-\frac{q_2}{R\,T}\right).$$
+formulation: |
+  This model computes the temperature-dependent diffusion coefficient $D$ using a
+  two-term Arrhenius expression, consistent with standard diffusion kinetics
+  treatments (e.g. Duderstadt & Hamilton for reactor materials diffusion
+  concepts; Arrhenius-type temperature dependence is widely used in fuel
+  performance modeling).
+
+  $$D(T) = d_1 \exp\left(-\frac{q_1}{R\,T}\right) + d_2 \exp\left(-\frac{q_2}{R\,T}\right).$$
+
+  - $D(T)$ is the diffusion coefficient (written to the OpenFOAM field $sf$)
+  - $d_1$ and $d_2$ are pre-exponential factors
+  - $q_1$ and $q_2$ are activation energies
+  - $R$ is the universal gas constant, taken as $8.31446$ J/(mol·K) in the code
+  - $T$ is the local temperature (from the OpenFOAM field $T$)
+  - $sf$ is the output OpenFOAM scalar field holding the diffusion coefficient
+  - $addr$ is the list of cell indices where $sf$ is updated
+  - $FpName$ selects which parameter set is used for the current material/species
+
+  If the material is flagged as cracked (see [diffCoefModel::isCracked] in the base
+  class), the diffusion coefficient is overridden to a nominal constant value
+  $D=10^{-6}$ in the affected cells and boundary faces.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

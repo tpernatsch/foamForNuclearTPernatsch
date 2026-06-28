@@ -1,0 +1,65 @@
+description: |
+  Class to handle virtual mass coupling between two immiscible/phase fluids in a
+  dispersed-interface framework.
+
+  It computes a virtual-mass scalar field ``Vm`` and stores the corresponding
+  interfacial force contributions as ``fvVectorMatrix`` objects, accessible
+  via ``force(UName)``.
+
+  The virtual-mass coefficient model is selected at runtime via ``typeName`` and
+  instantiated through ``virtualMassCoefficientModel``.
+formulation: |
+  The virtual-mass model provides a scalar coefficient field ``Vm`` that is used
+  to build an effective interfacial contribution to the dispersed-phase momentum
+  equation.
+
+  In the implementation, the coefficient field is corrected through the selected
+  ``virtualMassCoefficientModel`` and then combined with the dispersed-phase
+  volume fraction ``alphaDispersed`` to form a mixture-like coefficient
+  ``alphaRhoVm`` (optionally using mixture density).
+
+  $$ \mathrm{Vm} = \mathrm{Vm}(\text{model parameters}, \text{flow fields}) $$
+
+  $$ \alpha\rho \mathrm{Vm} = \mathrm{Vm}\,\alpha_{\mathrm{dispersed}} $$
+
+  where:
+
+  - ``Vm`` is the virtual-mass scalar field stored in ``Vm_``
+  - ``alphaDispersed`` is the dispersed-phase volume fraction from ``FFPair``
+  - ``alphaRhoVm`` is the effective coefficient used to update the virtual-mass
+    contribution to the momentum system
+  - the optional density treatment is controlled by the boolean
+    ``virtualMassUsesMixtureDensity``
+admonitions:
+- kind: note
+  body: This model is selected solely by its runtime ``typeName`` and defines no additional options.
+options: []
+externalOptions: []
+optionsLocations: []
+usage:
+- comment: |
+    The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``). Here is a snippet enabling the model:
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type virtualMass;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - externalOptions
+  - optionsLocations
+  stub_improved: true

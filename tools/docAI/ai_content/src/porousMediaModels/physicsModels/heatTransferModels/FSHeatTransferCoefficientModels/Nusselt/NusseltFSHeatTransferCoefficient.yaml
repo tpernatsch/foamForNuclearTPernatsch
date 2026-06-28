@@ -1,0 +1,80 @@
+description: |-
+  Heat transfer coefficient for forced convective flows that is computed from
+  the Nusselt number, which is in turn obtained from the correlation:
+
+  .. math::
+
+      Nu = \text{const} +
+           \text{coeff} \; Re^{C} \, Pr^{D}
+           \left( \frac{T_w}{T_b} \right)^{E}
+
+  **Variable definitions**
+
+  .. list-table::
+     :header-rows: 1
+     :widths: 20 80
+
+     * - Symbol
+       - Meaning
+     * - ``Re``
+       - Reynolds number (superficial in two-phase) of the fluid
+     * - ``Pr``
+       - Prandtl number of the fluid
+     * - ``T_w``
+       - Wall temperature
+     * - ``T_b``
+       - Fluid bulk temperature
+     * - ``const, coeff, expRe, expPr, expTc``
+       - User-selectable constants
+     * - ``C``
+       - Exponent for $Re$, set by ``expRe``
+     * - ``D``
+       - Exponent for $Pr$, set by ``expPr``
+     * - ``E``
+       - Exponent for $\left(T_w/T_b\right)$, set by ``expTc``
+options:
+- key: coeff
+  type: scalar
+  required: true
+  description: ''
+- key: const
+  type: scalar
+  required: true
+  description: ''
+- key: expPr
+  type: scalar
+  required: true
+  description: ''
+- key: expRe
+  type: scalar
+  required: true
+  description: ''
+- key: expTc
+  type: scalar
+  required: false
+  default: '0.0'
+  description: ''
+usage:
+- comment: "The NusseltReynoldsPrandtlPower heat transfer model is constructed at run-time via the\nheatTransferModels subdictionary\
+    \ of the physicsModel subdictionary of the phaseProperties dictionary. "
+  snippet: |-
+    physicsModels
+    {
+      heatTransferModels
+      {
+        "fuelElement:centralUnloadedFuelElement"
+        {
+            type    NusseltReynoldsPrandtlPower;
+            const   0;
+            coeff   0.023;
+            expRe   0.8;
+            expPr   0.4;
+            expTc   -0.3;
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description

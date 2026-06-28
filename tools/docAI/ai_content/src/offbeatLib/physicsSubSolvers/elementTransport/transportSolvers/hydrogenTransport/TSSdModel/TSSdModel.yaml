@@ -1,0 +1,27 @@
+description: |
+  Abstract base class for terminal solubility dissolution (TSSd) yield-stress
+  related models.
+
+  This class is intended to be used with von Mises rheology implementations.
+  It provides the common storage and run-time selection mechanism for models
+  that update the terminal solubility dissolution field.
+formulation: |
+  The class itself does not implement a physical model; it defines the
+  interface for updating the terminal solubility dissolution field $TSSd$.
+
+  Subclasses must implement the method that updates $TSSd$ based on their
+  specific dissolution kinetics and the provided material properties.
+
+  - $TSSd$ is the terminal solubility dissolution field stored as an OpenFOAM
+    `volScalarField` with dimensionless units (as created by `createOrLookup`).
+  - $\texttt{addr}$ is the list of addresses/indices identifying which entries
+    of the field should be updated (passed to `correctTSSd`).
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

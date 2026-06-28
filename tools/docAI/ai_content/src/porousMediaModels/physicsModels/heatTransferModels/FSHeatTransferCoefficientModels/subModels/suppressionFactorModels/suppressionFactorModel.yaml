@@ -1,0 +1,69 @@
+description: |
+  Abstract base class for *suppression factor* models used in boiling heat-transfer
+  correlations (e.g., in CHF/TRACE-CHF style multi-regime boiling frameworks).
+
+  A concrete implementation provides the local suppression factor value
+  through the virtual function $f_{\mathrm{sup}}(i)$, evaluated per mesh cell.
+formulation: |
+  The suppression factor model provides a dimensionless local multiplier
+  $f_{\mathrm{sup}}$ that reduces (suppresses) the contribution of a boiling
+  mechanism in the presence of suppressing effects (commonly associated with
+  CHF-related phenomena in mechanistic boiling correlations).
+
+  The model is evaluated pointwise in the computational domain:
+
+  $$
+  f_{\mathrm{sup}}(i) = \texttt{value}(i)
+  $$
+
+  where:
+
+  - $f_{\mathrm{sup}}(i)$ is the dimensionless suppression factor at cell $i$
+  - $i$ is the OpenFOAM cell index (the argument `celli`)
+
+  Specific functional forms (e.g., Chen-type or other correlations) are provided
+  by derived classes selected at runtime via the OpenFOAM run-time selection
+  mechanism.
+admonitions:
+- kind: note
+  body: This model is selected solely by its runtime ``typeName`` and defines no additional options.
+options: []
+usage:
+- comment: |
+    Select a concrete suppression factor model in the `phaseProperties`
+    subdictionary for the desired zone/region.
+  snippet: |
+    suppressionFactorModel
+                {
+                    type    Chen;
+                }
+- comment: |
+    Select the suppression factor model inside a multi-regime boiling setup
+    for a specific zone.
+  snippet: "\"heated\"\n            {\n                type    multiRegimeBoilingTRACECHF;\n                forcedConvectionModel\n\
+    \                {\n                \ttype    NusseltReynoldsPrandtlPower;\n                \tconst   0.0;\n         \
+    \       \tcoeff   0.023;//0.023;\n                \texpRe   0.8;\n                \texpPr   0.4;\n                }\n\
+    \                poolBoilingModel\n                {\n                  type    Gorenflo;\n                }\n       \
+    \         flowEnhancementFactorModel\n                {\n                  type    RezkallahSims;\n                  exp\
+    \     0.8;\n                }\n                suppressionFactorModel\n                {\n                  type    Chen;\n\
+    \                }\n                nucleateBoilingOnsetModel\n                {\n                  type            Basu;\n\
+    \                  surfaceTension  8e-3;//8e-3;   //- In N/m\n                  contactAngle    38;     //- In degrees\n\
+    \                }\n// ...\n"
+- comment: |
+    Select the suppression factor model inside a multi-regime boiling setup
+    for a composite zone name.
+  snippet: "\"heatedcorner:heatedside:heatedcenter\"\n            {\n                type    multiRegimeBoilingTRACECHF;\n\
+    \                forcedConvectionModel\n                {\n                \ttype    NusseltReynoldsPrandtlPower;\n  \
+    \              \tconst   0.0;\n                \tcoeff   0.023;\n                \texpRe   0.8;\n                \texpPr\
+    \   0.4;\n                }\n                poolBoilingModel\n                {\n                  type    Gorenflo;\n\
+    \                }\n                flowEnhancementFactorModel\n                {\n                  type    RezkallahSims;\n\
+    \                  exp     0.8;\n                }\n                suppressionFactorModel"
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - usage
+  stub_improved: true

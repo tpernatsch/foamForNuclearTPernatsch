@@ -1,0 +1,174 @@
+description: |-
+  Phase-change model for two-phase heat and mass transfer at an interface.
+
+  The model couples interfacial temperature and latent heat through sub-models for
+  latent heat and saturation, and provides interfacial mass-transfer rates
+  (fields ``dmdtI`` and related limiter fields) used by the surrounding
+  two-phase formulation.
+
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./**
+formulation: |
+  The model computes an interfacial temperature and associated latent-heat
+  and mass-transfer source terms for two fluids (``fluid1`` and ``fluid2``)
+  in a two-phase mixture.
+
+  The interfacial temperature is stored in the field ``T.interface`` and is
+  updated in ``correctInterfacialTemperature()`` with safeguards on the
+  interfacial temperature time derivative.
+
+  The latent heat is obtained from the selected ``latentHeatModel`` and the
+  saturation state from the selected ``saturationModel``. The resulting
+  interfacial mass-transfer rates are written to fields named ``dmdtI``,
+  ``dmdtI.<fluidName>``, and auxiliary limiter fields.
+
+  The implementation also supports a residual interfacial area to avoid
+  vanishing interfacial transfer in low-transfer regimes.
+
+  - $T_{\mathrm{int}}$ is the interfacial temperature field ``T.interface``
+  - $L$ is the latent heat field ``L`` from ``latentHeatModel``
+  - $\dot{m}''$ is the interfacial mass-transfer rate represented by the
+    volume source fields ``dmdtI`` (and related per-fluid fields)
+  - $a_{\mathrm{res}}$ is the residual interfacial area ``residualInterfacialArea``
+admonitions: []
+dictionary: neutronicsProperties
+optionsLocations: []
+options:
+- key: residualInterfacialArea
+  type: scalar
+  required: false
+  default: 1e-3
+  description: |
+    Residual interfacial area used to prevent the interfacial transfer
+    from vanishing completely. This value is read from the model dictionary
+    (via ``dict.getOrDefault``).
+- key: residualInterfacialAreaRegions
+  type: list[word]
+  required: false
+  description: |
+    Optional list of cellZones/regions where the residual interfacial area
+    treatment is applied. The code reads this list via
+    ``lookupOrDefault<wordList>("residualInterfacialAreaRegions", wordList())``.
+- key: massTransferSafetyFactor
+  type: scalar
+  required: false
+  description: |
+    Safety factor used when computing/limiting mass transfer to avoid
+    unphysical phase-fraction changes over a single time step. This option
+    is read from the ``customPimpleControl`` dictionary (``pimple_.dict()``)
+    only if present.
+- key: maxTInterfaceDdt
+  type: scalar
+  required: false
+  description: |
+    Maximum allowed time derivative of the interfacial temperature used to
+    limit ``T.interface`` updates. This option is read from the
+    ``customPimpleControl`` dictionary (``pimple_.dict()``) only if present.
+usage:
+- comment: |
+    Heat-driven phase-change model with conduction-limited mode, including
+    residual interfacial area and water-based latent heat and saturation models.
+  snippet: |
+    phaseProperties
+    {
+        physicsModels
+        {
+            <subModel>
+            {
+                "<zoneName>"
+                {
+                    type phaseChangeModel;
+
+                    mode conductionLimited;
+
+                    residualInterfacialArea 1e-3;
+
+                    latentHeatModel
+                    {
+                        type water;
+                    }
+
+                    saturationModel
+                    {
+                        type waterTRACE;
+                    }
+                }
+            }
+        }
+    }
+- comment: |
+    Heat-driven phase-change model with conduction-limited mode using
+    FinkLeibowitz latent heat and BrowningPotter saturation models.
+  snippet: |
+    phaseProperties
+    {
+        physicsModels
+        {
+            <subModel>
+            {
+                "<zoneName>"
+                {
+                    type phaseChangeModel;
+
+                    mode conductionLimited;
+
+                    latentHeatModel
+                    {
+                        type FinkLeibowitz;
+                        adjust true;
+                    }
+
+                    saturationModel
+                    {
+                        type BrowningPotter;
+                    }
+                }
+            }
+        }
+    }
+- comment: |
+    Heat-driven phase-change model with conduction-limited mode using water
+    latent heat and water saturation models, including residual interfacial area.
+  snippet: |-
+    phaseProperties
+    {
+        physicsModels
+        {
+            <subModel>
+            {
+                "<zoneName>"
+                {
+                    type phaseChangeModel;
+
+                    mode conductionLimited;
+
+                    residualInterfacialArea 1e-3;
+
+                    latentHeatModel
+                    {
+                        type water;
+                    }
+
+                    saturationModel
+                    {
+                        type water;
+                    }
+                }
+            }
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - dictionary
+  - optionsLocations
+  - options
+  - usage
+  stub_improved: true

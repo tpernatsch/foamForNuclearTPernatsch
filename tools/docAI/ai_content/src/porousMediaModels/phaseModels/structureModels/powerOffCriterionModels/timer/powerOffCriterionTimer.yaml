@@ -1,0 +1,23 @@
+description: Turns power off once the simulation time reaches or exceeds a provided threshold.
+options:
+- key: time
+  type: scalar
+  required: true
+  description: |
+    Time threshold $t_0$ (in seconds) read from the input dictionary. Power-off is triggered when the current simulation time $t$ satisfies $t \ge t_0$.
+usage:
+- comment: 'Example of usage:'
+  snippet: |-
+    powerOffCriterionModel
+    {
+        type            timeThreshold;
+        time            12.475;
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options
+  - dictionary

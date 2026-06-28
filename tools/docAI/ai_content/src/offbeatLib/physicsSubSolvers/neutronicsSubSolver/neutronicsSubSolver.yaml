@@ -1,0 +1,24 @@
+description: |
+  Base neutronics solver class. It neglects entirely the evolution of the neutron
+  flux over time.
+
+  No additional neutron-related field is created and no neutronics equation
+  is solved.
+admonitions:
+- kind: warning
+  body: |
+    For backward-compatibility, `fromLatestTime` can still be used as the
+    typename for the `none` neutronics solver. However, its use is deprecated.
+options: []
+usage:
+- comment: |
+    Code snippet of the `solverDict` to activate the `none`
+    neutronics solver.
+  snippet: neutronicsSolver none;
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - dictionary

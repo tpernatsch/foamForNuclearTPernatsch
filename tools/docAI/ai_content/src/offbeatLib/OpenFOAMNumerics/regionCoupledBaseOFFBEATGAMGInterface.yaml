@@ -1,0 +1,35 @@
+description: |
+  Base class for the GAMG agglomerated coupled-region interface in OFFBEAT.
+  It provides the bridge between a fine-level coupled LDU interface
+  ([regionCoupledOFFBEATLduInterface]) and the corresponding GAMG coarse-level
+  interface, including the mapping of face agglomeration data.
+formulation: |
+  This class does not introduce a new physical governing equation.
+  Instead, it defines the *algebraic* interface transfer needed by the GAMG
+  multigrid method for coupled (region-to-region) problems.
+
+  The key operation is the construction of a face agglomeration mapping from
+  the provided cell restrict addressing. For each fine-level interface face
+  (master), the code groups all fine-level faces that belong to the same
+  coarse master cell into a single coarse “face” index.
+
+  $$ \text{faceRestrictAddressing}[f] = \text{coarseFaceIndex}(\text{localRestrictAddressing}[f]) $$
+
+  where:
+  - $f$ is a fine-level interface face index
+  - $\text{localRestrictAddressing}[f]$ is the provided restrict addressing
+    from fine interface faces to coarse masters
+  - $\text{coarseFaceIndex}(\cdot)$ is the internally built mapping
+    (via `masterToCoarseFace`) from coarse master cell to coarse face index
+
+  The resulting mappings are stored in OpenFOAM members:
+  - $faceCells_$: list of coarse face “cells” (one representative fine master
+    per coarse face)
+  - $faceRestrictAddressing_$: restrict addressing from fine interface faces
+    to coarse faces
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

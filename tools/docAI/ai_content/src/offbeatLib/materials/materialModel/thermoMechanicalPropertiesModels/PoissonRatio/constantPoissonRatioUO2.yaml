@@ -1,0 +1,30 @@
+description: |
+  Class to set UO2 Poisson's Ratio to a constant input value.
+options:
+- key: PoissonRatioValue
+  type: scalar
+  required: false
+  default: 0.316
+  description: |
+    Constant Poisson's ratio value used when isotropic cracking is disabled, or as the base value when isotropic cracking is enabled.
+usage:
+- comment: |
+    Example selection of the `UO2Constant` thermalExpansion model.
+  snippet: |
+    materials
+    {
+      fuel
+      {
+        type UO2;
+        thermalExpansion
+        {
+          type UO2Constant;
+          // PoissonRatioValue 0.316;
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options

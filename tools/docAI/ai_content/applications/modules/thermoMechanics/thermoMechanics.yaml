@@ -1,0 +1,104 @@
+description: |
+  Base class for thermo-mechanical models.
+
+  This class provides common infrastructure for coupling thermal and structural
+  fields, including mesh displacement handling and storage of material- and
+  zone-dependent reference properties.
+
+  Reference publications [@FIORINA201524] [@FIORINA201515226].
+formulation: |
+  This base class does not implement a specific constitutive law or governing
+  PDE system. It defines the common data required by derived
+  thermo-mechanical models and exposes the abstract update hook
+  ``correct(scalar& residual)``.
+
+  The main coupling quantity handled by this base class is the mesh
+  displacement field ``meshDisp_`` (and, when enabled, additional displacement
+  fields for neutronics coupling). Derived classes are expected to:
+  - update temperature-related fields (e.g. ``TFuel_``, ``TCRRef_`` and
+    ``alphaFuel_``/``alphaCR_``),
+  - compute structural response and/or material property evolution,
+  - set the residual passed to ``correct(scalar& residual)``.
+
+  Variables (OpenFOAM field names as used by this base class):
+  - $\\mathbf{u}$ is the mesh displacement field ``meshDisp_``
+  - $T$ is the structural/thermal temperature field ``TStructFromTH_`` and
+    fuel-related temperatures ``TFuel_``, ``TFuelRef_`` (where applicable)
+  - $\\alpha$ is the material property field ``alphaFuel_`` and ``alphaCR_``
+  - $T_{\\mathrm{ref}}$ is the reference temperature field ``TCRRef_`` (and
+    per-zone ``TFuelRef`` read from ``materials``)
+admonitions: []
+dictionary: thermoMechanicalProperties
+optionsLocations:
+- name: couplingOptions
+  in: solverDict
+- name: globalOptions
+  in: solverDict
+- name: materials
+  in: solverDict
+options:
+- key: correctDispForNeutro
+  type: bool
+  required: false
+  default: false
+  location: couplingOptions
+  description: |
+    If true, allocate and update the additional displacement fields used for
+    coupling with the neutronics mesh (see ``fuelDisp_`` and ``CRDisp_``).
+- key: pinDirection
+  type: vector
+  required: true
+  location: globalOptions
+  description: |
+    Global pin direction vector used to define the fuel orientation
+    (stored in ``fuelOrientation_``).
+- key: TFuelRef
+  type: scalar
+  required: false
+  default: 0.0
+  location: materials
+  description: |
+    Per-zone reference fuel temperature used to initialize ``TFuelRef_``.
+    The value is read from each entry of the ``materials`` sub-dictionary.
+- key: alphaFuel
+  type: scalar
+  required: false
+  default: 0.0
+  location: materials
+  description: |
+    Per-zone reference value for the fuel property ``alphaFuel_`` read from
+    each entry of the ``materials`` sub-dictionary.
+- key: TCRRef
+  type: scalar
+  required: false
+  default: 0.0
+  location: materials
+  description: |
+    Per-zone reference value for the control-rod property ``TCRRef_`` read
+    from each entry of the ``materials`` sub-dictionary.
+- key: alphaCR
+  type: scalar
+  required: false
+  default: 0.0
+  location: materials
+  description: |
+    Per-zone reference value for the control-rod property ``alphaCR_`` read
+    from each entry of the ``materials`` sub-dictionary.
+- key: <parameter>
+  type: word
+  required: true
+  default: null
+  description: <description>
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - dictionary
+  - optionsLocations
+  - options
+  - usage
+  stub_improved: true

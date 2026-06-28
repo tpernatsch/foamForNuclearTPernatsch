@@ -1,0 +1,97 @@
+description: |
+  Time-dependent azimuthal profile defined by user-supplied interpolation in a
+  2D lookup table as a function of azimuthal location and time, i.e. $g(\theta,t)$.
+
+  The azimuthal coordinate is tabulated in normalized form between 0 and 1 and
+  the profile data are expected to be normalized to 1 (with the normalization
+  integral taken in cylindrical coordinates).
+
+  Both “step” and “linear” interpolation methods are supported via
+  ``InterpolateTable``.
+formulation: |
+  This class provides an azimuthal weighting function $g(\theta,t)$ by
+  interpolating tabulated data in azimuth and time.
+
+  The interpolation is performed on a 2D table with azimuthal coordinate
+  $\theta$ (normalized to [0,1]) and time $t$ (in user time units). The
+  interpolation method in each dimension is selected independently.
+
+  $$ g(\theta,t) = \mathcal{I}_{\theta}\!\left(\mathcal{I}_{t}\!\left(g_{ij}\right)\right) $$
+
+  where:
+
+  - $g(\theta,t)$ is the returned azimuthal profile value at azimuth $\theta$ and time $t$
+  - $g_{ij}$ is the tabulated profile data entry from ``data`` at
+    azimuth index $i$ and time index $j$
+  - $\theta$ is the normalized azimuthal location in [0,1] from ``azimuthalLocations``
+  - $t$ is the time from the simulation clock (mapped to user time) and interpolated
+    using ``timeInterpolationMethod``
+  - $\mathcal{I}_{\theta}$ is the azimuthal interpolation operator selected by
+    ``azimuthalInterpolationMethod`` (e.g. linear or step)
+  - $\mathcal{I}_{t}$ is the time interpolation operator selected by
+    ``timeInterpolationMethod`` (e.g. linear or step)
+
+  The class also provides time markers for discontinuities/non-smooth changes
+  in the tabulated time interpolation.
+options:
+- key: azimuthalLocations
+  type: list[scalar]
+  required: true
+  description: |
+    Tabulated azimuthal locations, normalized between 0 and 1. The first entry
+    must be 0 and the last entry must be 1.
+- key: timePoints
+  type: list[scalar]
+  required: true
+  description: |
+    Tabulated time values (in user time units) corresponding to the second
+    dimension of the ``data`` table.
+- key: data
+  type: table
+  required: true
+  description: |
+    2D table of profile data values. The outer list corresponds to azimuthal
+    locations (matching ``azimuthalLocations``) and each inner list corresponds
+    to the values at ``timePoints``.
+- key: azimuthalInterpolationMethod
+  type: word
+  required: false
+  default: linear
+  description: |
+    Interpolation method in the azimuthal direction. Supported values are those
+    available in ``interpolateTableBase::interpolationMethodNames_`` (e.g.
+    ``linear`` or ``step``).
+- key: timeInterpolationMethod
+  type: word
+  required: false
+  default: linear
+  description: |
+    Interpolation method in the time direction. Supported values are those
+    available in ``interpolateTableBase::interpolationMethodNames_`` (e.g.
+    ``linear`` or ``step``).
+dictionary: neutronicsProperties
+admonitions:
+- kind: warning
+  body: |
+    The first value in ``azimuthalLocations`` must be exactly 0.0 and the last
+    value must be exactly 1.0. Otherwise the constructor aborts with a
+    ``FatalIOErrorInFunction``.
+usage:
+- comment: |
+    Example configuration of a time-dependent tabulated azimuthal profile.
+  snippet: |-
+    {
+        type            timeDependentTabulated;
+        timePoints      ( 0 100 );
+        azimuthalLocations ( 0 0.4472135955 0.632455532 0.7745966692 0.894427191 1 );
+        data            (
+            ( 0.8319626974 0.90037028 0.9485969551 1.006237685 1.090645345 1.276336774 )
+            ( 0.7179025511 0.8243673183 0.9031851172 1.001405018 1.153001744 1.518179055 )
+        );
+        azimuthalInterpolationMethod    linear;
+        timeInterpolationMethod     linear;
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

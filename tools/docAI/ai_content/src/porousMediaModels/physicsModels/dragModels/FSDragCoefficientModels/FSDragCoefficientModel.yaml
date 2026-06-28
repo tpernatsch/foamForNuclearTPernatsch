@@ -1,0 +1,35 @@
+description: |-
+  Class to manage the fluid-structure (i.e. fluid-wall) drag coefficient
+  models. Available runtime selectable models include:
+  [@FSDragCoefficientModel]
+
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./**
+usage:
+- comment: "The fluid-structure drag coefficient model is constructed at run-time via the\ndragModels subdictionary of the\
+    \ physicsModel subdictionary of the phaseProperties dictionary. "
+  snippet: |-
+    physicsModels
+    {
+        dragModels
+        {
+            "liquid.structure"
+            {
+                "dummyIn:heated"
+                {
+                    type    ReynoldsPower;
+                    coeff   0.316;
+                    exp     -0.25;
+                }
+            }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-10'
+  modified_sections:
+  - description

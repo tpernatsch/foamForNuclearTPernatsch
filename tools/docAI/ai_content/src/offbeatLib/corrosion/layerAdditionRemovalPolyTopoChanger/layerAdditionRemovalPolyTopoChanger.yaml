@@ -1,0 +1,37 @@
+description: |
+  Polyhedral mesh topology changer that applies a sequence of layer
+  addition/removal operations.
+
+  This class is derived from ``polyTopoChanger`` but differs in that the list
+  of mesh modifiers is not read from the ``meshModifiers`` IOobject. Instead,
+  the mesh modifiers are hard-coded to be of the ``layerAdditionRemoval``
+  type, and for each modifier the minimum/maximum layer thickness values are
+  provided on a mesh-dependent basis.
+formulation: |
+  This class provides mesh topology changes by adding and/or removing
+  boundary layers using ``layerAdditionRemoval`` operations.
+
+  The actual geometric criteria (e.g. layer thickness limits) and the
+  thickness evaluation method are delegated to the underlying
+  ``layerAdditionRemoval`` mesh modifier(s).
+
+  - $t$ is the layer thickness used by each ``layerAdditionRemoval`` modifier
+    (set either directly or derived from volume, depending on
+    ``thicknessFromVolume``).
+  - $\Omega$ is the local control volume associated with the layer region
+    (used when thickness is evaluated from volume).
+options:
+- key: thicknessFromVolume
+  type: bool
+  required: false
+  default: true
+  description: |
+    If ``true``, evaluate the layer thickness from the layer volume.
+    If ``false``, use the thickness evaluation method implemented by the
+    underlying ``layerAdditionRemoval`` modifier(s) (i.e. not derived from
+    volume).
+admonitions: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

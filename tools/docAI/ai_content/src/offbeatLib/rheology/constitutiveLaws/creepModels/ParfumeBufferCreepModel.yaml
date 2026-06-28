@@ -1,0 +1,42 @@
+description: |
+  Creep model for buffer/parfume material that computes the creep strain-rate from
+  principal stresses and an irradiation fast-neutron flux.
+
+  The creep rate is evaluated as:
+  $$
+  \dot{\epsilon}_c = K \, \big[s_1 - v_c\,(s_2+s_3)\big] \, \phi_f
+  $$
+  where $s_1,s_2,s_3$ are the principal stresses and $v_c$ is the Poisson ratio for creep.
+  The model type is registered under ``BufferParfume``.
+formulation: |
+  The model assumes that the creep strain-rate is driven by the stress state through
+  the combination of principal stresses and by an irradiation fast-neutron flux.
+
+  The creep strain-rate is computed in the form:
+  $$
+  \dot{\epsilon}_c = K \, \big[s_1 - v_c\,(s_2+s_3)\big] \, \phi_f
+  $$
+
+  where:
+
+  - $s_1$ is the largest principal stress (computed by ``computePrincipalStress``)
+  - $s_2$ is the intermediate principal stress (computed by ``computePrincipalStress``)
+  - $s_3$ is the smallest principal stress (computed by ``computePrincipalStress``)
+  - $v_c$ is the Poisson ratio for creep, set by ``poissonRationForCreep``
+  - $\phi_f$ is the fast-neutron flux field used by this model, read from ``fastFluxName``
+  - $K$ is an irradiation/stress amplification coefficient, including
+    ``creepAmplificationCoefficient`` and a flux conversion factor ``fluxConversionFactor``
+
+  The principal stresses are obtained from the symmetric stress tensor; if they cannot
+  be solved, the model falls back to zero principal stresses and marks the solution as
+  not solved (as indicated by the ``solved`` flag in ``computePrincipalStress``).
+dictionary: neutronicsProperties
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,70 @@
+description: |-
+  Same as porousKEpsilon but turbulent intensity correlation in the form
+  :math:`A \, Re^{\,n} + D \, (1-\alpha)`, where :math:`\alpha` is the phase fraction.
+  The coefficients :math:`A`, :math:`D`, and :math:`n` are set by the input parameters
+  ``turbulenceIntensityCoeff``, ``turbulenceIntensityAlphaCoeff``, and ``turbulenceIntensityExp``,
+  respectively.
+options:
+- key: DhStruct
+  type: scalar
+  required: true
+  default: null
+  description: Hydraulic diameter of the whole porous structure. Used to rescale the turbulent viscosity and improve numerical
+    stability.
+- key: convergenceLength
+  type: scalar
+  required: true
+  default: null
+  description: k and epsilon will exponentially converge to equilibrium according  to this exponent
+- key: turbulenceIntensityCoeff
+  type: scalar
+  required: true
+  default: null
+  description: :math:`A` in :math:`A \, Re^{\,n} + D \, (1-\alpha)`
+- key: turbulenceIntensityExp
+  type: scalar
+  required: true
+  default: null
+  description: :math:`n` in :math:`A \, Re^{\,n} + D \, (1-\alpha)`
+- key: turbulenceLengthScaleCoeff
+  type: scalar
+  required: true
+  default: null
+  description: :math:`C` in :math:`L_t = C \, D_h` (turbulence length scale coefficient)
+usage:
+- comment: This is an example of ``turbulenceProperties`` dictionary
+  snippet: |
+    simulationType  RAS;
+
+    RAS
+    {
+        RASModel        porousKEpsilon2PhaseCorrected;
+
+        turbulence      on;
+
+        printCoeffs     on;
+
+        liquidName      "liquid";
+        gasName         "vapour";
+    }
+
+    porousKEpsilon2PhaseCorrectedProperties
+    {
+        "regionsName"
+        {
+            convergenceLength           0.1;
+            turbulenceIntensityCoeff    2.6;//3.2;//1.6;//0.32;//0.16;
+            turbulenceIntensityAlphaCoeff   100;//20;//10;//5;
+            turbulenceIntensityExp      -0.125;
+            turbulenceLengthScaleCoeff  0.07;
+        }
+    }
+notes:
+- Note that multiphase simulation require a ``turbulenceProperties`` dictionary for every phase (e.g., turbulenceProperties.liquid
+  and turbulenceProperties.vapour)
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options

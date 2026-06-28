@@ -1,0 +1,47 @@
+description: |
+  Correlation for 15-15 Ti heat capacity from Banerjee et al. (2007).
+options:
+- key: par1
+  type: scalar
+  required: false
+  default: 431
+  description: |
+    Correlation parameter $p_1$ (set by ``par1`` in the ``heatCapacity`` sub-dictionary).
+- key: par2
+  type: scalar
+  required: false
+  default: 0.177
+  description: |
+    Correlation parameter $p_2$ (set by ``par2`` in the ``heatCapacity`` sub-dictionary).
+- key: par3
+  type: scalar
+  required: false
+  default: 8.72e-05
+  description: |
+    Correlation parameter $p_3$ (set by ``par3`` in the ``heatCapacity`` sub-dictionary).
+usage:
+- comment: |
+    Example selection of the `Steel1515TiBanerjee` heat capacity model.
+  snippet: |-
+    materials
+    {
+        structure
+        {
+            type Steel1515Ti;
+
+            heatCapacity
+            {
+                type Steel1515TiBanerjee;
+                // par1 431;
+                // par2 0.177;
+                // par3 8.72e-5;
+            }
+        }
+    }
+dictionary: heatCapacity
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

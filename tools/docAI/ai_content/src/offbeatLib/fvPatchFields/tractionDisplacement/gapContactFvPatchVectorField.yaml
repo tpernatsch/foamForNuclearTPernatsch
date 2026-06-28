@@ -1,0 +1,75 @@
+description: |
+  Gap-contact boundary condition using a penalty method to handle contact
+  between two coupled surfaces of type `regionCoupledOFFBEAT`.
+
+  It computes both normal contact pressure (including a penalty-based
+  stiffness proportional to penetration) and tangential frictional traction
+  using a Coulomb friction model with slip-dependent limiting.
+
+  This fvPatchField is originally partly based on the [solids4Foam](
+  https://www.solids4foam.com/) library.
+
+  The implementation also adds the current gap-gas pressure from the
+  `gapGas` object to the interface normal pressure.
+formulation: |
+  The boundary condition enforces contact through a penalty formulation.
+  For the normal component, the interface normal pressure is augmented by a
+  penalty term proportional to the penetration (gap width), and for the
+  tangential component a Coulomb friction law limits the friction traction.
+
+  Normal contact pressure:
+  $$
+  ip = - f \, K \, g
+  $$
+  where:
+  - $ip$ is the interface normal pressure (normal traction component)
+  - $g$ is the penetration or `gapWidth` (negative if penetration occurs)
+  - $K$ is the minimum surface stiffness between master and slave faces
+  - $f$ is the penalty scale factor for the normal pressure
+
+  The stiffness is computed internally as:
+  - $K = K_m \, A/V$, where $K_m$ is the bulk modulus, $A$ is the face area,
+    and $V$ is the adjacent cell volume.
+
+  Tangential (friction) traction:
+  $$
+  |\tau| = \min(\alpha \, ip,\; |f_{fr}\,\mu\,\mathbf{s}|)
+  $$
+  where:
+  - $\tau$ is the frictional traction vector (tangential component)
+  - $\alpha$ is the friction coefficient
+  - $\mu$ is the minimum shear stiffness between slave and master faces
+  - $f_{fr}$ is the penalty scale factor for friction
+  - $\mathbf{s}$ is the slip vector (cumulative tangential displacement)
+
+  The shear stiffness is computed internally as:
+  - $\mu = \mu_m \, A/V$, where $\mu_m$ is the shear modulus.
+
+  The friction vector is oriented opposite to the slip direction and added
+  to the normal pressure component to form the total surface traction vector.
+
+  Gap-gas pressure contribution:
+  - The implementation updates the normal pressure by adding the gap-gas
+    pressure $p_{gap}$ from the `gapGas` object:
+    - $ip \leftarrow ip + p_{gap}$.
+admonitions:
+- kind: warning
+  body: |
+    A `gapGasModel` is required for this boundary condition to function
+    properly, since the implementation looks up an object named `gapGas` and
+    adds its pressure to the interface normal pressure.
+- kind: warning
+  body: |
+    This boundary condition assumes that the same boundary condition is applied
+    to a pair of `regionCoupledOFFBEAT` patches, coupled using the AMI
+    (Arbitrary Mesh Interface) mapping algorithm. It is strongly suggested to
+    assign the `owner` role to the smallest surface (e.g. `fuelOuter` in
+    typical fuel-cladding configurations).
+options: []
+optionsLocations: []
+externalOptions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

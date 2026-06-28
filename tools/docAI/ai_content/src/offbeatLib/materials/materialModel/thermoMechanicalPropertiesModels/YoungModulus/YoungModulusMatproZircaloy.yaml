@@ -1,0 +1,114 @@
+description: |
+  Class modelling Young Modulus of Zircaloy from Matprov11.
+options:
+- key: fastFluenceName
+  type: word
+  required: false
+  default: fastFluence
+  description: |
+    Name of the fast fluence field to read from the mesh (volScalarField).
+- key: coldWork
+  type: scalar
+  required: false
+  default: 0.0
+  description: |
+    Cold work parameter $c_W$ used in the Matpro model.
+- key: oxyCon
+  type: scalar
+  required: false
+  default: 0.0
+  description: |
+    Oxygen concentration parameter $x_{O}$ (oxygen concentration minus as-received concentration) used in the Matpro model.
+- key: par1
+  type: scalar
+  required: false
+  default: 6.61e11
+  description: |
+    Matpro model parameter $p_1$ (used in the oxygen concentration effect).
+- key: par2
+  type: scalar
+  required: false
+  default: 5.912e8
+  description: |
+    Matpro model parameter $p_2$ (used in the oxygen concentration effect).
+- key: par3
+  type: scalar
+  required: false
+  default: 2.6e10
+  description: |
+    Matpro model parameter $p_3$ (used in the cold work effect).
+- key: par4
+  type: scalar
+  required: false
+  default: 0.88
+  description: |
+    Matpro model parameter $p_4$ (used in the fast neutron fluence effect).
+- key: par5
+  type: scalar
+  required: false
+  default: 0.12
+  description: |
+    Matpro model parameter $p_5$ (used in the fast neutron fluence effect).
+- key: par6
+  type: scalar
+  required: false
+  default: 1e25
+  description: |
+    Matpro model parameter $p_6$ (used in the fast neutron fluence effect).
+- key: par7
+  type: scalar
+  required: false
+  default: 1.088e11
+  description: |
+    Matpro model parameter $p_7$ (alpha-phase value).
+- key: par8
+  type: scalar
+  required: false
+  default: 5.475e7
+  description: |
+    Matpro model parameter $p_8$ (alpha-phase temperature coefficient).
+- key: par9
+  type: scalar
+  required: false
+  default: 9.21e10
+  description: |
+    Matpro model parameter $p_9$ (beta-phase value).
+- key: par10
+  type: scalar
+  required: false
+  default: 4.05e7
+  description: |
+    Matpro model parameter $p_{10}$ (beta-phase temperature coefficient).
+usage:
+- comment: |
+    Example selection of the `ZircaloyMatpro` thermalExpansion model.
+  snippet: |-
+    materials
+    {
+      cladding
+      {
+        type Zircaloy;
+        thermalExpansion
+        {
+          type ZircaloyMatpro;
+          // fastFluenceName "fastFluence";
+          // par1 6.61e11;
+          // par10 4.05e7;
+          // par2 5.912e8;
+          // par3 2.6e10;
+          // par4 0.88;
+          // par5 0.12;
+          // par6 1e25;
+          // par7 1.088e11;
+          // par8 5.475e7;
+          // par9 9.21e10;
+        }
+      }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

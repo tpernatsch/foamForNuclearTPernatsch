@@ -1,0 +1,20 @@
+description: |
+  Class to set Molybdenum emissivity to a constant input value.
+options:
+- key: emissivityValue
+  type: scalar
+  required: false
+  default: 0.2
+  description: |
+    Constant emissivity value. This is read from the ``emissivity`` sub-dictionary as ``emissivityValue`` (defaulting to 0.2).
+usage:
+- comment: |
+    Example selection of the constant emissivity model for Molybdenum.
+  snippet: "materials\n{\n    <zoneName>\n    {\n        type Molybdenum;\n        \n        emissivity\n        {\n     \
+    \       type MolybdenumConstant;\n        \n            // Optional override\n            // emissivityValue 0.2;\n  \
+    \      }\n    }\n}"
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options

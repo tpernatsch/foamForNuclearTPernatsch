@@ -1,0 +1,48 @@
+description: |-
+  Contact partition model that represents the *complement* of another
+  contactPartitionModel on the same mesh.
+
+  For each cell, the model queries the other contactPartitionModel instance
+  registered on the mesh and returns:
+      value(celli) = 1 - value_other(celli)
+
+  Similarly, the field correction computes:
+      f[i] = 1 - value_other(i)
+
+  This allows defining two complementary contact partitions without
+  manually enforcing the algebraic consistency between them.
+usage:
+- comment: |
+    The contact partition model is specified via the ``type`` entry in the ``physicsModels/pairGeometryModels/[pair]/contactPartitionModel`` subdictionary of the ``phaseProperties`` file.
+    (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g.
+    ``constant/fluidRegion``).
+
+    Here is a snippet :
+  snippet: |-
+    pairGeometryModels
+    {
+        "liquid.structure"
+        {
+            contactPartitionModel
+            {
+                type        byRegime;
+                regimeMap   "slugMist";
+                "slug"
+                {
+                    type        linear;
+                    value       1.0;
+                }
+                "mist"
+                {
+                    type        complementary;
+                    value       0.1;
+                }
+            }
+        }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - dictionary

@@ -1,0 +1,35 @@
+description: |
+  Fixed-point load boundary condition for a vector-valued patch field.
+
+  The `fixedPointLoad` boundary condition applies a prescribed force to a patch by
+  distributing the specified load over the boundary faces closest to a user-defined
+  point. This is intended to emulate FEM-style nodal point loads on a continuum
+  boundary.
+
+  If the prescribed force magnitude is zero, the simulation aborts with an error.
+formulation: |
+  This boundary condition distributes a prescribed point force over the patch faces
+  in the vicinity of a specified point. The traction/displacement coupling is
+  inherited from [@tractionDisplacementFvPatchVectorField].
+
+  The applied force vector is read from the patch dictionary and must satisfy
+  $$
+  \|\mathbf{F}\| \neq 0
+  $$
+  where:
+
+  - $\mathbf{F}$ is the applied force vector in N, set by ``force`` in the patch dictionary
+  - $\mathbf{x}_p$ is the point location in meters, set by ``point`` in the patch dictionary
+
+  The detailed mapping from the point force to per-face tractions is implemented in
+  the underlying traction/displacement traction update logic (via ``updateTraction()``).
+options: []
+dictionary: neutronicsProperties
+optionsLocations: []
+externalOptions: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

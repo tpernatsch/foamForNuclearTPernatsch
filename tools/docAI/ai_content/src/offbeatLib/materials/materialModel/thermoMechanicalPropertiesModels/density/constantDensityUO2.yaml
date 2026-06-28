@@ -1,0 +1,37 @@
+description: |
+  Class to set UO2 density to a constant input value.
+options:
+- key: densityFraction
+  type: scalar
+  required: false
+  description: |
+    Fraction of theoretical density. Optional override. If not provided here, the value is read from the material base dictionary (preferred).
+- key: theoreticalDensity
+  type: scalar
+  required: false
+  description: |
+    Theoretical density. Optional override. If not provided here, the value is read from the material base dictionary (preferred).
+usage:
+- comment: |
+    Example selection of the `UO2Constant` density model.
+  snippet: |-
+    materials
+    {
+      fuel
+      {
+        type UO2;
+        density
+        {
+          type UO2Constant;
+          // densityFraction 0.95;
+          // theoreticalDensity 10960;
+        }
+      }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

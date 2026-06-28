@@ -1,0 +1,176 @@
+description: Describes triso and pebble of a pebble-bed reactor. Steady-state only.
+options:
+- key: coolantDensityCoeffs
+  type: Polynomial<8>
+  required: true
+  description: |
+    Polynomial coefficients for the coolant density $\rho_c(T)$.
+- key: fractionOfPowerFromNeutronics
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Fraction of neutronics power that is deposited in this power model (e.g. accounting for power going to the moderator).
+- key: nTRISO
+  type: label
+  required: true
+  description: |
+    Number of TRISO particles per pebble.
+- key: pebbleCoreRadius
+  type: scalar
+  required: true
+  description: |
+    Pebble inner graphite core radius.
+- key: pebbleGraphiteDensityCoeffs
+  type: Polynomial<8>
+  required: true
+  description: |
+    Polynomial coefficients for the pebble graphite density $\rho_g(T)$.
+- key: pebbleGraphiteKCoeffs
+  type: Polynomial<8>
+  required: true
+  description: |
+    Polynomial coefficients for the pebble graphite thermal conductivity $k_g(T)$.
+- key: pebbleMatrixRadius
+  type: scalar
+  required: true
+  description: |
+    Pebble matrix (graphite) radius.
+- key: pebbleShellRadius
+  type: scalar
+  required: true
+  description: |
+    Pebble outer graphite shell radius.
+- key: pebbleSurfaceTemperatureGuess
+  type: scalar
+  required: false
+  default: 900
+  description: |
+    First guess for the pebble surface temperature to avoid initializing temperatures to 0 K.
+- key: trisoBufferDensityCoeffs
+  type: Polynomial<8>
+  required: true
+  description: |
+    Polynomial coefficients for the TRISO buffer density $\rho_b(T)$.
+- key: trisoBufferKCoeffs
+  type: Polynomial<8>
+  required: true
+  description: |
+    Polynomial coefficients for the TRISO buffer thermal conductivity $k_b(T)$.
+- key: trisoBufferRadius
+  type: scalar
+  required: true
+  description: |
+    TRISO buffer layer radius.
+- key: trisoFuelDensityCoeffs
+  type: Polynomial<8>
+  required: true
+  description: |
+    Polynomial coefficients for the TRISO fuel kernel density $\rho_f(T)$.
+- key: trisoFuelKCoeffs
+  type: Polynomial<8>
+  required: true
+  description: |
+    Polynomial coefficients for the TRISO fuel kernel thermal conductivity $k_f(T)$.
+- key: trisoFuelRadius
+  type: scalar
+  required: true
+  description: |
+    TRISO fuel kernel radius.
+- key: trisoInnerPyCRadius
+  type: scalar
+  required: true
+  description: |
+    TRISO inner PyC layer radius.
+- key: trisoOuterPyCRadius
+  type: scalar
+  required: true
+  description: |
+    TRISO outer PyC layer radius.
+- key: trisoPyCDensityCoeffs
+  type: Polynomial<8>
+  required: true
+  description: |
+    Polynomial coefficients for the TRISO PyC density $\rho_{p}(T)$.
+- key: trisoPyCKCoeffs
+  type: Polynomial<8>
+  required: true
+  description: |
+    Polynomial coefficients for the TRISO PyC thermal conductivity $k_{p}(T)$.
+- key: trisoSiCDensityCoeffs
+  type: Polynomial<8>
+  required: true
+  description: |
+    Polynomial coefficients for the TRISO SiC density $\rho_{s}(T)$.
+- key: trisoSiCKCoeffs
+  type: Polynomial<8>
+  required: true
+  description: |
+    Polynomial coefficients for the TRISO SiC thermal conductivity $k_{s}(T)$.
+- key: trisoSiCRadius
+  type: scalar
+  required: true
+  description: |
+    TRISO SiC layer radius.
+usage:
+- comment: 'Example of usage:'
+  snippet: |-
+    powerModel
+    {
+        type                nuclearSteadyStatePebble;
+
+        // It can be shown that by averaging a/multiple pebble(s) over
+        // a volume of any shape, the interfacialArea and volumeFraction
+        // of the resulting porous pebble structure are not independent, yet
+        // are tied by volumetricArea = 3*volumeFraction/outerPinRadius
+        powerDensityNeutronics        19.96567386e6;
+        pebbleSurfaceTemperatureGuess 939;
+
+        pebbleCoreRadius        1.38e-2;
+        pebbleMatrixRadius      1.8e-2;
+        pebbleShellRadius       2e-2;
+        trisoFuelRadius         212.5e-6;
+        trisoBufferRadius       312.5e-6;
+        trisoInnerPyCRadius     352.5e-6;
+        trisoSiCRadius          387.5e-6;
+        trisoOuterPyCRadius     427.5e-6;
+
+        nTRISO                  9022;
+
+        trisoFuelKCoeffs        (3.3073 0 0 0 0 0 0 0);
+        trisoBufferKCoeffs      (0.50 0 0 0 0 0 0 0);
+        trisoPyCKCoeffs         (4.00 0 0 0 0 0 0 0);
+        trisoSiCKCoeffs         (90.3 0 0 0 0 0 0 0);
+        pebbleGraphiteKCoeffs   (41.68 0 0 0 0 0 0 0);
+
+        trisoFuelDensityCoeffs      (11031.432 -0.17907428 -9.1359257e-05 2.2133072e-09 0 0 0 0); thesis
+        trisoBufferDensityCoeffs    (1000 0 0 0 0 0 0 0);
+        trisoPyCDensityCoeffs       (1900 0 0 0 0 0 0 0);
+        trisoSiCDensityCoeffs       (4.015E+02 -5.995E-01 3.898E-04 -9.380E-08 0 0 0 0);
+        pebbleGraphiteDensityCoeffs (8.12E+01 -6.14E-02 2.73E-05 -5.18E-09 0 0 0 0);
+        coolantDensityCoeffs        (2413.03 -0.4884 0 0 0 0 0 0);
+    }
+- comment: 'The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the
+    ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``).
+    Here is a snippet enabling the model:'
+  snippet: |-
+    phaseProperties
+    {
+        structureProperties
+        {
+            "<zoneName>"
+            {
+                powerModel
+                {
+                    type nuclearSteadyStatePebble;
+                }
+            }
+        }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

@@ -1,0 +1,76 @@
+description: |
+  Legacy one-phase thermal-hydraulics model based on ``onePhase.H``.
+  It implements a porous-medium Navier--Stokes formulation with legacy
+  behavior, while incorporating upgrades from the newer one-phase
+  formulations.
+
+  Compared to the current one-phase implementation, this model solves for
+  and reports the Darcy velocity (``UDarcy``) rather than the actual fluid
+  velocity.
+formulation: |
+  The model solves a one-phase porous-medium flow coupled to thermal
+  energy equations for the fluid and the surrounding structure, using a
+  Darcy-type momentum closure and a buoyancy treatment.
+
+  In the incompressible (or weakly compressible) Boussinesq approximation,
+  density variations are represented through a linearized temperature
+  dependence.
+
+  $$ \rho(T) \approx \rho_{\mathrm{ref}}\left[1-\beta\left(T-T_{\mathrm{ref}}\right)\right] $$
+
+  where:
+
+  - $\rho(T)$ is the effective fluid density used in the momentum/continuity
+    coupling
+  - $\rho_{\mathrm{ref}}$ is the reference density (constant-density EOS)
+  - $\beta$ is the thermal expansion coefficient read from the fluid EOS
+    sub-dictionary (option ``beta``)
+  - $T_{\mathrm{ref}}$ is the reference temperature read from the fluid EOS
+    sub-dictionary (option ``T0``)
+  - $T$ is the local fluid temperature field
+
+  The Darcy velocity field ``UDarcy`` and the corresponding Darcy flux
+  ``phiDarcy`` are used to assemble the porous-medium continuity and
+  momentum contributions, and the model updates the coupled fluid/structure
+  temperatures through ``correctEnergy`` and the flow through
+  ``correctFluidMechanics``.
+admonitions:
+- kind: warning
+  body: This solver is not actively maintained nor subject to regression testing. Use with caution!
+dictionary: neutronicsProperties
+options:
+- key: incompressibleBuoyantBoussinesqTreatment
+  type: bool
+  required: false
+  default: false
+  description: |
+    Switch to activate the incompressible treatment with Boussinesq
+    approximation. When enabled, the fluid equation of state must be
+    constant density (``rhoConst``).
+- key: beta
+  type: scalar
+  required: false
+  default: 0.0
+  description: |
+    Thermal expansion coefficient $\beta$ used by the Boussinesq density
+    linearization. Read from the fluid EOS sub-dictionary
+    ``mixture/equationOfState`` when available.
+- key: T0
+  type: scalar
+  required: false
+  default: 0.0
+  description: |
+    Reference temperature $T_{\mathrm{ref}}$ used by the Boussinesq density
+    linearization. Read from the fluid EOS sub-dictionary
+    ``mixture/equationOfState`` when available.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - dictionary
+  - options
+  - usage
+  stub_improved: true

@@ -1,0 +1,38 @@
+description: |
+  Base class for OFFBEAT region-coupled finite-volume patches, providing
+  common functionality for ``regionCoupledFvPatch``-type interfaces.
+
+  In the OFFBEAT version, this class supports updating the AMI (Arbitrary
+  Mesh Interface) addressing during the simulation, including the effect of
+  relative motion across the coupled interface.
+formulation: |
+  This class does not implement a standalone physical model; it provides
+  interface-coupling utilities for region-to-region patch coupling.
+
+  During AMI updates, it computes the relative slip between the owner and
+  neighbour sides of the coupled interface using the displacement fields
+  and decomposes it into normal and tangential components with respect to the
+  owner patch normal.
+
+  $$ \mathbf{s} = \mathbf{u}_{src} - \mathbf{u}_{tgt} $$
+
+  $$ s_n = \mathbf{s}\cdot \mathbf{n} $$
+
+  $$ \mathbf{s}_t = \mathbf{s} - \mathbf{n}\, s_n $$
+
+  where:
+
+  - $\mathbf{u}_{src}$ is the displacement field on the source/owner patch
+  - $\mathbf{u}_{tgt}$ is the displacement field interpolated to the target
+    side of the coupled interface using ``regionCoupledPatch().interpolate``
+  - $\mathbf{s}$ is the relative slip vector across the interface
+  - $\mathbf{n}$ is the owner patch unit normal (``patch_.nf()``)
+  - $s_n$ is the scalar normal slip component
+  - $\mathbf{s}_t$ is the tangential slip vector component
+dictionary: neutronicsProperties
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

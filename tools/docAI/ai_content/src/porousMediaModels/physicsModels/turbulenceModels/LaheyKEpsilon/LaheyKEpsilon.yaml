@@ -1,0 +1,50 @@
+description: |-
+  Continuous-phase k-epsilon model including bubble-generated turbulence.
+
+  Reference:
+      Lahey Jr, R. T. (2005). The simulation of multidimensional multiphase flows. Nuclear Engineering and Design, 235(10), 1043-1060.
+
+  The default model coefficients are
+  \verbatim
+      LaheyKEpsilonCoeffs
+      {
+          Cmu             0.09;
+          C1              1.44;
+          C2              1.92;
+          C3              -0.33;
+          sigmak          1.0;
+          sigmaEps        1.3;
+          Cp              0.25;
+          Cmub            0.6;
+          alphaInversion  0.3;
+      }
+  \endverbatim
+options:
+- key: mixtureKEpsilonCoeffs
+  type: dictionary
+  required: false
+  default: Cmu 0.09; C1 1.44; C2 1.92; C3 C2; Cp 0.25; sigmak 1.0; sigmaEps 1.3;
+  description: Coefficient sub-dictionary for the mixture k–ε model containing Cmu, C1, C2, C3, Cp, sigmak and sigmaEps.
+usage:
+- comment: |-
+    The model is selected in the RAS section of the``turbulenceProperties`` dictionary for the gas and
+    liquid phases. A minimal example for a phase using ``LaheyKEpsilon`` is:
+  snippet: |-
+    simulationType  RAS;
+
+    RAS
+    {
+        RASModel        LaheyKEpsilon;
+
+        turbulence      on;
+
+        printCoeffs     on;
+
+        liquidName      "liquid";
+        gasName         "vapour";
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description

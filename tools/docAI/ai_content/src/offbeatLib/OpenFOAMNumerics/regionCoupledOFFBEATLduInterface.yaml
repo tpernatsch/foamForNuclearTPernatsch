@@ -1,0 +1,22 @@
+description: |
+  Abstract base class for region-coupled OFFBEAT LDU interfaces.
+
+  This interface provides the minimal connectivity information required by
+  coupled region solvers: identification of the neighbour patch, ownership
+  status, access to the neighbour interface, and access to the neighbouring
+  mesh.
+formulation: |
+  This class does not implement a physical model. It defines an abstract
+  interface used to couple discretizations across region boundaries.
+
+  The coupled solver is expected to use the following connectivity data:
+  - $p_n$ is the neighbour patch index (returned by `nbrPatchID()`)
+  - $\Omega_n$ is the neighbouring region mesh (returned by `nbrMesh()`)
+  - $\Gamma$ is the coupled interface (implied by the neighbour patch and
+    the LDU coupling mechanism)
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

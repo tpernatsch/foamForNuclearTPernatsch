@@ -1,0 +1,78 @@
+# 2D Point-Kinetics coupling with FMU
+
+Tags: [![badge](https://img.shields.io/badge/ThermalHydraulics-onePhase-blue.svg)]() [![badge](https://img.shields.io/badge/Neutronics-pointKinetics-blue.svg)]() [![badge](https://img.shields.io/badge/Multiphysics-looseCoupling-orange.svg)]() [![badge](https://img.shields.io/badge/Multicode-FMI-red.svg)]()
+
+
+## Description
+
+This case is derived from `2D_onePhaseAndPointKineticsCoupling`. It reuses the same mesh and physical parameters.
+
+This case demonstrates the use of external reactivity control via an FMU. It uses the point-kinetics sub-solver, with an additional reactivity contribution provided by the FMU.
+
+To link an FMU to a reactivity control, you must add the following line in [nuclearData](PIDcontrol/rootCase/constant/neutroRegion/nuclearData).
+
+```
+externalReactivityNameFromFMU   gfExtReact;
+```
+
+The current PID controller measures the power over the core. A command is provided to target a specific power. The FMU is built using OpenModelica.
+
+![](images/2D_PKCoupleFMI_ExternalReactivityController.png)
+
+*Fig 1: Power/reactivity PID controller viewed from OpenModelica.*
+
+
+## How to run
+
+### With and without FMU comparison
+
+In the [comparisonFMU](comparisonFMU) folder, first clean the folder:
+
+```bash
+./Allclean
+```
+
+Then run the following to simulate the case with and without the FMU:
+
+```bash
+./Allrun
+```
+
+Use the following script to compare the results:
+
+```bash
+python3 plot.py transientFMU/log.GeN-Foam transientUncoupled/log.GeN-Foam
+```
+
+The results should look like the following:
+
+![](images/2D_PKCoupleFMI_comparison.png)
+
+*Fig 2: Plot of core parameters for a ramp insertion of 57.67131 pcm over 1 s.*
+
+
+### PID controller
+
+In the [PIDcontrol](PIDcontrol) folder, first clean the folder:
+
+```bash
+./Allclean
+```
+
+Then run the following to simulate the case with the FMU PID controller:
+
+```bash
+./Allrun
+```
+
+Use the following script to compare the results:
+
+```bash
+python3 plot.py transient/log.GeN-Foam
+```
+
+The results should look like the following:
+
+![](images/2D_PKCoupleFMI_pidResponse.png)
+
+*Fig 3: Plot of core parameters with controlled PID responses to a 10% power increase request.*

@@ -1,0 +1,31 @@
+description: |
+  GAMG agglomerated cyclic AMI interface for discontinuous cyclic boundaries.
+
+  This class extends the OpenFOAM ``GAMGInterface`` with the cyclic AMI
+  functionality provided by ``discontinuousCyclicAMILduInterface`` and adds
+  support for GAMG agglomeration across processors.
+formulation: |
+  This interface does not introduce a standalone physical governing equation.
+  Instead, it defines the data transfer (restriction/prolongation) and the
+  cyclic AMI mapping used by the GAMG multigrid solver.
+
+  The interface provides:
+  - a mapping of neighbour-side internal-field values to the owner side via
+    ``internalFieldTransfer(...)``,
+  - a cyclic AMI interpolation operator ``AMI()`` that maps quantities between
+    non-conformal patches,
+  - face transformation tensors ``forwardT()`` and ``reverseT()`` used to
+    transform vector/tensor quantities across the cyclic AMI.
+
+  Variables:
+  - $i$ is the interface index within the GAMG hierarchy
+  - $f$ is the set of face indices ``iF`` passed to ``internalFieldTransfer``
+  - $T_f$ is the forward transformation tensor ``forwardT_``
+  - $T_r$ is the reverse transformation tensor ``reverseT_``
+  - $A$ is the AMI interpolation operator ``AMI()``
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

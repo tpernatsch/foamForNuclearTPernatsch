@@ -1,0 +1,47 @@
+description: |
+  Pore velocity model that computes the vapor pressure of the O/MOX system
+  (MOX = mixed uranium/plutonium/americium oxide) and applies a corresponding
+  pore-velocity correction following a Sens-type approach.
+
+  The model uses the local temperature field ``T`` and its gradient ``gradT``,
+  together with the oxygen-to-metal ratio field ``oxygenMetalRatio`` to
+  evaluate oxygen partial pressure and vapor pressure, including temperature
+  derivatives.
+formulation: |
+  The model evaluates the total vapor pressure as a function of the local
+  oxygen-to-metal ratio and temperature, then uses its temperature derivative
+  to compute a pore-velocity correction.
+
+  The implementation provides helper functions for:
+  - partial oxygen pressure $p_{\mathrm{O}_2}$ as a function of oxygen-to-metal
+    ratio and temperature,
+  - a Gibbs-energy integral used in the vapor pressure evaluation,
+  - the total vapor pressure $p_{\mathrm{vap}}$ and its derivative with respect
+    to temperature.
+
+  $$ p_{\mathrm{vap}} = p_{\mathrm{vap}}(OM, T) $$
+
+  $$ \frac{\partial p_{\mathrm{vap}}}{\partial T} = \left.\frac{d p_{\mathrm{vap}}}{dT}\right|_{OM} $$
+
+  where:
+
+  - $OM$ is the local oxygen-to-metal ratio field ``oxygenMetalRatio``
+  - $T$ is the local temperature field ``T``
+  - $p_{\mathrm{vap}}$ is the total vapor pressure computed by
+    ``calcVaporPressure(OM, T)``
+  - $\partial p_{\mathrm{vap}}/\partial T$ is computed by
+    ``calcVaporPressureDerivative(OM, T)``
+
+  The model also stores MOX composition-derived molar fractions and uses
+  physical constants (Boltzmann constant, molecular diameter) to evaluate
+  the Gibbs-energy integral and related thermodynamic quantities.
+dictionary: neutronicsProperties
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

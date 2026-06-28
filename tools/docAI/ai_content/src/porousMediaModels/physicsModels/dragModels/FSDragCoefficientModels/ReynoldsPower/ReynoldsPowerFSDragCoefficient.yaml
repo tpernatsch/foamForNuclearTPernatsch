@@ -1,0 +1,55 @@
+description: |-
+  Drag coefficient in the form $f_d = A + B \times Re^C$
+
+  $$f_d = const + coeff \times Re^{exp}$$
+
+  $$K_d = 0.5 f_d \frac{\alpha \rho |U|}{D_h}$$
+options:
+- key: coeff
+  type: scalar
+  required: true
+  description: Coefficient multiplying Reynolds power value (B)
+- key: exp
+  type: scalar
+  required: true
+  description: Exponential coefficient on the Reynolds number (C)
+- key: const
+  type: scalar
+  required: false
+  default: 0.0
+  description: Constant added to the power law (A)
+usage:
+- comment: |
+    The drag model is specified via the ``type`` entry in the ``physicsModels/dragModels/<zoneName>`` subdictionary of the ``phaseProperties`` file.
+    (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g.
+    ``constant/fluidRegion``).
+
+    Here is a snippet of a ``phaseProperties`` file enabling the ReynoldsPower fluid–structure drag model:
+  snippet: |-
+    // ... other phaseProperties subdictionaries
+
+    physicsModels
+    {
+      dragModels
+      {
+        "<zoneName>"
+        {
+                type    ReynoldsPower;
+                coeff   0.316;
+                exp     -0.25;
+        }
+
+        // ... other zone subdictionaries
+
+      }
+
+      // ... other physicsModels subdictionaries
+    }
+
+    // ... other subdictionaries
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options

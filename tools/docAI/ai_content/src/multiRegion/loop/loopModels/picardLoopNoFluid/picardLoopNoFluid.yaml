@@ -1,0 +1,47 @@
+description: |-
+  Identical to the picardLoop, but it does not solve the fluid-mechancs equations at
+  each of the iterations. Instead, it solves the fluid-mechanics equations only once
+  at the beginning of the iteration, and then solves the energy equation of the
+  thermal-hydraulics solver iteratively with the other physics.
+options:
+- key: maxIterations
+  type: int
+  required: true
+  description: ''
+- key: maxResidual
+  type: scalar
+  required: true
+  description: ''
+usage:
+- comment: 'The following subDict is an example on how to create a picardLoopNoFluid in regionsDict:'
+  snippet: |-
+    regionSolvers
+    {
+        Level_0
+        {
+            Level_1     picardLoopNoFluid;
+        }
+        Level_1
+        {
+            subSolvers // list of solvers
+            {
+                regionName              solverName;
+                fluidRegion             onePhase;
+                neutroRegion            diffusionNeutronics;
+                Level_2                 otherLoop;
+            }
+            maxResidual 0.00005;   // residual after which the iteration is ended
+            maxIterations 3;       // maximum number of iterations before the loop is ended
+        }
+
+        Level_2
+        {
+            ...
+        }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - dictionary

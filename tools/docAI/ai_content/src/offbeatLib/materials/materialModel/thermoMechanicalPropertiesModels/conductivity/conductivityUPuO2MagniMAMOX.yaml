@@ -1,0 +1,48 @@
+description: "Model for thermal conductivity of high-Pu content MOX. The used correlation \nis taken from \"Modelling of thermalconductivity\
+  \ and melting behaviour of \nminor actinide-MOX fuels and assessment against experimental and molecular \ndynamics data\
+  \ - A.Magni et al.\".\n(https://doi.org/10.1016/j.jnucmat.2021.153312)\n"
+options:
+- key: densityFraction
+  type: scalar
+  required: false
+  default: 0.95
+  description: |
+    Fraction of theoretical density used by the correlation.
+
+    Optional override: if not provided here, it is expected in the material
+    base/composition dictionary.
+usage:
+- comment: |
+    Example selection of the Magni MA-MOX conductivity correlation in the `solverDict`.
+  snippet: "materials\n{\n    fuel\n    {\n        type UPuO2;\n        \n        conductivity\n        {\n            type\
+    \ MaUPuO2Magni;\n\n            // Optional override\n            // densityFraction 0.95;\n        }\n    }\n}"
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - description
+  - options
+  - usage
+  formulation_added: true
+formulation: "The thermal conductivity is computed from a temperature-dependent baseline term for (U,Pu)O2 with an additional\
+  \ degradation due to burnup, actinide composition, and fuel porosity, following the correlation of Magni et al. (2021).\
+  \ The implementation uses local fields for burnup (Bu), oxygen-to-metal ratio (OM), number densities of U and Pu (N_U, N_Pu)\
+  \ and porosity (porosity), and evaluates a degradation factor that asymptotes to kappaInf_ at high burnup (see Duderstadt\
+  \ & Hamilton; Todreas & Kazimi for fuel thermal-transport modeling context).\n\n$$ k(T,\\mathrm{Bu}) = \\frac{k_{\\mathrm{base}}(T)}{\\\
+  left[1+\\Delta k(\\mathrm{Bu},\\mathbf{N})\\right]}\\,\\frac{1}{\\left(1-\\varepsilon\\right)} $$\n\n$$ k_{\\mathrm{base}}(T)=\\\
+  left(A_0 + A_x\\,T\\right) + \\left(A_{\\mathrm{Pu}} + B_{\\mathrm{Pu}}\\,T\\right)\\,f_{\\mathrm{Pu}} + A_{\\mathrm{Am}}\\\
+  ,f_{\\mathrm{Am}} + A_{\\mathrm{Np}}\\,f_{\\mathrm{Np}} $$\n\n$$ \\Delta k(\\mathrm{Bu},\\mathbf{N}) = \\left(kappaInf_\
+  \ - k_{\\mathrm{base}}(T)\\right)\\left(1-\\exp\\left[-\\frac{\\mathrm{Bu}}{\\phi_}\\right]\\right)\\,/\\,k_{\\mathrm{base}}(T)\
+  \ $$\n\n$$ f_i = \\frac{N_i}{N_U+N_{Pu}+N_{Am}+N_{Np}}, \\qquad \\varepsilon = \\texttt{porosity\\_} $$\n\n- $k$ is the\
+  \ effective fuel thermal conductivity (OpenFOAM field written into $sf$), in W/m/K.  \n- $k_{\\mathrm{base}}(T)$ is the\
+  \ baseline conductivity at temperature $T$ before burnup degradation (W/m/K).  \n- $\\Delta k(\\mathrm{Bu},\\mathbf{N})$\
+  \ is the dimensionless burnup/composition degradation factor.  \n- $T$ is the fuel temperature (input scalarField $T$),\
+  \ in K.  \n- $\\mathrm{Bu}$ is the local burnup field (OpenFOAM pointer $Bu_=$ mesh field named by `burnupName_`, default\
+  \ \"Bu\"), in GWd/tHM.  \n- $\\phi_ $ is the burnup correlation coefficient (GWd/tHM) controlling the degradation rate.\
+  \  \n- $kappaInf_ $ is the asymptotic lower limit for conductivity degradation at high burnup (W/m/K).  \n- $A_0, A_x, A_{\\\
+  mathrm{Pu}}, A_{\\mathrm{Am}}, A_{\\mathrm{Np}}, B_{\\mathrm{Pu}}$ are fitted correlation constants from Magni et al. (with\
+  \ the units as stored in the code).  \n- $f_i$ is the normalized number-fraction of actinide species $i\\in\\{U,Pu,Am,Np\\\
+  }$ computed from number densities.  \n- $N_U, N_{Pu}, N_{Am}, N_{Np}$ are local number densities (1/m$^3$) from OpenFOAM\
+  \ fields `N_U`, `N_Pu`, and internally managed `N_Am_`, `N_Np_`.  \n- $\\varepsilon$ is the fuel porosity from OpenFOAM\
+  \ field `porosity` (dimensionless).  \n- $\\mathrm{OM}$ is the oxygen-to-metal ratio field `oxygenMetalRatio` used by the\
+  \ correlation (e.g., to infer stoichiometry effects on $k_{\\mathrm{base}}$), in dimensionless form.\n"

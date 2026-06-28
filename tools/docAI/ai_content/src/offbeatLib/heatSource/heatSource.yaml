@@ -1,0 +1,25 @@
+description: |
+  Base heat source model class. It neglects the heat source entirely, allowing
+  for a simulation where the heat source field is not at all considered.
+
+  This means that the `Q` field is not created.
+admonitions:
+- kind: note
+  body: |
+    The abscence of the `Q` might create conflicts with other models that partially
+    or entirely depends on it (e.g. some of the behavioral models). If you want to use
+    those models bust still neglect the evolution of `Q` over time use the `constant`
+    heat source model.
+options: []
+usage:
+- comment: |
+    Here is a code snippet of the `solverDict` to be used for selecting the `none`
+    heat source model
+  snippet: heatSource none;
+dictionary: heatSourceOptions
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - dictionary

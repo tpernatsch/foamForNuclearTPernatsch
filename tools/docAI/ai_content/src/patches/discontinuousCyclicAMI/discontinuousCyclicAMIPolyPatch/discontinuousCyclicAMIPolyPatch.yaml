@@ -1,0 +1,31 @@
+description: |
+  Cyclic patch for Arbitrary Mesh Interface (AMI) that supports discontinuous
+  1-to-1 face matching across the interface by updating the patch topology.
+
+  This patch extends ``cyclicAMIPolyPatch`` and provides an option to duplicate
+  the patch data to enforce consistent AMI addressing/topology during
+  non-conformal interface handling.
+formulation: |
+  This class does not implement a physical transport model. Instead, it
+  provides mesh-interface handling for AMI-based cyclic boundary conditions.
+
+  The key behavior is controlled by the ``duplicate`` switch, which affects
+  how the patch is represented/duplicated internally to support conservative
+  non-conformal interface treatment (see the reference in the class header).
+
+  - $d$ is the boolean flag set by ``duplicate`` (mesh/interface duplication
+    behavior)
+options:
+- key: duplicate
+  type: bool
+  required: false
+  default: false
+  description: |
+    If ``true``, duplicate the patch representation to support consistent
+    AMI face matching/topology enforcement across the cyclic interface.
+dictionary: neutronicsProperties
+admonitions: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

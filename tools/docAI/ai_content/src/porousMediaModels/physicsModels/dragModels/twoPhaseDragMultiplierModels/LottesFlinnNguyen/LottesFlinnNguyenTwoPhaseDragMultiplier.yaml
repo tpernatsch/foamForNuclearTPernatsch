@@ -1,0 +1,48 @@
+description: |-
+  The LottesFlinnNguyen model is a correlation‑based two‑phase drag multiplier designed for porous‑medium thermal‑hydraulics. Its purpose is to scale the effective drag/friction term in the presence of a vapor phase by mapping the Lockhart–Martinelli parameter $X_{LM}$ to a surrogate void fraction $\alpha$, and then raising this holdup to a negative power, $\phi_2 = \alpha^{-\exp}$. This reproduces the “power‑law in holdup” behavior characteristic of the classical Lottes–Flinn family of two‑phase multipliers, whose squared form (exp≈2) is documented in early boiling‑channel work (e.g., ANL‑5760, 1961). [1](https://scholar.google.com/citations?user=YnqQ1CIAAAAJ&hl=en)
+
+  In this implementation, the holdup surrogate $\alpha$ is obtained through a specific analytic mapping:
+  $$\alpha(X_{LM}) = 1 - \left(1 + X_{LM}^{0.8}\right)^{-0.378},$$
+  which appears explicitly in the source code’s $\phi_2$ routine. This construction embeds the well‑established monotone dependence of void fraction on Martinelli‑type parameters used throughout separated‑flow and drift‑flux modeling frameworks, though the exact exponents (0.8, −0.378) are specific to this implementation rather than universal. [2](https://foamfornuclear.gitlab.io/foamForNuclear/cppapi/generated/porousMediaModels/physicsModels/dragModels/twoPhaseDragMultiplierModels/LottesFlinnNguyen/LottesFlinnNguyenTwoPhaseDragMultiplier.html)[3](https://www.cfdem.com/media/CFDEM/docu/voidFractionModel_dividedVoidFraction.html)
+
+  The final multiplier is defined as:
+  $$\phi_2 = \alpha^{-\exp},$$
+  with “exp” being the only user input (default 2.0). The exponent controls how sharply the multiplier grows with voiding; exp≈2 reproduces the classical squared Lottes–Flinn behavior, whereas smaller exponents (≈1.7–1.8) can be used to soften the growth in bubbly‑dominated regimes, a practice also noted in LWR/SFR correlation tuning. [2](https://foamfornuclear.gitlab.io/foamForNuclear/cppapi/generated/porousMediaModels/physicsModels/dragModels/twoPhaseDragMultiplierModels/LottesFlinnNguyen/LottesFlinnNguyenTwoPhaseDragMultiplier.html)[1](https://scholar.google.com/citations?user=YnqQ1CIAAAAJ&hl=en)
+
+  To ensure physical consistency, the model forces $\phi_2 = 1$ when the flow becomes nearly single‑phase (normalized > 0.999). Such a reversion to unity is standard across homogeneous and separated‑flow friction‑multiplier theories and prevents unphysical blow‑ups as $\alpha\to 1$ or $X_{LM}\to 0$. [2](https://foamfornuclear.gitlab.io/foamForNuclear/cppapi/generated/porousMediaModels/physicsModels/dragModels/twoPhaseDragMultiplierModels/LottesFlinnNguyen/LottesFlinnNguyenTwoPhaseDragMultiplier.html)[4](https://colab.ws/articles/10.1016/j.nucengdes.2022.111877)
+
+  The Lockhart–Martinelli parameter $X_{LM}$ itself is a classical dimensionless ratio built from phase mass fluxes and densities, used extensively in two‑phase pressure‑drop and boiling/condensing heat‑transfer correlations. This makes $X_{LM}$ a natural internal variable for constructing approximate void‑fraction surrogates, and the present model obtains it from the framework via mFluidPtr->XLM(). [3](https://www.cfdem.com/media/CFDEM/docu/voidFractionModel_dividedVoidFraction.html)
+
+  Within the context of sodium‑cooled fast reactor thermal‑hydraulics—where fully mechanistic two‑fluid closures remain challenging and code‑specific holdup correlations are widely used—the LottesFlinnNguyen model fits the established practice of using tuned analytic $\alpha(X_{LM})$ relations and a user‑adjustable exponent to match measured two‑phase drag behavior. Such approaches are explicitly discussed in recent sodium‑boiling reviews and code assessments (e.g., ESFR‑SMART / ASME JNRS). [5](https://pangea.stanford.edu/ERE/pdf/pereports/MS/Alkaya02.pdf)
+
+  Overall, the LottesFlinnNguyen model is best viewed as an explicit, correlation‑driven holdup‑multiplier closure: (1) simple enough to remain stable in coarse‑mesh porous‑medium simulations, (2) consistent with the Lottes–Flinn lineage through a power‑law in void fraction, (3) grounded in the Lockhart–Martinelli heritage via its $X_{LM}$‑based holdup surrogate, and (4) equipped with a physically necessary single‑phase limit.
+options:
+- key: exp
+  type: scalar
+  required: false
+  default: 2.0
+  description: ''
+usage:
+- comment: |
+    The two-phase drag multiplier model is specified via the ``type`` entry in the ``physicsModels/twoPhaseDragMultiplierModel/<zoneName>`` subdictionary of the ``phaseProperties`` file.
+    (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g.
+    ``constant/fluidRegion``).
+
+    Here is a snippet of a ``phaseProperties`` file enabling the LottesFlinnNguyen drag multiplier model drag model:
+  snippet: |-
+    physicsModels
+    {
+        twoPhaseDragMultiplierModel
+        {
+            type                LottesFlinnNguyen;
+            multiplierFluid     "liquid";
+        }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options
+  - dictionary

@@ -1,0 +1,38 @@
+description: |
+  Patch field that extrapolates the internal scalar field to the boundary and
+  applies it as a fixedValue boundary condition.
+
+  The extrapolated value is optionally under-relaxed using the relaxation
+  factor ``relax``.
+formulation: |
+  This boundary condition sets the patch scalar field ``phi`` by extrapolating
+  the adjacent cell-centre value to the patch face using the patch geometry.
+  The resulting fixedValue is then under-relaxed.
+
+  $$ \phi_p = (1-r)\,\phi_p^{\text{old}} + r\,\phi_p^{\text{ext}} $$
+
+  where:
+
+  - $r$ is the under-relaxation factor set by ``relax``
+  - $\phi_p^{\text{ext}}$ is the extrapolated boundary value obtained from the
+    internal field
+  - $\phi_p^{\text{old}}$ is the previous patch value (used for relaxation)
+  - $\phi_p$ is the updated patch value applied as a fixedValue
+
+  The class also provides patch-normal gradient evaluation and corresponding
+  boundary matrix coefficients, including support for non-orthogonal
+  correction when an appropriate gradient field is available in the object
+  registry.
+options:
+- key: relax
+  type: scalar
+  required: true
+  description: |
+    Under-relaxation factor used to blend the newly extrapolated patch value
+    with the previous patch value.
+dictionary: neutronicsProperties
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

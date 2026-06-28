@@ -1,0 +1,51 @@
+description: |
+  Abstract base class for run-time selectable region solvers.
+
+  This class provides the common interface and shared bookkeeping for
+  region-level physics solvers operating on a `dynamicFvMesh`. Concrete
+  solvers implement the physics update (`correctPhysics()`), time-step
+  constraints (`maxDeltaT()`), and convergence metrics (`getResidual()`).
+formulation: |
+  The base class does not prescribe a specific physical model. It defines
+  the common time-integration control logic used by derived region solvers.
+
+  The transient/steady-state behavior is determined from the selected
+  discretization scheme and local time-stepping capability:
+  $$
+  \text{transient} \iff \neg(\text{steady\_}) \wedge \neg(\text{LTS\_})
+  $$
+
+  where:
+
+  - $\text{steady\_}$ is a boolean flag taken from `mesh.schemes().steady()`
+  - $\text{LTS\_}$ is a boolean flag indicating whether local Euler time
+    stepping is enabled via `fv::localEulerDdt::enabled(mesh)`
+admonitions:
+- kind: note
+  body: This model is selected solely by its runtime ``typeName`` and defines no additional options.
+options: []
+usage:
+- comment: |
+    The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``). Here is a snippet enabling the model:
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type solver;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  stub_improved: true

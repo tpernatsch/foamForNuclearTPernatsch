@@ -1,0 +1,25 @@
+description: |
+  Model for constant emissivity. The value is read from the input dictionary.
+admonitions:
+- kind: warning
+  body: |
+    For retro-compatibility, the constant emissivity can still be provided as a `dimensionedScalar` keyword `emissivity` in the material dictionary. This is deprecated; prefer an `emissivity` sub-dictionary with `type constant;` and keyword `value`.
+options:
+- key: value
+  type: scalar
+  required: true
+  description: |
+    Constant emissivity value (read from the `emissivity` sub-dictionary as `value`).
+usage:
+- comment: |
+    Example selection of the constant emissivity model (recommended style).
+  snippet: "materials\n{\n    <zoneName>\n    {\n        type <MaterialTypeName>;\n        \n        emissivity\n        {\n\
+    \            type constant;\n            value 0.8;\n        }\n    }\n}"
+dictionary: emissivity
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options
+  - dictionary

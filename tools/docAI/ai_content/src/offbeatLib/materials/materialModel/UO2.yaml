@@ -1,0 +1,143 @@
+description: |
+  The `UO2` material model represents UO$_2$ nuclear fuel.
+
+  The class selects thermophysical and mechanical property models as well as
+  fuel behavioral models (densification, swelling, relocation, failure, and
+  pore velocity). If not specified in the material dictionary, default models
+  are used.
+options:
+- key: densityModel
+  type: word
+  required: false
+  default: UO2Constant
+  description: |
+    Selects the density correlation used by the `UO2` material.
+- key: heatCapacityModel
+  type: word
+  required: false
+  default: UO2Matpro
+  description: |
+    Selects the heat capacity correlation used by the `UO2` material.
+- key: conductivityModel
+  type: word
+  required: false
+  default: UO2Matpro
+  description: |
+    Selects the thermal conductivity correlation used by the `UO2` material.
+- key: emissivityModel
+  type: word
+  required: false
+  default: UO2Relap
+  description: |
+    Selects the emissivity correlation used by the `UO2` material.
+- key: YoungModulusModel
+  type: word
+  required: false
+  default: UO2Matpro
+  description: |
+    Selects the Young's modulus correlation used by the `UO2` material.
+- key: PoissonRatioModel
+  type: word
+  required: false
+  default: UO2Constant
+  description: |
+    Selects the Poisson's ratio correlation used by the `UO2` material.
+- key: thermalExpansionModel
+  type: word
+  required: false
+  default: UO2Relap
+  description: |
+    Selects the thermal expansion correlation used by the `UO2` material.
+- key: densificationModel
+  type: word
+  required: false
+  default: UO2Frapcon
+  description: |
+    Selects the densification (additional strain) model used by the `UO2` material.
+- key: swellingModel
+  type: word
+  required: false
+  default: UO2Frapcon
+  description: |
+    Selects the swelling (additional strain) model used by the `UO2` material.
+- key: relocationModel
+  type: word
+  required: false
+  default: UO2Frapcon
+  description: |
+    Selects the relocation (additional strain) model used by the `UO2` material.
+- key: failureModel
+  type: word
+  required: false
+  default: none
+  description: |
+    Selects the failure model used by the `UO2` material.
+- key: poreVelocityModel
+  type: word
+  required: false
+  default: none
+  description: |
+    Selects the pore velocity model used by the `UO2` material.
+usage:
+- comment: |
+    Example of a `solverDict` materials entry using the `UO2` material model
+    with its default sub-model selections.
+  snippet: |-
+    materials
+    {
+        fuel
+        {
+            material UO2;
+
+            // Optional overrides (defaults shown)
+            densityModel            UO2Constant;
+            heatCapacityModel       UO2Matpro;
+            conductivityModel       UO2Matpro;
+            emissivityModel         UO2Relap;
+            YoungModulusModel       UO2Matpro;
+            PoissonRatioModel       UO2Constant;
+            thermalExpansionModel   UO2Relap;
+
+            densificationModel      UO2Frapcon;
+            swellingModel           UO2Frapcon;
+            relocationModel         UO2Frapcon;
+            failureModel            none;
+            poreVelocityModel       none;
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - options
+  - usage
+  formulation_added: true
+formulation: |-
+  The `UO2` class is a composite fuel-material model: it provides temperature-dependent thermophysical properties and, via behavioral sub-models, additional strain contributions used in the coupled thermo-mechanical balance. The governing equations are therefore those of the host solver (e.g., heat conduction and solid mechanics), with material closures supplied by the selected sub-models (Matpro/Frapcon/Relap correlations, etc.; see Duderstadt & Hamilton and Todreas & Kazimi for fuel behavior context).
+
+  Heat transfer in the solid fuel is typically written as
+  $$ \rho(T)\,c_p(T)\,\frac{\partial T}{\partial t} - \nabla\cdot\left(k(T)\nabla T\right) = Q, $$
+  where the OpenFOAM fields are $T$ (temperature) and the material closures are returned by the selected `densityModel`, `heatCapacityModel`, and `conductivityModel`.
+
+  Mechanical response uses the strain decomposition
+  $$ \boldsymbol{\varepsilon} = \boldsymbol{\varepsilon}^{e} + \boldsymbol{\varepsilon}^{th} + \boldsymbol{\varepsilon}^{beh}, $$
+  where `additionalStrains(symmTensorField&)` supplies $\boldsymbol{\varepsilon}^{beh}$ from densification/swelling/relocation sub-models, and `thermalExpansionModel` supplies $\boldsymbol{\varepsilon}^{th}$ (thermal expansion).
+
+  Failure/constitutive degradation is handled through `checkFailure()`, which can modify the effective constitutive response (e.g., by flagging failed material points) depending on the selected `failureModel`.
+
+  The effective additional strain rate is model-dependent and is supplied by the selected behavioral correlations, conceptually of the form
+  $$ \frac{d\boldsymbol{\varepsilon}^{beh}}{dt} = \mathcal{F}_{dens}(T,\cdot)+\mathcal{F}_{swel}(T,\cdot)+\mathcal{F}_{relo}(T,\cdot), $$
+  with optional coupling to pore-velocity/relocation physics when `poreVelocityModel` is enabled.
+
+  - $T$ is the OpenFOAM temperature field [K]
+  - $\rho(T)$ is the temperature-dependent fuel density [kg/m$^3$]
+  - $c_p(T)$ is the temperature-dependent specific heat [J/(kg·K)]
+  - $k(T)$ is the temperature-dependent thermal conductivity [W/(m·K)]
+  - $Q$ is the volumetric heat source term [W/m$^3$]
+  - $\boldsymbol{\varepsilon}$ is the total small-strain tensor [–]
+  - $\boldsymbol{\varepsilon}^{e}$ is the elastic strain tensor [–]
+  - $\boldsymbol{\varepsilon}^{th}$ is the thermal expansion strain tensor [–]
+  - $\boldsymbol{\varepsilon}^{beh}$ is the behavioral (densification/swelling/relocation) additional strain tensor [–]
+  - $\mathcal{F}_{dens},\mathcal{F}_{swel},\mathcal{F}_{relo}$ are model-specific fuel behavioral strain evolution operators (Frapcon/Relap-type correlations)
+  - `additionalStrains` is the OpenFOAM-style material hook that returns $\boldsymbol{\varepsilon}^{beh}$
+  - `checkFailure` is the hook that applies the selected `failureModel$ to determine failure state

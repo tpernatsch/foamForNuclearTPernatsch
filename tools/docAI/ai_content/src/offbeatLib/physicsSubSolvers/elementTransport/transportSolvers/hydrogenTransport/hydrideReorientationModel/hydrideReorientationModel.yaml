@@ -1,0 +1,26 @@
+description: |
+  Parent (abstract) hydride reorientation model.
+
+  This base class provides the common infrastructure for hydride reorientation
+  models, including access to the mesh and the governing options dictionary.
+  The runtime type name is `hydrideReorientationModel`. If the model is selected
+  as `none` in `solverDict`, hydride reorientation is not considered.
+formulation: |
+  This is an abstract interface; concrete hydride reorientation models must
+  implement the update of the hydride state fields via
+  `correctReorientation(const labelList& addr)`.
+
+  The model holds references to:
+  - $f_{\mathrm{RHy}}$ is the OpenFOAM field `fracRHy` representing the fraction
+    of radial hydrides (dimensionless)
+  - $C_{\mathrm{RHy}}$ is the OpenFOAM field `radialHydrides` representing the
+    concentration of radial hydrides (wppm, stored with `dimless` in this base class)
+
+  The specific physical reorientation kinetics and coupling to other fuel
+  performance quantities are implemented in derived classes.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

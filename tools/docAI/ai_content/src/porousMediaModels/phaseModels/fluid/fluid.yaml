@@ -1,0 +1,47 @@
+description: |
+  Generic fluid phase class.
+
+  The class mainly serves as a container for the phase state and derived
+  fields (velocity, fluxes, continuity error, thermophysical properties,
+  turbulence, etc.), while delegating most physics to the associated
+  sub-models (thermo, turbulence, diameter model, and others).
+formulation: |
+  The class provides the bookkeeping fields required by the compressible
+  two-phase framework, including the continuity “dilation” term used to
+  express the compressible continuity equation in terms of the phase
+  fraction.
+
+  The continuity error field ``contErr`` is defined from the phase
+  continuity residual:
+  $$
+  \mathrm{contErr} = \frac{\partial \alpha}{\partial t} + \nabla\cdot(\alpha \rho \mathbf{U})
+  $$
+  where the terms are assembled using OpenFOAM operators consistent with
+  ``fvc::ddt(alpha, rho)`` and ``fvc::div(alphaRhoPhi)``.
+
+  - $\alpha$ is the phase fraction (field ``alpha`` in the solver context)
+  - $\rho$ is the phase density (provided by ``thermo_`` / ``rhoThermo``)
+  - $\mathbf{U}$ is the phase velocity (field ``U_``)
+  - $\alpha\rho\mathbf{U}$ is the phase mass flux on faces (field ``alphaRhoPhi_``)
+  - $\mathrm{contErr}$ is the continuity error (field ``contErr_``)
+
+  The class also stores the dilation term ``dgdt_`` (see the header comment)
+  which represents the compressible contribution to the phase continuity
+  equation, including possible mass sources/sinks.
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - options
+  - externalOptions
+  - optionsLocations
+  - admonitions
+  - usage
+  stub_improved: true

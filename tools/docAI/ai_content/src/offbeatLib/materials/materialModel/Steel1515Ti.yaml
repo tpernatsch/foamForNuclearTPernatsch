@@ -1,0 +1,134 @@
+description: |
+  The `Steel1515Ti` material model represents the austenitic Steel 15-15 Ti
+  cladding material.
+
+  The class selects a set of thermophysical/mechanical property models and a
+  swelling (irradiation-induced) model. If not specified in the material
+  dictionary, default models are used.
+options:
+- key: densityModel
+  type: word
+  required: false
+  default: Steel1515TiSchumann
+  description: |
+    Selects the density correlation used by the `Steel1515Ti` material.
+- key: heatCapacityModel
+  type: word
+  required: false
+  default: Steel1515TiBanerjee
+  description: |
+    Selects the heat capacity correlation used by the `Steel1515Ti` material.
+- key: conductivityModel
+  type: word
+  required: false
+  default: Steel1515TiTobbe
+  description: |
+    Selects the thermal conductivity correlation used by the `Steel1515Ti`
+    material.
+- key: emissivityModel
+  type: word
+  required: false
+  default: ZircaloyConstant
+  description: |
+    Selects the emissivity correlation used by the `Steel1515Ti` material.
+- key: YoungModulusModel
+  type: word
+  required: false
+  default: Steel1515TiTobbe
+  description: |
+    Selects the Young's modulus correlation used by the `Steel1515Ti` material.
+- key: PoissonRatioModel
+  type: word
+  required: false
+  default: Steel1515TiTobbe
+  description: |
+    Selects the Poisson's ratio correlation used by the `Steel1515Ti` material.
+- key: thermalExpansionModel
+  type: word
+  required: false
+  default: Steel1515TiGehr
+  description: |
+    Selects the thermal expansion correlation used by the `Steel1515Ti`
+    material.
+- key: swellingModel
+  type: word
+  required: false
+  default: none
+  description: |
+    Selects the swelling (irradiation-induced strain) model used by the
+    `Steel1515Ti` material.
+usage:
+- comment: |
+    Example of a `solverDict` materials entry using the `Steel1515Ti` material
+    model with its default sub-model selections.
+  snippet: |-
+    materials
+    {
+        cladding
+        {
+            material Steel1515Ti;
+
+            // Optional overrides (defaults shown)
+            densityModel            Steel1515TiSchumann;
+            heatCapacityModel       Steel1515TiBanerjee;
+            conductivityModel       Steel1515TiTobbe;
+            emissivityModel         ZircaloyConstant;
+            YoungModulusModel       Steel1515TiTobbe;
+            PoissonRatioModel       Steel1515TiTobbe;
+            thermalExpansionModel   Steel1515TiGehr;
+
+            swellingModel           Steel1515TiGeneralized;
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - usage
+  formulation_added: true
+formulation: |
+  This class is a composite material model that delegates the actual
+  thermophysical correlations (e.g., density, $c_p$, $k$, emissivity, $E$, $\nu$,
+  and thermal expansion) and the irradiation swelling law to sub-models
+  selected at runtime. The only non-trivial physics implemented directly in
+  `Steel1515Ti` is the coupling to an irradiation swelling model via the
+  `additionalStrains()` interface; the governing constitutive relations are
+  therefore those provided by the selected sub-models (see OpenFOAM
+  `materialModel`/`swellingModel` patterns and typical formulations in
+  Duderstadt & Hamilton and Todreas & Kazimi for irradiation effects).
+
+  The total additional (inelastic) strain tensor is assembled as
+  $$ \boldsymbol{\varepsilon}^{\text{add}}(t) = \boldsymbol{\varepsilon}^{\text{swelling}}(t), $$
+  where the swelling contribution is computed by the selected
+  `swellingModel` using the local temperature history $T$ and irradiation
+  state variables (e.g., fluence/flux) as required by that sub-model.
+
+  In the thermal-mechanical coupling, the material properties returned by
+  the selected sub-models are typically expressed as parametric functions
+  of temperature, e.g.
+  $$ \rho(T) = F_{\rho}\,\rho_0(T) + \Delta\rho, \qquad
+     c_p(T) = F_{c_p}\,c_{p,0}(T) + \Delta c_p, \qquad
+     k(T) = F_k\,k_0(T) + \Delta k, $$
+  $$ E(T) = F_E\,E_0(T) + \Delta E, \qquad
+     \nu(T) = F_{\nu}\,\nu_0(T) + \Delta \nu, \qquad
+     \alpha(T) = F_{\alpha T}\,\alpha_0(T) + \Delta(\alpha T), $$
+  with emissivity $\epsilon(T)$ similarly scaled by $F_{\epsilon}$ and
+  $\Delta\epsilon$.
+
+  - $t$ is time.
+  - $\boldsymbol{\varepsilon}^{\text{add}}$ is the additional strain tensor
+    returned through `additionalStrains(symmTensorField&)`.
+  - $\boldsymbol{\varepsilon}^{\text{swelling}}$ is the irradiation-induced
+    swelling strain tensor computed by `swellingModel`.
+  - $T$ is the local temperature field passed to `correctBehavioralModels(T)`.
+  - $\rho$ is density (`rho`-like property used by the solver).
+  - $c_p$ is specific heat capacity.
+  - $k$ is thermal conductivity.
+  - $E$ is Young’s modulus.
+  - $\nu$ is Poisson’s ratio.
+  - $\alpha$ is thermal expansion coefficient (or $\alpha T$-based form,
+    depending on the underlying `thermalExpansionModel`).
+  - $F_{\rho},F_{c_p},F_k,F_E,F_{\nu},F_{\alpha T},F_{\epsilon}$ are the
+    dimensionless scaling factors defined in this class.
+  - $\Delta\rho,\Delta c_p,\Delta k,\Delta E,\Delta\nu,\Delta(\alpha T),\Delta\epsilon$
+    are the corresponding offsets defined in this class.

@@ -1,0 +1,29 @@
+description: |
+  Region-coupled OpenFOAM polyPatch implementation for the foamForNuclear
+  OFFBEAT framework.
+
+  This class extends OpenFOAM's `polyPatch` and the OFFBEAT coupling base
+  (`regionCoupledBaseOFFBEAT`) to support region-to-region patch handling
+  (including geometry/topology updates during mesh motion).
+formulation: |
+  This class does not implement a standalone physical governing equation.
+  Instead, it provides the patch-level infrastructure required by OFFBEAT
+  coupled-region simulations, delegating geometry and mesh-motion operations
+  to the underlying OpenFOAM `polyPatch` implementation and OFFBEAT coupling
+  utilities.
+
+  The key operations are:
+
+  $$ \text{initGeometry} \rightarrow \text{patch geometric quantities} $$
+  $$ \text{initMovePoints, movePoints} \rightarrow \text{patch update under mesh motion} $$
+  $$ \text{initUpdateMesh, updateMesh} \rightarrow \text{patch topology update} $$
+
+  - $p$ is the OpenFOAM `pointField` containing mesh point coordinates
+  - $pBufs$ is the OpenFOAM `PstreamBuffers` used for parallel communication
+  - $T$ is not used directly by this class (no thermal model is implemented here)
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,112 @@
+description: |
+  Structure model that assigns structure properties by OpenFOAM cell zones.
+
+  The model reads a per-zone configuration from the case dictionary and
+  initializes structure volume fraction and hydraulic diameter fields.
+  Optionally, it also reads per-zone momentum sources (pumps) and passive
+  sub-structure properties.
+formulation: |
+  The model is a data-driven initializer for structure-related fields on
+  the mesh. For each configured cell zone, it sets the structure volume
+  fraction and the associated hydraulic diameter. If passive properties are
+  provided, it also computes the passive sub-structure effective heat
+  capacity term used later in the thermal coupling.
+
+  For each zone $z$:
+
+  $$
+  \alpha_s(\mathbf{x}) = \alpha_{s,z}
+  $$
+  where $\alpha_{s,z}$ is set from the zone dictionary key ``volumeFraction``.
+
+  $$
+  D_h(\mathbf{x}) = D_{h,z}
+  $$
+  where $D_{h,z}$ is set from the zone dictionary key ``Dh``.
+
+  If passive properties are provided, the passive effective $\rho C_p$ term
+  is set as either:
+
+  $$
+  (\rho C_p)_{\text{pas},z} = \rho_{\text{pas},z}\, C_{p,\text{pas},z}
+  $$
+  when both ``rho`` and ``Cp`` are given, or
+
+  $$
+  (\rho C_p)_{\text{pas},z} = (\rho C_p)_{\text{pas},z}
+  $$
+  when ``rhoCp`` is given.
+
+  - $\alpha_s(\mathbf{x})$ is the structure volume fraction field (OpenFOAM field ``alpha.structure``)
+  - $D_h(\mathbf{x})$ is the hydraulic diameter field (internal field ``Dh_``)
+  - $\alpha_{s,z}$ is the zone-level structure volume fraction from ``volumeFraction``
+  - $D_{h,z}$ is the zone-level hydraulic diameter from ``Dh``
+  - $(\rho C_p)_{\text{pas},z}$ is the passive sub-structure effective volumetric heat capacity term from ``rhoCp`` or from ``rho`` and ``Cp``
+admonitions: []
+dictionary: neutronicsProperties
+optionsLocations: []
+options:
+- key: Cp
+  type: scalar
+  required: true
+  default: null
+  description: ''
+- key: Dh
+  type: scalar
+  required: true
+  default: null
+  description: ''
+- key: T
+  type: scalar
+  required: true
+  default: null
+  description: ''
+- key: localX
+  type: vector
+  required: true
+  default: null
+  description: ''
+- key: localZ
+  type: vector
+  required: true
+  default: null
+  description: ''
+- key: rho
+  type: scalar
+  required: true
+  default: null
+  description: ''
+- key: rhoCp
+  type: scalar
+  required: true
+  default: null
+  description: ''
+- key: type
+  type: word
+  required: true
+  default: null
+  description: ''
+- key: volumeFraction
+  type: scalar
+  required: true
+  default: null
+  description: ''
+- key: volumetricArea
+  type: scalar
+  required: true
+  default: null
+  description: ''
+externalOptions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - dictionary
+  - optionsLocations
+  - externalOptions
+  - usage
+  stub_improved: true

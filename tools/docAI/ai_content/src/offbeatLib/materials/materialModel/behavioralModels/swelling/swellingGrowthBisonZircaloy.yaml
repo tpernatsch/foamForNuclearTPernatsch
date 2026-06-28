@@ -1,0 +1,54 @@
+description: |
+  Class modelling the irradiation growth phenomenon derived from Moose documentation.
+options:
+- key: fastFluenceName
+  type: word
+  required: false
+  default: fastFluence
+  description: |
+    Name of the fast fluence field.
+- key: A
+  type: scalar
+  required: false
+  default: 3e-20
+  description: |
+    Correlation parameter in the fast-fluence model $A \, \phi^{\,n}$, where $A$ is set by the ``A`` entry in ``swellingModelOptions`` (or by ``swelling.A`` for retro-compatibility).
+- key: n
+  type: scalar
+  required: false
+  default: 0.794
+  description: |
+    Correlation exponent in the fast-fluence model $A \, \phi^{\,n}$, where $n$ is set by the ``n`` entry in ``swellingModelOptions`` (or by ``swelling.n`` for retro-compatibility).
+- key: cladType
+  type: word
+  required: false
+  default: ESCORE
+  description: |
+    Cladding type selector used by the model. If ``cladType`` is set, the model overrides $A$ and $n$ according to the selected correlation.
+usage:
+- comment: |
+    Example selection of `ZircaloyBison`.
+  snippet: |-
+    materials
+    {
+        clad
+        {
+            type Zircaloy;
+
+            swelling
+            {
+                type ZircaloyBison;
+                // fastFluenceName fastFluence;
+                // A 3e-20;
+                // n 0.794;
+                cladType <required>;
+            }
+        }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

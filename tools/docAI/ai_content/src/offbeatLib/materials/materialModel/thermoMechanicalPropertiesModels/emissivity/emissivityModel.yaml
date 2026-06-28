@@ -1,0 +1,26 @@
+description: |
+  Mother class for emissivity models.
+
+  This is a run-time selectable interface used to compute (or update) an
+  emissivity field based on the local temperature.
+formulation: |
+  The emissivity model provides an implementation of the abstract update
+  method ``correct``. For a given set of mesh cells (specified by ``addr``),
+  the model updates the emissivity values in the provided scalar field.
+
+  $$ \varepsilon = \varepsilon(T) $$
+
+  where:
+
+  - $\varepsilon$ is the emissivity stored in the scalar field ``sf``
+  - $T$ is the temperature field ``T`` (input to ``correct``)
+  - $\varepsilon(T)$ is the model-specific emissivity law implemented in the
+    derived class
+admonitions: []
+dictionary: neutronicsProperties
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

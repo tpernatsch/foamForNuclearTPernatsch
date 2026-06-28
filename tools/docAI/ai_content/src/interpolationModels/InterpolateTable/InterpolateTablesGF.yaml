@@ -1,0 +1,57 @@
+description: |
+  InterpolateTablesGF provides generic interpolation-table functionality
+  (1D/2D/3D via the underlying template `InterpolateTableGF`) for returning
+  scalar values or interpolated fields, with support for different
+  interpolation schemes and out-of-bounds handling.
+
+  In this compilation unit, the scalar-table integral is specialized for
+  1D tables.
+formulation: |
+  For a 1D interpolation table with abscissae $x_i$ and tabulated values
+  $f_i = f(x_i)$, the integral over the tabulated range is computed by
+  summing contributions over each interval $[x_{i-1}, x_i]$.
+
+  $$ I(k) = \sum_{i=1}^{N-1} \left( x_i^k - x_{i-1}^k \right)\, w_i $$
+
+  where the interval weight $w_i$ depends on the interpolation method:
+
+  - STEP (piecewise-constant):
+    $$ w_i = f_{i-1} $$
+
+  - LINEAR (piecewise-linear, trapezoidal rule):
+    $$ w_i = \frac{1}{2}\left(f_{i-1} + f_i\right) $$
+
+  Variables:
+  - $x_i$ is the $i$-th tabulated abscissa (stored in `xValues_`)
+  - $f_i$ is the tabulated function value at $x_i$ (stored in `data_`)
+  - $k$ is the exponent used in the integral kernel (argument `k`)
+  - $N$ is the number of tabulated points (`xValues_.size()`)
+admonitions:
+- kind: note
+  body: This model is selected solely by its runtime ``typeName`` and defines no additional options.
+options: []
+usage:
+- comment: |
+    The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``). Here is a snippet enabling the model:
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type InterpolateTablesGF;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  stub_improved: true

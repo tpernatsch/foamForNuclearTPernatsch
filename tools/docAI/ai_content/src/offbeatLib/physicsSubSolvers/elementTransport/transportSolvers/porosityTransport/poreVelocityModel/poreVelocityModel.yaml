@@ -1,0 +1,78 @@
+description: |
+  Mother class for pore velocity models. When the ``none`` model is selected,
+  the pore velocity field is set to zero.
+
+  The class provides a run-time selectable interface for pore velocity
+  corrections, including an optional regularization of the temperature
+  gradient used by derived models.
+formulation: |
+  This base class does not impose a specific physical transport model.
+  It provides the infrastructure for derived pore-velocity models to update
+  the pore velocity field ``poreVelocity`` and, optionally, to compute a
+  regularized temperature-gradient field.
+
+  The ``none`` implementation corresponds to the limiting case where the pore
+  velocity is identically zero.
+
+  - ``poreVelocity`` is the pore velocity vector field (OpenFOAM field name
+    ``poreVelocity``)
+  - $\\alpha$ is the multiplicative correction factor set by
+    ``alphaPoreVelocity`` (dimensionless)
+  - $\\varepsilon$ is the regularization scale set by ``regularizationScale``
+    (units depend on the implementation; see derived models)
+  - ``regularizeGradT`` is a boolean switch controlling whether the temperature
+    gradient is regularized
+dictionary: neutronicsProperties
+options:
+- key: poreVelocityModel
+  type: word
+  required: false
+  default: none
+  description: |
+    Name of the pore velocity model to instantiate. The base class registers
+    the ``none`` model as the default type.
+- key: alphaPoreVelocity
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Multiplicator for pore velocity (dimensionless).
+- key: regularizeGradT
+  type: bool
+  required: false
+  default: false
+  description: |
+    If ``true``, derived models may use a regularized temperature gradient
+    when computing pore velocity-related corrections.
+- key: regularizationScale
+  type: scalar
+  required: false
+  default: 0
+  description: |
+    Regularization length/scale used by the regularized temperature-gradient
+    construction (value is passed to the internal regularization logic).
+optionsLocations: []
+usage:
+- comment: |
+    Activate the ``none`` pore velocity model by selecting it explicitly in the
+    ``materials`` section of ``solverDict``.
+  snippet: |-
+    materials
+    {
+        fuel
+        {
+            material UPuO2;
+
+            ...
+
+            poreVelocityModel     none;
+            // Multiplicator for pore velocity
+            // alphaPoreVelocity 1;
+        }
+
+        ...
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

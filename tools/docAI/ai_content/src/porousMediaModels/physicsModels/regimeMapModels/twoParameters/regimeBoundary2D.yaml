@@ -1,0 +1,39 @@
+description: |
+  2D line segment representing the boundary between two different
+  regimeDomains in parameter space.
+
+  The segment is defined by two endpoints $p_0$ and $p_1$ (stored as pointers),
+  and it carries an orientation through its unit tangent $\mathbf{v}_{\mathrm{norm}}$
+  and a right-hand-rule normal $\mathbf{v}_{\mathrm{norm}\perp}$, which is used
+  to identify the owning and neighboring regime domains.
+formulation: |
+  The boundary segment is represented in a 2D parameter space by the oriented
+  segment from $p_0$ to $p_1$.
+
+  The oriented tangent vector is
+  $$ \mathbf{v} = p_1 - p_0, \qquad \mathbf{v}_{\mathrm{norm}} = \frac{\mathbf{v}}{\|\mathbf{v}\|}, \qquad \ell = \|\mathbf{v}\|. $$
+
+  The right-hand-rule normal is obtained by rotating the unit tangent by $+90^\circ$:
+  $$ \mathbf{v}_{\mathrm{norm}\perp} = \begin{bmatrix} v_{\mathrm{norm},y} \\ -v_{\mathrm{norm},x} \end{bmatrix}. $$
+
+  The signed distance from a point $p$ to the infinite line through the segment
+  is computed via the projection of the vector $(p-p_0)$ onto the unit normal:
+  $$ d = (p - p_0)\cdot \mathbf{v}_{\mathrm{norm}\perp}, $$
+  with additional logic (not shown in the header) to account for the finite
+  segment extent.
+
+  - $p_0$ is the start point of the segment in parameter space
+  - $p_1$ is the end point of the segment in parameter space
+  - $\mathbf{v}$ is the oriented segment vector
+  - $\mathbf{v}_{\mathrm{norm}}$ is the unit tangent (versor) along the segment
+  - $\mathbf{v}_{\mathrm{norm}\perp}$ is the right-hand-rule unit normal
+  - $\ell$ is the segment length
+  - $p$ is an arbitrary point in parameter space
+  - $d$ is the distance from the segment/line to $p$ as returned by
+    `distanceTo()`
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

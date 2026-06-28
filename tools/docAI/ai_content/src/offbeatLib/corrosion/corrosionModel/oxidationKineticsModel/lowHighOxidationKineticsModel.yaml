@@ -1,0 +1,37 @@
+description: |
+  Base class for low- and high-temperature oxidation kinetics models, templated
+  for performance.
+
+  The model delegates oxide-layer thickness updates to two sub-models:
+  a low-temperature kinetics model and a high-temperature kinetics model,
+  and combines their results depending on the local temperature regime.
+formulation: |
+  The oxide-layer thickness $S$ is evolved by applying two kinetics models:
+  a low-temperature model and a high-temperature model. For each location,
+  the algorithm selects which model(s) to apply based on the local temperature
+  $T_i$ relative to the low-temperature model upper limit $T_{\text{low,max}}$.
+
+  $$ S^{n+1} = \max\left(S_{\text{low}},\, S_{\text{high}}\right) \quad \text{(when } T_i \ge T_{\text{low,max}}\text{)} $$
+
+  where $S_{\text{low}}$ is computed by advancing the low-temperature model
+  up to $T_{\text{low,max}}$ and $S_{\text{high}}$ is computed by advancing
+  the high-temperature model using the full local temperatures.
+
+  - $S$ is the oxide layer thickness field (m) updated in-place
+  - $S0$ is the oxide layer thickness at the previous time level (m)
+  - $Ti$ is the local fuel/cladding temperature used for kinetics (K)
+  - $Tb$ is the local boundary/steam temperature used for kinetics (K)
+  - $\phi$ is the local oxidant/steam-related parameter passed to the kinetics models
+  - $\Delta t$ is the time step (s)
+  - $T_{\text{low,max}}$ is the low-temperature model upper limit returned by
+    \f$ \texttt{lowTModel_.upperLimit()} \f$ (K)
+
+  The low-temperature model is applied directly when $T_i < T_{\text{low,max}}$.
+  When $T_i \ge T_{\text{low,max}}$, both models are advanced and the final
+  thickness is taken as the maximum to ensure consistency across regimes.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

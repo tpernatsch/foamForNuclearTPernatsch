@@ -1,0 +1,78 @@
+description: |
+  Base file for radial basis functions (RBFs) and related interpolation utilities.
+
+  The provided functions implement common RBF interpolation kernels and solvers, including:
+  - Gaussian-type anisotropic RBFs (via an RBF matrix inversion),
+  - Polyharmonic spline (PHS) RBFs (with selectable mode),
+  - Experimental variants using derivative constraints and/or integral constraints,
+  - Kriging utilities based on a variogram model.
+
+  In typical usage, a solver routine (e.g. ``solvePolyharmonicSpline``) computes the RBF weights by
+  inverting an RBF system matrix once, and the corresponding evaluation routine (e.g. ``polyharmonicSpline``)
+  evaluates the interpolant at arbitrary query points.
+formulation: |
+  RBF interpolation constructs an interpolant $s(\mathbf{x})$ as a weighted sum of basis functions centered
+  at known sample points. For a set of $N$ samples at locations $\mathbf{x}_i$ with values $v_i$, the
+  weights $\mathbf{w}$ are obtained by solving a linear system derived from enforcing interpolation at
+  the sample points.
+
+  For the Gaussian-type anisotropic RBF used in ``solveGaussianRadialBasisFunction`` and
+  ``gaussianRadialBasisFunction``, the basis function is:
+  $$
+  \phi(\mathbf{x},\mathbf{x}_i)=\exp\left(
+    -\epsilon_x (x-x_i)^2-\epsilon_y (y-y_i)^2-\epsilon_z (z-z_i)^2
+  \right)
+  $$
+  and the interpolant is:
+  $$
+  s(x,y,z)=\sum_{i=1}^{N} w_i\,\phi((x,y,z),\mathbf{x}_i).
+  $$
+
+  The weights are computed by forming the $N\times N$ matrix $A$ with entries
+  $$
+  A_{ij}=\phi(\mathbf{x}_i,\mathbf{x}_j),
+  $$
+  then solving $A\mathbf{w}=\mathbf{v}$ (implemented by precomputing $A^{-1}$ in ``invRBFmatrix``).
+
+  For polyharmonic splines (PHS) used in ``polyharmonicSplineFunction`` and the corresponding solvers,
+  the basis depends on the squared distance $r^2=\|\mathbf{x}-\mathbf{x}_i\|^2$ through a mode-dependent
+  polyharmonic function:
+  $$
+  \phi(r^2)=
+  \begin{cases}
+    \sqrt{r^2}, & \text{mode}=1,\\
+    \frac{1}{2}r^2\ln(r^2), & \text{mode}=2,\\
+    \sqrt{r^2}\,r^2, & \text{mode}=3,\\
+    \text{(additional modes implemented in code)}, & \text{otherwise}.
+  \end{cases}
+  $$
+  The interpolant is again $s(\mathbf{x})=\sum_i w_i\,\phi(\|\mathbf{x}-\mathbf{x}_i\|^2)$, with weights
+  obtained by solving the associated RBF linear system.
+
+  Variables:
+  - $N$ is the number of sample points (size of ``xList``)
+  - $\mathbf{x}_i$ is the $i$-th sample point location (given by ``xList``, ``yList``, ``zList``)
+  - $v_i$ is the $i$-th sample value (given by ``vList``)
+  - $\mathbf{w}$ is the vector of RBF weights (computed into ``w``)
+  - $A$ is the RBF system matrix with entries $A_{ij}=\phi(\mathbf{x}_i,\mathbf{x}_j)$
+  - $\mathbf{v}$ is the vector of sample values (``vList``)
+  - $\epsilon_x,\epsilon_y,\epsilon_z$ are Gaussian shape parameters (``eps[0]``, ``eps[1]``, ``eps[2]``)
+  - $r^2$ is the squared Euclidean distance between query point and sample point
+  - $\text{mode}$ is the PHS mode selector (default ``mode=2`` in several functions)
+
+  Notes:
+  - The code computes and caches $A^{-1}$ in ``invRBFmatrix`` and then applies it as ``invRBFmatrix * vList``.
+  - The PHS basis is a standard choice for interpolation with polyharmonic kernels (see e.g. standard RBF/PHS
+    references such as Fasshauer, and the general RBF interpolation overview in Duderstadt & Hamilton is not
+    directly applicable here; this is a numerical interpolation kernel rather than a reactor-physics model).
+admonitions: []
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  stub_improved: true

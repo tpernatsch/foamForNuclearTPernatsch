@@ -104,9 +104,14 @@ html_logo = "../logo/ffn-logo-bold-italic.svg"
 html_favicon = "../logo/ffn-logo.svg"
 
 html_theme_options = {
-    "navigation_depth": -1,
-    "collapse_navigation": False,
+    "navigation_depth": 3,
+    "collapse_navigation": True,
 }
+
+# Don't ship the raw .rst/.md sources or "view source" links — saves the
+# _sources/ tree in the published site.
+html_copy_source = False
+html_show_sourcelink = False
 
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -121,5 +126,66 @@ source_suffix = {
     ".md": "markdown",
 }
 
+# ---------------------------------------------------------------------------
+# Dual-build: standard vs AI-enhanced
+# ---------------------------------------------------------------------------
+
+from pathlib import Path as _Path
+
+_CONF_DIR = _Path(__file__).resolve().parent        # documentation/sphinx/
+_REPO_ROOT = _CONF_DIR.parent.parent                # repo root
+_AI_CONTENT_DIR = _REPO_ROOT / "tools" / "docAI" / "ai_content"
+
+AI_ENHANCED = os.getenv("SPHINX_AI", "0") == "1"
+
+if AI_ENHANCED:
+    html_title = "foamForNuclear Documentation (AI-enhanced)"
+    html_context = {"ai_enhanced": True}
+else:
+    html_context = {"ai_enhanced": False}
+
+# Note shown on AI-polished usersguide pages so readers can tell which pages
+# differ from the standard documentation.
+_AI_NOTE_RST = """
+.. note::
+
+   The language of this page was automatically polished by an AI model.
+   Use the *Standard docs* switcher button to view the original page.
+"""
+
+_AI_NOTE_MD = """
+```{note}
+The language of this page was automatically polished by an AI model.
+Use the *Standard docs* switcher button to view the original page.
+```
+"""
+
+
+def _inject_ai_note(text, suffix):
+    """Append the AI-polished note at the end of the page."""
+    note = _AI_NOTE_MD if suffix in (".md", ".txt") else _AI_NOTE_RST
+    return text.rstrip() + "\n\n" + note + "\n"
+
+
+# Inject AI content at read-time for the AI build (no file copies needed).
+# For each usersguide page, if an AI-polished version exists, replace the
+# source string; otherwise fall through silently to the original.
+def _overlay_ai_usersguide(app, docname, source):
+    if not docname.startswith("usersguide/"):
+        return
+    # The parser was chosen from the suffix of the real source file, so the
+    # overlay must use the ai_content file with that same suffix — injecting
+    # another format would garble the page (e.g. RST parsed as Markdown).
+    src_suffix = _Path(app.env.doc2path(docname)).suffix
+    ai_path = _AI_CONTENT_DIR / "documentation" / "sphinx" / (docname + src_suffix)
+    if ai_path.exists():
+        source[0] = _inject_ai_note(
+            ai_path.read_text(encoding="utf-8"), src_suffix
+        )
+
+
 def setup(app):
     app.add_js_file('filter-table.js')
+    app.add_js_file('version_switch.js')
+    if AI_ENHANCED:
+        app.connect('source-read', _overlay_ai_usersguide)

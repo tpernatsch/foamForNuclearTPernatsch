@@ -1,0 +1,33 @@
+description: |
+  Hydrogen diffusion coefficient in Zircaloy-4 based on the correlation reported by
+  Kammenzind et al. (ASTM STP1295, 1997).
+
+  This model updates the hydrogen diffusion coefficient field $D_H$ as an
+  Arrhenius-type function of the local temperature $T$.
+formulation: |
+  The hydrogen diffusion coefficient in Zircaloy-4 is modeled with an Arrhenius
+  dependence on temperature:
+  $$
+  D_H(T) = D_0 \exp\left(-\frac{E_d}{R\,T}\right)
+  $$
+  where the temperature is taken from the OpenFOAM field `T` (internal cells) and
+  from the boundary temperature field `T` on patches (boundary faces).
+
+  - $D_H$ is the hydrogen diffusion coefficient (field `diffH_`)
+  - $D_0$ is the pre-exponential factor ($8.8\times 10^{-8}$)
+  - $E_d$ is the activation energy ($33252$)
+  - $R$ is the universal gas constant ($8.31446$)
+  - $T$ is the local temperature (field `T`)
+
+  The implementation also updates boundary values consistently with the patch
+  temperature field and then enforces boundary conditions via
+  `diffH_.correctBoundaryConditions()`.
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

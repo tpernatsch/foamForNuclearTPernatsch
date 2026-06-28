@@ -1,0 +1,49 @@
+description: |
+  Built-in fission-product yield model for a UO2 fuel kernel.
+
+  This model dispatches internally per fission-product species using standard
+  IAEA HTGR benchmark defaults. The species is selected via the `fpName`
+  keyword, which the solver injects into the dictionary before constructing the
+  model.
+
+  Supported species and default yield forms:
+  - Cs: enrichment-dependent constant yield with a threshold
+  - Ag: burnup-dependent power-law yield
+  - Kr: constant yield
+  - Sr: constant yield
+formulation: |
+  The model provides the fission-product yield $Y$ (dimensionless or in the
+  framework’s yield units) as a function of the local burnup $Bu$ and, for
+  Cs, the fuel enrichment.
+
+  $$Y_{\mathrm{Cs}} =
+  \begin{cases}
+  \text{yieldLEU}, & \text{if } e < e_{\mathrm{th}} \\
+  \text{yieldHEU}, & \text{otherwise}
+  \end{cases}$$
+
+  $$Y_{\mathrm{Ag}}(Bu) = a_{\mathrm{Ag}} \, b^{p_{\mathrm{Ag}}}, \qquad
+  b = \max\!\left(1,\frac{Bu\cdot 10^{-3}}{\text{yieldAgConv}}\right)$$
+
+  $$Y_{\mathrm{Kr}} = \text{yieldKr}, \qquad
+  Y_{\mathrm{Sr}} = \text{yieldSr}$$
+
+  where:
+  - $Y$ is the species yield field (OpenFOAM `scalarField` $Y$)
+  - $Bu$ is the local burnup field (OpenFOAM `scalarField` `Bu`)
+  - $e$ is the fuel enrichment passed to the constructor
+  - $e_{\mathrm{th}}$ is the enrichment threshold (`enrichmentThreshold`)
+  - $\text{yieldLEU}$ and $\text{yieldHEU}$ are the Cs yields for low/high enrichment
+  - $a_{\mathrm{Ag}}$ is `yieldAgCoeff`
+  - $p_{\mathrm{Ag}}$ is `yieldAgExp`
+  - $\text{yieldAgConv}$ is `yieldAgConv`, a burnup conversion factor (MWd/tUO2 → %FIMA)
+  - The $\max(1,\cdot)$ enforces a minimum argument for the power law
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,43 @@
+description: |
+  Patch boundary condition that imposes a time-dependent temperature on an
+  ``fvPatchScalarField``. It is similar to OpenFOAM's
+  ``uniformFixedValue`` but uses a user-provided time series to update the
+  boundary temperature.
+
+  If an oxide/corrosion model is present in the coupled thermal model, an
+  additional thermal resistance associated with the oxide layer is accounted
+  for (via the outer oxide temperature).
+formulation: |
+  The boundary temperature on the patch is prescribed as a function of time
+  using a tabulated series with optional interpolation.
+
+  The imposed patch temperature $T(t)$ is obtained from the user-defined
+  time series ``temperatureSeries``:
+
+  $$
+  T(t) = T\bigl(t; \{(t_i,T_i)\}\bigr)
+  $$
+
+  where:
+
+  - $T(t)$ is the patch temperature value (K) imposed by this boundary condition
+  - $t$ is the current simulation time (s)
+  - $(t_i,T_i)$ are the tabulated time/temperature pairs provided in
+    ``temperatureSeries.values``
+  - $T_i$ are the tabulated temperatures (K)
+  - the interpolation is selected by ``temperatureSeries.interpolationScheme``
+    (default: ``linear``)
+
+  When an oxide/corrosion model is active, the initial outer oxide temperature
+  can be set with ``outerOxideTemperature``; if omitted, it is initialized from
+  ``value`` (the initial metallic/inner temperature).
+dictionary: neutronicsProperties
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

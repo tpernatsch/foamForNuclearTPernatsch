@@ -1,0 +1,44 @@
+description: |
+  Piecewise Arrhenius diffusion coefficient model.
+
+  The diffusion coefficient $D$ follows an Arrhenius law with one parameter set
+  below a switching temperature $T_\text{switch}$ and a second set at or above
+  $T_\text{switch}$:
+  \f[
+    D = \begin{cases}
+      d_1 \exp\!\left(-\dfrac{q_1}{RT}\right) & T < T_\text{switch} \\
+      d_2 \exp\!\left(-\dfrac{q_2}{RT}\right) & T \ge T_\text{switch}
+    \end{cases}
+  \f]
+
+  Typical use is in the UO$_2$ kernel for the diffusion of Kr, with
+  $T_\text{switch}=1773.15$ K.
+formulation: |
+  The model computes a diffusion coefficient field $D$ from the local
+  temperature field $T$ using a piecewise Arrhenius expression (see e.g.
+  Duderstadt & Hamilton for Arrhenius-type temperature dependencies).
+
+  $$ D(T) =
+  \begin{cases}
+    d_1 \exp\!\left(-\dfrac{q_1}{RT}\right) & T < T_\text{switch} \\
+    d_2 \exp\!\left(-\dfrac{q_2}{RT}\right) & T \ge T_\text{switch}
+  \end{cases}
+  $$
+
+  - $D$ is the diffusion coefficient (written to the OpenFOAM field `sf`)
+  - $T$ is the local temperature (OpenFOAM field `T`)
+  - $d_1$, $d_2$ are pre-exponential factors
+  - $q_1$, $q_2$ are activation energies
+  - $T_\text{switch}$ is the switching temperature separating the two regimes
+  - $R$ is the universal gas constant, taken as $R=8.31446$ J/(mol·K)
+
+  The implementation updates both internal-cell values and boundary-face
+  values of `sf` using the same piecewise law.
+options: []
+externalOptions: []
+optionsLocations: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,18 @@
+description: |
+  Mother (base) class for handling element transport solvers in foamForNuclear.
+
+  This class provides the common runtime-selection interface and the minimal
+  lifecycle hooks used by element transport models.
+formulation: |
+  This is a base class and does not implement a physical transport model by
+  itself. Derived classes are expected to override the relevant hooks (e.g.
+  ``correct()``, ``converged()``, ``nextDeltaT()``, and ``updateMesh()``) to
+  implement the governing transport physics.
+options: []
+admonitions: []
+dictionary: neutronicsProperties
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,80 @@
+description: |
+  Class modelling the transversly isotropic thermal expansion of PyC through
+  the code Parfume.
+options:
+- key: par1
+  type: scalar
+  required: false
+  default: 30.0
+  description: |
+    Parfume model parameter $p_1$ (read from the `thermalExpansion` sub-dictionary if present; otherwise read from the model dictionary).
+- key: par2
+  type: scalar
+  required: false
+  default: 37.5
+  description: |
+    Parfume model parameter $p_2$ (read from the `thermalExpansion` sub-dictionary if present; otherwise read from the model dictionary).
+- key: par3
+  type: scalar
+  required: false
+  default: 0.11
+  description: |
+    Parfume model parameter $p_3$ (read from the `thermalExpansion` sub-dictionary if present; otherwise read from the model dictionary).
+- key: par4
+  type: scalar
+  required: false
+  default: 673.0
+  description: |
+    Parfume model parameter $p_4$ (read from the `thermalExpansion` sub-dictionary if present; otherwise read from the model dictionary).
+- key: par5
+  type: scalar
+  required: false
+  default: 700.0
+  description: |
+    Parfume model parameter $p_5$ (read from the `thermalExpansion` sub-dictionary if present; otherwise read from the model dictionary).
+- key: par6
+  type: scalar
+  required: false
+  default: 36.0
+  description: |
+    Parfume model parameter $p_6$ (read from the `thermalExpansion` sub-dictionary if present; otherwise read from the model dictionary).
+- key: asFabricatedAnisotropy
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    As-fabricated anisotropy parameter $B$ used to compute the radial and tangential orientation factors $R_r$ and $R_t$.
+- key: sphereCoordinate
+  type: bool
+  required: false
+  default: true
+  description: |
+    If true, apply thermal expansion directly in spherical coordinates; if false, compute a coordinate transformation to the mesh tensor basis.
+usage:
+- comment: |
+    Example selection of the `PyCParfume` thermalExpansion model.
+  snippet: |-
+    materials
+    {
+      PyC
+      {
+        type PyC;
+        thermalExpansion
+        {
+          type PyCParfume;
+          // par1 30.0;
+          // par2 37.5;
+          // par3 0.11;
+          // par4 673.0;
+          // par5 700.0;
+          // par6 36.0;
+        }
+      }
+    }
+dictionary: thermalExpansionParfumePyC
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

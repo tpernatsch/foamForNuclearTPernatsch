@@ -19,7 +19,13 @@ image: ubuntu
 pages:
   stage: deploy
   image: python:3.10.12
+  # Required in current GitLab: the `pages` keyword is what actually creates a
+  # Pages deployment. A job merely named `pages` with a `public` artifact no
+  # longer deploys on its own.
+  pages:
+    publish: public
   allow_failure: true
+  timeout: 2h
 
   script:
     # Install and build doxygen doc
@@ -31,9 +37,18 @@ pages:
     - pip3 install -U sphinx sphinx-rtd-theme sphinx_intl myst-parser sphinx-mermaid sphinxcontrib-bibtex
     - cd pythonapi && pip3 install -e . && cd ..
     - python3 tools/caseFormatting/AllcheckYamlDoc.py
-    - python3 documentation/sphinx/generate_tutorials_docs.py
-    - python3 documentation/sphinx/generate_cpp_docs.py
-    - sphinx-build -b html documentation/sphinx public -j auto
+    - python3 tools/docAI/generate_tutorials_docs.py
+
+    # Standard build -> public/standard/
+    - python3 tools/docAI/generate_cpp_docs.py
+    - sphinx-build -q -d /tmp/doctrees-standard -b html documentation/sphinx public/standard
+
+    # AI-enhanced build -> public/ai/
+    - python3 tools/docAI/generate_cpp_docs.py --ai-content-dir tools/docAI/ai_content
+    - SPHINX_AI=1 sphinx-build -q -d /tmp/doctrees-ai -b html documentation/sphinx public/ai
+
+    # Root index redirects to standard docs
+    - cp documentation/public_root_index.html public/index.html
 
     # Move Doxygen documentation to the public directory alongside Sphinx
     - mv documentation/doxygen/Doxygen/html/ public/doxygen

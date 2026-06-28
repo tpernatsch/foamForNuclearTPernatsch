@@ -1,0 +1,71 @@
+description: |
+  Creep model that applies a power-law rheology to compute the creep strain
+  rate and update the elastic strain tensor field.
+
+  The model is implemented as a runtime-selectable `creepModel` named
+  ``powerLaw``.
+formulation: |
+  The creep strain-rate is computed from a power-law dependence on an
+  effective stress measure, with additional limiting/relaxation controls to
+  stabilize the update of the creep contribution.
+
+  $$ \dot{\varepsilon} = f(\sigma_\mathrm{eff},T,\text{irradiation time step}) $$
+
+  where the constitutive parameters are read from the input dictionary:
+
+  - $B$ is the power-law prefactor (set by ``B``)
+  - $\sigma_\mathrm{eff}$ is an effective stress measure (set by the
+    stress/strain state used inside ``correctCreep``)
+  - $n$ is the stress exponent (set by ``n``)
+  - $T$ is the temperature field ``T`` (read from the mesh)
+  - $\Delta t$ is the irradiation time step in hours (computed internally)
+
+  The update is further controlled by:
+
+  - ``relax`` as a relaxation factor applied to the creep update
+  - ``maxAverageCreep`` and ``maxMaximumCreep`` as caps on the creep rate
+  - ``timeIndex``-based logic to handle the first time step consistently
+options:
+- key: relax
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Relaxation factor applied to the creep strain-rate update.
+- key: B
+  type: scalar
+  required: true
+  description: |
+    Power-law prefactor used in the creep constitutive relation.
+- key: sigmaC
+  type: scalar
+  required: true
+  description: |
+    Reference stress (or scaling stress) used to non-dimensionalize the
+    effective stress in the power-law creep relation.
+- key: n
+  type: scalar
+  required: true
+  description: |
+    Power-law stress exponent.
+- key: maxAverageCreep
+  type: scalar
+  required: false
+  description: |
+    Maximum allowed average creep value/rate used to limit the update
+    (exact usage is implemented inside ``correctCreep``).
+- key: maxMaximumCreep
+  type: scalar
+  required: false
+  description: |
+    Maximum allowed pointwise creep value/rate used to limit the update
+    (exact usage is implemented inside ``correctCreep``).
+dictionary: neutronicsProperties
+admonitions: []
+optionsLocations: []
+externalOptions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

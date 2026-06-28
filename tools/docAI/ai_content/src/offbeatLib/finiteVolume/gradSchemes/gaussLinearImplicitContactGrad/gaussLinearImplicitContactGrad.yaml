@@ -1,0 +1,33 @@
+description: |
+  Basic second-order gradient scheme using face interpolation and Gauss'
+  theorem, with boundary correction tailored for the implicit contact
+  methodology.
+
+  This class provides a ``fv::gradScheme`` implementation named
+  ``GaussLinearImplicitContact`` that computes cell-centered gradients from
+  a given surface field and applies patch-wise corrections.
+formulation: |
+  The gradient of a volume field is computed using Gauss' theorem by
+  reconstructing the flux of the field over cell faces via a linear
+  face-interpolation scheme.
+
+  $$ \nabla \phi \approx \frac{1}{V}\sum_{f \in \partial V} \phi_f \, \mathbf{S}_f $$
+
+  where:
+
+  - $\phi$ is the input field (template parameter ``Type``)
+  - $\phi_f$ is the face-interpolated value obtained from the linear
+    interpolation scheme stored in ``tinterpScheme_``
+  - $V$ is the cell volume
+  - $\mathbf{S}_f$ is the face area vector
+
+  After the Gauss reconstruction, boundary values of the gradient are
+  corrected using patch ``snGrad`` information via
+  ``correctBoundaryConditions`` to remain consistent with the implicit
+  contact treatment.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,102 @@
+description: |
+  Interfacial area model ``Schor`` for structured pin bundles.
+
+  The model computes an effective interfacial area fraction between a dispersed
+  (gas) phase and the surrounding structured contact area, as a function of
+  the vapour volume fraction ``alpha``. It uses a piecewise interpolation with
+  cutoffs to avoid unphysical values at very low and very high vapour fractions.
+formulation: |
+  The effective interfacial area per unit volume is evaluated as a function
+  of the vapour volume fraction ``alpha`` (selected from the ``FFPair`` based on
+  which phase is gas).
+
+  The model uses three regimes:
+  - low-``alpha`` interpolation between ``iA1`` and ``iA2``
+  - a transition region controlled by ``alpha1`` and ``alpha2``
+  - a high-``alpha`` cutoff at ``alpha3`` with a minimum interfacial area ``iA3``
+
+  $$ iA(\alpha) =
+  \begin{cases}
+  iA_1, & \alpha \le \alpha_1 \\
+  \text{interpolated}, & \alpha_1 < \alpha < \alpha_2 \\
+  \text{interpolated}, & \alpha_2 \le \alpha < \alpha_3 \\
+  iA_3, & \alpha \ge \alpha_3
+  \end{cases}
+  $$
+
+  The constants used by the implementation are derived from pin geometry:
+  - ``D`` is the pin diameter
+  - ``P`` is the pin pitch
+  - ``PD = P/D``
+  - ``A = 2*sqrt(3)*PD^2`` and ``PI = 3.1415927``
+
+  The vapour fraction used in the evaluation is the vapour phase fraction
+  ``vapour_`` selected from the ``FFPair`` (the phase for which ``isGas()`` is true).
+
+  - $\alpha$ is the vapour volume fraction field (from ``vapour_``)
+  - $D$ is the pin diameter (from ``pinDiameter``)
+  - $P$ is the pin pitch (from ``pinPitch``)
+  - $PD$ is $P/D$ (computed internally)
+  - $A$ is $2\sqrt{3}\,PD^2$ (computed internally)
+  - $iA_1$, $iA_2$, $iA_3$ are regime-specific interfacial area values
+    computed internally from geometry and interpolation parameters
+  - $\alpha_1$ and $\alpha_2$ are fixed interpolation bounds (0.55 and 0.65)
+  - $\alpha_3$ is the high-``alpha`` cutoff (from ``cutoffAlpha`` with default 0.957)
+  - $iA_3$ is the minimum interfacial area at large ``alpha`` (from
+    ``minInterfacialAreaAtLargeAlpha`` with default 0)
+admonitions: []
+dictionary: neutronicsProperties
+options:
+- key: pinDiameter
+  type: scalar
+  required: true
+  description: |
+    Pin diameter ``D`` used to compute the interfacial area model constants.
+- key: pinPitch
+  type: scalar
+  required: true
+  description: |
+    Pin pitch ``P`` used to compute the interfacial area model constants.
+- key: cutoffAlpha
+  type: scalar
+  required: false
+  default: 0.957
+  description: |
+    High-``alpha`` cutoff value ``alpha3`` for the vapour volume fraction.
+    For ``alpha >= cutoffAlpha``, the model returns the minimum interfacial
+    area ``minInterfacialAreaAtLargeAlpha``.
+- key: minInterfacialAreaAtLargeAlpha
+  type: scalar
+  required: false
+  default: 0
+  description: |
+    Minimum allowable interfacial area ``iA3`` used when the vapour volume
+    fraction is larger than or equal to ``cutoffAlpha``.
+usage:
+- comment: 'The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the
+    ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``).
+    Here is a snippet enabling the model:'
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type Schor;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - dictionary
+  - options
+  stub_improved: true

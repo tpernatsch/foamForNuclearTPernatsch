@@ -1,0 +1,44 @@
+description: |
+  Heat-sink boundary condition defined by an axial profile of convective heat
+  transfer coefficients and a sink temperature axial profile.
+
+  This patch field is based on ``timeDependentAxialProfileHTCfvPatchScalarField`` and
+  fixes the scalar boundary value using an axial interpolation of the provided
+  profiles.
+formulation: |
+  The boundary condition represents a convective heat sink on a patch by
+  coupling the patch scalar field (typically temperature) to a sink temperature
+  profile through an axial heat-transfer coefficient profile.
+
+  The effective boundary heat-transfer coefficient is interpolated along the
+  patch using an axial coordinate and the user-provided axial tables for
+  the sink temperature ``TinitialData`` and the heat-transfer coefficient
+  ``HinitialData``.
+
+  The patch value is then evaluated as a fixed-value boundary corresponding
+  to the sink convection balance.
+
+  $$ \alpha = \frac{\alpha_P}{\alpha_P+\alpha_N} $$
+
+  where:
+
+  - $\alpha$ is the boundary weighting factor computed from the thermal
+    conductivity field ``kappa`` and the patch geometry
+  - $\alpha_P$ is the conductivity-based contribution on the patch side
+  - $\alpha_N$ is the conductivity-based contribution on the neighbour side
+  - $\delta$ is the patch ``deltaCoeffs`` (used in the conductivity-based
+    contributions)
+
+  The final boundary value is computed in ``updateCoeffs()``/``evaluate()``
+  from the interpolated axial sink temperature and the interpolated axial
+  heat-transfer coefficient.
+dictionary: neutronicsProperties
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

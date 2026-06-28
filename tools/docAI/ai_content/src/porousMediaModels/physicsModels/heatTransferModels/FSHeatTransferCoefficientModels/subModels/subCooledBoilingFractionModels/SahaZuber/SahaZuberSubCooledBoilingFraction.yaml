@@ -1,0 +1,62 @@
+description: |
+  Subcooled boiling fraction model that computes the liquid superheat
+  fraction (as a dimensionless value between 0 and 1) based on the onset of
+  nucleate boiling correlation by N. SahaZuber, G.R. Warrier, and V.K. Dhir,
+  "Onset of Nucleate Boiling and Active Nucleation Site Density During
+  Subcooled Flow Boiling," J. Heat Transfer, 124, 717-728, 2002.
+
+  This model should only be used in the following parameter range:
+  *   $p = 0.1 - 13.8$ MPa
+  *   massFlux = 95 - 2760 kg/m$^2$/s (i.e. $\sim$ 0.1 - 2.7 m/s for water at
+      $\sim$ 1000 kg/m$^3$)
+  *   heatFlux = 0.28 - 1.89 MW/m$^2$
+formulation: |
+  The model evaluates a minimum liquid temperature for bubble detachment
+  $T_{ldi}$ from the saturation temperature $T_{sat}$ and a detachment
+  criterion that depends on the local heat flux parameter $q_i$ and the
+  flow Reynolds/Prandtl numbers. The returned subcooled boiling fraction is
+  then computed as a normalized superheat between $T_{ldi}$ and $T_{sat}$,
+  and is clipped to the range $[0,1]$.
+
+  $$T_{ldi}=\max\left(T_{sat}-\frac{q_i\,D_h}{0.0065\;\max(Re\,Pr,\,7\times10^4)},\,0\right)$$
+
+  $$f_{scb}=\min\left(\max\left(\frac{T-T_{ldi}}{\max(T_{sat}-T_{ldi},\,10^{-3})},\,0\right),\,1\right)$$
+
+  where:
+
+  - $T_{sat}$ is the saturation temperature from the FFPair field $iT$
+  - $T$ is the local liquid temperature from the fluid thermo model
+  - $q_i$ is the model input scalar (passed as `qi`)
+  - $D_h$ is the local hydraulic diameter from `pair_.structureRef().Dh()`
+  - $Re$ is the local Reynolds number from `pair_.Re()`
+  - $Pr$ is the local Prandtl number from `pair_.fluidRef().Pr()$
+  - $f_{scb}$ is the returned subcooled boiling fraction (dimensionless)
+admonitions:
+- kind: note
+  body: This model is selected solely by its runtime ``typeName`` and defines no additional options.
+options: []
+usage:
+- comment: |
+    The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``). Here is a snippet enabling the model:
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type SahaZuber;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  stub_improved: true

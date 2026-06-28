@@ -1,0 +1,44 @@
+description: |
+  Base class for densification models.
+
+  The base model has type `none`. When selected, densification is not modeled,
+  but the field `epsilonDensification` is still created and registered.
+
+  If an `epsilonDensification` field file is provided in the starting time folder,
+  it is read and used; otherwise the field is initialized to zero.
+admonitions:
+- kind: warning
+  body: |
+    The keyword `densificationModel` is deprecated. Prefer a `densification`
+    dictionary with a `type` entry.
+options: []
+usage:
+- comment: |
+    Recommended selection via the `densification` dictionary.
+  snippet: |-
+    materials
+    {
+        fuel
+        {
+            material UO2;
+
+            densification
+            {
+                type none;
+            }
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - usage
+  formulation_added: true
+formulation: |
+  This class is a base/abstract-like container that only creates and stores the
+  densification strain field `epsilonDensification` in the OpenFOAM registry.
+  The `correct(...)` method is an empty no-op, and no densification evolution
+  equation (e.g., constitutive law or transport/kinetics) is implemented here.
+  Therefore, there are no non-trivial governing equations to specify for this
+  base model. (Concrete densification models would define their own
+  constitutive/kinetic relations in derived classes.)

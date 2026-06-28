@@ -1,0 +1,82 @@
+description: |
+  Mechanics solver class that solves for incremental displacement `DD` in
+  an updated framework (i.e. the mesh is updated at the start of each time step),
+  while employing the small-strain approximation.
+formulation: |
+  The `smallStrainIncUpdated` mechanics model uses an updated-Lagrangian *incremental* formulation: the mesh is moved to the end-of-previous time step (so the current configuration is the reference for the next increment), but the strain-displacement relation is kept in the small-strain (linear) form for the current increment. This is consistent with linearized elasticity/plasticity kinematics where the geometric non-linearity (terms quadratic in displacement gradients) is neglected within each time step, while material nonlinearity (via constitutive updates) may still be handled by the material model.
+
+  For the incremental displacement field $D$ (OpenFOAM field name `DD`), the symmetric small-strain tensor is computed as
+  $$
+  \epsilon = \frac{1}{2}\left(\nabla D + (\nabla D)^T\right)
+  $$
+  where $D$ is the increment measured relative to the current (updated) configuration.
+
+  The stress is obtained from the constitutive law through a material update at each mechanics corrector iteration. In the common linear-elastic case (used here only to clarify notation), the Cauchy stress increment can be written as
+  $$
+  \sigma = 2\mu\,\epsilon + \lambda\,\mathrm{tr}(\epsilon)\,I
+  $$
+  where $\mu$ and $\lambda$ are the (possibly spatially varying) Lamé parameters and $I$ is the identity tensor.
+
+  The momentum balance is solved in incremental form for the displacement increment. In quasi-static form (typical for structural mechanics sub-solvers in reactor thermal-hydraulics coupling), the governing equation can be expressed as
+  $$
+  -\nabla\cdot\sigma = f
+  $$
+  where $f$ represents the net body force and applied boundary tractions mapped onto the current mesh configuration. When the solver uses an implicit/explicit split for the stress divergence (as suggested by the presence of `DSigmaExp` and `divDSigmaExp` in the code), the discretized operator is applied to the displacement increment using the chosen stabilization/correction strategy (e.g. `RhieChowCorrection`).
+
+  The “updated” aspect enters through the reference configuration: the mesh is moved at the start of each time step (option `updateMesh`), so $D$ is defined on the updated mesh and the strain computed from $D$ is relative to that configuration. The solver therefore neglects geometric nonlinearity *between* the start and end of the time step by assuming that the updated configuration at the beginning of the step is sufficiently close to the end-of-step configuration for the kinematics, i.e. terms associated with large rotations and second-order strain measures are dropped.
+
+  Assumptions and validity range:
+  - Small displacement gradients: $\|\nabla D\|\ll 1$, so that the linear strain measure is accurate and quadratic terms in $\nabla D$ are negligible.
+  - Moderate rotations/deflections within a time step: geometric nonlinearity (e.g. Green–Lagrange strain terms) is ignored over the increment even though the reference is refreshed each time step.
+  - Quasi-static mechanics (or weak inertia): if inertia is present in the broader framework, it is treated consistently with the sub-solver’s mechanics model; the kinematic approximation remains the same.
+  - Material nonlinearity is allowed through the constitutive update (e.g. temperature-dependent elasticity, viscoelasticity, plasticity), but the geometric part of the nonlinearity is linearized.
+
+  OpenFOAM notation mapping (conceptual):
+  - `DD` is the incremental displacement field $D$.
+  - `gradDD` corresponds to $\nabla D$.
+  - `DSigma` and `DSigmaExp` correspond to stress (or stress-divergence-related) quantities used in the implicit/explicit split.
+  - `T` is not used directly here; the symmetric strain is formed from `gradDD` and its transpose.
+
+  References:
+  - Duderstadt & Hamilton, *Nuclear Reactor Analysis* (for reactor-physics coupling context and typical quasi-static structural assumptions).
+  - Todreas & Kazimi, *Nuclear Systems II* (for coupled multiphysics modeling conventions).
+  - For updated-Lagrangian vs. small-strain linearized kinematics and incremental formulations, see standard computational mechanics texts (e.g. Simo & Hughes, *Computational Inelasticity*) and classical finite deformation theory (Green–Lagrange vs. small-strain measures), with this solver using the small-strain limit while refreshing the reference each time step.
+  - The incremental displacement approach aligns with the “updated reference” idea commonly used in structural mechanics to improve robustness for moderate deformation histories while retaining linearized strain measures.
+options:
+- key: updateMesh
+  type: bool
+  required: false
+  default: true
+  description: |
+    Decide whether the configuration is updated at every time step.
+    If false, the solver behaves as a small-strain incremental solver (no update).
+usage:
+- comment: |
+    Code snippet of the `solverDict` to activate the
+    `smallStrainIncrementalUpdated` mechanics solver.
+  snippet: |-
+    mechanicsSolver smallStrainIncrementalUpdated;
+
+    mechanicsOptions
+    {
+        forceSummary false;
+        cylindricalStress false;
+        sphericalStress false;
+        updateMesh on;
+        RhieChowCorrection true;
+
+        multiMaterialCorrection
+        {
+            type none;
+        }
+    }
+dictionary: mechanicsOptions
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - options
+  - dictionary
+  formulation_extended: true

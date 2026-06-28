@@ -1,0 +1,54 @@
+description: |
+  Class modelling Young Modulus of UO2 fuel from Matprov11.
+options:
+- key: densityFraction
+  type: scalar
+  required: false
+  description: |
+    Fraction of theoretical density.
+    Optional override. If not provided here, the value is read from the
+    material base dictionary (preferred).
+- key: par1
+  type: scalar
+  required: false
+  default: 2.334e11
+  description: |
+    Matpro parameter $p_1$ (set by the ``par1`` entry in the ``YoungModulus`` sub-dictionary if present, otherwise read directly from this dictionary).
+- key: par2
+  type: scalar
+  required: false
+  default: 2.752
+  description: |
+    Matpro parameter $p_2$ (set by the ``par2`` entry in the ``YoungModulus`` sub-dictionary if present, otherwise read directly from this dictionary).
+- key: par3
+  type: scalar
+  required: false
+  default: 0.00010915
+  description: |
+    Matpro parameter $p_3$ (set by the ``par3`` entry in the ``YoungModulus`` sub-dictionary if present, otherwise read directly from this dictionary).
+usage:
+- comment: |
+    Example selection of the `UO2Matpro` thermalExpansion model.
+  snippet: |
+    materials
+    {
+      fuel
+      {
+        type UO2;
+        thermalExpansion
+        {
+          type UO2Matpro;
+          // densityFraction 0.95;
+          // par1 2.334e11;
+          // par2 2.752;
+          // par3 1.0915e-4;
+        }
+      }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

@@ -1,0 +1,76 @@
+description: |-
+  Heat transfer coefficient for forced convective flows computed from the
+  Nusselt number, which is in turn obtained from a correlation of the form
+
+  .. math::
+
+      Nu = A + B \, Re^{C} \, Pr^{D}
+
+  where :math:`Re` and :math:`Pr` are the Reynolds number (superficial in
+  two-phase flows) and the Prandtl number of the fluid, respectively, and
+  :math:`A`, :math:`B`, :math:`C`, :math:`D` are selectable constants.
+options:
+- key: coeff
+  type: scalar
+  required: true
+  description: |
+    Coefficient :math:`B` in the Nusselt correlation.
+- key: const
+  type: scalar
+  required: true
+  description: |
+    Coefficient :math:`A` in the Nusselt correlation.
+- key: expPr
+  type: scalar
+  required: true
+  description: |
+    Exponent :math:`D` applied to :math:`Pr`.
+- key: expRe
+  type: scalar
+  required: true
+  description: |
+    Exponent :math:`C` applied to :math:`Re`.
+usage:
+- comment: "The NusseltReynoldsPrandtlPower heat transfer model is constructed at run-time via the\nheatTransferModels subdictionary\
+    \ of the physicsModel subdictionary of the phaseProperties dictionary. "
+  snippet: |-
+    physicsModels
+    {
+        heatTransferModels
+        {
+            "liquid.vapour"
+            {
+                "liquid"
+                {
+                    type            NoKazimi;
+
+                }
+                "vapour"
+                {
+                    type            NusseltReynoldsPrandtlPower;
+                    const           10;
+                    coeff           0;
+                    expRe           0;
+                    expPr           0;
+                }
+            }
+        }
+    }
+formulation: |-
+  The model computes the Nusselt number correlation
+
+  $$Nu = A + B \, Re^{C} \, Pr^{D}$$
+
+  and returns the heat-transfer coefficient using
+
+  $$h = \frac{\kappa}{D_h}\, Nu$$
+
+  where :math:`\kappa` is the bulk fluid thermal conductivity and :math:`D_h`
+  is the characteristic dimension (with a lower bound applied in the code).
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options
+  - formulation

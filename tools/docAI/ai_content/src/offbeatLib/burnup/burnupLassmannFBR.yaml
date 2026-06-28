@@ -1,0 +1,106 @@
+description: |
+  Burnup model that extends the similar `Lassmann` depletion approach to
+  fast-spectrum reactor applications.
+
+  The model is inspired by the work of Lassmann et al.,
+  *“The radial distribution of plutonium in high burnup UO2 fuels”*
+  (Journal of Nuclear Materials), and generalizes the original formulation to
+  mixed-oxide and fast-reactor conditions.
+
+  Compared to the standard `Lassmann` model, this extension includes:
+
+  - Depletion of an extended set of nuclides:
+    He4, U234, U235, U236, U237, U238, Np237, Np238, Np239, Pu238, Pu239, Pu240,
+    Pu241, Pu242, Pu243, Am241, Am242, Am242m, Am243, Am244, Cm242, Cm243, Cm244,
+    Cm245.
+  - Explicit accounting for helium production due to:
+    alpha decay, ternary fission, and the O-16 (n,α) reaction.
+  - Use of parametrized microscopic cross sections read from lookup tables
+    located in `constant/XSdata`.
+
+  The parametrization of cross sections depends on the reactor type specified
+  by the user:
+
+  - For `LWR`, fission and capture cross sections are parametrized as a function
+    of the U-235 enrichment in UO2 fuel.
+  - For `FBR`, fission and capture cross sections are parametrized as a function
+    of the plutonium weight fraction in MOX fuel.
+admonitions:
+- kind: warning
+  body: |
+    This model requires the `reactorType` keyword to be specified in the
+    `globalOptions` dictionary of `solverDict`.
+
+    Currently, only `LWR` and `FBR` reactor types are supported.
+optionsLocations:
+- name: burnupOptions
+  in: solverDict
+options:
+- key: convergencePrecision
+  type: scalar
+  required: false
+  default: 1e-2
+  description: |
+    Convergence precision for the depletion iterations in the Lassmann burnup
+    calculations. The suggested default is `1e-2`.
+usage:
+- comment: |
+    Example `solverDict` snippet enabling the `LassmannFBR` burnup model for a
+    fast-reactor application. The model requires a `neutronicsSolver`, the
+    specification of `reactorType` in `globalOptions`, and additional material
+    data for fuel materials.
+  snippet: |-
+    globalOptions
+    {
+        pinDirection    (0 0 1);
+        reactorType     "FBR";
+    }
+
+    burnup LassmannFBR;
+    neutronicsSolver diffusion;
+
+    // ...
+
+    materials
+    {
+        fuel
+        {
+            material UPuO2;
+
+            oxygenMetalRatio 1.97;
+
+            isotopes
+            {
+                U
+                {
+                    ratioOverMetal 0.80;
+                    weightFractions
+                    (
+                        235 0.007
+                        238 0.993
+                    );
+                }
+                Pu
+                {
+                    ratioOverMetal 0.20;
+                    weightFractions
+                    (
+                        238 2.332e-2
+                        239 56.873e-2
+                        240 26.997e-2
+                        241 6.105e-2
+                        242 7.693e-2
+                    );
+                }
+            }
+        }
+
+        // ... Rest of materials
+    }
+dictionary: burnupLassmannFBR
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

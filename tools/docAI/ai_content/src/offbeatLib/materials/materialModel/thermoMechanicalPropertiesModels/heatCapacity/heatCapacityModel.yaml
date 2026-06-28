@@ -1,0 +1,27 @@
+description: |
+  Mother class for heat capacity models.
+
+  This is a run-time selectable base type used to update a per-cell heat
+  capacity field (typically as a function of temperature and material
+  properties).
+formulation: |
+  The specific heat capacity model updates the target scalar field
+  ``sf`` through the pure virtual method ``correct(sf, T, addr)``.
+
+  $$ sf = f(T, addr) $$
+
+  where:
+
+  - $sf$ is the scalar field being updated (heat capacity per cell)
+  - $T$ is the temperature field used as input
+  - $addr$ is an addressing list identifying which material/region entries
+    apply to each cell
+  - $f(\cdot)$ is the model-specific closure implemented by derived classes
+admonitions: []
+dictionary: neutronicsProperties
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

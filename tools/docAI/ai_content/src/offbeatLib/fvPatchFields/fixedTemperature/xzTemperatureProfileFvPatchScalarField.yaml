@@ -1,0 +1,97 @@
+description: |
+  Temperature boundary condition that imposes a temperature profile constant in
+  time but varying along the $x$ and $z$ directions.
+
+  The axial locations provided to this boundary condition are absolute values
+  expressed in m (they are NOT normalized).
+formulation: |
+  This boundary condition tabulates temperature values on an $x$-$z$ grid and
+  evaluates the patch temperature by interpolating first in $x$ and then in $z$
+  (or vice-versa, depending on the interpolation setup).
+
+  Let $T(x,z)$ be the imposed temperature field defined by the tabulated data
+  ``axialProfileDict/data`` on the grid points ``xLocations`` and ``zLocations``.
+
+  $$ T(x,z) = \mathcal{I}_z\!\left(z;\ \mathcal{I}_x(x)\right) $$
+
+  where:
+
+  - $T(x,z)$ is the imposed temperature at coordinates $(x,z)$ (in K), from
+    ``value``/``outerOxideTemperature`` and ``axialProfileDict/data``
+  - $x$ is the axial coordinate in the $x$ direction (in m), from ``xValues_``
+  - $z$ is the axial coordinate in the $z$ direction (in m), from ``zValues_``
+  - $\mathcal{I}_x$ is the interpolation operator in $x$, selected by
+    ``xInterpolationMethod`` (``linear`` or ``step``)
+  - $\mathcal{I}_z$ is the interpolation operator in $z$, selected by
+    ``zInterpolationMethod`` (``linear`` or ``step``)
+
+  The interpolation is performed using OpenFOAM table interpolation utilities
+  (``scalarFieldInterpolateTable``) with the interpolation methods specified
+  in ``axialProfileDict``.
+dictionary: neutronicsProperties
+options:
+- key: xLocations
+  type: list[scalar]
+  required: true
+  location: axialProfileDict
+  description: |
+    List of $x$ locations (in m) at which the axial profile values are given.
+    The $x$ values are NOT normalized.
+- key: zLocations
+  type: list[scalar]
+  required: true
+  location: axialProfileDict
+  description: |
+    List of $z$ locations (in m) at which the axial profile values are given.
+    The $z$ values are NOT normalized.
+- key: data
+  type: table
+  required: true
+  location: axialProfileDict
+  description: |
+    2D table of temperature profile values in K.
+
+    The table is provided as one row per $x$ location; within each row, values
+    correspond to the $z$ locations.
+- key: axialInterpolationMethod
+  type: word
+  required: false
+  location: axialProfileDict
+  default: linear
+  description: |
+    Keyword selecting the type of axial interpolation (``linear`` or ``step``).
+    By default is ``linear``.
+- key: xInterpolationMethod
+  type: word
+  required: false
+  location: axialProfileDict
+  default: linear
+  description: |
+    Keyword selecting the type of $x$ interpolation (``linear`` or ``step``).
+    By default is ``linear``.
+- key: zInterpolationMethod
+  type: word
+  required: false
+  location: axialProfileDict
+  default: linear
+  description: |
+    Keyword selecting the type of $z$ interpolation (``linear`` or ``step``).
+    By default is ``linear``.
+optionsLocations:
+- name: axialProfileDict
+  in: boundaryField
+usage:
+- comment: |
+    Apply the `xzTemperatureProfile` boundary condition to a patch.
+  snippet: "claddingOuterSurface\n{\n    type            xzTemperatureProfile;\n    axialProfileDict\n    {\n        timePoints\
+    \  (0 1e2 2e2 ... );\n        timeInterpolationMethod  linear;\n\n        // Note: axial locations are NOT normalized\n\
+    \        axialLocations ( 0 0.5 1 1.5 ... );\n        axialInterpolationMethod linear;\n        \n        data (\n   \
+    \         (400 420 430 425 ... )\n            (450 470 480 475 ... )\n            (440 460 470 465 ... )\n           \
+    \ :\n            :\n            :\n        );\n    }\n    value           uniform 300;\n\n    // If the corrosion model\
+    \ is present, the initial outer temperature\n    // (i.e. the one outside the oxide layer) can be specified with the\n\
+    \    // following keyword. Otherwise, it is set equal to \"values\"\n    outerOxideTemperature           uniform 300;\n\
+    }"
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

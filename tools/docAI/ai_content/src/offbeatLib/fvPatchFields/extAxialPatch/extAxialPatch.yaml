@@ -1,0 +1,131 @@
+description: |
+  FMI function object that extracts a sampled list of values along a given
+  mesh patch on the axial (Z) direction.
+
+  The object reads an input field (scalar or vector) on a named boundary
+  patch, samples it at axial locations provided either by the user or by an
+  external FMU, optionally scales and relaxes the sampled profile, and writes
+  the resulting axial profile to an FMI output port.
+formulation: |
+  This function object performs a geometric sampling of a boundary field
+  along an axial line pinned to the simulation pin direction.
+
+  For a patch boundary field value $\phi(s)$ evaluated at axial coordinate
+  $s$, the sampled output is computed as a scaled (and optionally
+  relaxed) profile:
+
+  $$
+  y(s) = \alpha \, \phi(s)
+  $$
+
+  where:
+
+  - $y(s)$ is the FMI output profile value at axial location $s$
+  - $\phi(s)$ is the extracted boundary field value at axial location $s$
+    (from the patch field of ``fieldName``)
+  - $\alpha$ is the scaling factor set by ``scale``
+
+  The axial locations $s$ are taken from either ``initialAxialLocations`` /
+  ``initialData`` (user-provided) or from the FMU variable named by
+  ``axialLocationsNameFromFMU``. The pin direction used to define the axial
+  sampling is taken from the ``globalOptions`` object.
+dictionary: neutronicsProperties
+options:
+- key: fieldName
+  type: word
+  required: true
+  description: |
+    Name of the OpenFOAM field to extract on the boundary patch (e.g. ``gradT``).
+- key: fieldType
+  type: word
+  required: true
+  description: |
+    Expected field type to extract (e.g. ``vector`` or ``scalar``). The
+    implementation uses this to decide whether to execute scalar or vector
+    extraction.
+- key: patchName
+  type: word
+  required: true
+  description: |
+    Name of the boundary patch along which the axial sampling is performed.
+- key: outputName
+  type: word
+  required: true
+  description: |
+    FMI port name of the output profile written by this function object.
+- key: axialLocationsNameFromFMU
+  type: word
+  required: true
+  description: |
+    FMI variable name from which axial locations are read.
+- key: initialAxialLocations
+  type: list[scalar]
+  required: false
+  description: |
+    Initial axial locations (in normalized axial coordinate as used by the
+    FMU interface) used to seed the sampled profile when FMU data is not
+    yet available.
+- key: initialData
+  type: scalar
+  required: true
+  description: |
+    Initial value(s) for the sampled profile. If ``initialAxialLocations`` is
+    provided, ``initialData`` is interpreted as a scalar list aligned with
+    those locations; otherwise it is used as a single initial value.
+- key: scale
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Scaling factor applied to the extracted boundary field values before
+    writing to the FMI output port.
+- key: relaxationFactor
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Relaxation factor used to blend updates of the sampled axial profile
+    between successive executions.
+usage:
+- comment: |
+    Extract a vector field ``gradT`` along patch ``cladOuter`` and write the
+    axial profile to the FMI output port ``surfacePowerAxial``. Provide an
+    initial axial grid and initial profile values, and scale the result by the
+    thermal conductivity of Zircaloy.
+  snippet: |
+    surfacePowerFMI
+    {
+        type                extAxialPatch;
+        fieldName           gradT;
+        fieldType           vector;
+        patchName           cladOuter;
+        outputName          surfacePowerAxial;
+        axialLocationsNameFromFMU   offbeatAxialLocations;
+        initialData         21{0};
+        initialAxialLocations
+        (
+            0 0.05 0.1 0.15 0.2 0.25 0.3 0.35 0.4 0.45 0.5 0.55 0.6 0.65 0.7 0.75 0.8 0.85 0.9 0.95 1
+        );
+        scale               21.5; // W/m/K, Thermal conductivity of Zircaloy
+        relaxationFactor    0.2;
+    }
+- comment: |
+    Extract a field ``gradT`` along patch ``cladOuter`` and write the axial
+    profile to the FMI output port ``surfacePowerAxial``. Use a single initial
+    value and rely on the FMU-provided axial locations.
+  snippet: |-
+    surfacePowerFMI
+    {
+        type                extAxialPatch;
+        fieldName           gradT;
+        patchName           cladOuter;
+        outputName          surfacePowerAxial;
+        axialLocationsNameFromFMU   offbeatAxialLocations;
+        initialData         0;
+        scale               21.5; // W/m/K, Thermal conductivity of Zircaloy
+        relaxationFactor    0.2;
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

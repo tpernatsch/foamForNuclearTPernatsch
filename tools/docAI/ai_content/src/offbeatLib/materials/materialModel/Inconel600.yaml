@@ -1,0 +1,54 @@
+description: |
+  The `Inconel600` material model provides temperature-dependent correlations
+  for thermophysical and mechanical properties of Inconel 600.
+
+  All properties are implemented directly in the material class and do not
+  rely on selectable sub-models.
+options: []
+usage:
+- comment: |
+    Example of a `solverDict` materials entry using the `Inconel600` material
+    model.
+  snippet: |-
+    materials
+    {
+        structure
+        {
+            material Inconel600;
+
+            // Constant density value
+            rho rho [1 -3 0 0 0] 8470;
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - usage
+  formulation_added: true
+formulation: |
+  This material model does not solve additional PDEs; instead it prescribes
+  temperature-dependent constitutive property correlations used by the
+  thermo-mechanical solver (e.g., for energy and stress/strain relations).
+  The implemented physics is therefore the evaluation of property functions
+  of temperature, consistent with standard engineering property-correlation
+  practice (see e.g. Duderstadt & Hamilton for coupled thermal/structural
+  modeling context, and Todreas & Kazimi for reactor materials/thermal
+  property usage).
+
+  Density is taken constant:
+  $$ \rho(T)=\rho_0. $$
+
+  Specific heat capacity is a cubic polynomial in temperature:
+  $$ C_p(T)= -2.80\times 10^{-7}T^3 + 6.65\times 10^{-4}T^2 - 2.81\times 10^{-1}T + 494.663. $$
+
+  Thermal conductivity, emissivity, Young’s modulus, Poisson’s ratio, and
+  thermal expansion are also implemented as explicit temperature-dependent
+  correlations in the corresponding member functions (i.e., property closure
+  relations of the form $p(T)$).
+
+  Variables:
+  - $T$ is the temperature [K] (OpenFOAM field passed as `T`)
+  - $\rho(T)$ is the density [kg/m^3] (OpenFOAM field `rho`)
+  - $\rho_0$ is the constant density value [kg/m^3] stored in `rho_`
+  - $C_p(T)$ is the specific heat capacity [J/(kg·K)] (OpenFOAM field `Cp`)

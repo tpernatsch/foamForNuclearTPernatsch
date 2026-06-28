@@ -1,0 +1,52 @@
+description: |
+  Radial heat-source profile prescribed from the burnup module output.
+
+  This model updates the internal radial profile values by copying the
+  neutronics-derived power form factor field (`formFactor`) at the cell
+  addresses provided to the constructor.
+formulation: |
+  The model assumes that the burnup module (or a coupled neutronics
+  sub-solver) provides a scalar *power form factor* field, stored in the
+  OpenFOAM volume scalar field `formFactor`. The radial profile is then
+  obtained by sampling this field at the locations corresponding to the
+  profile addresses.
+
+  $$ \text{profile}[i] = \text{formFactor}[\,\text{addr}[i]\,] $$
+
+  where:
+  - $i$ is the profile index over the addressed cells
+  - $\text{profile}[i]$ is the $i$-th value of the radial profile stored by
+    this object
+  - $\text{formFactor}$ is the OpenFOAM field `formFactor` (volScalarField)
+  - $\text{addr}[i]$ is the $i$-th label in the provided `addr` list mapping
+    profile entries to mesh cell indices
+admonitions: []
+options: []
+externalOptions: []
+optionsLocations: []
+usage:
+- comment: |
+    Example configuration of a heat source with a radial profile driven by the
+    burnup module.
+  snippet: |-
+    heatSourceOptions
+    {
+        #include "$FOAM_CASE/constant/lists/lhgr"
+        timeInterpolationMethod linear;
+
+        axialProfile
+        {
+            type flat;
+        }
+
+        radialProfile
+        {
+            type    fromBurnup;
+        }
+
+        materials ( fuel );
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

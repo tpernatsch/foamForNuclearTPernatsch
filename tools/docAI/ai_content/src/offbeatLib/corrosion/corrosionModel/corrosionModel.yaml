@@ -1,0 +1,18 @@
+description: |
+  Base class for patch-specific corrosion models.
+
+  The parent class runtime type is `fromLatestTime`. If this base type is selected,
+  corrosion and the oxide layer are not evolved.
+formulation: |
+  This is an abstract/base interface class. It does not implement any physical
+  corrosion kinetics by itself.
+
+  Derived classes are expected to implement the update of the oxide thickness
+  and the corresponding change in metal thickness for a given patch.
+options: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

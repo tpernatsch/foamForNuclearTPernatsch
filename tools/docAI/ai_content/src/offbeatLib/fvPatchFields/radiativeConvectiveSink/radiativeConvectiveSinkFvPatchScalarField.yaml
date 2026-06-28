@@ -1,0 +1,86 @@
+description: |
+  Radiative and convective heat-sink boundary condition for a solid
+  temperature field. The patch temperature is fixed using a combined
+  radiative/convective heat-transfer model with user-specified sink
+  temperature, convective coefficient, and emissivity.
+
+  The boundary condition computes an effective weighting between the
+  conductive contribution through the patch and the imposed sink heat
+  transfer, based on the local patch temperature and the sink temperature.
+formulation: |
+  The patch is treated as a heat sink exchanging energy with the solid
+  through conduction (via the local conductivity field) and through
+  radiative/convective heat transfer to an external sink at temperature
+  $T_0$.
+
+  The effective boundary value is obtained by balancing the conductive heat
+  flux with the combined sink heat flux, yielding a weighted form:
+
+  $$
+  \alpha = \frac{\alpha_P}{\alpha_P+\alpha_N}
+  $$
+
+  $$
+  \alpha_P = k\,\Delta
+  $$
+
+  $$
+  \alpha_N = H + \sigma_{\mathrm{eff}}\,\varepsilon\,(T^2+T_0^2)\,(T+T_0)
+  $$
+
+  where the radiative term is written in a factored form consistent with
+  linearization around the patch temperature.
+
+  - $T$ is the current patch temperature (the field value on the patch)
+  - $T_0$ is the sink temperature set by ``T0``
+  - $k$ is the thermal conductivity field set by ``kappa`` (scalar or
+    tensor-contracted with the patch normal)
+  - $\Delta$ is the patch ``deltaCoeffs`` (from the OpenFOAM patch geometry)
+  - $H$ is the convective heat transfer coefficient set by ``alpha``
+  - $\varepsilon$ is the emissivity set by ``emissivity``
+  - $\sigma_{\mathrm{eff}}$ is the effective Stefan–Boltzmann constant factor
+    used in the implementation (numerical factor $5.67\\times 10^{-8}$)
+
+  The final patch weighting ``alpha_`` is then used to compute the fixed
+  patch temperature value in ``updateCoeffs()``.
+dictionary: neutronicsProperties
+options:
+- key: kappa
+  type: word
+  required: false
+  default: k
+  description: |
+    Name of the thermal conductivity field used to compute the conductive
+    contribution. If a tensor conductivity field is present under this name,
+    it is normal-contracted on the patch; otherwise a scalar conductivity
+    field is used.
+- key: alpha
+  type: scalar
+  required: true
+  description: |
+    Convective heat transfer coefficient $H$ in W/K/m$^2$. Can be provided
+    as a ``uniform`` value or as a ``nonUniformList<scalar>`` with one value
+    per patch face.
+- key: emissivity
+  type: scalar
+  required: true
+  description: |
+    Radiative emissivity $\varepsilon$. Can be provided as a ``uniform``
+    value or as a ``nonUniformList<scalar>`` with one value per patch face.
+- key: T0
+  type: scalar
+  required: true
+  description: |
+    Sink temperature $T_0$ in K. Can be provided as a ``uniform`` value or
+    as a ``nonUniformList<scalar>`` with one value per patch face.
+- key: value
+  type: scalar
+  required: false
+  description: |
+    Initial value of the patch temperature field. If present, it is used to
+    initialize the patch field before coefficients are updated.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

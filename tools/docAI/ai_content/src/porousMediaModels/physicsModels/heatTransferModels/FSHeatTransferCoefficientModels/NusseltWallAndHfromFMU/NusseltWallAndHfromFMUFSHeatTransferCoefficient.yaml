@@ -1,0 +1,80 @@
+description: |-
+  Heat transfer coefficient for forced convective flows, computed from the
+  Nusselt number obtained via the correlation:
+
+  .. math::
+
+      Nu = A + B \, Re^{C} \, Pr^{D}
+
+  where :math:`Re` and :math:`Pr` are the Reynolds number (superficial in
+  two-phase) and Prandtl number of the fluid, respectively, and :math:`A`,
+  :math:`B`, :math:`C`, :math:`D` are selectable constants.
+
+  An additional heat transfer contribution accounts for wall resistance and
+  for an auxiliary external contribution (e.g. from an FMU), giving:
+
+  .. math::
+
+      \frac{1}{H}
+      =
+      \frac{1}{
+        \dfrac{Nu \, \kappa}{D_h}
+      }
+      +
+      \frac{1}{H_{\mathrm{wall}}}
+      +
+      \frac{1}{H_{\mathrm{fromFMU}}}
+options:
+- key: addH
+  type: scalar
+  required: true
+  description: |
+    Additional heat transfer coefficient to account for wall resistance
+    (i.e. $H_{\mathrm{wall}}$ in the combined resistance formula).
+- key: coeff
+  type: scalar
+  required: true
+  description: |
+    Coefficient $B$ in the Nusselt correlation $Nu = A + B\,Re^{C}\,Pr^{D}$.
+- key: const
+  type: scalar
+  required: true
+  description: |
+    Coefficient $A$ in the Nusselt correlation $Nu = A + B\,Re^{C}\,Pr^{D}$.
+- key: expPr
+  type: scalar
+  required: true
+  description: |
+    Exponent $D$ of the Prandtl number in the Nusselt correlation.
+- key: expRe
+  type: scalar
+  required: true
+  description: |
+    Exponent $C$ of the Reynolds number in the Nusselt correlation.
+usage:
+- comment: "The NusseltAndWall heat transfer model is constructed at run-time via the\nheatTransferModels subdictionary of\
+    \ the physicsModel subdictionary of the phaseProperties dictionary. "
+  snippet: |-
+    physicsModels
+    {
+      heatTransferModels
+      {
+        "hx1"
+        {
+            type            NusseltWallAndHfromFMU;
+            HNameFromFMU    gfHin1;
+            const   0.0;
+            coeff   0.023;
+            expRe   0.8;
+            expPr   0.4;
+            addH    30000;
+        }
+      }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

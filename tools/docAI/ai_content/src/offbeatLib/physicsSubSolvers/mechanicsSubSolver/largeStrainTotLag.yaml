@@ -1,0 +1,53 @@
+description: |
+  Mechanics solver class that solves for total displacement `D` in a total
+  Lagrangian framework (i.e. the mesh is NOT updated), employing a finite-strain
+  mechanics approximation.
+formulation: |
+  Geometric non-linearity is accounted for by multiplying the Cauchy stress tensor
+  by $J \, F^{-1}$, where $F$ is the deformation gradient and $J$ its determinant.
+
+  By default, the strain tensor includes second-order terms:
+
+  $$
+  E = \frac{1}{2}
+  \left(\nabla D + \nabla^T D + \nabla D \cdot \nabla^T D\right)
+  $$
+
+  A linear strain tensor can be enforced if requested via the ``linear`` option.
+options:
+- key: strainTensor
+  type: word
+  required: false
+  default: EulerAlmansi
+  description: |
+    Select strain tensor definition. Supported values are ``linear``, ``EulerAlmansi``,
+    ``Hencky``, and ``GreenLagrange``.
+usage:
+- comment: |
+    Code snippet of the `solverDict` to activate the
+    `largeStrainTotLag` mechanics solver.
+  snippet: |-
+    mechanicsSolver largeStrainTotLag;
+
+    mechanicsOptions
+    {
+        forceSummary false;
+        cylindricalStress false;
+        sphericalStress false;
+        strainTensor Hencky;
+        RhieChowCorrection true;
+
+        multiMaterialCorrection
+        {
+            type none;
+        }
+    }
+dictionary: mechanicsOptions
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - options
+  - dictionary

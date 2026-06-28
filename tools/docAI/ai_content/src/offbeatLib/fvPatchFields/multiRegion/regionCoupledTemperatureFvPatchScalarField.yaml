@@ -1,0 +1,63 @@
+description: |
+  Mixed boundary condition for temperature used for heat transfer (CHT) between
+  two coupled regions in OpenFOAM.
+
+  This patch field enforces equality of the heat-transfer equations on both
+  sides by specifying a coupled gradient and value:
+  - ``refGradient = qs_/kappa``
+  - ``refValue = neighbour value``
+  - ``valueFraction = kappaByDeltaNbr/(kappaByDeltaNbr + kappaByDelta)``
+
+  The effective thermal conductivity ``kappa`` is obtained from the
+  region thermophysical transport model when available; otherwise it is read
+  by name from an existing patch field.
+formulation: |
+  The boundary condition represents a thermal coupling between the current
+  region and a neighbouring region by matching the normal heat flux and using
+  a mixed (Robin-type) temperature constraint.
+
+  The coupled heat flux is written in terms of an effective conductivity
+  and the temperature difference across the interface.
+
+  $$
+  q_s = k\,\frac{T_n - T}{\Delta}
+  $$
+
+  The mixed boundary condition is then expressed using the standard OpenFOAM
+  ``mixedFvPatchScalarField`` parameters ``refGradient``, ``refValue``, and
+  ``valueFraction`` so that the discrete interface equations are consistent
+  on both sides.
+
+  $$
+  \text{refGradient} = \frac{q_s}{k}
+  $$
+
+  $$
+  \text{refValue} = T_{nbr}
+  $$
+
+  $$
+  \text{valueFraction} = \frac{k/\Delta_{nbr}}{k/\Delta_{nbr} + k/\Delta}
+  $$
+
+  where:
+
+  - $q_s$ is the coupled interfacial heat flux (as used by the underlying
+    ``mixedFvPatchScalarField`` implementation)
+  - $T$ is the patch temperature on the current region (the field being
+    prescribed by this boundary condition)
+  - $T_{nbr}$ is the neighbour-region patch temperature, read from the field
+    named by ``TnbrName_`` (dictionary entry ``Tnbr``)
+  - $k$ is the effective thermal conductivity on the patch, obtained from the
+    thermophysical transport model (or from a patch field named by ``kappa``)
+  - $\Delta$ and $\Delta_{nbr}$ are the effective distances used by the
+    discretization (represented internally via ``deltaCoeffs``-type quantities)
+dictionary: neutronicsProperties
+options: []
+optionsLocations: []
+externalOptions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

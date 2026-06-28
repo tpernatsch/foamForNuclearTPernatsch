@@ -1,0 +1,102 @@
+description: |-
+  Base class for two-phase drag multiplier correlations in channel/pipe flows.
+
+  The class computes a cell-wise drag multiplier $\phi_2$ and a corresponding total
+  (two-phase) drag tensor divided by the multiplier-fluid velocity.
+
+  The effective drag-factor tensor divided by the magnitude of the mixture velocity
+  is evaluated as:
+
+  .. math::
+
+      \frac{\mathbf{K}_{d,2\phi}}{\lvert \mathbf{U}_m \rvert}
+      \;\approx\;
+      \min\!\left(\max\Phi_2,\ \phi_2\right)
+      \;\mathbf{K}_{d,\mathrm{sp}}\;
+      \alpha_m^{2}\;
+      \lvert \mathbf{U}_m \rvert
+
+  where:
+
+  - :math:`\mathbf{K}_{d,\mathrm{sp}}` is the single‑phase drag tensor of the multiplier fluid,
+  - :math:`\alpha_m` is the normalized volume (or flow) fraction of the multiplier fluid,
+  - :math:`\lvert \mathbf{U}_m \rvert` is the magnitude of the multiplier‑fluid velocity
+
+  This base class provides:
+
+  - run-time selection infrastructure (twoPhaseDragMultiplierModels table)
+  - storage and access to the underlying friction factor tensor of the multiplier fluid
+  - the default implementation $\phi_2 = 1.0$ (no additional two-phase drag)
+  - a utility to fill a volTensorField with the resulting two-phase drag
+    tensor divided by velocity
+
+  Notes on two-phase drag multipliers (general background, not specific to
+  this implementation):
+
+  In many one-dimensional and averaged two-phase flow models, the effect of
+  the second phase on wall friction is represented via a two-phase multiplier
+  $\phi_2$ (also denoted as $\Phi^2$ or $C^2$), which relates the two-phase pressure drop
+  to a single-phase reference case at the same mass flow rate or superficial
+  velocity. Classic models include Lockhart–Martinelli, Chisholm, Friedel and
+  others, which express $\phi_2$ as a function of void fraction, mass flux, flow
+  regime and fluid property ratios (density, viscosity, surface tension).
+  This class is intended as the common parent in which the geometric and
+  single-phase information is assembled.
+
+  Available runtime selectable models include:
+
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./**
+options:
+- key: multiplierFluid
+  type: word
+  required: true
+  description: Name of the multiplier fluid phase. The corresponding <fluid> object is looked up as "alpha.<multiplierFluid>"
+    in the objectRegistry. This fluid provides the reference single-phase friction tensor and velocity field used in the model.
+- key: maxPhi2
+  type: scalar
+  required: false
+  default: 1000
+  description: Upper bound on the drag multiplier $\phi_2$ used when evaluating the total drag tensor. Larger values of $\phi_2$
+    are clipped to this limit to avoid excessive or numerically unstable drag amplification.
+usage:
+- comment: |-
+    The twoPhaseDragMultiplierModel is constructed at run-time via the
+    twoPhaseDragMultiplierModel subdictionary of the physicsModel subdictionary of the phaseProperties dictionary.
+  snippet: |-
+    physicsModels
+    {
+        dragModels
+        {
+            "liquid.vapour"
+            {
+                type    Bestion;
+            }
+
+            "liquid.structure"
+            {
+                "dummyIn:heated"
+                {
+                    type    ReynoldsPower;
+                    coeff   0.316;
+                    exp     -0.25;
+                }
+            }
+        }
+        twoPhaseDragMultiplierModel
+        {
+            type                LockhartMartinelli;
+            multiplierFluid     "liquid";
+        }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options
+  - dictionary

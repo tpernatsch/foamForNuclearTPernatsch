@@ -1,0 +1,49 @@
+description: |
+  Transport solver for plutonium (Pu) redistribution driven by thermal
+  effects and (optionally) pore migration.
+
+  This class is a derived implementation of ``transportSolver`` that updates
+  Pu-related fields (including a Pu form factor) and redistributes Pu
+  isotopes across the mesh according to the selected physical terms.
+formulation: |
+  The solver updates a Pu redistribution form factor and uses it to
+  redistribute Pu isotope number densities in each material region.
+
+  When pore migration is enabled, an additional migration flux is included
+  that couples Pu diffusion to porosity and temperature gradients through a
+  thermally activated transport coefficient.
+
+  The pore-migration contribution to the migration flux is constructed in
+  terms of the pore velocity field ``poreVelocity`` and a temperature-
+  dependent coefficient ``A`` (see ``poreMigration`` switch).
+
+  $$ \mathbf{J}_{pm} \propto \mathbf{v}_p \, \left(\phi \, \frac{D_{Pu}}{d_p}\, A \, \delta_p\right) $$
+
+  where:
+
+  - $\mathbf{J}_{pm}$ is the pore-migration contribution to the Pu migration flux
+  - $\mathbf{v}_p$ is the pore velocity field ``poreVelocity``
+  - $\phi$ is the porosity field ``porosity``
+  - $D_{Pu}$ is the thermal diffusion coefficient field ``diffPu``
+  - $d_p$ is the pore diameter ``poreDiameter``
+  - $A$ is the pore-migration coefficient ``A``
+  - $\delta_p$ is the pore thickness ``poreThickness``
+
+  The redistribution of isotopes is then performed by applying the computed
+  Pu form factor ``PuFormFactor`` to the isotope number density fields
+  (e.g. ``N_Pu238`` ... ``N_Pu242``).
+dictionary: neutronicsProperties
+options:
+- key: poreMigration
+  type: bool
+  required: false
+  default: false
+  description: |
+    Enable/disable the pore migration term in the Pu redistribution transport.
+    When enabled, the solver uses the pore velocity field ``poreVelocity`` and
+    the pore geometry/porosity parameters to build an additional migration flux.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

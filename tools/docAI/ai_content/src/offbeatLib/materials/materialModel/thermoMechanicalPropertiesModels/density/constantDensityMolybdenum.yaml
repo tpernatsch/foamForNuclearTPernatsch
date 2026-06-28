@@ -1,0 +1,31 @@
+description: |
+  Class to set Molybdenum density to a constant input value.
+options:
+- key: densityValue
+  type: scalar
+  required: false
+  default: 10280
+  description: |
+    Constant density value (read from the ``density`` sub-dictionary as ``densityValue``; default is 10280).
+usage:
+- comment: |
+    Example selection of the `MolybdenumConstant` density model.
+  snippet: |-
+    materials
+    {
+      structure
+      {
+        type Molybdenum;
+
+        density
+        {
+          type MolybdenumConstant;
+          // densityValue 10280;
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options

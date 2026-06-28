@@ -1,0 +1,73 @@
+description: |
+  Modified Jernkvist failure criterion for Zircaloy cladding during RIA
+  transients.
+options:
+- key: phi
+  type: scalar
+  required: true
+  description: |
+    Fast neutron fluence in $10^{25}\,\mathrm{n/m^2}$ (the code multiplies the
+    input by $10^{25}$).
+- key: meanHydrogenConcentration
+  type: scalar
+  required: true
+  description: |
+    Mean hydrogen concentration in the cladding (wt.ppm).
+- key: rimThicknessReductionFactor
+  type: bool
+  required: false
+  default: false
+  description: |
+    If true, activates a rim-thickness reduction factor and requires additional
+    rim-related inputs (`rimThickness`, `cladOuterRadius`, `rimHydrogenConcentration`).
+- key: rimThickness
+  type: scalar
+  required: false
+  description: |
+    Rim thickness (in um) used when `rimThicknessReductionFactor` is enabled.
+- key: cladOuterRadius
+  type: scalar
+  required: false
+  description: |
+    Cladding outer radius (in m) used when `rimThicknessReductionFactor` is enabled.
+- key: rimHydrogenConcentration
+  type: scalar
+  required: false
+  description: |
+    Hydrogen concentration in the rim region (wt.ppm), used when
+    `rimThicknessReductionFactor` is enabled.
+usage:
+- comment: |
+    Example of modified Jernkvist RIA failure criterion (no rim factor).
+  snippet: |
+    materials
+    {
+        cladding
+        {
+            material Zircaloy;
+
+            failureModel
+            {
+                type                    ZircaloyRIAJernkvistModified;
+
+                phi                     1.0;
+                meanHydrogenConcentration 400;
+
+                // optional
+                rimThicknessReductionFactor false;
+            }
+        }
+    }
+- comment: |
+    Example with rim-thickness reduction factor enabled.
+  snippet: "materials\n{\n    cladding\n    {\n        material Zircaloy;\n\n        failureModel\n        {\n           \
+    \ type                    ZircaloyRIAJernkvistModified;\n\n            phi                     1.0;\n            meanHydrogenConcentration\
+    \ 400;\n\n            rimThicknessReductionFactor true; \n            rimHydrogenConcentration 1200;\n            rimThickness\
+    \ 80;\n            cladOuterRadius 4.75e-3;\n            }\n    }\n}"
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

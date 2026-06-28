@@ -1,0 +1,65 @@
+description: |
+  Two-phase flow enhancement factor for the convective heat transfer
+  coefficient based on the work of K.S. Rezkallah and G.E. Sims,
+  "An Examination of Correlations of Mean Heat Transfer Coefficients in
+  Two-Phase Two-Component Flow in Vertical Tubes," AIChE Symposium
+  Series, 83 (257), 109-114, 1987.
+  The TRACE code typically uses this over the Chen model due to greater
+  numerical stability of this approach, particularly for low-pressure,
+  low mass flow scenarios (see
+  https://www.nrc.gov/docs/ML1200/ML120060218.pdf, pp. 263-267)
+
+  Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
+formulation: |
+  This model returns a bounded enhancement factor as a function of the
+  normalized dispersed-phase fraction (as provided by the underlying
+  two-phase structure model). The functional form is a power-law with a
+  tunable exponent, followed by numerical clipping to ensure positivity and
+  prevent excessive values.
+
+  $$ F = \min\left(\left[\max(f,10^{-3})\right]^{-\,\mathrm{exp\_}},\; F_{\max}\right) $$
+
+  where:
+
+  - $F$ is the returned flow enhancement factor (dimensionless)
+  - $f$ is the dispersed-phase normalized fraction in the current cell,
+    i.e. `pair_.fluidRef().normalized()[celli]`
+  - $\mathrm{exp\_}$ is the model exponent read from the dictionary (`exp`)
+  - $10^{-3}$ is a lower bound applied to $f$ to avoid singular behavior
+  - $F_{\max}$ is the inherited upper bound `maxValue_` from
+    `flowEnhancementFactorModel`
+admonitions: []
+options:
+- key: exp
+  type: scalar
+  required: true
+  description: |
+    Exponent controlling the power-law dependence of the enhancement factor
+    on the normalized dispersed-phase fraction.
+usage:
+- comment: 'The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the
+    ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``).
+    Here is a snippet enabling the model:'
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type RezkallahSims;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - options
+  stub_improved: true

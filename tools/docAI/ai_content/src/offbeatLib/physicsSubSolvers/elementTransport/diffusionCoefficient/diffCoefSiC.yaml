@@ -1,0 +1,39 @@
+description: |
+  Diffusion coefficient model for PyC (pyrolytic carbon) material, based on
+  correlations reported in the Parfume manual and an INL report.
+
+  The class is a concrete implementation of ``diffCoefModel`` for SiC
+  (runtime type ``SiCArrhenius``) and provides temperature- and
+  fluence-dependent diffusion coefficients through Arrhenius-type updates.
+formulation: |
+  This model updates the diffusion coefficient field using temperature
+  dependence (Arrhenius form) and fluence dependence through the fast
+  neutron fluence field ``phi_`` (looked up from the mesh).
+
+  The class provides separate coefficient updates for multiple diffusion
+  contributions, via the methods ``updateCsCoef``, ``updateKrCoef``,
+  ``updateAgCoef``, and ``updateSrCoef``, and a combined update via
+  ``updateCoef``.
+
+  $$ D = D(T, \phi) $$
+
+  where:
+
+  - $D$ is the effective diffusion coefficient stored in the OpenFOAM field
+    passed as ``sf``
+  - $T$ is the local temperature field passed as ``T``
+  - $\phi$ is the fast neutron fluence field stored in ``phi_`` (looked up as
+    the mesh object ``fastFluence``)
+  - $D(T,\phi)$ is assembled internally from the model-specific coefficient
+    contributions (``Cs``, ``Kr``, ``Ag``, ``Sr``) and the combined update
+    routine ``updateCoef``
+admonitions: []
+dictionary: neutronicsProperties
+options: []
+optionsLocations: []
+externalOptions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

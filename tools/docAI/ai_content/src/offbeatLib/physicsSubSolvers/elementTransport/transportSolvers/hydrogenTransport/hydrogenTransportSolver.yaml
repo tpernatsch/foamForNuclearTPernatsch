@@ -1,0 +1,43 @@
+description: |
+  Mother class for hydrogen transport solvers.
+
+  This class manages the hydrogen concentration fields in the solid
+  (terminal solid solubility for dissolution/precipitation models, hydrogen
+  diffusion coefficient model, and hydride reorientation model) and provides
+  common utilities for updating concentrations and selecting a stable time
+  step.
+formulation: |
+  The hydrogen transport in the solid is modeled through coupled
+  concentration fields for hydrogen in solid solution and in hydride
+  precipitates, with source/sink terms controlled by terminal solid solubility
+  models and additional physics such as Soret-driven transport (temperature
+  gradient effects) and hydride reorientation.
+
+  The solver maintains the following primary fields:
+  - $C_{ss}$ is the hydrogen concentration in solid solution (field ``Css_``)
+  - $C_{pp}$ is the hydrogen precipitate concentration (field ``Cpp_``)
+  - $C_{tot}$ is the total hydrogen concentration (field ``Ctot_``), computed as
+    $C_{tot}=C_{ss}+C_{pp}$
+
+  The diffusion coefficient is computed from a selected
+  ``HDiffusionCoefficientModel`` and stored in the field ``diffH_``.
+  A temperature-gradient-driven contribution is stored in ``soretTerm_`` and
+  is consistent with the selected transport formulation.
+
+  Terminal solid solubility thresholds are provided per cellZone by
+  ``TSSdModel`` (dissolution) and ``TSSpModel`` (precipitation), stored in
+  ``TSSd_`` and ``TSSp_`` respectively.
+
+  Hydride volume fraction is computed from the local concentrations using
+  ``hydrideVolFrac(const scalar&, const scalar&, const scalar&)`` and stored
+  in ``hydrideVolFrac_``. If cylindrical coordinates are used, additional
+  radial hydride fields (``radialHydrides_`` and ``fracRHy_``) are available.
+
+  The molar heat of transport $Q$ (field ``Q_``) is read from the input and can
+  be used by coupled thermal models.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,81 @@
+description: |
+  Hydrogen transport solver for cladding solid solution diffusion and
+  precipitation/dissolution of hydrogen into solid hydrides.
+
+  The solver advances three hydrogen-related fields:
+  - solid-solution hydrogen concentration ``Css`` (wt.ppm)
+  - precipitate hydrogen concentration ``Cpp`` (wt.ppm)
+  - total hydrogen concentration ``Ctot`` (wt.ppm)
+
+  The user must provide the initial ``Css`` and ``Cpp`` fields (with
+  ``Css`` using the ``hydrogenFvPatchField`` boundary condition).
+
+  The model enforces hydrogen supersolubility and solubility limits in
+  zirconium alloys (TSSp and TSSd), yielding precipitation, dissolution, or
+  phase-equilibrium behavior. Precipitation kinetics can be enabled or
+  disabled (diffusion-driven cases may neglect kinetics).
+formulation: |
+  The model couples hydrogen diffusion in the solid solution with
+  precipitation/dissolution kinetics, constrained by the temperature-dependent
+  solubility limits in zirconium alloys.
+
+  The solver updates diffusion coefficients and the temperature-dependent
+  solubility/supersolubility limits in ``updateCoefficients()``, then updates
+  the precipitation/dissolution source terms in ``updateConcentration()``.
+
+  $$ \text{(conceptual)} \quad \frac{\partial C}{\partial t}
+  = \nabla \cdot \left(D \nabla C\right) + S_{\text{prec/diss}} $$
+
+  where the precipitation/dissolution source term is activated depending on
+  whether the local hydrogen concentration is above or below the relevant
+  limit (TSSp/TSSd), and may include a kinetic parameter based on
+  Kammenzind et al. (optionally switchable off).
+
+  - $C$ is the hydrogen concentration in the relevant phase (``Css`` or ``Cpp``)
+  - $D$ is the hydrogen diffusion coefficient updated by ``updateCoefficients()``
+  - $S_{\text{prec/diss}}$ is the precipitation/dissolution rate updated by ``updateConcentration()``
+  - TSSp and TSSd are the supersolubility and solubility limits for hydrogen in zirconium alloy
+  - $\Delta C$ is represented internally by ``deltaConcentration_``
+optionsLocations:
+- name: HSolverOptions
+  in: solverDict
+options:
+- key: precipitationKinetic
+  type: bool
+  required: false
+  default: true
+  description: |
+    Switch to enable/disable precipitation kinetics.
+    When set to ``off``, precipitation kinetics are neglected for
+    diffusion-driven simulations.
+- key: hardCodedInitialProfile
+  type: bool
+  required: false
+  default: false
+  description: |
+    Advanced option to hard-code the initial ``Css``/``Cpp`` profiles.
+    When enabled, the initial profiles are expected to be provided via
+    codeStream in ``/0/Css`` and ``/0/Cpp`` for custom initialization.
+usage:
+- comment: |
+    Select the hydrogen redistribution element transport solver and configure
+    precipitation kinetics and (optionally) hard-coded initial profiles.
+  snippet: |-
+    elementTransportOptions
+    {
+        solvers
+        (
+            HRedistribution
+        );
+        HSolverEqOptions
+        {
+            precipitationKinetic off; //- switch off the kinetic of precipitation for diffusion driven problems
+                                      //- set to on by default
+            hardCodedInitialProfile on;  //- advanced users. possibility to hard code the initial profiles (Css/Cpp). Set to off by default.
+                                      //- in the solver. The use of codeStream in the /0/Css and /0/Cpp is recommanded for custom initial profiles
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

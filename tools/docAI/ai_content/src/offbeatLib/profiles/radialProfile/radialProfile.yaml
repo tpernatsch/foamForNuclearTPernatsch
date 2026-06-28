@@ -1,0 +1,32 @@
+description: |
+  Base class for a general radial profile used to distribute a quantity in the
+  radial direction.
+
+  The base implementation assumes a uniform, flat profile. The class stores
+  a mesh reference and an addressing list, and maps the profile onto the
+  addressed locations, which can be accessed through the ``profile()`` and
+  ``radialLocations()`` functions.
+formulation: |
+  The class provides a radial weighting function defined on an addressed
+  subset of mesh locations. The profile is stored as a scalar field
+  ``profile_`` over the addressing list ``addr_`` and can be normalized with
+  respect to the addressed control-volume volumes.
+
+  $$ \int_V w(r)\, dV = 1 $$
+
+  where:
+
+  - $w(r)$ is the normalized radial weight represented by ``profile_`` on the
+    addressed locations
+  - $V$ is the addressed volume measure used by ``checkNormalization()``
+
+  The base class does not impose a time dependence; derived classes may
+  override ``correct()``, ``nextTimeMarker()``, and ``lastTimeMarker()``.
+options: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,35 @@
+description: |
+  Correlation for Zircaloy heat capacity from Matpro.
+  Link : https://www.nrc.gov/docs/ML1429/ML14296A063.pdf - page 60.
+options: []
+usage:
+- comment: |
+    Example selection of the `ZircaloyMatpro` heat capacity model.
+  snippet: |-
+    materials
+    {
+        cladding
+        {
+            type Zircaloy;
+
+            heatCapacity
+            {
+                type ZircaloyMatpro;
+            }
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections: []
+  formulation_added: true
+formulation: "The model computes the Zircaloy specific heat capacity as a temperature-dependent correlation, evaluated pointwise\
+  \ in each cell. The implementation in `correct()` uses the local temperature $T$ to evaluate $c_p(T)$ and assigns it to\
+  \ the OpenFOAM field `sf` (a `scalarField`).\n\n$$ c_p(T) = \\text{Matpro correlation}(T) $$\n\n- $c_p(T)$ is the Zircaloy\
+  \ specific heat capacity at constant pressure (units: J/(kg·K))  \n- $T$ is the local material temperature (units: K), taken\
+  \ from the input field `T[cellI]`  \n- `sf` is the OpenFOAM scalar field being updated with $c_p(T)$ values  \n- `addr`\
+  \ is the list of cell indices over which the correlation is evaluated  \n- $cellI$ is the current cell index in `addr` \
+  \ \n- The code also enforces a validity warning for $272.9 \\le T \\le 2099$ K (outside this range, only a warning is issued)\n\
+  \nThis is a constitutive property closure used in thermal energy equations (see standard reactor thermal-hydraulics/heat\
+  \ transfer treatments in Duderstadt & Hamilton and Todreas & Kazimi, where material properties are commonly modeled as functions\
+  \ of temperature).\n"

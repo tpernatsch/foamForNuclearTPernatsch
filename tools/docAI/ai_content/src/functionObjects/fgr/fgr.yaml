@@ -1,0 +1,27 @@
+description: Prints the fgr% (or fgr(m3) when enabled) versus time.
+options:
+- key: fgrM3
+  type: bool
+  required: false
+  default: false
+  description: |
+    Switch selecting the output quantity. If true, writes ``fgr(m3)``; otherwise writes ``fgr(%)``.
+usage:
+- comment: "A functionObject is normally specified via the ``type`` entry in the ``functions`` subdictionary of the ``controlDict``\
+    \ file (located in ``system/``). \nIt is also necessary to indicate the correct .so library (using the ``libs`` keyword).\
+    \ Here is a snippet enabling the ``fgr`` functionObject:\n"
+  snippet: |-
+    functions
+    {
+      <anyName>
+      {
+          type              fgr;
+          libs              ("libFFNFunctionObjects.so");
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options

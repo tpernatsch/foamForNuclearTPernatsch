@@ -1,0 +1,18 @@
+description: |
+  Mother class for Young's Modulus models.
+formulation: |
+  This is an abstract base class that defines the interface for updating a
+  Young's modulus field based on temperature.
+
+  Implementations must provide the ``correct`` method, which updates the
+  Young's modulus values in ``sf`` using the temperature field ``T`` and the
+  addressing list ``addr`` (typically mapping material regions to mesh
+  locations).
+admonitions: []
+dictionary: neutronicsProperties
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

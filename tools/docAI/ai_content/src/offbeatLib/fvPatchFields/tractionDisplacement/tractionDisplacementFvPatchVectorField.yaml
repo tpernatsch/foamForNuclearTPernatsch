@@ -1,0 +1,42 @@
+description: |
+  OpenFOAM traction-displacement boundary condition for solid mechanics.
+
+  Applies a fixed or time-dependent traction vector and an additional pressure
+  acting against the patch normal. Optionally, it can enforce a plane strain
+  approximation (uniform normal strain on the patch) or a flat-surface
+  approximation (uniform normal displacement on the patch). A spring-dashpot
+  stabilization option can be enabled to improve convergence.
+formulation: |
+  The boundary condition prescribes the traction and pressure acting on the
+  patch and (optionally) adds an iterative spring-dashpot force to stabilize
+  the displacement solve.
+
+  The spring-dashpot system produces a force per unit area on a patch face
+  such that the total traction contribution satisfies:
+
+  $$
+  \tau_{sd}\,A_f = -K_s\,D_f - K_d\,(D_f - D_{f,prev})
+  $$
+
+  where:
+
+  - $\tau_{sd}$ is the spring-dashpot force on a patch face
+  - $A_f$ is the face area
+  - $K_s$ is the spring modulus (set by ``fixedSpringModulus``)
+  - $K_d$ is the dashpot modulus (set by ``dashpotModulus``)
+  - $D_f$ is the current face displacement vector
+  - $D_{f,prev}$ is the face displacement vector at the previous iteration
+
+  At convergence, the dashpot term vanishes because $D_f - D_{f,prev}=0$,
+  so the dashpot acts only during iterations, while the spring contribution
+  persists in the equilibrium state.
+dictionary: neutronicsProperties
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

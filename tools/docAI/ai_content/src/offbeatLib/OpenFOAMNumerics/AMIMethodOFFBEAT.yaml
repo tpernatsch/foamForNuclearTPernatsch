@@ -1,0 +1,39 @@
+description: |
+  Base class for Arbitrary Mesh Interface (AMI) methods in OpenFOAM.
+
+  An AMI method establishes the geometric coupling between a *source* patch and
+  a *target* patch by computing face-to-face overlap information (addressing
+  and interpolation weights). This class provides common infrastructure such
+  as patch checks, octree-based search support, and triangulation settings,
+  while the actual overlap-to-weights algorithm is implemented in derived
+  classes via the pure virtual `calculate()` method.
+formulation: |
+  AMI coupling computes interpolation weights based on the geometric overlap
+  between source and target faces. For each source face $f_s$, the method
+  identifies the set of target faces $\{f_t\}$ that overlap it and determines
+  weights proportional to the overlap area.
+
+  $$ w_{f_s \to f_t} = \frac{A_{f_s \cap f_t}}{A_{f_s}} $$
+
+  where:
+
+  - $w_{f_s \to f_t}$ is the interpolation weight from source face $f_s$ to
+    target face $f_t$
+  - $A_{f_s \cap f_t}$ is the overlap area between the two faces
+  - $A_{f_s}$ is the source face area (provided as `srcMagSf_`)
+  - $f_s$ is a face index on the source patch (`srcPatch_`)
+  - $f_t$ is a face index on the target patch (`tgtPatch_`)
+
+  The overlap search is accelerated using an octree (`treePtr_`) and the
+  face intersection is performed using a configurable triangulation mode
+  (`triMode_`). Conformal patch checks can be applied to validate that the
+  source and target bounding boxes are sufficiently similar.
+admonitions: []
+options: []
+optionsLocations: []
+externalOptions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

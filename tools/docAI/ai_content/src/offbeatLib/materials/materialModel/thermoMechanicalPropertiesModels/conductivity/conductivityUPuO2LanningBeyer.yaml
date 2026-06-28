@@ -1,0 +1,41 @@
+description: |
+  Thermal conductivity correlation for MOX fuel (U-Pu-O₂) based on the
+  Lanning–Beyer formulation.
+options:
+- key: burnupName
+  type: word
+  required: false
+  default: Bu
+  description: |
+    Name of the burnup field used to compute the conductivity.
+- key: densityFraction
+  type: scalar
+  required: false
+  default: 0.945
+  description: |
+    Fuel density fraction used by the correlation. The fuel porosity is
+    computed as $1-\phi$, where $\phi$ is set by this parameter.
+usage:
+- comment: |
+    Example selection of the Lanning–Beyer conductivity correlation for MOX fuel in the `solverDict`.
+  snippet: |-
+    materials
+    {
+        fuel
+        {
+            type UPuO2;
+
+            conductivity
+            {
+                type UPuO2LanningBeyer;
+
+                // Optional override
+                // densityFraction 0.95;
+            }
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options

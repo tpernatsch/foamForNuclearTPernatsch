@@ -1,0 +1,76 @@
+description: |
+  Linear elastic–Mises plasticity constitutive law.
+
+  Elastic behaviour is linear isotropic. Plastic flow is governed by a
+  von Mises yield criterion.
+
+  This law requires a `yieldStress` model to be provided as a sub-dictionary.
+options:
+- key: yieldStress
+  type: yieldStress
+  required: true
+  description: |
+    Yield stress model controlling the onset of plastic flow.
+    This entry selects a run-time-selectable `yieldStress` class and
+    provides its associated parameters.
+usage:
+- comment: |
+    Example of the `solverDict` configuration to activate the
+    `misesPlasticity` constitutive law with the required sub-model.
+  snippet: |-
+    materials
+    {
+      solid
+      {
+        type Zircaloy;
+
+        // other material options/models
+
+        constitutiveLaw
+        {
+          type misesPlasticity;
+
+          yieldStress
+          {
+            type constant;
+            // model-specific coefficients
+          }
+        }
+      }
+
+      // other materials subdict
+    }
+formulation: |
+  The trial deviatoric stress is computed from the elastic strain:
+  $$
+    \mathbf{s}_{\mathrm{trial}} = 2\mu\,\mathrm{dev}(\boldsymbol{\varepsilon}^{el})
+  $$
+  and the Mises yield function is
+  $$
+    f_{\mathrm{trial}} = \|\mathbf{s}_{\mathrm{trial}}\| - \sqrt{\frac{2}{3}}\,\sigma_Y.
+  $$
+  For $f_{\mathrm{trial}} \le 0$ the response is elastic ($\Delta\lambda=0$).
+  For $f_{\mathrm{trial}} > 0$ the plastic multiplier increment is
+  $$
+    \Delta\lambda = \frac{f_{\mathrm{trial}}}{2\mu}
+    \left(1 + \frac{H_p}{3\mu}\right)^{-1},
+  $$
+  where $H_p$ is the hardening slope from the selected `yieldStress` model.
+  The return direction is
+  $$
+    \mathbf{n} = \frac{\mathbf{s}_{\mathrm{trial}}}{\|\mathbf{s}_{\mathrm{trial}}\|}.
+  $$
+  The increment of equivalent plastic strain is
+  $$
+    \Delta\varepsilon^{p}_{eq} = \sqrt{\frac{2}{3}}\,\Delta\lambda,
+  $$
+  and the plastic strain increment is
+  $$
+    \Delta\boldsymbol{\varepsilon}^{p} = \Delta\lambda\,\mathbf{n}.
+  $$
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - options
+  - formulation

@@ -1,0 +1,94 @@
+description: |
+  Subclass for diffusion neutronics.
+  Reference publications [@FIORINA201524] [@FIORINA201515226] [@FIORINA2016212].
+
+  The module solves the multi-group diffusion equations:
+
+  $$
+  \begin{align}
+      \frac{1}{v_g} \frac{\partial \phi_g}{\partial t} = &
+          \nabla D_g \nabla \phi_g
+          + \frac{\chi_{p,g}}{k_{eff}} (1-\beta_{tot}) \nu \Sigma_{f,g} \phi_g \\
+          & - \Sigma_{r,g} \phi_g
+          + \frac{\chi_{p,g}}{k_{eff}} (1-\beta_{tot}) S_{n,g} \\
+          & + \chi_{d,g} S_d
+          + S_{s,g}
+          + S_g
+          \quad \forall g \in [1; G]
+  \end{align}
+  $$
+
+  $$
+      \frac{\partial C_k}{\partial t} + \nabla \cdot (\mathbf{u} C_k) =
+          \frac{\beta_k}{k_{eff}} \sum_h \nu \Sigma_{f,h} \phi_h
+          - \lambda_k C_k
+          \quad \forall k \in [1; N]
+  $$
+
+  with the explicit source term:
+
+  $$
+  \begin{align}
+      S_{n,g} & = \sum_{h \neq g} \nu \Sigma_{f,h} \phi_h \\
+      S_d     & = \sum_k \lambda_k C_k \\
+      S_{s,g} & = \sum_{h \neq g} \Sigma_{h \rightarrow g} \phi_h
+  \end{align}
+  $$
+
+  \vartable
+    Parameter        | Description
+    $\phi_g$         | Neutron flux for the gth energy group
+    $C_k$            | Concentration of the kth delayed neutron precursor group
+    $D_g$            | Neutron diffusion coefficient for the gth energy group
+    $\chi_{p,g}$     | Prompt neutron yield for the gth energy group
+    $\chi_{d,g}$     | Delayed neutron yield for the ith energy group
+    $k_{eff}$        | Effective multiplication factor
+    $\beta_{tot}$    | Total delayed neutron fraction
+    $\beta_k$        | Delayed neutron fraction for the kth delayed neutron precursor group
+    $\nu$            | Average number of neutrons per fission
+    $\Sigma_{f,g}$   | Fission cross section for the gth energy group
+    $\Sigma_{r,g}$   | Removal (disappearance) cross section for the gth energy group
+    $\Sigma_{h \rightarrow g}$ | Group-transfer cross section from the hth to the gth energy group
+    $S_{n,g}$        | Fission neutron source from neutron energy groups others than the gth
+    $S_d$            | Delayed neutron source
+    $S_{s,g}$        | Scattering neutron source from neutron energy groups others than the gth
+    $S_g$            | External neutron source for the gth energy group
+    $\mathbf{u}$     | Fuel velocity
+    $v_g$            | Average neutron velocity for the gth energy group
+    $\lambda_k$      | Decay constant for the kth delayed neutron precursor group
+  \endvartable
+options:
+- key: eigenvalueNeutronics
+  type: bool
+  required: true
+  description: Solve the diffusion equations in eigenvalue mode.
+- key: externalSourceNeutronics
+  type: bool
+  required: false
+  default: false
+  description: Solve the diffusion equations in external source mode.
+- key: energyGroups
+  type: label
+  required: true
+  description: Number of neutron energy groups.
+- key: precGroups
+  type: label
+  required: true
+  description: Number of delayed neutron precursor groups.
+usage:
+- comment: |
+    In the ``constant/neutronicsProperties`` file, for keff calculation in a
+    critical reactor
+  snippet: |
+    eigenvalueNeutronics        true;
+- comment: |
+    For a subcritical reactor driven by an external neutron source
+  snippet: |-
+    eigenvalueNeutronics        false;
+    externalSourceNeutronics    true;
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options

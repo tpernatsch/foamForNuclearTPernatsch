@@ -1,0 +1,43 @@
+description: |
+  Monolithic SiC creep model that computes creep strain rate from the
+  effective stress and fast neutron flux using a coefficient $K$:
+
+  $$
+  \dot{\epsilon}_{\mathrm{creep}} = K \, \sigma_{\mathrm{eff}} \, \phi_{\mathrm{fast}}
+  $$
+
+  If $K$ is not provided by the user, it is calculated from an internal
+  correlation (see implementation in ``MonolithicSiCCreepModel.C``).
+formulation: |
+  This model updates the creep strain tensor by relating the creep strain
+  rate to the effective mechanical stress and the fast neutron flux.
+
+  The creep strain rate is expressed in the form:
+
+  $$
+  \dot{\epsilon}_{\mathrm{creep}} = K \, \sigma_{\mathrm{eff}} \, \phi_{\mathrm{fast}}
+  $$
+
+  where:
+
+  - $\dot{\epsilon}_{\mathrm{creep}}$ is the creep strain rate (updated by
+    ``correctCreep`` into the provided ``epsilonEl`` field)
+  - $K$ is the creep coefficient set by ``creepCoefficient`` (or computed by
+    correlation when not provided/disabled in the implementation)
+  - $\sigma_{\mathrm{eff}}$ is an effective stress measure computed from the
+    mechanical state (implementation details in ``MonolithicSiCCreepModel.C``)
+  - $\phi_{\mathrm{fast}}$ is the fast neutron flux field used by the model,
+    read from the mesh object named by ``fastFluxName``
+
+  The model includes a Poisson-ratio parameter for creep, ``poissonRationForCreep``,
+  and a flux conversion factor ``fluxConversionFactor`` to convert between
+  different fast-neutron energy thresholds.
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

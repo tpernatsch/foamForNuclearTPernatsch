@@ -1,0 +1,37 @@
+description: |
+  Conservative AMI (Arbitrary Mesh Interface) interpolation class for
+  transferring data between two primitive patches with an arbitrary mesh
+  interface.
+
+  The interpolation is based on local Galerkin projection as described in
+  Farrell PE and Maddison JR (2011), *Conservative interpolation between volume
+  meshes by local Galerkin projection*.
+
+  The two patches are expected to have opposite orientations (opposite
+  normals). The ``reverseTarget`` flag can be used to reverse the orientation
+  of the target patch.
+formulation: |
+  The class constructs an AMI mapping between a source patch and a target
+  patch by computing, for each source face, the set of overlapping target
+  faces and associated interpolation weights. The weights are based on
+  geometric overlap and can be normalised to suppress numerical error.
+
+  $$ w_{ij} = \frac{A_{ij}}{\sum_k A_{ik}} $$
+
+  where:
+
+  - $w_{ij}$ is the normalised weight from source face $i$ to target face $j$
+  - $A_{ij}$ is the overlap measure (based on face-area intersection) between
+    source face $i$ and target face $j$
+  - $\sum_k A_{ik}$ is the total overlap measure for source face $i$
+
+  The mapping is then used to transfer quantities conservatively across the
+  interface, consistent with the local Galerkin projection approach.
+options: []
+externalOptions: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

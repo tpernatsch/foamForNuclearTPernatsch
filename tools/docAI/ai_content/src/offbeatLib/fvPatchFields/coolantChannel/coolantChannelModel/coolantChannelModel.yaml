@@ -1,0 +1,50 @@
+description: |
+  Coolant channel state model used by the ``coolantChannel`` boundary condition.
+
+  The class stores channel properties, coolant boundary inputs, and derived
+  coolant thermodynamic state. Patch-specific geometry quantities (e.g. face
+  heights and axial face locations) are supplied by the boundary condition
+  during the ``updateBulkState`` call.
+formulation: |
+  This model advances a 1D coolant channel bulk state along the axial
+  direction and derives secondary thermodynamic quantities from the bulk
+  state and the wall temperature.
+
+  The bulk coolant temperature and enthalpy are updated using an enthalpy
+  integration approach when enabled (``enthalpyModel``). The update is
+  performed over the OpenFOAM time step size $\Delta t$ (argument ``deltaT``).
+
+  The derived state includes:
+  - steam quality $q$ (field ``Q_``) based on enthalpy,
+  - void fraction estimate $\alpha$ (field ``X_``),
+  - Reynolds number $\mathrm{Re}$ (field ``Re_``),
+  - Prandtl number $\mathrm{Pr}$ (field ``Pr_``),
+  - film temperature $T_f$ (field ``Tfilm_``),
+  - coolant thermal conductivity $k$ (field ``coolantk_``) and specific heat
+    $c_p$ (field ``coolantCp_``),
+  - mixture density $\rho$ (field ``rho_``) and velocity $u$ (field ``velocity_``).
+
+  Variables:
+  - $A$ is the coolant flow area set by ``flowArea``
+  - $D_h$ is the hydraulic diameter set by ``hydraulicDiameter``
+  - $\dot{m}$ is the mass flow rate (field ``massFlowRate_``), possibly time-dependent
+  - $T_{in}$ is the inlet coolant temperature (``inletTemperature`` or ``inletTemperatureList``)
+  - $z$ is the axial coordinate (``axialLocations``)
+  - $\Delta t$ is the time step size passed to ``updateBulkState`` (defaults to ``GREAT`` for steady-state limit)
+  - $T_w$ is the wall temperature passed to ``updateDerivedState`` (argument ``Twall``)
+
+  Notes:
+  - The axial inlet/temperature profile used for bulk-state initialization is
+    prescribed via ``axialProfileDict`` and interpolated in space and time
+    using ``axialInterpolationMethod`` and ``timeInterpolationMethod``.
+  - The model can enforce that all mass flow rate values are positive when
+    ``positiveMassFlowRequired`` is enabled.
+dictionary: neutronicsProperties
+options: []
+externalOptions: []
+optionsLocations: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

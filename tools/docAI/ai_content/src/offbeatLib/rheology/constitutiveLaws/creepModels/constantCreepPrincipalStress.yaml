@@ -1,0 +1,70 @@
+description: |
+  Creep model that computes the creep strain rate from the eigenvalues of the
+  stress tensor, using a constant creep coefficient and irradiation-driven
+  effects.
+
+  This class is used to verify OFFBEAT results against the IAEA CPR-6
+  benchmark for TRISO fuel applications.
+formulation: |
+  The model updates the creep strain rate based on the principal stresses
+  (eigenvalues) of the symmetric stress tensor. The principal stresses are
+  ordered such that $\sigma_1 \ge \sigma_2 \ge \sigma_3$, and the creep
+  coefficient is taken as constant.
+
+  $$ \dot{\varepsilon}^{c} = \mathcal{F}(\sigma_1,\sigma_2,\sigma_3;K,\nu,f) $$
+
+  where the irradiation time step is taken from the OpenFOAM time object and
+  the fast neutron flux is converted using a fixed factor.
+
+  - $\dot{\varepsilon}^{c}$ is the creep strain-rate contribution updated by
+    ``correctCreep``
+  - $\sigma_1$, $\sigma_2$, $\sigma_3$ are the principal stresses returned by
+    ``computePrincipalStress`` (ordered as $\sigma_1 \ge \sigma_2 \ge \sigma_3$)
+  - $K$ is the constant creep coefficient provided by ``creepCoefficient``
+  - $\nu$ is Poisson's ratio for creep provided by ``poissonRationForCreep``
+  - $f$ is the fast neutron flux field used by the model, with conversion
+    factor $f_{cf}$ provided by ``fluxConversionFactor``
+
+  Note: the exact functional form $\mathcal{F}$ is implemented in
+  ``constantCreepPrincipalStress.C`` and depends on the internal fields
+  managed by the base ``creepModel`` (e.g. creep strain fields and
+  irradiation-time stepping).
+dictionary: neutronicsProperties
+options:
+- key: relax
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Relaxation factor applied during creep correction.
+- key: fastFluxName
+  type: word
+  required: false
+  default: fastFlux
+  description: |
+    Name of the fast neutron flux field to be looked up from the mesh.
+- key: poissonRationForCreep
+  type: scalar
+  required: false
+  default: 0.5
+  description: |
+    Poisson's ratio used for the creep model.
+- key: fluxConversionFactor
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Flux conversion factor to convert between a reference fast flux
+    definition (e.g. $E>0.1$ MeV) and the flux definition used by this model
+    (e.g. $E>0.18$ MeV).
+- key: creepCoefficient
+  type: scalar
+  required: true
+  description: |
+    Creep coefficient provided by the user in units of
+    ``/(MPa 10^25 n/m²)``.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

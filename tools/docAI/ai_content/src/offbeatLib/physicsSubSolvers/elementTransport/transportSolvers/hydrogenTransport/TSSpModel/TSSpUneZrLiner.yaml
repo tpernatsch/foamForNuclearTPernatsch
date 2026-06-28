@@ -1,0 +1,29 @@
+description: |
+  TSSP (temperature-dependent stress/strain parameter) model for the pure
+  Zirconium inner liner based on Une et al. (2004)
+  (https://doi.org/10.1080/18811248.2004.9715569).
+formulation: |
+  This model updates the field $TSSp$ using an Arrhenius-type dependence on
+  the local temperature, applied both to internal cells and to boundary
+  patches.
+
+  $$ TSSp(T) = TSSp0 \\, \exp\left(-\frac{Qp}{R\,T}\right) $$
+
+  where:
+
+  - $TSSp(T)$ is the updated TSSp value at temperature $T$
+  - $T$ is the local temperature field (OpenFOAM field name: `T`)
+  - $TSSp0$ is the pre-exponential factor (constant in this implementation)
+  - $Qp$ is the activation energy parameter (constant in this implementation)
+  - $R$ is the universal gas constant (8.31446 J/mol/K)
+
+  The implementation evaluates $TSSp$ for each cell in the provided address
+  list and then mirrors the same relation on boundary faces using the
+  boundary temperature values from `T`, followed by
+  `TSSp_.correctBoundaryConditions()`.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

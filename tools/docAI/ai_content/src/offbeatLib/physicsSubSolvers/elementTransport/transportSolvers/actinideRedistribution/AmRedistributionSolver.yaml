@@ -1,0 +1,47 @@
+description: |
+  Solver for the redistribution of americium (Am) isotopes in fuel material,
+  implemented as a specialization of ``transportSolver``. It computes an
+  Am form-factor field and updates the Am diffusion coefficient, optionally
+  including pore-migration effects.
+formulation: |
+  The solver redistributes Am isotopes by applying a temperature-dependent
+  form factor to the local Am concentration fields, and by updating the
+  effective diffusion coefficient. When enabled, a pore-migration term
+  contributes an additional flux driven by temperature gradients.
+
+  The effective diffusion coefficient is updated from a base diffusion model
+  and the pore migration switch; the pore migration flux is proportional to
+  porosity, diffusion, and a migration coefficient.
+
+  $$ \mathbf{J}_{pm} \propto \phi \, \frac{D}{d_p}\, A \, d_t \, \nabla T $$
+
+  where:
+  - $\mathbf{J}_{pm}$ is the pore-migration contribution to the Am flux
+  - $\phi$ is the porosity field ``porosity``
+  - $D$ is the effective Am diffusion coefficient ``diffAm``
+  - $d_p$ is the pore diameter ``poreDiameter``
+  - $A$ is the pore migration coefficient ``A``
+  - $d_t$ is the pore thickness ``poreThickness``
+  - $\nabla T$ is the temperature gradient field ``gradT``
+
+  The Am form factor is computed from the transport parameters and the local
+  temperature field ``T`` (see implementation in ``AmRedistributionSolver.C``).
+optionsLocations:
+- name: AmRedistributionOptions
+  in: elementTransportDict
+options:
+- key: poreMigration
+  type: bool
+  location: AmRedistributionOptions
+  dictionary: neutronicsProperties
+  required: false
+  default: false
+  description: |
+    Enable or disable pore migration for Am redistribution. When set to
+    ``true``, the solver adds a pore-migration flux term based on porosity,
+    diffusion, and temperature gradients.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

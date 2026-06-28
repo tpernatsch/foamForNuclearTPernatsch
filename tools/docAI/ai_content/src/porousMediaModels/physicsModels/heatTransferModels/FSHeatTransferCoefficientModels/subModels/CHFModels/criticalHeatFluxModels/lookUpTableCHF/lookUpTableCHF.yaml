@@ -1,0 +1,93 @@
+description: |
+  Critical Heat Flux (CHF) model computed from a tabulated 3D look-up table
+  using interpolation in pressure, mass flux (via flow quality), and quality.
+
+  The model evaluates CHF at each cell by interpolating the pre-tabulated
+  data provided in the input dictionary.
+formulation: |
+  The CHF is obtained by interpolating a tabulated 3D dataset as a function
+  of pressure, mass flow rate (represented through the local flow quality),
+  and vapor quality.
+
+  The interpolation is performed in three stages: pressure, mass-flow-rate,
+  and quality, using the interpolation methods selected in the input.
+
+  $$ \mathrm{CHF} = \mathcal{I}\big(p,\; g,\; x\big) $$
+
+  where:
+
+  - $p$ is the local pressure field value (from ``p``)
+  - $g$ is the local mass-flow-rate coordinate derived from the local flow
+    quality (from ``mass_flow_quality_``)
+  - $x$ is the local vapor quality coordinate (from ``mass_flow_quality_``)
+  - $\mathcal{I}$ is the 3D interpolator built from the tabulated arrays
+    ``pressureValues``, ``massFlowRateValues``, ``qualityValues`` and the
+    raw table data ``data``
+admonitions: []
+dictionary: neutronicsProperties
+options:
+- key: PitchToDiameter
+  type: scalar
+  required: true
+  description: |
+    Pitch-to-diameter ratio used by the CHF model.
+- key: pressureInterpolationMethod
+  type: word
+  required: false
+  default: linear
+  description: |
+    Interpolation method used along the pressure direction.
+- key: massFlowRateInterpolationMethod
+  type: word
+  required: false
+  default: linear
+  description: |
+    Interpolation method used along the mass flow rate direction.
+- key: qualityInterpolationMethod
+  type: word
+  required: false
+  default: linear
+  description: |
+    Interpolation method used along the quality direction.
+usage:
+- comment: |
+    Example configuration from
+    ``tutorials/featureCases/1D_PSBT_SC/PhaseII_Ex2_04_6770/constant/fluidRegion/phaseProperties``.
+  snippet: |-
+    criticalHeatFluxModel
+                {
+                    type lookUpTableCHF;
+                    PitchToDiameter 1.32631578947;
+                    pressureValues (
+                        100.0   300.0   500.0    1000.0   2000.0   3000.0
+                        5000.0  7000.0  10000.0  12000.0  14000.0  16000.0
+                        18000.0 20000.0 21000.0);
+
+                    massFlowRateValues (
+                        0.0    50.0    100.0   300.0   500.0
+                        750.0  1000.0  1500.0  2000.0  2500.0
+                        3000.0 3500.0  4000.0  4500.0  5000.0
+                        5500.0 6000.0  6500.0  7000.0  7500.0
+                        8000.0);
+
+                    qualityValues (
+                        -0.50 -0.40 -0.30 -0.20 -0.15
+                        -0.10 -0.05 0.00 0.05 0.10
+                        0.15 0.20 0.25 0.30 0.35
+                        0.40 0.45 0.50 0.60 0.70
+                        0.80 0.90 1.0
+                         );
+
+                    #include "chfTables"
+                }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - dictionary
+  - options
+  - usage
+  stub_improved: true

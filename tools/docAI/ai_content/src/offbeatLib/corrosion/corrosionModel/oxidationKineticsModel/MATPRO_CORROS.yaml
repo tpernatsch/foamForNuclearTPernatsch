@@ -1,0 +1,82 @@
+description: |
+  MATPRO 11 low-temperature oxidation model based on the CORROS subcode.
+
+  This class provides the correlation used to update the oxide layer thickness
+  $S$ (m) as a function of temperature history, using the MATPRO 11
+  handbook correlations for light-water reactor fuel rod behavior
+  (NUREG/CR-0497, Duderstadt & Hamilton; MATPRO 11, February 1979).
+
+  Two variants are implemented:
+  - [@MATPRO_CORROS_PWR] for PWR conditions
+  - [@MATPRO_CORROS_BWR] for BWR conditions
+formulation: |
+  The oxide thickness evolution is computed with a two-regime correlation:
+  a pre-transition regime where the oxide growth rate follows a cubic-law
+  in thickness, and a post-transition regime where the thickness increases
+  approximately linearly with time.
+
+  The transition thickness is
+  $$
+  S_{\mathrm{trans}} = 7.749\times 10^{-6}\exp\left(-\frac{790}{T_i}\right)
+  $$
+  where $T_i$ is the oxide growth temperature (K).
+
+  Let $S_0$ be the oxide thickness at the start of the time step and
+  $\Delta t$ the time step in seconds (converted internally to days).
+  If $S_0 < S_{\mathrm{trans}}$, the time to reach transition is
+  $$
+  \Delta t_{\mathrm{trans}} =
+  \frac{S_{\mathrm{trans}}^3 - S_0^3}{C_1\exp\left(-\frac{Q_{1R}}{T_i}\right)}
+  $$
+  and:
+  - if $\Delta t_{\mathrm{trans}} > \Delta t$ (pre-transition):
+    $$
+    S = \left(C_1\exp\left(-\frac{Q_{1R}}{T_i}\right)\Delta t
+    + S_0^3\right)^{1/3}
+    $$
+  - else (transition/post-transition):
+    $$
+    S = S_{\mathrm{trans}} + C_2\exp\left(-\frac{Q_{2R}}{T_i}\right)\Delta t_{\mathrm{post}}
+    $$
+    with $\Delta t_{\mathrm{post}}=\Delta t-\Delta t_{\mathrm{trans}}$.
+
+  If $S_0 \ge S_{\mathrm{trans}}$ (post-transition from the start):
+  $$
+  S = S_0 + C_2\exp\left(-\frac{Q_{2R}}{T_i}\right)\Delta t
+  $$
+
+  The correlation constants depend on the coolant/steam-side temperature
+  $T_b$ through an Arrhenius-like factor $A(T_b)$:
+  - PWR: $A = 1.203\times 10^2\exp(-7.118\times 10^{-3}T_b)$
+  - BWR: $A = 4.84\times 10^5\exp(-1.945\times 10^{-2}T_b)$
+
+  Then:
+  - $C_1 = 4.976\times 10^{-9}A$ (m$^3$/day)
+  - $C_2 = 82.88A$ (PWR, m/day) or $C_2 = 8.288\times 10^1A$ (BWR, m/day)
+  - $Q_{1R}=15660$ (1/K), $Q_{2R}=14080$ (1/K)
+
+  Notes:
+  - The input parameter $\phi$ is accepted by the API but is not used in the
+    implemented correlation.
+  - The model is intended for low-temperature oxidation and uses the MATPRO
+    11/CORROS correlation form.
+
+  Variables:
+  - $S$ is the updated oxide layer thickness (m) at the end of the time step
+  - $S_0$ is the oxide layer thickness (m) at the beginning of the time step
+  - $T_i$ is the oxide growth temperature (K) used in the exponential terms
+  - $T_b$ is the boundary/coolant-side temperature (K) used to compute $A(T_b)$
+  - $\phi$ is an additional input parameter (dimensionless/unused in this implementation)
+  - $\Delta t$ is the time step duration (s), converted internally to days
+  - $S_{\mathrm{trans}}$ is the transition oxide thickness (m)
+  - $\Delta t_{\mathrm{trans}}$ is the time required to reach $S_{\mathrm{trans}}$ (days)
+  - $\Delta t_{\mathrm{post}}$ is the remaining time after transition (days)
+  - $A$ is the temperature-dependent correlation factor
+  - $C_1$, $C_2$ are correlation coefficients
+  - $Q_{1R}$, $Q_{2R}$ are activation-energy-like constants (1/K)
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

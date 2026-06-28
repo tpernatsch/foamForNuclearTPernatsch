@@ -1,0 +1,20 @@
+description: |
+  Class to set Zircaloy emissivity to a constant input value.
+options:
+- key: emissivityValue
+  type: scalar
+  required: false
+  default: 0.808642
+  description: |
+    Constant emissivity value. If the input dictionary contains an ``emissivity`` sub-dictionary, the value is read from ``emissivityValue`` there; otherwise it is read directly from the provided dictionary.
+usage:
+- comment: |
+    Example selection of the constant emissivity model for Zircaloy.
+  snippet: "materials\n{\n    <zoneName>\n    {\n        type Zircaloy;\n        \n        emissivity\n        {\n       \
+    \     type ZircaloyConstant;\n        \n            // Optional override\n            // emissivityValue 0.808642;\n \
+    \       }\n    }\n}"
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options

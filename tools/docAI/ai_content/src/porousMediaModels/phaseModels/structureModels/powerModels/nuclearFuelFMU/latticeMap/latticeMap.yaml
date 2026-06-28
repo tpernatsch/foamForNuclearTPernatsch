@@ -1,0 +1,97 @@
+description: |
+  Base class for lattices.
+
+  This class parses a lattice description from an OpenFOAM dictionary and
+  provides the coordinates of all non-empty lattice elements.
+
+  \mainauthor
+      Thomas Guilbaud (thomas.guilbaud@epfl.ch)
+options:
+- key: type
+  type: word
+  required: true
+  description: |
+    Lattice type. Expected values are ``square`` or ``hexagonal``.
+- key: origin
+  type: scalar
+  required: true
+  description: |
+    Lattice origin as a 2-component list ``(x y)``. The class stores the
+    components in ``originX`` and ``originY``.
+- key: pitch
+  type: scalar
+  required: true
+  description: |
+    FMU pitch distance (lattice spacing).
+- key: rotationAngle
+  type: scalar
+  required: false
+  default: 0
+  description: |
+    Rotation angle of the lattice in radians. Defaults to 0.
+- key: nElements
+  type: label
+  required: true
+  description: |
+    Number of lattice elements as a 2-component list ``(nx ny)``.
+- key: lattice
+  type: word
+  required: true
+  description: |
+    Lattice map in MCNP/Serpent format provided as a flat list of tokens.
+    The number of entries must match ``nx*ny``.
+usage:
+- comment: |
+    Exemple for an hexagonal lattice
+  snippet: |
+    xyPosLattice
+    {
+        origin      (0 0);
+        nElements   (5 5);
+        pitch       0.6;
+        type        hexagonal;
+        lattice
+        (
+            e e F F F      //   y -->
+             e F F F F     // x
+              F F F F F    // |
+               F F F F e   // V
+                F F F e e
+        );
+    }
+- comment: |
+    Exemple for a square lattice
+  snippet: |-
+    xyPosLattice
+    {
+        origin      (0 0);
+        nElements   (15 15);
+        pitch       0.12;
+        type        square;
+        lattice
+        (
+            e e e e e F F F F F e e e e e  //   y -->
+            e e e F F F F F F F F F F e e  // x
+            e e F F F F F F F F F F F e e  // |
+            e F F F F F F F F F F F F F e  // V
+            e F F F F F F F F F F F F F e
+            F F F F F F F F F F F F F F F
+            F F F F F F F F F F F F F F F
+            F F F F F F F F F F F F F F F
+            F F F F F F F F F F F F F F F
+            F F F F F F F F F F F F F F F
+            e F F F F F F F F F F F F F e
+            e F F F F F F F F F F F F F e
+            e e F F F F F F F F F F F e e
+            e e e F F F F F F F F F F e e e
+            e e e e e F F F F F e e e e e
+        );
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options
+  - usage
+  stub_improved: true

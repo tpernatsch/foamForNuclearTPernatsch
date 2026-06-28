@@ -1,0 +1,20 @@
+description: FunctionObject that prints rod inner pressure vs time.
+options: []
+usage:
+- comment: "A functionObject is normally specified via the ``type`` entry in the ``functions`` subdictionary of the ``controlDict``\
+    \ file (located in ``system/``). \nIt is also necessary to indicate the correct .so library (using the ``libs`` keyword).\
+    \ Here is a snippet enabling the ``rodPressure`` functionObject:\n"
+  snippet: |-
+    functions
+    {
+      <anyName>
+      {
+          type              rodPressure;
+          libs              ("libFFNFunctionObjects.so");
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description

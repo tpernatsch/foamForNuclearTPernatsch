@@ -1,0 +1,33 @@
+description: |
+  Hydrogen diffusion coefficient model based on the Kearns correlation, with an
+  Arrhenius-type temperature dependence.
+
+  The model updates the hydrogen diffusion coefficient field $D_H$ in the
+  addressed cells and synchronizes boundary values consistently with the local
+  temperature field $T$.
+formulation: |
+  The hydrogen diffusion coefficient is modeled with an Arrhenius law
+  (Kearns-type correlation):
+
+  $$ D_H(T) = D_0 \exp\left(-\frac{E_d}{R\,T}\right) $$
+
+  where:
+
+  - $D_H$ is the hydrogen diffusion coefficient (field $diffH_$)
+  - $T$ is the local temperature in the cell (OpenFOAM field `T`)
+  - $D_0$ is the pre-exponential factor
+  - $E_d$ is the activation energy
+  - $R$ is the universal gas constant (8.31446 J/mol/K)
+
+  The implementation evaluates $D_H$ using the internal-field temperature
+  $T_i$ for each addressed cell, and applies the same correlation on boundary
+  faces using the boundary temperature $T_p$.
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

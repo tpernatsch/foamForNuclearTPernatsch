@@ -1,0 +1,30 @@
+description: |
+  Class to set Mo Poisson's Ratio to a constant input value.
+options:
+- key: PoissonRatioValue
+  type: scalar
+  required: false
+  default: 0.316
+  description: |
+    Constant Poisson ratio value. If the input dictionary contains a sub-dictionary named ``PoissonRatio``, the value is read from there; otherwise it is read from the model dictionary itself.
+usage:
+- comment: |
+    Example selection of the `MolybdenumConstant` thermalExpansion model.
+  snippet: |-
+    materials
+    {
+      structure
+      {
+        type Molybdenum;
+        thermalExpansion
+        {
+          type MolybdenumConstant;
+          // PoissonRatioValue 0.316;
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options

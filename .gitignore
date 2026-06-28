@@ -45,7 +45,9 @@ documentation/doxygen/Doxygen/html/**
 documentation/mkdocs/docs/classes
 documentation/**/generated
 documentation/**/usersguide/tutorials
+documentation/**/usersguide/tutorials.rst
 documentation/**/_build
+_build
 public
 
 # Python API
@@ -115,3 +117,8 @@ pythonapi/tutorials/fuel_behavior/triso_benchmarks/**/figures/*.png
 pythonapi/tutorials/fuel_behavior/triso_benchmarks/**/figures/*.svg
 pythonapi/tutorials/fuel_behavior/triso_fp_diffusion/**/figures/*.png
 pythonapi/tutorials/fuel_behavior/triso_fp_diffusion/**/figures/*.svg
+
+# docAI pipeline local/transient artifacts (keep yaml_progress.md tracked)
+tools/docAI/.llm_cache.json
+doc_ai_report.json
+.claude/settings.local.json

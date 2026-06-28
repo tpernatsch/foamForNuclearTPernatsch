@@ -1,0 +1,30 @@
+description: |
+  Class modelling the thermal expansion of SiC with a constant value $4.9\times10^{-6}\,\mathrm{K}^{-1}$ from Parfume.
+options:
+- key: thermalExpansionCoefficient
+  type: scalar
+  required: false
+  default: 4.9e-06
+  description: |
+    Constant thermal expansion coefficient $\alpha$ (1/K).
+usage:
+- comment: |
+    Example selection of the `SiCParfume` thermalExpansion model.
+  snippet: |-
+    materials
+    {
+      SiC
+      {
+        type SiC;
+        thermalExpansion
+        {
+          type SiCParfume;
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options

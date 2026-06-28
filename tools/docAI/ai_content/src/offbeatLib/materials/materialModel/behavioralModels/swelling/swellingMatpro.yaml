@@ -1,0 +1,80 @@
+description: |
+  Class modelling swelling phenomenon derived from Frapcon.
+options:
+- key: burnupName
+  type: word
+  required: false
+  default: Bu
+  description: |
+    Name of the burnup field.
+- key: densityName
+  type: word
+  required: false
+  default: rho
+  description: |
+    Name of the density field.
+- key: par1
+  type: scalar
+  required: false
+  default: 5.577e-05
+  description: |
+    Frapcon correlation parameter (used in the swelling model).
+- key: par2
+  type: scalar
+  required: false
+  default: 1.96e-31
+  description: |
+    Frapcon correlation parameter (used in the swelling model).
+- key: par3
+  type: scalar
+  required: false
+  default: 2800
+  description: |
+    Frapcon correlation parameter (used in the swelling model).
+- key: par4
+  type: scalar
+  required: false
+  default: 11.73
+  description: |
+    Frapcon correlation parameter (used in the swelling model).
+- key: par5
+  type: scalar
+  required: false
+  default: -0.0162
+  description: |
+    Frapcon correlation parameter (used in the swelling model).
+- key: par6
+  type: scalar
+  required: false
+  default: -0.0178
+  description: |
+    Frapcon correlation parameter (used in the swelling model).
+usage:
+- comment: |
+    Example selection of `UO2Matpro`.
+  snippet: |-
+    materials
+    {
+        fuel
+        {
+            type UO2;
+
+            swelling
+            {
+                type UO2Matpro;
+                // burnupName Bu;
+                // densityName rho;
+                // par1 5.577e-5;
+                // par2 1.96e-31;
+                // par3 2800;
+                // par4 11.73;
+                // par5 -0.0162;
+                // par6 -0.0178;
+            }
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options

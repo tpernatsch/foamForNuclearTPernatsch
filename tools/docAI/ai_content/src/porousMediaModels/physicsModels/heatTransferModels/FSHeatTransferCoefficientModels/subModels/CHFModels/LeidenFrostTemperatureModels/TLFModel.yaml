@@ -1,0 +1,52 @@
+description: |
+  Model for the prediction of the Leidenfrost temperature (i.e. $T_{\min}$), defined as
+  the temperature for which the heat flux is minimal. After this temperature, the
+  flow is in the post-CHF (post critical heat flux) regime.
+
+  The class is an abstract runtime-selectable interface; concrete Leidenfrost
+  temperature models are provided by derived classes.
+formulation: |
+  The model provides the Leidenfrost temperature $T_{\mathrm{LF}}$ (also denoted
+  $T_{\min}$) as a local scalar value per computational cell.
+
+  $$ T_{\mathrm{LF}} = \mathrm{TLFModel.value}(celli) $$
+
+  where:
+  - $T_{\mathrm{LF}}$ is the predicted Leidenfrost temperature (K)
+  - $celli$ is the index of the computational cell
+  - $T_{\mathrm{sat}}$ is the saturation/interface temperature field
+    (OpenFOAM field name: `T.interface`)
+  - $p$ is the local pressure field (OpenFOAM field name: `p`)
+
+  The specific functional dependence $T_{\mathrm{LF}}(T_{\mathrm{sat}},p,\ldots)$
+  is implemented in derived classes.
+options: []
+usage:
+- comment: 'The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the
+    ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``).
+    Here is a snippet enabling the model:'
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type TLFModel;
+          }
+        }
+      }
+    }
+admonitions:
+- kind: note
+  body: This model is selected solely by its runtime ``typeName`` and defines no additional options.
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  stub_improved: true

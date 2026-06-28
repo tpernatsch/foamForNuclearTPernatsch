@@ -1,0 +1,32 @@
+description: |
+  Base class for solution acceleration/extrapolation based on a series of
+  solution snapshots.
+
+  This base implementation performs no acceleration; it only provides the
+  interface and bookkeeping for registering the fields that an acceleration
+  scheme would operate on.
+formulation: |
+  The base class does not modify the solution. It only stores references to
+  the registered OpenFOAM fields and checks that all required fields have been
+  provided before an acceleration step is attempted.
+
+  $$ \text{accelerate: no-op} $$
+
+  - $\psi$ is an OpenFOAM volume field (e.g. $U$, $T$, etc.) registered via
+    `addField()`
+  - $nFields$ is the number of registered fields
+  - $\psi_i$ are the stored references to the registered fields
+options: []
+usage:
+- comment: |
+    Disable solution acceleration by selecting the `none` acceleration scheme
+    in the `accelerationScheme` sub-dictionary.
+  snippet: |-
+    accelerationScheme
+    {
+        type        none;
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

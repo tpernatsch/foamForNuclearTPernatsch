@@ -1,0 +1,49 @@
+description: |
+  Fixed displacement boundary condition for a vector-valued displacement field.
+  It imposes a prescribed patch displacement either as a constant vector value
+  or as a time-dependent series.
+
+  When used with an incremental mechanics solver and applied to the
+  incremental displacement field ``DD``, the imposed fixed value is interpreted
+  as an increment (not as a total displacement).
+formulation: |
+  The boundary condition sets the patch displacement field to a prescribed
+  value, either constant in time or obtained from a user-defined time series.
+
+  Let $d(t)$ be the imposed displacement vector at time $t$.
+
+  - If a time series is provided, $d(t)$ is evaluated from the series
+    (with user-selectable interpolation and out-of-bounds handling).
+  - If a constant value is provided, $d(t)$ is taken directly from the
+    ``value`` entry.
+
+  For an incremental mechanics formulation, when this boundary condition is
+  applied to the incremental displacement field ``DD`` (so that the internal
+  field name is ``DD``), the code converts the prescribed total displacement
+  into an increment by subtracting the old total displacement:
+  $$
+  \Delta d = d(t) - d^{old}(t)
+  $$
+  where $d^{old}(t)$ is obtained from the old-time total displacement field
+  ``D`` (patch-wise).
+
+  - $d(t)$ is the prescribed total displacement vector at the current time,
+    from ``displacementSeries`` or ``value``
+  - $d^{old}(t)$ is the old-time total displacement vector on the patch,
+    read from the ``D`` field
+  - $\Delta d$ is the imposed incremental displacement on ``DD``
+dictionary: neutronicsProperties
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions:
+- kind: warning
+  body: |
+    If applied to the incremental displacement field ``DD`` when using an
+    incremental mechanics solver, the imposed fixed value is intended as an
+    increment not as total displacement.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

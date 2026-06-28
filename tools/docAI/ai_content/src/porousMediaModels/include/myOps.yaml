@@ -1,0 +1,67 @@
+description: |
+  A collection of utility functions used for under-relaxation control and
+  word/string processing.
+
+  In particular, it provides helpers to query and apply OpenFOAM
+  `fvSolution.relaxationFactors` settings consistently across PIMPLE
+  iterations, including the special handling of the final iteration.
+formulation: |
+  The functions in this utility module implement a consistent selection of
+  relaxation factors between intermediate and final PIMPLE iterations.
+
+  For a given field relaxation keyword base name $n$, the effective keyword
+  used by OpenFOAM is chosen as:
+  $$
+  n_{\mathrm{eff}} =
+  \begin{cases}
+  n + \text{``Final''} & \text{if } \texttt{mesh.data().isFinalIteration()} \\
+  n & \text{otherwise}
+  \end{cases}
+  $$
+
+  The boolean relaxation decision is then obtained from the presence of the
+  corresponding relaxation entry, and the relaxation factor is returned as:
+  $$
+  \alpha =
+  \begin{cases}
+  \texttt{mesh.fieldRelaxationFactor}(n_{\mathrm{eff}}) & \text{if the entry exists} \\
+  1.0 & \text{otherwise}
+  \end{cases}
+  $$
+
+  where:
+  - $n$ is the input word name passed to the helper (e.g. the field base name)
+  - $n_{\mathrm{eff}}$ is the effective keyword used to query
+    `fvSolution.relaxationFactors.fields`
+  - $\alpha$ is the scalar relaxation factor returned by
+    `relaxationFactor(mesh, name)`
+options: []
+usage:
+- comment: 'The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the
+    ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``).
+    Here is a snippet enabling the model:'
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type myOps;
+          }
+        }
+      }
+    }
+admonitions:
+- kind: note
+  body: This model is selected solely by its runtime ``typeName`` and defines no additional options.
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  stub_improved: true

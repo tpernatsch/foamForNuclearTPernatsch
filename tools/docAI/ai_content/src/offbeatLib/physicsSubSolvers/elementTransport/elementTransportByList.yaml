@@ -1,0 +1,37 @@
+description: |
+  Aggregates multiple user-selected transport solvers into a `PtrList` and
+  orchestrates their execution (correction, convergence checking, and time-step
+  selection) through the common `elementTransport` interface.
+
+  The runtime type name is `byList`, meaning this class is selected by
+  specifying `byList` in the relevant solver dictionary entry.
+formulation: |
+  This class does not implement a standalone physical transport model.
+  Instead, it couples a set of transport solver instances that each implement
+  their own governing equations.
+
+  The coupling logic is:
+  $$ \text{correct: } \forall i,\; \text{solver}_i.\text{correct}() $$
+  $$ \text{converged: } \bigwedge_i \text{solver}_i.\text{converged}() $$
+  $$ \Delta t_{\text{next}} = \min_i \left(\text{solver}_i.\text{nextDeltaT}()\right) $$
+  $$ \text{updateMesh: } \forall i,\; \text{solver}_i.\text{updateMesh}() $$
+
+  where:
+  - $i$ is the index of the selected transport solver in `solverList_`
+  - $\Delta t_{\text{next}}$ is the next time-step size returned by this
+    aggregator
+  - $\text{solver}_i$ is the $i$-th `transportSolver` instance created via
+    `transportSolver::New(...)`
+options:
+- key: solvers
+  type: list[word]
+  required: true
+  description: |
+    List of transport solver type names to instantiate. For each entry,
+    `transportSolver::New(mesh, mat, elementTransportDict, solverName)` is
+    called and the resulting solver is stored in `solverList_`.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

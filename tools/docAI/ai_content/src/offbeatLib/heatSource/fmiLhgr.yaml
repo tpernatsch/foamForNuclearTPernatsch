@@ -1,0 +1,92 @@
+description: |
+  Heat source model that provides a linear heat generation rate (LHGR) as an
+  additional field, driven by an FMI (Functional Mock-up Interface) port.
+
+  This class is the parent implementation for LHGR-based heat source models
+  that obtain their LHGR (or, alternatively, an average power density) from an
+  external FMI component.
+formulation: |
+  The model supports two mutually exclusive inputs coming from an FMI port:
+  either the linear heat generation rate (LHGR) directly, or an average power
+  density $Q_{avg}$ from which the LHGR distribution is inferred via a
+  proportionality (relation) factor.
+
+  $$ \bar{L} = \bar{L}_0 $$
+  $$ \bar{Q} = \bar{Q}_0 $$
+  $$ \bar{L} = \alpha \, \bar{Q} $$
+
+  where:
+
+  - $\bar{L}$ is the average LHGR value used as the initial/previous value
+    (set from ``lhgrAvg`` in the ``uniform/fmiState`` file, or defaulted to 0)
+  - $\bar{Q}$ is the average power density used as the initial/previous value
+    (set from ``Qavg`` in the ``uniform/fmiState`` file, or defaulted to 0)
+  - $\alpha$ is the relation factor between LHGR and average power density,
+    set by ``relationFactor`` in the ``heatSourceOptions`` dictionary
+  - $L$ and $Q$ are communicated to/from the FMI port using the names
+    ``lhgrNameFromFMU`` and/or ``QavgNameFromFMU``
+
+  The actual spatial distribution update is performed in ``correct()``,
+  building on the base ``constantLhgr`` heat source functionality.
+optionsLocations:
+- name: heatSourceOptions
+  in: solverDict
+options:
+- key: lhgrNameFromFMU
+  type: word
+  required: false
+  description: |
+    FMI port name for the LHGR input. If present, the model uses LHGR from
+    the FMI port (and does not require ``QavgNameFromFMU``).
+- key: initialLhgr
+  type: scalar
+  required: false
+  default: 0.0
+  description: |
+    Initial LHGR value. (Documented in the class header usage example; the
+    implementation uses ``uniform/fmiState`` keys ``lhgrAvg`` and ``Qavg`` as
+    initial/previous values.)
+- key: initialQavg
+  type: scalar
+  required: false
+  default: 0.0
+  description: |
+    Initial average power density value. (Documented in the class header
+    usage example; the implementation uses ``uniform/fmiState`` keys ``Qavg``
+    and ``lhgrAvg`` as initial/previous values.)
+- key: relationFactor
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Relation factor $\alpha$ between LHGR and average power density.
+- key: QavgNameFromFMU
+  type: word
+  required: false
+  description: |
+    FMI port name for the average power density input. If present (and
+    ``lhgrNameFromFMU`` is not provided), the model uses $Q_{avg}$ from the
+    FMI port.
+admonitions: []
+usage:
+- comment: |
+    Select the FMI-driven LHGR heat source model and provide the FMI port name
+    for LHGR. Optionally set the initial values and the LHGR/Qavg relation
+    factor.
+  snippet: |-
+    heatSource fmiLhgr;
+
+    heatSourceOptions
+    {
+        lhgrNameFromFMU     offbeatLhgr;
+        initialLhgr         230e2;
+        // or
+        initialQavg         0.0;
+
+        // Optional
+        alpha               1.0;
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

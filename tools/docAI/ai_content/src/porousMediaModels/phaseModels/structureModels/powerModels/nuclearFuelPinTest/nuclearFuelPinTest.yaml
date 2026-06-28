@@ -1,0 +1,43 @@
+description: |
+  Dummy nuclear fuel pin power model used in the ESFR regression test to verify
+  that the framework can handle multiple ``nuclear`` power models.
+
+  This class is intended to be a lightweight stand-in for ``nuclearFuelPin``
+  and focuses on reading per-region pin geometry and material properties and
+  maintaining temperature-related fields for the fuel pin regions.
+formulation: |
+  The model maintains a 1-D radial temperature profile across fuel and
+  cladding for each mesh cell, driven by the local volumetric heating
+  (provided through the framework via ``correct(HT,H)``).
+
+  The class stores region-wise geometric parameters (inner/outer radii and
+  radial mesh spacing) and region-wise effective volumetric heat capacities
+  ($\rho c_p$) and thermal conductivities ($k$), and uses them to update
+  the local temperature profile and to compute local averages and
+  min/max values.
+
+  The interfacial area density is set consistently with the pin geometry:
+  if the pin volume fraction in a cell is $\alpha$, then the pin surface
+  interfacial area density $iA$ is proportional to the inverse of the outer
+  radius.
+
+  $$ iA = \frac{2\alpha}{R_{\mathrm{out}}} $$
+
+  where:
+
+  - $\alpha$ is the pin volume fraction in the current mesh cell
+  - $R_{\mathrm{out}}$ is the pin outer radius used by ``setInterfacialArea``
+
+  The class also supports an optional gap heat transfer dependence on power
+  density via a user-provided ``Function1<scalar>`` table.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - options
+  - usage
+  stub_improved: true

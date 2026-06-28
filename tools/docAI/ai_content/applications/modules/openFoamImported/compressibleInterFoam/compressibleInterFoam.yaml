@@ -1,0 +1,60 @@
+description: |
+  Compressible, two-phase (VOF) Eulerian solver with non-isothermal flow
+  capabilities and a user-defined regime-map based physics modelling workflow.
+
+  The solver advances a single momentum equation for a two-phase mixture
+  (volume-fraction fields ``alpha1``/``alpha2`` with mixture properties), and
+  couples fluid mechanics with energy correction steps. It also supports
+  stationary structure handling via an Eulerian formulation (see
+  ``correctEnergy()``, ``correctFluidMechanics()``, and the tightly coupled
+  correction hooks).
+
+  The class is implemented as ``Foam::solvers::compressibleInterFoam`` and
+  derives from ``solver``.
+formulation: |
+  The solver is based on a compressible, two-phase VOF formulation in which
+  a single set of flow fields is evolved for the mixture, while phase
+  fractions determine local material properties.
+
+  The mixture density is constructed from the phase densities as:
+  $$
+  \rho = \alpha_1 \rho_1 + \alpha_2 \rho_2
+  $$
+  where:
+
+  - $\alpha_1$ is the volume fraction of phase 1 (field ``alpha1``)
+  - $\alpha_2$ is the volume fraction of phase 2 (field ``alpha2``)
+  - $\rho_1$ is the density of phase 1 (from ``mixture_.thermo1().rho()``)
+  - $\rho_2$ is the density of phase 2 (from ``mixture_.thermo2().rho()``)
+
+  The pressure-velocity coupling uses a pressure-like variable ``p_rgh`` and
+  a velocity field ``U`` (with flux ``phi``). Gravity is included through
+  the standard OpenFOAM ``gh``/``ghf`` construction using ``g`` and ``hRef``.
+
+  The solver provides separate correction stages to update energy and fluid
+  mechanics, with optional tight coupling:
+  - ``correctEnergy()`` updates temperatures without updating the regime map
+  - ``correctFluidMechanics()`` updates pressure/velocity without updating the
+    regime map
+  - ``correctTightlyCoupledPhysics()`` performs a coupled update
+admonitions: []
+dictionary: neutronicsProperties
+options:
+- key: <parameter>
+  type: word
+  required: true
+  default: null
+  description: <description>
+optionsLocations: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - dictionary
+  - optionsLocations
+  - usage
+  stub_improved: true

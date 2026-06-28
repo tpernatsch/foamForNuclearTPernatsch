@@ -1,0 +1,43 @@
+description: Turns power off if the field value maximum exceeds a provided value.
+options:
+- key: fieldName
+  type: word
+  required: true
+  description: Name of the volScalarField used for the criterion evaluation
+- key: fieldOperation
+  type: word
+  required: true
+  description: Field operation performed to obtain the value for comparison against the threshold. Allowed values are `max`
+    and `min`.
+- key: criterion
+  type: word
+  required: true
+  description: Criterion to be applied. Allowed values are `valueAboveThreshold` and `valueBelowThreshold`.
+- key: threshold
+  type: scalar
+  required: true
+  description: Threshold value used for the comparison.
+- key: timeDelay
+  type: scalar
+  required: false
+  default: 0.0
+  description: Time delay between satisfaction of the criterion and the moment power is actually turned off.
+usage:
+- comment: 'Example of usage:'
+  snippet: |-
+    type            fieldValueThreshold;
+
+    fieldName       "normalized.alpha.vapour";
+
+    fieldOperation  max;
+
+    criterion       valueAboveThreshold;
+
+    threshold       0.957;
+
+    timeDelay       0.0;
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options

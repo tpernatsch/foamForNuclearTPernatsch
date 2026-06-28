@@ -1,0 +1,29 @@
+description: |
+  Temperature-dependent yield stress model for the creep/plasticity framework.
+  The yield stress is computed from an Arrhenius-type relation using the local
+  temperature field $T$.
+formulation: |
+  The model updates the yield stress field $TSSp$ using an Arrhenius law of the form
+  $TSSp(T)=TSSp_0 \exp\!\left(-\dfrac{Q_d}{R\,T}\right)$, where $T$ is the local
+  temperature (cell-centered for the internal field, and patch-centered for boundary faces).
+  This is consistent with thermally activated processes commonly used in
+  creep/plasticity constitutive modeling (e.g. Duderstadt & Hamilton for
+  reactor materials context; Arrhenius kinetics are standard in materials science).
+
+  $$ TSSp(T) = TSSp_0 \exp\!\left(-\frac{Q_d}{R\,T}\right) $$
+
+  where:
+  - $TSSp(T)$ is the updated yield stress (stored in OpenFOAM field $TSSp_$)
+  - $TSSp_0$ is the pre-exponential factor (constant in this implementation)
+  - $Q_d$ is the activation energy
+  - $R$ is the universal gas constant ($8.31446$ J/mol/K in the code)
+  - $T$ is the local temperature field $T$ (OpenFOAM field name: `T`)
+
+  Boundary faces are updated by applying the same relation using the patch
+  temperature field values.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

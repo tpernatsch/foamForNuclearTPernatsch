@@ -1,0 +1,104 @@
+description: |
+  Boundary condition that applies a coolant pressure (fixed or time-dependent)
+  on a displacement field patch.
+
+  This is a simplified re-implementation of the OpenFOAM
+  ``tractionDisplacementFvPatchVectorField`` boundary condition, allowing users
+  to specify coolant pressure directly instead of prescribing both traction
+  and pressure-related quantities.
+
+  The class inherits from ``tractionDisplacementFvPatchVectorField``, including
+  support for a plane strain approximation and an optional spring-dashpot
+  stabilization system.
+formulation: |
+  The boundary condition converts the prescribed coolant pressure into the
+  corresponding normal traction acting on the displacement field patch, and
+  delegates the remaining traction/displacement coupling to the inherited
+  ``tractionDisplacementFvPatchVectorField`` implementation.
+
+  For a prescribed pressure $p(t)$, the normal traction component is applied
+  consistently with the traction-displacement formulation.
+
+  $$ \mathbf{t}(t) = -p(t)\,\mathbf{n} + \mathbf{t}_{\mathrm{extra}} $$
+
+  where:
+
+  - $p(t)$ is the coolant pressure in Pa, provided either as a fixed scalar
+    ``coolantPressure`` or as a time-dependent table ``coolantPressureList``
+  - $\mathbf{n}$ is the patch outward unit normal
+  - $\mathbf{t}(t)$ is the traction vector applied on the patch
+  - $\mathbf{t}_{\mathrm{extra}}$ represents additional contributions handled
+    by the inherited ``tractionDisplacementFvPatchVectorField`` (e.g. spring-
+    dashpot stabilization when ``fixedSpring`` is enabled)
+  - plane strain modifies the normal stress/strain treatment at the boundary
+    when ``planeStrain`` is enabled
+dictionary: neutronicsProperties
+options:
+- key: coolantPressureList
+  type: table
+  required: false
+  description: |
+    Time-dependent coolant pressure table. Each entry consists of a time
+    value (interpreted using the time unit defined in ``solverDict``) followed
+    by the pressure value in Pa.
+
+    If provided, it is used instead of ``coolantPressure``.
+- key: coolantPressure
+  type: scalar
+  required: false
+  description: |
+    Fixed coolant pressure in Pa. Used only if ``coolantPressureList`` is not
+    provided.
+- key: planeStrain
+  type: bool
+  required: false
+  default: false
+  description: |
+    Activates the plane strain approximation for the normal stress at the
+    boundary. When enabled, the normal strain is assumed constant across the
+    last layer of cells.
+- key: fixedSpring
+  type: bool
+  required: false
+  default: false
+  description: |
+    Activates a fixed spring-dashpot system for additional stability.
+- key: fixedSpringModulus
+  type: scalar
+  required: false
+  description: |
+    Spring modulus in N/m. Required when ``fixedSpring`` is set to ``true``.
+- key: dashpotModulus
+  type: scalar
+  required: false
+  description: |
+    Dashpot modulus in N/m. Required when ``fixedSpring`` is set to ``true``.
+- key: relax
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Relaxation factor for gradient updates.
+- key: value
+  type: vector
+  required: true
+  description: |
+    Initial displacement value (not stress). Used to initialize the patch
+    field and for restarts.
+usage:
+- comment: |
+    Apply the ``coolantPressure`` boundary condition to the ``cladOuter`` patch
+    using a fixed coolant pressure time history.
+  snippet: "cladOuter\n{\n    type            coolantPressure;\n\n    // Fixed pressure in case the coolantPressureList is\
+    \ not provided\n    // coolantPressure 1e5;\n\n    coolantPressureList\n    {\n        type                table;\n\n\
+    \        // Use \"file\" or directly provide \"values\"\n        file                \"$FOAM_CASE/constant/lists/coolantPressureList\"\
+    ;\n        \n        // Optional: values can be provided directly\n        // values\n        // (\n        //     (0.0\
+    \ 1e5)\n        //     (100.0 1e6)\n        // );\n\n        format              foam;      // Optional data format\n\
+    \        outOfBounds         clamp;     // Optional handling for out-of-bounds values\n        interpolationScheme linear;\
+    \    // Optional interpolation method\n    }\n\n    // Activate plane strain approximation (default is false)\n    planeStrain\
+    \     false;\n\n    // Relaxation factor\n    relax           1.0;\n\n    // Initial displacement value\n    value   \
+    \        $internalField;\n}"
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,44 @@
+description: |
+  Conservative AMI (Arbitrary Mesh Interface) interpolation between two
+  primitive patches with an arbitrary mesh interface.
+
+  The class implements interpolation based on local Galerkin projection
+  (Farrell & Maddison, 2011) and provides OFFBEAT-specific modifications.
+
+  The interpolation requires that the two patches have opposite orientations
+  (opposite normals). If the patches are co-directional, the
+  `reverseTarget` flag can be used to reverse the target patch orientation.
+formulation: |
+  The AMI interpolation constructs a conservative mapping between a source
+  patch and a target patch by projecting source face contributions onto
+  target faces through local overlap geometry.
+
+  Let $S_f$ denote a source face and $T_g$ a target face. For each source
+  face, the algorithm determines the set of overlapping target faces and
+  computes geometric weights (depending on the selected interpolation
+  method) from the intersected face areas.
+
+  The mapped quantity on the target patch is then assembled as a weighted
+  sum of source-face values, with weights normalized by the total overlap
+  weight per face to ensure conservation.
+
+  $$ \phi_{T_g} = \sum_{S_f \in \mathcal{N}(T_g)} w_{g f}\, \phi_{S_f} $$
+  $$ \sum_{S_f \in \mathcal{N}(T_g)} w_{g f} \approx 1 $$
+
+  where:
+  - $\phi_{S_f}$ is the source-face quantity to be interpolated
+  - $\phi_{T_g}$ is the resulting target-face quantity
+  - $w_{g f}$ is the interpolation weight derived from AMI overlap geometry
+  - $\mathcal{N}(T_g)$ is the set of source faces that overlap target face $T_g$
+
+  The implementation supports multiple weight definitions via the
+  `interpolationMethod` enumeration, including direct mapping, nearest
+  mapping, and several face-area-weighted variants (including partial and
+  swept area weighting). For parallel runs, the class builds the required
+  processor-to-processor distribution and merges patch overlap information.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,77 @@
+description: |-
+  Base class for dispersion models defining which phase is dispersed and how. Available runtime selectable models include:
+
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./**
+options: []
+usage:
+- comment: 'The dispersion model is constructed at run-time via the  dispersionModel subdictionary of the pairGeometryModels
+    subdictionary of the physicsModel subdictionary of the phaseProperties dictionary. An example is reported below. Please
+    note that the example makes use of the byRegime templated model, allowing to give different types to different regimes.
+    Notice also that the constant model used in the example is not the templated constant model used elsewhere in foamForNuclear,
+    but the constantDispersion sub-model listed above. '
+  snippet: |-
+    physicsModels
+    {
+      pairGeometryModels
+      {
+          "liquid.vapour"
+          {
+              dispersionModel
+              {
+                  type        byRegime;
+                  regimeMap   "annularMist";
+                  "annular"
+                  {
+                      type                constant;
+                      dispersedPhase      "vapour";
+                  }
+                  "mist"
+                  {
+                      type                constant;
+                      dispersedPhase      "liquid";
+                  }
+              }
+          }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections: []
+  formulation_added: true
+  formulation_extended: true
+formulation: |-
+  This base class provides the interface for dispersion/entrainment closure used in two-phase (fluid–fluid) interfacial models: a derived dispersionModel returns a scalar “dispersion value” per cell that is then used by the corresponding interfacial/contact-fraction or transport closures. In practice, the dispersion value is a model-specific effective dispersion/transfer coefficient (or an equivalent length/velocity scale) that parameterizes how the dispersed phase is spread by turbulence and interfacial dynamics; the exact interpretation depends on the derived model (e.g., constantDispersion, byRegime, etc.), but the mathematical role is always to supply a local closure field through $$d = d(\mathbf{x})$$.
+
+  Let $$d_i$$ denote the dispersion value returned by $$value(celli)$$ for cell $$i$$. The base class does not prescribe the governing transport equation; instead, it supplies $$d_i$$ to other parts of the solver. A typical way this enters two-fluid/mixture closures is through an effective “dispersion flux” or an effective interfacial area/contact fraction source term of the generic form (see standard two-phase dispersion/entrainment closures in Duderstadt & Hamilton and Todreas & Kazimi):
+  $$ \nabla \cdot \left( D_d \nabla \alpha_d \right) \;\;\text{or}\;\; S_{\text{disp}}(\alpha_d, d), $$
+  where $$\alpha_d$$ is the dispersed-phase volume fraction and $$D_d$$ is an effective dispersion diffusivity/transport coefficient. In many implementations, the closure is written as
+  $$ D_d(\mathbf{x}) = d(\mathbf{x}) \, , $$
+  or as a proportionality to a characteristic scale (turbulent eddy diffusivity, slip velocity, or interfacial shear), e.g.
+  $$ D_d = C_d \, \nu_t \quad \text{or} \quad D_d = C_d \, |u_r| \, \ell_t, $$
+  with $$C_d$$ a model constant, $$\nu_t$$ the turbulent viscosity (often from $$k\text{-}\epsilon$$ or $$k\text{-}\omega$$), $$u_r$$ the relative (slip) velocity, and $$\ell_t$$ a turbulence length scale. The derived dispersionModel is responsible for mapping the local flow/regime information to the scalar $$d(\mathbf{x})$$.
+
+  The base class also provides $$correctField(scalarField& d)$$, which is intended to post-process or enforce constraints on the dispersion field after evaluation (e.g., positivity, limiting, regime consistency). A common physical requirement is
+  $$ d(\mathbf{x}) \ge 0, $$
+  and, when $$d$$ is used as a diffusivity, one may additionally require boundedness consistent with numerical stability:
+  $$ 0 \le D_d \le D_{d,\max}. $$
+
+  Assumptions and validity range (applies to the closure family, not uniquely to this base interface):
+  - Local equilibrium/closure assumption: dispersion is treated as an instantaneous local function of cell-wise flow state and/or regime classification (Eulerian closure), rather than requiring a separate transport equation for dispersed-phase “turbulent dispersion energy.”
+  - Homogenized dispersed-phase representation: the dispersed phase is assumed sufficiently fine-scale that its effect can be represented by a scalar effective parameter (typical for mist/annular mist regimes and dispersed bubbles/droplets in coarse-grained two-fluid models).
+  - Turbulence-driven dispersion: the dominant mechanism is assumed to be turbulence/interfacial shear rather than molecular diffusion; thus the closure is meaningful when turbulence is resolved/parameterized (i.e., not in purely laminar or near-laminar regimes unless the derived model explicitly accounts for it).
+  - Regime dependence: for stratified/annular/mist or other separated-flow regimes, dispersion parameters are assumed to change with regime; this is reflected by runtime-selectable byRegime-type models.
+
+  OpenFOAM / GeN-Foam notation:
+  - $$value(celli)$$ returns a scalar for the cell index $$celli$$ (OpenFOAM cell-based discretization).
+  - The dispersion field passed to/handled by $$correctField$$ is a $$scalarField$$ named generically $$d$$ (the actual OpenFOAM field name is determined by the calling model).
+  - The dispersed-phase identity is handled by the derived model (e.g., the example uses $$dispersedPhase "vapour"$$ or $$"liquid"$$); the base class guarantees the interface but not the physics mapping.
+
+  References (for the standard notation and closure philosophy):
+  - Duderstadt & Hamilton, *Nuclear Reactor Analysis* — two-phase flow modeling concepts, interfacial transfer/dispersion closure background.
+  - Todreas & Kazimi, *Nuclear Systems Volume I* — entrainment/dispersion and effective transport parameterization in thermal-hydraulics.
+  - General two-phase dispersion/entrainment closure literature in Eulerian two-fluid models (effective diffusivity or source-term formulations), consistent with the generic structure $$\nabla\cdot(D_d\nabla\alpha_d)$$ or interfacial source terms.

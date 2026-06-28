@@ -1,0 +1,70 @@
+description: |-
+  NoKazimi model for the liquid side of a liquid-vapour heat transfer
+  coefficient. Can be only used if a phaseChangeModel is specified as this
+  models relies on latent heat.
+options: []
+usage:
+- comment: "The NoKazimi heat transfer model is constructed at run-time via the\nheatTransferModels subdictionary of the physicsModel\
+    \ subdictionary of the phaseProperties dictionary. "
+  snippet: |-
+    physicsModels
+    {
+        heatTransferModels
+        {
+            "liquid.vapour"
+            {
+                "liquid"
+                {
+                    type            NoKazimi;
+
+                }
+                "vapour"
+                {
+                    type            NusseltReynoldsPrandtlPower;
+                    const           10;
+                    coeff           0;
+                    expRe           0;
+                    expPr           0;
+                }
+            }
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - usage
+  formulation_added: true
+formulation: |-
+  The NoKazimi correlation provides the liquid-side interfacial heat transfer
+  coefficient for liquid–vapour phase change using a latent-heat-based
+  driving and a Prandtl/Reynolds-type dependence through liquid properties
+  evaluated at the fluid–fluid interface (see e.g. Nozaki/Kazimi-style
+  boiling/condensation correlations as implemented in many two-phase
+  submodels; Duderstadt & Hamilton; Todreas & Kazimi).
+  The model returns a local coefficient $h_{ff,\ell}$ used in the interfacial
+  heat flux closure $q''_{ff}=h_{ff,\ell}(T_{iT}-T)$.
+  $$ h_{ff,\ell} = \mathrm{coeff}\;\frac{kappa_}{D}\;Pr_^{\,a}\;Re_^{\,b} $$
+  where the implementation precomputes a constant prefactor $\mathrm{coeff}$
+  from latent heat and the specified exponents, and evaluates the local
+  liquid properties at each cell.
+  - $h_{ff,\ell}$ is the liquid-side fluid–fluid interfacial heat transfer
+    coefficient [W m$^{-2}$ K$^{-1}$]
+  - $q''_{ff}$ is the interfacial heat flux [W m$^{-2}$]
+  - $T_{iT}$ is the fluid–fluid interfacial temperature ($iT$ in OpenFOAM field
+    naming) [K]
+  - $T$ is the local liquid temperature [K]
+  - $kappa_ $ is the liquid thermal conductivity ($kappa_$) [W m$^{-1}$ K$^{-1}$]
+  - $Pr_ $ is the liquid Prandtl number ($Pr_$) [-]
+  - $Re_ $ is the liquid Reynolds number ($\mathrm{Re}$ built from $\rho_,$
+    $magU_,$ and a characteristic length) [-]
+  - $D$ is an effective characteristic length (e.g. based on interfacial area
+    $iA_$ and/or phase-change length scale) [m]
+  - $\mathrm{coeff}$ is a pre-computed scalar coefficient stored in the model
+    (member `coeff_`) [-]
+  - $\alpha_ $ is the liquid volume fraction ($alpha_$) [-]
+  - $\rho_ $ is the liquid density ($rho_$) [kg m$^{-3}$]
+  - $p_ $ is the pressure reference ($p_$) [Pa]
+  - $iA_ $ is the fluid–fluid interfacial area density ($iA_$) [m$^{-1}$]
+  - $magU_ $ is the magnitude of the liquid velocity ($magU_$) [m s$^{-1}$]
+  - $a$ and $b$ are correlation exponents (set/derived from the model inputs)

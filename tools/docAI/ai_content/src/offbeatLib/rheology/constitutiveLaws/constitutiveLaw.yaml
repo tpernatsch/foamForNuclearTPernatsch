@@ -1,0 +1,125 @@
+description: |
+  Base constitutive law interface for thermo-mechanical behaviour.
+
+  A `constitutiveLaw` instance updates the stress tensor by combining a
+  hydrostatic part and a deviatoric part, and (optionally) updates elastic
+  strain and additional strain contributions according to the selected
+  rheology model.
+
+  Concrete constitutive laws (e.g. elasticity, plasticity, creep) are
+  implemented as derived classes selected at run time via the `type` entry.
+formulation: |
+  The constitutive law provides the evolution of stress components by
+  separating the Cauchy stress into hydrostatic and deviatoric parts.
+
+  $$ \sigma = \sigma_{\mathrm{hyd}} + \sigma_{\mathrm{dev}} $$
+
+  where:
+
+  - $\sigma$ is the total stress tensor field (OpenFOAM: ``sigma``)
+  - $\sigma_{\mathrm{hyd}}$ is the hydrostatic stress contribution
+    (OpenFOAM: ``sigmaHyd``)
+  - $\sigma_{\mathrm{dev}}$ is the deviatoric stress contribution
+    (OpenFOAM: ``sigmaDev``)
+
+  Derived classes implement the model-specific update of
+  ``sigmaHyd``, ``sigmaDev``, and elastic strain ``epsEl`` through the
+  pure-virtual method ``correct(...)``. The base class provides
+  ``updateStress(...)`` to recombine hydrostatic and deviatoric components.
+admonitions: []
+dictionary: neutronicsProperties
+optionsLocations: []
+options: []
+externalOptions: []
+usage:
+- comment: |
+    Select an elastic constitutive law for a solid material by specifying the
+    `type` inside the `constitutiveLaw` sub-dictionary.
+  snippet: |
+    solid
+        {
+            //for structures
+            material        constant;
+            rho             rho     [1 -3 0 0 0]        1; //density
+            E               E       [1 -1 -2 0 0]       2e+11;  // Young modulus
+            nu              nu      [0 0 0 0 0]         0.3; // Poisson ratio
+            Cp              Cp      [0 2 -2 -1 0]       100; // cp
+            k               k       [1 1 3 -1 0]        100; // conductivity
+            alpha           alpha   [0 0 0 0 0]         1e-5; // linear expansion coeff (1/K)
+            Tref            Tref    [0 0 0 0 0]         0;
+            emissivity      emissivity [0 0 0 0 0]      0.0; // emissivity
+
+            constitutiveLaw
+            {
+                type elasticity;
+            }
+        }
+- comment: |
+    Select a plasticity/creep constitutive law (``misesPlasticCreep``) and
+    provide its rheology-specific options under the `constitutiveLaw`
+    dictionary.
+  snippet: |
+    cladding
+        {
+            material                Zircaloy;
+            Tref                    Tref [ 0 0 0 1 0 ] 293;
+            conductivityModel       constant;
+            k                       k    [ 1 1 -3 -1 0] 16;
+
+            nSlices                 1;
+
+            constitutiveLaw
+            {
+                type misesPlasticCreep;
+
+                yieldStress
+                {
+                    type constant;
+                    sigmaY 250e6;
+                }
+
+                creep
+                {
+                    type ZircaloyLimback;
+                    relax 1.0;
+                }
+            }
+        }
+- comment: |
+    Example of selecting a `misesPlasticCreep` constitutive law in a legacy
+    test case configuration.
+  snippet: |-
+    cladding
+        {
+            type                Zircaloy;
+
+            thermalExpansion
+            {
+                type ZircaloyMatpro;
+                Tref 300;
+            }
+
+            failure
+            {
+                type ZircaloyOverstrainBison;
+                stopIfFailed            on;
+                hoopStrainLimit         0.244897959;
+                patchNames ( "outer" "inner" );
+            }
+
+            phaseTransition
+            {
+                type ZircaloyDynamic;
+            }
+
+            nSlices         1;
+
+            constitutiveLaw
+            {
+                type misesPlasticCreep;
+
+                yieldStress
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

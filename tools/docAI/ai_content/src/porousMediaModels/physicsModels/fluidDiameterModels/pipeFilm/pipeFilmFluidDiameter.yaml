@@ -1,0 +1,45 @@
+description: |-
+  Correlation to be used in annular flow scenarios in which the phase of
+  interest to which this model is applied flows in a film along the walls
+  of a circular pipe, so that the film thickness is proportional to
+  $1-\sqrt{1-\alpha}$, where $\alpha$ is the normalized phase fraction of
+  the phase of interest.
+options:
+- key: residualAlpha
+  type: scalar
+  required: false
+  default: 0.01
+  description: |-
+    Minimum allowable value of the normalized phase fraction to avoid a
+    null fluid diameter.
+usage:
+- comment: 'The pipeFilm fluid diameter model is selected at run-time as: '
+  snippet: |-
+    fluid1 "liquid";
+    fluid2 "vapour";
+
+    liquidProperties
+    {
+        stateOfMatter   liquid;
+        dispersedDiameterModel
+        {
+            type    pipeFilm;
+        }
+        thermoResidualAlpha 1e-6;
+    }
+formulation: |-
+  The model returns the effective fluid diameter as
+  $$d_f = \left(1-\sqrt{1-\max(\alpha,\alpha_{\mathrm{res}})}\right)\,D_h,$$
+  where $\alpha$ is the normalized phase fraction (from
+  ``fluid_.normalized()``), $\alpha_{\mathrm{res}}$ is set by
+  ``residualAlpha``, and $D_h$ is the structure hydraulic diameter
+  (from ``pair_.structureRef().Dh()``).
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options
+  - formulation
+  - dictionary

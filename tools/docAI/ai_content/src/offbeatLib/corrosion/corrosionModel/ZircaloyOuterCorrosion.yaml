@@ -1,0 +1,37 @@
+description: |
+  Water-side corrosion model for Zircaloy cladding.
+
+  This model provides the outer (water-side) oxidation and associated oxide/metal thickness changes
+  using a kinetics sub-model. The implementation is currently hardcoded to support the
+  EPRI/KWU/C-E low-temperature oxidation model and the Cathcart-Pawel high-temperature oxidation model,
+  with model constants taken from Dunbar et al. (2024).
+
+  See also [@corrosionModel] and the general corrosion-by-patch workflow (see Foam::corrosionByPatch).
+formulation: |
+  The model updates the oxide thickness on a given patch by solving oxidation kinetics through an
+  underlying ``oxidationKineticsModel``. The corrosion rate is evaluated using local thermal and
+  transport quantities on the patch (e.g. metal/oxide interface temperature, fast flux, and thermal
+  conductivity), and the oxide growth is converted into changes in oxide and metal thickness.
+
+  The oxide thickness update is performed in ``correct(...)`` and the corresponding metal thickness
+  change is computed in ``updateDMetalThickness(...)``.
+
+  The implementation uses a Pilling–Bedworth ratio for zirconium, $R_{pb}=1.56$, to relate oxide
+  growth to metal consumption.
+
+  - $R_{pb}$ is the Pilling–Bedworth ratio for Zr (hardcoded as 1.56 in the implementation)
+dictionary: neutronicsProperties
+options:
+- key: oxidationKineticsModel
+  type: word
+  required: true
+  description: |
+    Name of the oxidation kinetics sub-model to use. The model is instantiated via
+    ``oxidationKineticsModel::New(word(dict.lookup("oxidationKineticsModel")), dict)``.
+    The sub-model selection also determines which oxidation regime/correlation is applied
+    (e.g. EPRI/KWU/C-E low-temperature and Cathcart-Pawel high-temperature models).
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,85 @@
+description: |
+  Class to hold the lists of region meshes and solvers.
+
+  It also provides loop and iteration functionality which automatically sets the
+  region ``Info`` prefix for each of the solvers returned by the ``[]`` operator
+  or iterator.
+formulation: |
+  This class does not implement a physical model. It orchestrates the creation
+  and iteration of region-level solvers and (for multi-physics solvers) their
+  iterative coupling.
+
+  The main responsibilities are:
+  - create region solvers from the ``regionsDict``/``regionSolvers`` configuration
+  - provide indexed access via ``operator[]`` and iterator access via
+    ``begin()``/``end()``
+  - manage the OpenFOAM ``Info`` prefix so that log output is tagged with the
+    active region name during solver calls
+
+  Multi-region coupling control variables are stored internally:
+  - ``multiRegionTightCoupled_`` selects a tight-coupling strategy
+  - ``multiRegionResidual_`` and ``maxMultiRegionIterations_`` bound the
+    convergence/iteration behavior for multi-region coupling
+optionsLocations:
+- name: regionSolvers
+  in: regionsDict
+options:
+- key: axialLocations
+  type: scalar
+  required: true
+  default: null
+  description: ''
+- key: fieldFromName
+  type: word
+  required: true
+  default: null
+  description: ''
+- key: fieldToName
+  type: word
+  required: true
+  default: null
+  description: ''
+- key: fromWhichRegions
+  type: word
+  required: true
+  default: null
+  description: ''
+- key: interpolationType
+  type: word
+  required: true
+  default: null
+  description: ''
+externalOptions: []
+admonitions: []
+usage:
+- comment: |
+    From tutorials/featureCases/1D_CHF/imposedPower/system/regionsDict.
+  snippet: |
+    regionSolvers
+    {
+        Level_0
+        {
+            fluidRegion     twoPhase;
+        }
+    }
+- comment: |
+    From tutorials/featureCases/1D_HX/onePhase/system/controlDict.
+  snippet: |
+    regionSolvers
+    {
+        fluidRegion     onePhase;
+    }
+- comment: |
+    From tutorials/featureCases/1D_HX/onePhase/system/regionsDict.
+  snippet: "regionSolvers\n{\n\tLevel_0\n    {\n        fluidRegion  onePhase;\n    }\n}"
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - optionsLocations
+  - externalOptions
+  - admonitions
+  - usage
+  stub_improved: true

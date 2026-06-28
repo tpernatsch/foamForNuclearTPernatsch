@@ -1,0 +1,60 @@
+description: |
+  Saturation model for water in the $0.01$–$350\,^\circ\mathrm{C}$ range based on an
+  interpolation of NIST data in the form
+  $P_\mathrm{sat} = A\,(T-B)^C$.
+
+  The NIST data can be found at:
+  https://www.nist.gov/system/files/documents/srd/NISTIR5078-Tab1.pdf
+formulation: |
+  This model provides the saturation pressure of water as a function of the
+  local temperature, using a power-law fit to NIST tabulated data. It also
+  provides the derivative of the saturation pressure with respect to
+  temperature, and the inverse relation to compute saturation temperature
+  from pressure.
+
+  $$ P_\mathrm{sat}(T) = A\,(T-B)^C $$
+
+  $$ \frac{dP_\mathrm{sat}}{dT} = (C-1)\,A\,(T-B)^{C-1} $$
+
+  $$ T_\mathrm{sat}(p) = \left(\frac{p}{A}\right)^{1/C} + B $$
+
+  where:
+
+  - $P_\mathrm{sat}$ is the saturation pressure (computed by `valuePSat`)
+  - $T$ is the local temperature field value (from OpenFOAM field `iT_`)
+  - $p$ is the local pressure field value (from OpenFOAM field `p`)
+  - $A$, $B$, $C$ are empirical fit coefficients (hard-coded in the constructor)
+  - $T_\mathrm{sat}$ is the saturation temperature (computed by `valueTSat`)
+
+  The logarithm of saturation pressure is also available as:
+  $$ \ln P_\mathrm{sat} = \log(P_\mathrm{sat}) $$
+admonitions:
+- kind: note
+  body: This model is selected solely by its runtime ``typeName`` and defines no additional options.
+options: []
+usage:
+- comment: 'The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the
+    ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``).
+    Here is a snippet enabling the model:'
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type water;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  stub_improved: true

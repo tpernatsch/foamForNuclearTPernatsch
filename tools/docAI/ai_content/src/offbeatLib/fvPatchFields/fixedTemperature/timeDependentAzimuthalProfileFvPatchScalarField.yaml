@@ -1,0 +1,82 @@
+description: |
+  Boundary condition that imposes a time-dependent azimuthal (angular) scalar
+  profile on a patch.
+
+  The azimuthal profile is provided as tabulated data versus azimuthal angle
+  (in degrees) and time, and is interpolated in both dimensions to obtain the
+  boundary value at the current simulation time.
+formulation: |
+  The boundary value is constructed by interpolating a tabulated azimuthal
+  temperature (or generic scalar) profile in angle and time.
+
+  Let $\\theta$ be the azimuthal angle (degrees) at a patch face and $t$ be
+  the current simulation time. The imposed value $T(\\theta,t)$ is obtained
+  from the tabulated dataset $D(\\theta_i,t_j)$ using independent
+  interpolation in the azimuthal and time directions.
+
+  $$
+  T(\\theta,t) = \\mathcal{I}_t\\big(\\mathcal{I}_\\theta(D(\\theta_i,t_j))\\big)
+  $$
+
+  where:
+
+  - $\\theta$ is the face azimuthal location in degrees, computed from patch
+    face centres
+  - $t$ is the current simulation time
+  - $D(\\theta_i,t_j)$ is the tabulated profile data provided via
+    ``azimuthalProfileDict`` -> ``data``
+  - $\\mathcal{I}_\\theta$ is the azimuthal interpolation operator selected by
+    ``azimuthalInterpolationMethod``
+  - $\\mathcal{I}_t$ is the time interpolation operator selected by
+    ``timeInterpolationMethod``
+
+  The class derives from ``fixedTemperatureFvPatchScalarField`` and updates
+  the patch values accordingly in ``updateCoeffs()``.
+dictionary: neutronicsProperties
+options:
+- key: azimuthalProfileDict
+  type: table
+  required: true
+  description: |
+    Sub-dictionary containing the azimuthal profile tables and interpolation
+    settings. It is accessed as ``dict.subDict("azimuthalProfileDict")``.
+- key: azimuthalProfileDict.azimuthalLocations
+  type: list
+  required: true
+  description: |
+    Tabulated azimuthal locations in degrees. Stored internally as
+    ``thetaValues_``.
+- key: azimuthalProfileDict.timePoints
+  type: list
+  required: true
+  description: |
+    Tabulated time points corresponding to the profile data. Stored internally
+    as ``timeValues_``.
+- key: azimuthalProfileDict.data
+  type: table
+  required: true
+  description: |
+    Tabulated profile data. Loaded as a list of ``scalarField`` via
+    ``scalarFieldFieldINew()`` and stored internally as ``profileData_``.
+    The data are used to build the 2D interpolation table.
+- key: azimuthalProfileDict.azimuthalInterpolationMethod
+  type: word
+  required: false
+  default: linear
+  description: |
+    Interpolation method name for the azimuthal direction. Stored internally
+    as ``thetaMethod_``.
+- key: azimuthalProfileDict.timeInterpolationMethod
+  type: word
+  required: false
+  default: linear
+  description: |
+    Interpolation method name for the time direction. Stored internally as
+    ``tMethod_``.
+optionsLocations: []
+externalOptions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

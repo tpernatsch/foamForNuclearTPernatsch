@@ -1,0 +1,48 @@
+description: |
+  Critical Heat Flux (CHF) model selector and evaluator.
+
+  The class provides a common interface to compute the CHF heat flux $q''_{CHF}$
+  (in W/m$^2$) for a given face, using one of several correlations/lookup-table
+  models:
+
+  - ``EPRI``: EPRI (1985) look-up-based correlation for PWR rods
+  - ``GroeneveldTable``: Groenveld et al. look-up table (read from
+    ``constant/chfTableDict``)
+  - ``Zuber``: Zuber (1958) pool boiling limit
+  - ``ModifiedZuber``: Zuber with subcooling correction (Frederking)
+  - ``GE``: GE (1973) simple quality-based limit
+
+  The model does not compute $T_{CHF}$; this is handled by the CHF boundary
+  condition (e.g. via ``solvePreCHFTemperature`` or a fast approximation).
+formulation: |
+  This class evaluates a CHF heat-flux limit $q''_{CHF}$ as a function of
+  local thermohydraulic state and (for some models) non-local inlet/axial
+  information.
+
+  The exact functional form depends on the selected ``model_``:
+
+  - For ``GroeneveldTable``, $q''_{CHF}$ is obtained by interpolating a
+    pre-tabulated dataset over pressure, mass flux, and quality.
+  - For ``EPRI``, additional non-local inlet quantities are precomputed once
+    per time step (see ``precompute``), and the per-face CHF is then computed
+    using the precomputed inlet quality and axial shape factors.
+
+  Variables used by the per-face interface (units in comments) are:
+  - $p$ is the local pressure [Pa]
+  - $T_0$ is the bulk coolant temperature (used by ``ModifiedZuber``) [K]
+  - $Q$ is the thermodynamic quality [-]
+  - $G$ is the mass flux [kg/(m$^2\cdot$s)]
+  - $D_H$ is the hydraulic diameter [m]
+  - $q_{wall}$ is the current wall heat flux [W/m$^2$]
+  - $f$ is the face index (used by ``EPRI`` to access ``FAP_[faceI]``)
+
+  The model returns $q''_{CHF}$ in W/m$^2$.
+options: []
+optionsLocations: []
+externalOptions: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

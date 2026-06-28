@@ -1,0 +1,59 @@
+description: |
+  Saturated nucleate boiling heat transfer correlation model.
+
+  This class computes a saturated boiling heat transfer coefficient by
+  evaluating a selected nucleate boiling correlation and combining it with
+  a provided single-phase heat transfer coefficient. The returned value is
+  the maximum of the single-phase contribution and the saturated boiling
+  contribution.
+
+  Supported nucleate boiling models:
+  - Chen (1966) superposition model
+  - Schrock-Grossman (1962) correlation
+  - Rohsenow (1952) pool-boiling correlation
+formulation: |
+  The saturated boiling heat transfer coefficient is computed as:
+  $$
+  h_{sat} = \max(h_{SP},\, h_{SB})
+  $$
+  where $h_{SP}$ is the provided single-phase heat transfer coefficient and
+  $h_{SB}$ is the saturated boiling contribution computed from the selected
+  correlation.
+
+  For the Chen option, the nucleate boiling contribution is evaluated using a
+  superposition of a convective boiling term and a suppression factor:
+  $$
+  h_{SB} = h_{NB} \quad,\quad
+  h_{NB} = 0.00122\,\Delta T_w^{0.24}\,\Delta p^{0.75}\,
+  \frac{k_l^{0.79}\,c_{p,l}^{0.45}\,\rho_l^{0.49}}
+       {\sigma^{0.5}\,\mu_l^{0.29}}
+  $$
+  with $\Delta T_w = |T_w-T_{sat}|$ and $\Delta p = |p_{sat}(T_w)-p_{sat}(T_{sat})|$.
+  The suppression factor $S$ and the convective contribution $h_c$ are computed
+  from the Chen formulation using the mass flux $G$, hydraulic diameter $DH$,
+  liquid properties at saturation, and the Martinelli-type parameter $X_{tt}$.
+
+  Thermodynamic saturation properties are obtained from IF97 at the system
+  pressure $p$.
+
+  Variables:
+  - $T_0$ is the bulk coolant temperature [K]
+  - $T_w$ is the wall temperature [K]
+  - $p$ is the pressure [Pa]
+  - $Q$ is the thermodynamic quality [-]
+  - $G$ is the mass flux [kg/(m²·s)]
+  - $DH$ is the hydraulic diameter [m]
+  - $qWall$ is the wall heat flux magnitude [W/m²] (used as an input to the
+    correlation through the quality-related term)
+  - $h_{SP}$ is the single-phase HTC [W/(m²·K)]
+  - $T_{sat}$ is the saturation temperature at pressure $p$ [K]
+  - $T_{film}$ is the film temperature, $T_{film}=\tfrac{1}{2}(T_0+T_w)$ [K]
+  - $h_{SB}$ is the saturated boiling HTC contribution [W/(m²·K)]
+  - $h_{sat}$ is the returned saturated boiling HTC [W/(m²·K)]
+admonitions: []
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,44 @@
+description: modifiedEngel correlation for pressure drop
+options: []
+usage:
+- comment: |
+    The drag model is specified via the ``type`` entry in the ``physicsModels/dragModels/<zoneName>`` subdictionary of the ``phaseProperties`` file.
+    (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g.
+    ``constant/fluidRegion``).
+
+    Here is a snippet of a ``phaseProperties`` file enabling the modifiedEngel fluid–structure drag model:
+  snippet: |-
+    // ... other phaseProperties subdictionaries
+
+    physicsModels
+    {
+      dragModels
+      {
+        "<zoneName>"
+        {
+          type    modifiedEngel;
+        }
+
+        // ... other zone subdictionaries
+
+      }
+
+      // ... other physicsModels subdictionaries
+    }
+
+    // ... other subdictionaries
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - usage
+  formulation_added: true
+formulation: |
+  The model provides a cell-wise drag/pressure-drop coefficient for wire-wrapped fuel bundles using a semi-empirical Engel-type correlation (Bubelis & Schikorr, 2008). In the code, this appears as a scalar closure returned by ``value(celli)`` and is used by the surrounding two-phase/FS framework as the effective drag coefficient (see Duderstadt & Hamilton; Todreas & Kazimi for bundle pressure-drop/friction-factor context).
+
+  $$ C_{D,\mathrm{FS}}(x) \equiv \texttt{value(celli)} $$
+
+  - $C_{D,\mathrm{FS}}(x)$ is the effective fluid–structure drag/pressure-drop coefficient used by the solver at location $x$ (OpenFOAM: per-cell scalar returned by ``value``).
+  - $x$ is the spatial position corresponding to a computational cell index ``celli``.
+
+  The correlation is parameterized through the ``FSPair`` (bundle/geometry and flow state) and user coefficients in the model dictionary; the exact algebraic form is implemented in ``modifiedEngel.C`` (not shown here).

@@ -1,0 +1,79 @@
+description: |
+  Time-dependent radial profile defined by user-supplied tabulated data and
+  interpolated in both radius and time, i.e. $g(r,t)$.
+
+  The profile is mapped onto an addressed list provided by the base
+  ``radialProfile`` class. Interpolation supports both ``step`` and ``linear``
+  methods (via ``InterpolateTable``).
+
+  The supplied radial locations are expected to be normalized between 0 and 1,
+  and the supplied profile data must be normalized to 1 when integrated in
+  cylindrical coordinates.
+formulation: |
+  The model provides a normalized radial shape function $g(r,t)$ by
+  interpolating tabulated values in radius and time.
+
+  For a given time $t$, the intermediate radial profile is obtained by
+  interpolating the tabulated data along the time axis, and then interpolating
+  in radius to the requested location.
+
+  $$ g(r,t) = \mathcal{I}_r\!\left(\mathcal{I}_t\!\left(g_{ij}\right)\right) $$
+
+  where:
+
+  - $g(r,t)$ is the interpolated, normalized radial profile value
+  - $r$ is the normalized radial coordinate in $[0,1]$
+  - $t$ is the physical time (as provided by ``mesh_.time()``)
+  - $g_{ij}$ are the tabulated profile values from the ``data`` table
+  - $\mathcal{I}_t$ is the time interpolation operator selected by
+    ``timeInterpolationMethod``
+  - $\mathcal{I}_r$ is the radial interpolation operator selected by
+    ``radialInterpolationMethod``
+
+  The class also provides discontinuity markers through ``nextTimeMarker()``
+  and the end of validity through ``lastTimeMarker()`` based on the underlying
+  interpolation table.
+options:
+- key: radialLocations
+  type: list[scalar]
+  required: true
+  description: |
+    Tabulated normalized radial locations $r_i$ in the range $[0,1]$.
+    The first entry must be 0 and the last entry must be 1.
+- key: timePoints
+  type: list[scalar]
+  required: true
+  description: |
+    Tabulated time values $t_j$ corresponding to the columns/rows of the
+    provided ``data`` table.
+- key: data
+  type: table
+  required: true
+  description: |
+    Tabulated profile data $g_{ij}$.
+    The table is provided as a list of rows, where each row corresponds to a
+    time point and contains values at the tabulated ``radialLocations``.
+- key: radialInterpolationMethod
+  type: word
+  required: false
+  default: linear
+  description: |
+    Radial interpolation method used to evaluate $g(r,t)$ at intermediate
+    radii. Supported values are those available in
+    ``interpolateTableBase::interpolationMethodNames_`` (e.g. ``linear``,
+    ``step``).
+- key: timeInterpolationMethod
+  type: word
+  required: false
+  default: linear
+  description: |
+    Time interpolation method used to evaluate $g(r,t)$ at intermediate
+    times. Supported values are those available in
+    ``interpolateTableBase::interpolationMethodNames_`` (e.g. ``linear``,
+    ``step``).
+dictionary: neutronicsProperties
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,83 @@
+description: |
+  Constant dispersion model that returns a spatially uniform dispersion/contact fraction
+  for a specified dispersed phase.
+
+  The model computes a constant value based on whether the configured
+  `dispersedPhase` matches `pair_.fluid1().name()`; otherwise it returns the
+  complementary fraction.
+formulation: |
+  The dispersion/contact fraction is treated as spatially constant and is
+  returned directly by the model:
+
+  $$
+  f_{\mathrm{disp}}(i) = f_0
+  $$
+
+  where the constant $f_0$ is selected from the input parameter `value` as:
+
+  $$
+  f_0 =
+  \begin{cases}
+  \texttt{value}, & \text{if } \texttt{dispersedPhase} = \texttt{pair\_.fluid1().name()} \\
+  1-\texttt{value}, & \text{otherwise}
+  \end{cases}
+  $$
+
+  - $f_{\mathrm{disp}}(i)$ is the dispersion/contact fraction returned for cell $i$
+  - $f_0$ is the constant fraction value
+  - `value` is the user-specified fraction (default: 1.0)
+  - `dispersedPhase` is the dispersed phase name used to decide whether to take
+    `value` or its complement
+options:
+- key: dispersedPhase
+  type: word
+  required: true
+  description: |
+    Name of the dispersed phase. If it matches `pair_.fluid1().name()`, the model
+    returns `value`; otherwise it returns $1-\texttt{value}$.
+- key: value
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Fraction value used by the constant dispersion model. If `dispersedPhase`
+    matches `pair_.fluid1().name()`, the returned fraction is `value`; otherwise
+    the returned fraction is $1-\texttt{value}$.
+usage:
+- comment: "The dispersion model is constructed at run-time via the  dispersionModel subdictionary of the pairGeometryModels\
+    \ subdictionary of the physicsModel subdictionary of the phaseProperties dictionary. An example is reported below. Please\
+    \ note that the example makes use of the byRegime templated model, allowing to give different types to different regimes.\
+    \ \n"
+  snippet: |-
+    physicsModels
+    {
+      pairGeometryModels
+      {
+          "liquid.vapour"
+          {
+              dispersionModel
+              {
+                  type        byRegime;
+                  regimeMap   "annularMist";
+                  "annular"
+                  {
+                      type                constant;
+                      dispersedPhase      "vapour";
+                  }
+                  "mist"
+                  {
+                      type                constant;
+                      dispersedPhase      "liquid";
+                  }
+              }
+          }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - options
+  stub_improved: true

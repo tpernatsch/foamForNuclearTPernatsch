@@ -1,0 +1,78 @@
+description: |
+  Calculate the temperature of onset of nucleate boiling according to the
+  model by N. Basu, G.R. Warrier, and V.K. Dhir, "Onset of Nucleate Boiling
+  and Active Nucleation Site Density During Subcooled Flow Boiling,"
+  J. Heat Transfer, 124, 717-728, 2002.
+
+  Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
+formulation: |
+  This TONB model computes the local onset temperature $T_{\mathrm{ONB}}$
+  from the liquid subcooling and a correlation for the wall superheat required
+  to activate nucleation sites. The correlation is expressed in terms of the
+  liquid temperature $T_l$, the saturation temperature $T_{\mathrm{sat}}$,
+  and a heat-transfer-related parameter $h_{tc2pFC}$ (passed as
+  `htc2pFCi`), following Basu et al. (2002).
+
+  $$ \Delta T_{\mathrm{ONB,sat}} =
+     \frac{A \, h_{tc2pFC}\, T_{\mathrm{sat}}}
+          {\rho_g \, |\Delta L| \, \kappa_l} $$
+
+  $$ T_{\mathrm{ONB}} =
+     T_l + 0.25 \left(
+       \sqrt{\Delta T_{\mathrm{ONB,sat}}} +
+       \sqrt{\max(\Delta T_{\mathrm{ONB,sat}} + 4\,(T_{\mathrm{sat}}-T_l),\,0)}
+     \right)^2 $$
+
+  where:
+
+  - $T_l$ is the local liquid temperature (OpenFOAM field `pair_.fluidRef().T()[celli]`)
+  - $T_{\mathrm{sat}}$ is the local saturation temperature (OpenFOAM field `Tsat_[celli]`)
+  - $h_{tc2pFC}$ is the passed heat-transfer parameter `htc2pFCi`
+  - $\rho_g$ is the other-fluid density (OpenFOAM field `otherFluidPtr_->rho()[celli]`)
+  - $|\Delta L|$ is the magnitude of the characteristic length difference
+    (OpenFOAM field `mag((*LPtr_)[celli])`)
+  - $\kappa_l$ is the liquid thermal conductivity (OpenFOAM field `pair_.fluidRef().kappa()[celli]`)
+  - $A$ is a precomputed constant derived from surface tension and contact angle:
+    $$ A = \frac{2\sigma}{\left(1-\exp\left(-\theta^3-\tfrac{1}{2}\theta\right)\right)^2} $$
+  - $\sigma$ is the liquid surface tension (`surfaceTension`)
+  - $\theta$ is the liquid-structure contact angle in radians (`contactAngle` converted from degrees)
+options:
+- key: surfaceTension
+  type: scalar
+  required: true
+  description: |
+    Liquid surface tension $\sigma$ used to compute the constant $A$ in the
+    Basu TONB correlation.
+- key: contactAngle
+  type: scalar
+  required: true
+  description: |
+    Liquid-structure interface contact angle $\theta$ provided in degrees.
+    The implementation converts it to radians before using it in the
+    correlation.
+usage:
+- comment: 'The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the
+    ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``).
+    Here is a snippet enabling the model:'
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type Basu;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - options
+  stub_improved: true

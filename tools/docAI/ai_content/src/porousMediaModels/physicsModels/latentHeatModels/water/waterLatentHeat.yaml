@@ -1,0 +1,69 @@
+description: |
+  Latent heat model for water, providing the latent heat of vaporization
+  $L$ over the liquid temperature range 0.01–350 \u00b0C using a fitted
+  saturation-data correlation from NIST.
+
+  The fit is expressed in the form
+  $L = A + B \\, \log(C - T)$, where $T$ is the liquid temperature in K.
+  The coefficients are embedded in the implementation.
+
+  The model remains reasonably usable up to about 365 \u00b0C due to the
+  rapid approach of the latent heat to zero near the critical point, while
+  the implementation clamps the temperature to avoid numerical issues.
+  It is not intended for sub-to-supercritical transition simulations.
+
+  Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
+formulation: |
+  This model returns the latent heat of vaporization of water as a function
+  of the local liquid temperature $T$ (OpenFOAM field name convention: the
+  temperature is provided by the parent [@phaseChangeModel] and stored in
+  the base class as $iT_$).
+
+  The implementation clamps the effective temperature to avoid the
+  logarithm singularity and to keep the correlation within its intended
+  validity range.
+
+  $$ L(T) = 10^6\left(-2.44 + 0.82 \\, \log(681.718 - T)\right) \\, , $$
+
+  where $L$ is in J/kg and the logarithm argument is dimensionless as used
+  by the original fit.
+
+  - $L$ is the latent heat of vaporization, in J/kg
+  - $T$ is the liquid temperature, in K
+  - $iT_$ is the liquid temperature field value at cell $celli$ (provided by
+    the coupled phase-change model)
+  - The effective temperature is clamped as:
+    $$ T = \min\left(\max(iT_{celli}, 273.16), 680\right) $$
+
+  The correlation is based on NIST saturation data (see class header). Near
+  the critical region, the latent heat approaches zero; the model is therefore
+  used with numerical clamping rather than a dedicated critical-point model.
+admonitions:
+- kind: note
+  body: This model is selected solely by its runtime ``typeName`` and defines no additional options.
+options: []
+usage:
+- comment: |
+    The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``). Here is a snippet enabling the model:
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type water;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  stub_improved: true

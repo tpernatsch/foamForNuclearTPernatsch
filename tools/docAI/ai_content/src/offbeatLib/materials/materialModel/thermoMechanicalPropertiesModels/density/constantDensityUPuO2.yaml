@@ -1,0 +1,39 @@
+description: |
+  Class modelling the constant density of (U,Pu)O2 MOX fuel.
+options:
+- key: densityFraction
+  type: scalar
+  required: false
+  default: 0.945
+  description: |
+    Fraction of theoretical density. If not provided in this model dictionary, it is read from the material base dictionary (``baseDict``) and defaults to 0.945.
+- key: theoreticalDensity
+  type: scalar
+  required: false
+  default: 10430.0
+  description: |
+    Theoretical density. If not provided in this model dictionary, it is read from the material base dictionary (``baseDict``) and defaults to 10430.0.
+usage:
+- comment: |
+    Example selection of the `UPuO2Constant` density model.
+  snippet: |-
+    materials
+    {
+      fuel
+      {
+        type UPuO2;
+        density
+        {
+          type UPuO2Constant;
+          // densityFraction 0.945;
+          // theoreticalDensity 10430;
+        }
+      }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

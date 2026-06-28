@@ -1,0 +1,36 @@
+description: |
+  Heat source model class that allows the user to set the volumetric heat source
+  field by providing or setting the corresponding field file `Q` in the starting
+  time folder.
+
+  If the `Q` file is present in the starting time folder, the internal field and
+  boundary conditions are set according to its specifications. Otherwise, the heat
+  source is set to 0 W/m3 in each cell, with zeroGradient BCs in all non-empty
+  (non-wedge) patches.
+
+  Note that when selecting this heat source model, the heat source field will remain
+  the same as it was defined in the starting time folder (or as it was set by default
+  by the code).
+admonitions:
+- kind: note
+  body: |
+    At the moment, the constant model is the correct heat source model to use
+    if you are coupling OFFBEAT to an external neutronics solver that provides the
+    `Q` field directly. At every coupled iteration, simply substitute the
+    `Q` file generated with the external solver in the starting time folder and
+    (re)start the OFFBEAT simulation.
+- kind: warning
+  body: |
+    For backward-compatibility, `fromLatestTime` can be still used as the typename
+    for the `constant` heatSource model. However, its use is deprecated.
+options: []
+usage:
+- comment: |
+    Here is a code snippet of the `solverDict` to be used for the `constant` heat
+    source model
+  snippet: heatSource constant;
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description

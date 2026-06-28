@@ -1,0 +1,40 @@
+description: |
+  Class modelling the Young's modulus of D9 Steel cladding using the Hofman
+  correlation.
+options:
+- key: par1
+  type: scalar
+  required: false
+  default: 2.01e5
+  description: |
+    Parameter used in the Hofman correlation for the Young's modulus.
+- key: par2
+  type: scalar
+  required: false
+  default: 79.29
+  description: |
+    Parameter used in the Hofman correlation for the Young's modulus.
+usage:
+- comment: |
+    Example selection of the `SteelD9Hofman` thermalExpansion model.
+  snippet: |-
+    materials
+    {
+      cladding
+      {
+        type Steel1515Ti;
+        thermalExpansion
+        {
+          type SteelD9Hofman;
+          // par1 2.01e5;
+          // par2 79.29;
+        }
+      }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

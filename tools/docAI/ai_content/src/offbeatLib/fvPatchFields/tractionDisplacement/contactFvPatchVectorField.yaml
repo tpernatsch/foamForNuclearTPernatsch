@@ -1,0 +1,74 @@
+description: |
+  Contact boundary condition for vector displacement fields that enforces
+  contact between two coupled surfaces of type ``regionCoupledOFFBEAT`` using
+  a penalty method.
+
+  The model computes both normal contact pressure (including a penalty term
+  proportional to penetration) and tangential frictional traction using a
+  Coulomb-like limit. It is intended to be applied to a coupled patch pair
+  mapped via AMI, typically assigning the ``owner`` role to the smaller
+  surface.
+
+  This fvPatchField is originally partly based on the ``solids4Foam`` library.
+formulation: |
+  The contact traction is computed from the current gap width and the
+  relative tangential slip between the two coupled surfaces. Normal contact
+  uses a penalty stiffness based on the minimum bulk modulus between master
+  and slave faces, while tangential traction uses a Coulomb friction law
+  limited by the normal interface pressure.
+
+  For the normal component, the interface normal pressure is:
+  $$
+  ip = -f \cdot K \cdot g
+  $$
+  where $g$ is the gap width (negative when penetration occurs), $K$ is the
+  minimum effective normal stiffness between the two sides, and $f$ is the
+  penalty scale factor.
+
+  The effective stiffness is computed internally from face and cell
+  geometry as $K = K_m \cdot A/V$, where $K_m$ is the bulk modulus, $A$ is the
+  face area, and $V$ is the volume of the associated cell.
+
+  For the tangential (friction) component, a Coulomb model is used:
+  $$
+  |\tau| = \min(\alpha \cdot ip,\ |f_{fr} \cdot \mu \cdot \mathbf{s}|)
+  $$
+  where $\alpha$ is the friction coefficient, $\mu$ is the minimum effective
+  shear stiffness between the two sides (computed internally as
+  $\mu = \mu_m \cdot A/V$ with $\mu_m$ the shear modulus), $f_{fr}$ is the
+  friction penalty scale factor, and $\mathbf{s}$ is the cumulative slip
+  vector between the surfaces.
+
+  The friction traction vector is oriented opposite to the slip direction
+  and combined with the normal pressure component to form the total surface
+  traction.
+
+  Notes:
+  - The gap width calculation accounts for face-center displacements and
+    supports both total and incremental mechanics solvers (``D`` vs ``DD``),
+    including correct behavior with ``smallStrain`` mechanics.
+  - An optional ``offset`` can be added to the gap width for sensitivity
+    studies.
+
+  - $ip$ is the interface normal pressure (set by ``penaltyFactor`` and the
+    effective stiffness)
+  - $g$ is the gap width / penetration measure (set by the coupled
+    displacement fields; optionally shifted by ``offset``)
+  - $K$ is the minimum effective normal stiffness between master and slave
+    faces (computed internally from bulk modulus and $A/V$)
+  - $f$ is the normal penalty scale factor (set by ``penaltyFactor``)
+  - $\tau$ is the frictional traction vector magnitude
+  - $\alpha$ is the friction coefficient (set by ``frictionCoefficient``)
+  - $\mu$ is the minimum effective shear stiffness between slave and master
+    faces (computed internally from shear modulus and $A/V$)
+  - $f_{fr}$ is the friction penalty scale factor (set by ``penaltyFactorFriction``)
+  - $\mathbf{s}$ is the cumulative tangential slip vector between surfaces
+    (tracked internally via ``slip``/``slip0_``)
+options: []
+optionsLocations: []
+externalOptions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

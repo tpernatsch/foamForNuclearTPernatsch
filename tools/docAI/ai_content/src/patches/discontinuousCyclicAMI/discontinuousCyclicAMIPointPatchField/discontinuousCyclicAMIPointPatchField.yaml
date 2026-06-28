@@ -1,0 +1,37 @@
+description: |
+  Point patch field for *discontinuous* cyclic AMI (Arbitrary Mesh Interface)
+  coupling on the front/back planes.
+
+  This class is a thin wrapper around [@cyclicAMIPointPatchField], using the
+  discontinuous cyclic AMI patch type. It disables constraints by returning
+  a null constraint type.
+formulation: |
+  This boundary condition provides a mapping of point values across a cyclic
+  AMI interface using the interpolation machinery implemented in
+  [@cyclicAMIPointPatchField] and the discontinuous cyclic AMI patch
+  definition.
+
+  The discontinuous nature implies that the interface is treated without
+  enforcing a single shared constraint equation across the coupled patches;
+  instead, values are transferred via the AMI interpolation.
+
+  Let:
+
+  - $f$ be the OpenFOAM point field associated with the patch
+  - $f_{\mathrm{nbr}}$ be the mapped value on the opposing cyclic patch
+  - $\mathcal{I}$ be the AMI interpolation operator (including any geometric
+    transform)
+
+  Then the patch field values are obtained as:
+  $$ f = \mathcal{I}\!\left(f_{\mathrm{nbr}}\right) $$
+  where $\mathcal{I}$ is provided by the underlying cyclic AMI point patch
+  field implementation.
+admonitions: []
+options: []
+externalOptions: []
+optionsLocations: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

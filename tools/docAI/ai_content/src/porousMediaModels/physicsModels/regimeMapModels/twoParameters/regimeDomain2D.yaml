@@ -1,0 +1,30 @@
+description: |
+  Regime domain representation in 2D parameter-space.
+
+  A `regimeDomain2D` is defined by a polygon in a two-parameter map (e.g. regime-map axes) and a set of
+  boundary segments (`regimeBoundary2D`). It provides point-in-polygon queries and supports
+  identification of internal/shared boundaries for interpolation across adjacent domains.
+formulation: |
+  The class represents a 2D polygonal domain and provides membership tests for a point
+  $\mathbf{p}=(p_x,p_y)$ in the polygon.
+
+  Depending on the polygon geometry, membership is evaluated using either:
+  - a convex-polygon test (faster), or
+  - a concave-polygon test (more general, but more expensive).
+
+  The polygon orientation is characterized by `sign_`:
+  - $+1$: convex polygon with counter-clockwise ordered vertices,
+  - $-1$: convex polygon with clockwise ordered vertices,
+  - $0$: concave polygon (vertex ordering is not assumed to be consistent).
+
+  Variables:
+  - $\mathbf{p}$ is the query point in the 2D parameter space
+  - $V_i$ are the polygon vertices (stored indirectly via `pointPtrs_`)
+  - $\partial\Omega$ is the polygon boundary (stored as `boundaries_`)
+  - `sign_` is the polygon sign/orientation indicator used to select the appropriate containment logic
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

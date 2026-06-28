@@ -1,0 +1,67 @@
+description: |
+  Boundary condition to prescribe a Gaussian laser intensity profile on a patch
+  by providing laser power, beam waist, and a coefficient of reflection.
+
+  The boundary condition is implemented as a ``fixedValueFvPatchField`` of
+  scalar type and is registered under the runtime type name ``gaussianLaser``.
+formulation: |
+  The boundary condition prescribes a scalar value on a patch face as a
+  Gaussian function of the in-plane distance from the beam center, scaled by
+  the (possibly time-dependent) laser power and modified by a reflection
+  coefficient.
+
+  $$ I(r,t) = (1-R)\, \frac{2P(t)}{\pi w^2}\, \exp\!\left(-\frac{2r^2}{w^2}\right) $$
+
+  where:
+
+  - $I(r,t)$ is the prescribed patch scalar value (laser intensity-like
+    quantity) at radial distance $r$ and time $t$
+  - $P(t)$ is the laser power in W, provided either as a constant ``power``
+    or as a time table ``powerList``
+  - $w$ is the beam waist in m, set by ``beamWaist``
+  - $R$ is the coefficient of reflection, set by ``reflectionCoeff``
+  - $r$ is the radial distance from the beam center in the patch plane
+    (as computed internally from the patch geometry)
+
+  The boundary condition uses OpenFOAM time to evaluate $P(t)$ when
+  ``powerList`` is provided.
+dictionary: neutronicsProperties
+options:
+- key: powerList
+  type: table
+  required: false
+  description: |
+    Time-dependent laser power specified as a table of pairs
+    ``(timeInSeconds, powerInW)``. The table is evaluated at the current
+    simulation time.
+
+    The sub-dictionary supports optional entries:
+    - ``outOfBounds`` (e.g. ``clamp``)
+    - ``interpolationScheme`` (e.g. ``linear``)
+- key: power
+  type: scalar
+  required: false
+  description: |
+    Constant laser power in W. Used only if ``powerList`` is not provided.
+- key: beamWaist
+  type: scalar
+  required: true
+  description: |
+    Laser beam waist in m.
+- key: reflectionCoeff
+  type: scalar
+  required: true
+  description: |
+    Coefficient of reflection. The effective absorbed/scaled factor is
+    $(1-R)$.
+- key: value
+  type: scalar
+  required: false
+  description: |
+    Standard OpenFOAM ``fixedValue`` entry. In typical usage it is set to
+    ``$internalField`` as shown in the example.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true
