@@ -77,7 +77,7 @@ Users are also encouraged to make use of the typical OpenFOAM learning strategie
 
 ## OpenFOAM Version
 
-FFN is based on the **OpenFOAM® (ESI/OpenCFD)** distribution, currently **v2512**, available at [www.openfoam.com](https://www.openfoam.com). The platform is regularly updated to maintain compatibility with new releases.
+FFN is based on the **OpenFOAM® (ESI/OpenCFD)** distribution, currently **v2606**, available at [www.openfoam.com](https://www.openfoam.com). The platform is regularly updated to maintain compatibility with new releases.
 
 ## Getting started
 
@@ -85,7 +85,7 @@ First, [install OpenFOAM](https://www.openfoam.com/). If installing from source,
 
 Make sure OpenFOAM has been installed correctly and that the environment is correctly sourced. For instance, when installing from source, and if installing under the ~/openfoam folder:
 ```bash
-source ~/openfoam/OpenFOAM-v2512/etc/bashrc
+source ~/openfoam/OpenFOAM-v2606/etc/bashrc
 ```
 
 Once you are sure the appropriate OpenFOAM version is correctly installed, and the OpenFOAM environment is sourced:

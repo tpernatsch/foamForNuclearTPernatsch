@@ -116,11 +116,11 @@ public:
             const fvPatchFieldMapper&
         );
 
-        //- Construct as copy
+        //- Construct as copy -- From OpenFOAM v2606, this needs to be deleted
         discontinuousCyclicAMIFvsPatchField
         (
             const discontinuousCyclicAMIFvsPatchField<Type>&
-        );
+        ) = delete;
 
         //- Construct as copy setting internal field reference
         discontinuousCyclicAMIFvsPatchField
@@ -129,11 +129,13 @@ public:
             const DimensionedField<Type, surfaceMesh>&
         );
 
-        //- Return clone
+        //- Return clone -- Changed to compile in v2606
         virtual tmp<fvsPatchField<Type>> clone() const
         {
-            return fvsPatchField<Type>::Clone(*this);
+            // Use the constructor that takes (ptf, internalField)
+            return fvsPatchField<Type>::Clone(*this, this->internalField());
         }
+
 
         //- Clone with an internal field reference
         virtual tmp<fvsPatchField<Type>> clone
