@@ -5990,8 +5990,12 @@ class BlockMesh(OpenFOAMFile, Mesh):
     def add_baffles(
             self,
             baffleName: str='baffle',
+            boundaryType: str='mappedWall',
             includeFacename: list[str]=[],
-            excludeFacename: list[str]=[]
+            excludeFacename: list[str]=[],
+            inGroups: list[str]=['wall', 'mappedPatch', 'baffleFaces'],
+            extraParameters0: dict | None=None,
+            extraParameters1: dict | None=None,
         ) -> list[Face]:
         """
         Add faces into a baffle zone to merged in `createPatchDict`. Create 2
@@ -5999,6 +6003,10 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
         Parameters
         ----------
+        baffleName : str
+            Name of the baffle faces root.
+        boundaryType : str
+            Type of boundary condition (e.g `mappedWall`, `cyclicAMI`, ...).
         includeFacename : list[str]
             List of keyword include in face names to include the faces. For
             example (`faces = ['wall1', 'wall2', 'top']`,
@@ -6014,11 +6022,13 @@ class BlockMesh(OpenFOAMFile, Mesh):
             List of baffle faces.
         """
         check_type("baffleName", baffleName, str)
+        check_type("boundaryType", boundaryType, str)
         check_type("includeFacename", includeFacename, list)
         check_type("excludeFacename", excludeFacename, list)
 
         mergedFaces  = [f1 for f1, f2 in self.mergePatchPairs] + [f2 for f1, f2 in self.mergePatchPairs]
 
+        # Look for overlapping faces with the specified constraints
         baffleFaces = self.get_overlapping_faces(
             overlappingFaces=mergedFaces,
             includeFacename=includeFacename,
@@ -6029,25 +6039,46 @@ class BlockMesh(OpenFOAMFile, Mesh):
         leftFaces  = [face0 for face0, face1 in baffleFaces]
         rightFaces = [face1 for face0, face1 in baffleFaces]
 
-        baffle0 = Face(
-            name=f"{baffleName}0",
-            boundaryType="mappedWall",
-            inGroups=['wall', 'mappedPatch', 'baffleFaces'],
-            extraParameters={
+        # Set predefined baffle options
+        isUsePredefineOptions = extraParameters0 is None and extraParameters1 is None
+        extraParameters0 = {} if isUsePredefineOptions else extraParameters0
+        extraParameters1 = {} if isUsePredefineOptions else extraParameters1
+        if (isUsePredefineOptions and boundaryType == 'mappedWall'):
+            extraParameters0 = {
                 'sampleMode': 'nearestPatchFace',
                 'samplePatch': f'{baffleName}1'
             }
-        )
-        baffle1 = Face(
-            name=f"{baffleName}1",
-            boundaryType="mappedWall",
-            inGroups=['wall', 'mappedPatch', 'baffleFaces'],
-            extraParameters={
+            extraParameters1 = {
                 'sampleMode': 'nearestPatchFace',
                 'samplePatch': f'{baffleName}0'
             }
+        elif (isUsePredefineOptions and boundaryType == 'cyclicAMI'):
+            extraParameters0 = {
+                'matchTolerance': 0.0001,
+                'neighbourPatch': f'{baffleName}1',
+                'transform': 'noOrdering',
+            }
+            extraParameters1 = {
+                'matchTolerance': 0.0001,
+                'neighbourPatch': f'{baffleName}0',
+                'transform': 'noOrdering',
+            }
+
+        # Create baffle faces
+        baffle0 = Face(
+            name=f"{baffleName}0",
+            boundaryType=boundaryType,
+            inGroups=inGroups,
+            extraParameters=extraParameters0
+        )
+        baffle1 = Face(
+            name=f"{baffleName}1",
+            boundaryType=boundaryType,
+            inGroups=inGroups,
+            extraParameters=extraParameters1
         )
 
+        # Fill bc with faces
         for face in leftFaces:
             for face_i in face.faces:
                 baffle0.add_sub_face(face_i)
@@ -6058,7 +6089,11 @@ class BlockMesh(OpenFOAMFile, Mesh):
         leftNames = [face.name for face in leftFaces]
         rightNames = [face.name for face in rightFaces]
 
-        self.faces = [face for face in self.faces if (face.name not in leftNames and face.name not in rightNames)]
+        self.faces = [
+            face
+            for face in self.faces
+            if (face.name not in leftNames and face.name not in rightNames)
+        ]
 
         self.add_boundary(baffle0)
         self.add_boundary(baffle1)
@@ -7378,7 +7413,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             coupledFaces = self.get_overlapping_faces(overlappingFaces=mergedFaces)
 
             for face_i, face_j in coupledFaces:
-                if (face_i.boundaryType == "mappedWall"):
+                if (face_i.boundaryType in ["mappedWall", "cyclicAMI"]):
                     continue
 
                 face_i.isPrint = False

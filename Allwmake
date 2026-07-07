@@ -229,7 +229,7 @@ then
     then
         echo    "Allwmake GeN-Foam"
     fi
-    
+
     echo -e "-----------------\n"
 
     # Make OFFBEAT libs (keep if GeN-Foam depends on them)
@@ -252,7 +252,7 @@ then
     # Make modules
     wmake -j$num_jobs ./applications/modules/thermalHydraulics
     wmake -j$num_jobs ./applications/modules/neutronics
-    wmake -j$um_jobs ./applications/modules/thermoMechanics
+    wmake -j$num_jobs ./applications/modules/thermoMechanics
     wmake -j$num_jobs ./applications/modules/fuelBehaviour
     wmake -j$num_jobs ./applications/modules/openFoamImported
 

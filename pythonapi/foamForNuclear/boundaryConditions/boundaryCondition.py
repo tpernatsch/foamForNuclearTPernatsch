@@ -61,8 +61,8 @@ _PATCH_TYPES = {
     "resistiveGap", "fuelRodGap", "gapContact", "tractionDisplacement", "coolantPressure",
     "fixedDisplacementZeroShear", "plenumSpringPressure", "topCladRingPressure",
     "implicitGapContact", "gapPressure",
-    "unilateralContact", 
-    "coolantChannel", "coolantChannelRIA", 
+    "unilateralContact",
+    "coolantChannel", "coolantChannelRIA",
     # FMU4FOAM
     "coupledUniformExternalValue", "coupledFlowRateInletVelocity",
     "coupledFlowRateOutletVelocity", "coupledUniformExternalValue",

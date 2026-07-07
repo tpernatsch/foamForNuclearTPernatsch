@@ -7,7 +7,6 @@ from foamForNuclear._attrs_tools import auto_type_validator, call_method_on_chan
 from abc import abstractmethod
 import os
 
-from foamForNuclear.boundaryConditions.zeroGradient import ZeroGradient
 from foamForNuclear.common import *
 from foamForNuclear.checkvalue import check_type, CheckedList
 from foamForNuclear.mesh.dicts import DecomposeParDict
@@ -17,7 +16,7 @@ from foamForNuclear.numerics import fvSchemes, fvSolution
 from foamForNuclear.mesh.mesh import Mesh
 from foamForNuclear.preprocessing import SetFieldRegion, SetFieldsDict
 from foamForNuclear.timeFolder import TimeFolder
-    
+
 
 @define(
     slots=True,
@@ -133,7 +132,7 @@ class Solver:
             time_folders[time_value].add_field(fld)
 
         return [time_folders[t] for t in sorted(time_folders)]
-    
+
     def _get_fields_by_time_as_text(self, depth: int = 0) -> str:
         if not self.fields:
             return ""
@@ -244,7 +243,7 @@ class Solver:
                 )
 
             self.fields.append(fld)
-    
+
     def create_folders(self) -> None:
         if (self.region is not None and self.region != ""):
             if (not os.path.exists(f"constant/{self.region}")):
@@ -303,7 +302,6 @@ class Solver:
         Return a field named `zoneIdx` with zeroGradient BC everywhere.
         """
         idxField = Field("zoneIdx", internalField=0, region=self.region)
-        idxField.set_boundary_condition('".*"', ZeroGradient())
 
         for idx, cellZone in enumerate(cellZones):
             self.setFieldsDict.add_zone_to_cell([(idxField, idx+1)], cellZone)
