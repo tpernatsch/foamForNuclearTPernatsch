@@ -73,7 +73,7 @@ class LinearMotion(MotionDict):
     Parameters
     ----------
     name : str
-        Name of the motion.
+        Name of the motion or cellZone name if `multiSolidBodyMotionSolver`.
     velocity : Vector
         Motion velocity in m/s.
     """
@@ -121,7 +121,7 @@ class OscillatingLinearMotion(MotionDict):
     Parameters
     ----------
     name : str
-        Name of the motion.
+        Name of the motion or cellZone name if `multiSolidBodyMotionSolver`.
     amplitude : Vector | Table
         Amplitude vector of the oscilation in m.
     omega : float | Table
@@ -218,7 +218,7 @@ class RotatingMotion(MotionDict):
     Parameters
     ----------
     name : str
-        Name of the motion.
+        Name of the motion or cellZone name if `multiSolidBodyMotionSolver`.
     origin : Vector
         Origin position of the rotation in m (default `Vector(0, 0, 0)`).
     axis : Vector
@@ -297,7 +297,7 @@ class OscillatingRotatingMotion(MotionDict):
     Parameters
     ----------
     name : str
-        Name of the motion.
+        Name of the motion or cellZone name if `multiSolidBodyMotionSolver`.
     omega : float
         Angular frequency in rad/s.
     amplitude : Vector
@@ -371,9 +371,12 @@ class Tabulated6DoFMotion(MotionDict):
     Parameters
     ----------
     name : str
-        Name of the motion.
-    tableDoF : list
-        Table containing the 6 DoF displacement.
+        Name of the motion or cellZone name if `multiSolidBodyMotionSolver`.
+    tableDoF : list[tuple]
+        Table containing the 6 DoF displacement. Each row is a tuple with:
+        1. `float` for time
+        2. `Vector` for position or `None`
+        3. `Vector` for rotation or `None`
     CofG : Vector
         Center of Gravity (default: `Vector(0, 0, 0)`).
     interpolationScheme : str, {'spline', 'linear'}
@@ -382,7 +385,7 @@ class Tabulated6DoFMotion(MotionDict):
     def __init__(
             self,
             name: str,
-            tableDoF: list | None=None,
+            tableDoF: list[tuple] | None=None,
             CofG: Vector=Vector(0, 0, 0),
             interpolationScheme: str='linear'
         ):
@@ -396,7 +399,7 @@ class Tabulated6DoFMotion(MotionDict):
         with open(f"constant/{region}/{self.name}.dat", 'w') as f:
             tabulated6DoFMotionTable = f"{len(self.tableDoF)}\n(\n"
 
-            for t, position, rotation in self.tableDoF:
+            for t, position, rotation in sorted(self.tableDoF, key=lambda e: e[0]):
                 tabulated6DoFMotionTable += f"{tab}( {t} ( {position} {rotation} ) )\n"
 
             tabulated6DoFMotionTable += ")\n"
@@ -421,7 +424,19 @@ class Tabulated6DoFMotion(MotionDict):
     @tableDoF.setter
     def tableDoF(self, tableDoF) -> None:
         check_type("tableDoF", tableDoF, list, none_ok=True)
-        self._tableDoF = [] if tableDoF is None else tableDoF
+
+        self._tableDoF = []
+        if (tableDoF is not None):
+            for line in sorted(tableDoF, key=lambda e: e[0]):
+                if (len(line) == 3):
+                    self.add_point(line[0], line[1], line[2])
+                elif (len(line) == 2):
+                    self.add_point(line[0], line[1])
+                elif (len(line) == 1):
+                    self.add_point(line[0])
+                else:
+                    msg = "Line is empty in DoF table."
+                    raise ValueError(msg)
 
     @property
     def CofG(self):
@@ -658,6 +673,7 @@ class DynamicMeshDict(OpenFOAMFile):
 
         return text
 
+
     @property
     def dynamicFvMesh(self):
         return self._dynamicFvMesh
@@ -715,6 +731,7 @@ class DynamicMeshDict(OpenFOAMFile):
         check_type("diffusivity", diffusivity, DiffusivityMotion, none_ok=True)
         self._diffusivity = diffusivity
 
+
     @property
     def is_empty(self) -> bool:
         return(self.motionSolver == None)
@@ -737,7 +754,7 @@ class DynamicMeshDict(OpenFOAMFile):
         Parameters
         ----------
         name : str
-            Name of the motion.
+            Name of the motion or cellZone name if `multiSolidBodyMotionSolver`.
         origin : Vector
             Origin position of the rotation in m (default `Vector(0, 0, 0)`).
         axis : Vector
@@ -765,7 +782,7 @@ class DynamicMeshDict(OpenFOAMFile):
         Parameters
         ----------
         name : str
-            Name of the motion.
+            Name of the motion or cellZone name if `multiSolidBodyMotionSolver`.
         omega : float
             Angular frequency in rad/s.
         amplitude : Vector
@@ -791,7 +808,7 @@ class DynamicMeshDict(OpenFOAMFile):
         Parameters
         ----------
         name : str
-            Name of the motion.
+            Name of the motion or cellZone name if `multiSolidBodyMotionSolver`.
         velocity : Vector
             Motion velocity in m/s.
         """
@@ -817,15 +834,15 @@ class DynamicMeshDict(OpenFOAMFile):
         Parameters
         ----------
         name : str
-            Name of the motion.
+            Name of the motion or cellZone name if `multiSolidBodyMotionSolver`.
         amplitude : Vector
             Amplitude vector of the oscilation in m.
         omega : float
             Angular frequency in rad/s.
         timeShift : float
-            Phase shift in s (default `None`).
+            Time shift (phase shift in OpenFOAM) in s (default `None`).
         amplitudeShift : Vector
-            Vertical shift in m (default `None`).
+            Amplitude shift (vertical shift in OpenFOAM) in m (default `None`).
         """
         self.add_motion(OscillatingLinearMotion(
             name=name,

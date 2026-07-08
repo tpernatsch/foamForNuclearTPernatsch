@@ -655,7 +655,30 @@ Which leads to the following mesh:
 Mesh motion
 ===========
 
-Using ``solidBody`` motion solver:
+OpenFOAM features mesh motion capabilities that allows to move or deform a mesh
+or part of a mesh during runtime. Here is a list of tutorials featuring the mesh
+motion capabilities.
+
+.. raw:: html
+
+   <input type="text" class="tableFilter" placeholder="Search tutorial...">
+
+.. list-table:: List of tutorials using mesh motion
+    :widths: 50 50
+    :header-rows: 1
+    :class: filterable-table
+
+    * - Name
+      - Link
+
+    * - 3D Tank sloshing
+      - https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/pythonapi/tutorials/featureCases/3D_TankSloshing?ref_type=heads
+
+
+
+Here follows a list of options using ``solidBody`` motion solver and the
+`3D Tank sloshing tutorial<https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/pythonapi/tutorials/featureCases/3D_TankSloshing?ref_type=heads>`_.
+
 
 .. code-block:: python
 
@@ -671,7 +694,7 @@ Using ``solidBody`` motion solver:
     * - Code
       - Render
 
-    * - :class:`foamForNuclear.DynamicMeshDict.add_linear_motion`
+    * - :class:`DynamicMeshDict.add_linear_motion`
 
         .. code :: python
 
@@ -685,7 +708,7 @@ Using ``solidBody`` motion solver:
             :width: 500
             :alt: Linear
 
-    * - :class:`foamForNuclear.DynamicMeshDict.add_oscillating_linear_motion`
+    * - :class:`DynamicMeshDict.add_oscillating_linear_motion`
 
         .. code :: python
 
@@ -700,7 +723,7 @@ Using ``solidBody`` motion solver:
             :width: 500
             :alt: Oscillating Linear
 
-    * - :class:`foamForNuclear.DynamicMeshDict.add_rotating_motion`
+    * - :class:`DynamicMeshDict.add_rotating_motion`
 
         .. code :: python
 
@@ -715,7 +738,7 @@ Using ``solidBody`` motion solver:
             :width: 500
             :alt: Rotating
 
-    * - :class:`foamForNuclear.DynamicMeshDict.add_oscillating_rotating_motion`
+    * - :class:`DynamicMeshDict.add_oscillating_rotating_motion`
 
         .. code :: python
 
@@ -729,3 +752,25 @@ Using ``solidBody`` motion solver:
       - .. image:: ../images/meshes/mesh_motion_oscillatingRotatingY.gif
             :width: 500
             :alt: Oscillating Rotating
+
+    * - :class:`Tabulated6DoFMotion`
+
+        .. code :: python
+
+            # Oscillating Rotating
+            dofMotion = Tabulated6DoFMotion(
+                name='motion5',
+                tableDoF=[
+                    # t   Position [m]                 Rotation [deg]
+                    (0,   ffn.Vector(0.0,  0.0,  0.0)),
+                    (2.5, ffn.Vector(0.0, -0.5, -0.5)),
+                    (5,   ffn.Vector(0.0,  0.5,  0.0), ffn.Vector(0, 90, 0)),
+                    (7.5, ffn.Vector(0.0,  0.5,  0.5)),
+                    (10,  ffn.Vector(0.0,  0.0,  0.0)),
+                ]
+            )
+            dynamicMeshDict.add_motion(dofMotion)
+
+      - .. image:: ../images/meshes/mesh_motion_table6DoF.gif
+            :width: 500
+            :alt: User-defined 6 DoF
