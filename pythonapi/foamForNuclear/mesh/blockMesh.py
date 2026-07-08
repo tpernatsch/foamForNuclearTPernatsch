@@ -2972,6 +2972,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             radius: float,
             nx: int=1, ny: int=1, nz: int=1, nt: int=1,
             isHoleCylinder: bool=True,
+            isCornerCubes: bool=True,
             squareEdgeToHoleCenter=None,
             isAddAllBC: bool=False,
             isAddTopBC: bool=False,
@@ -2997,6 +2998,8 @@ class BlockMesh(OpenFOAMFile, Mesh):
             Cells per direction. Default ``1``.
         isHoleCylinder : bool
             Curve hole edges into a cylinder. Default ``True``.
+        isCornerCubes : bool
+            Add cubes on shapes corner to reduce cell skewness. Default ``True``.
         squareEdgeToHoleCenter : float
             Distance from the cube center to the inner block corners.
             Default ``radius/sqrt(2)``.
@@ -3007,15 +3010,26 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
         Returns
         -------
-        tuple[Block]
-            ``(frontBlock, backRightBlock, frontRightBlock, backBlock,
-            backLeftBlock, frontLeftBlock, leftBlock, rightBlock)``
+        if isHoleCylinder:
+            tuple[Block]
+                ``(frontBlock, backRightBlock, frontRightBlock, backBlock,
+                backLeftBlock, frontLeftBlock, leftBlock, rightBlock)``
+        else:
+            tuple[Block]
+                ``(frontBlock, backBlock, leftBlock, rightBlock)``
 
 
         .. image:: ../../../documentation/sphinx/images/meshes/fig_mesh_square_hole_cylz_0.png
             :width: 250
             :alt: fig_mesh_square_hole_cylz_0
         """
+        if (isHoleCylinder and 2*radius > highX-lowX):
+            msg = "Hole diameter is larger than the cube bound limits along X"
+            raise ValueError(msg)
+        if (isHoleCylinder and 2*radius > highY-lowY):
+            msg = "Hole diameter is larger than the cube bound limits along Y"
+            raise ValueError(msg)
+
         sqrt2 = np.sqrt(2)
         centerX = (highX+lowX)/2
         centerY = (highY+lowY)/2
@@ -3024,52 +3038,107 @@ class BlockMesh(OpenFOAMFile, Mesh):
         if (sqrEdge is None):
             sqrEdge = radius/sqrt2
 
-        frontLeftBlock = self.create_block(name, [
-            Point(lowX,            lowY,            lowZ),
-            Point(centerX-sqrEdge, lowY,            lowZ),
-            Point(centerX-sqrEdge, centerY-sqrEdge, lowZ),
-            Point(lowX,            centerY-sqrEdge, lowZ),
-            Point(lowX,            lowY,            highZ),
-            Point(centerX-sqrEdge, lowY,            highZ),
-            Point(centerX-sqrEdge, centerY-sqrEdge, highZ),
-            Point(lowX,            centerY-sqrEdge, highZ),
-        ], nx, ny, nz)
+        if (isCornerCubes):
+            frontLeftBlock = self.create_block(name, [
+                Point(lowX,            lowY,            lowZ),
+                Point(centerX-sqrEdge, lowY,            lowZ),
+                Point(centerX-sqrEdge, centerY-sqrEdge, lowZ),
+                Point(lowX,            centerY-sqrEdge, lowZ),
+                Point(lowX,            lowY,            highZ),
+                Point(centerX-sqrEdge, lowY,            highZ),
+                Point(centerX-sqrEdge, centerY-sqrEdge, highZ),
+                Point(lowX,            centerY-sqrEdge, highZ),
+            ], nx, ny, nz)
 
-        frontBlock = self.extrude_right([frontLeftBlock], name, dx=2*sqrEdge, nx=nt)
+            frontBlock = self.extrude_right([frontLeftBlock], name, dx=2*sqrEdge, nx=nt)
 
-        frontRightBlock = self.extrude_right([frontBlock], name, dx=highX-centerX-sqrEdge, nx=nx)
+            frontRightBlock = self.extrude_right([frontBlock], name, dx=highX-centerX-sqrEdge, nx=nx)
 
-        (leftBlock, rightBlock) = self.extrude_back(
-            [frontLeftBlock, frontRightBlock], name, dy=2*sqrEdge, ny=nt
-        )
+            (leftBlock, rightBlock) = self.extrude_back(
+                [frontLeftBlock, frontRightBlock], name, dy=2*sqrEdge, ny=nt
+            )
 
-        (backLeftBlock, backRightBlock) = self.extrude_back(
-            [leftBlock, rightBlock], name, dy=highY-centerY-sqrEdge, ny=ny
-        )
+            (backLeftBlock, backRightBlock) = self.extrude_back(
+                [leftBlock, rightBlock], name, dy=highY-centerY-sqrEdge, ny=ny
+            )
 
-        backBlock = self.add_right(backLeftBlock, name, [
-            backRightBlock.points[0],
-            backRightBlock.points[3],
-            backRightBlock.points[4],
-            backRightBlock.points[7],
-        ], nx=nt)
+            backBlock = self.add_right(backLeftBlock, name, [
+                backRightBlock.points[0],
+                backRightBlock.points[3],
+                backRightBlock.points[4],
+                backRightBlock.points[7],
+            ], nx=nt)
 
-        frontLeftBlock.points[2].x = centerX-radius/sqrt2
-        frontLeftBlock.points[2].y = centerY-radius/sqrt2
-        frontLeftBlock.points[6].x = centerX-radius/sqrt2
-        frontLeftBlock.points[6].y = centerY-radius/sqrt2
-        frontRightBlock.points[3].x = centerX+radius/sqrt2
-        frontRightBlock.points[3].y = centerY-radius/sqrt2
-        frontRightBlock.points[7].x = centerX+radius/sqrt2
-        frontRightBlock.points[7].y = centerY-radius/sqrt2
-        backRightBlock.points[0].x = centerX+radius/sqrt2
-        backRightBlock.points[0].y = centerY+radius/sqrt2
-        backRightBlock.points[4].x = centerX+radius/sqrt2
-        backRightBlock.points[4].y = centerY+radius/sqrt2
-        backLeftBlock.points[1].x = centerX-radius/sqrt2
-        backLeftBlock.points[1].y = centerY+radius/sqrt2
-        backLeftBlock.points[5].x = centerX-radius/sqrt2
-        backLeftBlock.points[5].y = centerY+radius/sqrt2
+            frontLeftBlock.points[2].x = centerX-radius/sqrt2
+            frontLeftBlock.points[2].y = centerY-radius/sqrt2
+            frontLeftBlock.points[6].x = centerX-radius/sqrt2
+            frontLeftBlock.points[6].y = centerY-radius/sqrt2
+            frontRightBlock.points[3].x = centerX+radius/sqrt2
+            frontRightBlock.points[3].y = centerY-radius/sqrt2
+            frontRightBlock.points[7].x = centerX+radius/sqrt2
+            frontRightBlock.points[7].y = centerY-radius/sqrt2
+            backRightBlock.points[0].x = centerX+radius/sqrt2
+            backRightBlock.points[0].y = centerY+radius/sqrt2
+            backRightBlock.points[4].x = centerX+radius/sqrt2
+            backRightBlock.points[4].y = centerY+radius/sqrt2
+            backLeftBlock.points[1].x = centerX-radius/sqrt2
+            backLeftBlock.points[1].y = centerY+radius/sqrt2
+            backLeftBlock.points[5].x = centerX-radius/sqrt2
+            backLeftBlock.points[5].y = centerY+radius/sqrt2
+
+            allBlocks = [
+                frontBlock, backRightBlock, frontRightBlock, backBlock,
+                backLeftBlock, frontLeftBlock, leftBlock, rightBlock
+            ]
+
+        # No corner cubes
+        else:
+            frontBlock = self.create_block(name, [
+                Point(lowX,            lowY,            lowZ),
+                Point(highX,           lowY,            lowZ),
+                Point(centerX+sqrEdge, centerY-sqrEdge, lowZ),
+                Point(centerX-sqrEdge, centerY-sqrEdge, lowZ),
+                Point(lowX,            lowY,            highZ),
+                Point(highX,           lowY,            highZ),
+                Point(centerX+sqrEdge, centerY-sqrEdge, highZ),
+                Point(centerX-sqrEdge, centerY-sqrEdge, highZ),
+            ], nt, ny, nz)
+
+            backBlock = self.create_block(name, [
+                Point(centerX-sqrEdge, centerY+sqrEdge, lowZ),
+                Point(centerX+sqrEdge, centerY+sqrEdge, lowZ),
+                Point(highX,           highY,           lowZ),
+                Point(lowX,            highY,           lowZ),
+                Point(centerX-sqrEdge, centerY+sqrEdge, highZ),
+                Point(centerX+sqrEdge, centerY+sqrEdge, highZ),
+                Point(highX,           highY,           highZ),
+                Point(lowX,            highY,           highZ),
+            ], nt, ny, nz)
+
+            rightBlock = self.create_block(name, [
+                frontBlock.points[2],
+                frontBlock.points[1],
+                backBlock.points[2],
+                backBlock.points[1],
+                frontBlock.points[6],
+                frontBlock.points[5],
+                backBlock.points[6],
+                backBlock.points[5],
+            ], ny, nt, nz)
+
+            leftBlock = self.create_block(name, [
+                frontBlock.points[0],
+                frontBlock.points[3],
+                backBlock.points[0],
+                backBlock.points[3],
+                frontBlock.points[4],
+                frontBlock.points[7],
+                backBlock.points[4],
+                backBlock.points[7],
+            ], ny, nt, nz)
+
+            allBlocks = [frontBlock, backBlock, leftBlock, rightBlock]
+
 
         if (isHoleCylinder):
             frontBlock.add_edge_arc(2, 3, x=centerX, y=centerY, isOrigin=True)
@@ -3085,10 +3154,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
         if (isAddAllBC or isAddTopBC):
             topFace = Face(f"{name}Top_{idxFace}")
-            for block in [
-                frontBlock, backRightBlock, frontRightBlock, backBlock,
-                backLeftBlock, frontLeftBlock, leftBlock, rightBlock
-            ]:
+            for block in allBlocks:
                 topFace.add_sub_face(block.topFace())
 
             self.add_boundary(topFace)
@@ -3096,10 +3162,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         if (isAddAllBC or isAddBottomBC):
             botFace = Face(f"{name}Bottom_{idxFace}")
 
-            for block in [
-                frontBlock, backRightBlock, frontRightBlock, backBlock,
-                backLeftBlock, frontLeftBlock, leftBlock, rightBlock
-            ]:
+            for block in allBlocks:
                 botFace.add_sub_face(block.bottomFace())
 
             self.add_boundary(botFace)
@@ -3107,20 +3170,22 @@ class BlockMesh(OpenFOAMFile, Mesh):
         if (isAddAllBC or isAddLateralBC):
             wallFaceFront = Face(f"{name}WallFront_{idxFace}", boundaryType='wall')
             wallFaceFront.add_sub_face(frontBlock.frontFace())
-            wallFaceFront.add_sub_face(frontLeftBlock.frontFace())
-            wallFaceFront.add_sub_face(frontRightBlock.frontFace())
             wallFaceBack = Face(f"{name}WallBack_{idxFace}", boundaryType='wall')
             wallFaceBack.add_sub_face(backBlock.backFace())
-            wallFaceBack.add_sub_face(backRightBlock.backFace())
-            wallFaceBack.add_sub_face(backLeftBlock.backFace())
             wallFaceLeft = Face(f"{name}WallLeft_{idxFace}", boundaryType='wall')
-            wallFaceLeft.add_sub_face(frontLeftBlock.leftFace())
             wallFaceLeft.add_sub_face(leftBlock.leftFace())
-            wallFaceLeft.add_sub_face(backLeftBlock.leftFace())
             wallFaceRight = Face(f"{name}WallRight_{idxFace}", boundaryType='wall')
-            wallFaceRight.add_sub_face(frontRightBlock.rightFace())
             wallFaceRight.add_sub_face(rightBlock.rightFace())
-            wallFaceRight.add_sub_face(backRightBlock.rightFace())
+
+            if (isCornerCubes):
+                wallFaceFront.add_sub_face(frontLeftBlock.frontFace())
+                wallFaceFront.add_sub_face(frontRightBlock.frontFace())
+                wallFaceBack.add_sub_face(backLeftBlock.backFace())
+                wallFaceBack.add_sub_face(backRightBlock.backFace())
+                wallFaceLeft.add_sub_face(frontLeftBlock.leftFace())
+                wallFaceLeft.add_sub_face(backLeftBlock.leftFace())
+                wallFaceRight.add_sub_face(frontRightBlock.rightFace())
+                wallFaceRight.add_sub_face(backRightBlock.rightFace())
 
             self.add_boundary(wallFaceFront)
             self.add_boundary(wallFaceBack)
@@ -3142,10 +3207,14 @@ class BlockMesh(OpenFOAMFile, Mesh):
             self.add_boundary(wallFaceHoleLeft)
             self.add_boundary(wallFaceHoleRight)
 
-        return(
-            frontBlock, backRightBlock, frontRightBlock, backBlock,
-            backLeftBlock, frontLeftBlock, leftBlock, rightBlock
-        )
+        # Return
+        if (isCornerCubes):
+            return(
+                frontBlock, backRightBlock, frontRightBlock, backBlock,
+                backLeftBlock, frontLeftBlock, leftBlock, rightBlock
+            )
+        else:
+            return(frontBlock, backBlock, leftBlock, rightBlock)
 
 
     def create_cube_with_corner_hole_along_z(
@@ -4736,6 +4805,108 @@ class BlockMesh(OpenFOAMFile, Mesh):
         self.add_boundary(outlet)
 
 
+    def create_sectorized_ring_along_z(
+            self,
+            sectorNames: list[str],
+            sectorAngleSpans: list[float],
+            sectorNt: list[int],
+            innerRadius: float,
+            outerRadius: float,
+            lowZ: float,
+            highZ: float,
+            angleStart: float=0,
+            x: float=0,
+            y: float=0,
+            nr: int=1,
+            nz: int=1,
+        ) -> list[Block]:
+        """
+        Create a cylindrical ring with user-specified ring section.
+
+        Parameters
+        ----------
+        sectorNames : list[str]
+            List of each sector name of the ring.
+        sectorAngleSpans : list[float]
+            List of each sector angle spanning in degree of the ring.
+        sectorNt : list[int]
+            List of each sector number of cell azimutally of the ring.
+        innerRadius : float
+            Inner radius of the ring.
+        outerRadius : float
+            Outer radius of the ring.
+        lowZ : float
+            Bottom Z coordinate.
+        highZ : float
+            Top Z coordinate.
+        angleStart : float
+            Angle start in degrees (default `0`).
+        x : float
+            Ring center position along X-axis (default `0`).
+        y : float
+            Ring center position along Y-axis (default `0`).
+        nr : int
+            Number of cells radially (default `1`).
+        nz : int
+            Number of cells radially (default `1`).
+        """
+        check_type("sectorNames", sectorNames, list)
+        check_type("sectorAngleSpans", sectorAngleSpans, list)
+        check_type("sectorNt", sectorNt, list)
+        check_type("innerRadius", innerRadius, (float, int))
+        check_type("outerRadius", outerRadius, (float, int))
+        check_type("lowZ", lowZ, (float, int), none_ok=True)
+        check_type("highZ", highZ, (float, int), none_ok=True)
+        check_type("angleStart", angleStart, (float, int))
+        check_type("x", x, (float, int))
+        check_type("y", y, (float, int))
+        check_type("nr", nr, int)
+        check_type("nz", nz, int)
+
+        if (sum(sectorAngleSpans) >= 360):
+            msg = "Sum of sectorAngleSpans are over 360 deg"
+            raise ValueError(msg)
+        if (360 - sum(sectorAngleSpans) >= 180):
+            msg = f"Last sector {sectorNames[-1]} angle span must be lower than 180 deg to close the loop (found {360 - sum(sectorAngleSpans)} deg). Add intermediate sectors"
+            raise ValueError(msg)
+        if (len(sectorNames) != len(sectorNt)):
+            msg = "len(sectorNames) != len(sectorNt), lists must be the same length"
+            raise ValueError(msg)
+        if (len(sectorNames) != len(sectorAngleSpans)+1):
+            msg = "len(sectorNames) != len(sectorAngleSpans)+1, sectorNames must be one more than sectorAngleSpans"
+            raise ValueError(msg)
+
+        firstArc = self.create_ring_sector_along_z(
+            name=sectorNames[0],
+            innerRadius=innerRadius, outerRadius=outerRadius,
+            angleStart=angleStart, angleArc=sectorAngleSpans[0],
+            lowZ=lowZ, highZ=highZ,
+            nr=nr, nt=sectorNt[0], nz=nz,
+            x=x, y=y
+        )
+        blocks = [firstArc]
+        for name, angleSection, nt in zip(sectorNames[1:], sectorAngleSpans[1:], sectorNt[1:]):
+            newArc = self.extrude_normal_arc(
+                blocks[-1], 'back', name, angleSection, arcCenter=Vector(x, y, 0), nt=nt
+            )
+            blocks.append(newArc)
+
+        # Last section to close the loop
+        lastArc = self.add_back(
+            blocks[-1],
+            sectorNames[-1],
+            [firstArc.points[1], firstArc.points[0], firstArc.points[5], firstArc.points[4]],
+            ny=sectorNt[-1]
+        )
+        lastArc.add_edge_arc(0, 3, x, y, isOrigin=True)
+        lastArc.add_edge_arc(1, 2, x, y, isOrigin=True)
+        lastArc.add_edge_arc(5, 6, x, y, isOrigin=True)
+        lastArc.add_edge_arc(4, 7, x, y, isOrigin=True)
+        blocks.append(lastArc)
+
+        return(blocks)
+
+
     def create_pipe_cylindrical_manifold_along_z(
             self,
             name: str,
@@ -4826,10 +4997,10 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
             for arc in blocks[:nEntries]:
                 arc1 = self.extrude_normal_arc(
-                    arc, 'right', name, angleSection, arcCenter=Vector(x, y, 0), nt=nt
+                    arc, 'back', name, angleSection, arcCenter=Vector(x, y, 0), nt=nt
                 )
                 arc2 = self.extrude_normal_arc(
-                    arc, 'left', name, -angleSection, arcCenter=Vector(x, y, 0), nt=nt
+                    arc, 'front', name, -angleSection, arcCenter=Vector(x, y, 0), nt=nt
                 )
                 blocks.append(arc1)
                 blocks.append(arc2)
@@ -4848,23 +5019,23 @@ class BlockMesh(OpenFOAMFile, Mesh):
         blocks = [firstArc]
         for i in range(nEntries-1):
             arc1 = self.extrude_normal_arc(
-                blocks[-1], 'right', name, angleSection, arcCenter=Vector(x, y, 0), nt=nt
+                blocks[-1], 'back', name, angleSection, arcCenter=Vector(x, y, 0), nt=nt
             )
             arc2 = self.extrude_normal_arc(
-                arc1, 'right', f"{name}_pipe{i+1}", anglePipe, arcCenter=Vector(x, y, 0), nt=1
+                arc1, 'back', f"{name}_pipe{i+1}", anglePipe, arcCenter=Vector(x, y, 0), nt=1
             )
             blocks.append(arc1)
             blocks.append(arc2)
 
         # Last section to close the loop
-        lastArc = self.add_right(blocks[-1], name, [
-            firstArc.points[0], firstArc.points[3],
-            firstArc.points[4], firstArc.points[7]
-        ], nx=nt)
-        lastArc.add_edge_arc(0, 1, x, y, isOrigin=True)
-        lastArc.add_edge_arc(2, 3, x, y, isOrigin=True)
-        lastArc.add_edge_arc(4, 5, x, y, isOrigin=True)
-        lastArc.add_edge_arc(6, 7, x, y, isOrigin=True)
+        lastArc = self.add_back(blocks[-1], name, [
+            firstArc.points[1], firstArc.points[0],
+            firstArc.points[5], firstArc.points[4]
+        ], ny=nt)
+        lastArc.add_edge_arc(0, 3, x, y, isOrigin=True)
+        lastArc.add_edge_arc(1, 2, x, y, isOrigin=True)
+        lastArc.add_edge_arc(5, 6, x, y, isOrigin=True)
+        lastArc.add_edge_arc(4, 7, x, y, isOrigin=True)
         blocks.append(lastArc)
 
         return(blocks)

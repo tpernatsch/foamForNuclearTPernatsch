@@ -154,9 +154,9 @@ class OscillatingLinearMotion(MotionDict):
             }
         )
         if (self.timeShift is not None):
-            oscillatingLinearMotionCoeffs['timeShift'] = self.timeShift
+            oscillatingLinearMotionCoeffs['phaseShift'] = self.timeShift
         if (self.amplitudeShift is not None):
-            oscillatingLinearMotionCoeffs['amplitudeShift'] = self.amplitudeShift
+            oscillatingLinearMotionCoeffs['verticalShift'] = self.amplitudeShift
 
         self.__setitem__("solidBodyMotionFunction", self.solidBodyMotionFunction)
         self.__setitem__("oscillatingLinearMotionCoeffs", oscillatingLinearMotionCoeffs)

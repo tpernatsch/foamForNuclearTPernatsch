@@ -19,7 +19,7 @@ def createDummyCase(nMesh: mesh.Mesh):
     # ffn.allclean()
     model.export_to_openfoam()
 
-    ffn.run_preprocessing(model=model)
+    ffn.run_preprocessing(model)
 
     model.plot_mesh(region=nMesh, show_edges=True)
     # model.plot_mesh(region=nMesh, show_edges=True, normal='z')
@@ -82,6 +82,23 @@ def createCubeWithHoleSqr():
         nx=4, ny=4, nz=2, nt=4,
         isAddAllBC=True,
         isHoleCylinder=False
+    )
+
+    return(nMesh)
+
+def createCubeWithHoleCylzNoCorner():
+    nMesh = mesh.BlockMesh(region="square_hole_cylz_noCorner")
+
+    nMesh.create_cube_with_hole_along_z(
+        "block",
+        lowX=0, highX=1,
+        lowY=0, highY=1,
+        lowZ=0, highZ=1,
+        radius=0.3,
+        nx=4, ny=4, nz=2, nt=4,
+        isAddAllBC=True,
+        isHoleCylinder=True,
+        isCornerCubes=False
     )
 
     return(nMesh)
@@ -378,25 +395,45 @@ def createQuarterCylinderZ():
     return(nMesh)
 
 
+def createSectorRingZ():
+    nMesh = mesh.BlockMesh(region="sectorized_ring_along_z")
+
+    nMesh.create_sectorized_ring_along_z(
+        sectorNames=["block1", "block2", "block3", "block4"],
+        sectorAngleSpans=[30, 60, 120],
+        sectorNt=[30, 5, 70, 9],
+        innerRadius=1,
+        outerRadius=1.5,
+        lowZ=0, highZ=1,
+        nr=3,
+        nz=3,
+        angleStart=0
+    )
+
+    return(nMesh)
+
+
 
 for funcMeshGen in [
-    create_cube,
-    createCubeWithCornerHole,
+    # create_cube,
+    # createCubeWithCornerHole,
     createCubeWithHoleCylz,
     createCubeWithHoleSqr,
-    create_wedge,
-    createHexagonPrism,
-    createHexagonPrismFine,
-    createHexagonPrismWithHoleCylz,
-    createHexagonPrismWithHoleHex,
-    createCylinderZ,
-    createQuarterCylinderZ,
-    createRingZ,
-    createRingSectorZ,
-    create_triangular_channel,
-    create_sphere,
-    # create_hollow_half_sphere,
-    create_half_sphere,
-    create_sphere_1D
+    createCubeWithHoleCylzNoCorner,
+    # create_wedge,
+    # createHexagonPrism,
+    # createHexagonPrismFine,
+    # createHexagonPrismWithHoleCylz,
+    # createHexagonPrismWithHoleHex,
+    # createCylinderZ,
+    # createQuarterCylinderZ,
+    # createRingZ,
+    # createRingSectorZ,
+    # create_triangular_channel,
+    # create_sphere,
+    # # create_hollow_half_sphere,
+    # create_half_sphere,
+    # create_sphere_1D,
+    # createSectorRingZ,
 ]:
     createDummyCase(nMesh=funcMeshGen())

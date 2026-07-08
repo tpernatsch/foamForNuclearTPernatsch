@@ -264,6 +264,27 @@ meshes.
             :width: 500
             :alt: Ring
 
+    * - Ring sectors along Z:
+
+        :class:`BlockMesh.create_sectorized_ring_along_z`
+
+        .. code :: python
+
+            nMesh.create_sectorized_ring_along_z(
+                sectorNames=["block1", "block2", "block3", "block4"],
+                sectorAngleSpans=[30, 60, 120],
+                sectorNt=[30, 5, 70, 9],
+                innerRadius=1,
+                outerRadius=1.5,
+                lowZ=0, highZ=1,
+                nr=3,
+                nz=3,
+                angleStart=0
+            )
+      - .. image:: ../images/meshes/fig_mesh_sectorized_ring_along_z_0.png
+            :width: 500
+            :alt: Ring sectorized
+
     * - Ring sector along Z:
 
         :class:`BlockMesh.create_ring_sector_along_z`
@@ -340,6 +361,26 @@ meshes.
       - .. image:: ../images/meshes/fig_mesh_square_hole_cylz_0.png
             :width: 500
             :alt: Cube with cylindrical hole
+
+    * - Cube with cylindrical hole and no corner cubes:
+
+        :class:`BlockMesh.create_cube_with_hole_along_z`
+
+        .. code :: python
+
+            mesh.create_cube_with_hole_along_z(
+                "block",
+                lowX=0, highX=1,
+                lowY=0, highY=1,
+                lowZ=0, highZ=1,
+                radius=0.3,
+                nx=4, ny=4, nz=2, nt=4,
+                isCornerCubes=False,
+                isAddAllBC=True
+            )
+      - .. image:: ../images/meshes/fig_mesh_square_hole_cylz_noCorner_0.png
+            :width: 500
+            :alt: Cube with cylindrical hole and no corner cubes
 
     * - Hexagonal prism with hexagonal hole:
 
