@@ -4,7 +4,7 @@ The *reactorState* dictionary
 -----------------------------
 
 The *reactorState* dictionary is found under the *timeFolder/uniform/*
-sub-folder. It includes essentially 3 keywords:
+sub-folder. Its main keywords are:
 
 :keff: is used in the spatial kinetics solvers as an initial guess for ``keff`` when
        doing an eigenvalue calculation. It is then updated automatically at each
@@ -29,6 +29,29 @@ sub-folder. It includes essentially 3 keywords:
                   found, precursor concentrations are initialized to be in
                   equilibrium with the starting conditions (i.e. a steady state
                   is assumed), :math:`C_i(0) = \frac{\beta_i}{\lambda_i \Lambda} \text{power}`.
+
+The point kinetics sub-solver additionally writes and re-reads the reference
+state used to evaluate the feedback reactivities, so that a restart resumes
+from a consistent condition:
+
+:TFuelRef, TCladRef, TCoolRef, rhoCoolRef, TStructRef, TStructMechRef, TDrivelineRef:
+    the reference temperatures and coolant density against which the feedback
+    reactivities are computed (:math:`\alpha_x (x - x^{ref})`). They are
+    established at the first time step of a run (defaulting to the current
+    field values if absent) and stored here. On a restart they are read back
+    from *reactorState*, so the feedback baseline is preserved rather than
+    reset to the restart-time values. Any of them may also be set by hand to
+    impose a specific reference.
+:precEquilibriumReactivity: (liquid fuel only) the reactivity offset that makes
+    the circulating-fuel configuration critical at the start of the transient,
+    :math:`\rho_{eq} = \beta_{tot} - \beta_{tot}^{eff}`. It is computed once,
+    when the equilibrium precursor distribution is initialized
+    (``initPrecursorsLiquidFuel true`` in *nuclearData*), and stored here. On a
+    restart it is read back, so the (potentially hours-long) equilibrium solve
+    does not have to be repeated: initialize once with the flag on, then restart
+    subsequent transients with the flag off to reuse the stored value together
+    with the persisted precursor fields. See the point-kinetics solver
+    documentation for the full run-once / restart-many workflow.
 
 
 All neutronics models can be used for liquid-fuel reactors. One can

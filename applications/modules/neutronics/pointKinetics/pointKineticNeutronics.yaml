@@ -88,12 +88,38 @@ description: |-
   - If no fluxes are available, the neutronics sub-solver will use the provided *oneGroupFlux*
   - If the ``initialOneGroupFluxByZone`` keyword is used in *neutronicsProperties*, this will be used to overwrite *oneGroupFlux*
 
-  **Liquid-fuel precursor initialization**
+  **Liquid-fuel precursor initialization and restart**
 
-  When `liquidFuel true` is set in *neutronicsProperties* and
-  `initPrecursorsLiquidFuel true` is set in *nuclearData*, the precursor
-  spatial distribution is initialized at the first time step of a transient
-  run. Two initialization modes are available:
+  When `liquidFuel true` is set in *neutronicsProperties*, the point-kinetics
+  sub-solver needs an equilibrium precursor distribution and the associated
+  *precursor-equilibrium reactivity* ($\rho_{eq} = \beta_{tot} - \beta_{tot}^{eff}$,
+  the reactivity offset that makes the circulating-fuel configuration critical at
+  the start of the transient, where $\beta_{tot}^{eff}$ is the flux-weighted
+  effective delayed fraction of the *flowing* precursors). These two concerns
+  are handled separately:
+
+  - *Reference feedback state* — the reference temperatures/densities used for
+    the feedback reactivities and the ``precEquilibriumReactivity`` — is
+    established at the first time step of *every* run and written to
+    *reactorState* (*timeFolder/uniform/reactorState*). On a restart it is read
+    back from *reactorState*, so it does not have to be recomputed. This mirrors
+    the solid-fuel behaviour and is independent of `initPrecursorsLiquidFuel`.
+
+  - *Equilibrium precursor distribution* is the expensive part and is
+    (re)computed only when `initPrecursorsLiquidFuel true` is set in
+    *nuclearData*. The resulting ``precPKStar*``/``precPK*`` fields are written
+    to the time directory like any other field.
+
+  This separation enables a run-once / restart-many workflow: perform the
+  equilibrium initialization **once** with `initPrecursorsLiquidFuel true`, then
+  restart every subsequent transient with `initPrecursorsLiquidFuel false`. The
+  restart reuses the stored precursor fields and reads ``precEquilibriumReactivity``
+  and the reference temperatures back from *reactorState*, skipping the costly
+  equilibrium solve (which can take hours). Starting a liquid-fuel transient with
+  the flag off before any initialization has ever been run is flagged with a
+  warning, since the transient would then begin from a non-critical state.
+
+  Two initialization modes are available for the equilibrium solve:
 
   *Standard steady-state solve* (default when `pseudoTimeSteps` is absent or
   zero): the precursor transport equation is solved once in steady state, i.e.
@@ -126,11 +152,6 @@ options:
     required: true
     default:
     description: Flag to activate reactivity feedback for fast spectrum reactors. If true, use the ``-coeffDoppler * log(TFuel/TFuelRef)``, else use ``coeffDoppler * (sqrt(TFuel) - sqrt(TFuelRef))``
-  - key: initPrecursorsLiquidFuel
-    type: boolean
-    required: false
-    default: false
-    description: Flag to initialize the concentration of precursors to their equilibrium value at the beginning of the simulation. Only used for liquid fuel
   - key: ScNo
     type: boolean
     required: false
@@ -244,11 +265,16 @@ options:
     required: false
     default: false
     description: |-
-      If true, the precursor spatial distribution is initialized at the first
-      time step of a transient run (i.e. when
-      `timeIndex == startTimeIndex + 1`). The initialization mode depends on
-      `pseudoTimeSteps`: if zero or absent a standard steady-state solve is
-      performed; if positive, pseudo-time-stepping is used instead.
+      If true, the equilibrium precursor spatial distribution and the
+      ``precEquilibriumReactivity`` are (re)computed at the first time step of
+      the run (i.e. when `timeIndex == startTimeIndex + 1`); the initialization
+      mode depends on `pseudoTimeSteps` (zero/absent: standard steady-state
+      solve; positive: pseudo-time-stepping). This is the expensive step. It is
+      *not* required on restart: the reference feedback state and
+      ``precEquilibriumReactivity`` are persisted to *reactorState* and the
+      precursor fields to the time directory, so a transient can be restarted
+      with this flag set to false to reuse the stored equilibrium. Only used
+      for liquid fuel.
   - key: fuelZones
     type: list[word]
     required: false

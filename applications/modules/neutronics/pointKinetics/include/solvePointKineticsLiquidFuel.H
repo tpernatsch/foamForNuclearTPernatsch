@@ -33,16 +33,23 @@ PtrList<scalar> weightedPrec(delayedGroups_);
 int neutroIter = 0;
 scalar neutroResidual = 0.0;
 
-//- Check if you need to initialize precurosr distribution
-bool initialize = false;
-if(initPrecursorsLiquidFuel_ &&
-  (mesh_.time().timeIndex() == mesh_.time().startTimeIndex()+1) && neutroIter==0)
-{
-    initialize = true;
-}
+//- Reference feedback state (reference temperatures/densities and the
+//  precursor-equilibrium reactivity) is established/loaded at the first step
+//  of every run, independently of initPrecursorsLiquidFuel_. This mirrors the
+//  solid-fuel path (solvePointKinetics.H) and, together with the reads below,
+//  allows a restart to recover these cheap scalars from reactorState without
+//  repeating the expensive equilibrium precursor solve.
+bool initReferenceState =
+    (mesh_.time().timeIndex() == mesh_.time().startTimeIndex()+1);
+
+//- Whether to (re)compute the equilibrium precursor distribution via the
+//  pseudo time-stepping solve below. This is the expensive step (the ~hours
+//  process) and is only performed on explicit request.
+bool initialize =
+    initPrecursorsLiquidFuel_ && initReferenceState && neutroIter==0;
 
 
-if (initialize)
+if (initReferenceState)
 {
     //- TFuelRef limited as it appears in a fraction denominator if doing
     //  fastNeutrons (for the Doppler coeff)
@@ -51,7 +58,7 @@ if (initialize)
        reactorState_.lookupOrDefault<scalar>("TFuelRef", TFuelValue);
 
     TCladRef_ =
-        reactorState_.lookupOrDefault<scalar>("TladRef", TCladValue);
+        reactorState_.lookupOrDefault<scalar>("TCladRef", TCladValue);
 
     TCoolRef_ =
         reactorState_.lookupOrDefault<scalar>("TCoolRef", TCoolValue);
@@ -66,7 +73,7 @@ if (initialize)
         reactorState_.lookupOrDefault<scalar>("TStructMechRef", TStructMechValue);
 
     TDrivelineRef_ =
-        reactorState_.lookupOrDefault<scalar>("TDriveLineRef", TDrivelineValue);
+        reactorState_.lookupOrDefault<scalar>("TDrivelineRef", TDrivelineValue);
 
     //- Since a T*Ref_ are scalars, the value inside the dictionary is not
     //  updated at runTime automatically. The line below resets the SCALAR IN
@@ -79,6 +86,28 @@ if (initialize)
     reactorState_.set("TStructRef", TStructRef_);
     reactorState_.set("TStructMechRef", TStructMechRef_);
     reactorState_.set("TDrivelineRef", TDrivelineRef_);
+
+    //- Load the precursor-equilibrium reactivity persisted by a previous
+    //  initialization run. When it is present (a restart from a run that
+    //  computed it) it is read back here, so the transient can start from the
+    //  correct steady state without redoing the equilibrium precursor solve.
+    //  When it is absent and we are not about to compute it now, the transient
+    //  would start from a non-critical state: warn the user.
+    if (reactorState_.found("precEquilibriumReactivity"))
+    {
+        precEquilibriumReactivity_ =
+            reactorState_.get<scalar>("precEquilibriumReactivity");
+    }
+    else if (!initialize)
+    {
+        WarningInFunction
+            << "precEquilibriumReactivity not found in reactorState while "
+            << "initPrecursorsLiquidFuel is false. The precursor equilibrium "
+            << "state has never been computed, so this liquid-fuel transient "
+            << "will start from a non-equilibrium (non-critical) condition. "
+            << "Run once with initPrecursorsLiquidFuel = true to generate it, "
+            << "then restart with the flag off to reuse it." << endl;
+    }
 }
 
 #include "correctReactivity.H"
@@ -266,6 +295,12 @@ if(initialize)
     precEquilibriumReactivity_ = 0.0;
     precEquilibriumReactivity_ += beta_;
     precEquilibriumReactivity_ -= liquidFuelBeta_;
+
+    //- Persist it in reactorState (AUTO_WRITE) so a later restart can reload
+    //  it (see the reference-state block above) instead of recomputing the
+    //  equilibrium precursor distribution.
+    reactorState_.set("precEquilibriumReactivity", precEquilibriumReactivity_);
+
     #include "correctReactivity.H"
 }
 
