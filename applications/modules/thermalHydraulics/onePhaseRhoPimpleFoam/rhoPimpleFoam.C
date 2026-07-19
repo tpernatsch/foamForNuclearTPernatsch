@@ -62,33 +62,32 @@ namespace solvers
 
 Foam::solvers::rhoPimpleFoam::rhoPimpleFoam
 (
-    dynamicFvMesh& mesh_
+    dynamicFvMesh& mesh
 )
 :
-    solver(mesh_),
-    mesh_(mesh_),
-    pimple_(mesh_),
-    pThermo_(fluidThermo::New(mesh_)),
+    solver(mesh),
+    pimple_(mesh),
+    pThermo_(fluidThermo::New(mesh)),
     thermo_(pThermo_()),
     p_
     (
         IOobject
         (
             "p",
-            mesh_.time().timeName(),
-            mesh_,
+            mesh.time().timeName(),
+            mesh,
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-        mesh_
+        mesh
     ),
     rho_
     (
         IOobject
         (
             "rho",
-            mesh_.time().timeName(),
-            mesh_,
+            mesh.time().timeName(),
+            mesh,
             IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         ),
@@ -99,24 +98,24 @@ Foam::solvers::rhoPimpleFoam::rhoPimpleFoam
         IOobject
         (
             "U",
-            mesh_.time().timeName(),
-            mesh_,
+            mesh.time().timeName(),
+            mesh,
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-        mesh_
+        mesh
     ),
     phi_
     (
         IOobject
         (
             "phi",
-            mesh_.time().timeName(),
-            mesh_,
+            mesh.time().timeName(),
+            mesh,
             IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         ),
-        linearInterpolate(rho_*U_) & mesh_.Sf()
+        linearInterpolate(rho_*U_) & mesh.Sf()
     ),
     pressureControl_(p_, rho_, pimple_.dict(), false),
     turbulence_
@@ -134,41 +133,41 @@ Foam::solvers::rhoPimpleFoam::rhoPimpleFoam
         IOobject
         (
             "dpdt",
-            mesh_.time().timeName(),
-            mesh_,
-            mesh_.dynamic() ?
+            mesh.time().timeName(),
+            mesh,
+            mesh.dynamic() ?
                 IOobject::READ_IF_PRESENT :
                 IOobject::NO_READ,
-            mesh_.dynamic() ?
+            mesh.dynamic() ?
                 IOobject::AUTO_WRITE :
                 IOobject::NO_WRITE
         ),
         fvc::ddt(p_)
     ),
     K_("K", 0.5*magSqr(U_)),
-    MRF_(mesh_),
+    MRF_(mesh),
     rhoMax_("rhoMax", dimDensity, GREAT, pimple_.dict()),
     rhoMin_("rhoMin", dimDensity, Zero, pimple_.dict()),
-    fvOptions_(fv::options::New(mesh_)),
+    fvOptions_(fv::options::New(mesh)),
     correctPhi_(pimple_.dict().getOrDefault<bool>("correctPhi", false)),
     moveMeshOuterCorrectors_(pimple_.dict().getOrDefault<bool>("moveMeshOuterCorrectors_", false)),
     checkMeshCourantNo_(pimple_.dict().getOrDefault<bool>("checkMeshCourantNo", false)),
     rhoUf_(nullptr),
     residual_(0),
     cumulativeContErr_(0),
-    originalPoints_(mesh_.points()),
+    originalPoints_(mesh.points()),
     solveEnergy_(true),
     stressTensor_
     (
         IOobject
         (
             "stressTensor",
-            mesh_.time().timeName(),
-            mesh_,
+            mesh.time().timeName(),
+            mesh,
             IOobject::NO_READ,
             IOobject::AUTO_WRITE
         ),
-        mesh_,
+        mesh,
         dimensionedSymmTensor("stressTensor", dimPressure, symmTensor::zero)
     ),
     kappaEff_
@@ -351,7 +350,7 @@ scalar Foam::solvers::rhoPimpleFoam::maxDeltaT()
         CoNum = 0.5*gMax(sumPhi/mesh_.V().field())*mesh_.time().deltaTValue();
     
         meanCoNum =
-            0.5*(gSum(sumPhi)/gSum(mesh.V().field()))*mesh_.time().deltaTValue();
+            0.5*(gSum(sumPhi)/gSum(mesh().V().field()))*mesh_.time().deltaTValue();
     }
  
     Info<< "Courant Number mean: " << meanCoNum
@@ -380,8 +379,8 @@ void Foam::solvers::rhoPimpleFoam::correctBaffleLessFields()
                 IOobject
                 (
                     "regionsDict",
-                    runTime.time().system(),
-                    runTime.db(),
+                    runTime().time().system(),
+                    runTime().db(),
                     IOobject::READ_IF_PRESENT,
                     IOobject::NO_WRITE
                 )
@@ -444,8 +443,8 @@ void Foam::solvers::rhoPimpleFoam::deformMesh()
         IOobject
         (
             "regionsDict",
-            runTime.time().system(),
-            runTime.db(),
+            runTime().time().system(),
+            runTime().db(),
             IOobject::READ_IF_PRESENT,
             IOobject::NO_WRITE
         )

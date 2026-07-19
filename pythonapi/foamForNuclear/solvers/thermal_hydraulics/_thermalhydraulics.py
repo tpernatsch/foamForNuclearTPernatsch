@@ -443,7 +443,7 @@ class FluidFluidModels(FoamForNuclearDict):
 
 @define(
     slots=True,
-    on_setattr=[attr.setters.validate, call_method_on_change("propagate_region", "region")],
+    on_setattr=[attr.setters.convert, attr.setters.validate, call_method_on_change("propagate_region", "region")],
     field_transformer=auto_type_validator,
     repr=False,
 )
@@ -458,7 +458,7 @@ class ThermalHydraulicsSolver(Solver):
     region: str = ""
     isSetFvSolutionToDefault: bool = True
     isSetFvSchemesToDefault: bool = True
-    g: Vector = Vector(0.0, 0.0, -9.81)
+    g: list[float | int] = field(factory=lambda: [0.0, 0.0, -9.81])
     pimpleOptions: PimpleOptions = field(factory=PimpleOptions)
     pMin: int | float = 10000
     pRefCell: int  = 0
@@ -647,11 +647,11 @@ class ThermalHydraulicsSolver(Solver):
 
 @define(
     slots=True,
-    on_setattr=[attr.setters.validate, call_method_on_change("propagate_region", "region")],
+    on_setattr=[attr.setters.convert, attr.setters.validate, call_method_on_change("propagate_region", "region")],
     field_transformer=auto_type_validator,
     repr=False,
 )
-class OnePhaseThermalHydraulicsSolver(ThermalHydraulicsSolver):
+class OnePhase(ThermalHydraulicsSolver):
     """
     One-phase thermal-hydraulics solver.
 
@@ -704,6 +704,22 @@ class OnePhaseThermalHydraulicsSolver(ThermalHydraulicsSolver):
         buf.write("}")
 
 
+    @property
+    def turbulenceProperties(self) -> TurbulenceProperties:
+        return self.fluid.turbulenceProperties
+
+    @turbulenceProperties.setter
+    def turbulenceProperties(self, value: TurbulenceProperties) -> None:
+        self.fluid.turbulenceProperties = value
+
+
+    @property
+    def thermophysicalProperties(self):
+        return self.fluid.thermophysicalProperties
+
+    @thermophysicalProperties.setter
+    def thermophysicalProperties(self, value) -> None:
+        self.fluid.thermophysicalProperties = value        
     def export_to_openfoam(self):
         self.create_folders()
 
@@ -729,7 +745,7 @@ class OnePhaseThermalHydraulicsSolver(ThermalHydraulicsSolver):
     repr=False,
     kw_only=True,
 )
-class TwoPhaseThermalHydraulicsSolver(ThermalHydraulicsSolver):
+class TwoPhase(ThermalHydraulicsSolver):
     """
     Two-phase thermal-hydraulics solver.
 
@@ -872,7 +888,7 @@ class TwoPhaseThermalHydraulicsSolver(ThermalHydraulicsSolver):
 
 @define(
     slots=True,
-    on_setattr=[attr.setters.validate, call_method_on_change("propagate_region", "region")],
+    on_setattr=[attr.setters.validate, attr.setters.convert,  call_method_on_change("propagate_region", "region")],
     field_transformer=auto_type_validator,
     repr=False,
 )

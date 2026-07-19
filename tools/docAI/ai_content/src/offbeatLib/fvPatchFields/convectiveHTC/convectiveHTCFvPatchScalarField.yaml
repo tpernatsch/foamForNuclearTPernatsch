@@ -1,0 +1,52 @@
+description: |
+  Convective heat transfer coefficient (HTC) boundary condition for a scalar
+  temperature field.
+
+  This `convectiveHTC` fvPatchField computes the patch temperature $T_b$
+  such that the imposed convective heat flux $q"$ balances the conductive
+  heat flux through the boundary.
+
+  The convective heat flux is modeled as:
+  $$
+  q" = h\cdot(T_b-T_0)
+  $$
+  and the conductive heat flux is computed from Fourier's law:
+  $$
+  q" = -k\cdot \nabla T
+  $$
+  where $h$ is the heat transfer coefficient, $T_0$ is the sink/environment
+  temperature, and $k$ is the thermal conductivity.
+formulation: |
+  The boundary condition enforces a mixed (Robin-type) relation between the
+  boundary temperature and the normal conductive heat flux by introducing a
+  working coefficient $\alpha$ that blends the conductive contribution from the
+  conductivity field with the convective sink contribution.
+
+  The working coefficient $\alpha$ is computed on the patch as:
+  $$
+  \alpha = \frac{\alpha_P}{\alpha_P+\alpha_N}
+  $$
+  where $\alpha_P$ is the conductive contribution and $\alpha_N$ is the
+  convective contribution.
+
+  - $\alpha$ is the boundary heat transfer factor (working variable) stored in ``alpha_``
+  - $\alpha_P$ is the conductive contribution computed from ``kappa`` and ``deltaCoeffs``
+  - $\alpha_N$ is the convective contribution equal to ``h``
+  - $h$ is the convective heat transfer coefficient (input ``h``)
+  - $T_0$ is the sink/environment temperature (input ``T0``)
+  - $k$ is the thermal conductivity field referenced by ``kappa`` (default name ``k``)
+  - $\deltaCoeffs$ is the OpenFOAM patch coefficient ``patch.deltaCoeffs()``
+  - $n$ is the patch outward unit normal, computed as ``patch.Sf()/patch.magSf()``
+
+  If the conductivity field referenced by ``kappa`` is a tensor field, the
+  normal conductivity is taken as the projection $n\cdot k \cdot n$; if it is a
+  scalar field, it is used directly.
+dictionary: neutronicsProperties
+options: []
+optionsLocations: []
+externalOptions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

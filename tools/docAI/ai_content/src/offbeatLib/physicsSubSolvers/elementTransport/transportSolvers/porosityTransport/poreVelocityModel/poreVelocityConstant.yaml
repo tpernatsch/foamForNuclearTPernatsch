@@ -1,0 +1,40 @@
+description: |
+  Pore velocity model that keeps the pore velocity constant by reading it from
+  the previous time-step folder.
+
+  When this model is selected, the `correct()` method performs no updates,
+  i.e. the velocity is assumed to be provided externally (e.g. via
+  user-defined initial conditions such as `codedStream`).
+formulation: |
+  This model does not apply any governing physical closure inside
+  `poreVelocityConstant::correct()`. Instead, it relies on the pore velocity
+  field being available from the latest time directory (i.e. the previous
+  time step).
+
+  $$ \mathbf{u}_p^{n} = \mathbf{u}_p^{n-1} $$
+
+  where:
+  - $\mathbf{u}_p^{n}$ is the pore velocity field at the current time step
+  - $\mathbf{u}_p^{n-1}$ is the pore velocity field read from the previous time step
+options: []
+usage:
+- comment: |
+    Select the constant pore velocity model in the `materials` dictionary.
+  snippet: |-
+    materials
+    {
+        fuel
+        {
+            material UPuO2;
+
+            ...
+
+            poreVelocityModel     constant;
+        }
+
+        ...
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

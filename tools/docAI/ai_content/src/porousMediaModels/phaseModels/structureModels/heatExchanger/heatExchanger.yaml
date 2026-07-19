@@ -1,0 +1,173 @@
+description: |-
+  Heat-exchange model used to couple two distinct mesh regions (cellZones), representing
+  the primary and secondary sides of a heat exchanger (HX). The two regions may
+  contain either single-phase or two-phase mixtures.
+
+  The two fluid regions are separated by a wall with thermal conductance ``Hw``,
+  provided by the user. For a planar metal sheet or thin-walled tube,
+  ``Hw = k_wall / delta_wall``. The wall is assumed to have negligible thermal
+  inertia and is characterised by two surface temperatures:
+
+    * ``Tp`` – wall temperature on the primary side
+    * ``Ts`` – wall temperature on the secondary side
+
+  The field ``THX`` stores the HX wall-surface temperature, such that:
+
+    * ``THX = Tp`` in the primary ``cellZone``
+    * ``THX = Ts`` in the secondary ``cellZone``
+
+  The core objective is to compute ``Tp`` and ``Ts`` such that heat flux across
+  the wall is conserved.
+
+  The heat flux from the secondary side toward the primary through the wall is:
+
+  .. math::
+     Q_{s \rightarrow p} = H_w (T_s - T_p) \qquad (1)
+
+  The heat flux from the wall surface into the primary-side two-phase mixture is:
+
+  .. math::
+     Q_{p \rightarrow \text{mix}} =
+     f_{1p} H_{1p}(T_p - T_{1p}) +
+     f_{2p} H_{2p}(T_p - T_{2p}) \qquad (2)
+
+  Here, the subscript ``p`` indicates quantities evaluated using fields from the
+  primary side. Phase fractions, phase transfer coefficients, and phase
+  temperatures follow the usual definitions of the ``fluidPartitionModel`` and
+  the powerModels/passiveStructure source terms.
+
+  Enforcing flux equality ``Q_{s→p} = Q_{p→mix}`` yields an equation relating
+  ``Ts`` to ``Tp``. Performing the same analysis on the secondary side leads to
+  the following coupled system:
+
+  .. math::
+     T_s = \left(\frac{H_w + f_{1p}H_{1p} + f_{2p}H_{2p}}{H_w}\right) T_p
+           - \frac{f_{1p}H_{1p}T_{1p} + f_{2p}H_{2p}T_{2p}}{H_w} \qquad (3)
+
+  .. math::
+     T_p = \left(\frac{H_w + f_{1s}H_{1s} + f_{2s}H_{2s}}{H_w}\right) T_s
+           - \frac{f_{1s}H_{1s}T_{1s} + f_{2s}H_{2s}T_{2s}}{H_w}
+
+  Solving the above yields closed-form expressions for ``Tp`` and ``Ts``:
+
+  .. math::
+     T_p = \frac{B_p A_s + B_s}{A_p A_s - 1} \qquad (4)
+
+  .. math::
+     T_s = \frac{B_s A_p + B_p}{A_p A_s - 1}
+
+  with:
+
+  .. math::
+     A_i = \frac{H_w + (f_{1i}H_{1i} + f_{2i}H_{2i})}{H_w}
+
+  .. math::
+     B_i = \frac{f_{1i}H_{1i}T_{1i} + f_{2i}H_{2i}T_{2i}}{H_w}
+
+  where ``i ∈ {p, s}``.
+
+  In the one-phase solver, the fields passed into the corrector are:
+
+    * ``HT = H * T``
+    * ``H  = H``
+
+  where ``H`` is the fluid–structure heat-transfer coefficient.
+
+  In the two-phase solver:
+
+    * ``HT = f1 * H1 * T1 + f2 * H2 * T2``
+    * ``H  = f1 * H1 + f2 * H2``
+
+  Thus the framework applies to both one-phase and two-phase formulations
+  without modification. For clarity, the corrector function receives the
+  arguments as ``sumH`` (representing ``H``) and ``sumHT`` (representing
+  ``HT``). Then:
+
+  .. math::
+     A_i = \frac{H_w + \text{sumH}_i}{H_w} \qquad (5)
+
+  .. math::
+     B_i = \frac{\text{sumHT}_i}{H_w}
+
+  The subscript ``i`` denotes which side of the HX interface a quantity is taken
+  from.
+
+  When computing ``Tp`` inside a given primary-side cell ``celli``, the fields
+  ``sumHT[celli]`` and ``sumH[celli]`` correspond to ``sumHT_p`` and ``sumH_p``.
+  To access the corresponding secondary-side values, mesh-to-mesh mapping is
+  used. For example, if primary cell ``cellip`` corresponds to secondary cell
+  ``cellis``:
+
+    * ``HTsOp[cellip]`` returns ``HT[cellis]`` (secondary-over-primary)
+    * ``HTpOs[cellis]`` returns ``HT[cellip]`` (primary-over-secondary)
+
+  Mesh-to-mesh interpolation is required because the two cellZones may be
+  non-conformal, so a direct index-level correspondence cannot be assumed.
+
+  The ``THX`` field is finally updated using a double-loop procedure:
+
+    * primary-region cells are assigned ``Tp``
+    * secondary-region cells are assigned ``Ts``
+
+  The structure of the update directly reflects the solved system for
+  ``(Tp, Ts)`` and ensures consistent temperature coupling across the HX wall.
+options:
+- key: primary
+  type: word
+  required: true
+  description: Name of the source cellZone
+- key: secondary
+  type: word
+  required: true
+  description: Name of the target cellZone
+- key: volumetricArea
+  type: scalar
+  required: true
+  description: Volumetric area of structure
+- key: wallConductance
+  type: scalar
+  required: true
+  description: Wall conductance between the primary and the secondary
+usage:
+- comment: |-
+    Here below is an example of input where the celZones representing the primary and
+    secondary side of the heat exchanger are called pIHX and sIHX, respectively.
+  snippet: |-
+    phaseProperties
+    {
+        structureProperties
+        {
+            "IHXPrimary:IHXSecondary"
+            {
+                volumeFraction          0;
+                Dh                      0.00113;
+            }
+            heatExchangers
+            {
+                // Declare twice the Heat Exchanger, one per cellZone. This allows to
+                // link 2 heat exchanegr side from 2 different mesh (e.g. 1 with sodium
+                // fluid and 1 with water fluid)
+                "pIHX"
+                {
+                    primary             "IHXPrimary";
+                    secondary           "IHXSecondary";
+                    volumetricArea      106.6673;
+                    wallConductance     16736.4017;
+                }
+                "sIHX"
+                {
+                    primary             "IHXSecondary";
+                    secondary           "IHXPrimary";
+                    volumetricArea      106.6673;
+                    wallConductance     16736.4017;
+                }
+            }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options
+  - dictionary

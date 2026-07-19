@@ -1,0 +1,121 @@
+description: |-
+  This class implements a dedicated Fluid–Structure Interaction (FSI) solver
+  that couples a single fluid region to a single solid region using the
+  Arbitrary Lagrangian–Eulerian (ALE) approach. The solver is designed as a
+  specialized loop that advances both physics in a tightly coupled manner
+  within each time step, ensuring consistent interface conditions for velocity,
+  displacement, and traction. It assumes that the solid and fluid are coupled
+  through a single patch on both sides, allowing for a direct exchange of
+  information between the fluid and solid regions. The fluid solver is expected
+  to support dynamicFvMesh in order to deform the mesh according to the solid
+  displacement. The loop assumes that the solid region is not deformed, using
+  a non-updated approach for the displacement solution.
+options:
+- key: fluidRegionName
+  type: word
+  required: true
+  description: |
+    Name of the fluid region.
+- key: fluidSidePatchName
+  type: word
+  required: true
+  description: |
+    Name of the coupled patch on the fluid side.
+- key: maxIterations
+  type: label
+  required: true
+  description: |
+    Maximum number of FSI coupling iterations per time step.
+- key: maxResidual
+  type: scalar
+  required: true
+  description: |
+    Maximum FSI coupling residual used as a convergence criterion.
+- key: solidRegionName
+  type: word
+  required: true
+  description: |
+    Name of the solid region.
+- key: solidSidePatchName
+  type: word
+  required: true
+  description: |
+    Name of the coupled patch on the solid side.
+- key: underRelaxationFactor
+  type: scalar
+  required: true
+  description: |
+    Under-relaxation factor for the FSI coupling.
+- key: useHTC
+  type: bool
+  required: false
+  default: false
+  description: |
+    If true, use the heat-transfer coefficient field ``htc`` on the coupled patch.
+    If false, compute the effective heat transfer using the thermal conductivity
+    field (``fluidKappa``/``solidKappa``) multiplied by patch ``deltaCoeffs()``.
+- key: couplingStartTime
+  type: scalar
+  required: false
+  default: 0
+  description: |
+    Time after which the FSI thermal coupling (and/or coupling iterations) starts.
+- key: thermalCoupling
+  type: bool
+  required: false
+  default: false
+  description: |
+    Enable optional thermal coupling between fluid and solid across the coupled patch.
+- key: fluidKappa
+  type: word
+  required: false
+  default: kappaEff
+  description: |
+    Name of the fluid thermal conductivity field used when ``useHTC`` is false.
+- key: solidKappa
+  type: word
+  required: false
+  default: k
+  description: |
+    Name of the solid thermal conductivity field used when ``useHTC`` is false.
+usage:
+- comment: 'The following subDict is an example on how to create an FSILoop in regionsDict:'
+  snippet: |-
+    regionSolvers
+    {
+      Level_0
+      {
+        Level_1 FSILoop;
+      }
+
+      Level_1
+      {
+        subSolvers
+        {
+          fluid rhoPimpleFoam;
+          solid extendedThermoMechanics;
+        }
+
+        maxIterations 100;
+        maxResidual 1e-5;
+
+        FSILoopCoeffs
+        {
+          FSIInterface true;
+          fluidRegionName fluid;
+          solidRegionName solid;
+          solidSidePatchName plate;
+          fluidSidePatchName plate;
+          underRelaxationFactor 0.05;
+          couplingStartTime 2;
+        }
+
+      }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

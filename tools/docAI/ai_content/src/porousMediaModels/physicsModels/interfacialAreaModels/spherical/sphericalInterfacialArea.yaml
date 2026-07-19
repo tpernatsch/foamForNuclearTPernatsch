@@ -1,0 +1,49 @@
+description: |
+  Interfacial contact fraction model based on a spherical approximation for
+  the dispersed/continuous phase geometry.
+
+  For each cell, the model returns the fraction of structure interfacial
+  contact in contact with the dispersed fluid, using the local dispersed and
+  continuous volume-fraction fields provided by the phase pair.
+formulation: "The model computes a scalar interfacial contact fraction $f$ in each cell\nbased on the local dispersed volume\
+  \ fraction $\\alpha_d$ and a cutoff\nthreshold $\\alpha_{\\mathrm{cut}}$.\n\n$$ f(\\alpha_d) = \n\\begin{cases}\n1, & \\\
+  alpha_d \\ge \\alpha_{\\mathrm{cut}} \\\\\n\\alpha_d / \\alpha_{\\mathrm{cut}}, & \\alpha_d < \\alpha_{\\mathrm{cut}}\n\\\
+  end{cases}\n$$\n\nwhere:\n\n- $f$ is the returned interfacial contact fraction in the cell\n- $\\alpha_d$ is the local dispersed\
+  \ volume fraction (from ``alphaDispersed()``)\n- $\\alpha_{\\mathrm{cut}}$ is the cutoff threshold set by ``cutoffAlpha``\n\
+  \nNotes:\n- The constructor also stores the continuous volume fraction and the\n  dispersed hydraulic diameter field (``alphaContinuous()``,\
+  \ ``DhDispersed()``),\n  but the cutoff-based contact fraction is controlled by ``cutoffAlpha``.\n"
+options:
+- key: cutoffAlpha
+  type: scalar
+  required: false
+  default: 0.9
+  description: |
+    Cutoff threshold for the dispersed volume fraction used to compute the
+    interfacial contact fraction. When the local dispersed volume fraction
+    exceeds this value, the returned fraction saturates to 1.
+usage:
+- comment: 'The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the
+    ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``).
+    Here is a snippet enabling the model:'
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type spherical;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - options
+  stub_improved: true

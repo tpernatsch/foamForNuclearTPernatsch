@@ -5,6 +5,7 @@ pressureDrop/pressureDrop.C
 stopIfMaxFieldDiff/stopIfMaxFieldDiff.C
 patchScalarFieldValue/patchScalarFieldValue.C
 fgr/fgr.C
+fpRelease/fpRelease.C
 rodPressure/rodPressure.C
 
 LIB = $(FOAM_USER_LIBBIN)/libFFNFunctionObjects

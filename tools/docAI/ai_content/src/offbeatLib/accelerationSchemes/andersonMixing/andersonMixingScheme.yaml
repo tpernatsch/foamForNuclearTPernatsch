@@ -1,0 +1,72 @@
+description: |
+  Solution acceleration using restarted Anderson mixing.
+
+  This acceleration scheme forms a linear combination of a limited history of
+  solution snapshots to reduce nonlinear iteration count, based on the
+  restarted Anderson mixing approach.
+formulation: |
+  Anderson mixing accelerates fixed-point iterations by combining the current
+  iterate with a weighted sum of previous iterates (snapshots). The method
+  uses a projection step whose main diagonal can be scaled to improve
+  diagonal dominance.
+
+  Let $x_k$ be the solution snapshot at iteration $k$ and let $f_k$ denote
+  the corresponding residual-like quantity used by the underlying
+  accelerationScheme implementation. The scheme computes coefficients by
+  solving a small projected system, then updates the next iterate as a
+  blended combination of the stored snapshots.
+
+  The stored history length is controlled by the acceleration ``order'':
+  the number of snapshots is $m = \texttt{order} + 1$.
+
+  The update uses a blending factor $\alpha$ (``alpha'') and applies a
+  diagonal scaling factor $\beta$ (``diagonalFactor'') to the projection
+  matrix to promote diagonal dominance.
+
+  - $m$ is the number of stored snapshots, set by ``order`` as $m=\texttt{order}+1$
+  - $\alpha$ is the blending factor, set by ``alpha``
+  - $\beta$ is the diagonal scaling factor, set by ``diagonalFactor``
+dictionary: neutronicsProperties
+options:
+- key: order
+  type: label
+  required: true
+  description: |
+    Order of acceleration (number of snapshots minus 1), i.e. the number of
+    stored snapshots is ``order + 1``.
+- key: alpha
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Blending coefficient for the Anderson-mixed update.
+- key: diagonalFactor
+  type: scalar
+  required: false
+  default: 1e-4
+  description: |
+    Factor multiplying the main diagonal of the projection matrix to ensure
+    diagonal dominance.
+usage:
+- comment: |
+    Activate the `andersonMixing` acceleration scheme and configure its
+    parameters.
+  snippet: |-
+    accelerationScheme
+    {
+        type        andersonMixing;
+
+        // Order of acceleration (number of snapshots minus 1)
+        order       5;
+
+        // Blending coefficient (default 1)
+        alpha       1;
+
+        // Increase the main diagonal of the projection matrix by this
+        // factor to ensure diagonal dominance (default 1e-4)
+        diagonalFactor 1e-4;
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

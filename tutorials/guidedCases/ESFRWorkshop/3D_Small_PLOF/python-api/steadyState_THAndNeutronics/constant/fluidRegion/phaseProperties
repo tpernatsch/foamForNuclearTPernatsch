@@ -1,0 +1,139 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2512                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      phaseProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+structureProperties
+{
+    heatExchangers
+    {
+    }
+
+    "diagrid:upperGasPlenum:upperReflector:lowerGasPlenum:lowerReflector:radialReflector:follower:controlRod"
+    {
+        volumeFraction  0.718520968;
+        Dh              0.00365;
+        passiveProperties 
+        {
+            volumetricArea  5;
+            rhoCp           4800000.0;
+            T               668;
+        }
+
+    }
+
+    "innerCore:outerCore"
+    {
+        volumeFraction  0.718520968;
+        Dh              0.00365;
+        powerModel 
+        {
+            type            nuclearFuelPin;
+            powerDensity    0;
+            fuelInnerRadius 0.0012;
+            fuelOuterRadius 0.004715;
+            cladInnerRadius 0.004865;
+            cladOuterRadius 0.005365;
+            fuelMeshSize    30;
+            cladMeshSize    5;
+            fuelRho         10480;
+            fuelCp          250;
+            fuelK           3;
+            cladRho         7500;
+            cladCp          500;
+            cladK           20;
+            fuelT           668;
+            cladT           668;
+            gapH            3000;
+        }
+
+        passiveProperties 
+        {
+            volumetricArea  5;
+            rhoCp           4800000.0;
+            T               668;
+        }
+
+    }
+
+}
+
+regimeMapModels
+{
+    lamTurb
+    {
+        type            oneParameter;
+        parameter       Re;
+        regimeBounds 
+        {
+            laminar          (0 1000);
+            turbulent        (2300 2301);
+        }
+
+    }
+
+}
+
+physicsModels
+{
+    dragModels
+    {
+        "innerCore:outerCore:diagrid:upperGasPlenum:upperReflector:lowerGasPlenum:lowerReflector:radialReflector:follower:controlRod"
+        {
+            type            ReynoldsPower;
+            coeff           0.687;
+            exp             -0.25;
+            const           0;
+        }
+
+    }
+
+    heatTransferModels
+    {
+        "innerCore:outerCore:diagrid:upperGasPlenum:upperReflector:lowerGasPlenum:lowerReflector:radialReflector:follower:controlRod"
+        {
+            type            byRegime;
+            regimeMap       lamTurb;
+            laminar 
+            {
+                type            NusseltReynoldsPrandtlPower;
+                const           4;
+                coeff           0;
+                expRe           0;
+                expPr           0;
+                expTc           0;
+            }
+
+            turbulent 
+            {
+                type            NusseltReynoldsPrandtlPower;
+                const           4.82;
+                coeff           0.0185;
+                expRe           0.827;
+                expPr           0.827;
+                expTc           0;
+            }
+
+        }
+
+    }
+
+    pairGeometryModels
+    {
+    }
+
+}
+
+
+// ************************************************************************* //

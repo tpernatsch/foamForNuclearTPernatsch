@@ -1,0 +1,21 @@
+description: |
+  Discontinuous cyclic AMI (Arbitrary Mesh Interface) coupled interface field.
+
+  This class is a thin specialization of [@Foam::cyclicAMILduInterfaceField], providing a runtime type named
+  `discontinuousCyclicAMILduInterfaceField` for use in OpenFOAM AMI interface coupling setups.
+formulation: |
+  This class does not implement additional physical equations. It provides a specific interface-field type
+  for cyclic AMI coupling, delegating the actual coupling behavior to the base class
+  [@Foam::cyclicAMILduInterfaceField].
+
+  The discontinuous/cyclic AMI coupling mechanism is handled in the underlying implementation of
+  `cyclicAMILduInterfaceField` (see its source for the detailed mapping and interpolation logic).
+admonitions: []
+options: []
+externalOptions: []
+optionsLocations: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

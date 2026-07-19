@@ -1,0 +1,64 @@
+description: |
+  Abstract sub-cooled boiling fraction model used to predict the fraction of the
+  pool boiling heat flux that results in a net vapour generation (i.e. bubble
+  detachment) for sub-cooled boiling.
+
+  The model is selected at runtime via its OpenFOAM type name and provides a
+  cell-wise evaluation through the pure virtual function
+  $f(cell, q_i)$.
+formulation: |
+  This class defines the interface for a sub-cooled boiling “vapour generation
+  fraction” model. Concrete derived implementations provide the functional
+  dependence of the vapour-generation fraction on the local pool boiling heat
+  flux input.
+
+  The returned quantity is interpreted as a dimensionless fraction:
+  $$
+  \alpha_{\mathrm{vap}} = f(\text{cell}, q_i)
+  $$
+  where:
+
+  - $\alpha_{\mathrm{vap}}$ is the fraction of the pool boiling heat flux
+    that results in a net vapour generation (bubble detachment), dimensionless
+  - $q_i$ is the local pool boiling heat-flux-related input passed to
+    the model (as a scalar), in the units expected by the derived model
+  - $\text{cell}$ is the mesh cell index ($celli$) where the fraction is
+    evaluated
+
+  The specific physical correlations/assumptions are provided by the
+  derived classes (see their implementations).
+admonitions:
+- kind: note
+  body: This model is selected solely by its runtime ``typeName`` and defines no additional options.
+options: []
+usage:
+- comment: |
+    Select a sub-cooled boiling fraction model by specifying its `type` in the
+    `phaseProperties` subdictionary for the relevant fluid region/zone.
+  snippet: |
+    subCooledBoilingFractionModel
+                {
+                    type            SahaZuber;  //constant;
+                    //value           0.5;
+                }
+- comment: |
+    Example of selecting the sub-cooled boiling fraction model within a
+    multi-zone `phaseProperties` dictionary.
+  snippet: "\"heatedcorner:heatedside:heatedcenter\"\n            {\n                type    multiRegimeBoilingTRACECHF;\n\
+    \                forcedConvectionModel\n                {\n                \ttype    NusseltReynoldsPrandtlPower;\n  \
+    \              \tconst   0.0;\n                \tcoeff   0.023;\n                \texpRe   0.8;\n                \texpPr\
+    \   0.4;\n                }\n                poolBoilingModel\n                {\n                    type    Gorenflo;\n\
+    \                }\n                flowEnhancementFactorModel\n                {\n                    type    RezkallahSims;\n\
+    \                    exp     0.8;\n                }\n                suppressionFactorModel\n                {\n    \
+    \                type    Chen;\n                }\n                nucleateBoilingOnsetModel\n                {\n    \
+    \                type            Basu;\n                    surfaceTension  8e-3;//0.012260695;//8e-3;   //- In N/m\n\
+    \                    contactAngle    38;     //- In degrees\n                }\n// ..."
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - usage
+  stub_improved: true

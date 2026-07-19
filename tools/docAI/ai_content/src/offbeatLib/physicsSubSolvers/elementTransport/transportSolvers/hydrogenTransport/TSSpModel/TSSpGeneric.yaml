@@ -1,0 +1,30 @@
+description: |
+  Generic temperature-dependent yield-stress (TSSp) model where the yield
+  stress varies with plastic strain through an Arrhenius-type dependence on
+  temperature.
+
+  This class updates the internal and boundary values of the yield-stress
+  field $TSSp$ using the local temperature field $T$.
+formulation: |
+  The model assumes an Arrhenius-type evolution of the yield stress with
+  temperature:
+  $$ TSSp(T) = TSSp0 \exp\left(-\frac{Qp}{R\,T}\right) $$
+  where $R$ is the universal gas constant.
+
+  The implementation applies the same relation to boundary faces using the
+  boundary temperature field values.
+
+  - $TSSp(T)$ is the yield stress at temperature $T$ (field $TSSp$)
+  - $TSSp0$ is the pre-exponential factor (dictionary entry `TSSp0`)
+  - $Qp$ is the activation energy-like parameter (dictionary entry `Qp`)
+  - $R$ is the universal gas constant, $R = 8.31446$ J/(mol·K)
+  - $T$ is the local temperature (OpenFOAM field `T`, in K)
+options: []
+externalOptions: []
+admonitions: []
+optionsLocations: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,38 @@
+description: |
+  Boundary condition that specifies a time-dependent axial and azimuthal
+  scalar profile on an `fvPatch`.
+
+  The axial and azimuthal components are assumed independent, i.e.
+  $T(z,\theta,t)=f_z(z,t)+f_\theta(\theta,t)$, where the azimuthal dependence
+  is tabulated/interpolated as a function of the angle $\theta$.
+formulation: |
+  This boundary condition evaluates a time-dependent axial profile and
+  superimposes an azimuthal (angular) contribution.
+
+  The azimuthal angle $\theta$ for each boundary face is computed from the
+  face position relative to a radial axis direction, then used to obtain an
+  azimuthal value by interpolation of tabulated data.
+
+  $$ \theta = \theta(\mathbf{r}) $$
+
+  $$ f_\theta(\theta,t) = \mathcal{I}_\theta\!\left(\theta; \{(\theta_i,\,g_i(t))\}\right) $$
+
+  $$ T(z,\theta,t) = f_z(z,t) + f_\theta(\theta,t) $$
+
+  where:
+
+  - $T$ is the patch scalar value (e.g. temperature) imposed by this boundary condition
+  - $z$ is the axial coordinate (handled by the base ``timeDependentAxialProfileFvPatchScalarField``)
+  - $\theta$ is the azimuthal angle at each boundary face (computed internally)
+  - $\mathcal{I}_\theta$ is the interpolation operator defined by ``thetaInterpolationMethod``
+  - $g_i(t)$ are the time-dependent tabulated azimuthal data entries from ``thetaData``
+dictionary: neutronicsProperties
+options: []
+optionsLocations: []
+externalOptions: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

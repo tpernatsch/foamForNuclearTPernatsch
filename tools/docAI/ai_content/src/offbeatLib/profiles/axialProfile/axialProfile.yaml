@@ -1,0 +1,59 @@
+description: |
+  Base class for a general axial profile model. The base implementation
+  assumes a uniform, flat profile in the axial direction.
+
+  The class stores an axial profile defined over an addressed list of cells
+  (given by ``addr``) and provides access to the mapped profile via the
+  ``profile()`` and ``scalingFactorProfile()`` accessors.
+formulation: |
+  The axial profile is represented as a scalar distribution over the addressed
+  set of mesh entities (cells) and is later mapped to the corresponding
+  field locations used by the heat source / fuel behaviour models.
+
+  The base class corresponds to a uniform “flat” distribution, i.e. the
+  profile shape is constant along the axial coordinate and is only scaled
+  through the normalization/checking mechanism.
+
+  $$ p(z) = 1 $$
+  where $p(z)$ is the normalized axial shape function (set by the selected
+  run-time profile type, e.g. ``flat``).
+
+  - $p(z)$ is the normalized axial profile shape evaluated on the addressed
+    locations (stored in ``profile_``)
+  - $z$ is the axial coordinate along ``axialDirection_`` between ``zMin_`` and
+    ``zMax_``
+
+  The class also provides a scaling-factor profile ``scalingFactorProfile_``
+  that can be used by derived heat-source models to convert the normalized
+  shape into an absolute distribution.
+dictionary: neutronicsProperties
+options: []
+optionsLocations: []
+admonitions: []
+usage:
+- comment: |
+    Select a time-dependent tabulated axial profile and include the axial
+    profile definition file.
+  snippet: |
+    axialProfile
+    {
+        type timeDependentTabulated;
+        #include "axialProfile";
+        axialInterpolationMethod step;
+        burnupInterpolationMethod linear;
+    }
+- comment: |
+    Select a constant tabulated axial profile and include the axial profile
+    definition file.
+  snippet: |-
+    axialProfile
+    {
+        type constantTabulated;
+        #include "axialProfile";
+        axialInterpolationMethod step;
+        burnupInterpolationMethod linear;
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

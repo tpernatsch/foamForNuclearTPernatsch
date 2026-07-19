@@ -5,7 +5,7 @@ import foamForNuclear as ffn
 import matplotlib.pyplot as plt
 import numpy as np
 
-solver = ffn.solvers.offbeat.OffbeatSolver()
+solver = ffn.solvers.offbeat.Offbeat()
 solver.import_from_openfoam()
 
 solver.thermalSolver = ffn.offbeat_lib.misc.SolidConductionThermalSolver()
@@ -17,7 +17,7 @@ solver.export_to_openfoam()
 
 
 
-# model = ffn.case.Case()
+# model = ffn.Case()
 # model.import_from_openfoam()
 
 # print(model)

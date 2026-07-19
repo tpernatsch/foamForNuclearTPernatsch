@@ -12,9 +12,6 @@ import foamForNuclear as ffn
 import foamForNuclear.boundaryConditions as bc
 import foamForNuclear.mesh as mesh
 
-#==============================================================================*
-
-ffn.allclean()
 
 #==============================================================================*
 # Nuclear data parameters - PWR two-group cross sections
@@ -83,7 +80,7 @@ nMesh = createMesh(nz=nz)
 #==============================================================================*
 # Fields
 
-timeFolder0 = ffn.timeFolder.TimeFolder(0)
+timeFolder0 = ffn.TimeFolder(0)
 
 defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
 defaultFlux.dimensions = ffn.fields.Dimension(default='flux')
@@ -154,7 +151,7 @@ neutronicsSolver.nuclearData.add_state(refState)
 #==============================================================================*
 # Settings
 
-model = ffn.case.Case(timeFolders=[timeFolder0])
+model = ffn.Case(timeFolders=[timeFolder0])
 
 model.solvers.append(neutronicsSolver)
 

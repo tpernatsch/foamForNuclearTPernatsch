@@ -1,0 +1,65 @@
+description: |
+  Model for constant Poisson Ratio. The value is read from the input dictionary.
+options:
+- key: value
+  type: scalar
+  required: true
+  description: |
+    Constant Poisson ratio value $\nu_0$ in [-].
+- key: nu
+  type: scalar
+  required: false
+  description: |
+    Deprecated backward-compatible keyword for the constant Poisson ratio value. If present, it is read as a dimensioned scalar and its numeric value is used.
+usage:
+- comment: |
+    Example selection of the `constant` thermalExpansion model.
+  snippet: |-
+    materials
+    {
+      fuel
+      {
+        type constant;
+        thermalExpansion
+        {
+          type constant;
+          value 0.3;
+        }
+      }
+    }
+formulation: |
+  This model implements a spatially uniform (constant) Poisson ratio for use in coupled thermo-mechanical or constitutive closures where the Poisson ratio enters the strain-stress relation. In the code, the field passed to ``correct`` is filled with the same scalar value at all requested locations (cells/patches addressed by ``addr``), i.e., no dependence on temperature $T$ or position is modeled.
+
+  In isotropic linear elasticity (see, e.g., Duderstadt & Hamilton for reactor material modeling context; and standard continuum mechanics texts), the Poisson ratio $\nu$ is defined as the negative ratio of transverse to axial strain under uniaxial stress:
+  $$
+  \nu = -\frac{\varepsilon_\perp}{\varepsilon_\parallel}.
+  $$
+  The present model assumes $\nu$ is constant and equal to an input parameter:
+  $$
+  \nu(\mathbf{x}) = \nu_0.
+  $$
+
+  The implementation is equivalent to setting the output scalar field ``sf`` (OpenFOAM naming convention: ``scalarField``) as
+  $$
+  s_i = \nu_0 \quad \forall i \in \text{addr},
+  $$
+  where ``addr`` selects the indices to be updated.
+
+  The constant value $\nu_0$ is read from the dictionary as follows:
+  - if the parent dictionary name is ``PoissonRatio``, then $\nu_0$ is obtained from the keyword ``value``;
+  - otherwise, for backward compatibility, $\nu_0$ is obtained from the deprecated keyword ``nu`` (read as a ``dimensionedScalar`` and its numeric value is used).
+
+  Assumptions and validity range:
+  - Material isotropy and linear-elastic kinematics are implied by the use of a single scalar Poisson ratio in constitutive relations.
+  - No thermo-dependence is included: $\nu$ is independent of the temperature field ``T`` supplied to ``correct``.
+  - For stable isotropic elastic behavior, $\nu_0$ is typically within the physically admissible range $-1 < \nu_0 < 0.5$ (with most engineering solids having $0 \le \nu_0 < 0.5$); the model does not enforce bounds and assumes the user provides a physically meaningful value.
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options
+  - formulation
+  - dictionary
+  formulation_extended: true

@@ -16,6 +16,21 @@ EXE_INC = \
     -std=c++17 \
     -Wno-old-style-cast -Wno-deprecated-declarations \
     $(VERSION_SPECIFIC_INC) \
+    -I./../../../src/interpolationModels/lnInclude \
+    -I./../../../src/solutionControl/lnInclude \
+    -I./../../../src/profiles/lnInclude \
+    -I./../../../src/crossSections/lnInclude \
+    -I./../../../src/porousMediaModels/lnInclude \
+    -I./../../../src/thermophysicalProperties/lnInclude \
+    -I./../../../src/multiRegion/lnInclude \
+    -I./../../../src/fvPatchFields/lnInclude \
+    -I./../../modules/thermalHydraulics/lnInclude \
+    -I./../../modules/neutronics/lnInclude \
+    -I./../../modules/thermoMechanics/lnInclude \
+    -I./../../modules/fuelBehaviour/lnInclude \
+    -I./../../modules/openFoamImported/lnInclude \
+    -I./../../../src/multiRegion/lnInclude \
+    -I./../../modules/thermoMechanics/lnInclude \
     -I../../../src/offbeatLib/lnInclude \
     -I../../../thirdParty/SCIANTIX/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
@@ -35,6 +50,20 @@ EXE_INC = \
 
 EXE_LIBS = \
     -L$(FOAM_USER_LIBBIN)\
+    -L$(FOAM_USER_LIBBIN) -lInterpolationModels \
+    -L$(FOAM_USER_LIBBIN) -lSolutionControl \
+    -L$(FOAM_USER_LIBBIN) -lProfiles \
+    -L$(FOAM_USER_LIBBIN) -lCrossSections \
+    -L$(FOAM_USER_LIBBIN) -lPorousMediaModels \
+    -L$(FOAM_USER_LIBBIN) -lThermophysicalProperties \
+    -L$(FOAM_USER_LIBBIN) -lMultiRegion \
+    -L$(FOAM_USER_LIBBIN) -lFvPatchFields \
+    -L$(FOAM_USER_LIBBIN) -lFluidSolvers\
+    -L$(FOAM_USER_LIBBIN) -lNeutronicsSolvers \
+    -L$(FOAM_USER_LIBBIN) -lThermoMechanicsSolvers \
+    -L$(FOAM_USER_LIBBIN) -lFuelSolvers \
+    -L$(FOAM_USER_LIBBIN) -lOFSolvers \
+    -L$(FOAM_USER_LIBBIN) -lFuelSolvers \
     -loffbeat \
     -lsciantix \
     -lOpenFOAM \

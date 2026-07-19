@@ -94,8 +94,6 @@ Foam::solvers::thermalHydraulicsModel::thermalHydraulicsModel
             IOobject::NO_WRITE
         )
     ),
-    runTime_(time),
-    mesh_(mesh),
     pimple_(mesh),
     fvOptions_(fvOptions),
     phi_
@@ -342,8 +340,8 @@ void Foam::solvers::thermalHydraulicsModel::correctBaffleLessFields()
                 IOobject
                 (
                     "regionsDict",
-                    runTime.time().system(),
-                    runTime.db(),
+                    runTime().time().system(),
+                    runTime().db(),
                     IOobject::READ_IF_PRESENT,
                     IOobject::NO_WRITE
                 )
@@ -412,8 +410,8 @@ void Foam::solvers::thermalHydraulicsModel::deformMesh()
         IOobject
         (
             "regionsDict",
-            runTime.time().system(),
-            runTime.db(),
+            runTime().time().system(),
+            runTime().db(),
             IOobject::READ_IF_PRESENT,
             IOobject::NO_WRITE
         )

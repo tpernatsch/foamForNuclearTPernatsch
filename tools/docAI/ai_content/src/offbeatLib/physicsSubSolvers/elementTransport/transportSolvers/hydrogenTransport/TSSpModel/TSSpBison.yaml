@@ -1,0 +1,31 @@
+description: |
+  Yield-stress model for creep that varies the effective yield stress as a
+  function of plastic strain (via an Arrhenius-type dependence on the local
+  temperature).
+formulation: |
+  The model updates the temperature-dependent stress threshold $TSSp$ using an
+  Arrhenius-like exponential law calibrated by two constants. The same
+  expression is applied to both internal cells and boundary faces, using the
+  local temperature field values.
+
+  $$ TSSp = TSSp0 \exp\left(-\frac{Qp}{R\,T}\right) $$
+
+  where:
+
+  - $TSSp$ is the updated yield-stress-like threshold field (stored in
+    OpenFOAM as $TSSp_$)
+  - $TSSp0$ is the pre-exponential constant (here $30853$)
+  - $Qp$ is an activation-energy-like constant (here $Qp = 0.26\,e\,N_a$)
+  - $R$ is the universal gas constant (here $8.31446$)
+  - $T$ is the local temperature field value (OpenFOAM field $T$)
+
+  The implementation reads the OpenFOAM temperature field $T$ from
+  `mesh_.lookupObject<volScalarField>("T")` and evaluates the expression for
+  each cell address in `addr`, then for boundary faces using the corresponding
+  boundary temperature values.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

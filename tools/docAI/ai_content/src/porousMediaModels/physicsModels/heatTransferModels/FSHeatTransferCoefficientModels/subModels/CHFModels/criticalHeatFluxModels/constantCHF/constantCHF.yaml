@@ -1,0 +1,50 @@
+description: |
+  Constant critical heat flux (CHF) model.
+
+  The CHF value is read once from the phase properties dictionary and returned
+  uniformly for all cells.
+formulation: |
+  This model prescribes a constant CHF independent of local flow or thermal
+  state. The critical heat flux returned by the model is therefore
+
+  $$ \mathrm{CHF}(i) = \mathrm{value} $$
+
+  where:
+
+  - $i$ is the cell index (OpenFOAM `celli`)
+  - $\mathrm{CHF}(i)$ is the critical heat flux returned by the model in cell $i$
+  - $\mathrm{value}$ is the user-specified constant CHF (OpenFOAM `value_`)
+options:
+- key: value
+  type: scalar
+  required: true
+  description: |
+    Constant critical heat flux value returned by the model.
+usage:
+- comment: |
+    Select the constantCHF model and provide a constant CHF value in the
+    phaseProperties file.
+  snippet: |
+    criticalHeatFluxModel
+                {
+                    type constantCHF;
+                    value 1.66e6;//1e9;5e8;
+                }
+- comment: |
+    Select the constantCHF model and provide a constant CHF value in the
+    phaseProperties file.
+  snippet: |-
+    criticalHeatFluxModel
+                {
+                    type constantCHF;
+                    value 1.66e6;//1.6e6;//1e9;5e8;
+                }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - options
+  - usage
+  stub_improved: true

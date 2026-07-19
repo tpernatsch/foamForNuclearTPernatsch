@@ -1,0 +1,75 @@
+description: |
+  ZhangHastelloyCreepModel computes the creep strain-rate for Hastelloy using a
+  power-law time exponential model derived from the work of Zhang.
+
+  The model is implemented as a ``creepModel`` and updates the creep contribution
+  to the mechanical strain-rate field via ``correctCreep``.
+formulation: |
+  The creep strain-rate is computed from a temperature- and irradiation-dependent
+  constitutive law. The irradiation dependence is expressed through a dpa
+  (displacements per atom) scaling, while the temperature dependence follows an
+  Arrhenius-type activation with activation energy $Q_c$.
+
+  The model applies a power-law time exponential form to obtain the creep strain
+  rate, and it can optionally use a Newton-Raphson inner iteration for improved
+  convergence.
+
+  $$ \dot{\epsilon}_c = f(T, \mathrm{dpa}, t; A, Q_c, a, b, n_0) $$
+
+  where the exact functional form is implemented in ``correctCreep`` and uses
+  the material constants set by the model.
+
+  - $\dot{\epsilon}_c$ is the creep strain-rate (updated in ``epsilonEl``)
+  - $T$ is the material temperature field (read from the ``T`` volScalarField)
+  - $\mathrm{dpa}$ is the irradiation damage measure built from the fast
+    fluence/flux fields (names set by ``fastFluenceName`` and ``fastFluxName``)
+  - $t$ is the irradiation time (tracked internally via ``timeIndex_``)
+  - $A$ is the material constant ``A_``
+  - $Q_c$ is the activation energy ``Qc_``
+  - $a$ is the multiplier for dpa ``a_``
+  - $b$ is the exponent for dpa ``b_``
+  - $n_0$ is the creep dpa dependence constant ``n0_``
+dictionary: neutronicsProperties
+options:
+- key: fastFluenceName
+  type: word
+  required: false
+  default: fastFluence
+  description: |
+    Name of the ``volScalarField`` containing the fast fluence used by the
+    creep model. The field must exist in the object registry.
+- key: fastFluxName
+  type: word
+  required: false
+  default: fastFlux
+  description: |
+    Name of the ``volScalarField`` containing the fast flux used by the
+    creep model. The field must exist in the object registry.
+- key: relax
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Relaxation factor applied during the creep update.
+- key: NewtonRaphsonMethod
+  type: bool
+  required: false
+  default: false
+  description: |
+    If ``true``, activate the Newton-Raphson method for the inner convergence
+    loop used during the creep update.
+- key: NewtonRaphsonTolerance
+  type: scalar
+  required: false
+  default: 1e-6
+  description: |
+    Tolerance for the inner convergence loop of the Newton-Raphson method.
+    Only used when ``NewtonRaphsonMethod`` is enabled.
+admonitions: []
+optionsLocations: []
+externalOptions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

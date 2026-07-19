@@ -1,0 +1,70 @@
+description: |
+  Class modelling the void swelling growth phenomenon for 15-15 Ti cladding
+  material according to the 'Generalized 15-15 Ti' correlation.
+  Source : "Modeling and Analysis of Nuclear Fuel Pin Behavior for Innovative
+  Lead Cooled FBR - L.Luzzi et al. - 2014"
+options:
+- key: fastFluenceName
+  type: word
+  required: false
+  default: fastFluence
+  description: |
+    Name of the fast fluence field.
+- key: par1
+  type: scalar
+  required: false
+  default: 0.0015
+  description: |
+    Correlation parameter.
+- key: par2
+  type: scalar
+  required: false
+  default: -2.5
+  description: |
+    Correlation parameter.
+- key: par3
+  type: scalar
+  required: false
+  default: 450
+  description: |
+    Correlation parameter.
+- key: par4
+  type: scalar
+  required: false
+  default: 100
+  description: |
+    Correlation parameter.
+- key: par5
+  type: scalar
+  required: false
+  default: 2.75
+  description: |
+    Correlation parameter.
+usage:
+- comment: |
+    Example selection of `Steel1515TiGeneralized`.
+  snippet: |-
+    materials
+    {
+        clad
+        {
+            type Steel1515Ti;
+
+            swelling
+            {
+                type Steel1515TiGeneralized;
+                // fastFluenceName fastFluence;
+                // par1 1.5e-3;
+                // par2 -2.5;
+                // par3 450;
+                // par4 100;
+                // par5 2.75;
+            }
+        }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - dictionary

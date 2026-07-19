@@ -50,6 +50,8 @@ from .totalPressure import *
 from .tractionDisplacement import *
 from .uniformFixedValue import *
 from .unilateralContact import *
+from .coolantChannel import *
+from .coolantChannelRIA import *
 from .wedge import *
 from .wallHeatTransfer import *
 from .zeroGradient import *

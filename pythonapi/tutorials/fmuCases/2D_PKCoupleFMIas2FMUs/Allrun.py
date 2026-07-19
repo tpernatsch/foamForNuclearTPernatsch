@@ -49,7 +49,7 @@ def generateSteadyStateModel():
     #==============================================================================*
     # Time folder
 
-    timeFolder0 = ffn.timeFolder.TimeFolder(0)
+    timeFolder0 = ffn.TimeFolder(0)
 
     defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
     defaultFlux.dimensions = ffn.fields.Dimension(default='neutronFlux')
@@ -101,7 +101,7 @@ def generateSteadyStateModel():
     #==============================================================================*
     # Thermal-hydraulics solver
 
-    thSolver = ffn.solvers.thermal_hydraulics.OnePhaseThermalHydraulicsSolver(
+    thSolver = ffn.solvers.thermal_hydraulics.OnePhase(
         region=thMesh.region,
         mesh=thMesh,
         removeBaffles=True,
@@ -283,7 +283,7 @@ def generateSteadyStateModel():
     #==============================================================================*
     # Model
 
-    model = ffn.case.Case(
+    model = ffn.Case(
         solvers=solvers,
         coupling=coupling,
         timeFolders=[timeFolder0],
@@ -317,7 +317,7 @@ def generateSteadyStateModel():
     return(model, neutronicsSolver)
 
 
-def generateTransientModel(model: ffn.case.Case, neutronicsSolver: ffn.solvers.Solver):
+def generateTransientModel(model: ffn.Case, neutronicsSolver: ffn.solvers.Solver):
     try:
         ffn.duplicateFolder(model.caseFolder, "transient")
     except:
@@ -359,7 +359,7 @@ def generateTransientModel(model: ffn.case.Case, neutronicsSolver: ffn.solvers.S
         ( -0.1,  0.01 ),
     ]
 
-    pointKineticsData.externalReactivityTimeProfile = ffn.timeProfile.TimeProfile(
+    pointKineticsData.externalReactivityTimeProfile = ffn.TimeProfile(
         type='fmi',
         nameFromFMU='gfExtReact',
         initialValue=0

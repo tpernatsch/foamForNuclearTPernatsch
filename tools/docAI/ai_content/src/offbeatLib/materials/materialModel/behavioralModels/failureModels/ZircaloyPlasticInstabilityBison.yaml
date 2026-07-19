@@ -1,0 +1,45 @@
+description: |
+  Plastic instability failure criterion for Zircaloy cladding inspired by BISON.
+
+  The model evaluates plastic instability on the specified patches and uses a
+  burst strain-rate threshold as an input parameter.
+options:
+- key: patchNames
+  type: list[word]
+  required: true
+  description: |
+    List of patch names on which the criterion is evaluated.
+- key: burstStrainRate
+  type: scalar
+  required: false
+  default: 0.0278
+  description: |
+    Burst strain-rate threshold used by the model.
+usage:
+- comment: |
+    Example of plastic instability failure criterion for Zircaloy (BISON-like).
+  snippet: |-
+    materials
+    {
+        cladding
+        {
+            material Zircaloy;
+
+            failureModel
+            {
+                type           ZircaloyPlasticInstabilityBison;
+
+                // required
+                patchNames     ( "cladOuter" "cladInner" );
+
+                // optional
+                burstStrainRate 2.78e-2;
+            }
+        }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - dictionary

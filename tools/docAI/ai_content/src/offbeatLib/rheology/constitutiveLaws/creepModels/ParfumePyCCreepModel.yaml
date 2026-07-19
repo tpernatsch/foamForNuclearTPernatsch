@@ -1,0 +1,78 @@
+description: |
+  PyC creep model based on the PARFUME formulation for irradiation-assisted creep in
+  Pyrolytic Carbon (PyC).
+
+  The creep strain rate is computed from principal stresses and the fast neutron
+  flux as:
+  ``creep_rate = K*[s1 - vc*(s2 + s3)]*fast_neutron_flux``,
+  where $s1$, $s2$, and $s3$ are the principal stresses and $vc$ is the Poisson
+  ratio for creep.
+formulation: |
+  This model computes an irradiation-assisted creep contribution using a
+  PARFUME-type linear dependence on the stress combination
+  $(s_1 - v_c (s_2+s_3))$ and on the fast neutron flux.
+
+  $$ \dot{\epsilon}_{\mathrm{creep}} = K \, \bigl(s_1 - v_c (s_2+s_3)\bigr)\, \phi_f $$
+
+  where:
+
+  - $s_1$ is the largest principal stress (computed from the local symmetric
+    stress tensor)
+  - $s_2$ is the second principal stress
+  - $s_3$ is the smallest principal stress
+  - $v_c$ is the creep Poisson ratio set by ``poissonRationForCreep``
+  - $\phi_f$ is the fast neutron flux field (read from ``fastFluxName``)
+  - $K$ is an effective creep amplification coefficient set by
+    ``creepAmplificationCoefficient`` (with additional model constants
+    ``par1``–``par5`` embedded in the implementation)
+
+  The principal stresses are computed from the local symmetric tensor; if the
+  eigenvalue computation fails, the model uses zero principal stresses and marks
+  the computation as unsolved.
+dictionary: neutronicsProperties
+options:
+- key: relaxCreep
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Relaxation factor used when updating creep-related internal variables.
+- key: densityName
+  type: word
+  required: false
+  default: rho
+  description: |
+    Name of the density field (a ``volScalarField``) used by the creep update.
+- key: fastFluxName
+  type: word
+  required: false
+  default: fastFlux
+  description: |
+    Name of the fast neutron flux field (a ``volScalarField``) used to drive
+    irradiation-assisted creep.
+- key: creepAmplificationCoefficient
+  type: scalar
+  required: false
+  default: 2.0
+  description: |
+    Creep amplification coefficient used in the PARFUME creep rate expression.
+- key: poissonRationForCreep
+  type: scalar
+  required: false
+  default: 0.5
+  description: |
+    Poisson ratio for creep, $v_c$, used to form the stress combination
+    $(s_1 - v_c (s_2+s_3))$.
+- key: fluxConversionFactor
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Flux conversion factor to convert between a flux definition used by the
+    neutronics (typically $E>0.1$ MeV) and the flux definition used by the
+    creep correlation (typically $E>0.18$ MeV).
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,40 @@
+description: |
+  Discontinuous cyclic AMI (Arbitrary Mesh Interface) patch field for surface
+  fields in OpenFOAM.
+
+  This boundary condition is a modification of OpenFOAM's
+  `cyclicAMIFvPatchField`: it switches between a `zeroGradient`-type behavior
+  and a jump cyclic behavior depending on whether the patch field is created
+  from the dictionary (i.e. read from file) or created during the simulation.
+
+  The two modes allow introducing discontinuities in fields that are not
+  physically continuous across an AMI interface (e.g. porosity or hydraulic
+  diameter), while still coupling other fields (e.g. velocity, pressure).
+
+  The `value` entry is required (`MUST_READ`).
+formulation: |
+  This class provides a patch-field coupling strategy across a cyclic AMI
+  interface that can be discontinuous for selected quantities.
+
+  In practice, the boundary condition behavior is selected based on the
+  construction context:
+  - when the patch field is read from the case dictionary, it uses a
+    discontinuous “jump cyclic” mapping across the AMI;
+  - when the patch field is created during the simulation, it uses a
+    `zeroGradient`-type behavior on the patch.
+
+  Let $\\phi$ denote the coupled patch field value (e.g. $\\phi = U$ for
+  velocity, or $\\phi = p$ for pressure, or a material property such as
+  porosity). The discontinuity is introduced by the AMI mapping in the
+  “jump cyclic” mode, while the “zeroGradient” mode enforces a vanishing
+  normal gradient on the patch.
+
+  - $\\phi$ is the patch field (OpenFOAM field of template type `Type`)
+  - $\\nabla_n \\phi$ is the normal gradient of $\\phi$ at the patch
+  - AMI is the arbitrary mesh interface mapping between the two cyclic sides
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

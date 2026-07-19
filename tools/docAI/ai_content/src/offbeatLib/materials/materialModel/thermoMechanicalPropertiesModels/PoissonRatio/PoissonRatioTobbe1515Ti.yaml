@@ -1,0 +1,38 @@
+description: |
+  Class modelling Poisson's ratio of 15-15 Ti cladding material based on Tobbe
+  correlation (1975).
+options:
+- key: par1
+  type: scalar
+  required: false
+  default: 0.277
+  description: |
+    Parameter used in the Tobbe correlation. Default value is $0.277$.
+- key: par2
+  type: scalar
+  required: false
+  default: 6e-5
+  description: |
+    Parameter used in the Tobbe correlation. Default value is $6\times 10^{-5}$.
+usage:
+- comment: |
+    Example selection of the `Steel1515TiTobbe` thermalExpansion model.
+  snippet: |-
+    materials
+    {
+      cladding
+      {
+        type Steel1515Ti;
+        thermalExpansion
+        {
+          type Steel1515TiTobbe;
+          // par1 0.277;
+          // par2 6e-5;
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options

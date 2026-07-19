@@ -64,7 +64,7 @@ model.caseFolder = "transient_masterGenfoam_PID"
 
 ffn.duplicateFolder(oldFolder, model.caseFolder)
 
-timeFolder1 = ffn.timeFolder.TimeFolder(settings.endTime)
+timeFolder1 = ffn.TimeFolder(settings.endTime)
 
 timeFolder1.append(alphat)
 timeFolder1.append(epsilon)
@@ -103,7 +103,7 @@ pointKineticsData = ffn.nuclearData.PointKineticsData(
     structFeedbackZones=["fuelElement"],
 )
 
-pointKineticsData.externalReactivityTimeProfile = ffn.timeProfile.TimeProfile(
+pointKineticsData.externalReactivityTimeProfile = ffn.TimeProfile(
     type='fmi',
     nameFromFMU='gfExtReact_in',
     initialValue=0

@@ -1,0 +1,94 @@
+description: |
+  The `UO2Nfir` conductivity model implements a UO$_2$ thermal conductivity
+  correlation from NFIR.
+
+  The model depends on the local temperature and on a burnup field. It also
+  applies a porosity-related correction based on `densityFraction` and includes
+  a Gd-content effect through `GdContent`.
+
+  `densityFraction` and `GdContent` can be given as optional overrides in the
+  `conductivity` sub-dictionary. If not provided there, they are expected in
+  the material base/composition dictionary.
+options:
+- key: burnupName
+  type: word
+  required: false
+  default: Bu
+  description: |
+    Name of the burnup field looked up in the mesh.
+- key: densityFraction
+  type: scalar
+  required: false
+  description: |
+    Optional override of the fuel fraction of theoretical density used for the
+    porosity correction.
+
+    If not provided in the `conductivity` sub-dictionary, it is read from the
+    material base/composition dictionary (recommended place).
+- key: GdContent
+  type: scalar
+  required: false
+  description: |
+    Optional override of the initial gadolinium content used by the model.
+
+    If not provided in the `conductivity` sub-dictionary, it is read from the
+    material base/composition dictionary (recommended place).
+usage:
+- comment: |
+    Example selection using a `conductivity` sub-dictionary in the `solverDict`.
+    Shared material inputs are provided once in the base material dictionary.
+  snippet: |
+    materials
+    {
+        fuel
+        {
+            material UO2;
+
+            // Recommended: define shared state/composition once for the material
+            densityFraction 0.95;
+            GdContent       0.0;
+
+            conductivity
+            {
+                type UO2Nfir;
+
+                // Optional
+                burnupName Bu;
+
+                // Optional overrides (otherwise read from base/composition)
+                // densityFraction 0.95;
+                // GdContent 0.0;
+            }
+        }
+    }
+- comment: |
+    Legacy selection (deprecated).
+  snippet: |-
+    materials
+    {
+        fuel
+        {
+            material UO2;
+
+            // Recommended: define shared state/composition once for the material
+            densityFraction 0.95;
+            GdContent       0.0;
+
+            conductivityModel UO2Nfir;
+
+            conductivity
+            {
+                // Optional
+                burnupName Bu;
+
+                // Optional overrides (otherwise read from base/composition)
+                // densityFraction 0.95;
+                // GdContent 0.0;
+            }
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description

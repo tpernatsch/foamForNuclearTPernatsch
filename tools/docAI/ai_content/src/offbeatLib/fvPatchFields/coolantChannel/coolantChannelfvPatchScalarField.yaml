@@ -1,0 +1,199 @@
+description: |
+  Coolant channel boundary condition for thermal coupling between a solid wall
+  and a 1D coolant stream represented through a patch.
+
+  The boundary condition computes, at each patch face:
+  - wall heat flux from the solid side,
+  - axial bulk coolant temperature/enthalpy and derived coolant state,
+  - heat transfer coefficients using selected correlations for different
+    boiling/flow regimes,
+  - mixed boundary coefficients for the wall temperature.
+formulation: |
+  The wall heat flux is obtained from a mixed (Robin-type) boundary condition
+  that couples the solid-side wall temperature to the coolant-side heat transfer
+  coefficient.
+
+  $$ q'' = h\,(T_w - T_b) $$
+  $$ \alpha = \frac{h}{1 + h\,/\,\alpha_P} $$
+  $$ q'' = \alpha\,(T_w - T_b) $$
+
+  where:
+
+  - $q''$ is the wall heat flux at the patch faces (field ``heatFlux_``)
+  - $h$ is the coolant-side heat transfer coefficient (field ``h_``)
+  - $T_w$ is the wall temperature at the patch (the unknown ``value``/``T``)
+  - $T_b$ is the axial bulk coolant temperature/enthalpy-derived temperature
+    (provided/updated by ``coolantChannelModel``)
+  - $\alpha_P$ is the solid-side conductance used to form the mixed boundary
+    coefficient (computed by ``computeSolidSideConductance``)
+  - $\alpha$ is the mixed boundary coefficient (field ``alpha_``)
+
+  Heat transfer coefficients are selected by regime using the ``correlations``
+  sub-dictionary (e.g. single-phase, ONB, subcooled boiling, saturated boiling,
+  transition boiling, film boiling, CHF, and Leidenfrost). The class also
+  supports optional self-consistent wall-temperature solves for pre-CHF and
+  film boiling, by finding $T_w$ such that the corresponding regime heat flux
+  equals a target heat flux.
+dictionary: neutronicsProperties
+options:
+- key: kappa
+  type: word
+  required: false
+  default: k
+  description: |
+    Name of the thermal conductivity field in the solid region (used to
+    compute the solid-side conductance ``alphaP``).
+- key: hydraulicDiameter
+  type: scalar
+  required: true
+  description: |
+    Hydraulic diameter of the coolant channel, used by the internal
+    ``coolantChannelModel`` and heat transfer correlations.
+- key: flowArea
+  type: scalar
+  required: true
+  description: |
+    Flow cross-sectional area used to relate mass flow rate to bulk coolant
+    velocity and to drive the axial coolant energy balance.
+- key: flowDirection
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Projection direction used to compute face heights along the pin/channel
+    axis (used in axial integration).
+- key: relaxHTC
+  type: scalar
+  required: false
+  default: 0.15
+  description: |
+    Relaxation factor applied to the heat transfer coefficient update.
+- key: filmBoilingRIACorrection
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Relative-impingement/RI A correction factor applied to the film boiling
+    heat transfer coefficient.
+- key: transitionBoilingRIACorrection
+  type: scalar
+  required: false
+  default: -6.0e-05
+  description: |
+    Correction factor applied to the transition boiling heat transfer
+    coefficient.
+- key: leidenfrostdTBessiron
+  type: scalar
+  required: false
+  default: 50.0
+  description: |
+    Parameter used by the Leidenfrost/CHF-related Bessiron option.
+- key: thicknessBessironRIA
+  type: scalar
+  required: false
+  default: 0.00016
+  description: |
+    Parameter used by the Bessiron option for RIA/thickness correction.
+- key: enthalpyModel
+  type: bool
+  required: true
+  description: |
+    If ``true``, the coolant axial state is advanced using an enthalpy-based
+    model. If ``false``, an ``axialProfileDict`` can be provided instead.
+- key: correlations
+  type: table
+  required: false
+  description: |
+    Sub-dictionary selecting the heat transfer correlations by regime.
+    The implementation reads ``correlations`` as a sub-dictionary and applies
+    defaults when entries are missing.
+
+    Supported keys (case-insensitive as used in the code) include:
+    ``singlePhase`` (default ``Gnielinski``), ``onb`` (default ``Basu``),
+    ``chf`` (default ``EPRI``), ``subcooledBoiling`` (default ``Rohsenow``),
+    ``saturatedBoiling`` (default ``Rohsenow``),
+    ``transitionBoiling`` (default ``McDonoughMilichKing``),
+    ``filmBoiling`` (default ``Frederking``),
+    ``leidenfrost`` (default ``GroeneveldStewartCorrected``).
+- key: qCHF
+  type: scalar
+  required: false
+  description: |
+    Optional CHF heat flux value used when the selected CHF correlation is
+    ``Bessiron``. Only read/used when ``correlations.chf`` equals ``Bessiron``.
+- key: vaporizedThickness
+  type: scalar
+  required: false
+  description: |
+    Optional vaporized thickness used when the selected CHF correlation is
+    ``Bessiron``. Only read/used when ``correlations.chf`` equals ``Bessiron``.
+- key: inletTemperature
+  type: scalar
+  required: false
+  description: |
+    Inlet coolant temperature (used when time-dependent inlet lists are not
+    provided).
+- key: coolantPressure
+  type: scalar
+  required: false
+  description: |
+    Coolant pressure at inlet (used when time-dependent inlet lists are not
+    provided). May be provided as ``uniform <value>``.
+- key: massFlowRate
+  type: scalar
+  required: false
+  description: |
+    Mass flow rate at inlet (used when time-dependent inlet lists are not
+    provided). May be provided as ``uniform <value>``.
+- key: inletTemperatureList
+  type: list[scalar]
+  required: false
+  description: |
+    Time-dependent inlet temperature data.
+- key: coolantPressureList
+  type: list[scalar]
+  required: false
+  description: |
+    Time-dependent inlet pressure data.
+- key: massFlowRateList
+  type: list[scalar]
+  required: false
+  description: |
+    Time-dependent inlet mass flow rate data.
+usage:
+- comment: |
+    Example coolant channel boundary condition with selected heat transfer
+    correlations and inlet conditions.
+  snippet: |-
+    cladOuter
+    {
+        type                    coolantChannel;
+        value                   uniform 560;
+
+        kappa                   k;
+        hydraulicDiameter       0.01;
+        flowArea                1e-4;
+        flowDirection           1.0;
+        enthalpyModel           true;
+        relax                   0.15;
+
+        correlations
+        {
+            singlePhase         Gnielinski;
+            onb                 Basu;
+            chf                 EPRI;
+            subcooledBoiling    Chen;
+            saturatedBoiling    Chen;
+            transitionBoiling   McDonoughMilichKing;
+            filmBoiling         Frederking;
+            leidenfrost         GroeneveldStewartCorrected;
+        }
+
+        inletTemperature        560;
+        coolantPressure         uniform 1.55e7;
+        massFlowRate            uniform 0.25;
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

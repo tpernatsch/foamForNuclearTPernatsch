@@ -1,0 +1,108 @@
+description: |
+  Base class with common functionality for OFFBEAT ``regionCoupled`` polyPatch
+  coupling, including AMI (Arbitrary Mesh Interface) interpolation support.
+
+  The class stores the coupled neighbour patch/region information and provides
+  interpolation utilities between the two sides, optionally using an AMI
+  interpolator with update triggers based on slip tolerances.
+formulation: |
+  This class provides infrastructure for coupled-region patch interpolation
+  rather than a standalone physical model. It supports transferring field
+  values across non-conformal meshes using AMI interpolation.
+
+  When AMI is enabled, the interpolation weights can be updated when the
+  relative motion (or geometric mismatch) between the coupled patches exceeds
+  user-defined tolerances.
+
+  The AMI interpolation method is selected via ``AMIMethod`` (default:
+  ``faceAreaWeightAMI``), and the AMI interpolator can optionally reverse
+  normals via ``flipNormals`` to ensure consistent orientation.
+
+  - $f$ is the coupled-field value interpolated from the neighbour patch to
+    the current patch using the AMI interpolator ``AMIPtr_``.
+  - $w$ is the AMI interpolation weight set, updated when the slip exceeds
+    ``updateAMINormalTol`` and/or ``updateAMITangentialTol`` (if ``updateAMI``
+    is enabled).
+  - $m$ is the AMI method selected by ``AMIMethod``.
+dictionary: neutronicsProperties
+options:
+- key: owner
+  type: bool
+  required: false
+  default: false
+  description: |
+    Whether this side owns the coupled patch. This affects which side
+    constructs and caches the AMI/interpolation data (e.g. projection surface).
+- key: neighbourPatch
+  type: word
+  required: true
+  description: |
+    Name of the neighbour patch in the neighbour region.
+- key: neighbourRegion
+  type: word
+  required: true
+  description: |
+    Name of the neighbour region (used to locate the neighbour mesh and its
+    boundary patches).
+- key: flipNormals
+  type: bool
+  required: false
+  default: false
+  description: |
+    If true, indicates that the slave patch should be reversed for AMI to
+    ensure consistent normal orientation.
+- key: surface
+  type: table
+  required: false
+  description: |
+    Sub-dictionary controlling optional construction of a projection
+    surface used by the coupling. The sub-dictionary is read from
+    ``surface`` via ``surfDict_``.
+- key: surface.type
+  type: word
+  required: false
+  default: none
+  description: |
+    Type of the projection surface. If set to ``none``, no projection
+    surface is constructed.
+- key: surface.name
+  type: word
+  required: false
+  default: patch name
+  description: |
+    Name of the projection surface. Defaults to the current patch name.
+- key: updateAMI
+  type: bool
+  required: false
+  default: false
+  description: |
+    If true, update AMI weights during the simulation based on slip
+    tolerances.
+- key: updateAMINormalTol
+  type: scalar
+  required: false
+  default: 1e-6
+  description: |
+    Normal slip tolerance used as a trigger for AMI weight updates when
+    ``updateAMI`` is enabled.
+- key: updateAMITangentialTol
+  type: scalar
+  required: false
+  default: 1e-6
+  description: |
+    Tangential slip tolerance used as a trigger for AMI weight updates when
+    ``updateAMI`` is enabled.
+- key: AMIMethod
+  type: word
+  required: false
+  default: faceAreaWeightAMI
+  description: |
+    AMI interpolation method name. Default is ``faceAreaWeightAMI``.
+optionsLocations:
+- name: surface
+  in: solverDict
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

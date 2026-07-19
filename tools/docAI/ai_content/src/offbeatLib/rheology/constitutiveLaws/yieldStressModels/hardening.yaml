@@ -1,0 +1,32 @@
+description: |
+  User-defined constant yield stress as a function of the equivalent plastic
+  strain.
+
+  This model provides a post-yield stress evolution law through a tabulated
+  relationship between plastic strain and yield stress.
+formulation: |
+  The yield stress is updated from a user-supplied post-yield law expressed
+  as a function of the equivalent plastic strain.
+
+  For each cell addressed by ``addr``, the model reads the equivalent plastic
+  strain field ``epsilonPEq`` and evaluates the tabulated stress–plastic
+  strain relationship to obtain the updated yield stress.
+
+  $$ \sigma_y = f(\epsilon_p^{eq}) $$
+
+  where:
+
+  - $\sigma_y$ is the updated yield stress (set by this model)
+  - $f(\cdot)$ is the tabulated post-yield stress function provided via
+    ``stressPlasticStrainSeries_``
+  - $\epsilon_p^{eq}$ is the equivalent plastic strain field ``epsilonPEq``
+  - $\epsilon_p^{eq,old}$ is the previous-time value ``epsilonPEq_.oldTime()``
+    (used internally for incremental/consistent updates, depending on the
+    implementation details in ``hardening.C``)
+dictionary: neutronicsProperties
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

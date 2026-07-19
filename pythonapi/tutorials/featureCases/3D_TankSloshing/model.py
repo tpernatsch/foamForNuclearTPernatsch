@@ -38,7 +38,7 @@ thMesh.add_boundary(wall)
 #==============================================================================*
 # Time folder
 
-timeFolder0 = ffn.timeFolder.TimeFolder(0)
+timeFolder0 = ffn.TimeFolder(0)
 
 U = ffn.fields.Field('U', region=thMesh.region)
 U.dimensions = ffn.fields.Dimension('U')
@@ -90,7 +90,10 @@ thSolver.fluid.thermophysicalProperties = multiPhase
 
 thSolver.setFieldsDict.add_default_values(alpha_water, 0)
 
-# Fill half the tank
+
+# Filling the tank
+#-----------------
+
 thSolver.setFieldsDict.add_box_to_cell(
     fieldValues=[(alpha_water, 1)],
     lowCorner=ffn.common.Vector(-10, -10, -10),
@@ -110,6 +113,10 @@ thSolver.setFieldsDict.add_box_to_cell(
 #     origin=ffn.Vector(0, 0, 0.5)
 # )
 
+
+# Motion setup
+#-------------
+
 thSolver.dynamicMeshDict.dynamicFvMesh = "dynamicMotionSolverFvMesh"
 thSolver.dynamicMeshDict.motionSolver = "solidBody"
 thSolver.dynamicMeshDict.solidBodyMotionFunction = "multiMotion"
@@ -117,24 +124,50 @@ omegaTable = ffn.common.Table([
     (3, 0.5*np.pi),
     (7, -0.5*np.pi),
 ])
+
+# Choose one or more of the following option
+
+# --- Linear motion
 # thSolver.dynamicMeshDict.add_linear_motion(name='motion1', velocity=ffn.common.Vector(0.2, 0, 0))
-thSolver.dynamicMeshDict.add_oscillating_linear_motion('motion21', ffn.common.Vector(0.5, 0, 0), omega=0.5*np.pi)
+
+# --- Linear oscillation long an axis
+# thSolver.dynamicMeshDict.add_oscillating_linear_motion('motion21', ffn.common.Vector(0.5, 0, 0), omega=0.5*np.pi)
 # thSolver.dynamicMeshDict.add_oscillating_linear_motion('motion21', ffn.common.Vector(0.5, 0, 0), omega=omegaTable)
 # thSolver.dynamicMeshDict.add_oscillating_linear_motion('motion22', ffn.common.Vector(0, 1.0, 0), omega=1.0*np.pi)
+
+# --- Rotation motion
 # thSolver.dynamicMeshDict.add_rotating_motion('motion3', 0.5*np.pi, axis=ffn.common.Vector(1, 0, 0))
+
+# --- Rotation oscillation
 # thSolver.dynamicMeshDict.add_oscillating_rotating_motion('motion4', 0.5*np.pi, amplitude=ffn.common.Vector(0, 45, 0))
 
+# --- User-defined position and rotation over time
+dofMotion = mesh.dicts.Tabulated6DoFMotion(
+    'tank',
+    tableDoF=[
+        (0,   ffn.common.Vector(0, 0, 0)),
+        (2.5, ffn.common.Vector(0, -0.5, -0.5)),
+        (5,   ffn.common.Vector(0, 0.5, 0), ffn.common.Vector(0, 90, 0)),
+        (7.5, ffn.common.Vector(0, 0.5, 0.5)),
+        (10,  ffn.common.Vector(0, 0, 0)),
+    ]
+)
+# or
+# dofMotion.add_point(0,   ffn.common.Vector(0, 0, 0))
+# dofMotion.add_point(2.5, ffn.common.Vector(0, -0.5, -0.5))
+# dofMotion.add_point(5,   ffn.common.Vector(0, 0.5, 0), ffn.common.Vector(0, 90, 0))
+# dofMotion.add_point(7.5, ffn.common.Vector(0, 0.5, 0.5))
+# dofMotion.add_point(10,  ffn.common.Vector(0, 0, 0))
 
-# thSolver.dynamicMeshDict.dynamicFvMesh = "dynamicMotionSolverFvMesh"
-# thSolver.dynamicMeshDict.motionSolver = "velocityLaplacian"
-# thSolver.dynamicMeshDict.diffusivity = ffn.QuadraticDiffusivityMotion('inverseDistance', ['wall'])
+thSolver.dynamicMeshDict.add_motion(dofMotion)
+
 
 #==============================================================================*
 # Model
 
 solvers = ffn.solvers.Solvers([thSolver])
 
-model = ffn.case.Case(
+model = ffn.Case(
     solvers=solvers,
     timeFolders=[timeFolder0]
 )

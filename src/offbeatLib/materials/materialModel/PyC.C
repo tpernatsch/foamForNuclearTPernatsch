@@ -94,7 +94,7 @@ Foam::PyC::PyC
     thermalExpansionModel::New(mesh, materialModelDict, "PyCParfume");
 
     swelling_ =
-    swellingModel::New(mesh, materialModelDict, "PyCParfume");
+    swellingModel::New(mesh, materialModelDict, "none");
 }
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //

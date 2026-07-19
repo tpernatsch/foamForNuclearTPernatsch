@@ -1,0 +1,46 @@
+description: |
+  Mixed convective boundary condition that couples a solid scalar field to a
+  fluid model via a heat-transfer coefficient and a fluid temperature.
+
+  The boundary condition creates and stores two auxiliary volume scalar
+  fields on the coupled patch:
+  - ``htc``: the heat transfer coefficient
+  - ``Tfluid``: the fluid temperature
+
+  These auxiliary fields are intended to be mapped from the fluid side onto
+  the solid patch using foamForNuclear volumetric mapping capabilities. Once
+  mapped, the boundary condition enforces a mixed (Robin-type) condition that
+  conserves the heat flux between the solid and the fluid.
+
+  If adjacent solid–fluid simulations are intended, use other patches or
+  foamForNuclear CHTLoop features instead.
+formulation: |
+  The boundary condition represents convection between the solid scalar
+  field (typically temperature) and an external fluid at temperature $T_f$,
+  with heat transfer coefficient $h$.
+
+  The mixed boundary condition is written in terms of the patch value
+  $\phi_p$ and the normal gradient $\partial \phi/\partial n$ as:
+
+  $$
+  -k \\, \frac{\partial \phi}{\partial n} = h \\, (\phi - T_f)
+  $$
+
+  where the right-hand side represents the convective heat flux from the
+  fluid to the solid.
+
+  - $\phi$ is the solid scalar field value on the patch (the field to which this boundary condition is attached)
+  - $k$ is the solid conductivity field ``kappa`` (looked up as a ``volScalarField``)
+  - $h$ is the heat transfer coefficient field ``htc`` (auxiliary mapped field)
+  - $T_f$ is the fluid temperature field ``Tfluid`` (auxiliary mapped field)
+  - $n$ is the outward patch normal
+
+  The auxiliary fields ``htc`` and ``Tfluid`` are created/owned by this boundary
+  condition and are expected to be populated by mapping before the
+  coefficients are updated.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

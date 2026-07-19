@@ -1,0 +1,59 @@
+description: |-
+  A time‑dependent fixedValue scalar patch field that interpolates between
+  user-provided scalarFields at specified times.
+
+  The boundary condition reads a table consisting of pairs:
+
+  .. code-block:: text
+
+      ( time  fieldValues[] )
+
+  Each entry provides a full ``scalarField`` to be applied at the patch for
+  that time. During the simulation, the BC linearly interpolates between the
+  two nearest fields in time, based on the simulation time from
+  ``timeOutputValue()``. For times earlier than the first entry, it applies
+  the first field; for times later than the final entry, it applies the last
+  one.
+
+  This enables driving arbitrary time-dependent scalar distributions on a
+  boundary, including transient temperature, pressure, or other scalar
+  profiles.
+options:
+- key: table
+  type: List<Tuple2<scalar, scalarField>>
+  required: true
+  description: A list of ``(time, scalarField)`` entries defining the value of the scalar patch field at discrete times. Each
+    entry contains ``first`` → time (scalar) and ``second`` → a full patch-sized ``scalarField``. The list must be ordered
+    in increasing time, and the first entry determines the starting time ``tStart``.
+usage:
+- comment: |-
+    Example: prescribing a transient temperature profile on a patch using
+    tabulated fields at two times.
+  snippet: |-
+    boundaryPatch
+    {
+        type            timeFieldTable;
+        table
+        (
+            (0.0   (300 300 300 300))   // scalarField of size nFaces
+            (1.0   (500 500 450 400))   // another scalarField
+        );
+        value           uniform 0;      // dummy initial value
+    }
+notes:
+- |-
+  The interpolation is performed on complete scalarFields defined on the
+  patch. All fields must have the same size as the patch.
+- |-
+  Times in the table must be strictly increasing; the class does not
+  internally sort or validate the list.
+- |-
+  Interpolation uses ``timeOutputValue()``, meaning output‑time compression/
+  expansion (write intervals) affects the time coordinate used.
+- assumed: true
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - dictionary

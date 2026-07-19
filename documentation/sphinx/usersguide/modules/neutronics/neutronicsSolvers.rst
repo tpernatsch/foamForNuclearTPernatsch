@@ -25,16 +25,7 @@ contain specific sub-solvers:
 
    <br><br>
 
-For the user, the derived classes translate into runtime selectable models. The
-specific sub-solver to be used in a simulation can be selected at runtime in the
-*constant/neutroRegion/neutronicsProperties* dictionary.
-
-The choice of the model is achieved by selecting the wanted solver in
-*regionSolvers* depending on whether the neutronics
-solvers need to be part of a tightly coupled loop or not (see
-:ref:`Coupling solvers <userguide_coupling_the-controlDict-dictionary>`).
-
-*adjointDiffusion* has been developed only as an eigenvalue solver. The others
+``adjointDiffusion`` has been developed only as an eigenvalue solver. The others
 can be used for transient calculations. However, the SN transient solver has not
 been tested. In addition, it is currently not accelerated, thus extremely slow
 (it can require hundreds of iterations per time step).
@@ -57,3 +48,33 @@ source strength.
 In the case of an FMI coupling, it is possible to use the
 ``externalSourceModulationNameFromFMU`` entry to change the external source
 modulation through an FMI. To use it, the mode must be ``transient``.
+
+
+Power normalization
+~~~~~~~~~~~~~~~~~~~
+
+The spatial neutronics solvers always create a *powerDensity* and
+*secondaryPowerDensity* fields. By default, *secondaryPowerDensity* is set to
+zero and the ``fuelFraction`` keyword in *nuclearData* is used to translate the
+volume-average power density that is normally calculated by multiplying
+cross-sections and fluxes into the fuel-averaged power density that is needed by
+the thermal-hydraulic sub-solver. However, a *secondaryPowerDensity* might sometimes be needed. It might be used
+to provide some power to the coolant in a solid-fuel reactor and, more
+importantly, to provide some power to the graphite in a liquid-fuel reactor. To
+calculate a *secondaryPowerDensity*, the neutronics solver needs to know how much of the
+total power goes into the *secondaryPowerDensity*, and what is the volume
+fraction of the secondary power-producing structure or liquid. This can be done
+by using the ``fractionToSecondaryPower`` and ``secondaryPowerVolumeFraction``
+keywords in each cellZone in the *nuclearData* sub-dictionary (the same place as ``fuelFraction``).
+If these keywords are present, the neutronics module will calculate power densities as
+follows:
+
+- :math:`\text{secondaryPowerDensity} = \frac{\text{powerDensity}}{\max(\text{secondaryPowerVolumeFraction}, \text{SMALL})} \times \text{fractionToSecondaryPower}`
+- :math:`\text{powerDensity} = \frac{\text{powerDensity}}{\max(\text{fuelFraction}, SMALL)} \times (1.0 - \text{fractionToSecondaryPower})`
+
+
+When point kinetics sub-solver is selected, the *powerDensity* and 
+*secondaryPowerDensity* fields found in the initial time folder are rescaled. The 
+only exception is when ``liquidFuel`` is true and the ``initialPowerDensity`` keyword is used. In
+this case, ``initialPowerDensity`` will take priority and this is the value that
+the neutronics sub-solver will rescale and print.

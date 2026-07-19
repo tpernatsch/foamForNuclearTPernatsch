@@ -20,7 +20,7 @@ if (initialize)
        reactorState_.lookupOrDefault<scalar>("TFuelRef", TFuelValue);
 
     TCladRef_ =
-        reactorState_.lookupOrDefault<scalar>("TladRef", TCladValue);
+        reactorState_.lookupOrDefault<scalar>("TCladRef", TCladValue);
 
     TCoolRef_ =
         reactorState_.lookupOrDefault<scalar>("TCoolRef", TCoolValue);
@@ -35,7 +35,7 @@ if (initialize)
         reactorState_.lookupOrDefault<scalar>("TStructMechRef", TStructMechValue);
 
     TDrivelineRef_ =
-        reactorState_.lookupOrDefault<scalar>("TDriveLineRef", TDrivelineValue);
+        reactorState_.lookupOrDefault<scalar>("TDrivelineRef", TDrivelineValue);
 
     //- Since a T*Ref_ are scalars, the value inside the dictionary is not
     //  updated at runTime automatically. The line below resets the SCALAR IN

@@ -40,7 +40,9 @@ dependencies = [
     "requests",
     "imageio",
     "tqdm",
-    "tabulate"
+    "tabulate",
+    "pytest",
+    "pytest-xdist"
 ]
 
 [project.optional-dependencies]
@@ -57,3 +59,7 @@ include = ['foamForNuclear*']
 exclude = ['tests*']
 
 [tool.setuptools.package-data]
+
+[project.scripts]
+rodmaker = "foamForNuclear.tools.rodmaker_entry:main"
+

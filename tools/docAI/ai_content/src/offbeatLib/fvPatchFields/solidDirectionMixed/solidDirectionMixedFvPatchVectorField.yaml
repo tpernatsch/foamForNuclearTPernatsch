@@ -1,0 +1,55 @@
+description: |
+  Patch-field boundary condition implementing a mixed (Robin-type) treatment
+  of a vector field with an additional non-orthogonal correction for the
+  diffusion-term gradient evaluation.
+
+  This class is intended for solid mechanics / diffusion-like operators
+  where the patch normal direction is not perfectly aligned with the mesh
+  orthogonality, and where a limited correction is applied to the
+  non-orthogonal contribution.
+formulation: |
+  The boundary condition follows the standard OpenFOAM ``mixedFvPatchVectorField``
+  approach, combining a value (Dirichlet-like) contribution with a gradient
+  (Neumann-like) contribution, while augmenting the gradient evaluation with
+  a non-orthogonal correction for the diffusion term.
+
+  The non-orthogonal correction is computed from the decomposition of the
+  face-to-cell displacement into normal and tangential components, and a
+  limited correction is applied to the tangential contribution to improve
+  robustness on distorted meshes.
+
+  $$ \text{snGrad} = \text{snGrad}_{\perp} + \text{limiter}\,\text{snGrad}_{\text{corr}} $$
+
+  where:
+
+  - $n$ is the patch face unit normal (from ``patch().nf()``)
+  - $\delta$ is the face-to-cell displacement vector (from ``patch().delta()``)
+  - $k$ is the tangential component of $\delta$, i.e. $\delta - n(n\cdot\delta)$
+  - $\text{snGrad}_{\perp}$ is the orthogonal (standard) surface-normal gradient
+  - $\text{snGrad}_{\text{corr}}$ is the non-orthogonal correction term based on
+    the patch-internal gradient of the associated volume field (via
+    ``lookupPatchField`` for ``"grad" + internalField().name()``)
+  - $\text{limiter}$ is a scalar limiting factor set by ``limitCoeff``
+
+  The limiter coefficient reduces the magnitude of the non-orthogonal
+  correction to prevent excessive boundary gradients on highly non-orthogonal
+  meshes.
+dictionary: neutronicsProperties
+options:
+- key: limitCoeff
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Limiter coefficient applied to the non-orthogonal correction term for the
+    ``snGrad`` evaluation. Values smaller than 1 reduce the correction
+    magnitude; the default is 1.0 (no additional limiting beyond the base
+    mixed boundary treatment).
+admonitions: []
+optionsLocations: []
+externalOptions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -58,7 +58,7 @@ options:
   - key: swellingModel
     type: word
     required: false
-    default: FeCrAl
+    default: none
     description: |
       Selects the swelling model used by the `Molybdenum` material.
 

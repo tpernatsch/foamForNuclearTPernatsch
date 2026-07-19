@@ -1,0 +1,60 @@
+description: |
+  Subclass for SP3 neutronics.
+  Reference publications [@FIORINA201524] [@FIORINA201515226] [@FIORINA2017419].
+formulation: |
+  The SP3 method approximates the neutron transport equation by solving coupled
+  diffusion-like equations for angular moments up to third order, using
+  group-wise cross sections from ``XS``. The resulting neutron fluxes are used
+  to compute the prompt and delayed neutron sources and the scattering
+  contribution.
+
+  The total (prompt) volumetric neutron source is assembled from the group flux
+  and the fission/scattering terms provided by ``XS`` and the SP3 closure.
+
+  The delayed neutron source is computed from the precursor groups stored in
+  ``prec_`` and the corresponding delayed production terms in ``XS``.
+  The precursor evolution is handled consistently with the SP3 moment equations
+  through ``correctPhysics()`` and ``correctTightlyCoupledPhysics()``.
+
+  The class also provides a power estimate by integrating the group-wise
+  fission power production:
+
+  $$
+  P = \int_\Omega \sum_{g} \phi_g \, \sigma^{P}_g \, dV
+  $$
+
+  where:
+  - $P$ is the total reactor power returned by ``power()``
+  - $\Omega$ is the computational domain
+  - $\phi_g$ is the SP3/group flux field ``flux_[energyI]`` for energy group $g$
+  - $\sigma^{P}_g$ is the power cross section ``xs_.sigmaPow()[energyI]$
+admonitions: []
+dictionary: neutronicsProperties
+options:
+- key: eigenvalueNeutronics
+  type: boolean
+  required: true
+  default: null
+  description: Solve the diffusion equations in eigenvalue mode.
+- key: energyGroups
+  type: label
+  required: true
+  default: null
+  description: <description>
+- key: precGroups
+  type: label
+  required: true
+  default: null
+  description: <description>
+optionsLocations: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - formulation
+  - admonitions
+  - dictionary
+  - optionsLocations
+  - usage
+  stub_improved: true

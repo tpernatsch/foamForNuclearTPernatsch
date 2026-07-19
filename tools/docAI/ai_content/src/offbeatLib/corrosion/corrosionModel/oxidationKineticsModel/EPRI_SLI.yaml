@@ -1,0 +1,53 @@
+description: |
+  EPRI/SLI model for cladding corrosion, taken from the EPRI PFCC Theory Manual.
+
+  This class implements the EPRI PWR Fuel Cladding Corrosion (PFCC) model, Volume 1:
+  Theory and User's Manual, EPRI TR-105387-V1 (December 1995).
+formulation: |
+  The model provides a correlation for the growth of the cladding oxide layer thickness
+  as a function of coolant chemistry and thermal-hydraulic conditions, following the
+  EPRI PFCC (PFCC Theory Manual) EPRI/SLI approach.
+
+  The correlation is applied through the method ``correctOxideThickness``, which updates
+  the oxide thickness ``S`` over a time increment ``dt`` using the current and reference
+  oxide thicknesses and the local thermal/chemical state.
+
+  $$ S \leftarrow S + \Delta S(S,S_0,T_i,T_b,\phi,dt) $$
+
+  where:
+
+  - $S$ is the oxide layer thickness to be updated (input/output, in m)
+  - $S_0$ is the reference/initial oxide thickness used by the correlation (in m)
+  - $T_i$ is the cladding interface temperature (in K)
+  - $T_b$ is the bulk coolant temperature (in K)
+  - $\phi$ is the relevant chemical/transport driving parameter used by the EPRI/SLI correlation
+  - $dt$ is the time step duration (in s)
+  - $Li$ is the coolant lithium concentration (set by ``Li`` in ppm)
+  - $Sn$ is the cladding tin content (set by ``Sn`` in %wt)
+  - $Fe$ is the fraction of iron particles dissolved (set by ``Fe`` in %, given an initial particle size distribution)
+dictionary: neutronicsProperties
+options:
+- key: Li
+  type: scalar
+  required: true
+  description: |
+    Coolant lithium concentration used by the EPRI/SLI correlation, in ppm.
+- key: Sn
+  type: scalar
+  required: true
+  description: |
+    Cladding tin content used by the EPRI/SLI correlation, in %wt.
+- key: Fe
+  type: scalar
+  required: true
+  description: |
+    Fraction of iron particles dissolved used by the EPRI/SLI correlation, in %,
+    given an initial particle size distribution.
+admonitions: []
+optionsLocations: []
+externalOptions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

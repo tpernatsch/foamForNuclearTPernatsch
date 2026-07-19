@@ -1,0 +1,36 @@
+description: |
+  Creep model that computes the creep strain rate from the eigenvalues of the
+  stress tensor, using a user-provided correlation for the creep coefficient.
+
+  This class is intended for thermo-mechanical verification workflows (e.g.
+  OFFBEAT results against the IAEA CPR-6 benchmark for TRISO fuel applications).
+formulation: |
+  The model evaluates the principal stresses of the symmetric stress tensor and
+  uses them to compute a creep coefficient via a user-provided correlation.
+  The creep strain-rate tensor is then updated in ``correctCreep`` based on the
+  computed coefficient and the current irradiation/thermal state.
+
+  The principal stresses are ordered such that
+  $s_1 \ge s_2 \ge s_3$, where $s_i$ are the eigenvalues of the symmetric stress
+  tensor ``s`` passed to ``computePrincipalStress``.
+
+  $$ s_1, s_2, s_3 = \mathrm{eig}(\mathbf{s}) $$
+
+  where:
+
+  - $s_1$ is the largest principal stress (``stressPrinciple1``)
+  - $s_2$ is the intermediate principal stress (``stressPrinciple2``)
+  - $s_3$ is the smallest principal stress (``stressPrinciple3``)
+  - $\mathbf{s}$ is the symmetric stress tensor (argument ``symmTensor s``)
+
+  If the principal stresses cannot be computed, the model falls back to
+  $0.0$ for the principal stresses and marks the computation as not solved
+  (``solved = false``).
+options: []
+externalOptions: []
+optionsLocations: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

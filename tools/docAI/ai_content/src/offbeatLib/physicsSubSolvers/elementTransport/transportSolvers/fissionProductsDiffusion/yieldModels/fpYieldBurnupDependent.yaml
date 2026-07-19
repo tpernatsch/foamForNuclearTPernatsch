@@ -1,0 +1,37 @@
+description: |
+  Burnup-dependent fission-product yield model using a power-law dependence
+  on local burnup (e.g. Ag-110m).
+
+  The yield as a function of burnup $b$ (in \%FIMA) is computed as:
+  \f[ y(b) = yieldCoeff \cdot b^{burnupExponent} \f]
+
+  The local burnup $b$ is obtained from the field \c Bu [MWd/tUO2] via:
+  \f[ b = Bu \times 10^{-3} / (burnupConversion) \f]
+
+  where the default \c burnupConversion is 8.232 (0.881 × 9.3706 for UO2).
+formulation: |
+  This model computes the fission-product yield $Y$ from the local burnup
+  field \c Bu using a power-law correlation. The burnup is converted from
+  MWd/tUO2 to \%FIMA and is clamped to be at least 1 \%FIMA to avoid
+  numerical issues when applying a non-integer exponent.
+
+  $$ b = \max\left(1,\; \frac{Bu \cdot 10^{-3}}{burnupConversion}\right) $$
+  $$ Y = yieldCoeff \cdot b^{burnupExponent} $$
+
+  where:
+  - $Y$ is the computed fission-product yield (written into the OpenFOAM
+    field \c Y)
+  - $Bu$ is the local burnup field in MWd/tUO2 (input field \c Bu)
+  - $b$ is the converted burnup in \%FIMA
+  - $yieldCoeff$ is the power-law prefactor (dictionary entry \c yieldCoeff)
+  - $burnupExponent$ is the power-law exponent (dictionary entry \c burnupExponent)
+  - $burnupConversion$ is the conversion factor from MWd/tUO2 to \%FIMA
+    (dictionary entry \c burnupConversion)
+options: []
+externalOptions: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

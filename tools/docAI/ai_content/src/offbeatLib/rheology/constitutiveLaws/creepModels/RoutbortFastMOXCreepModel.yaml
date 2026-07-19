@@ -1,0 +1,96 @@
+description: |
+  Creep model for fast-MOX fuel based on the Routbort (irradiation creep) and
+  Combette (thermal creep) formulations.
+
+  The model computes and updates irradiation creep and thermal creep
+  strain contributions, including equivalent scalar measures used for
+  secondary creep evolution.
+formulation: |
+  The total creep strain is decomposed into irradiation and thermal parts,
+  each represented as a symmetric tensor field in OpenFOAM:
+  $\epsilon^{c}=\epsilon^{c}_{\mathrm{irr}}+\epsilon^{c}_{\mathrm{th}}$.
+
+  The model also tracks equivalent scalar measures of irradiation creep
+  and thermal creep, together with their increments over the current time
+  step, which are used to update the tensorial creep strain.
+
+  The irradiation creep contribution is activated/disabled through the
+  ``irradiationCreep`` switch and is advanced in time using the local
+  irradiation/heat-source information provided by the fields named by
+  ``heatSourceName`` and ``grainRadiusName``.
+
+  The thermal creep contribution is advanced using the local temperature
+  field ``T`` and the same time stepping strategy as the irradiation part.
+
+  The constitutive parameters are hard-coded for fast-MOX (Routbort/Combette
+  fit), including the Arrhenius-like activation energies $Q_1$ and $Q_2$
+  and the fission-event energy scale $E_f$.
+
+  - $\epsilon^{c}$ is the total creep strain tensor (updated in ``correctCreep``)
+  - $\epsilon^{c}_{\mathrm{irr}}$ is the irradiation creep strain tensor (field ``epsilonCreepIrr``)
+  - $\epsilon^{c}_{\mathrm{th}}$ is the thermal creep strain tensor (field ``epsilonCreepTh``)
+  - $Q$ is the volumetric heat source field used for irradiation creep (set by ``heatSourceName``)
+  - $r_g$ is the grain radius field used for irradiation creep (set by ``grainRadiusName``)
+  - $T$ is the local temperature field (looked up as ``T``)
+  - $Q_1$ and $Q_2$ are activation energy parameters (hard-coded)
+  - $E_f$ is the energy of a fission event (hard-coded)
+dictionary: neutronicsProperties
+options:
+- key: heatSourceName
+  type: word
+  required: false
+  default: Q
+  description: |
+    Name of the volumetric heat source field used by the irradiation creep
+    calculation. The model looks up a ``volScalarField`` with this name.
+- key: grainRadiusName
+  type: word
+  required: false
+  default: grainRadius
+  description: |
+    Name of the grain radius field used by the irradiation creep
+    calculation. The model looks up a ``volScalarField`` with this name.
+- key: relaxCreep
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Relaxation factor applied to the creep update.
+- key: irradiationCreep
+  type: bool
+  required: false
+  default: true
+  description: |
+    Switch to activate irradiation creep. If ``false``, irradiation creep
+    contributions are not computed/updated.
+- key: NewtonRaphsonMethod
+  type: bool
+  required: false
+  default: false
+  description: |
+    If ``true``, activate Newton-Raphson iterations for the inner
+    convergence loop used during creep update.
+- key: NewtonRaphsonTolerance
+  type: scalar
+  required: false
+  description: |
+    Inner-loop tolerance for the Newton-Raphson method. This option is only
+    used when ``NewtonRaphsonMethod`` is enabled. If not provided while
+    enabled, the code defaults to ``1e-6``.
+- key: creepRateLimiter
+  type: bool
+  required: false
+  default: false
+  description: |
+    If ``true``, limit the magnitude of the computed creep rate.
+- key: creepRateLimit
+  type: scalar
+  required: false
+  default: 4.1e-06
+  description: |
+    Maximum allowed creep rate when ``creepRateLimiter`` is enabled.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

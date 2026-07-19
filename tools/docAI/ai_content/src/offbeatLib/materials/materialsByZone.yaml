@@ -1,0 +1,39 @@
+description: |
+  Material model selector that assigns material properties to mesh cellZones.
+  The same material model (e.g. ``UO2``, ``MOX``, ``Zircaloy``) can be used in
+  multiple cellZones, while each cellZone must be associated with exactly one
+  material model.
+
+  Material properties are provided through a sub-dictionary named ``materials``.
+  The class checks that all cellZones are assigned with one (and only one)
+  material model.
+formulation: |
+  This class does not introduce new governing physics; it routes the
+  thermo-mechanical property calculations to the selected per-zone material
+  models.
+
+  For each cellZone $z$:
+  - the material model is selected from the ``materials`` sub-dictionary using
+    the cellZone name as key,
+  - the material model computes its own fields (e.g. density ``rho_``, heat
+    capacity ``Cp_`` and thermal expansion-related quantities) based on the
+    local temperature field ``T`` (looked up from the mesh as ``T``).
+
+  The mapping from zone index to material model addressing is updated via
+  ``calcAddressing``.
+
+  Variables:
+  - $z$ is a cellZone index (from ``mesh_.cellZones()``)
+  - $T$ is the OpenFOAM temperature field ``T`` (volScalarField)
+  - $\rho$ is the material density field ``rho_`` (updated by the selected model)
+  - $C_p$ is the material heat capacity field ``Cp_`` (updated by the selected model)
+dictionary: neutronicsProperties
+options: []
+optionsLocations: []
+externalOptions: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

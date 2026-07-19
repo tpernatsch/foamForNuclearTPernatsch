@@ -1,0 +1,58 @@
+description: |
+  The `Molybdenum` conductivity model provides a temperature-dependent thermal
+  conductivity correlation for molybdenum.
+
+  The correlation is evaluated as
+  $k(T) = C_1 T^2 - C_2 T + C_3$, where the coefficients $C_1$, $C_2$, and $C_3$
+  are set by the input parameters ``par1``, ``par2``, and ``par3``.
+  Parameters can optionally be provided in the `conductivity` sub-dictionary.
+  If not provided, the default values embedded in the model are used.
+options:
+- key: par1
+  type: scalar
+  required: false
+  default: 9.128e-06
+  description: |
+    Quadratic coefficient $C_1$ in the correlation $k(T) = C_1 T^2 - C_2 T + C_3$.
+    Can be overridden in the `conductivity` sub-dictionary.
+- key: par2
+  type: scalar
+  required: false
+  default: 0.04945
+  description: |
+    Linear coefficient $C_2$ in the correlation $k(T) = C_1 T^2 - C_2 T + C_3$.
+    Can be overridden in the `conductivity` sub-dictionary.
+- key: par3
+  type: scalar
+  required: false
+  default: 152
+  description: |
+    Constant term $C_3$ in the correlation $k(T) = C_1 T^2 - C_2 T + C_3$.
+    Can be overridden in the `conductivity` sub-dictionary.
+usage:
+- comment: |
+    Example selection using a `conductivity` sub-dictionary in the `solverDict`.
+  snippet: |-
+    materials
+    {
+        disc
+        {
+            material Molybdenum;
+
+            conductivity
+            {
+                type Molybdenum;
+
+                // Optional overrides
+                // par1 9.128e-06;
+                // par2 4.945e-2;
+                // par3 152;
+            }
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options

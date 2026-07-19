@@ -1,0 +1,50 @@
+description: |
+  Flow enhancement factor model ``COBRA_TF``.
+
+  The model returns the fraction of structure interfacial contact in contact
+  with the dispersed fluid, based on the local phase fraction of the
+  ``pair_.fluidRef()`` and the identity of the other fluid present in the
+  ``pair_.mesh()``.
+formulation: |
+  The flow enhancement factor is computed as a local fraction of interfacial
+  contact with the dispersed fluid. The implementation uses the normalized
+  phase fraction of the reference fluid and determines which of the two
+  fluids in the ``FSPair`` is the “other” fluid.
+
+  $$ f = a $$
+  where:
+
+  - $f$ is the returned flow enhancement factor (fraction of interfacial
+    contact with the dispersed fluid)
+  - $a$ is the local normalized phase fraction of ``pair_.fluidRef()`` at
+    cell $i$ (read from ``pair_.fluidRef().normalized()[celli]``)
+admonitions:
+- kind: note
+  body: This model is selected solely by its runtime ``typeName`` and defines no additional options.
+options: []
+usage:
+- comment: 'The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the
+    ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``).
+    Here is a snippet enabling the model:'
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type COBRA_TF;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  stub_improved: true

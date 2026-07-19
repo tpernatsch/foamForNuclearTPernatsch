@@ -1,0 +1,26 @@
+description: |
+  Base gap gas model class. It neglects the presence of any gap gas.
+  No gas pressure, composition, or thermal transport through the gap is modeled.
+admonitions:
+- kind: warning
+  body: |
+    Several OFFBEAT boundary conditions for gap heat transfer and contact
+    assume the presence of a gap gas model.
+
+    Selecting `none` may result in fatal errors if such boundary conditions
+    are used.
+optionsLocations:
+- name: solverDict
+  in: solverDict
+options: []
+usage:
+- comment: |
+    Disable gap gas modeling.
+  snippet: gapGas none;
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - admonitions
+  - dictionary

@@ -1,0 +1,125 @@
+description: |
+  Unilateral contact boundary condition for a vector displacement field.
+  It restricts normal penetration at a patch while allowing tangential
+  sliding without shear forces.
+
+  In the normal direction, the patch displacement is prevented from becoming
+  positive relative to the patch normal (i.e. no penetration through the
+  contact plane). If a positive normal displacement is attempted, it is
+  forced to zero in the normal direction. A relaxation factor can be used to
+  improve convergence, and the spring constraint is enforced implicitly.
+
+  When the patch detaches inward (negative normal displacement relative to
+  the patch normal), a prescribed traction/pressure is applied. The
+  traction/pressure can be provided via the patch dictionary; otherwise it is
+  assumed to be zero.
+formulation: |
+  The boundary condition enforces a unilateral (one-sided) spring constraint
+  on the patch displacement. Tangential components are left unconstrained
+  (sliding allowed), while the normal component is constrained to be
+  non-penetrating.
+
+  Let $u_n$ be the normal component of the patch displacement relative to
+  the contact plane, and let $u_t$ denote the tangential components. The
+  unilateral constraint is enforced as:
+
+  $$
+  u_n \le 0
+  $$
+
+  When $u_n < 0$ (detached/in contact opening inward), the patch traction
+  is applied as a sum of a fixed pressure and a fixed traction vector:
+
+  $$
+  \mathbf{t} = -p\,\mathbf{n} + \boldsymbol{\tau}
+  $$
+
+  where:
+  - $p$ is the fixed pressure set by ``pressure`` (or overwritten by the
+    ``gapGas`` model pressure if present)
+  - $\boldsymbol{\tau}$ is the fixed traction vector set by ``traction``
+  - $\mathbf{n}$ is the patch normal direction (either provided by
+    ``planeNormal`` or computed from the patch geometry)
+
+  The normal spring constraint is applied implicitly with a penalty-like
+  stiffness controlled by ``penaltyScaleFactor`` and the ramp parameters
+  ``contactRelRampWidth`` and ``contactRelOffset`` (used to regularize the
+  contact stiffness near the constraint boundary). The update is relaxed by
+  ``relax``.
+dictionary: neutronicsProperties
+options:
+- key: traction
+  type: vector
+  required: false
+  default: (0 0 0)
+  description: |
+    Fixed surface traction vector $\boldsymbol{\tau}$ in Pa applied when the
+    contact condition indicates detachment/inward opening. Zero by default.
+- key: pressure
+  type: scalar
+  required: false
+  default: 0
+  description: |
+    Fixed surface pressure $p$ in Pa applied when the contact condition
+    indicates detachment/inward opening. Zero by default. If a ``gapGas``
+    model object is found in the boundary mesh, this value is overwritten by
+    ``gapGas.p()``.
+- key: relax
+  type: scalar
+  required: false
+  default: 1
+  description: |
+    Relaxation factor for the contact contribution update to aid convergence.
+- key: planeNormal
+  type: vector
+  required: false
+  description: |
+    Unit (or non-unit) vector defining the normal direction of the contact
+    plane. If not provided, the patch normal is computed from patch geometry.
+- key: planePoint
+  type: vector
+  required: false
+  default: (0 0 0)
+  description: |
+    Point through which the contact plane passes. If not provided, the
+    implementation derives a plane position from patch geometry.
+- key: contactRelRampWidth
+  type: scalar
+  required: false
+  description: |
+    Relative (to cell size) width for the linear ramp of contact stiffness.
+    If not provided, it defaults to ``relTolerance`` or ``SMALL``.
+- key: contactRelOffset
+  type: scalar
+  required: false
+  default: SMALL
+  description: |
+    Relative (to cell size) penetration tolerance for the contact plane.
+    Defaults to ``SMALL``.
+- key: penaltyScaleFactor
+  type: scalar
+  required: false
+  default: 1
+  description: |
+    Penalty scale factor for the contact stiffness.
+usage:
+- comment: |
+    Apply the `unilateralContact` boundary condition to a given patch.
+  snippet: |-
+    cladOuter
+    {
+        type            unilateralContact;
+
+        // Relaxation factor for the contact contribution
+        relax           1;
+
+        // Pressure for the part of the boundary not in contact (zero by default)
+        pressure uniform 0.0;
+
+        // Traction for the part of the boundary not in contact (zero by default)
+        traction uniform (0 0 0);
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,52 @@
+description: |-
+  Base class for time profile functions. This object embeds the OpenFOAM
+  Function1 object used to represents tables. timeProfile is also able to
+  input data from an FMI.
+options:
+- key: type
+  type: word
+  required: true
+  description: Type of time profile. Options ``table`` or ``fmi``
+- key: startTime
+  type: scalar
+  required: false
+  description: Time offset used when evaluating the underlying OpenFOAM ``Function1`` (i.e. the argument is shifted by ``startTime``).
+- key: table
+  type: table
+  required: false
+  description: Table containing the time profile if type ``table`` is selected. List of tuples with time as first element
+    and the value as second element.
+- key: initialValue
+  type: scalar
+  required: false
+  description: Initial value used by the FMI port if type ``fmi``.
+- key: nameFromFMU
+  type: word
+  required: false
+  description: FMI input name if type ``fmi``.
+usage:
+- comment: 'Example of usage with a table in the ``nuclearData`` file:'
+  snippet: |-
+    externalReactivityTimeProfile
+    {
+        type        table;
+        startTime   100;
+        table       table
+        (
+            (   0   0)
+            (   1   0.0005767131    )
+        );
+    }
+- comment: 'Example of usage with an FMI input in the ``nuclearData`` file:'
+  snippet: |-
+    externalReactivityTimeProfile
+    {
+        type            fmi;
+        nameFromFMU     gfExtReact;
+        initialValue    0.0;
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options

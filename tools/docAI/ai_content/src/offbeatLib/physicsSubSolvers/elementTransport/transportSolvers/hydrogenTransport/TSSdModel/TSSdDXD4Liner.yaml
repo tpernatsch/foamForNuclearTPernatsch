@@ -1,0 +1,39 @@
+description: |
+  TSSd model for the DXD4 outer liner, based on the substrate expression
+  reported by Gong et al. (2019) (https://doi.org/10.1016/j.jnucmat.2019.151757).
+formulation: |
+  The model updates the TSSd field (surface/solid-state diffusion-related
+  quantity in the TSSd framework) using a Kammenzind-type substrate
+  temperature dependence with an Arrhenius form.
+
+  The internal-field value is computed as:
+  $$
+  \mathrm{TSSd}(T) = \mathrm{TSSd}_0 \exp\!\left(-\frac{Q_d}{R\,T}\right)
+  \exp\!\left(\frac{\mu_{H0}}{R\,T}\right)
+  $$
+  where the implementation uses $R=8.31446$ J/mol/K and $T$ is taken from the
+  OpenFOAM temperature field $T$.
+
+  Boundary-field values are computed analogously using the boundary
+  temperature $T_p$ on each patch face:
+  $$
+  \mathrm{TSSd}_p(T_p) =
+  \mathrm{TSSd}_0 \exp\!\left(-\frac{Q_d}{R\,T_p}\right)
+  \exp\!\left(\frac{\mu_{H0}}{R\,T_p}\right)
+  $$
+
+  Constants used by this implementation:
+  - $\mathrm{TSSd}_0$ is the pre-exponential factor (66000)
+  - $Q_d$ is the activation energy-like parameter (32144)
+  - $\mu_{H0}$ is the chemical potential difference parameter from Wong et al.
+    (−656 J/mol, with reported uncertainty ~42%)
+  - $R$ is the universal gas constant (8.31446 J/mol/K)
+  - $T$ is the cell temperature from the OpenFOAM volScalarField named `T`
+  - $T_p$ is the patch-face temperature from the boundary field of `T`
+  - $\mathrm{TSSd}$ is the updated TSSd field (internal and boundary)
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

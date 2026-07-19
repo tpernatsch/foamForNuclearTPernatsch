@@ -49,7 +49,8 @@ namespace Foam
 }
 
 
-Foam::scalar Foam::solver::deltaTFactor = 1.2;
+// TODO: what is this scalar?
+Foam::scalar Foam::solver::deltaTFactor_ = 1.2;
 
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
@@ -75,12 +76,9 @@ Foam::solver::solver(dynamicFvMesh& mesh)
         )
     ),
     mesh_(mesh),
-    steady(mesh_.schemes().steady()),
-    LTS(fv::localEulerDdt::enabled(mesh)),
-    // fvModelsPtr(nullptr),
-    // fvConstraintsPtr(nullptr),
-    mesh(mesh_),
-    runTime(mesh_.time())
+    runTime_(mesh.time()),
+    steady_(mesh.schemes().steady()),
+    LTS_(fv::localEulerDdt::enabled(mesh))
 {}
 
 
@@ -92,26 +90,6 @@ Foam::solver::~solver()
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
-// Foam::fvModels& Foam::solver::fvModels() const
-// {
-//     if (!fvModelsPtr)
-//     {
-//         fvModelsPtr = &Foam::fvModels::New(mesh);
-//     }
-
-//     return *fvModelsPtr;
-// }
-
-
-// Foam::fvConstraints& Foam::solver::fvConstraints() const
-// {
-//     if (!fvConstraintsPtr)
-//     {
-//         fvConstraintsPtr = &Foam::fvConstraints::New(mesh);
-//     }
-
-//     return *fvConstraintsPtr;
-// }
 
 
 // ************************************************************************* //

@@ -137,21 +137,63 @@ def _to_const_alpha(value):
 
 @ffn_define
 class Constant(Material):
+    """
+    Constant thermomechanical properties material.
+
+    Parameters
+    ----------
+    name : str
+        Name of the material.
+    TYPE : str
+        Type of material property (default `constant`).
+    density : float | properties.density.Density
+        Density of the material in kg/m3.
+    conductivity : float | properties.conductivity.Conductivity
+        Thermal conductivity of the material in W/m/K.
+    heatCapacity : float | properties.heat_capacity.HeatCapacity
+        Specific heat capacity of the material in J/kg/K.
+    emissivity : float | properties.emissivity.Emissivity
+        Emissivity of the material.
+    YoungModulus : float | properties.young_modulus.YoungModulus
+        Young modulus of the material.
+    PoissonRatio : float | properties.poisson_ratio.PoissonRatio
+        Poisson ratio of the material.
+    thermalExpansion : float | properties.thermal_expansion.ThermalExpansion
+        Thermal expansion coefficient of the material.
+    TFuelRef : float | int | None
+        Optional fuel reference temperature used in the extended
+        thermomechanical solver for GeN-Foam (default `None`).
+    alphaFuel : float | int | None
+        Optional fuel thermal expansion coefficient used in the extended
+        thermomechanical solver for GeN-Foam (default `None`).
+    TCRRef : float | int | None
+        Optional control rod reference temperature used in the extended
+        thermomechanical solver for GeN-Foam (default `None`).
+    alphaCR : float | int | None
+        Optional control rod thermal expansion coefficient used in the extended
+        thermomechanical solver for GeN-Foam (default `None`).
+    """
     TYPE: ClassVar[str] = "constant"
 
     # override fields to add converters (types stay the same)
     density: float | properties.density.Density = field(
-        default=1000, converter=_to_const_density)
+        default=1000, converter=_to_const_density
+    )
     conductivity: float | properties.conductivity.Conductivity = field(
-        default=20, converter=_to_const_conductivity)
+        default=20, converter=_to_const_conductivity
+    )
     heatCapacity: float | properties.heat_capacity.HeatCapacity = field(
-        default=200, converter=_to_const_heat_capacity)
+        default=200, converter=_to_const_heat_capacity
+    )
     emissivity: float | properties.emissivity.Emissivity = field(
-        default=0.8, converter=_to_const_emissivity)
+        default=0.8, converter=_to_const_emissivity
+    )
     YoungModulus: float | properties.young_modulus.YoungModulus = field(
-        default=100e9, converter=_to_const_E)
+        default=100e9, converter=_to_const_E
+    )
     PoissonRatio: float | properties.poisson_ratio.PoissonRatio = field(
-        default=0.3, converter=_to_const_nu)
+        default=0.3, converter=_to_const_nu
+    )
     thermalExpansion: float | properties.thermal_expansion.ThermalExpansion = field(
         default=1e-5,
         converter=_to_const_alpha,
@@ -160,6 +202,10 @@ class Constant(Material):
             _sync_Tref_and_alpha_hook,
         ),
     )
+    TFuelRef: float | int | None = None
+    alphaFuel: float | int | None = None
+    TCRRef: float | int | None = None
+    alphaCR: float | int | None = None
 
 
 
@@ -228,29 +274,96 @@ class Constant(Material):
 #     # swelling: swelling.Swelling = field(factory=swelling.FeCrAl)
 
 
-# @ffn_define
-# class PyC(Material):
-#     TYPE: ClassVar[str] = "PyC"
-#     # density: properties.density.Density = field(factory=properties.density.Constant)
-#     # conductivity: properties.conductivity.Conductivity = field(factory=properties.conductivity.Constant)
-#     # heatCapacity: properties.heat_capacity.HeatCapacity = field(factory=properties.heat_capacity.Constant)
-#     # emissivity: properties.emissivity.Emissivity = field(factory=properties.emissivity.Emissivity)
-#     # YoungModulus: properties.young_modulus.YoungModulus = field(factory=properties.young_modulus.PyCParfume)
-#     # PoissonRatio: properties.poisson_ratio.PoissonRatio = field(factory=properties.poisson_ratio.Constant)
-#     # thermalExpansion: properties.thermal_expansion.ThermalExpansion = field(factory=properties.thermal_expansion.PyCParfume)
-#     # swelling: swelling.Swelling = field(factory=swelling.PyCParfume)
+@ffn_define
+class PyC(Material):
+    TYPE: ClassVar[str] = "PyC"
+
+    density: float | int | properties.density.Density = field(
+        default=1900.0, converter=_to_const_density,
+    )
+    conductivity: float | int | properties.conductivity.Conductivity = field(
+        default=4.0, converter=_to_const_conductivity,
+    )
+    heatCapacity: float | int | properties.heat_capacity.HeatCapacity = field(
+        default=720.0, converter=_to_const_heat_capacity,
+    )
+    emissivity: float | int | properties.emissivity.Emissivity = field(
+        default=0.0, converter=_to_const_emissivity,
+    )
+    YoungModulus: float | int | properties.young_modulus.YoungModulus = field(
+        factory=properties.young_modulus.PyCParfume, converter=_to_const_E,
+    )
+    PoissonRatio: float | int | properties.poisson_ratio.PoissonRatio = field(
+        default=0.33, converter=_to_const_nu,
+    )
+    thermalExpansion: float | int | properties.thermal_expansion.ThermalExpansion = field(
+        factory=properties.thermal_expansion.PyCParfume,
+        converter=_to_const_alpha,
+        on_setattr=setters.pipe(setters.convert, _sync_Tref_and_alpha_hook),
+    )
+    swelling: swelling.Swelling | None = None
 
 
-# @ffn_define
-# class SiC(Material):
-#     TYPE: ClassVar[str] = "SiC"
-#     # density: properties.density.Density = field(factory=properties.density.Constant)
-#     # conductivity: properties.conductivity.Conductivity = field(factory=properties.conductivity.SiCParfume)
-#     # heatCapacity: properties.heat_capacity.HeatCapacity = field(factory=properties.heat_capacity.SiCSnead)
-#     # emissivity: properties.emissivity.Emissivity = field(factory=properties.emissivity.Emissivity)
-#     # YoungModulus: properties.young_modulus.YoungModulus = field(factory=properties.young_modulus.SiCParfume)
-#     # PoissonRatio: properties.poisson_ratio.PoissonRatio = field(factory=properties.poisson_ratio.Constant)
-#     # thermalExpansion: properties.thermal_expansion.ThermalExpansion = field(factory=properties.thermal_expansion.SiCParfume)
+@ffn_define
+class SiC(Material):
+    TYPE: ClassVar[str] = "SiC"
+
+    density: float | int | properties.density.Density = field(
+        default=3200.0, converter=_to_const_density,
+    )
+    conductivity: float | int | properties.conductivity.Conductivity = field(
+        factory=properties.conductivity.SiCParfume, converter=_to_const_conductivity,
+    )
+    heatCapacity: float | int | properties.heat_capacity.HeatCapacity = field(
+        factory=properties.heat_capacity.SiCSnead, converter=_to_const_heat_capacity,
+    )
+    emissivity: float | int | properties.emissivity.Emissivity = field(
+        default=0.0, converter=_to_const_emissivity,
+    )
+    YoungModulus: float | int | properties.young_modulus.YoungModulus = field(
+        factory=properties.young_modulus.SiCParfume, converter=_to_const_E,
+    )
+    PoissonRatio: float | int | properties.poisson_ratio.PoissonRatio = field(
+        default=0.13, converter=_to_const_nu,
+    )
+    thermalExpansion: float | int | properties.thermal_expansion.ThermalExpansion = field(
+        factory=properties.thermal_expansion.SiCParfume,
+        converter=_to_const_alpha,
+        on_setattr=setters.pipe(setters.convert, _sync_Tref_and_alpha_hook),
+    )
+    swelling: swelling.Swelling | None = None
+
+
+@ffn_define
+class Buffer(Material):
+    TYPE: ClassVar[str] = "buffer"
+
+    theoreticalDensity: float | int = 2250.0
+    density: float | int | properties.density.Density = field(
+        default=1000.0, converter=_to_const_density,
+    )
+    conductivity: float | int | properties.conductivity.Conductivity = field(
+        factory=properties.conductivity.BufferParfume, converter=_to_const_conductivity,
+    )
+    heatCapacity: float | int | properties.heat_capacity.HeatCapacity = field(
+        default=720.0, converter=_to_const_heat_capacity,
+    )
+    emissivity: float | int | properties.emissivity.Emissivity = field(
+        default=0.0, converter=_to_const_emissivity,
+    )
+    YoungModulus: float | int | properties.young_modulus.YoungModulus = field(
+        factory=properties.young_modulus.BufferParfume, converter=_to_const_E,
+    )
+    PoissonRatio: float | int | properties.poisson_ratio.PoissonRatio = field(
+        default=0.33, converter=_to_const_nu,
+    )
+    thermalExpansion: float | int | properties.thermal_expansion.ThermalExpansion = field(
+        factory=properties.thermal_expansion.BufferParfume,
+        converter=_to_const_alpha,
+        on_setattr=setters.pipe(setters.convert, _sync_Tref_and_alpha_hook),
+    )
+    swelling: swelling.Swelling | None = None
+
 
 
 # @ffn_define
@@ -316,6 +429,7 @@ class UO2(FuelMaterial):
         factory=properties.thermal_expansion.UO2Relap)
 
     # composition/spec
+    enrichment: float | int = 0.0
     densityFraction: float | int = 0.95
     theoreticalDensity: float | int = 10960.0
     oxygenMetalRatio: float | int = 2.0

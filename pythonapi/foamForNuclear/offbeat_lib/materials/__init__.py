@@ -3,6 +3,6 @@
 #     FuelMaterial, UO2, UPuO2, Zircaloy, IsotopesDict
 # )
 
-from .models import ( 
-    Material, Constant, FuelMaterial, UO2, Zircaloy
+from .models import (
+    Material, Constant, FuelMaterial, UO2, Zircaloy, PyC, SiC, Buffer
 )

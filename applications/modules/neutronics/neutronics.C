@@ -75,7 +75,6 @@ Foam::solvers::neutronics::neutronics
             IOobject::NO_WRITE
         )
     ),
-    mesh_(mesh),
     reactorState_
     (
         IOobject
@@ -126,7 +125,7 @@ Foam::solvers::neutronics::neutronics
             "oneGroupFlux",
             mesh.time().timeName(),
             mesh,
-            IOobject::NO_READ,
+            IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         ),
         mesh,
@@ -182,7 +181,7 @@ Foam::solvers::neutronics::neutronics
             "rhoCool",
             mesh.time().timeName(),
             mesh,
-            IOobject::NO_READ,
+            IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         ),
         mesh,
@@ -279,8 +278,8 @@ void Foam::solvers::neutronics::correctBaffleLessFields()
                 IOobject
                 (
                     "regionsDict",
-                    runTime.time().system(),
-                    runTime.db(),
+                    runTime().time().system(),
+                    runTime().db(),
                     IOobject::MUST_READ,
                     IOobject::NO_WRITE
                 )
@@ -356,8 +355,8 @@ void Foam::solvers::neutronics::deformMesh()
         IOobject
         (
             "regionsDict",
-            runTime.time().system(),
-            runTime.db(),
+            runTime().time().system(),
+            runTime().db(),
             IOobject::READ_IF_PRESENT,
             IOobject::NO_WRITE
         )

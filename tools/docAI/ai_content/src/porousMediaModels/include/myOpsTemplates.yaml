@@ -1,0 +1,66 @@
+description: |
+  myOpsTemplates is a small collection of C++ template helper functions used
+  across foamForNuclear/OpenFOAM-based solvers.
+
+  It provides utilities to:
+  - store the previous iteration of a field conditionally (based on the
+    relaxation policy),
+  - split a “compound” item into sub-items using one or multiple delimiter
+    characters,
+  - print basic field statistics (name and volume-weighted average/min/max)
+    in a consistent format.
+formulation: |
+  This class does not implement a standalone physical model. It contains
+  generic numerical/utility routines that support solver workflows.
+
+  - Conditional previous-iteration storage:
+    $$
+    \text{if } \texttt{myOps::relax(mesh, fieldName)} \text{ then }
+    \texttt{field.storePrevIter()}
+    $$
+    where the relaxation decision is delegated to \texttt{myOps::relax}.
+
+  - String/compound splitting:
+    The compound item is scanned character-by-character and partitioned into
+    tokens whenever a delimiter is encountered (single delimiter or a set of
+    delimiters).
+
+  - Field information output:
+    The routine computes a volume-weighted average of the provided field
+    using the mesh cell volumes $V$:
+    $$
+    \langle \phi \rangle_V = \frac{\sum_i \phi_i V_i}{\sum_i V_i}
+    $$
+    and prints the field name along with average/min/max statistics.
+
+    - $\phi$ is the field values (OpenFOAM field)
+    - $V$ is the mesh cell volume field ($\texttt{mesh().V()}$)
+admonitions:
+- kind: note
+  body: This model is selected solely by its runtime ``typeName`` and defines no additional options.
+options: []
+usage:
+- comment: |
+    The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``). Here is a snippet enabling the model:
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type myOpsTemplates;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  stub_improved: true

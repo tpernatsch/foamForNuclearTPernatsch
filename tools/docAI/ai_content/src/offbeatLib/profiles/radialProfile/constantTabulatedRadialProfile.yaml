@@ -1,0 +1,36 @@
+description: |
+  Radial profile defined using a tabulated constant interpolation table as a
+  function of the radial position.
+
+  The profile values are interpolated over a normalized radial coordinate
+  $r \in [0,1]$ using either "step" or "linear" interpolation (see
+  [@InterpolateTable] / OpenFOAM `InterpolateTables`).
+
+  The supplied tabulated profile must be normalized to 1 in cylindrical
+  coordinates (i.e. the radial integral used by the underlying table
+  integration must equal unity).
+formulation: |
+  The model provides a radial shape function $f(r)$ defined on a normalized
+  radius $r \in [0,1]$ by interpolating tabulated values.
+
+  The tabulated function is required to satisfy the cylindrical-coordinate
+  normalization used by the underlying table integration:
+  $$
+  \int_0^1 f(r)\, r^2 \, dr = 1
+  $$
+  (the exact weighting corresponds to the `integral(2)` call in the
+  implementation, i.e. a cylindrical/spherical-style moment of order 2).
+
+  The interpolated profile is then evaluated at the mesh radial locations
+  stored in the base class and written into the internal `profile_` array.
+
+  - $r$ is the normalized radial coordinate ($0 \le r \le 1$)
+  - $f(r)$ is the tabulated/interpolated radial profile value
+  - $r^2$ is the cylindrical-coordinate weighting implied by the
+    `integral(2)` normalization check
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

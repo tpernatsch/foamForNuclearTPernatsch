@@ -1,0 +1,159 @@
+#!/bin/sh
+#
+# foam_patch: Apply OpenFOAM v2512 fix for MPI_ERR_TRUNCATE in parallel FSI
+#             simulations, then rebuild the affected library (libmeshTools.so).
+#
+# Apply once per OpenFOAM installation, before running parallel FSI simulations.
+# It is idempotent: running it on an already-patched tree is a no-op.
+#
+# Bug:  mappedPatchBase::upToDate() computes local per-processor booleans
+#       thisUpToDate / sampleUpToDate and uses them as conditions to enter
+#       blocks that issue collective Pstream::reduceAnd() calls.  When the
+#       fluid patch has zero faces on some processors (unequal decomposition)
+#       the conditions diverge, causing misaligned MPI collectives that
+#       manifest as MPI_ERR_TRUNCATE with nonBlocking communications.
+#
+# Fix:  Add two Pstream::reduceAnd() calls to synchronise those flags across
+#       all processors BEFORE using them as conditions.
+#
+# See:  OpenFOAM-v2512_MPIbug.md  for the full write-up.
+
+cd "${0%/*}" || exit    # Run from this directory
+
+TARGET="$FOAM_SRC/meshTools/mappedPatches/mappedPolyPatch/mappedPatchBase.C"
+
+# ── Sanity check ──────────────────────────────────────────────────────────────
+if [ ! -f "$TARGET" ]; then
+    echo "foam_patch: ERROR - target file not found:" >&2
+    echo "  $TARGET" >&2
+    echo "  Check that OpenFOAM-v2512 is installed at \$FOAM_SRC/.." >&2
+    exit 1
+fi
+
+# ── Guard: the patch comment is unique to the patched version ─────────────────
+if grep -q "MPI_ERR_TRUNCATE" "$TARGET"; then
+    echo "foam_patch: mappedPatchBase.C already patched -- nothing to do."
+    exit 0
+fi
+
+echo "foam_patch: patching mappedPatchBase.C ..."
+
+# ── Apply patch using an embedded Python script ───────────────────────────────
+# Python is used rather than sed/patch to handle multi-line insertions
+# reliably without depending on exact line numbers.
+python3 - "$TARGET" << 'PYEOF'
+import sys
+
+target = sys.argv[1]
+
+with open(target, 'r') as fh:
+    src = fh.read()
+
+# ── Patch 1 ───────────────────────────────────────────────────────────────────
+# Add global synchronisation of thisUpToDate BEFORE the conditional that calls
+# checkPointMovement (which issues a collective Pstream::reduceAnd) on the
+# local (fluid) mesh.  Without this, procs with empty patches skip the
+# collective while others enter it, causing MPI_ERR_TRUNCATE.
+
+OLD1 = "    if (!thisUpToDate && thisMesh.moving())"
+
+NEW1 = """\
+    // When meshes are moving, the local upToDate flags may diverge across
+    // processors (e.g. procs with empty patches have no points to compare and
+    // evaluate locally to true while others evaluate to false).  Before using
+    // these flags as conditions for calls to checkPointMovement -- which issues
+    // a collective Pstream::reduceAnd -- we must synchronise them globally so
+    // that every processor enters (or skips) the collective together, avoiding
+    // MPI_ERR_TRUNCATE with nonBlocking communications.
+
+    if (thisMesh.moving())
+    {
+        Pstream::reduceAnd(thisUpToDate);
+    }
+
+    if (!thisUpToDate && thisMesh.moving())"""
+
+if OLD1 not in src:
+    print(
+        "foam_patch: ERROR - pattern 1 not found in source.\n"
+        "  The file may differ from the expected OpenFOAM v2512 content.\n"
+        "  Manual inspection of mappedPatchBase.C is required.",
+        file=sys.stderr
+    )
+    sys.exit(1)
+
+src = src.replace(OLD1, NEW1, 1)
+
+# ── Patch 2 ───────────────────────────────────────────────────────────────────
+# Add global synchronisation of sampleUpToDate BEFORE the conditional that
+# calls checkPointMovement on the sample (solid) mesh.
+
+OLD2 = """\
+    if
+    (
+       !sampleUpToDate
+     && sampleMesh().moving()
+     && (
+            mode_ == NEARESTPATCHFACE
+         || mode_ == NEARESTPATCHFACEAMI
+         || mode_ == NEARESTPATCHPOINT
+        )
+    )
+    {
+        sampleUpToDate = checkPointMovement"""
+
+NEW2 = """\
+    if
+    (
+        sameWorld()
+     && sampleMesh().moving()
+     && (
+            mode_ == NEARESTPATCHFACE
+         || mode_ == NEARESTPATCHFACEAMI
+         || mode_ == NEARESTPATCHPOINT
+        )
+    )
+    {
+        Pstream::reduceAnd(sampleUpToDate);
+    }
+
+    if
+    (
+       !sampleUpToDate
+     && sampleMesh().moving()
+     && (
+            mode_ == NEARESTPATCHFACE
+         || mode_ == NEARESTPATCHFACEAMI
+         || mode_ == NEARESTPATCHPOINT
+        )
+    )
+    {
+        sampleUpToDate = checkPointMovement"""
+
+if OLD2 not in src:
+    print(
+        "foam_patch: ERROR - pattern 2 not found in source.\n"
+        "  The file may differ from the expected OpenFOAM v2512 content.\n"
+        "  Manual inspection of mappedPatchBase.C is required.",
+        file=sys.stderr
+    )
+    sys.exit(1)
+
+src = src.replace(OLD2, NEW2, 1)
+
+with open(target, 'w') as fh:
+    fh.write(src)
+
+print(f"foam_patch: {target} patched successfully.")
+PYEOF
+
+if [ $? -ne 0 ]; then
+    echo "foam_patch: ERROR - patch script failed." >&2
+    exit 1
+fi
+
+# ── Rebuild libmeshTools.so ───────────────────────────────────────────────────
+echo "foam_patch: rebuilding libmeshTools.so ..."
+wmake "$FOAM_SRC/meshTools" || exit 1
+
+echo "foam_patch: done."

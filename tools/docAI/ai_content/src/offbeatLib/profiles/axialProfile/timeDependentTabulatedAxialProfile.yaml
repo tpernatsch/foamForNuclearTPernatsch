@@ -1,0 +1,97 @@
+description: |
+  Time-dependent axial profile defined by interpolation in a 2D lookup table
+  as a function of axial location and time, i.e. $f(z,t)$.
+
+  The profile is provided by the user as tabulated data and is interpolated
+  using independent interpolation methods in the axial and time directions.
+  The supplied axial profile data must be normalized to 1.
+
+  The class maps the interpolated profile onto the addressed list managed by
+  the base ``axialProfile`` and provides access to the resulting profile
+  values through the profile function interface.
+formulation: |
+  The model constructs an axial profile value at a given time by interpolating
+  tabulated data in both axial coordinate and time.
+
+  Let $z$ be the normalized axial coordinate in $[0,1]$ and $t$ be the
+  simulation time. The normalized profile is obtained from a 2D interpolation
+  of the user-provided table:
+  $$
+  p(z,t) = \mathcal{I}_t\left(\mathcal{I}_z\left(p_{ij}\right)\right)
+  $$
+  where $p_{ij}$ are the tabulated values in the ``data`` array, and
+  $\mathcal{I}_z$ and $\mathcal{I}_t$ denote the interpolation operators
+  selected by ``axialInterpolationMethod`` and ``timeInterpolationMethod``.
+
+  A separate 1D interpolation is used to apply an optional axial scaling
+  factor:
+  $$
+  s(z) = \mathcal{I}_z\left(s_i\right)
+  $$
+  where $s_i$ are the tabulated values in ``axialScalingFactors`` (or $s_i=1$
+  if not provided).
+
+  The final mapped profile value is:
+  $$
+  f(z,t) = s(z)\,p(z,t)
+  $$
+
+  - $z$ is the normalized axial coordinate (set by ``axialLocations`` and
+    normalized to the ``axialProfile`` range)
+  - $t$ is the simulation time (tabulated in ``timePoints``)
+  - $p_{ij}$ are the normalized profile values from ``data``
+  - $s_i$ are the axial scaling factors from ``axialScalingFactors``
+  - $f(z,t)$ is the resulting (scaled) axial profile used by the base
+    ``axialProfile`` mapping
+options:
+- key: axialLocations
+  type: list[scalar]
+  required: true
+  description: |
+    Tabulated normalized axial locations in the range $[0,1]$.
+    The first entry must be 0.0 and the last entry must be 1.0.
+- key: timePoints
+  type: list[scalar]
+  required: true
+  description: |
+    Tabulated time values corresponding to the second interpolation dimension.
+- key: data
+  type: table
+  required: true
+  description: |
+    2D tabulated normalized profile data. The outer list corresponds to
+    time entries (``timePoints``), and each inner list provides values at
+    the axial locations (``axialLocations``).
+    Each row must contain values with the same length as ``axialLocations``.
+- key: axialScalingFactors
+  type: list[scalar]
+  required: false
+  default: 1.0
+  description: |
+    Optional tabulated axial scaling factors $s_i$ at the entries of
+    ``axialLocations``. If not provided, scaling defaults to 1.0 everywhere.
+- key: axialInterpolationMethod
+  type: word
+  required: false
+  default: linear
+  description: |
+    Interpolation method used in the axial direction for both the profile
+    table and the scaling factor table.
+- key: timeInterpolationMethod
+  type: word
+  required: false
+  default: linear
+  description: |
+    Interpolation method used in the time direction for the profile table.
+dictionary: neutronicsProperties
+usage:
+- comment: |
+    Select the time-dependent tabulated axial profile and provide the 2D
+    interpolation table.
+  snippet: "{\n    type            timeDependentTabulated;\n    timePoints      ( 0 100 );\n    axialLocations  ( 0.0 0.5\
+    \ 1.0 );\n    data          ( ( 0.5 1.0 1.5 )\n                    ( 0.8 1.1 1.0 ) );\n    axialInterpolationMethod  \
+    \  linear;\n    timeInterpolationMethod     linear;\n    \n}"
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

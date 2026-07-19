@@ -1,0 +1,53 @@
+description: |
+  COBRA-TF suppression factor model based on the local fluid temperature $T_f$,
+  the structure wall temperature $T_{wall}$, and the saturation/interface
+  temperature $T_{sat}$.
+
+  The model returns a bounded fraction representing the reduction of
+  interfacial contact as the fluid approaches saturation, following the
+  temperature-ratio logic implemented in the code.
+formulation: |
+  The suppression factor is computed cell-wise from the temperature
+  differences between the local fluid temperature $T_f$, the saturation
+  (interface) temperature $T_{sat}$, and the structure wall temperature
+  $T_{wall}$.
+
+  $$ S = \min\left( \max\left(\frac{T_f - T_{sat}}{T_{wall} - T_{sat}}, 0\right), 1 \right) $$
+
+  where the denominator is regularized in the implementation by using a
+  minimum value of $10^{-3}$ to avoid division by very small numbers.
+
+  - $S$ is the suppression factor (dimensionless, bounded in $[0,1]$)
+  - $T_f$ is the local fluid temperature field ($Tf_$)
+  - $T_{wall}$ is the local structure wall temperature field ($Twall_$)
+  - $T_{sat}$ is the local saturation/interface temperature field ($Tsat_ = T.interface$)
+admonitions:
+- kind: note
+  body: This model is selected solely by its runtime ``typeName`` and defines no additional options.
+options: []
+usage:
+- comment: 'The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the
+    ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``).
+    Here is a snippet enabling the model:'
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type COBRA_TF;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  stub_improved: true

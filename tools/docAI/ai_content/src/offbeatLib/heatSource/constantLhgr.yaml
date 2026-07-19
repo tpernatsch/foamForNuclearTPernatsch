@@ -1,0 +1,179 @@
+description: |
+  Heat source model class that allows for a constant average **linear heat
+  generation rate (lhgr)**.
+
+  It is possible to apply a radial and an axial profile to the lhgr. Note
+  that even if the lhgr is constant over time, the axial and radial profile might
+  change over time, depending on the profile type chosen by the user.
+
+  It is also possible to use the external reference dimensions option to apply the
+  lhgr of the full-length rod a small segment or rodlet.
+formulation: |
+  The final volumetric heat source is derived as a combination of lhgr, radial and
+  axial profiles, as follows:
+
+  $$
+  \begin{aligned}
+  Q(t,r,z) = Q_{avg} \cdot f(r,t) \cdot g(z,t)
+  \end{aligned}
+  $$
+
+  where:
+
+  - $r$ is the relative radial position (0...1)
+  - $z$ is the relative axial position (0...1)
+  - $t$ is the current time
+  - $f(r,t)$ and $g(z,t)$ are the radial and axial profiles, respectively
+  - $Q_{avg}$ is the average power density in $W/m^3$.
+
+  The radial and axial profiles are expected to be normalized to 1, while the
+  average power density is obtained from:
+
+  $$
+  \begin{aligned}
+  Q_{avg} = \frac{lhgr \cdot h_{ref}}{\frac{V_{model}}{\alpha}}
+  \end{aligned}
+  $$
+
+  where:
+
+  - $h_{ref}$ is the height of the rod in the reference, undeformed geometry
+  - $V_{model}$ is the volume of the fuel as calculated by OpenFOAM in the model
+  - $\alpha$ is the fraction of the real geometry modeled in the simulations
+    (e.g. 0.25 if you are using symmetry BCs and you are simulating only a quarter
+    of the rod).
+admonitions:
+- kind: warning
+  body: |
+    This class requires the `pinDirection` keyword to be set in the `globalOptions` sub-dictionary. The `angularFraction` keyword might also be necessary (see
+    next warning).
+- kind: warning
+  body: |
+    Remove the `angularFraction` keyword for axisymmetric r-z models, as the
+    angular fraction is automatically calculated from the wedge boundaries.
+    Otherwise, it must be provided. For example, set it to 0.25 for quarter
+    symmetry, to 0.5 for half-symmetry and to 1.0 for 3D simulations.
+options:
+- key: lhgr
+  type: scalar
+  required: true
+  description: The constant linear heat generation rate in W/m.
+- key: materials
+  type: list[word]
+  required: true
+  description: A list of material (or cellZones names) where the heat source model applies.
+- key: axialProfile
+  type: axialProfile
+  required: true
+  py:
+    type: axial_profile.AxialProfile
+    factory: axial_profile.Flat
+    imports:
+    - from ..profiles import axial_profile
+  description: A sub-dictionary that specifies the type of axial profile.
+- key: radialProfile
+  type: radialProfile
+  required: true
+  py:
+    type: radial_profile.RadialProfile
+    factory: radial_profile.Flat
+    imports:
+    - from ..profiles import radial_profile
+  description: A sub-dictionary that specifies the type of radial profile.
+- key: useExternalReferenceDimensions
+  type: bool
+  required: false
+  default: false
+  description: Activate reading reference dimensions for axial profile (`zMin` and `zMax`) from the dictionary.
+- key: zMin
+  type: scalar
+  required: false
+  description: Reference axial coordinate of the bottom of the fuel region (only if `useExternalReferenceDimensions` is true).
+- key: zMax
+  type: scalar
+  required: false
+  description: Reference axial coordinate of the top of the fuel region (only if `useExternalReferenceDimensions` is true).
+- key: volumeFraction
+  type: scalar
+  required: false
+  description: Fraction of the reference rod present in the local mesh (only if `useExternalReferenceDimensions` is true).
+usage:
+- comment: |
+    Here is a code snippet the `solverDict` to be used for the case of a constant
+    lhgr of 10e3 W/m with flat (i.e. uniform) axial and radial profiles.
+    This particular example considers a quarter of a fuel disc.
+  snippet: |
+    heatSource constantLhgr;
+
+    globalOptions
+    {
+        angularFraction 0.25;
+        pinDirection  (0 0 1);
+    }
+
+    heatSourceOptions
+    {
+        lhgr        10e3;
+
+        materials ( fuel );
+
+        useExternalReferenceDimensions off;
+        // // Alternatively one can use external reference dimensions
+        // useExternalReferenceDimensions on;
+        // zMin 0.0;
+        // zmax 3.0;
+        // volumeFraction 0.01;
+
+        axialProfile
+        {
+            type flat;
+        }
+
+        radialProfile
+        {
+            type flat;
+        }
+    }
+- comment: "For a time-dependent axial profile, one can modify the `axialProfile` \nsub-dictionary as follows:\n"
+  snippet: |-
+    heatSourceOptions
+    {
+        // .. The rest of the dictionary may remain unchanged
+
+        axialProfile
+        {
+            // Example: time dependent axial radial profile.
+            // The user provides a 2D table (z-vs-time) of normalized lhgr values
+            // (normalized to the average).
+            // Other options are available (see axialProfile class).
+            type            timeDependentTabulated;
+
+            // List of time points for axial profile
+            timePoints      ( 0 3600 31539600 );
+
+            // List of axial locations for axial profile
+            axialLocations  ( 0.0 0.5 1.0 );
+
+            // 2D table for axial profile (z is x axis; time is y axis)
+            data
+            (
+                ( 1.0 1.0 1.0 )
+                ( 0.5 1.0 1.5 )
+                ( 0.8 1.1 1.0 )
+            );
+
+            // Select the axial interpolation method
+            axialInterpolationMethod    linear;
+
+            // Select the time interpolation method for time steps that fall in-between
+            // the time points indicated in the timePoints list above
+            timeInterpolationMethod     linear;
+        }
+
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options

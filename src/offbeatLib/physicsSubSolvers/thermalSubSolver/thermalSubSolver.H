@@ -231,7 +231,15 @@ public:
         //- Update temperature by solving the heat balance equation
         virtual void correct();
 
-        //- Return true if converged
+        //- Return true if converged given explicit residual values
+        virtual bool converged
+        (
+            const scalar& residual,
+            const scalar& relResidual,
+            const scalar& absErr
+        );
+
+        //- Return true if converged using stored initial residuals
         virtual bool converged();
 
     //- Access functions     
@@ -242,7 +250,13 @@ public:
             return mat_.rho();
         }
 
-        //- Return a const reference to the temperature field 
+        //- Return a reference to the temperature field
+        inline volScalarField& T()
+        {
+            return T_;
+        }
+
+        //- Return a const reference to the temperature field
         inline const volScalarField& T() const
         {
             return T_;

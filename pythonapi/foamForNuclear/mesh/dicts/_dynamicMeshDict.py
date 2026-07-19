@@ -27,6 +27,7 @@ _DIFFUSIVITY_MOTION_TYPES = {
     "uniform", "directional", "motionDirectional", "quadratic", "file"
 }
 _QUADRATIC_MOTION_TYPES = {"inverseDistance"}
+_INTERPOLATION_SCHEME_TYPES = {"spline", "linear"}
 
 
 class MotionDict(OpenFOAMDict):
@@ -72,7 +73,7 @@ class LinearMotion(MotionDict):
     Parameters
     ----------
     name : str
-        Name of the motion.
+        Name of the motion or cellZone name if `multiSolidBodyMotionSolver`.
     velocity : Vector
         Motion velocity in m/s.
     """
@@ -115,19 +116,19 @@ class OscillatingLinearMotion(MotionDict):
     Oscillating Linear Motion used in dynamicMeshDict. The motion is defined by
     the following formula:
 
-        displacement(t) = amplitude * sin(omega * (t + phaseShift)) + verticalShift
+        displacement(t) = amplitude * sin(omega * (t + timeShift)) + amplitudeShift
 
     Parameters
     ----------
     name : str
-        Name of the motion.
+        Name of the motion or cellZone name if `multiSolidBodyMotionSolver`.
     amplitude : Vector | Table
         Amplitude vector of the oscilation in m.
     omega : float | Table
         Angular frequency in rad/s.
-    phaseShift : float | Table
+    timeShift : float | Table
         Phase shift in s (default `None`).
-    verticalShift : Vector | Table
+    amplitudeShift : Vector | Table
         Vertical shift in m (default `None`).
     """
     def __init__(
@@ -135,15 +136,15 @@ class OscillatingLinearMotion(MotionDict):
             name: str,
             amplitude: Vector | Table,
             omega: float | Table,
-            phaseShift: float | Table=None,
-            verticalShift: Vector | Table=None
+            timeShift: float | Table=None,
+            amplitudeShift: Vector | Table=None
         ):
         super().__init__(name, solidBodyMotionFunction="oscillatingLinearMotion")
 
         self.amplitude = amplitude
         self.omega = omega
-        self.phaseShift = phaseShift
-        self.verticalShift = verticalShift
+        self.timeShift = timeShift
+        self.amplitudeShift = amplitudeShift
 
     def __repr__(self, depth = 0):
         oscillatingLinearMotionCoeffs = OpenFOAMDict(
@@ -152,10 +153,10 @@ class OscillatingLinearMotion(MotionDict):
                 'omega': self.omega
             }
         )
-        if (self.phaseShift is not None):
-            oscillatingLinearMotionCoeffs['phaseShift'] = self.phaseShift
-        if (self.verticalShift is not None):
-            oscillatingLinearMotionCoeffs['verticalShift'] = self.verticalShift
+        if (self.timeShift is not None):
+            oscillatingLinearMotionCoeffs['phaseShift'] = self.timeShift
+        if (self.amplitudeShift is not None):
+            oscillatingLinearMotionCoeffs['verticalShift'] = self.amplitudeShift
 
         self.__setitem__("solidBodyMotionFunction", self.solidBodyMotionFunction)
         self.__setitem__("oscillatingLinearMotionCoeffs", oscillatingLinearMotionCoeffs)
@@ -192,22 +193,22 @@ class OscillatingLinearMotion(MotionDict):
         self._omega = omega
 
     @property
-    def phaseShift(self):
-        return self._phaseShift
+    def timeShift(self):
+        return self._timeShift
 
-    @phaseShift.setter
-    def phaseShift(self, phaseShift) -> None:
-        check_type("phaseShift", phaseShift, (float, int, Table), none_ok=True)
-        self._phaseShift = phaseShift
+    @timeShift.setter
+    def timeShift(self, timeShift) -> None:
+        check_type("timeShift", timeShift, (float, int, Table), none_ok=True)
+        self._timeShift = timeShift
 
     @property
-    def verticalShift(self):
-        return self._verticalShift
+    def amplitudeShift(self):
+        return self._amplitudeShift
 
-    @verticalShift.setter
-    def verticalShift(self, verticalShift) -> None:
-        check_type("verticalShift", verticalShift, (Vector, Table), none_ok=True)
-        self._verticalShift = verticalShift
+    @amplitudeShift.setter
+    def amplitudeShift(self, amplitudeShift) -> None:
+        check_type("amplitudeShift", amplitudeShift, (Vector, Table), none_ok=True)
+        self._amplitudeShift = amplitudeShift
 
 
 class RotatingMotion(MotionDict):
@@ -217,7 +218,7 @@ class RotatingMotion(MotionDict):
     Parameters
     ----------
     name : str
-        Name of the motion.
+        Name of the motion or cellZone name if `multiSolidBodyMotionSolver`.
     origin : Vector
         Origin position of the rotation in m (default `Vector(0, 0, 0)`).
     axis : Vector
@@ -296,7 +297,7 @@ class OscillatingRotatingMotion(MotionDict):
     Parameters
     ----------
     name : str
-        Name of the motion.
+        Name of the motion or cellZone name if `multiSolidBodyMotionSolver`.
     omega : float
         Angular frequency in rad/s.
     amplitude : Vector
@@ -360,6 +361,112 @@ class OscillatingRotatingMotion(MotionDict):
     def amplitude(self, amplitude) -> None:
         check_type("amplitude", amplitude, Vector)
         self._amplitude = amplitude
+
+
+class Tabulated6DoFMotion(MotionDict):
+    """
+    Tabulated 6 Degrees of Freedom (DoF) Motion used in dynamicMeshDict. The
+    motion is defined by the table of time, position vector and rotation vector.
+
+    Parameters
+    ----------
+    name : str
+        Name of the motion or cellZone name if `multiSolidBodyMotionSolver`.
+    tableDoF : list[tuple]
+        Table containing the 6 DoF displacement. Each row is a tuple with:
+        1. `float` for time
+        2. `Vector` for position or `None`
+        3. `Vector` for rotation or `None`
+    CofG : Vector
+        Center of Gravity (default: `Vector(0, 0, 0)`).
+    interpolationScheme : str, {'spline', 'linear'}
+        Interpolation scheme between data points (default `linear`).
+    """
+    def __init__(
+            self,
+            name: str,
+            tableDoF: list[tuple] | None=None,
+            CofG: Vector=Vector(0, 0, 0),
+            interpolationScheme: str='linear'
+        ):
+        super().__init__(name, solidBodyMotionFunction="tabulated6DoFMotion")
+
+        self.tableDoF = tableDoF
+        self.CofG = CofG
+        self.interpolationScheme = interpolationScheme
+
+    def __repr__(self, depth: int=0, region: str=""):
+        with open(f"constant/{region}/{self.name}.dat", 'w') as f:
+            tabulated6DoFMotionTable = f"{len(self.tableDoF)}\n(\n"
+
+            for t, position, rotation in sorted(self.tableDoF, key=lambda e: e[0]):
+                tabulated6DoFMotionTable += f"{tab}( {t} ( {position} {rotation} ) )\n"
+
+            tabulated6DoFMotionTable += ")\n"
+
+            f.write(tabulated6DoFMotionTable)
+
+        self.__setitem__("solidBodyMotionFunction", self.solidBodyMotionFunction)
+        self.__setitem__("timeDataFileName", f'"<constant>/{region}/{self.name}.dat"')
+        self.__setitem__("CofG", self.CofG)
+        self.__setitem__("interpolationScheme", self.interpolationScheme)
+
+        return super().__repr__(depth)
+
+    @property
+    def description(self):
+        return(f"{self.name}: {self.solidBodyMotionFunction} ({len(self.tableDoF)} data points)")
+
+    @property
+    def tableDoF(self):
+        return self._tableDoF
+
+    @tableDoF.setter
+    def tableDoF(self, tableDoF) -> None:
+        check_type("tableDoF", tableDoF, list, none_ok=True)
+
+        self._tableDoF = []
+        if (tableDoF is not None):
+            for line in sorted(tableDoF, key=lambda e: e[0]):
+                if (len(line) == 3):
+                    self.add_point(line[0], line[1], line[2])
+                elif (len(line) == 2):
+                    self.add_point(line[0], line[1])
+                elif (len(line) == 1):
+                    self.add_point(line[0])
+                else:
+                    msg = "Line is empty in DoF table."
+                    raise ValueError(msg)
+
+    @property
+    def CofG(self):
+        return self._CofG
+
+    @CofG.setter
+    def CofG(self, CofG) -> None:
+        check_type("CofG", CofG, Vector)
+        self._CofG = CofG
+
+    @property
+    def interpolationScheme(self):
+        return self._interpolationScheme
+
+    @interpolationScheme.setter
+    def interpolationScheme(self, interpolationScheme) -> None:
+        check_type("interpolationScheme", interpolationScheme, str)
+        check_value("interpolationScheme", interpolationScheme, _INTERPOLATION_SCHEME_TYPES)
+        self._interpolationScheme = interpolationScheme
+
+    def add_point(
+            self,
+            t: float,
+            position: Vector=Vector(0, 0, 0),
+            rotation: Vector=Vector(0, 0, 0)
+        ):
+        check_type("t", t, (float, int))
+        check_type("position", position, Vector)
+        check_type("rotation", rotation, Vector)
+        self.tableDoF.append((t, position, rotation))
 
 
 class DiffusivityMotion:
@@ -538,7 +645,8 @@ class DynamicMeshDict(OpenFOAMFile):
             motionSolver: str=None,
             solidBodyMotionFunction: str=None,
             region: str="",
-            motionSolverLibs: List=List(["fvMotionSolvers"])
+            motionSolverLibs: List=List(["fvMotionSolvers"]),
+            extraParameters: dict | None=None
         ):
         super().__init__("dynamicMeshDict", folder="constant", region=region)
 
@@ -546,6 +654,7 @@ class DynamicMeshDict(OpenFOAMFile):
         self.motionSolver = motionSolver
         self.solidBodyMotionFunction = solidBodyMotionFunction
         self.motionSolverLibs = motionSolverLibs
+        self.extraParameters = extraParameters if extraParameters is not None else {}
 
         self.motions = []
         self.diffusivity = None
@@ -563,6 +672,7 @@ class DynamicMeshDict(OpenFOAMFile):
                     text += f"{(depth+1)*tab}{motion.description}\n"
 
         return text
+
 
     @property
     def dynamicFvMesh(self):
@@ -621,6 +731,7 @@ class DynamicMeshDict(OpenFOAMFile):
         check_type("diffusivity", diffusivity, DiffusivityMotion, none_ok=True)
         self._diffusivity = diffusivity
 
+
     @property
     def is_empty(self) -> bool:
         return(self.motionSolver == None)
@@ -643,7 +754,7 @@ class DynamicMeshDict(OpenFOAMFile):
         Parameters
         ----------
         name : str
-            Name of the motion.
+            Name of the motion or cellZone name if `multiSolidBodyMotionSolver`.
         origin : Vector
             Origin position of the rotation in m (default `Vector(0, 0, 0)`).
         axis : Vector
@@ -671,7 +782,7 @@ class DynamicMeshDict(OpenFOAMFile):
         Parameters
         ----------
         name : str
-            Name of the motion.
+            Name of the motion or cellZone name if `multiSolidBodyMotionSolver`.
         omega : float
             Angular frequency in rad/s.
         amplitude : Vector
@@ -697,7 +808,7 @@ class DynamicMeshDict(OpenFOAMFile):
         Parameters
         ----------
         name : str
-            Name of the motion.
+            Name of the motion or cellZone name if `multiSolidBodyMotionSolver`.
         velocity : Vector
             Motion velocity in m/s.
         """
@@ -711,34 +822,34 @@ class DynamicMeshDict(OpenFOAMFile):
             name: str,
             amplitude: Vector,
             omega: float,
-            phaseShift: float = None,
-            verticalShift: Vector = None
+            timeShift: float = None,
+            amplitudeShift: Vector = None
         ) -> None:
         """
         Add an Oscillating Linear Motion used in dynamicMeshDict. The motion is
         defined by the following formula:
 
-            displacement(t) = amplitude * sin(omega * (t + phaseShift)) + verticalShift
+            displacement(t) = amplitude * sin(omega * (t + timeShift)) + amplitudeShift
 
         Parameters
         ----------
         name : str
-            Name of the motion.
+            Name of the motion or cellZone name if `multiSolidBodyMotionSolver`.
         amplitude : Vector
             Amplitude vector of the oscilation in m.
         omega : float
             Angular frequency in rad/s.
-        phaseShift : float
-            Phase shift in s (default `None`).
-        verticalShift : Vector
-            Vertical shift in m (default `None`).
+        timeShift : float
+            Time shift (phase shift in OpenFOAM) in s (default `None`).
+        amplitudeShift : Vector
+            Amplitude shift (vertical shift in OpenFOAM) in m (default `None`).
         """
         self.add_motion(OscillatingLinearMotion(
             name=name,
             amplitude=amplitude,
             omega=omega,
-            phaseShift=phaseShift,
-            verticalShift=verticalShift
+            timeShift=timeShift,
+            amplitudeShift=amplitudeShift
         ))
 
 
@@ -747,6 +858,9 @@ class DynamicMeshDict(OpenFOAMFile):
         text = ""
         text += addParameter("dynamicFvMesh", self.dynamicFvMesh, isAddExtraLine=True)
         text += addParameter("motionSolverLibs", self.motionSolverLibs, isAddExtraLine=True)
+
+        for key, value in self.extraParameters.items():
+            text += addParameter(key, value, isAddExtraLine=True)
 
         if (self.dynamicFvMesh == "dynamicMotionSolverFvMesh"):
             check_type("motionSolver", self.motionSolver, str)
@@ -762,6 +876,17 @@ class DynamicMeshDict(OpenFOAMFile):
 
                 for motion in self.motions:
                     text += f"{motion!r}\n"
+
+            elif (self.motionSolver == "multiSolidBodyMotionSolver"):
+                text += "multiSolidBodyMotionSolverCoeffs\n{\n"
+
+                for motion in self.motions:
+                    if (isinstance(motion, Tabulated6DoFMotion)):
+                        text += f"{tab}{motion.__repr__(depth=1, region=self.region)}\n"
+                    else:
+                        text += f"{tab}{motion.__repr__(depth=1)}\n"
+
+                text += "}\n"
 
             elif (
                 self.motionSolver == "displacementSBRStress" or

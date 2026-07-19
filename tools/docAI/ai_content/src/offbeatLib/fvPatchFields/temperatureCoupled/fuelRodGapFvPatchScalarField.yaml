@@ -1,0 +1,117 @@
+description: |
+  Coupled fvPatchScalarField for modeling fuel-rod gap conductance between two
+  AMI-coupled regions (typically pellet-to-cladding or cladding-to-cladding
+  contact surfaces).
+
+  The boundary condition computes an evolving interface gap conductance
+  $h$ as the sum of gas, radiation, and contact contributions, and applies the
+  resulting thermal coupling across a pair of `regionCoupledOFFBEAT` patches.
+
+  This class is based primarily on the FRAPCON 4.0 gap conductance correlations
+  and is intended for standard fuel rods (fuel pellet + cladding).
+formulation: |
+  The total gap conductance is modeled as:
+  $$
+  h = h_{\mathrm{gas}} + h_{\mathrm{rad}} + h_{\mathrm{contact}}
+  $$
+  where each term depends on the local gap geometry, surface roughness,
+  temperatures, and (for the gas term) the gap gas state provided by a
+  `gapGasModel`.
+
+  The patch temperature field is coupled to the neighbour patch through an
+  effective resistive interface conductance, consistent with the
+  `resistiveGapFvPatchScalarField` framework.
+
+  Variables and inputs:
+  - $h$ is the total interface gap conductance (W/m$^2$), computed by this BC
+  - $h_{\mathrm{gas}}$ is the gas conductance contribution (W/m$^2$)
+  - $h_{\mathrm{rad}}$ is the radiative heat transfer contribution (W/m$^2$)
+  - $h_{\mathrm{contact}}$ is the contact conductance contribution (W/m$^2$)
+  - $R$ is the surface roughness field (m), provided by ``roughness``
+  - $\epsilon$ is the emissivity field (dimensionless), provided by ``emissivity``
+  - $T$ is the patch temperature (K), i.e. the scalar field value on the patch
+  - $T_n$ is the neighbour patch temperature (K), obtained via AMI interpolation
+  - $k$ is the conductivity field (W/m/K), provided by ``kappa``
+  - The gap gas state is obtained from the ``gapGasModel`` object
+
+  The implementation also supports optional relaxation of the computed
+  conductance via ``relax`` to improve nonlinear convergence.
+admonitions:
+- kind: warning
+  body: |
+    This boundary condition assumes that the same boundary condition is applied
+    to a pair of `regionCoupledOFFBEAT` patches, which are coupled using the AMI
+    (Arbitrary Mesh Interface) mapping algorithm.
+- kind: warning
+  body: |
+    This boundary condition requires the presence of a `gapGasModel` in the
+    simulation.
+dictionary: neutronicsProperties
+options:
+- key: patchType
+  type: word
+  required: true
+  description: |
+    Underlying fvPatch type. Must be set to `regionCoupledOFFBEAT`.
+- key: kappa
+  type: word
+  required: false
+  default: k
+  description: |
+    Name of the conductivity field used by the underlying resistive-gap
+    formulation. By default, it is set to `k` (OFFBEAT material conductivity field name).
+- key: emissivity
+  type: word
+  required: false
+  default: emissivity
+  description: |
+    Name of the emissivity field used for the radiative contribution.
+- key: gapGasModel
+  type: word
+  required: false
+  default: gapGas
+  description: |
+    Name of the `gapGasModel` object to query for the gap gas state.
+- key: alpha
+  type: scalar
+  required: false
+  description: |
+    Initial value for the gap conductance (used as the initial condition for
+    the computed interface conductance). If not provided, the conductance
+    starts from the default behavior of the underlying implementation.
+- key: roughness
+  type: scalar
+  required: true
+  description: |
+    Roughness field used to calculate the effective gap width and contact
+    conductance.
+- key: relax
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Relaxation factor for the gap conductance. Values as low as 0.1 are often
+    useful to improve (and sometimes accelerate) convergence.
+- key: value
+  type: scalar
+  required: true
+  description: |
+    Initial value of the patch temperature field.
+usage:
+- comment: |
+    Typical patch-field dictionary for the coupled fuel-rod gap conductance BC.
+  snippet: |-
+    fuelOuter
+    {
+        type            fuelRodGap;
+        patchType       regionCoupledOFFBEAT;
+
+        roughness       uniform 1e-6;
+        relax           0.1;
+
+        value           $internalField;
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

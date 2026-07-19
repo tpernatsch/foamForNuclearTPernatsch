@@ -1,0 +1,111 @@
+description: |
+  Solver for fission product (FP) transport by diffusion.
+
+  For each configured FP species, it solves a transient diffusion equation of
+  the form
+  \f[ \frac{\partial C}{\partial t} - \nabla \cdot (D \nabla C) = S \f].
+
+  Diffusion coefficients are provided by material-specific ``diffCoefModel``
+  subclasses, while source terms (fission yields) are provided by per-species
+  ``fpYieldModel`` subclasses.
+
+  The implementation follows the TRISO FP diffusion and release modeling
+  approach discussed in Jiang et al. (Journal of Nuclear Materials, 2021).
+formulation: |
+  The FP concentration field ``N_<species>`` (units: mol/m^3) is evolved by a
+  transient diffusion equation with a production/release source term.
+
+  $$ \frac{\partial N}{\partial t} - \nabla \cdot \left( D \nabla N \right) = s $$
+
+  where:
+
+  - $N$ is the FP concentration field ``N_<species>`` [mol/m$^3$]
+  - $D$ is the diffusion coefficient ``diffN_<species>`` [m$^2$/s], obtained
+    from a per-material-zone ``diffCoefModel`` (optionally overridden per
+    species inside each zone)
+  - $s$ is the source term field ``srcN_<species>`` [mol/m$^3$/s], obtained
+    from a per-species ``fpYieldModel`` (optionally using enrichment-dependent
+    yields)
+  - $t$ is time [s]
+
+  The solver also supports optional coupling to additional externally
+  registered source fields named ``extSrc_N_<species>`` by adding them to the
+  internal source term.
+dictionary: neutronicsProperties
+optionsLocations:
+- name: elementTransportOptions
+  in: solverDict
+options:
+- key: fissionProducts
+  type: list[word]
+  location: FpDiffusionOptions
+  required: true
+  description: |
+    List of FP species names (keys of the ``fissionProducts`` sub-dictionary).
+    For each entry ``X``, the solver creates fields ``N_X``, ``diffN_X``,
+    and ``srcN_X``.
+- key: diffusion
+  type: table
+  location: FpDiffusionOptions
+  required: true
+  description: |
+    Material-zone keyed diffusion coefficient configuration.
+
+    The sub-dictionary keys are interpreted as zone patterns (``wordRe``),
+    and each matching zone provides a ``diffCoefModel`` configuration.
+
+    A per-species sub-dictionary inside a zone dictionary takes priority over
+    the zone-level ``type``. For example, within a matching zone:
+    - ``Kernel { type ...; }`` sets the diffusion model for species ``Kernel``
+    - otherwise the zone-level dictionary is used as the model configuration
+- key: yield
+  type: table
+  location: FpDiffusionOptions
+  required: false
+  description: |
+    Material-zone keyed fission yield (source) model configuration.
+
+    Only fissile zones need entries. A per-species sub-dictionary inside a
+    zone dictionary takes priority over the zone-level ``type``.
+    (The solver reads the UO2 enrichment from the UO2 material, which is used
+    by enrichment-dependent yield models.)
+usage:
+- comment: |
+    Configure the FP diffusion solver in the ``solverDict`` using the
+    ``elementTransportOptions`` structure.
+  snippet: |-
+    elementTransportOptions
+    {
+        solvers ( FpDiffusion );
+        FpDiffusionOptions
+        {
+            fissionProducts (Cs Ag);     // word list of species
+
+            diffusion                    // zone-keyed; wordRe patterns accepted
+            {
+                Kernel      { type UO2Arrhenius; }
+                Buffer      { type singleArrhenius; d1 1e-8; q1 0; }
+                "IPyC|OPyC" { type PyCArrhenius; }
+                SiC         { type SiCArrhenius; }
+            }
+
+            yield                        // zone-keyed; only fissile zones needed
+            {
+                Kernel { type UO2; }     // smart default: built-in Cs/Ag/Kr/Sr yields
+            }
+
+            // Per-species overrides — add a species subdict inside the zone dict:
+            // diffusion
+            // {
+            //     Kernel
+            //     {
+            //         Cs { type doubleArrhenius; d1 5.6e-8; q1 209000; d2 5.2e-4; q2 362000; }
+            //         Ag { type UO2Arrhenius; }
+            //     }
+            // }
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

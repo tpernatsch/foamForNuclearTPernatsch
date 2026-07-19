@@ -1,0 +1,30 @@
+description: |
+  HDiffusionCoefficientBison is a hydrogen diffusion coefficient model that
+  computes the effective diffusion coefficient as an Arrhenius-type function
+  of the local temperature field $T$.
+
+  The model updates the internal diffusion coefficient field `diffH_` and
+  applies the same temperature dependence on boundary patches.
+formulation: |
+  The hydrogen diffusion coefficient is modeled with an Arrhenius law of the
+  form used in Bison-type fuel performance correlations.
+
+  $$ D_H(T) = D_0 \exp\left(-\frac{E_d}{R\,T}\right) $$
+
+  where:
+
+  - $D_H$ is the hydrogen diffusion coefficient (field `diffH_`), in m$^2$/s
+  - $D_0$ is the pre-exponential factor (constant in this implementation)
+  - $E_d$ is the activation energy (constant in this implementation)
+  - $R$ is the universal gas constant (8.31446 J/mol/K)
+  - $T$ is the local temperature (field `T`), in K
+
+  The implementation evaluates $D_H$ using the internal temperature
+  `T_.internalField()` and repeats the same relation on each boundary patch
+  using the patch temperature field `T_.boundaryField()`.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

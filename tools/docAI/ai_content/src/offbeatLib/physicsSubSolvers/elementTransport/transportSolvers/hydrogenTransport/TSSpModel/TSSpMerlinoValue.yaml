@@ -1,0 +1,31 @@
+description: |
+  TSSp model that computes the temperature-dependent yield stress (TSSp) as an
+  Arrhenius-type function of the local temperature $T$.
+
+  The model updates the internal field and applies the same temperature
+  dependence on boundary patches.
+formulation: |
+  The yield-stress-like field $TSSp$ is modeled with an Arrhenius dependence
+  on temperature, consistent with thermally activated behavior often used in
+  creep/plasticity formulations (e.g., as used in phenomenological
+  correlations).
+
+  $$ TSSp(T) = TSSp_0 \exp\left(-\frac{Q_p}{R\,T}\right) $$
+
+  where:
+
+  - $TSSp(T)$ is the computed temperature-dependent yield stress field
+    (stored in OpenFOAM as $TSSp_$)
+  - $TSSp_0$ is the pre-exponential factor ($1.39\times 10^5$)
+  - $Q_p$ is the activation energy ($3.45\times 10^4$)
+  - $R$ is the universal gas constant ($8.31446$)
+  - $T$ is the local temperature field $T$ (OpenFOAM field name: `T`)
+
+  The model is evaluated pointwise on the cell internal field and on each
+  boundary face using the corresponding boundary temperature.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

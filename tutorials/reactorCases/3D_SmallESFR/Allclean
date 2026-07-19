@@ -12,8 +12,7 @@ cd ${0%/*} || exit 1    # Run from this directory
 
 #==============================================================================*
 
-rm -fr legacyThermoMechanics/processor*
-rm -fr extendedThermoMechanics/processor*
+rm -fr processor*
 rm -rf *.out
 rm -rf log.*
 

@@ -59,7 +59,7 @@ thMesh.add_boundary(walls)
 #==============================================================================*
 # Fields
 
-timeFolder0 = ffn.timeFolder.TimeFolder(0)
+timeFolder0 = ffn.TimeFolder(0)
 
 
 T = ffn.fields.Field("T", region="fluidRegion")
@@ -108,7 +108,7 @@ timeFolder0.append(p_rgh)
 #==============================================================================*
 # Solvers
 
-thSolver = ffn.solvers.thermal_hydraulics.OnePhaseThermalHydraulicsSolver(
+thSolver = ffn.solvers.thermal_hydraulics.OnePhase(
     region=thMesh.region,
     removeBaffles=False,
     mesh=thMesh
@@ -151,7 +151,7 @@ heatExchanger = porous.HeatExchangerModel(
 #     Dh=0.5,
 #     volumeFraction=0,
 #     momentumSource=ffn.Vector(0, 0, -166000),
-#     momentumSourceTimeProfile=ffn.timeProfile.TimeProfile(
+#     momentumSourceTimeProfile=ffn.TimeProfile(
 #         type='table',
 #         table=[
 #             (   0,   1   ),
@@ -257,7 +257,7 @@ TBulk = ffn.functions.TBulk(
 #==============================================================================*
 # Settings
 
-model = ffn.case.Case()
+model = ffn.Case()
 
 model.solvers.append(thSolver)
 model.timeFolders = [timeFolder0]

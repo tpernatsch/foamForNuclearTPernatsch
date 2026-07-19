@@ -1,0 +1,121 @@
+description: |
+  Class to hold all the region meshes and perform the volumetric mappings.
+
+  `meshHandler` reads the multi-region coupling configuration from `regionsDict`, creates the required dynamic meshes for all participating regions/solvers, and provides utilities to map fields between regions (including optional baffle-less handling) via mesh-to-mesh interpolation.
+dictionary: regionsDict
+formulation: |
+  This class provides the infrastructure for field mapping between coupled regions rather than a standalone physical model.
+
+  For each configured coupling entry, fields are interpolated from a source region mesh to a target region mesh using a mesh-to-mesh mapping object (see `meshToMesh`), optionally after creating baffle-less meshes to avoid discontinuities at internal baffles.
+
+  The mapping is applied to the configured field pairs (e.g. temperature, velocity, viscosity, etc.) at each coupling step when `mapAllFields` / `mapAndWrite` are invoked.
+admonitions: []
+options:
+- key: axialDirection
+  type: vector
+  required: true
+  default: null
+  description: ''
+- key: axialLocations
+  type: scalar
+  required: true
+  default: null
+  description: ''
+- key: interpolationType
+  type: word
+  required: true
+  default: null
+  description: ''
+- key: locations
+  type: vectorList
+  required: true
+  default: null
+  description: ''
+- key: patchName
+  type: word
+  required: true
+  default: null
+  description: ''
+- key: regionToReplicate
+  type: word
+  required: true
+  default: null
+  description: ''
+- key: sourceField
+  type: word
+  required: true
+  default: null
+  description: ''
+- key: sourceFields
+  type: word
+  required: true
+  default: null
+  description: ''
+- key: sourceRegions
+  type: word
+  required: true
+  default: null
+  description: ''
+- key: targetField
+  type: word
+  required: true
+  default: null
+  description: ''
+- key: type
+  type: word
+  required: true
+  default: null
+  description: ''
+optionsLocations: []
+usage:
+- comment: |
+    Usage already present in Header (verbatim):
+  snippet: |
+    In regionsDict
+        \verbatim
+            mappings
+            {
+                <Name of region ONTO which I am mapping>
+                {
+                    <Name of region FROM which I am mapping>
+                    {
+                        sourceFields    (nameOfSourceField1 nameOfSourceField2);
+                        targetFields    (nameOfTargetField1 nameOfTargetField2);
+                    }
+                }
+                neutroRegion
+                {
+                    fluidRegion
+                    {
+                        sourceFields    ( T U mu alpha );
+                        targetFields    (TCool U mu alpha );
+                    }
+                }
+            }
+        \endverbatim
+- comment: |
+    The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``). Here is a snippet enabling the model:
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type meshHandler;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - dictionary
+  - formulation
+  - admonitions
+  - optionsLocations
+  stub_improved: true

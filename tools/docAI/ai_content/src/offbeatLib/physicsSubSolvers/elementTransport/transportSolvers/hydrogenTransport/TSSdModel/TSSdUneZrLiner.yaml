@@ -1,0 +1,28 @@
+description: |
+  TSSD model for the pure Zirconium inner liner based on Une et al. (2004)
+  (https://doi.org/10.1080/18811248.2004.9715569).
+formulation: |
+  This model updates the through-wall TSSd (temperature-dependent
+  solid-state diffusion-related) coefficient field $TSSd$ using an Arrhenius
+  law evaluated at the local temperature.
+
+  $$ TSSd(T) = TSSd0 \exp\left(-\frac{Qd}{R\,T}\right) $$
+
+  where the temperature $T$ is taken from the OpenFOAM temperature field $T$
+  either in the cell interior or on boundary patches.
+
+  - $TSSd$ is the model coefficient field updated by [correctTSSd]
+  - $TSSd0$ is the pre-exponential factor (here $1.41\times 10^5$)
+  - $Qd$ is the activation energy (here $38104$)
+  - $R$ is the universal gas constant (here $8.31446$)
+  - $T$ is the local temperature from the OpenFOAM field named `T` (K)
+
+  The boundary values of $TSSd$ are computed consistently from the boundary
+  temperature field $T$ on each patch and then the boundary conditions are
+  corrected.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

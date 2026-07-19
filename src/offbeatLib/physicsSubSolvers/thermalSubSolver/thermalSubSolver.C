@@ -431,27 +431,31 @@ void Foam::thermalSubSolver::correct()
 }
 
  
-bool Foam::thermalSubSolver::converged()
+bool Foam::thermalSubSolver::converged
+(
+    const scalar& residual,
+    const scalar& relResidual,
+    const scalar& absErr
+)
 {
-
     bool converged(false);
 
-    const dictionary& stressControl = 
+    const dictionary& stressControl =
     mesh_.solutionDict().subDict("stressAnalysis");
 
     bool useRelRes(stressControl.lookupOrDefault("useRelResT", true));
-    
+
     scalar convergenceTolerance
     (
         stressControl.lookupOrDefault("T", 1e-6)
     );
-    
+
     scalar absErrTolerance
     (
         stressControl.lookupOrDefault("absErrT", 0.0)
     );
 
-    if(absErr_ > absErrTolerance)
+    if(absErr > absErrTolerance)
     {
         if ( useRelRes )
         {
@@ -460,32 +464,32 @@ bool Foam::thermalSubSolver::converged()
                 readScalar(stressControl.lookup("relT"))
             );
 
-            // Consider converged if both initialResidual and relResidual are 
+            // Consider converged if both initialResidual and relResidual are
             // below threshold or if one of the two is 10 times below threshold.
-            converged = 
-            ( 
-                initialResidual_ < convergenceTolerance 
-                && 
-                relResidual_ < relConvergenceTolerance 
+            converged =
+            (
+                residual < convergenceTolerance
+                &&
+                relResidual < relConvergenceTolerance
             )
             or
             (
-                initialResidual_ < convergenceTolerance/10
+                residual < convergenceTolerance/10
             )
             or
             (
-                relResidual_ < relConvergenceTolerance/10 
+                relResidual < relConvergenceTolerance/10
             )
-            ; 
+            ;
         }
         else
         {
-            // In this case only the residual computed by OpenFOAM is accounted for 
+            // In this case only the residual computed by OpenFOAM is accounted for
             // the convergence monitoring.
-            converged = 
-            ( 
-                initialResidual_ < convergenceTolerance
-            ); 
+            converged =
+            (
+                residual < convergenceTolerance
+            );
         }
     }
     else
@@ -494,6 +498,12 @@ bool Foam::thermalSubSolver::converged()
     }
 
     return converged;
+}
+
+
+bool Foam::thermalSubSolver::converged()
+{
+    return converged(initialResidual_, relResidual_, absErr_);
 }
 
 

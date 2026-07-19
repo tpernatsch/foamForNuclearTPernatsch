@@ -8,8 +8,8 @@ from foamForNuclear.mesh import Mesh
 
 class TimeFolder(CheckedList):
     """
-    Object containing all :class:`Field` objects. This is used as initial
-    conditions.
+    Object containing all Field objects associated with a given time.
+    Mainly used internally to group fields for OpenFOAM export/import.
 
     Parameters
     ----------
@@ -35,7 +35,13 @@ class TimeFolder(CheckedList):
     @time.setter
     def time(self, time) -> None:
         check_type("time", time, (str, float, int))
-        self._time = f"{time}"
+
+        if isinstance(time, str):
+            self._time = time
+        elif isinstance(time, int):
+            self._time = str(time)
+        elif isinstance(time, float):
+            self._time = str(int(time)) if time.is_integer() else f"{time:g}"
 
     def add_field(self, item: Field | list[Field]):
         """

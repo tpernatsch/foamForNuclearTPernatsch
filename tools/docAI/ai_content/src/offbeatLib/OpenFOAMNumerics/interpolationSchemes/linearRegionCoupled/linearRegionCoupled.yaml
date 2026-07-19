@@ -1,0 +1,35 @@
+description: |
+  Central-differencing interpolation scheme for region-coupled meshes.
+
+  This class provides interpolation weights used by OpenFOAM surface
+  interpolation infrastructure, with special handling of coupled boundary
+  patches of type [@regionCoupledOFFBEATFvPatch] to reuse precomputed
+  interface weights.
+formulation: |
+  The surface interpolation of a volume field $vf$ to a face field is written
+  in terms of interpolation weights $w$ as
+  $$
+  \phi_f = w_f \, \phi_P + (1-w_f)\, \phi_N,
+  $$
+  where $\phi_P$ and $\phi_N$ are the values associated with the owner and
+  neighbour cells of face $f$, and $w_f$ is the face weight.
+
+  In this implementation, the base weights are obtained from
+  `mesh().surfaceInterpolation::weights()`. For coupled boundary patches
+  of type [@regionCoupledOFFBEATFvPatch], the weights on those patches may be
+  overwritten by values returned from the coupled patch field
+  `giveWeights()` (excluding fields whose name ends with `PrevIter`).
+
+  - $vf$ is the input volume field (`GeometricField<Type, fvPatchField, volMesh>`)
+  - $w_f$ is the face interpolation weight (`surfaceScalarField`)
+  - $P$ is the owner cell of face $f$
+  - $N$ is the neighbour cell of face $f$
+admonitions: []
+options: []
+externalOptions: []
+optionsLocations: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

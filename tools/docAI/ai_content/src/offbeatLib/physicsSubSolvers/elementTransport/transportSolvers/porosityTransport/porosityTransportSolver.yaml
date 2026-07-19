@@ -1,0 +1,45 @@
+description: |
+  Transport solver for the redistribution of fuel porosity.
+
+  This solver evolves the OpenFOAM scalar field ``porosity`` using an advection–diffusion model whose coefficients and switches are controlled through the ``porosityOptions`` sub-dictionary.
+formulation: |
+  The porosity transport is modeled as an advection–diffusion equation for the scalar field ``porosity``.
+  The diffusion coefficient is set from the material model property ``poreDiffusionCoeff`` and the advection velocity is provided by the pore velocity field ``poreVelocity``.
+
+  $$ \frac{\partial \phi}{\partial t} + \nabla \cdot \left( \mathbf{u}_p \, \phi \right) - \nabla \cdot \left( D \nabla \phi \right) = 0 $$
+
+  where:
+
+  - $\phi$ is the porosity field ``porosity`` (set in the case as a ``volScalarField``)
+  - $\mathbf{u}_p$ is the pore velocity field ``poreVelocity`` (``volVectorField``)
+  - $D$ is the pore diffusion coefficient field ``poreDiffusionCoeff`` (``volScalarField``)
+  - $t$ is time
+  - $\nabla$ is the spatial gradient operator
+
+  The diffusion term is enabled/disabled with ``diffusiveTerm`` and the advection discretization is controlled with ``boundedAdvectionTerm``.
+  The time step may be limited using a Courant criterion when ``adjustableTimeStep``/``adjustTimeStep`` is enabled in ``controlDict``.
+dictionary: neutronicsProperties
+optionsLocations:
+- name: porosityOptions
+  in: solverDict
+options:
+- key: diffusiveTerm
+  type: bool
+  location: porosityOptions
+  required: false
+  default: false
+  description: |
+    Switch to include the diffusive contribution ``-∇·(D∇porosity)`` in the porosity transport equation.
+- key: boundedAdvectionTerm
+  type: bool
+  location: porosityOptions
+  required: false
+  default: false
+  description: |
+    Switch to use a bounded advection term formulation for the ``∇·(poreVelocity*porosity)`` contribution.
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

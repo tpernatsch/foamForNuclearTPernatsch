@@ -1,0 +1,58 @@
+description: |
+  Axial profile defined from an FMI (Functional Mock-up Interface) state.
+  The profile is tabulated along the axial coordinate and interpolated using
+  either ``step`` or ``linear`` interpolation (see OpenFOAM
+  ``InterpolateTables``).
+
+  The supplied axial profile values are expected to be normalized to 1.
+formulation: |
+  This class provides an axial weighting function $p(z)$ used by
+  ``axialProfile``-based models. The weighting is defined by tabulated
+  values coming from an FMI state dictionary and interpolated along the
+  axial coordinate.
+
+  $$ p(z) = \mathcal{I}\left(z; z_i, v_i\right) $$
+
+  where:
+
+  - $z$ is the physical axial coordinate (set by the solver/model using
+    ``axialDirection``, ``zMin``, and ``zMax``)
+  - $z_i$ are the tabulated axial locations (from FMI via ``axialLocationsNameFromFMU``)
+  - $v_i$ are the tabulated normalized profile values (from FMI via ``axialProfileNameFromFMU``)
+  - $\mathcal{I}$ is the interpolation operator (set by ``axialInterpolationMethod``)
+dictionary: neutronicsProperties
+options:
+- key: axialLocationsNameFromFMU
+  type: word
+  required: false
+  description: |
+    FMI port name (variable name) that provides the tabulated axial locations
+    array. If not found in the FMI state, the class falls back to a default
+    axial location set (and emits a warning).
+- key: axialProfileNameFromFMU
+  type: word
+  required: true
+  description: |
+    FMI port name (variable name) that provides the tabulated normalized axial
+    profile values. The FMI state sub-dictionary is expected to contain a
+    ``values`` entry.
+- key: axialInterpolationMethod
+  type: word
+  required: false
+  default: linear
+  description: |
+    Axial interpolation method used to evaluate the tabulated profile between
+    points. Supported values are those of OpenFOAM
+    ``interpolateTableBase::interpolationMethod`` (e.g. ``linear`` and ``step``).
+- key: initialData
+  type: list[scalar]
+  required: false
+  description: |
+    Initial axial profile data used by the parent ``axialProfile`` base class
+    when FMI data are not yet available. The FMI-provided profile is written
+    back into the FMI state under ``axialProfile`` and ``values``.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

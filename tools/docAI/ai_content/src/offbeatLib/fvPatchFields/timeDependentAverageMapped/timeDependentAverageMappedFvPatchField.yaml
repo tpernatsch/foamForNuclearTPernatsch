@@ -1,0 +1,87 @@
+description: |
+  Mapped fixed-value boundary condition where the patch value is defined as a
+  time-dependent interpolation of prescribed “average” values.
+
+  The boundary field is updated from a time interpolation table built from
+  user-provided pairs of ``timePoints`` and ``averageValues``. The
+  interpolation is performed using an ``interpolationScheme``-like choice
+  (via ``timeInterpolationMethod``) and then mapped onto the patch using the
+  underlying ``mappedPatchFieldBase`` machinery.
+formulation: |
+  This boundary condition prescribes the patch field as a time-interpolated
+  average value. At a given time $t$, the scalar interpolation table returns
+  an averaged value $a(t)$, which is then assigned to the patch field and
+  mapped consistently across mesh changes.
+
+  $$ a(t) = \mathcal{I}\big(t;\{t_i\},\{a_i\}\big) $$
+
+  where:
+
+  - $t$ is the current simulation time
+  - $t_i$ are the entries of ``timePoints_`` (from ``timePoints``)
+  - $a_i$ are the entries of ``averageValues_`` (from ``averageValues``)
+  - $\mathcal{I}$ is the interpolation operator defined by ``timeInterpolationMethod``
+    (default: ``linear``)
+
+  The resulting $a(t)$ is used to update the coefficients of the
+  ``fixedValueFvPatchField`` and is compatible with patch mapping operations
+  (``autoMap``/``rmap``) provided by ``mappedPatchFieldBase``.
+dictionary: neutronicsProperties
+options:
+- key: fieldName
+  type: word
+  required: false
+  default: this field name
+  description: |
+    Name of the field to be mapped. If not specified, the boundary condition
+    uses the default field name associated with the patch field.
+- key: timePoints
+  type: list[scalar]
+  required: true
+  description: |
+    List of time points defining the interpolation table.
+- key: averageValues
+  type: list
+  required: true
+  description: |
+    List of average values corresponding to each entry in ``timePoints``.
+    The list entries must be compatible with the patch field template type
+    ``Type``.
+- key: interpolationScheme
+  type: word
+  required: false
+  description: |
+    Type of interpolation scheme (as documented in the header). The actual
+    time interpolation method is controlled by ``timeInterpolationMethod``.
+    If provided, it is intended to select the interpolation behavior used by
+    the mapped boundary condition.
+- key: timeInterpolationMethod
+  type: word
+  required: false
+  default: linear
+  description: |
+    Interpolation method used for the time-dependent interpolation table.
+    Supported values are those available in
+    ``interpolateTableBase::interpolationMethodNames_``. Default is
+    ``linear``.
+admonitions: []
+optionsLocations: []
+externalOptions: []
+usage:
+- comment: |
+    Example boundary condition specification using the time-dependent
+    interpolation table.
+  snippet: |-
+    <patchName>
+    {
+        type            timeDependentAverageMapped;
+        fieldName       T;
+        interpolationScheme cell;
+        timePoints      ( 0 1 2 3 ... );
+        averagePoints   ( 1 1 1.5 ... );
+        value           uniform 0;
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

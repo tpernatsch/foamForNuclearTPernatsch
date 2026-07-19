@@ -1,0 +1,50 @@
+description: |
+  Burnup model implementing a Lassmann-inspired radial burnup distribution for
+  high-burnup UO2 fuel.
+
+  The model is inspired by Lassmann et al., "The radial distribution of
+  plutonium in high burnup UO2 fuels" (Journal of Nuclear Materials). It is
+  designed to refine the radial (per axial slice) burnup and related fuel
+  composition effects using a slice-wise flux distribution obtained from a
+  neutronics sub-solver.
+formulation: |
+  The model updates an average burnup using the existing `burnupFromPower`
+  mechanism, and then refines the radial distribution within each axial slice
+  using a flux-normalized distribution read from the object registry.
+
+  The slice-wise neutron flux distribution is obtained from a registered
+  volumetric neutron flux field named ``neutronFlux0`` (if present). The
+  model then uses the slice mapper to extract the radial slice distribution
+  and applies the Lassmann-inspired form-factor approach to compute the
+  radial burnup/composition distribution.
+
+  The convergence of the internal burnup/composition refinement is controlled
+  by the ``convergencePrecision`` parameter.
+
+  In practice, the algorithm proceeds as:
+  - update average burnup via ``burnupFromPower::correct()``
+  - (if needed) obtain the ``sliceMapper`` object for moving meshes
+  - extract the flux profile from ``neutronFlux0`` using the slice addressing
+  - iterate until the refinement converges using ``convergencePrecision``
+admonitions:
+- kind: warning
+  body: |
+    This burnup model requires a neutronics sub-solver to be enabled and to
+    provide a neutron flux field registered in the object registry under the
+    name ``neutronFlux0``. If ``neutronFlux0`` is not found, the model
+    terminates with a fatal error.
+options:
+- key: convergencePrecision
+  type: scalar
+  required: false
+  default: 1e-2
+  description: |
+    Convergence precision used by the Lassmann burnup refinement iterations.
+    The value is read from the ``neutronicsProperties`` dictionary with a
+    default of ``1e-2``.
+dictionary: neutronicsProperties
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

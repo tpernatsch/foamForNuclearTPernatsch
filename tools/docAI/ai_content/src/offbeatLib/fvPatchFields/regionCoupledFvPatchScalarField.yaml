@@ -1,0 +1,51 @@
+description: |
+  General region-coupled patchField for scalar fields.
+
+  Conceptually similar to ``cyclicAMI`` but it does not assume continuity
+  across the interface: the patch is treated as uncoupled from the delta
+  point, enabling exchange of different physics across the interface.
+
+  If the patchField is defined as coupled, the fvPatch is incorporated into
+  the matrix implicitly. If not coupled, the patchField reverts to a simple
+  ``zeroGradient``-type behaviour.
+formulation: |
+  This patchField provides an implicit coupling between the patch values and
+  the neighbouring region through patch weights and an optional
+  area-weighting correction factor.
+
+  The coupled behaviour is controlled by the boolean ``coupled``. When
+  ``coupled`` is ``false``, the patchField behaves as an uncoupled boundary
+  condition (reverting to a ``zeroGradient``-type treatment).
+
+  The coupling is implemented through the internal matrix contributions
+  assembled by the patchField methods:
+  - ``valueInternalCoeffs`` and ``valueBoundaryCoeffs`` for the value
+    contribution
+  - ``gradientInternalCoeffs`` for the gradient contribution
+
+  The neighbour data used in the coupling is obtained via
+  ``patchNeighbourField()`` / ``patchNeighbourField(UList<scalar>&)``.
+
+  Variables:
+  - $w$ is the coupled patch weights from ``patch().weights()``
+  - $c$ is the area-weighting correction factor (stored in
+    ``correctionFactor_``)
+  - $u$ is the scalar field value on the patch (the patchField being
+    evaluated)
+  - $u_n$ is the neighbour coupled internal cell data returned by
+    ``patchNeighbourField()``
+dictionary: neutronicsProperties
+options:
+- key: coupled
+  type: bool
+  required: false
+  default: true
+  description: |
+    If ``true``, the patch is treated as coupled and is incorporated into
+    the matrix implicitly. If ``false``, the patchField reverts to an
+    uncoupled behaviour (effectively a ``zeroGradient``-type treatment).
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

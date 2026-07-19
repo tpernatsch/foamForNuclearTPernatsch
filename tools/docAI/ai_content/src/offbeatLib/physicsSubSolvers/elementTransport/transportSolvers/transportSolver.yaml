@@ -1,0 +1,40 @@
+description: |
+  Mother class for transport solvers.
+
+  This is an abstract base class that provides common convergence-control
+  utilities (inner corrector count and residual-based convergence checks)
+  used by concrete transport solver implementations.
+formulation: |
+  The class provides generic convergence logic for iterative transport
+  solution procedures. For a given field (identified by ``fieldName``), the
+  solver checks convergence using absolute and/or relative residual criteria
+  controlled through the ``stressAnalysis`` sub-dictionary of the mesh
+  ``solutionDict()``.
+
+  $$ \text{converged} =
+  \begin{cases}
+  \left(r_0 < \varepsilon_0 \ \wedge\ r_{\mathrm{rel}} < \varepsilon_{\mathrm{rel}}\right)
+  \ \ \vee\ \ \left(r_0 < 0.1\,\varepsilon_0\right)
+  \ \ \vee\ \ \left(r_{\mathrm{rel}} < 0.1\,\varepsilon_{\mathrm{rel}}\right),
+  & \text{if } \texttt{useRelRes} = \text{true} \\
+  \left(r_0 < \varepsilon_0\right), & \text{otherwise}
+  \end{cases}
+  $$
+
+  where:
+
+  - $r_0$ is the initial inner-iteration residual stored in ``initialResidual_``
+  - $r_{\mathrm{rel}}$ is the latest inner-iteration residual stored in ``relResidual_``
+  - $\varepsilon_0$ is the absolute convergence tolerance set by ``fieldName`` in the ``stressAnalysis`` dictionary
+  - $\varepsilon_{\mathrm{rel}}$ is the relative convergence tolerance set by ``rel`` + ``fieldName`` in the ``stressAnalysis`` dictionary
+  - ``useRelRes`` is a boolean switch enabling the relative-residual logic
+dictionary: neutronicsProperties
+options: []
+optionsLocations: []
+externalOptions: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

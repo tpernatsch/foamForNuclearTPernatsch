@@ -1,0 +1,178 @@
+description: |-
+  Regime map model depending on two parameters.
+
+  This model defines 2‑D regime domains in a plane whose axes correspond to two
+  scalar fields (``parameter1`` and ``parameter2``). The user declares a set of
+  named points in ``regimePoints`` and uses these to construct polygonal regime
+  domains via the ``regimes`` dictionary.
+
+  At run‑time, the model:
+    - retrieves the two parameter fields from the mesh,
+    - normalizes their values using the global domain bounding box,
+    - determines which polygon (regime) the (x/DX, y/DY) point belongs to,
+    - and optionally interpolates across internal boundaries if an
+      ``interpolationWidth`` > 0 is defined.
+
+  Interpolation occurs only across *internal boundaries*, i.e., boundaries
+  shared by two neighbouring regime polygons. Both linear and quadratic blending
+  modes are available.
+options:
+- key: parameter1
+  type: word
+  required: true
+  default: null
+  description: name of the first volScalarField used in the 2‑D regime map
+- key: parameter2
+  type: word
+  required: true
+  default: null
+  description: name of the second volScalarField used in the 2‑D regime map
+- key: interpolationWidth
+  type: scalar
+  required: true
+  default: null
+  description: relative width of interpolation region in normalized 2‑D space (0 disables interpolation)
+- key: interpolationMode
+  type: word
+  required: false
+  default: linear
+  description: interpolation type for regime blending (linear or quadratic)
+- key: regimePoints
+  type: dictionary
+  required: true
+  default: null
+  description: dictionary mapping point names to (x y) coordinates used to build polygon vertices
+- key: regimes
+  type: dictionary
+  required: true
+  default: null
+  description: dictionary mapping regime names to ordered lists of point names defining polygonal domains
+usage:
+- comment: 'The model is selected via the ``type`` entry in the appropriate      ``regimeMapModel``-related sub-dictionary.
+    Here is a commented example:'
+  snippet: |-
+    regimeMapModels
+    {
+        "preCHFTraceRegimeMap"
+        {
+            type twoParameters;
+
+            //- Vapour phase fraction
+            parameter1      "normalized.alpha.vapour";
+
+            //- Liquid mass flux
+            parameter2      "alphaRhoMagU.liquid";
+
+            interpolationWidth  0.125;
+
+            interpolationMode linear;
+
+            //- This is an approximation to the TRACE pre-CHF flow regime map
+            //  described at page 201 (225 of the PDF) in
+            //  https://www.nrc.gov/docs/ML1200/ML120060218.pdf
+            //  It is an approximation as there is no possibility do define
+            //  as explicit interpolation region between alpha 0.5 and alpha
+            //  0.75, as interpolation regions are automatically built across
+            //  all regime boundaries and have a thickness (in the normalized
+            //  regime map wherein both parameter1 and parameter2 vary in the
+            //  [0-1] range) of interpolationWidth specified above. Thus, in
+            //  in this regime map, the explicit interpolation area has been
+            //  split in and divided between the three regimes. This map
+            //  thus looks like the following
+            /*
+                ^ parameter2 (massFlux)
+                |
+                |
+                |
+                6------------------5------------4
+                |                  |            |
+                | dispersedBubble  |            |
+                |                  |            |
+                |             8----9            |
+                |            /     |            |
+                |           /      |            |
+                |          /       |annularMist |
+                |         /        |            |
+                |        7         |            |
+                |        |         |            |
+                |        |capSlugBu|            |
+                0--------1---------2------------3--------> parameter1 (void)
+            */
+            //- Nonetheless, consider that the TRACE map is an approixmation
+            //  itself, so this is fine and is still consistent with the
+            //  Choe-Weismann cap/slug to bubbly transition criteria
+            regimePoints
+            {
+                p0 (0 0);
+                p1 (0.3 0);
+                p2 (0.625 0);
+                p3 (1.0 0);
+                p4 (1.0 6000);
+                p5 (0.625 6000);
+                p6 (0 6000);
+                p7 (0.3 2000);
+                p8 (0.5 2700);
+                p9 (0.625 2700);
+            }
+            regimes
+            {
+                "dispersedBubble" (p0 p1 p7 p8 p9 p5 p6);
+                "capSlugBubble" (p1 p2 p9 p8 p7);
+                "annularMist" (p2 p3 p4 p5 p9);
+            }
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - usage
+  formulation_added: true
+formulation: |-
+  The model is a purely algebraic 2‑D regime classifier: it maps a local pair of
+  scalar parameters to a regime-dependent quantity via polygon membership and
+  optional smooth blending across shared internal boundaries (Duderstadt & Hamilton
+  for regime-map philosophy; Todreas & Kazimi for the use of empirical regime
+  maps in thermal-hydraulics).
+
+  Let the local values of the two OpenFOAM fields be $p_1$ and $p_2$ (from
+  ``parameter1`` and ``parameter2``). They are normalized to the unit square using
+  the global bounding box of the regime-map domain:
+  $$ x = \frac{p_1 - p_{1,\min}}{p_{1,\max}-p_{1,\min}}, \qquad
+     y = \frac{p_2 - p_{2,\min}}{p_{2,\max}-p_{2,\min}} $$
+
+  - $x$ is the normalized coordinate corresponding to ``parameter1``
+  - $y$ is the normalized coordinate corresponding to ``parameter2``
+  - $p_1$ is the local value of the first volScalarField (``parameter1``)
+  - $p_2$ is the local value of the second volScalarField (``parameter2``)
+  - $p_{1,\min}$ is the minimum ``parameter1`` value over the map domain
+  - $p_{1,\max}$ is the maximum ``parameter1`` value over the map domain
+  - $p_{2,\min}$ is the minimum ``parameter2`` value over the map domain
+  - $p_{2,\max}$ is the maximum ``parameter2`` value over the map domain
+
+  The normalized point $(x,y)$ is tested for inclusion in each polygonal
+  regime domain defined by the ordered point lists in ``regimes``/``regimePoints``.
+  If $(x,y)$ lies strictly inside a polygon, that regime is selected.
+
+  If $(x,y)$ lies within an interpolation band of relative thickness
+  ``interpolationWidth`` around a shared internal boundary between two neighbouring
+  regimes $A$ and $B$, the regime-dependent transfer coefficient (or other
+  regime-mapped output) is blended using a scalar weight $w\in[0,1]$:
+  $$ \phi = (1-w)\,\phi_A + w\,\phi_B $$
+
+  - $\phi$ is the blended regime-map output (e.g., transfer coefficient)
+  - $\phi_A$ is the output associated with regime $A$
+  - $\phi_B$ is the output associated with regime $B$
+  - $w$ is the interpolation weight across the internal boundary
+
+  For ``interpolationMode linear``, $w$ varies linearly with the normalized
+  distance $s$ from the boundary centerline within the band:
+  $$ w = \mathrm{clip}\!\left(\frac{s}{\delta},\,0,\,1\right) $$
+
+  - $s$ is the signed normalized distance to the internal boundary (within the band)
+  - $\delta$ is the band thickness in normalized 2‑D space (set by ``interpolationWidth``)
+  - $\mathrm{clip}(\cdot,0,1)$ is saturation to $[0,1]$
+
+  For ``interpolationMode quadratic``, the weight is replaced by a quadratic
+  blending function (still constrained to $[0,1]$), i.e. $w=f_2(s/\delta)$
+  with $f_2$ monotone and smooth at the band edges.

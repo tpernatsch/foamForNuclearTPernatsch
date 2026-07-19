@@ -1,0 +1,32 @@
+description: |
+  Criterion used to combine multiple failure criteria. Failure is supposed to
+  occur when one of the criteria declare failure.
+options:
+- key: criteria
+  type: list[word]
+  required: true
+  description: |
+    List of failure criteria to combine. Failure is triggered if any of the
+    listed criteria declares failure.
+usage:
+- comment: |
+    In solverDict file: example selection of the combined failure model.
+  snippet: |-
+    materials
+    {
+        cladding
+        {
+            failureModel    combined;
+            stopIfFailed    on;
+            failureModelOptions
+            {
+                criteria        ( ZircaloyOverstressBison ZircaloyPlasticInstabilityBison )
+            }
+        }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - dictionary

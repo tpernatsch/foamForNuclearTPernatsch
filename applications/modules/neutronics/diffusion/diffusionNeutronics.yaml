@@ -36,7 +36,7 @@ description: |
   $$
 
   \table
-    Parameter      | Description
+    Parameter        | Description
     $\phi_g$         | Neutron flux for the gth energy group
     $C_k$            | Concentration of the kth delayed neutron precursor group
     $D_g$            | Neutron diffusion coefficient for the gth energy group

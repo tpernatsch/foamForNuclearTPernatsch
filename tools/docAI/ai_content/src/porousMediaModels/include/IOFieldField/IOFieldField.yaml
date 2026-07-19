@@ -1,0 +1,50 @@
+description: |
+  A primitive ``FieldField`` of type ``<T>`` with automated input and output.
+  It provides storage of an old-time value to support time-dependent
+  simulations and (optionally) sub-cycling.
+
+  The class is a template wrapper around ``FieldField<Field,Type>`` that
+  inherits from ``regIOobject`` to integrate with OpenFOAM I/O.
+formulation: |
+  This class does not introduce a new physical model. It manages the
+  time-history storage of a ``FieldField`` instance for use by other
+  physics models.
+
+  - $f(t)$ is the current ``FieldField<Field,Type>`` value stored in the
+    object
+  - $f^0$ is the old-time value stored by ``storeOldTime()`` and returned by
+    ``oldTime()``
+  - $\Delta t$ is the simulation time step, implicitly used by the OpenFOAM
+    time index (``timeIndex_``) to decide when old-time data should be
+    updated
+admonitions:
+- kind: note
+  body: This model is selected solely by its runtime ``typeName`` and defines no additional options.
+dictionary: neutronicsProperties
+options: []
+usage:
+- comment: |
+    The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``). Here is a snippet enabling the model:
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type IOFieldField;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - dictionary
+  stub_improved: true

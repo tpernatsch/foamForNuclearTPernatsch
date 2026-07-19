@@ -1,0 +1,100 @@
+description: |-
+  Heat transfer coefficient for pool boiling scenarios calculated via the
+  correlation devised by D. Gorenflo, *Pool Boiling*, VDI-Heat Atlas,
+  Sect. Ha, VDI-Verlag, Düsseldorf, 1993. Obtained from secondary reference:
+  J. G. Collier and J. R. Thome, *Convective Boiling and Condensation*,
+  3rd Edition, pp. 155–158, Oxford University Press, Oxford, 1994.
+
+  **IMPLEMENTATION NOTES**
+
+  The original pool boiling heat transfer coefficient by Gorenflo is provided
+  in the form:
+
+  .. math::
+
+      htc_{PB}
+      = h_0\, F \left(\frac{q}{q_0}\right)^{n}
+        \left(\frac{R}{R_0}\right)^{0.133}
+
+  where :math:`F` is a function of the reduced pressure :math:`p/p_{c,\mathrm{tri}}`.
+  This form is not directly suitable for numerical implementation, because
+  :math:`htc_{PB}` depends on :math:`q`, while :math:`q` is defined in terms of
+  the total heat transfer coefficient. In general, the pool boiling heat flux is:
+
+  .. math::
+
+      q = htc\, (T_{\mathrm{wall}} - T_{\mathrm{sat}})
+
+  where :math:`htc` is the total wall–fluid heat transfer coefficient,
+  :math:`T_{\mathrm{wall}}` the wall temperature, and :math:`T_{\mathrm{sat}}`
+  the saturation temperature.
+
+  By assuming :math:`htc \approx htc_{PB}` — a common simplification in many
+  numerical codes (e.g. TRACE) — one can write:
+
+  .. math::
+
+      htc_{PB}
+      = h_0\, F
+        \left(
+          \frac{
+            htc_{PB}\,(T_{\mathrm{wall}} - T_{\mathrm{sat}})
+          }{
+            q_0
+          }
+        \right)^{n}
+        \left(\frac{R}{R_0}\right)^{0.133}
+
+  which can be rearranged to isolate :math:`htc_{PB}`:
+
+  .. math::
+
+      htc_{PB}
+      =
+      \left[
+        \frac{
+          h_0\, F\,
+          (T_{\mathrm{wall}} - T_{\mathrm{sat}})^{n}\,
+          (R/R_0)^{0.133}
+        }{
+          q_0^{\,n}
+        }
+      \right]^{\frac{1}{1-n}}
+
+  This rearranged form is the one implemented here. While the assumption
+  :math:`htc \approx htc_{PB}` is admittedly crude, it is widely employed to
+  obtain a feasible numerical implementation in several established thermal–
+  hydraulics codes.
+options:
+- key: useExplicitHeatFlux
+  type: bool
+  required: false
+  default: false
+  description: |-
+    If true, use the explicit structure heat flux field ``heatFlux.structure`` as the pool-boiling heat flux ``q``.
+    If false, compute the heat transfer coefficient from the wall and saturation temperatures using
+    ``Twall`` (``pair.structureRef().Twall()``) and ``T.interface`` (saturation temperature).
+usage:
+- comment: "The Gorenflo heat transfer model is constructed at run-time via the\nheatTransferModels subdictionary of the physicsModel\
+    \ subdictionary of the phaseProperties dictionary. "
+  snippet: |-
+    physicsModels
+    {
+      heatTransferModels
+      {
+        "liquid.structure"
+        {
+            "heated"
+            {
+                type    Gorenflo;
+            }
+        }
+      }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

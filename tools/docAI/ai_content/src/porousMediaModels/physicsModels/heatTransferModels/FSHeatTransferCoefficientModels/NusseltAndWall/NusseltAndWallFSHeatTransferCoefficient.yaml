@@ -1,0 +1,113 @@
+description: |-
+  Heat transfer coefficient for forced convective flows, computed starting
+  from the Nusselt number. The Nusselt correlation is of the form:
+
+  .. math::
+
+      Nu = A + B \, Re^{C} \, Pr^{D}
+
+  **Variable definitions**
+
+  .. list-table::
+     :header-rows: 1
+     :widths: 20 80
+
+     * - Symbol
+       - Meaning
+     * - ``Re``
+       - Reynolds number (superficial in two-phase) of the fluid
+     * - ``Pr``
+       - Prandtl number of the fluid
+     * - ``A, B, C, D``
+       - User-selectable constants for the correlation
+
+  An additional heat transfer coefficient is introduced to account for the
+  wall thermal resistance, leading to:
+
+  .. math::
+
+      \frac{1}{H}
+      =
+      \frac{1}{
+        \dfrac{Nu \, \kappa}{D_h}
+      }
+      +
+      \frac{1}{H_{\mathrm{wall}}}
+options:
+- key: addH
+  type: scalar
+  required: true
+  description: |
+    Additional heat transfer coefficient used to account for the wall resistance
+    ($H_{\mathrm{wall}}$).
+- key: coeff
+  type: scalar
+  required: true
+  description: |
+    Correlation coefficient $B$ in $Nu = A + B\,Re^{C}\,Pr^{D}$.
+- key: const
+  type: scalar
+  required: true
+  description: |
+    Correlation constant $A$ in $Nu = A + B\,Re^{C}\,Pr^{D}$.
+- key: expPr
+  type: scalar
+  required: true
+  description: |
+    Exponent $D$ of the Prandtl number in $Nu = A + B\,Re^{C}\,Pr^{D}$.
+- key: expRe
+  type: scalar
+  required: true
+  description: |
+    Exponent $C$ of the Reynolds number in $Nu = A + B\,Re^{C}\,Pr^{D}$.
+usage:
+- comment: "The NusseltAndWall heat transfer model is constructed at run-time via the\nheatTransferModels subdictionary of\
+    \ the physicsModel subdictionary of the phaseProperties dictionary. "
+  snippet: |-
+    physicsModels
+    {
+      heatTransferModels
+      {
+        "SGenPrim1:SGenPrim2:SGenPrim3:SGenPrim4:SGenPrim5:SGenPrim6:SGenPrim7:SGenPrim8"
+        {
+            type            NusseltAndWall;
+            const   9.368208;
+            coeff   0.037473;
+            expRe   0.770000;
+            expPr   0.770000;
+            // -> H from Nu = 1.101372e+04 W/m2/K
+            addH    2.7e3;
+        }
+      }
+    }
+formulation: |-
+  The model computes a fluid-side heat transfer coefficient $H_{\mathrm{fluid}}$ from the
+  Nusselt correlation and then combines it with a wall resistance $H_{\mathrm{wall}}$ as:
+
+  .. math::
+
+      H_{\mathrm{fluid}} = \frac{\kappa}{D_h}\, Nu
+
+  .. math::
+
+      Nu =
+      \begin{cases}
+      A + B \left(Re\,Pr\right)^{C}, & C = D \\
+      A + B \, Re^{C}\,Pr^{D}, & C \neq D
+      \end{cases}
+
+  The final heat transfer coefficient $H$ is obtained from the series resistance:
+
+  .. math::
+
+      \frac{1}{H} = \frac{1}{H_{\mathrm{fluid}}} + \frac{1}{H_{\mathrm{wall}}}
+      \quad\Longleftrightarrow\quad
+      H = \frac{H_{\mathrm{fluid}}\,H_{\mathrm{wall}}}{H_{\mathrm{fluid}} + H_{\mathrm{wall}}}
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - formulation
+  - dictionary

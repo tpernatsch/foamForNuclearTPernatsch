@@ -1,0 +1,101 @@
+description: |-
+  Abstract saturation-property model used by the phase-change framework to
+  provide saturation temperature and saturation pressure (and related
+  derivatives) as functions of the local cell index.
+
+  The class is a runtime-selectable base ([@saturationModel]) that maps string
+  identifiers (e.g. `TSat`, `pSat`) to member functions and fills a provided
+  `volScalarField` accordingly via [@correctField].
+
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./**
+formulation: |
+  This base class does not prescribe a specific thermodynamic correlation.
+  Derived implementations provide the saturation properties as functions of
+  the local state (typically through the cell index).
+
+  The field update performed by [@correctField] is:
+  $$
+  \text{field}[i] = f(i)
+  $$
+  where $f$ is one of the saturation-property functions selected by the input
+  `func` name.
+
+  - $i$ is the OpenFOAM cell index (`label celli`)
+  - $\text{field}$ is the OpenFOAM scalar field being overwritten
+  - $f(i)$ is one of:
+    - $T_\mathrm{sat}(i)$ from [@valueTSat]
+    - $p_\mathrm{sat}(i)$ from [@valuePSat]
+    - $\ln p_\mathrm{sat}(i)$ from [@valueLnPSat]
+    - $\left.\dfrac{dp_\mathrm{sat}}{dT}\right|_i$ from [@valuePSatPrime]
+admonitions:
+- kind: note
+  body: This model is selected solely by its runtime ``typeName`` and defines no additional options.
+options: []
+usage:
+- comment: |
+    Select the `waterTRACE` saturation model inside the `phaseChangeModel`
+    sub-dictionary.
+  snippet: |
+    phaseChangeModel
+        {
+            type                        heatDriven;
+            mode                        conductionLimited;
+            residualInterfacialArea     1e-3;
+            latentHeatModel
+            {
+                type                    water;
+            }
+            saturationModel
+            {
+                type                    waterTRACE;
+            }
+        }
+- comment: |
+    Select the `BrowningPotter` saturation model inside the `phaseChangeModel`
+    sub-dictionary.
+  snippet: |
+    phaseChangeModel
+        {
+            type                heatDriven;
+            mode                conductionLimited;
+            latentHeatModel
+            {
+                type            FinkLeibowitz;
+                adjust          true;
+            }
+            saturationModel
+            {
+                type            BrowningPotter;
+            }
+        }
+- comment: |
+    Select the `water` saturation model inside the `phaseChangeModel`
+    sub-dictionary.
+  snippet: |-
+    phaseChangeModel
+        {
+            type                        heatDriven;
+            mode                        conductionLimited;
+            residualInterfacialArea     1e-3;
+            latentHeatModel
+            {
+                type                    water;
+            }
+            saturationModel
+            {
+                type                    water;
+            }
+        }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - usage
+  stub_improved: true

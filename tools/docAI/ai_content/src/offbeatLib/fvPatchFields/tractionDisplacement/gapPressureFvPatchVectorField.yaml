@@ -1,0 +1,41 @@
+description: |
+  Patch vector boundary condition that applies the *gap pressure* to a
+  mechanical displacement problem.
+
+  This boundary condition is derived from
+  [@tractionDisplacementFvPatchVectorField] and uses the same general
+  spring-dashpot mechanism, but it does not require the user to directly
+  specify the traction vector or pressure. Instead, the gap pressure is
+  obtained dynamically from a coupled `gapGasModel` at every update.
+
+  It is intended to be used together with a `gapGasModel` that provides the
+  gap pressure during the simulation.
+formulation: |
+  The boundary condition computes the patch traction $\mathbf{t}$ from the
+  gap pressure $p_g$ provided by the coupled `gapGasModel`. In this
+  implementation, the traction is set to zero and the internal pressure
+  field is updated from the gap gas model.
+
+  $$ p_g = p(\text{gapGas}) $$
+  $$ \mathbf{t} = \mathbf{0} $$
+
+  where:
+  - $p_g$ is the gap pressure applied at the patch (stored in the patch field
+    as `pressure_`)
+  - $\mathbf{t}$ is the patch traction vector (stored in the patch field as
+    `traction_`)
+  - $\mathbf{0}$ is the zero vector
+
+  Notes:
+  - The detailed spring-dashpot traction-displacement coupling is inherited
+    from [@tractionDisplacementFvPatchVectorField]; this class only updates
+    the gap-pressure-driven quantities.
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

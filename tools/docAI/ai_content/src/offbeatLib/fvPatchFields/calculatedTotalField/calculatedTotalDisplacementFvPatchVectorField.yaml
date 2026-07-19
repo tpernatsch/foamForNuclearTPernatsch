@@ -1,0 +1,35 @@
+description: |
+  Patch boundary condition for the displacement field ``D`` that sets the
+  boundary value to the *total* displacement computed from the previous time
+  value ``D.oldTime()`` plus an incremental displacement ``DD``:
+  \f[
+    D = D.oldTime() + DD
+  \f]
+  The class is intended to be used as the default boundary condition when the
+  displacement field ``D`` is created, particularly in incremental solvers.
+formulation: |
+  This boundary condition updates the patch field value by adding the
+  incremental displacement field ``DD`` to the previous-time displacement
+  field ``D`` at the same patch.
+
+  $$ \mathbf{D}_p = \mathbf{D}_{p}^{old} + \mathbf{DD}_p $$
+
+  where:
+
+  - $\mathbf{D}_p$ is the updated patch displacement field (vector) on the
+    current time level
+  - $\mathbf{D}_{p}^{old}$ is the patch displacement field taken from
+    ``D.oldTime()`` on the current patch
+  - $\mathbf{DD}_p$ is the patch incremental displacement field on the current
+    patch, read from the ``DD`` volume field
+  - the subscript $p$ denotes the boundary patch index ``patch().index()``
+
+  The implementation assumes that the volume fields ``D`` and ``DD`` exist in
+  the object registry and that their boundary fields are compatible with the
+  patch.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

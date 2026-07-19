@@ -23,6 +23,22 @@ from io import StringIO
 
 import foamlib
 
+def _register_fp_fvSolution(inst, value):
+    """Add N_.* solver entry to fvSolution when FpDiffusion is assigned."""
+    from foamForNuclear.offbeat_lib.element_transport.models import FpDiffusion
+    from copy import copy
+    if not isinstance(value, FpDiffusion):
+        return
+    try:
+        fvSol = inst.fvSolution
+    except AttributeError:
+        return  # fvSolution not yet initialised (constructor path; __attrs_post_init__ handles it)
+    if fvSol is None or "N_.*" in fvSol.solvers:
+        return
+    fvSol.solvers["N_.*"] = copy(fvSol.solvers["T"])
+    inst.add_relaxation_on_field("N_.*", 0.9)
+
+
 #==============================================================================*
 # OFFBEAT Main Solver
 
@@ -33,7 +49,7 @@ import foamlib
     field_transformer=auto_type_validator,
     repr=False
 )
-class OffbeatSolver(Solver):
+class Offbeat(Solver):
     """
     OFFBEAT solver parameter object.
 
@@ -59,7 +75,7 @@ class OffbeatSolver(Solver):
     rheology : Rheology
 
     heatSource : HeatSource
-
+        (default `Constant`).
     burnup : Burnup
 
     fastFlux : FastFlux
@@ -71,7 +87,7 @@ class OffbeatSolver(Solver):
     fissionGasRelease : FissionGasRelease
 
     sliceMapper : SliceMapper
-
+        (default `AutoAxialSlices`).
     globalOptions: GlobalOptions
 
     couplingOptions: ThermoMechanicsCouplingOptions
@@ -112,21 +128,28 @@ class OffbeatSolver(Solver):
     stressAnalysis : StressAnalysis
     """
 
-    solver: str = "offbeat"
+    solver: str = "extendedThermoMechanics"
     region: str = ""
     thermalSolver: thermal_solver.ThermalSolver | None = None
     mechanicsSolver: mechanics_solver.MechanicsSolver | None = None
     neutronicsSolver: neutronics_solver.NeutronicsSolver | None = None
-    elementTransportSolver: ElementTransportSolver | None = None
+    elementTransportSolver: ElementTransportSolver | None = field(
+        default=None,
+        on_setattr=attr.setters.pipe(
+            attr.setters.convert,
+            attr.setters.validate,
+            lambda inst, attrib, value: _register_fp_fvSolution(inst, value) or value,
+        ),
+    )
     materials: list[materials.Material] = field(factory=list)
     rheology: rheology.Rheology | None = None
-    heatSource: heat_source.HeatSource | None = None
+    heatSource: heat_source.HeatSource | None = field(factory=heat_source.Constant)
     burnup: burnup.Burnup | None = None
     fastFlux: fast_flux.FastFlux | None = None
     corrosion: corrosion.Corrosion | None = None
     gapGasModel: gap_gas.GapGasModel | None = None
     fissionGasRelease: fgr.FissionGasRelease | None = None
-    sliceMapper: slice_mapper.SliceMapper | None = None
+    sliceMapper: slice_mapper.SliceMapper | None = field(factory=slice_mapper.AutoAxialSlices)
     globalOptions: GlobalOptions | None = field(factory=GlobalOptions)
     couplingOptions: ThermoMechanicsCouplingOptions | None = None
     removeBaffles: bool = False
@@ -144,6 +167,9 @@ class OffbeatSolver(Solver):
             self.set_fvSolution_default()
         if self.isSetFvSchemesToDefault:
             self.set_fvSchemes_default()
+
+        # Construction-time path: on_setattr fired before fvSolution existed
+        _register_fp_fvSolution(self, self.elementTransportSolver)
 
         super().__attrs_post_init__()
 
@@ -206,8 +232,8 @@ class OffbeatSolver(Solver):
         self.stressAnalysis.useRelResT = False
         # self.stressAnalysis.relD = 1e-5
         # self.stressAnalysis.relT = 1e-5
-        self.stressAnalysis.absErrD = 0
-        self.stressAnalysis.absErrT = 0
+        self.stressAnalysis.absErrD = 1e-9
+        self.stressAnalysis.absErrT = 1e-4
 
         self.add_relaxation_on_field('D', 0.9)
         self.add_relaxation_on_field('T', 0.9)
@@ -356,50 +382,56 @@ class OffbeatSolver(Solver):
 
 
     def export_properties_to_openfoam(self):
-        # pick filename
+        # Pick filename
+        # and everything we might write, in the order we want it to appear
         if self.is_offbeat_solver:
             filename = "solverDict"
+
+            candidates = {
+                "globalOptions":     self.globalOptions,
+                "thermalSolver":     self.thermalSolver,
+                "mechanicsSolver":   self.mechanicsSolver,
+                "neutronicsSolver":  self.neutronicsSolver,
+                "elementTransport":  self.elementTransportSolver,
+                "corrosion":         self.corrosion,
+                "rheology":          self.rheology,
+                "fissionGasRelease": self.fissionGasRelease,
+                "gapGas":            self.gapGasModel,
+                "heatSource":        self.heatSource,
+                "fastFlux":          self.fastFlux,
+                "burnup":            self.burnup,
+                "sliceMapper":       self.sliceMapper,
+            }
+
         elif self.is_extended_thermomechanics_solver:
             filename = "thermoMechanicalProperties"
+
+            candidates = {
+                "couplingOptions":   self.couplingOptions,
+                "globalOptions":     self.globalOptions,
+                "thermalSolver":     self.thermalSolver,
+                "mechanicsSolver":   self.mechanicsSolver,
+                "heatSource":        self.heatSource,
+                "sliceMapper":       self.sliceMapper,
+            }
+
         else:
             raise ValueError("Unknown solver type")
 
-        # everything we might write, in the order we want it to appear
-        candidates = {
-            "globalOptions":     self.globalOptions,
-            "thermalSolver":     self.thermalSolver,
-            "mechanicsSolver":   self.mechanicsSolver,
-            "neutronicsSolver":  self.neutronicsSolver,
-            "elementTransport":  self.elementTransportSolver,
-            "corrosion":         self.corrosion,
-            "rheology":          self.rheology,
-            "fissionGasRelease": self.fissionGasRelease,
-            "gapGas":            self.gapGasModel,
-            "heatSource":        self.heatSource,
-            "fastFlux":          self.fastFlux,
-            "burnup":            self.burnup,
-            "sliceMapper":       self.sliceMapper,
-        }
 
-        # writer
+        # Writer
         buf = StringIO()
 
-        # header
+        # Header
         buf.write(openfoamHeader)
         buf.write(openfoamFileHeader(filename))
 
-        if self.is_extended_thermomechanics_solver:
-            buf.write(f"couplingOptions{self.couplingOptions!r}\n")
-            buf.write(f"globalOptions{self.globalOptions!r}\n")
-            buf.write(f"thermalSolverOptions{self.thermalSolver!r}\n")
-            buf.write(f"mechanicsSolverOptions{self.mechanicsSolver!r}\n")
-        elif self.is_offbeat_solver:
-            # dynamic blocks (skip empties, keep order)
-            for key, val in candidates.items():
-                if (val is not None and not val.is_empty):
-                    buf.write(f"{key}{val!r}\n")
+        # Dynamic blocks (skip empties, keep order)
+        for key, val in candidates.items():
+            if (val is not None and not val.is_empty):
+                buf.write(f"{key}{val!r}\n")
 
-        # materials block
+        # Materials block
         materials_dict = OpenFOAMListDict(
             name="materials",
             expected_type=materials.Material,
@@ -407,10 +439,10 @@ class OffbeatSolver(Solver):
         )
         buf.write(f"{materials_dict.__repr__(depth=0)}\n")
 
-        # footer
+        # Footer
         buf.write(openfoamFooterLine)
 
-        # write file
+        # Write file
         out_path = f"constant/{self.region}/{filename}"
         with open(out_path, "w", encoding="utf-8") as f:
             f.write(buf.getvalue())

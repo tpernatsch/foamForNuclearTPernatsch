@@ -1,0 +1,54 @@
+description: |-
+  This class creates a multiphysics tightly coupled loop, made of an arbitrary
+  number of physics. The class member-functions are inherited from solver.H
+  and are the same as those of the other solvers. Each member function consists
+  of a loop where the same member function is called iteratively for all the
+  solvers included in the picardLoop. Note that another picardLoop
+  can be created within a picardLoop, hence creating a hierarchical
+  structure which might be helpful for multi-scale problems.
+options:
+- key: maxIterations
+  type: label
+  required: true
+  description: ''
+- key: maxResidual
+  type: scalar
+  required: true
+  description: ''
+usage:
+- comment: |-
+    The picardLoop automatically solves all the equations of the solvers for each time step.
+    In some cases, it is convenient to only solve the energy equation of the
+    thermal-hydraulics solver, while the fluid-mechanics is solved only once at the
+    beginning of the iteration. This can be done by setting the picardLoopNoFluid solover instead.
+  snippet: |-
+    regionSolvers
+    {
+        Level_0
+        {
+            Level_1     picardLoop;
+        }
+        Level_1
+        {
+            subSolvers // list of solvers
+            {
+                regionName              solverName;
+                otherRegionName              otherSolverName;
+                Level_2                 otherLoop;
+            }
+            maxResidual 0.00005;   // residual after which the iteration is ended
+            maxIterations 3;       // maximum number of iterations before the loop is ended
+        }
+
+        Level_2
+        {
+            ...
+        }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

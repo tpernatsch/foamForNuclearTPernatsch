@@ -1,0 +1,33 @@
+description: |
+  Base class for defining the set of faces that constitute the interfaces
+  between different materials, and for providing face-based correction
+  weights used by derived multi-material correction models.
+
+  The class stores two face-weight fields:
+  - weightsEps_ for the in-elastic strain part of $\sigma^{exp}$
+  - weightsGrad_ for the gradient part of $\sigma^{exp}$
+formulation: |
+  This base class does not implement a specific physical correction.
+  It provides the interface-weight fields used by derived models to split
+  (or blend) contributions across material interfaces.
+
+  Derived classes are expected to override:
+  - active(): to indicate whether a multi-material correction is applied
+  - correct(): to update the interface weights on the mesh faces
+
+  The stored face fields are:
+  - $w_{\varepsilon}$ is the face correction weight for the in-elastic strain
+    part of $\sigma^{exp}$
+  - $w_{\nabla}$ is the face correction weight for the gradient part of
+    $\sigma^{exp}$
+
+  In OpenFOAM terms, these correspond to:
+  - weightsEps_ : surfaceScalarField
+  - weightsGrad_ : surfaceScalarField
+admonitions: []
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

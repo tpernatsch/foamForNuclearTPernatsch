@@ -1,0 +1,63 @@
+description: |
+  Heat transfer coefficient model that superposes a forced-convection heat
+  transfer coefficient and a pool-boiling heat transfer coefficient, with
+  additional modulation through a flow enhancement factor and a suppression
+  factor.
+
+  The intent is to represent scenarios where single-phase convection evolves
+  into nucleate boiling, without an intermediate sub-cooled boiling region.
+formulation: |
+  The effective front-side heat transfer coefficient is computed by
+  combining a forced-convection contribution and a pool-boiling contribution,
+  then modulating the result with a flow enhancement factor and a suppression
+  factor.
+
+  $$ h = F \, S \, \left(h_{FC} + h_{PB}\right) $$
+
+  where:
+
+  - $h$ is the effective heat transfer coefficient returned by ``value``
+  - $h_{FC}$ is the forced-convection heat transfer coefficient from the model
+    selected in the ``forcedConvection`` sub-dictionary
+  - $h_{PB}$ is the pool-boiling heat transfer coefficient from the model
+    selected in the ``poolBoiling`` sub-dictionary
+  - $F$ is the flow enhancement factor from the model selected in the
+    ``flowEnhancementFactor`` sub-dictionary
+  - $S$ is the suppression factor from the model selected in the
+    ``suppressionFactor`` sub-dictionary
+admonitions:
+- kind: note
+  body: This model is selected solely by its runtime ``typeName`` and defines no additional options.
+dictionary: neutronicsProperties
+optionsLocations: []
+options: []
+externalOptions: []
+usage:
+- comment: 'The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the
+    ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``).
+    Here is a snippet enabling the model:'
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type superpositionNucleateBoiling;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - dictionary
+  - optionsLocations
+  - externalOptions
+  stub_improved: true

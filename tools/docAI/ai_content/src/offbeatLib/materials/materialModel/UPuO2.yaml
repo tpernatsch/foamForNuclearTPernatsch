@@ -1,0 +1,125 @@
+description: "UPuO2 material class. \n\nThe thermomechanical properties are taken from different sources, as Bison \nmanual,\
+  \ Frapcon manual or Relap manual.\n\nThe material property and behavioral models can selected with the specific\nkeywords.\
+  \ Otherwise, default models will be used.\n"
+options:
+- key: densityModel
+  type: word
+  required: false
+  default: UPuO2Constant
+  description: |
+    Selects the density correlation used by the `UPuO2` material.
+- key: heatCapacityModel
+  type: word
+  required: false
+  default: UPuO2Matpro
+  description: |
+    Selects the heat capacity correlation used by the `UPuO2` material.
+- key: conductivityModel
+  type: word
+  required: false
+  default: MaUPuO2Magni
+  description: |
+    Selects the thermal conductivity correlation used by the `UPuO2` material.
+- key: emissivityModel
+  type: word
+  required: false
+  default: UO2Relap
+  description: |
+    Selects the emissivity correlation used by the `UPuO2` material.
+- key: YoungModulusModel
+  type: word
+  required: false
+  default: UPuO2Matpro
+  description: |
+    Selects the Young's modulus correlation used by the `UPuO2` material.
+- key: PoissonRatioModel
+  type: word
+  required: false
+  default: UPuO2Constant
+  description: |
+    Selects the Poisson's ratio correlation used by the `UPuO2` material.
+- key: thermalExpansionModel
+  type: word
+  required: false
+  default: UPuO2Matpro
+  description: |
+    Selects the thermal expansion correlation used by the `UPuO2` material.
+- key: densificationModel
+  type: word
+  required: false
+  default: none
+  description: |
+    Selects the densification (additional strain) model used by the `UPuO2` material.
+- key: swellingModel
+  type: word
+  required: false
+  default: none
+  description: |
+    Selects the swelling (additional strain) model used by the `UPuO2` material.
+- key: relocationModel
+  type: word
+  required: false
+  default: none
+  description: |
+    Selects the relocation (additional strain) model used by the `UPuO2` material.
+- key: failureModel
+  type: word
+  required: false
+  default: none
+  description: |
+    Selects the failure model used by the `UPuO2` material.
+- key: poreVelocityModel
+  type: word
+  required: false
+  default: none
+  description: |
+    Selects the pore velocity model used by the `UPuO2` material.
+usage:
+- comment: |
+    Example of a `solverDict` materials entry using the `UPuO2` material model
+    with its default sub-model selections.
+  snippet: |-
+    materials
+    {
+        fuel
+        {
+            material UPuO2;
+
+            // Optional overrides (defaults shown)
+            densityModel            UPuO2Constant;
+            heatCapacityModel       UPuO2Matpro;
+            conductivityModel       MaUPuO2Magni;
+            emissivityModel         UO2Relap;
+            YoungModulusModel       UPuO2Matpro;
+            PoissonRatioModel       UPuO2Constant;
+            thermalExpansionModel   UPuO2Matpro;
+
+            densificationModel      UO2Frapcon;
+            swellingModel           UO2Frapcon;
+            relocationModel         UO2Frapcon;
+            failureModel            none;
+            poreVelocityModel       none;
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - description
+  - formulation
+  - usage
+  formulation_added: true
+formulation: |
+  The UPuO2 class provides temperature-dependent thermophysical and thermomechanical properties through selectable sub-models (density, heat capacity, conductivity, emissivity, elastic moduli, thermal expansion) and supports uncertainty quantification/SA via multiplicative scaling and additive offsets. The non-trivial physics is therefore the evaluation of property correlations as functions of temperature (and possibly other state variables) with optional densification/swelling/relocation/failure sub-models, as in standard fuel performance frameworks (e.g., BISON/FRAPCON/RELAP; see also Duderstadt & Hamilton for coupled thermal-mechanics concepts).
+
+  For any base correlation $\phi_{\mathrm{base}}(T)$ (e.g., $\rho$, $c_p$, $k$, $E$, $\nu$, $\alpha\Delta T$, $\epsilon$), the implemented UQ/SA form is a scaled-and-shifted property:
+  $$ \phi(T) = F_\phi\,\phi_{\mathrm{base}}(T) + \Delta\phi $$
+  where the scaling factor $F_\phi$ and offset $\Delta\phi$ are user parameters defined by the class.
+
+  In OpenFOAM field-name conventions, the temperature is $T$ (typically stored as a volScalarField named `T`), and the resulting material properties are used by the solver to assemble constitutive relations (e.g., Fourier heat conduction using $k(T)$ and radiative heat transfer using $\epsilon(T)$) and mechanical response (e.g., $E(T)$, $\nu(T)$, and thermal strain via $\alpha(T)\Delta T$).
+
+  - $T$ is the local material temperature (OpenFOAM field `T`).
+  - $\phi(T)$ is a generic UPuO2 material property evaluated at temperature $T$ (e.g., $\rho$, $c_p$, $k$, $\epsilon$, $E$, $\nu$, $\alpha\Delta T$).
+  - $\phi_{\mathrm{base}}(T)$ is the value returned by the selected correlation model (e.g., `UPuO2Constant`, `UPuO2Matpro`, `MaUPuO2Magni`, `UO2Relap`).
+  - $F_\phi$ is the dimensionless scaling parameter (e.g., `F_rho_`, `F_Cp_`, `F_k_`, `F_emissivity_`, `F_E_`, `F_nu_`, `F_alphaT_`).
+  - $\Delta\phi$ is the additive offset parameter (e.g., `delta_rho_`, `delta_Cp_`, `delta_k_`, `delta_emissivity_`, `delta_E_`, `delta_nu_`, `delta_alphaT_`).

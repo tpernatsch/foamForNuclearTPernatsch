@@ -1,0 +1,29 @@
+description: |
+  Baker-Just high-temperature oxidation model.
+formulation: |
+  Updates the oxide layer thickness using a Baker–Just type oxidation correlation
+  (often written in the form of a parabolic rate law). The implementation advances
+  the oxide thickness $S$ over a time step $\Delta t$ from an initial thickness $S_0$
+  using an Arrhenius temperature dependence.
+
+  $$ S = \sqrt{ A_s \exp\!\left(-\frac{Q_s^R}{T_i}\right)\Delta t + S_0^2 } $$
+
+  where:
+
+  - $S$ is the updated oxide layer thickness (m)
+  - $S_0$ is the oxide layer thickness at the beginning of the time step (m)
+  - $T_i$ is the oxidation temperature used in the correlation (K)
+  - $T_b$ is an additional temperature input (K) (not used by this implementation)
+  - $\phi$ is an additional parameter input (dimensionless) (not used by this implementation)
+  - $\Delta t$ is the time step duration (s)
+  - $A_s$ is the pre-exponential constant ($1.883\times 10^{-4}$, in units consistent with the correlation)
+  - $Q_s^R$ is the effective activation energy parameter ($22898.8$, in units consistent with $T_i$)
+
+  The correlation is applied only within the model’s temperature limits:
+  $T \ge 673$ K and up to an effectively unbounded upper limit.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

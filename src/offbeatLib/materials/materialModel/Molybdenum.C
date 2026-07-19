@@ -54,7 +54,7 @@ Foam::Molybdenum::Molybdenum
 )
 :
     materialModel(mesh, materialModelDict, addr),
-    swelling_(swellingModel::New(mesh, materialModelDict, "FeCrAl"))
+    swelling_(swellingModel::New(mesh, materialModelDict, "none"))
 {  
     density_ =
         densityModel::New(mesh, materialModelDict, "MoConstant");

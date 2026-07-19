@@ -1,0 +1,157 @@
+description: "Gap gas model that computes gap gas composition, pressure, temperature,\nand volume using correlations derived\
+  \ from the FRAPCON 4.0 manual.\n\nThe gap gas state at the initial time (presure and composition) must \nbe separately provided\
+  \ via the `gapGas` file.\n\nThe model assumes:\n- ideal gas behavior,\n- multiple free-volume regions (gap, plena, central\
+  \ hole, cracks),\n- instantaneous pressure equalization over the entire free volume.\n"
+formulation: "The gas pressure is going to be calculated as:\n\n$$\n\\begin{aligned}\np = \\frac{nR}{\\sum_i(V_i/T_i)}\n\\\
+  end{aligned}\n$$\n                  \nwhere the i might stand for the gap, plena, central hole or cracks.\nThe calculation\
+  \ of the various V/T terms is done separately for the various\nsections of the free volume. \n\nThe calculation of the gap\
+  \ and plena volumes is done applying the \ngauss-green theorem applied to the bounding surfaces:\n\n$$\n\\begin{aligned}\n\
+  V &= \\int_V dV = \\frac{1}{3} \\int_V \\nabla\\cdot(\\vec{r})\\, dV\n   = \\frac{1}{3} \\oint_S (\\vec{r}_s \\cdot n)\\\
+  , dS\n\\end{aligned}\n$$   \n"
+admonitions:
+- kind: warning
+  body: |
+    Gap patches must use the `regionCoupledOFFBEAT` boundary condition.
+    This is required for correct AMI-based volume and temperature evaluation.
+options:
+- key: gapPatches
+  location: gapGasOptions
+  type: list[word]
+  required: true
+  description: |
+    Patches defining the fuel–cladding gap (e.g. `fuelOuter cladInner`).
+- key: holePatches
+  location: gapGasOptions
+  type: list[word]
+  required: false
+  default: []
+  description: |
+    Patches defining internal fuel holes.
+- key: topFuelPatches
+  location: gapGasOptions
+  type: list[word]
+  required: false
+  description: |
+    Patches at the top of the fuel stack.
+- key: bottomFuelPatches
+  location: gapGasOptions
+  type: list[word]
+  required: false
+  description: |
+    Patches at the bottom of the fuel stack.
+- key: gapVolumeOffset
+  location: gapGasOptions
+  type: scalar
+  required: false
+  default: 0.0
+  description: |
+    Offset applied to the initial gap volume.
+- key: gasReserveVolume
+  location: gapGasOptions
+  type: scalar
+  required: false
+  default: 0.0
+  description: |
+    Additional reserve gas volume used in pressure calculation.
+- key: gasReserveTemperature
+  location: gapGasOptions
+  type: scalar
+  required: false
+  default: 290
+  description: |
+    Temperature of the reserve gas (K).
+- key: gasReserveTemperatureList
+  location: gapGasOptions
+  type: table
+  required: false
+  py:
+    type: OffbeatTimeProfile
+    imports:
+    - from foamForNuclear.timeProfile import OffbeatTimeProfile
+  description: |
+    Time-dependent table for reserve gas temperature.
+    If present, it overrides `gasReserveTemperature`.
+- key: includeCentralHole
+  location: gapGasOptions
+  type: bool
+  required: false
+  default: true
+  description: |
+    Include fuel central hole volume in the free volume calculation.
+- key: includeDishes
+  location: gapGasOptions
+  type: bool
+  required: false
+  default: true
+  description: |
+    Include dish geometry in the free volume calculation.
+externalOptions:
+- key: massFractions
+  path: <timeDirectory>.uniform.gapGas
+  type: dictionary[str, scalar]
+  required: true
+  description: |
+    Initial gas mass fractions for:
+    `Ar`, `He`, `Kr`, `Ne`, `Rn`, `Xe`.
+- key: gasPressureType
+  path: <timeDirectory>.uniform.gapGas
+  type: word
+  required: false
+  default: fromModel
+  description: |
+    Pressure prescription method:
+    - `fromModel`: computed by the gap gas model (default)
+    - `fixed`: use `gasPressure`
+    - `fromList`: use `gapPressureList`
+- key: gasPressure
+  path: <timeDirectory>.uniform.gapGas
+  type: scalar
+  required: false
+  description: |
+    Fixed gas pressure (Pa), only used when `gasPressureType` is `fixed`.
+- key: gapPressureList
+  path: <timeDirectory>.uniform.gapGas
+  type: table
+  required: false
+  description: |
+    Time-dependent table for gap pressure (Pa), only used when
+    `gasPressureType` is `fromList`.
+
+    Expected structure:
+    - `type`: table
+    - `values`: list of (time, pressure)
+    - optional `outOfBounds` (default: clamp)
+    - optional `interpolationScheme` (e.g. linear)
+usage:
+- comment: |
+    Snippet of `solverDict` to activate the FRAPCON-based gap gas model.
+  snippet: |
+    gapGas Frapcon;
+
+    gapGasOptions
+    {
+        gapPatches ( fuelOuter cladInner );
+        holePatches ( fuelInner );
+        topFuelPatches ( fuelTop );
+        bottomFuelPatches ( fuelBottom );
+
+        gapVolumeOffset 0.0;
+        gasReserveVolume 0.0;
+        gasReserveTemperature 290;
+
+        includeCentralHole on;
+        includeDishes on;
+    }
+- comment: "At the same time the user **must** set the `gapGas` file inside the time \nstep folder (e.g. `0/uniform/`):\n"
+  snippet: "massFractions\n{\n    Ar 0;\n    He 1;\n    Kr 0;\n    Ne 0;\n    Rn 0;\n    Xe 0;\n};\n\ngasPressureType    \
+    \             fromModel;// fixed;// fromList;\ngasPressure                     2.25e6;\n    \n//  gapPressureList\n//\
+    \  {\n//  type    table;\n//  \n//      values\n//      (\n//          (0.0    1e5)\n//          (100.0  1e6)\n//    \
+    \  );\n\n//      outOfBounds         clamp;     // optional out-of-bounds handling\n//      interpolationScheme linear;\
+    \    // optional interpolation method\n//  }"
+dictionary: gapGasProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - formulation
+  - dictionary

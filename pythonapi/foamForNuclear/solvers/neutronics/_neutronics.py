@@ -198,7 +198,10 @@ class NeutronicsSolver(Solver):
         Flag to change Doppler feedback correlation in the point-kinetics
         (default `True`).
     liquidFuel : bool
-        Flag to specify that the fuel is liauid (default `False`).
+        Flag to specify that the fuel is liquid (default `False`).
+    initPrecursorsLiquidFuel : bool
+        Flag to initialize the concentration of precursors to their equilibrium
+        value at the beginning of the simulation (default `False`).
     keff : float
         Initial eigenvalue (default `1`).
     power : float
@@ -225,6 +228,7 @@ class NeutronicsSolver(Solver):
     isLowMemory: bool | None = None
     fastNeutrons: bool | None = None
     liquidFuel: bool = False
+    initPrecursorsLiquidFuel: bool | None = None
     keff: float | int = field(
         default=1,
         validator=v.and_(v.instance_of((float, int)), v.ge(0.0))
@@ -388,6 +392,9 @@ class NeutronicsSolver(Solver):
             if (self.fastNeutrons is not None):
                 f.write(addParameter("fastNeutrons", self.fastNeutrons, isAddExtraLine=True))
             f.write(addParameter('liquidFuel', self.liquidFuel, isAddExtraLine=True, none_ok=False))
+
+            if (self.initPrecursorsLiquidFuel is not None):
+                f.write(addParameter('initPrecursorsLiquidFuel', self.initPrecursorsLiquidFuel, isAddExtraLine=True, none_ok=False))
 
             f.write(openfoamFooterLine)
 

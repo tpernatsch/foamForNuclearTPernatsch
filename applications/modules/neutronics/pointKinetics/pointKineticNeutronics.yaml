@@ -37,7 +37,7 @@ description: |-
   $$
 
   \table
-      Parameter   | Description
+      Parameter     | Description
       $P$           | Core power
       $C_i$         | Precursor power
       $S$           | Optional external source power
@@ -58,11 +58,25 @@ description: |-
       $\rho_{boron}$         | Boron concentration reactivity contribution
       $\rho_{ext}$           | External reactivity contribution
       $\rho_{ext}^{FMU}$     | External reactivity contribution from an FMU
+      $\bold u$     | Velocity field (liquid fuel)
+      $D_i$         | Precursor diffusion coefficient (liquid fuel)
   \endtable
+
+
+  For liquid fuel reactors, the point-kinetics equations becomes [@HABTEMARIAM2024110237]:
+
+  $$
+  \begin{align}
+      \frac{dP(t)}{dt} & = \frac{\rho_{tot} - \zeta - \beta_{tot}}{\Lambda} P(t)
+          + \sum_{i=1}^N \lambda_i \hat C_i(t) \\
+      \frac{d \tilde c_i(r,t)}{dt} + \bold u \cdot \nabla \tilde c_i(r,t) & = \nabla \cdot D_i \nabla \tilde c_i(r,t) + \frac{\beta_i}{\Lambda} P(t)
+          - \lambda_i \tilde c_i(r,t) \quad \forall i \in [1; N]
+  \end{align}
+  $$
 
   A correct evaluation of the reactivity worth of delayed neutron precursors in
   MSRs, as well as of the impact of temperatures on reactivities, normally
-  requires the knowledge of the adjoint flux. In GeN-Foam, the field
+  requires the knowledge of the adjoint flux. In the neutronics module, the field
   *oneGroupFlux* is used by the point kinetic solver for weighting temperatures,
   densities and precursors. When fluxes are not calculated via a spatial
   neutronics calculation, one has to manually provide the *oneGroupFlux* in
@@ -72,7 +86,60 @@ description: |-
 
   - If calculated fluxes are available in *neutroRegion*, these will be user to recalculate and overwrite *oneGroupFlux*.
   - If no fluxes are available, the neutronics sub-solver will use the provided *oneGroupFlux*
-  - If the *initialOneGroupFluxByZone* keyword is used in *nuclearData*, this will be used to overwrite *oneGroupFlux*
+  - If the ``initialOneGroupFluxByZone`` keyword is used in *neutronicsProperties*, this will be used to overwrite *oneGroupFlux*
+
+  **Liquid-fuel precursor initialization and restart**
+
+  When `liquidFuel true` is set in *neutronicsProperties*, the point-kinetics
+  sub-solver needs an equilibrium precursor distribution and the associated
+  *precursor-equilibrium reactivity* ($\rho_{eq} = \beta_{tot} - \beta_{tot}^{eff}$,
+  the reactivity offset that makes the circulating-fuel configuration critical at
+  the start of the transient, where $\beta_{tot}^{eff}$ is the flux-weighted
+  effective delayed fraction of the *flowing* precursors). These two concerns
+  are handled separately:
+
+  - *Reference feedback state* — the reference temperatures/densities used for
+    the feedback reactivities and the ``precEquilibriumReactivity`` — is
+    established at the first time step of *every* run and written to
+    *reactorState* (*timeFolder/uniform/reactorState*). On a restart it is read
+    back from *reactorState*, so it does not have to be recomputed. This mirrors
+    the solid-fuel behaviour and is independent of `initPrecursorsLiquidFuel`.
+
+  - *Equilibrium precursor distribution* is the expensive part and is
+    (re)computed only when `initPrecursorsLiquidFuel true` is set in
+    *nuclearData*. The resulting ``precPKStar*``/``precPK*`` fields are written
+    to the time directory like any other field.
+
+  This separation enables a run-once / restart-many workflow: perform the
+  equilibrium initialization **once** with `initPrecursorsLiquidFuel true`, then
+  restart every subsequent transient with `initPrecursorsLiquidFuel false`. The
+  restart reuses the stored precursor fields and reads ``precEquilibriumReactivity``
+  and the reference temperatures back from *reactorState*, skipping the costly
+  equilibrium solve (which can take hours). Starting a liquid-fuel transient with
+  the flag off before any initialization has ever been run is flagged with a
+  warning, since the transient would then begin from a non-critical state.
+
+  Two initialization modes are available for the equilibrium solve:
+
+  *Standard steady-state solve* (default when `pseudoTimeSteps` is absent or
+  zero): the precursor transport equation is solved once in steady state, i.e.
+  $\partial C_i / \partial t = 0$, giving the equilibrium distribution for the
+  initial flow and power field.
+
+  *Pseudo-time-stepping* (activated by setting `pseudoTimeSteps > 0`): a
+  backward-Euler pseudo-time loop advances the precursor equation over
+  $N \times \Delta\tau$ seconds of pseudo-time. The scheme converges when
+  $N \Delta\tau \gg 1/\lambda_{min}$. This approach handles stiff cases where
+  the direct steady-state solve is ill-conditioned (e.g. very slow flows or
+  high diffusion).
+
+  **Fission source restriction**
+
+  `fuelZones` lists the cell zones in which fission source terms for the
+  delayed neutron precursors are active. Cells outside these zones contribute
+  no precursor production, which is physically correct for loop-type MSRs
+  where only part of the circuit is fissile. If `fuelZones` is absent, all
+  cells are treated as fuel (backward-compatible default).
 
 admonitions:
   - kind: warning
@@ -84,77 +151,82 @@ options:
     type: boolean
     required: true
     default:
-    description: <description>
+    description: Flag to activate reactivity feedback for fast spectrum reactors. If true, use the ``-coeffDoppler * log(TFuel/TFuelRef)``, else use ``coeffDoppler * (sqrt(TFuel) - sqrt(TFuelRef))``
+  - key: ScNo
+    type: boolean
+    required: false
+    default: 1.0
+    description: Schmidt number. Only used for liquid fuel
   - key: promptGenerationTime
     type: scalar
     required: true
     default:
-    description: <description>
+    description: Prompt generation time
   - key: Beta
     type: list[scalar]
     required: true
     default:
-    description: <description>
+    description: Belayed neutron fraction per precursor groups
   - key: lambda
     type: list[scalar]
     required: true
     default:
-    description: <description>
+    description: Decay constant per precursor groups
   - key: feedbackCoeffTFuel
     type: scalar
     required: true
     default:
-    description: <description>
+    description: Fuel temperature reactivity feedback coefficient
   - key: feedbackCoeffTClad
     type: scalar
     required: true
     default:
-    description: <description>
+    description: Cladding temperature reactivity feedback coefficient
   - key: feedbackCoeffTCool
     type: scalar
     required: true
     default:
-    description: <description>
+    description: Coolant temperature reactivity feedback coefficient
   - key: feedbackCoeffRhoCool
     type: scalar
     required: true
     default:
-    description: <description>
+    description: Coolant density reactivity feedback coefficient
   - key: feedbackCoeffDoppler
     type: scalar
     required: true
     default:
-    description: <description>
+    description: Fuel Doppler reactivity feedback coefficient
   - key: feedbackCoeffTStruct
     type: scalar
     required: true
     default:
-    description: <description>
+    description: Structure temperature reactivity feedback coefficient
   - key: feedbackCoeffTStructMech
     type: scalar
     required: true
     default:
-    description: <description>
+    description: Mechanical structure temperature reactivity feedback coefficient
   - key: fuelFeedbackZones
     type: list[word]
     required: true
     default:
-    description: <description>
+    description: List of fuel cellZone names for which the fuel reactivity feedback is applied
   - key: coolantFeedbackZones
     type: list[word]
     required: true
     default:
-    description: <description>
+    description: List of coolant cellZone names for which the coolant reactivity feedback is applied
   - key: structFeedbackZones
     type: list[word]
     required: true
     default:
-    description: <description>
+    description: List of structure cellZone names for which the structure reactivity feedback is applied
   - key: drivelineFeedbackZones
     type: list[word]
     required: true
     default:
-    description: <description>
+    description: List of driveline cellZone names for which the driveline reactivity feedback is applied
   - key: GEMSodiumLevelRef
     type: scalar
     required: false
@@ -180,6 +252,68 @@ options:
     required: false
     default:
     description: <description>
+  - key: liquidFuel
+    type: boolean
+    required: false
+    default: false
+    description: |-
+      If true, enables liquid-fuel point-kinetics mode. Delayed neutron
+      precursors are advected and diffused with the flowing fuel rather than
+      being fixed in place. Must also be set in *neutronicsProperties*.
+  - key: initPrecursorsLiquidFuel
+    type: boolean
+    required: false
+    default: false
+    description: |-
+      If true, the equilibrium precursor spatial distribution and the
+      ``precEquilibriumReactivity`` are (re)computed at the first time step of
+      the run (i.e. when `timeIndex == startTimeIndex + 1`); the initialization
+      mode depends on `pseudoTimeSteps` (zero/absent: standard steady-state
+      solve; positive: pseudo-time-stepping). This is the expensive step. It is
+      *not* required on restart: the reference feedback state and
+      ``precEquilibriumReactivity`` are persisted to *reactorState* and the
+      precursor fields to the time directory, so a transient can be restarted
+      with this flag set to false to reuse the stored equilibrium. Only used
+      for liquid fuel.
+  - key: fuelZones
+    type: list[word]
+    required: false
+    default: (all cells)
+    description: |-
+      List of cell zone names in which the fission source term for delayed
+      neutron precursors is active. Only cells inside these zones contribute
+      to precursor production. Cells outside (e.g. heat exchanger, pump,
+      piping) correctly produce no precursors. If absent, all cells are
+      treated as fuel, preserving backward compatibility with cases that do
+      not distinguish fissile and non-fissile regions.
+  - key: pseudoTimeSteps
+    type: scalar or list[scalar]
+    required: false
+    default: 0
+    description: |-
+      Number of backward-Euler pseudo-time iterations used to initialize the
+      precursor spatial distribution when `initPrecursorsLiquidFuel true`.
+      A scalar applies the same count to all precursor groups; a list of
+      length N assigns a per-group count. Set to 0 (or omit) to fall back to
+      the standard steady-state solve. For convergence, the total pseudo-time
+      $N \times \Delta\tau$ should satisfy $N \Delta\tau \gg 1/\lambda_{min}$.
+  - key: pseudoTimeStepSize
+    type: scalar or list[scalar]
+    required: false
+    default:
+    description: |-
+      Pseudo-time step size $\Delta\tau$ in seconds for the precursor
+      initialization loop. A scalar applies to all groups; a list of length N
+      gives per-group values. Required when `pseudoTimeSteps > 0`.
+  - key: pseudoTimeRelaxation
+    type: scalar or list[scalar]
+    required: false
+    default: 1.0
+    description: |-
+      Under-relaxation factor applied after each pseudo-time step:
+      $C_i^{new} = \omega \, C_i^{solved} + (1-\omega) \, C_i^{old}$.
+      A scalar applies to all groups; a list of length N gives per-group
+      values. Use values less than 1 if the pseudo-time iterations oscillate.
 
 usage:
   - comment: |-

@@ -1,0 +1,109 @@
+description: |-
+  Allows defining a momentum source, including options for a time
+  dependent source, and a source coming from an FMU
+options:
+- key: momentumSource
+  type: vector
+  required: true
+  description: Momentum source vector
+- key: momentumSourceTimeProfile
+  type: timeTable
+  required: false
+  description: Momentum source scaling factor as a time table or FMI port.
+usage:
+- comment: 'Example of usage:'
+  snippet: |-
+    // Example of mandatory dictionary entries:
+    volumeFraction      0.5;
+    Dh                  1;
+    momentumSource      (0 0 1000);
+
+    // Example of time dependant momentum source scaling entries:
+    momentumSourceTimeProfile
+    {
+        type        table;
+        startTime   100;
+        table       table
+        (
+            //- <Time>  <Momentum source scaling factor>
+            (   0       1   )
+            (   1       0.1 )
+        );
+    }
+
+    // Example of entries for scaling source coming from FMUs:
+    momentumSourceTimeProfile
+    {
+        type            fmi;
+        nameFromFMU     momentumSourceCoupled;
+        initialValue    1.0;
+    }
+- comment: 'The model is specified via the ``momentumSource`` entry in the ``structureModels/<zoneName>`` subdictionary of
+    the ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g ``constant/fluidRegion``).
+    Here is a snippet enabling the model:'
+  snippet: |-
+    phaseProperties
+    {
+        structureModels
+        {
+            "<zoneName>"
+            {
+                volumeFraction          0;
+                Dh                      0.0032;
+                momentumSource          (0 0 -166000);
+                momentumSourceTimeProfile
+                {
+                    type        table;
+                    startTime   910;
+                    table       table
+                    (
+                        (   0   1   )
+                        (   1   0.8490104619    )
+                    );
+            }
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - options
+  - usage
+  formulation_added: true
+formulation: |-
+  This class prescribes a volumetric momentum source term in the momentum
+  equation by applying a user-defined constant vector, optionally scaled in
+  time by a tabulated profile (or an FMI-provided multiplier). The governing
+  momentum source is therefore an explicit source term with no additional
+  differential equations solved inside the pump model.
+
+  The momentum equation in OpenFOAM form can be written generically as
+  $$ \frac{\partial (\rho \mathbf{U})}{\partial t} + \nabla \cdot (\rho \mathbf{U}\otimes \mathbf{U})
+     = \cdots + \mathbf{S}_M, $$
+  where the pump contributes $\mathbf{S}_M$ only in the specified cells.
+
+  The pump model sets the cell-wise momentum source vector as
+  $$ \mathbf{S}_M(\mathbf{x},t) = \chi_{\text{pump}}(\mathbf{x})\; \mathbf{pumpValue}\; f(t), $$
+  with $\chi_{\text{pump}}(\mathbf{x})=1$ in the cells listed by \texttt{cellList_} and
+  $\chi_{\text{pump}}(\mathbf{x})=0$ elsewhere.
+
+  The time scaling factor $f(t)$ is either unity (if no time profile is provided)
+  or obtained from \texttt{momentumSourceTimeProfile_}:
+  $$ f(t)=
+     \begin{cases}
+       1, & \text{if } \texttt{momentumSourceTimeProfile\_.valid()}=\texttt{false},\\
+       \texttt{momentumSourceTimeProfile\_.value}(t), & \text{otherwise.}
+     \end{cases} $$
+
+  Variables:
+  - $ \mathbf{S}_M(\mathbf{x},t) $ is the pump momentum source term (vector) added to the momentum equation
+  - $ \chi_{\text{pump}}(\mathbf{x}) $ is an indicator function equal to 1 in \texttt{cellList_} and 0 elsewhere
+  - $ \mathbf{pumpValue} $ is the constant momentum source vector read from \texttt{momentumSource}
+  - $ f(t) $ is the dimensionless (or user-consistent) time scaling factor from \texttt{momentumSourceTimeProfile}
+  - $ t $ is simulation time
+
+  Implementation-wise, \texttt{correct(volVectorField& pumpField)} updates the OpenFOAM
+  vector field (e.g. \texttt{pumpField}) directly using the above explicit expression.
+  For the general momentum-equation structure and source-term treatment, see
+  Duderstadt & Hamilton and Todreas & Kazimi for reactor-fluid context, and
+  standard OpenFOAM finite-volume source-term conventions.

@@ -1,0 +1,101 @@
+description: |
+  Run-time selectable base class for thermal-hydraulics models in foamForNuclear.
+  It provides common infrastructure for multi-region, multi-phase solvers,
+  including pressure reference handling, momentum formulation selection,
+  optional regime-map model support, and coupling utilities such as
+  baffle-less field mapping between regions.
+
+  The class is an OpenFOAM ``solver`` and an ``IOdictionary`` and is designed
+  to be extended by concrete thermal-hydraulics implementations.
+formulation: |
+  This base class does not implement a specific set of governing
+  thermal-hydraulics equations. Instead, it sets up shared fields and
+  solver infrastructure used by derived models, including:
+
+  - pressure reference treatment for ``p``/``p_rgh``-based formulations
+  - selection of the momentum discretization mode
+  - optional coupling/regime-map model construction
+  - optional inter-region field mapping when baffles are removed
+
+  The pressure reference is configured through the reference cell and value
+  used by derived solvers when assembling pressure equations.
+
+  The gravitational reference enthalpy is initialized as:
+
+  $$
+  h_{\mathrm{Ref}} = \left(\mathbf{g}\cdot \mathbf{C}_f\right) + \|\mathbf{g}\|\, h_{\mathrm{Ref}}^{(0)}
+  $$
+
+  where:
+
+  - $h_{\mathrm{Ref}}$ is the initialized reference enthalpy field
+  - $\mathbf{g}$ is the gravitational acceleration vector (from the ``g`` field)
+  - $\mathbf{C}_f$ is the face-centre position vector (``mesh.Cf()``)
+  - $h_{\mathrm{Ref}}^{(0)}$ is the scalar reference enthalpy offset set by the
+    derived model/base initialization (see ``hRef`` field construction)
+admonitions: []
+dictionary: neutronicsProperties
+optionsLocations:
+- name: solverDict
+  in: solverDict
+options:
+- key: pRefCell
+  type: scalar
+  required: false
+  default: 0
+  description: |
+    Reference cell index used to fix the pressure level in ``p``/``p_rgh``-based
+    formulations.
+- key: pRefValue
+  type: scalar
+  required: false
+  default: 0
+  description: |
+    Reference pressure value applied at ``pRefCell`` to remove the null-space
+    of the pressure equation.
+- key: forcePRef
+  type: bool
+  required: false
+  default: false
+  description: |
+    If ``true``, forces the use of the pressure reference even when the
+    pressure equation would otherwise be solvable without it.
+- key: momentumMode
+  type: word
+  required: false
+  default: cellCentered
+  description: |
+    Selects the momentum discretization/assembly mode. The available modes
+    are defined by ``momentumModeNames_`` in the implementation.
+- key: porousInterfaceSharpness
+  type: scalar
+  required: false
+  default: 0.0
+  description: |
+    Controls the sharpness of the porous interface treatment used by
+    derived thermal-hydraulics models (e.g. for smearing/transition functions).
+- key: initialFluidMass
+  type: scalar
+  required: false
+  default: 0
+  description: |
+    Initial total fluid mass used by derived models that track mass
+    conservation or perform mass-based normalization.
+- key: <parameter>
+  type: word
+  required: true
+  default: null
+  description: <description>
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - dictionary
+  - optionsLocations
+  - options
+  - usage
+  stub_improved: true

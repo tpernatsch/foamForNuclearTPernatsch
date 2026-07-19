@@ -53,6 +53,7 @@ Foam::diffCoefModel::diffCoefModel
 :
     mesh_(mesh),
     crackFp_(dict.lookupOrDefault<bool>("crackFpRelease", false)),
+    failureTime_(dict.lookupOrDefault<scalar>("failureTime", GREAT)),
     FpNamesMat_()
 {
   if (dict.found("fissionProductsTransport"))

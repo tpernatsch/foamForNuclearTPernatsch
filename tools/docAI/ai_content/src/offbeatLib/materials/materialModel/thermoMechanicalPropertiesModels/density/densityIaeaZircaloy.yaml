@@ -1,0 +1,51 @@
+description: |
+  Class modelling Zircaloy density from Iaea.
+options:
+- key: par1
+  type: scalar
+  required: false
+  default: 6595.2
+  description: |
+    IAEA density parameter used in the linear relation $\rho_1 = \mathrm{par1} - \mathrm{par2}\,T$ for $T < 1083\,\mathrm{K}$.
+- key: par2
+  type: scalar
+  required: false
+  default: 0.1477
+  description: |
+    IAEA density parameter used in the linear relation $\rho_1 = \mathrm{par1} - \mathrm{par2}\,T$ for $T < 1083\,\mathrm{K}$.
+- key: par3
+  type: scalar
+  required: false
+  default: 6690.0
+  description: |
+    IAEA density parameter used in the linear relation $\rho_2 = \mathrm{par3} - \mathrm{par4}\,T$ for $T \ge 1144\,\mathrm{K}$.
+- key: par4
+  type: scalar
+  required: false
+  default: 0.1855
+  description: |
+    IAEA density parameter used in the linear relation $\rho_2 = \mathrm{par3} - \mathrm{par4}\,T$ for $T \ge 1144\,\mathrm{K}$.
+usage:
+- comment: |
+    Example selection of the `ZircaloyIaea` density model.
+  snippet: |-
+    materials
+    {
+      cladding
+      {
+        type Zircaloy;
+        density
+        {
+          type ZircaloyIaea;
+          // par1 6595.2;
+          // par2 0.1477;
+          // par3 6690.0;
+          // par4 0.1855;
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options

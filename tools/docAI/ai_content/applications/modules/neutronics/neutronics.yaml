@@ -1,0 +1,73 @@
+description: |
+  Neutronics driver/solver wrapper for foamForNuclear.
+
+  This class reads reactor state parameters (e.g. $k_{eff}$ and target power) from the
+  ``reactorState`` dictionary and manages neutronics-related fields such as
+  ``powerDensity`` and optional secondary power density. It also supports
+  coupling workflows such as baffle-less field correction and external source
+  modulation.
+formulation: |
+  This class primarily orchestrates neutronics inputs/outputs and coupling
+  rather than implementing a single closed-form physical model.
+
+  It reads the effective multiplication factor $k_{eff}$ and a target total
+  power from the ``reactorState`` dictionary, and uses them to drive the
+  neutronics power normalization and related source terms.
+
+  - $k_{eff}$ is the effective neutron multiplication factor read from
+    ``reactorState`` (key ``keff``)
+  - $P_{target}$ is the target total power read from ``reactorState`` (key ``power``)
+  - $q$ is the volumetric power density field (OpenFOAM field ``powerDensity``)
+  - $q_2$ is an optional secondary volumetric power density field
+    (OpenFOAM field ``secondaryPowerDensity``)
+dictionary: neutronicsProperties
+options:
+- key: eigenvalueNeutronics
+  type: bool
+  required: false
+  default: false
+  description: |
+    Enable eigenvalue neutronics mode. When set to ``true``, the neutronics
+    workflow is configured to treat the problem as an eigenvalue calculation
+    (as opposed to a fixed-source/normalization workflow).
+- key: externalSourceNeutronics
+  type: bool
+  required: false
+  default: false
+  description: |
+    Enable external-source-driven neutronics mode. When set to ``true``,
+    the solver expects and uses an external source definition.
+- key: liquidFuel
+  type: bool
+  required: false
+  default: false
+  description: |
+    Enable liquid-fuel-specific neutronics handling (e.g. coupling/field
+    treatment appropriate for liquid fuel configurations).
+- key: mu
+  type: dimensionedScalar
+  required: false
+  default: 0  [kg/(m·s)]
+  description: |-
+    Molecular dynamic viscosity of the fuel salt, used in the delayed
+    neutron precursor diffusion coefficient:
+
+    $$D_{prec} = \frac{\mu_{t} + \mu}{\rho_{cool} \, Sc}$$
+
+    where $\mu_t$ is the turbulent dynamic viscosity and $Sc$ is the
+    turbulent Schmidt number. For typical MSR operating conditions
+    molecular diffusion is negligible compared to turbulent diffusion,
+    so `mu` can often be set to zero. Provide a non-zero value when
+    laminar or transitional flows are modelled. Looked up from
+    *nuclearData* in the point-kinetics liquid-fuel solver.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - dictionary
+  - options
+  - usage
+  stub_improved: true

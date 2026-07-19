@@ -1,0 +1,59 @@
+description: |
+  Creep model for the specific Steel AIM1 of the 15-15 Ti class, using the
+  Tobbe (1975) correlation.
+
+  The model computes irradiation creep and thermal creep strain increments
+  and updates the corresponding equivalent creep measures.
+formulation: |
+  The model provides a rheology update for the creep strain tensor
+  contributions by combining irradiation-driven and temperature-driven
+  creep mechanisms, following the Tobbe (1975) correlation as implemented
+  for Steel AIM1 (15-15 Ti).
+
+  The implementation maintains:
+  - irradiation creep strain tensor ``epsilonCreepIrr_`` and its equivalent
+    scalar measure ``epsilonCreepIrrEq_``
+  - thermal creep strain tensor ``epsilonCreepTh_`` and its equivalent scalar
+    measure ``epsilonCreepThEq_``
+  - increments ``DepsilonCreepIrrEq_`` and ``DepsilonCreepThEq_`` used to
+    advance the equivalent creep state in time.
+
+  The creep update is applied in ``correctCreep`` for the provided mechanical
+  strain field ``epsilonEl`` and addressing list ``addr``. The irradiation
+  contribution uses a fast neutron flux field (name configurable via
+  ``fastFluxName``), while the thermal contribution uses the local temperature
+  field ``T`` and the local elastic/viscoelastic state available through the
+  base ``creepModel`` interface.
+
+  The correlation parameters are fixed constants in this implementation:
+  - $p_1=3.2\times 10^{-24}$
+  - $p_2=2.30\times 10^{14}$
+  - $p_3=84600$
+  - $p_4=1.986$
+  - $p_5=39.72$
+
+  The time integration uses an internal time index ``timeIndex_`` and applies
+  a relaxation factor ``relax_`` to the updated creep quantities.
+options:
+- key: fastFluxName
+  type: word
+  required: false
+  default: fastFlux
+  description: |
+    Name of the fast neutron flux field (a ``volScalarField``) used by the
+    irradiation creep part of the model. The field is looked up from the mesh
+    object registry when ``correctCreep`` is called.
+- key: relax
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Relaxation factor applied to the creep update.
+dictionary: neutronicsProperties
+optionsLocations: []
+externalOptions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

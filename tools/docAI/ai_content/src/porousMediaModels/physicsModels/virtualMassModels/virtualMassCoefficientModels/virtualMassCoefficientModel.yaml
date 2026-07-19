@@ -1,0 +1,32 @@
+description: |2-
+
+  Base class for virtual-mass coefficient models operating on an FFPair. Calculate virtual mass based on a coefficient. Available runtime selectable models include:
+
+  toctreeHere
+
+  If no models are available, it means that only templated models, such as ``constant`` exist.
+options: []
+usage:
+- comment: 'The virtual-mass coefficient model is constructed at run-time via the       virtualMassCoefficientModel subdictionary
+    of the physicsModel subdictionary of the phaseProperties dictionary. '
+  snippet: |-
+    physicsModels
+    {
+      virtualMassCoefficientModel
+      {
+          type            constant;
+          value           0.1;
+      }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - dictionary
+  formulation_added: true
+formulation: |2-
+
+  This class is an abstract base that defines the interface for virtual-mass coefficient models via the pure virtual function ``value(celli)`` and provides a ``correctField`` hook. It does not implement a specific physical closure; the non-trivial equations (if any) are contained in derived runtime-selectable models (e.g., ``constant`` or other implementations of ``value``).

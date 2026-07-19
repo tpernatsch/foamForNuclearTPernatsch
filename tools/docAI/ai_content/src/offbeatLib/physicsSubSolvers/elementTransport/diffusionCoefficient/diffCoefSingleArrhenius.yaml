@@ -1,0 +1,29 @@
+description: |
+  Single-term Arrhenius diffusion coefficient model.
+
+  The diffusion coefficient is given by:
+  \f[ D = d_1 \exp\!\left(-\frac{q_1}{RT}\right) \f]
+
+  Example dictionary entry:
+  \verbatim
+  Buffer { type singleArrhenius; d1 1e-8; q1 100e3; }
+  \endverbatim
+formulation: |
+  This model assumes a single Arrhenius term for the diffusion coefficient as a function of temperature.
+  The coefficient is evaluated pointwise in the selected cell set and also on boundary faces
+  belonging to patches that are present in the provided temperature field.
+
+  $$ D(T) = d_1 \exp\!\left(-\frac{q_1}{R\,T}\right) $$
+
+  where:
+  - $D(T)$ is the diffusion coefficient (stored in the OpenFOAM field $sf$)
+  - $d_1$ is the pre-exponential factor (input $d1$)
+  - $q_1$ is the activation energy (input $q1$)
+  - $R$ is the universal gas constant, $R = 8.31446$ J/(mol·K)
+  - $T$ is the local temperature (OpenFOAM field $T$), in K
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

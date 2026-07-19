@@ -1,4 +1,4 @@
-//- Get solution contro
+//- Get solution control
 const dictionary& neutronTransport =
 mesh_.solutionDict().subDict("neutronTransport");
 
@@ -33,16 +33,23 @@ PtrList<scalar> weightedPrec(delayedGroups_);
 int neutroIter = 0;
 scalar neutroResidual = 0.0;
 
-//- Check if you need to initialize precurosr distribution
-bool initialize = false;
-if(initPrecursorsLiquidFuel_ &&
-  (mesh_.time().timeIndex() == mesh_.time().startTimeIndex()+1) && neutroIter==0)
-{
-    initialize = true;
-}
+//- Reference feedback state (reference temperatures/densities and the
+//  precursor-equilibrium reactivity) is established/loaded at the first step
+//  of every run, independently of initPrecursorsLiquidFuel_. This mirrors the
+//  solid-fuel path (solvePointKinetics.H) and, together with the reads below,
+//  allows a restart to recover these cheap scalars from reactorState without
+//  repeating the expensive equilibrium precursor solve.
+bool initReferenceState =
+    (mesh_.time().timeIndex() == mesh_.time().startTimeIndex()+1);
+
+//- Whether to (re)compute the equilibrium precursor distribution via the
+//  pseudo time-stepping solve below. This is the expensive step (the ~hours
+//  process) and is only performed on explicit request.
+bool initialize =
+    initPrecursorsLiquidFuel_ && initReferenceState && neutroIter==0;
 
 
-if (initialize)
+if (initReferenceState)
 {
     //- TFuelRef limited as it appears in a fraction denominator if doing
     //  fastNeutrons (for the Doppler coeff)
@@ -51,7 +58,7 @@ if (initialize)
        reactorState_.lookupOrDefault<scalar>("TFuelRef", TFuelValue);
 
     TCladRef_ =
-        reactorState_.lookupOrDefault<scalar>("TladRef", TCladValue);
+        reactorState_.lookupOrDefault<scalar>("TCladRef", TCladValue);
 
     TCoolRef_ =
         reactorState_.lookupOrDefault<scalar>("TCoolRef", TCoolValue);
@@ -66,7 +73,7 @@ if (initialize)
         reactorState_.lookupOrDefault<scalar>("TStructMechRef", TStructMechValue);
 
     TDrivelineRef_ =
-        reactorState_.lookupOrDefault<scalar>("TDriveLineRef", TDrivelineValue);
+        reactorState_.lookupOrDefault<scalar>("TDrivelineRef", TDrivelineValue);
 
     //- Since a T*Ref_ are scalars, the value inside the dictionary is not
     //  updated at runTime automatically. The line below resets the SCALAR IN
@@ -79,6 +86,28 @@ if (initialize)
     reactorState_.set("TStructRef", TStructRef_);
     reactorState_.set("TStructMechRef", TStructMechRef_);
     reactorState_.set("TDrivelineRef", TDrivelineRef_);
+
+    //- Load the precursor-equilibrium reactivity persisted by a previous
+    //  initialization run. When it is present (a restart from a run that
+    //  computed it) it is read back here, so the transient can start from the
+    //  correct steady state without redoing the equilibrium precursor solve.
+    //  When it is absent and we are not about to compute it now, the transient
+    //  would start from a non-critical state: warn the user.
+    if (reactorState_.found("precEquilibriumReactivity"))
+    {
+        precEquilibriumReactivity_ =
+            reactorState_.get<scalar>("precEquilibriumReactivity");
+    }
+    else if (!initialize)
+    {
+        WarningInFunction
+            << "precEquilibriumReactivity not found in reactorState while "
+            << "initPrecursorsLiquidFuel is false. The precursor equilibrium "
+            << "state has never been computed, so this liquid-fuel transient "
+            << "will start from a non-equilibrium (non-critical) condition. "
+            << "Run once with initPrecursorsLiquidFuel = true to generate it, "
+            << "then restart with the flag off to reuse it." << endl;
+    }
 }
 
 #include "correctReactivity.H"
@@ -88,21 +117,134 @@ if (initialize)
 diffCoeffPrecPtr_() = (alphatPtr_()+muPtr_()/ScNo_)/rhoCool_; // exactly the same
 phiPtr_()=fvc::flux(UPtr_()*alphaPtr_());
 
-//Calc equilibrium precPK at the steady-state
+//Calc equilibrium precPK at the steady-state using pseudo time stepping
 if(initialize)
 {
-    forAll(precPK_,precI)
+        //- Determine maximum number of iterations among precursors
+        label maxPseudo(0);
+        for (label i = 0; i < pseudoTimeSteps_.size(); ++i)
+        {
+            maxPseudo = max(maxPseudo, pseudoTimeSteps_[i]);
+        }
+
+        if (maxPseudo > 0)
+        {
+            scalarList finalPseudoResiduals(delayedGroups_, -1.0);
+
+            Info << "Pseudo time stepping initialization for precursors:" << nl
+                 << "  Max iterations: " << maxPseudo << nl
+                 << "  Per-group iterations: ";
+            forAll(pseudoTimeSteps_, i) Info << pseudoTimeSteps_[i] << " ";
+            Info << nl << "  Per-group dt: ";
+            forAll(pseudoTimeStepSizes_, i) Info << pseudoTimeStepSizes_[i] << " ";
+            Info << nl << "  Per-group relaxation: ";
+            forAll(pseudoTimeRelaxations_, i) Info << pseudoTimeRelaxations_[i] << " ";
+            Info << endl;
+
+            //- Store old values for relaxation
+            PtrList<volScalarField> precPKStarOld(delayedGroups_);
+            forAll(precPK_, precI)
+            {
+                precPKStarOld.set(precI, new volScalarField(precPKStar_[precI]));
+            }
+
+            //- Pseudo time stepping loop up to max across groups. Each group
+            //  only participates for its configured number of iterations
+            for (int pseudoIter = 0; pseudoIter < maxPseudo; ++pseudoIter)
+            {
+                forAll(precPK_, precI)
+                {
+                    if (pseudoIter >= pseudoTimeSteps_[precI])
+                    {
+                        continue;
+                    }
+
+                    scalar pseudoDt = pseudoTimeStepSizes_[precI];
+
+                    fvMatrix<scalar> precEq
+                    (
+                        fvm::Sp(
+                            dimensionedScalar("", dimless/dimTime, 1.0/pseudoDt)*alphaPtr_()
+                            + dimensionedScalar("", dimless/dimTime, lambdas_[precI])*alphaPtr_(),
+                            precPKStar_[precI]
+                        )
+                        - isFuel_*initOneGroupFluxN_*dimensionedScalar("", dimPower, power_)*betas_[precI]/
+                          dimensionedScalar("", dimTime, promptGenerationTime_)
+                        + fvm::div(phiPtr_(), precPKStar_[precI], "div(phi_,precStar_)")
+                        - fvm::laplacian(diffCoeffPrecPtr_(), precPKStar_[precI])
+                    );
+
+                    //- Add the source term from previous iteration: (1/pseudoDt)*alpha*precPKStarOld
+                    precEq.source() +=
+                        (1.0/pseudoDt) * alphaPtr_().internalField() * precPKStarOld[precI].internalField()
+                        * precPKStar_[precI].mesh().V();
+
+                    precEq.solve();
+
+                    //- Apply per-group relaxation if specified
+                    if (pseudoTimeRelaxations_[precI] < 1.0)
+                    {
+                        precPKStar_[precI] =
+                            pseudoTimeRelaxations_[precI] * precPKStar_[precI]
+                            + (1.0 - pseudoTimeRelaxations_[precI]) * precPKStarOld[precI];
+                    }
+
+                    //- Store per-group ending residual to guide pseudo-time tuning
+                    scalar pseudoDenom =
+                        fvc::domainIntegrate(mag(precPKStarOld[precI])).value()
+                        + SMALL;
+                    scalar pseudoNumer =
+                        fvc::domainIntegrate
+                        (
+                            mag(precPKStar_[precI] - precPKStarOld[precI])
+                        ).value();
+                    finalPseudoResiduals[precI] = pseudoNumer/pseudoDenom;
+
+                    //- Update old for next pseudo iteration
+                    precPKStarOld[precI] = precPKStar_[precI];
+                }
+
+                if (pseudoIter % max(1, maxPseudo/10) == 0 || pseudoIter == maxPseudo - 1)
+                {
+                    Info << "  Pseudo time step " << (pseudoIter + 1)
+                         << " / " << maxPseudo << endl;
+                }
+            }
+
+            Info << "Initialization complete." << nl
+                 << "  Final residuals by precursor group:" << nl;
+            forAll(finalPseudoResiduals, i)
+            {
+                if (finalPseudoResiduals[i] < 0.0)
+                {
+                    Info << "    group " << i << ": not solved (pseudoTimeSteps = 0)" << nl;
+                }
+                else
+                {
+                    Info << "    group " << i << ": " << finalPseudoResiduals[i] << nl;
+                }
+            }
+            Info << endl;
+        }
+    else
     {
-        fvMatrix<scalar> precEq
-        (
-            fvm::Sp(dimensionedScalar("",dimless/dimTime,lambdas_[precI])*alphaPtr_(), precPKStar_[precI])
-            - initOneGroupFluxN_*dimensionedScalar("",dimPower,power_)*betas_[precI]/
-            dimensionedScalar("",dimTime,promptGenerationTime_)
-             +   fvm::div(phiPtr_(), precPKStar_[precI], "div(phi_,precStar_)")
-             -   fvm::laplacian(diffCoeffPrecPtr_(), precPKStar_[precI])
-        );
-        precEq.solve();
-        precPKStar_[precI].storePrevIter();
+        //- If pseudoTimeSteps = 0, do steady state
+        Info << "Using standard steady-state solver for precursor initialization" << nl
+             << endl;
+
+        forAll(precPK_, precI)
+        {
+            fvMatrix<scalar> precEq
+            (
+                fvm::Sp(dimensionedScalar("", dimless/dimTime, lambdas_[precI])*alphaPtr_(), precPKStar_[precI])
+                - isFuel_*initOneGroupFluxN_*dimensionedScalar("", dimPower, power_)*betas_[precI]/
+                  dimensionedScalar("", dimTime, promptGenerationTime_)
+                + fvm::div(phiPtr_(), precPKStar_[precI], "div(phi_,precStar_)")
+                - fvm::laplacian(diffCoeffPrecPtr_(), precPKStar_[precI])
+            );
+            precEq.solve();
+            precPKStar_[precI].storePrevIter();
+        }
     }
 }
 
@@ -153,6 +295,12 @@ if(initialize)
     precEquilibriumReactivity_ = 0.0;
     precEquilibriumReactivity_ += beta_;
     precEquilibriumReactivity_ -= liquidFuelBeta_;
+
+    //- Persist it in reactorState (AUTO_WRITE) so a later restart can reload
+    //  it (see the reference-state block above) instead of recomputing the
+    //  equilibrium precursor distribution.
+    reactorState_.set("precEquilibriumReactivity", precEquilibriumReactivity_);
+
     #include "correctReactivity.H"
 }
 
@@ -176,7 +324,7 @@ do
         (
             fvm::ddt(alphaPtr_(), precPKStar_[precI])
             +   fvm::Sp(dimensionedScalar("",dimless/dimTime,lambdas_[precI])*alphaPtr_(), precPKStar_[precI])
-            -   initOneGroupFluxN_*dimensionedScalar("",dimPower,power_)*betas_[precI]/
+            -   isFuel_*initOneGroupFluxN_*dimensionedScalar("",dimPower,power_)*betas_[precI]/
             dimensionedScalar("",dimTime,promptGenerationTime_)
             +   fvm::div(phiPtr_(), precPKStar_[precI], "div(phi_,precStar_)")
             -   fvm::laplacian(diffCoeffPrecPtr_(), precPKStar_[precI])

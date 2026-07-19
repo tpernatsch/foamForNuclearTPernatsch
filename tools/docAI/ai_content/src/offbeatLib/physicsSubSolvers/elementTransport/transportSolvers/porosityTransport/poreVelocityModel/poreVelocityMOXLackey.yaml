@@ -1,0 +1,30 @@
+description: |
+  Pore velocity model for MOX fuel based on the correlation by Lackey et al.
+  It computes and applies a pore velocity field using local temperature,
+  temperature gradient, and oxygen-to-metal ratio.
+
+  Ref: W. J. Lackey, F. J. Homan & A. R. Olsen (1972) Porosity and Actinide
+  Redistribution During Irradiation of (U, Pu)O2, Nuclear Technology, 16:1,
+  120-142, DOI: 10.13182/NT72-A31181.
+formulation: |
+  This model evaluates the pore velocity correlation for MOX fuel using local
+  thermochemical state. The implementation uses the local temperature field
+  ``T``, its gradient ``gradT``, and the oxygen-to-metal ratio field
+  ``oxygenMetalRatio`` to compute the pore velocity.
+
+  $$ \mathbf{v}_p = f\!\left(T,\nabla T,\mathrm{OM}\right) $$
+
+  where:
+
+  - $\mathbf{v}_p$ is the pore velocity vector field computed by this model
+  - $T$ is the local temperature field (OpenFOAM field name ``T``)
+  - $\nabla T$ is the local temperature gradient field (OpenFOAM field name ``gradT``)
+  - $\mathrm{OM}$ is the local oxygen-to-metal ratio (OpenFOAM field name ``oxygenMetalRatio``)
+  - $f(\cdot)$ is the Lackey et al. correlation implemented in ``correct(...)``
+  - $K$ is the correlation factor read from the model dictionary (see options)
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

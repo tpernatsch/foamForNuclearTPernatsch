@@ -1,0 +1,54 @@
+description: |
+  Coolant subchannel boundary condition for sodium-cooled fuel rods.
+
+  This boundary condition solves a 1D axial energy balance for the coolant bulk
+  temperature along the channel to obtain an axial coolant temperature profile.
+  The cladding surface temperature is then related to the coolant bulk temperature
+  through a heat-transfer coefficient $h$, computed using selected Nusselt-number
+  correlations and liquid sodium property models.
+formulation: |
+  The model updates the coolant bulk temperature along the axial direction by
+  enforcing an energy balance between the imposed/available heat transfer to the
+  coolant and the resulting enthalpy rise. The cladding-to-coolant heat transfer
+  is represented through a heat-transfer coefficient $h$ obtained from a Nusselt
+  correlation.
+
+  $$ \dot{m}\, c_p \, \frac{dT}{dz} = q''(z) $$
+  where the heat flux $q''(z)$ is linked to the cladding surface temperature via
+  $h$.
+
+  $$ q''(z) = h(z)\,\bigl(T_w(z)-T(z)\bigr) $$
+
+  The heat-transfer coefficient is computed from a Nusselt correlation of the form
+  $Nu = f(Re,Pr,...)$ and then mapped to $h$ using the hydraulic diameter.
+
+  $$ h(z) = \frac{Nu(z)\,k(z)}{D_h} $$
+
+  Variables and inputs:
+  - $T$ is the coolant bulk temperature (K), obtained from the axial energy balance
+  - $z$ is the axial coordinate
+  - $\dot{m}$ is the coolant mass flow rate (kg/s), from ``massFlowRate`` or ``massFlowRateList``
+  - $c_p$ is the liquid sodium specific heat capacity (J/kg/K), from ``heatCapacityModel`` or constant ``constCp_``
+  - $q''$ is the effective heat flux to the coolant (W/m$^2$) used by the BC update
+  - $T_w$ is the cladding surface temperature (K) used in the heat-transfer relation
+  - $h$ is the heat-transfer coefficient (W/m$^2$/K), relaxed by ``relaxHTC``
+  - $Nu$ is the Nusselt number, selected by ``NusseltModel``
+  - $k$ is the liquid sodium thermal conductivity (W/m/K), from ``conductivityModel``
+  - $D_h$ is the hydraulic diameter (m), from ``hydraulicDiameter``
+
+  Notes:
+  - The implementation supports time-dependent ``massFlowRateList`` and
+    ``inletTemperatureList`` via OpenFOAM ``Function1`` tables (depending on build).
+  - The specific functional forms of $Nu(Re,Pr,...)$ and property correlations are
+    provided by the selected model names (e.g. ``Schad``, ``Lyon``, ``FinkLeibowitz``,
+    ``Vargaftic``, ``Shpilrain``).
+dictionary: neutronicsProperties
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,47 @@
+description: |
+  Multi-material correction class where two sets of weights can be used:
+
+  - `defaultWeights` for internal faces within a cellZone
+  - `interfaceWeights` for interface faces between different cellZones
+options:
+- key: defaultWeights
+  type: scalar
+  required: true
+  description: |
+    Fraction of the correction applied on internal faces.
+    Recommended between 0.9 and 1.
+- key: defaultWeightsGrad
+  type: scalar
+  required: false
+  description: |
+    Fraction of the gradient correction.
+    By default equal to `defaultWeights`.
+- key: interfaceWeights
+  type: scalar
+  required: true
+  description: |
+    Fraction of the correction applied at interfaces between cellZones.
+    Typically safe to set to 1.0.
+usage:
+- comment: |
+    Example of the `solverDict` configuration using cellZone-based
+    multi-material correction.
+  snippet: |-
+    mechanicsSolver
+    {
+      type smallStrain;
+      RhieChowCorrection false;
+
+      multiMaterialCorrection
+      {
+          type cellZone;
+          defaultWeights 1.0;
+          interfaceWeights 1.0;
+      }
+    }
+dictionary: mechanicsOptions
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - dictionary

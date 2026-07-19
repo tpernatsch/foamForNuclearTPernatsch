@@ -11,7 +11,8 @@ from ._functions import (
     TBulk,
     FMUSimulator,
     FunctionObjects,
-    FGR
+    FGR,
+    FpRelease,
 )
 
 __all__ = (
@@ -28,4 +29,5 @@ __all__ = (
     "FMUSimulator",
     "FunctionObjects",
     "FGR",
+    "FpRelease",
 )

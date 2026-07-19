@@ -1,0 +1,57 @@
+description: |-
+  Power models are used to simulate the behavior  of sub-scale structures that produce power. Main entries are repoted below.
+  In the code, this is a run-time selectable class to handle the thermal description (i.e. energy   source/sinks) of a structure.
+  It returns a heat source term to the main solver be used in the energy   equations.
+  Available power models include:
+
+  .. toctree::
+     :maxdepth: 1
+     :glob:
+
+     ./*/*
+
+  .. toctree::
+    :maxdepth: 1
+    :hidden:
+
+    ../powerOffCriterionModels/powerOffCriterionModel
+
+  .. raw:: html
+
+    <br><br>
+options:
+- key: type
+  type: word
+  required: true
+  description: Run-time selectable power model type.
+- key: volumetricArea
+  type: scalar
+  required: true
+  description: Interfacial area per unit volume, $i_A$ (set by the ``volumetricArea`` entry in each region sub-dictionary).
+- key: volumeFraction
+  type: scalar
+  required: false
+  description: |
+    Power-model volume fraction, $\alpha$ (set by the ``volumeFraction`` entry in each region sub-dictionary). If not provided, the structure region volume fraction is used.
+- key: powerOffCriterionModel
+  type: word
+  required: false
+  description: See :doc:`../powerOffCriterionModels/powerOffCriterionModel`
+usage:
+- comment: 'The model is specified via the ``type`` entry in the ``powerModel`` subdictionary, within the ``structureProperties``
+    subdictionary  of the ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region
+    cases, e.g. ``constant/fluidRegion``). Here below is a snippet enabling the model. All keywords except for ``type`` depends
+    on the specific power model selected. '
+  snippet: "structureProperties\n{\n  \"innerCore\"\n  {\n    powerModel \n    {\n      type                nuclearFuelPin;\n\
+    \      powerDensity        0;\n      fuelInnerRadius     0.0012;\n      fuelOuterRadius     0.004715;\n      cladInnerRadius\
+    \     0.004865;\n      cladOuterRadius     0.005365;\n      fuelMeshSize        30;\n      cladMeshSize        5;\n  \
+    \    fuelRho             10480;\n      fuelCp              250;\n      cladRho             7500;\n      cladCp       \
+    \       500;\n      gapH                3000;\n      fuelK               3;\n      cladK               20;\n      fuelT\
+    \               668;\n      cladT               668;\n\n    }\n  }\n}"
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

@@ -1,0 +1,40 @@
+description: |
+  Class modelling the thermal expansion of 15-15 Ti cladding through the
+  correlation proposed by Gehr (1973).
+options:
+- key: par1
+  type: scalar
+  required: false
+  default: -0.0003101
+  description: |
+    Gehr correlation parameter $p_1$ (used in the thermal expansion polynomial).
+    This parameter is read from the ``thermalExpansion`` sub-dictionary if present,
+    otherwise it falls back to the model dictionary.
+- key: par2
+  type: scalar
+  required: false
+  default: 1.545e-05
+  description: |
+    Gehr correlation parameter $p_2$ (used in the thermal expansion polynomial).
+    This parameter is read from the ``thermalExpansion`` sub-dictionary if present,
+    otherwise it falls back to the model dictionary.
+- key: par3
+  type: scalar
+  required: false
+  default: 2.75e-09
+  description: |
+    Gehr correlation parameter $p_3$ (used in the thermal expansion polynomial).
+    This parameter is read from the ``thermalExpansion`` sub-dictionary if present,
+    otherwise it falls back to the model dictionary.
+usage:
+- comment: |
+    Example selection of the `Steel1515TiGehr` thermalExpansion model.
+  snippet: "materials\n{\n  cladding\n  {\n    type Steel1515Ti;\n    \n    thermalExpansion\n    {\n      type Steel1515TiGehr;\n\
+    \      // par1 -3.101e-4;\n      // par2 1.545e-5;\n      // par3 2.75e-9;\n    }\n  }\n}"
+dictionary: thermalExpansion
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

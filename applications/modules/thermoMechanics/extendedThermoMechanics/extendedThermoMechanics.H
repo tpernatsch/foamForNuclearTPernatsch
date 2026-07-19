@@ -39,20 +39,30 @@ SourceFiles
 #include "fvCFD.H"
 #include "SortableList.H"
 
-#include "globalFieldLists.H"
 #include "globalOptions.H"
 #include "offbeatTime.H"
 #include "thermalSubSolver.H"
 #include "mechanicsSubSolver.H"
+#include "gapGasModel.H"
+#include "fissionGasRelease.H"
+#include "burnup.H"
+#include "neutronicsSubSolver.H"
 #include "heatSource.H"
-#include "timeHandling.H"
+#include "fastFlux.H"
 #include "sliceMapper.H"
 #include "materials.H"
 #include "rheology.H"
-#include "userParameters.H"
+#include "corrosion.H"
+#include "elementTransport.H"
+
+
+#ifdef OPENFOAMFOUNDATION
+#include "flowSubSolver.H"
+#include "helperFuns.H"
+#endif
 
 #include "InterpolateTables.H"
-#include "thermoMechanics.H"
+#include "solver.H"
 
 #include "runTimeSelectionTables.H"
 #include "dynamicFvMesh.H"
@@ -72,21 +82,73 @@ namespace solvers
 
 class extendedThermoMechanics
 :
-    public thermoMechanics
+    public solver
 {
+    // Private function
+    
+        //- Static function to read input dict with correct name
+        static IOdictionary readInputDict(const fvMesh& mesh);
+
     // Private data
 
+        //- Vustom time
         const offbeatTime& runTime_;
-        dynamicFvMesh& mesh_;
+
+        //- Main dictionary
         IOdictionary solverDict_;
-        // timeHandling adjustableTime_;
+        
+        //- Global options (e.g. pin direction)
         globalOptions globalOpt_;
+
+        //- Materials
         autoPtr<materials> mat_;
+
+        //- Slice mapper
         autoPtr<sliceMapper> mapper_;
+
+        //- Rheology
         autoPtr<rheology> rheo_;
+
+        //- Heat source
         autoPtr<heatSource> heatSrc_;
+
+        //- Burnup and depletion
+        autoPtr<burnup> burnup_;
+
+        //- Neutronics solver
+        autoPtr<neutronicsSubSolver> neutronics_;
+
+        //- Fast flux
+        autoPtr<fastFlux> fastFlux_;
+
+        //- Thermal solver
         autoPtr<thermalSubSolver> thermal_;
+
+        //- Mechanics solver
         autoPtr<mechanicsSubSolver> mechanics_;
+
+        //- Fission gas release
+        autoPtr<fissionGasRelease> fgr_;
+
+        //- Gap gas model
+        autoPtr<gapGasModel> gapGas_;
+
+        //- Corrosion model
+        autoPtr<corrosion> corrosion_;
+
+        //- Element transport solvers
+        autoPtr<elementTransport> elementTransport_;
+
+#ifdef OPENFOAMFOUNDATION
+        //- Flow Solver
+        autoPtr<flowSubSolver> flow_;
+#endif
+
+        //- Number of Outer iterations (reset at each time steo)
+        scalar nOuterIter_;
+
+        //- Total number of iterations from start to finish
+        scalar totalIterations_;
 
     // Private Member Functions
 
@@ -102,8 +164,6 @@ public:
 
     // Constructors
 
-
-
         //- Construct from mesh, materials and dictionary
         extendedThermoMechanics
         (
@@ -118,37 +178,40 @@ public:
 
     // Member Functions
 
-        // Run extendedThermoMechanics
+        //- Run extendedThermoMechanics
+        #ifdef isCommDataLayerIncluded
+        virtual void correctPhysics(fmuControl* fmu);
+        #else
         virtual void correctPhysics();
-        virtual void correctTightlyCoupledPhysics();
+        #endif
 
-        // Set next deltaT according to adjustable time class
+        //- Return next deltaT according to adjustable time class
         virtual scalar maxDeltaT();
 
+        //- Return end time
+        virtual scalar endTime();
 
-        // Returns ref to runTime
-        inline virtual const Time& getRunTime()
+    // Access Functions
+        
+        //- Return total number of iterations
+        virtual scalar totalIterations()
         {
-            return runTime_;
+            return totalIterations_;
+        }
+        
+        //- Return current number of outer iterations
+        virtual scalar nOuterIter()
+        {
+            return nOuterIter_;
         }
 
-        // Returns max value of T at the outer cladding patch
-        virtual scalar getMaxToutClad
-        (
-            const word& cladOuterPatchName
-        );
-
-        inline virtual const fvMesh& mesh()
+        //- Give back current residual
+        // TODO: change to obtain real residual
+        virtual scalar getResidual()
         {
-            return mesh_;
-        }
+            return 0;
+        };
 
-        virtual scalar getResidual(){return 0;};
-
-
-        virtual void correctBaffleLessFields(){};
-
-        virtual void deformMesh(){};
 };
 
 

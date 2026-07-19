@@ -1,0 +1,121 @@
+description: |
+  Discrete-ordinates (SN) neutronics solver for steady and/or transient
+  neutron transport with multigroup energy and angular quadrature.
+
+  The solver supports anisotropic scattering via a Legendre expansion of
+  the scattering kernel and includes delayed neutron precursors.
+
+  The implementation follows the standard SN formulation for multigroup
+  transport and delayed-neutron kinetics (e.g. Duderstadt & Hamilton;
+  Todreas & Kazimi).
+formulation: |
+  For each energy group $i$ and discrete direction $j$, the multigroup
+  transport equation in SN form is written as:
+
+  $$
+  \frac{1}{v_i}\frac{\partial \psi_{i,j}}{\partial t}
+  + \nabla \cdot \left(\Omega_j \psi_{i,j}\right)
+  + \Sigma_{t,i}\psi_{i,j}
+  = S_{i,j}^I + S_{i,j}^A + S_i^D
+  $$
+
+  where the isotropic source, anisotropic scattering source (Legendre
+  expansion), and delayed-neutron source are:
+
+  $$
+  S_{i,j}^I
+  = \sum_{i'=1}^{G}\sum_{j'=1}^{M}\omega_{j'}\psi_{i',j'}
+  \left(\frac{1}{k_{eff}}\nu\Sigma_{f,i'}\chi_{p,i}
+  + \Sigma_{s,i'\rightarrow i}\right)
+  $$
+
+  $$
+  S_{i,j}^A
+  = \sum_{i'=1}^{G}\sum_{j'=1}^{M}\omega_{j'}\psi_{i',j'}
+  \Sigma_{s,i'\rightarrow i}
+  \left(\sum_{l=1}^{p}s_{i'\rightarrow i}^l\frac{2l+1}{2}
+  P_l(\Omega_j\cdot\Omega_{j'})\right)
+  $$
+
+  $$
+  S_i^D = \chi_{d,i}\sum_{k=1}^{N}\lambda_k C_k
+  $$
+
+  Delayed-neutron precursor groups satisfy:
+
+  $$
+  \frac{\partial C_k}{\partial t}
+  + \nabla\cdot(\mathbf{u}C_k)
+  = \frac{\beta_k}{k_{eff}}\sum_{i'=1}^{G}\nu\Sigma_{f,i'}\psi_{i'}
+  - \lambda_k C_k
+  $$
+
+  - $\psi_{i,j}$ is the angular flux for energy group $i$ and direction $j$
+  - $C_k$ is the precursor concentration for precursor group $k$
+  - $S_{i,j}^I$ is the isotropic contribution to the right-hand-side source
+  - $S_{i,j}^A$ is the anisotropic scattering contribution (Legendre terms)
+  - $S_i^D$ is the delayed-neutron source for energy group $i$
+  - $\Sigma_{t,i}$ is the total macroscopic cross-section for group $i$
+  - $\nu\Sigma_{f,i'}$ is the fission production cross-section for group $i'$
+  - $\Sigma_{s,i'\rightarrow i}$ is the scattering macroscopic cross-section
+    from group $i'$ to group $i$
+  - $k_{eff}$ is the effective multiplication factor (eigenvalue mode)
+  - $\chi_{p,i}$ is the prompt fission spectrum for group $i$
+  - $\chi_{d,i}$ is the delayed fission spectrum for group $i$
+  - $\lambda_k$ is the precursor decay constant for group $k$
+  - $\beta_k$ is the delayed neutron fraction for precursor group $k$
+  - $\omega_{j'}$ is the quadrature weight for direction $j'$
+  - $s_{i'\rightarrow i}^l$ is the $l$-th Legendre coefficient of the
+    scattering kernel
+  - $P_l$ is the $l$-th Legendre polynomial
+  - $\Omega_j$ is the unit vector of discrete direction $j$
+  - $\mathbf{u}$ is the precursor advection velocity (e.g. fuel velocity)
+  - $v_i$ is the average neutron speed in group $i$
+dictionary: neutronicsProperties
+options:
+- key: eigenvalueNeutronics
+  type: bool
+  required: true
+  description: |
+    If enabled, solve the neutronics in eigenvalue mode (i.e. compute the
+    effective multiplication factor $k_{eff}$ consistently with the SN
+    transport and delayed-neutron kinetics).
+  default: false
+- key: energyGroups
+  type: label
+  required: true
+  description: |
+    Number of neutron energy groups $G$ used for the multigroup SN
+    discretization.
+- key: precGroups
+  type: label
+  required: true
+  description: |
+    Number of delayed-neutron precursor groups $N$.
+- key: legendreMoments
+  type: label
+  required: true
+  description: |
+    Number of Legendre moments $p$ used to represent anisotropic scattering
+    in the scattering kernel expansion.
+- key: isLowMemory
+  type: bool
+  required: false
+  description: |
+    Enable a lower-memory execution mode (implementation-dependent).
+  default: false
+optionsLocations: []
+usage:
+- comment: |
+    Usage
+  snippet: <usage>
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - dictionary
+  - options
+  - optionsLocations
+  stub_improved: true

@@ -1,0 +1,33 @@
+description: |
+  Mother (base) class for fission-product diffusion coefficient models.
+
+  Concrete implementations provide the physics for updating the diffusion
+  coefficient field(s) used in fission-product transport, potentially
+  accounting for fuel cracking release effects.
+formulation: |
+  This class defines the interface for diffusion-coefficient models used in
+  fission-product transport. It does not prescribe a specific constitutive
+  law; derived classes implement the update of the diffusion coefficient
+  according to their chosen physical model.
+
+  The only model-specific logic provided here is the cracking/release state,
+  which is treated as a boolean condition that can be used by derived models
+  when computing diffusion coefficients.
+
+  $$ \text{isCracked} = \text{crackFp\_} \;\; \lor \;\; \left(t \ge t_\text{failure}\right) $$
+
+  where:
+
+  - $t$ is the current simulation time ($\texttt{mesh\_.time().value()}$)
+  - $t_\text{failure}$ is the configured failure time ($\texttt{failureTime\_}$)
+  - $\text{crackFp\_}$ is the configured flag enabling crack release
+    ($\texttt{crackFpRelease}$)
+admonitions: []
+options: []
+externalOptions: []
+optionsLocations: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

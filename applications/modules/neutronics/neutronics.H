@@ -106,9 +106,6 @@ class neutronics
 
 protected:
 
-    //- Reference to mesh
-    fvMesh& mesh_;
-
     //- Dictionary from which keff, power are read
     IOdictionary reactorState_;
 

@@ -29,6 +29,8 @@ isConverge()
 isConverge steadyState "Steady state"
 isConverge transient "Transient"
 isConverge transientEnd "Transient end"
+isConverge transient_substepping "Transient substepping"
+isConverge transientEnd_substepping "Transient end substepping"
 
 # --- Recover the results
 power=$(grep totalPower ./transient/log.GeN-Foam | tail -1 | awk '{ printf "%.0f\n", $3 }')
@@ -63,6 +65,24 @@ else
     echo "|       | Simulated | Expected |" | tee -a $resFile
     echo "|:------|:---------:|:--------:|" | tee -a $resFile
     echo "| Power | $power | $expectedAt |" | tee -a $resFile
+    exit 1
+fi
+
+# --- Check substepping results
+power_sub=$(grep totalPower ./transient_substepping/log.GeN-Foam | tail -1 | awk '{ printf "%.0f\n", $3 }')
+expectedAt_sub=415258000
+
+echo "Power at the end of transient_substepping with $error relative error" | tee -a $resFile
+if [ $(isInRange $expectedAt_sub $power_sub $error) -eq 0 ]; then
+    echo "Perfect match:" | tee -a $resFile
+    echo "|       | Simulated | Expected |" | tee -a $resFile
+    echo "|:------|:---------:|:--------:|" | tee -a $resFile
+    echo "| Power | $power_sub | $expectedAt_sub |" | tee -a $resFile
+else
+    echo "Divergent results:" | tee -a $resFile
+    echo "|       | Simulated | Expected |" | tee -a $resFile
+    echo "|:------|:---------:|:--------:|" | tee -a $resFile
+    echo "| Power | $power_sub | $expectedAt_sub |" | tee -a $resFile
     exit 1
 fi
 

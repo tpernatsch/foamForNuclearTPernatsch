@@ -1,0 +1,71 @@
+description: |
+  Class modelling the void swelling growth phenomenon for 15-15 Ti cladding
+  material according to the 'AIM1 15-15 Ti' correlation.
+  Source : "Modeling and Analysis of Nuclear Fuel Pin Behavior for Innovative
+  Lead Cooled FBR - L.Luzzi et al. - 2014"
+options:
+- key: fastFluenceName
+  type: word
+  required: false
+  default: fastFluence
+  description: |
+    Name of the fast fluence field (looked up as a `volScalarField` in the mesh).
+- key: par1
+  type: scalar
+  required: false
+  default: 1.3e-05
+  description: |
+    Correlation parameter. If the `swelling` sub-dictionary exists, this value is read from `swelling.par1`.
+- key: par2
+  type: scalar
+  required: false
+  default: -2.5
+  description: |
+    Correlation parameter. If the `swelling` sub-dictionary exists, this value is read from `swelling.par2`.
+- key: par3
+  type: scalar
+  required: false
+  default: 490
+  description: |
+    Correlation parameter. If the `swelling` sub-dictionary exists, this value is read from `swelling.par3`.
+- key: par4
+  type: scalar
+  required: false
+  default: 100
+  description: |
+    Correlation parameter. If the `swelling` sub-dictionary exists, this value is read from `swelling.par4`.
+- key: par5
+  type: scalar
+  required: false
+  default: 3.9
+  description: |
+    Correlation parameter. If the `swelling` sub-dictionary exists, this value is read from `swelling.par5`.
+usage:
+- comment: |
+    Example selection of `Steel1515TiAim1`.
+  snippet: |-
+    materials
+    {
+        clad
+        {
+            type Steel1515Ti;
+
+            swelling
+            {
+                type Steel1515TiAim1;
+                // fastFluenceName fastFluence;
+                // par1 1.3e-5;
+                // par2 -2.5;
+                // par3 490;
+                // par4 100;
+                // par5 3.9;
+            }
+        }
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

@@ -88,9 +88,6 @@ protected:
 
     // Protected data
 
-        //- Reference to mesh
-        fvMesh& mesh_;
-
         //- Mesh displacement
         //- Move here all the fields needed for coupling with other physics
         volVectorField meshDisp_;

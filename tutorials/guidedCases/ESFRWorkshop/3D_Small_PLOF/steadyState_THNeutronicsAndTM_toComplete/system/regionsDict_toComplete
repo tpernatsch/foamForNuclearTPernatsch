@@ -1,0 +1,111 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      regionsDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Add thermoMechanics region, with "legacyThermoMechanics" solver
+
+regionSolvers
+{
+    Level_0
+    {
+	    fluidRegion     onePhase;
+	    neutroRegion    diffusionNeutronics;
+	    ... ;
+    }
+}
+
+
+// ------------------------------------------------------------------------- //
+// ----------------- MESHES TO DEFORM -------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+// Using this sub-dictionary, one can specify for each regions if the mesh
+// has to be displaced and, if so, which field to be used for that
+// The field has to be a vectorial field which represents the displacement
+
+// In this exercise, we will deform the neutronics mesh using the displacement
+// field called "disp". This field is not computed by the neutronics solver,
+// hence we will have to make sure that the field is mapped from the TM
+// solver!
+
+meshDeformation
+{
+    neutroRegion
+    {
+        displacementField ...;
+    }
+}
+
+
+
+// ------------------------------------------------------------------------- //
+// ----------------- MESHES TO DEFORM -------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+// Add thermomechanics mappings too:
+
+//TM --> neutronics:
+    // meshDisp --> disp      IMPORTANT FOR DISPLACEMENT
+
+// fluid --> TM:
+    // T.passiveStructure --> TStructFromTH
+    // T.fuelAvForNeutronics --> TFuel
+
+// neutronics --> TM 
+    // powerDensity --> powerDensityStructure
+
+
+mappings
+{
+    fluidRegion
+    {
+        neutroRegion
+        {
+            sourceFields     ( powerDensity secondaryPowerDensity );
+            targetFields     ( powerDensityStructure powerDensityLiquid );
+        }
+    }
+    neutroRegion
+    {
+        fluidRegion
+        {
+            sourceFields     ( T thermo:rho T.fuelAvForNeutronics T.cladAvForNeutronics );
+            targetFields     ( TCool rhoCool TFuel TClad);
+        }
+        thermoMechanicalRegion
+        {
+            sourceFields (...);
+            targetFields (...);
+        }
+    }
+    thermoMechanicalRegion
+    {
+        fluidRegion
+        {
+            sourceFields (...);
+            targetFields (...);
+        }
+        neutroRegion
+        {
+            sourceFields (...);
+            targetFields (...);
+        }
+    }
+}
+
+
+// ************************************************************************* //

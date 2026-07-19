@@ -1,0 +1,55 @@
+description: |
+  Creep model based on the Tobbe (1975) correlation, specialized for the steel DIN 1.4970m
+  in the 15-15 Ti class.
+
+  The model computes irradiation creep and thermal creep strain contributions and
+  updates their equivalent forms used by the rheology.
+formulation: |
+  The model evaluates irradiation creep and thermal creep strain increments and
+  accumulates them into the total creep strain tensors. It also computes equivalent
+  scalar measures for irradiation and secondary thermal creep, which are typically
+  used by the constitutive update in the surrounding thermo-mechanics framework.
+
+  The implementation follows the Tobbe (1975) correlation for the selected steel grade,
+  using the model parameters ``par1``--``par5`` (set internally in the code) and the
+  irradiation/temperature state fields provided by the simulation.
+
+  The class updates the creep strain fields through its ``correctCreep`` method.
+
+  - $\\boldsymbol{\\varepsilon}^{\\mathrm{I}}_{c}$ is the irradiation creep strain tensor
+    stored in ``epsilonCreepIrr``.
+  - $\\boldsymbol{\\varepsilon}^{\\mathrm{Th}}_{c}$ is the thermal creep strain tensor
+    stored in ``epsilonCreepTh``.
+  - $\\varepsilon^{\\mathrm{I}}_{c,eq}$ is the equivalent irradiation creep strain
+    stored in ``epsilonCreepIrrEq``.
+  - $\\Delta \\varepsilon^{\\mathrm{I}}_{c,eq}$ is the increment of equivalent irradiation
+    creep strain stored in ``DepsilonCreepIrrEq``.
+  - $\\varepsilon^{\\mathrm{Th}}_{c,eq}$ is the equivalent secondary thermal creep strain
+    stored in ``epsilonCreepThEq``.
+  - $\\Delta \\varepsilon^{\\mathrm{Th}}_{c,eq}$ is the increment of equivalent secondary thermal
+    creep strain stored in ``DepsilonCreepThEq``.
+  - $\\phi_f$ is the fast neutron flux field used for irradiation creep, read from the
+    field named by ``fastFluxName`` (default ``fastFlux``).
+dictionary: neutronicsProperties
+options:
+- key: fastFluxName
+  type: word
+  required: false
+  default: fastFlux
+  description: |
+    Name of the fast neutron flux field (a ``volScalarField``) used by the irradiation
+    creep part of the Tobbe correlation. The field is looked up from the mesh at runtime.
+- key: relax
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Relaxation factor applied during the creep update in ``correctCreep``.
+    Values smaller than 1 can be used to improve numerical stability.
+optionsLocations: []
+externalOptions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

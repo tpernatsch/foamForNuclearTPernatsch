@@ -1,0 +1,21 @@
+description: |
+  Discontinuous cyclic AMI (Arbitrary Mesh Interface) implementation of the
+  $LduInterface$ used for coupling fields across cyclic boundaries.
+
+  This class is a thin specialization of [@cyclicAMILduInterface], providing a
+  discontinuous variant of the cyclic AMI coupling strategy.
+formulation: |
+  This class does not implement additional physical equations; it provides
+  a discontinuous cyclic AMI coupling interface by specializing the behavior
+  inherited from [@cyclicAMILduInterface].
+
+  The governing numerical coupling is handled in the base class, which
+  constructs the AMI interpolation and applies it across the cyclic
+  boundaries for the coupled $Ldu$ fields.
+options: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

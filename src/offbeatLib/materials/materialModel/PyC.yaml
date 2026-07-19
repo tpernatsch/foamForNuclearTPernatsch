@@ -58,7 +58,7 @@ options:
   - key: swellingModel
     type: word
     required: false
-    default: PyCParfume
+    default: none
     description: |
       Selects the irradiation-induced swelling model used by the `PyC` material.
 

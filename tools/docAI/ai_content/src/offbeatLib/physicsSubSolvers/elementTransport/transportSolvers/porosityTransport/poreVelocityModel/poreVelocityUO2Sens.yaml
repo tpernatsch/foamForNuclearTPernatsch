@@ -1,0 +1,44 @@
+description: |
+  Pore velocity model for UO$_2$ fuel pellets based on the correlation by Sens
+  (P.F. Sens, *Journal of Nuclear Materials*, 43(3):293–307, 1972,
+  doi:10.1016/0022-3115(72)90061-X).
+
+  The model computes the pore movement velocity and optionally applies a
+  multiplicative correction factor (default value is 1.0).
+formulation: |
+  This class implements the Sens correlation for the pore velocity in UO$_2$
+  fuel, using the local temperature field and its gradient.
+
+  The computed pore velocity is then corrected by an optional
+  multiplicative factor.
+
+  $$ U_p = \alpha \, U_{p,\mathrm{Sens}}(T,\nabla T) $$
+
+  where:
+
+  - $U_p$ is the pore velocity used by the solver (field updated by
+    ``correct``)
+  - $\alpha$ is the correction factor set by ``alphaPoreVelocity`` (default
+    1.0)
+  - $U_{p,\mathrm{Sens}}$ is the Sens correlation evaluated from the local
+    temperature ``T`` and temperature gradient ``gradT``
+
+  The exact functional form of $U_{p,\mathrm{Sens}}(T,\nabla T)$ is provided
+  by the Sens (1972) correlation as implemented in ``poreVelocityUO2Sens.C``.
+dictionary: neutronicsProperties
+optionsLocations:
+- name: poreVelocityOptions
+  in: solverDict
+options:
+- key: alphaPoreVelocity
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Multiplicator for pore velocity. The final pore velocity is scaled by
+    this factor.
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

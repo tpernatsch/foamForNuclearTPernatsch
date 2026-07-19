@@ -1,0 +1,95 @@
+description: |
+  Class modelling Young Modulus of SiC with the Interpolation from Parfume.
+options:
+- key: E1
+  type: scalar
+  required: false
+  default: 428.0
+  description: |
+    Option read by the model.
+- key: E2
+  type: scalar
+  required: false
+  default: 375.0
+  description: |
+    Option read by the model.
+- key: E3
+  type: scalar
+  required: false
+  default: 340.0
+  description: |
+    Option read by the model.
+- key: E4
+  type: scalar
+  required: false
+  default: 198.0
+  description: |
+    Option read by the model.
+- key: temp1
+  type: scalar
+  required: false
+  default: 25.0
+  description: |
+    Option read by the model.
+- key: temp2
+  type: scalar
+  required: false
+  default: 940.0
+  description: |
+    Option read by the model.
+- key: temp3
+  type: scalar
+  required: false
+  default: 1215.0
+  description: |
+    Option read by the model.
+- key: temp4
+  type: scalar
+  required: false
+  default: 1600.0
+  description: |
+    Option read by the model.
+usage:
+- comment: |
+    Example selection of the `SiCParfume` thermalExpansion model.
+  snippet: |-
+    materials
+    {
+      SiC
+      {
+        type SiC;
+        thermalExpansion
+        {
+          type SiCParfume;
+          // E1 428.0;
+          // E2 375.0;
+          // E3 340.0;
+          // E4 198.0;
+          // temp1 25.0;
+          // temp2 940.0;
+          // temp3 1215.0;
+          // temp4 1600.0;
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - usage
+  formulation_added: true
+formulation: |
+  The model computes the temperature-dependent Young modulus of SiC, $E(T)$, using a piecewise interpolation between tabulated Parfume reference points. The implementation updates the provided scalar field of Young modulus based on the local temperature field (see OpenFOAM field-name conventions: $T$ and output $E$).
+  $$ E(T) =
+  \begin{cases}
+  E_1, & T \le T_1 \\
+  E_1 + (E_2-E_1)\dfrac{T-T_1}{T_2-T_1}, & T_1 < T \le T_2 \\
+  E_2 + (E_3-E_2)\dfrac{T-T_2}{T_3-T_2}, & T_2 < T \le T_3 \\
+  E_3 + (E_4-E_3)\dfrac{T-T_3}{T_4-T_3}, & T_3 < T \le T_4 \\
+  E_4, & T > T_4
+  \end{cases} $$
+  - $E(T)$ is the Young modulus (updated in the output scalar field, e.g. $sf$) [Pa]
+  - $T$ is the local temperature from the input scalar field $T$ [K]
+  - $T_1,T_2,T_3,T_4$ are the Parfume reference temperatures (model parameters $temp1$–$temp4$) [K]
+  - $E_1,E_2,E_3,E_4$ are the Parfume reference Young moduli (model parameters $E1$–$E4$) [Pa]
+  This is a purely empirical interpolation of material property data (cf. typical property-correlation usage in reactor thermal-mechanics workflows; see Duderstadt & Hamilton and Todreas & Kazimi for general coupling context, though the specific interpolation is data-driven).

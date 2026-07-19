@@ -59,21 +59,21 @@ options:
   - key: densificationModel
     type: word
     required: false
-    default: UO2Frapcon
+    default: none
     description: |
       Selects the densification (additional strain) model used by the `UO2` material.
 
   - key: swellingModel
     type: word
     required: false
-    default: UO2Frapcon
+    default: none
     description: |
       Selects the swelling (additional strain) model used by the `UO2` material.
 
   - key: relocationModel
     type: word
     required: false
-    default: UO2Frapcon
+    default: none
     description: |
       Selects the relocation (additional strain) model used by the `UO2` material.
 

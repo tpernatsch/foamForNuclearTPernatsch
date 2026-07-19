@@ -1,0 +1,57 @@
+description: |
+  Class modelling the constant Poisson's ratio of UPuO2 MOX fuel from
+  Matprov11.
+options:
+- key: PoissonRatioValue
+  type: scalar
+  required: false
+  default: 0.276
+  description: |
+    Constant Poisson's ratio value. If the top-level dictionary contains a
+    sub-dictionary named `PoissonRatio`, this option is read from there
+    (key `PoissonRatioValue`); otherwise it is read from the current
+    dictionary.
+- key: isotropicCracking
+  type: bool
+  required: false
+  default: false
+  description: |
+    Enable isotopic cracking. When enabled, the Poisson ratio is modified
+    according to the selected cracking model.
+- key: isotropicCrackingType
+  type: word
+  required: false
+  default: Barani
+  description: |
+    Select the isotropic cracking model. Supported values are `Barani`
+    and `JankusWeeks`.
+- key: nCracksMax
+  type: scalar
+  required: false
+  default: 1
+  description: |
+    Maximum number of cracks used to cap the computed crack count when
+    `isotropicCracking` is enabled.
+usage:
+- comment: |
+    Example selection of the `UPuO2Constant` thermalExpansion model.
+  snippet: |-
+    materials
+    {
+      fuel
+      {
+        type UPuO2;
+        thermalExpansion
+        {
+          type UPuO2Constant;
+          // PoissonRatioValue 0.276;
+          // isotropicCracking false;
+          // isotropicCrackingType "Barani";
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options

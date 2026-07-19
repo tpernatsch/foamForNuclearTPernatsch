@@ -19,8 +19,11 @@ from foamForNuclear.solvers import Solver, Solvers
 from foamForNuclear.control import ControlDict
 from foamForNuclear.timeFolder import TimeFolder
 from foamForNuclear.fields import Field
-from foamForNuclear.solvers.offbeat import OffbeatSolver
+from foamForNuclear.solvers.offbeat import Offbeat
 from foamForNuclear import executor
+
+from typing import TypeVar
+TSolver = TypeVar("TSolver", bound=Solver)
 
 
 class Residuals:
@@ -165,6 +168,8 @@ class Case:
 
     def __init__(
             self,
+            caseFolder: str = "./",
+            *,
             settings: ControlDict=None,
             functions: FunctionObjects | list[FunctionObject] | None = None,
             solvers: Solvers=None,
@@ -172,16 +177,15 @@ class Case:
             timeFolders: list[TimeFolder] | None = None,
             coupling: Coupling=None,
             externalCouplingDict: ExternalCouplingDict=None,
-            caseFolder: str="./"
         ):
+        self.caseFolder: str = caseFolder
         self.settings: ControlDict = ControlDictFfn() if settings is None else settings
         self._functions: FunctionObjects = FunctionObjects(owner=self)
         self.solvers: Solvers = Solvers() if solvers is None else solvers
         self.coupling: Coupling = coupling
-        self.fields: list[Field] = CheckedList(Field, "fields") if fields is None else CheckedList(fields)
+        # self.fields: list[Field] = CheckedList(Field, "fields") if fields is None else CheckedList(fields)
         self.timeFolders: list[TimeFolder] = [] if timeFolders is None else list(timeFolders)
         self.externalCouplingDict: ExternalCouplingDict = externalCouplingDict
-        self.caseFolder: str = caseFolder
 
         # ensure at least a time folder at t = 0 exists
         if not self.timeFolders:
@@ -191,30 +195,44 @@ class Case:
         if functions is not None:
             self.functions = functions
 
-
     def __repr__(self):
         isParallel = self.is_parallel
         maxSubdomains = self.get_number_processors
 
         text = f"{self.settings}"
         text += underline('Solvers:') + "\n"
+
         if (len(self.solvers) > 0):
             for solver in self.solvers:
-                text += f"{solver.__repr__(depth = 1)}"
+                text += f"{solver.__repr__(depth=1)}"
 
                 if (isParallel and solver.decomposeParDict.numberOfSubdomains != maxSubdomains):
-                    text += f"{tab}  {Keyword.WARNING}: Number of subdomains is different than the max subdomains ({maxSubdomains})\n"
+                    text += (
+                        f"{tab}  {Keyword.WARNING}: Number of subdomains is different "
+                        f"than the max subdomains ({maxSubdomains})\n"
+                    )
 
-                # Check fields are present
+                # Check required fields are present
                 if (solver.solver == "twoPhase"):
                     continue
 
                 requiredFields = solver.get_required_fields()
-                createdFields = [field.name for field in self.timeFolders[0]]
+
+                createdFields = set()
+
+                # Legacy case-level fields/timeFolders
+                if self.timeFolders:
+                    createdFields.update(field.name for field in self.timeFolders[0])
+
+                # New solver-owned fields
+                if hasattr(solver, "fields") and solver.fields is not None:
+                    createdFields.update(field.name for field in solver.fields)
+
                 for field in requiredFields:
                     if (field not in createdFields):
-                        text += f"{tab}  {Keyword.WARNING}: Field '{field}' has NOT been declared in the time folder.\n"
-
+                        text += (
+                            f"{tab}  {Keyword.WARNING}: Field '{field}' has NOT been declared.\n"
+                        )
         else:
             text += f"{tab}None\n"
 
@@ -223,14 +241,16 @@ class Case:
             text += f"{self.coupling}"
 
             if (len(self.solvers) != len(self.coupling.get_unique_regions(self.coupling))):
-                text += f"{Keyword.WARNING}: Mismatch number of regions in 'Solvers' and 'Coupling' objects\n"
+                text += (
+                    f"{Keyword.WARNING}: Mismatch number of regions in 'Solvers' "
+                    f"and 'Coupling' objects\n"
+                )
 
-        # Add FMU simulator info is present
+        # Add FMU simulator info if present
         FMUSimulator = self.get_FMU_simulator()
         if (FMUSimulator is not None):
             text += underline("FMU simulation:") + "\n"
             text += f"{tab}Found {FMUSimulator.name} functionObject\n"
-
             text += FMUSimulator.get_coupling_mapping_as_text(depth=1)
 
         return(text)
@@ -291,11 +311,11 @@ class Case:
         check_type("caseFolder", caseFolder, str, none_ok=True)
         self._caseFolder = caseFolder
 
-
-    def add_solver(self, solver: Solver):
+    def add_solver(self, solver: TSolver) -> TSolver:
         if solver is not None:
             check_type('solver', solver, Solver)
             self.solvers.append(solver)
+            return solver
 
 
     def add_time_folder(self, timeFolder: TimeFolder):
@@ -397,19 +417,22 @@ class Case:
         # Read solver. This includes any property/options dict in constant/
         # as well as fvSchemes and fvSolution files
         if case.control_dict["application"] == "offbeat":
-            solver = OffbeatSolver()
+            solver = Offbeat()
             solver.import_from_openfoam(path)
             self.add_solver(solver)
 
 
     def export_to_openfoam(self):
+        """
+        Export the case to an OpenFOAM-compatible directory structure.
+        """
         # Create case folder
         for i, folder in enumerate(self.caseFolder.split("/")):
             folder = '/'.join(self.caseFolder.split('/')[:i+1])
             if (not os.path.exists(folder)):
                 os.mkdir(folder)
 
-        # Change directory to avoid manipulating all the file genration
+        # Change directory to avoid manipulating all the file generation
         cwd = os.getcwd()
         os.chdir(self.caseFolder)
 
@@ -418,23 +441,24 @@ class Case:
         if (not os.path.exists("system")):
             os.mkdir("system")
 
-        if (len(self.solvers) == 1):
-            self.coupling = Coupling(self.solvers)
+        if (self.coupling is None and self.settings.application == "GeN-Foam"):
+            if (len(self.solvers) == 1):
+                self.coupling = Coupling(self.solvers)
 
         if (self.coupling is not None and self.settings.application == "GeN-Foam"):
             self.coupling.export_to_openfoam()
-            # self.settings.coupling = self.coupling
             self.settings.solvers = self.solvers
 
         # External coupling dict for FMI
         if (self.externalCouplingDict is not None):
             self.externalCouplingDict.export_to_openfoam()
-        elif (hasattr(self.settings, "solveFMI") and self.settings.solveFMI is not None and self.settings.solveFMI):
+        elif (
+            hasattr(self.settings, "solveFMI")
+            and self.settings.solveFMI is not None
+            and self.settings.solveFMI
+        ):
             self.externalCouplingDict = ExternalCouplingDict()
             self.externalCouplingDict.export_to_openfoam()
-
-        if (len(self.timeFolders) == 1):
-            self.solvers.set_time_folder(self.timeFolders[0])
 
         if (self.functions is not None):
             for function in self.functions:
@@ -443,40 +467,42 @@ class Case:
                     break
 
         self.settings.export_to_openfoam()
-
         self.functions.export_to_openfoam(self.settings)
 
+        # Export solvers (each solver is now responsible for exporting its own fields)
         self.solvers.export_to_openfoam()
 
-        # build region → mesh mapping from solvers
-        region_meshes: dict[str | None, Mesh] = {}
-        for solver in self.solvers:
-            region_name = getattr(solver, "region", None)
-            mesh = getattr(solver, "mesh", None)
-            if mesh is not None:
-                region_meshes[region_name] = mesh
+        # # Legacy support: still export case-level time folders if they are used
+        # if self.timeFolders:
+        #     # build region → mesh mapping from solvers
+        #     region_meshes: dict[str | None, Mesh] = {}
+        #     for solver in self.solvers:
+        #         region_name = getattr(solver, "region", None)
+        #         mesh = getattr(solver, "mesh", None)
+        #         if mesh is not None:
+        #             region_meshes[region_name] = mesh
 
-        # Sync self.fields -> timeFolders (typically t=0)
-        if self.fields:
-            # make sure there is at least one folder
-            if not self.timeFolders:
-                self.timeFolders.append(TimeFolder(0.0))
+        #     # Sync self.fields -> timeFolders (legacy path, typically t=0)
+        #     if self.fields:
+        #         # make sure there is at least one folder
+        #         if not self.timeFolders:
+        #             self.timeFolders.append(TimeFolder(0.0))
 
-            # choose where to put initial fields: earliest time folder
-            t0_folder = min(self.timeFolders, key=lambda tf: tf.time)
+        #         # choose where to put initial fields: earliest time folder
+        #         t0_folder = min(self.timeFolders, key=lambda tf: tf.time)
 
-            # avoid duplicates if fields were already added via add_field
-            existing = {fld.name for fld in t0_folder}
+        #         # avoid duplicates if fields were already added via add_field
+        #         existing = {(fld.name, getattr(fld, "region", "")) for fld in t0_folder}
 
-            for fld in self.fields:
-                if fld.name not in existing:
-                    # reuse your existing logic, but force time=t0
-                    self.add_field(fld, time=t0_folder.time)
-                    existing.add(fld.name)
+        #         for fld in self.fields:
+        #             key = (fld.name, getattr(fld, "region", ""))
+        #             if key not in existing:
+        #                 self.add_field(fld, time=t0_folder.time)
+        #                 existing.add(key)
 
-        # export time folders, passing region_meshes
-        for timeFolder in self.timeFolders:
-            timeFolder.export_to_openfoam(region_meshes=region_meshes)
+        #     # export legacy case-level time folders
+        #     for timeFolder in self.timeFolders:
+        #         timeFolder.export_to_openfoam(region_meshes=region_meshes)
 
         # Return to the current directory
         os.chdir(cwd)
@@ -515,6 +541,11 @@ class Case:
 
         if preprocess:
             executor.run_preprocessing(case=self)
+
+        if (self.coupling is not None and len(self.solvers) > 1):
+            self.coupling.plot_solving_flowchart()
+            self.coupling.plot_solving_graph()
+
 
         executor.run(case=self)
 
@@ -627,7 +658,8 @@ class Case:
             self,
             parameters: list[str],
             title: str='',
-            nLastIter: int=100
+            nLastIter: int=100,
+            fig_dir: str=""
         ):
         t1 = timePack.time()
 
@@ -659,13 +691,15 @@ class Case:
             ax.legend()
 
         # Save figures
+        if (fig_dir != ""):
+            fig_dir += "/"
+
         fig.tight_layout()
-        fig.savefig(f"fig_results_residuals_{'-'.join(parameters)}.png")
+        fig.savefig(f"{fig_dir}fig_results_residuals_{'-'.join(parameters)}.png")
 
         t2 = timePack.time()
 
         print(f"Processing time for plotting residuals = {t2-t1:.6g} s")
-
 
     def get_time_steps(self):
         """
@@ -785,7 +819,8 @@ class Case:
             show_edges: bool=False,
             unit: str='-',
             isVerticalLegend: bool=True,
-            limits: list[float]=None
+            limits: list[float]=None,
+            fig_dir: str=""
         ):
         """
         Parameters
@@ -814,6 +849,8 @@ class Case:
             If true, the color bar is vertical, else it is horizontal
         limits : list[float]
             Limit the colormap range (default `None`).
+        fig_dir : str, default ""
+            Directory where plot figure is saved
         """
         self.plot_mesh(
             region=region,
@@ -828,13 +865,14 @@ class Case:
             unit=unit,
             isVerticalLegend=isVerticalLegend,
             limits=limits,
-            isSlice=True
+            isSlice=True,
+            fig_dir=fig_dir
         )
 
 
     def plot_mesh(
             self,
-            region: str | Mesh,
+            region: str | Mesh | list[str] | list[Mesh],
             time: float=0,
             fieldName: str=None,
             cmap: str=None,
@@ -983,7 +1021,6 @@ class Case:
         if (offset[2] != 0):
             ext = f"{ext}_z{offset[2]:g}"
 
-        plotter.screenshot(f"fig_{figType}_{'_'.join(regionNames)}_{time}{ext}.png")
         if (fig_dir != ""):
             fig_dir += "/"
 
@@ -1063,39 +1100,46 @@ class Case:
             thresholdFieldName: str=None,
             fps: int=None,
             offset: tuple=(0, 0, 0),
-            limits: list[float]=None
+            limits: list[float]=None,
+            fig_dir: str=""
         ):
         """
-        Plot animation over all time steps. A uniform time stepping is
-        recommanded for a nice render.
+        Plot an animation over all available time steps.
+
+        A uniform time stepping is recommended for a smooth animation.
 
         Parameters
         ----------
         region : str | Mesh
-            Name of the region
-        fieldName : str
-            Field name to color the mesh
-        cmap : str
-            Colormap name based on the values of the `fieldName`
-        normal : str
-            Change camera view along the specified axis (`x`, `y`, or `z`)
-        lighting : bool
-            Use light on the mesh (default `True`)
+            Region name, or mesh object from which the region name is taken.
+        fieldName : str, optional
+            Field used to color the mesh.
+        cmap : str, optional
+            Colormap used for `fieldName`.
+        normal : str, optional
+            Camera direction (`x`, `y`, or `z`). If provided, a slice is shown.
+        lighting : bool, default True
+            Whether lighting is enabled.
         show_edges : bool, default False
-            Show mesh edges
-        unit : str, default '-'
-            Add unit to the color
+            Whether mesh edges are shown.
+        unit : str, default "-"
+            Unit displayed in the color bar title.
         isVerticalLegend : bool, default True
-            If true, the color bar is vertical, else it is horizontal
-        threshold : list, default None
-            If provided, apply a threshold onto the mesh (e.g `[0.9, 1.1]`)
-        thresholdFieldName : str, default None
-            Name of the threshold field, can be different from `fieldName`
-        fps : int, default None
-            Number of frame per second in the gif. If default to `None`, the fps
-            will be computed to as `1/(timeStep[1] - timeStep[0])`
-        limits : list[float]
-            Limit the colormap range (default `None`).
+            Whether the color bar is vertical.
+        threshold : list, optional
+            Threshold interval applied to the mesh, for example `[0.9, 1.1]`.
+        thresholdFieldName : str, optional
+            Field used for the threshold operation. It can be different from
+            `fieldName`.
+        fps : int, optional
+            Frames per second of the GIF. If None, it is estimated from the time
+            step spacing.
+        offset : tuple, default (0, 0, 0)
+            Translation applied to the displayed slice.
+        limits : list[float], optional
+            Color limits. Use `None` for automatic bounds.
+        fig_dir : str, default ""
+            Directory where the GIF is saved.
         """
         regionName = region
         if (isinstance(region, Mesh)):
@@ -1201,7 +1245,10 @@ class Case:
             ext += "_" + camera_position
 
         # Open a gif
-        plotter.open_gif(f'fig_results_{regionName}_{fieldName}{ext}.gif', fps=fps)
+        if (fig_dir != ""):
+            fig_dir += "/"
+
+        plotter.open_gif(f'{fig_dir}fig_results_{regionName}_{fieldName}{ext}.gif', fps=fps)
 
         for time in tqdm.tqdm(reader.time_values, desc=f"Render {fieldName}{ext}", unit='frame'):
             try:
@@ -1218,16 +1265,16 @@ class Case:
 class OffbeatCase(Case):
     def __init__(
         self,
+        caseFolder: str = "./",
         *,
-        solver: OffbeatSolver | None = None,
+        solver: Offbeat | None = None,
         mesh=None,
         settings: ControlDictOffbeat | None = ControlDictOffbeat(),
-        caseFolder: str = "./",
     ):
         super().__init__(settings=settings, caseFolder=caseFolder)
 
         if solver is None:
-            solver = OffbeatSolver(mesh=mesh)
+            solver = Offbeat(mesh=mesh, solver="offbeat")
         self.add_solver(solver)
 
         if isinstance(mesh, (Rod1DBlockMesh, Rod2DRZBlockMesh)):
@@ -1236,12 +1283,20 @@ class OffbeatCase(Case):
         settings.application = "offbeat"
 
     @property
-    def solver(self) -> OffbeatSolver:
+    def solver(self) -> Offbeat:
         if len(self.solvers) != 1:
             raise RuntimeError("OffbeatCase expects exactly one solver.")
         return self.solvers[0]
 
     # Optional convenience forwards
+    @property
+    def fields(self):
+        return self.solver.fields
+
+    @fields.setter
+    def fields(self, value):
+        self.solver.fields = value
+
     @property
     def burnup(self):
         return self.solver.burnup
@@ -1350,7 +1405,7 @@ class OffbeatCase(Case):
     def rheology(self):
         return self.solver.rheology
 
-    @materials.setter
+    @rheology.setter
     def rheology(self, value):
         self.solver.rheology = value
 
@@ -1361,11 +1416,3 @@ class OffbeatCase(Case):
     @stressAnalysis.setter
     def stressAnalysis(self, value):
         self.solver.stressAnalysis = value
-
-    @property
-    def globalOptions(self):
-        return self.solver.globalOptions
-
-    @globalOptions.setter
-    def globalOptions(self, value):
-        self.solver.globalOptions = value

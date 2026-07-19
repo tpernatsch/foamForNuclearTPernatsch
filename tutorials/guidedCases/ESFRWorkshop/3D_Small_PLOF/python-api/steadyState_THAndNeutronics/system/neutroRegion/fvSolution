@@ -1,0 +1,92 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2512                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    "prec.*" 
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-06;
+        relTol          0.001;
+    }
+
+    "precStar.*" 
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-06;
+        relTol          0.001;
+    }
+
+    "adjoint_prec.*" 
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-06;
+        relTol          0.001;
+    }
+
+    "flux.*" 
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-06;
+        relTol          0.001;
+    }
+
+    "adjoint_flux.*" 
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-06;
+        relTol          0.001;
+    }
+
+    "angularFlux.*" 
+    {
+        solver          PBiCGStab;
+        preconditioner  DILU;
+        tolerance       1e-07;
+        relTol          0.1;
+    }
+
+}
+
+neutronTransport
+{
+    integralPredictor false;
+    implicitPredictor false;
+    ROMAcceleration false;
+    aitkenAcceleration false;
+    neutronIterationResidual 1e-06;
+    maxNeutronIterations 50;
+}
+
+relaxationFactors
+{
+    equations 
+    {
+    }
+
+    fields 
+    {
+    }
+
+}
+
+
+// ************************************************************************* //

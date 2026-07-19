@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-"""
+r"""
 foamForNuclear:
 
-    /*--------------------------------------------------------------------------*\
+    /*--------------------------------------------------------------------------*\\
     |       ______ ______ _   __    |                                            |
     |      / ____// ____// | / /    | foamForNuclear - Python API                |
     |     / /_   / /_   /  |/ /     | Website: https://gitlab.com/foamForNuclear |
@@ -44,14 +44,19 @@ from . import _attrs_tools
 from . import boundaryConditions
 
 # To be checked how to group
-from foamForNuclear.checkvalue import (check_value, check_positive, check_type, CheckedList)
+from foamForNuclear.checkvalue import (
+    check_value, check_positive, check_type, CheckedList
+)
 from . import common
 
 from . import control
 
 # To be checked how to group
 from . import coupling
-from foamForNuclear.executor import run, allclean, run_preprocessing, run_reconstruction, copyFolder, duplicateFolder, generateCaseAsFMU
+from foamForNuclear.executor import (
+    allclean, cleanCase0, run, run_preprocessing, run_reconstruction,
+    copyFolder, duplicateFolder, generateCaseAsFMU
+)
 from . import executor
 from foamForNuclear.externalSource import ExternalSource
 
@@ -65,7 +70,7 @@ from . import functions
 # To be checked how to group
 from . import nuclearData
 
-from . import case
+from foamForNuclear.case import (Case, OffbeatCase)
 from . import mesh
 from . import numerics
 from . import offbeat_lib
@@ -78,14 +83,12 @@ from . import porous_medium
 from . import preprocessing
 from . import profiles
 
-# To be checked how to group
-from . import quadratureSet
+from foamForNuclear.quadratureSet import QuadratureSet
 
 from . import solvers
 
-# To be checked how to group
-from . import timeFolder
-from . import timeProfile
+from foamForNuclear.timeFolder import TimeFolder
+from foamForNuclear.timeProfile import TimeProfile, OffbeatTimeProfile
 
 from . import thermo
 from . import transport

@@ -1,0 +1,61 @@
+description: |
+  St. Venant–Kirchhoff **hyperelastic constitutive law**.
+
+  This model describes finite-strain elastic behaviour using the
+  St. Venant–Kirchhoff formulation.
+options: []
+usage:
+- comment: |
+    Example of the `solverDict` configuration to activate the
+    `hyperElasticity` constitutive law.
+  snippet: |-
+    materials
+    {
+      solid
+      {
+        type Steel;
+
+        // other material options/models
+
+        constitutiveLaw
+        {
+          type hyperElasticity;
+        }
+      }
+
+      // other materials subdict
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - usage
+  formulation_added: true
+formulation: |
+  The model computes the finite-strain elastic response in terms of the
+  Green–Lagrange strain and the 2nd Piola–Kirchhoff stress, using a
+  St. Venant–Kirchhoff (linear-in-strain) constitutive relation
+  (see e.g. Holzapfel, *Nonlinear Solid Mechanics*; and Duderstadt & Hamilton for
+  general continuum mechanics context).
+
+  The deformation gradient is taken from the OpenFOAM field $F$ (stored as a volTensorField),
+  and the material parameters are the Lamé moduli $\lambda$ and $\mu$ (volScalarField).
+  The right Cauchy–Green tensor and Green–Lagrange strain are
+  $$ C = F^{T}F, \qquad E = \tfrac{1}{2}(C - I). $$
+  The 2nd Piola–Kirchhoff stress is then
+  $$ S = 2\mu\,E + \lambda\,\mathrm{tr}(E)\,I. $$
+
+  In the implementation, this corresponds to:
+  - $C$ is the symmetric tensor $\\texttt{symm}(F^T F)$,
+  - $E$ is $\\texttt{0.5*(C - I)}$,
+  - $S$ is $\\texttt{2.0*mu*E + lambda*tr(E)*I}$.
+
+  Variables (OpenFOAM field-name conventions):
+  - $F$ is the deformation gradient field ($\\texttt{mesh_.lookupObject<volTensorField>(\"F\")}$)
+  - $C$ is the right Cauchy–Green deformation tensor
+  - $I$ is the identity tensor
+  - $E$ is the Green–Lagrange strain tensor
+  - $\lambda$ is the first Lamé parameter field ($\\texttt{\"lambda\"}$)
+  - $\mu$ is the shear modulus field ($\\texttt{\"mu\"}$)
+  - $S$ is the 2nd Piola–Kirchhoff stress tensor (returned via the constitutive-law outputs, e.g. $\\texttt{sigmaDev}$/$\\texttt{sigmaHyd}$ depending on the solver’s split)
+  - $\\mathrm{tr}(E)$ is the trace of the strain tensor

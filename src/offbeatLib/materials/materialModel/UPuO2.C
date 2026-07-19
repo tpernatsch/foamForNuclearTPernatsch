@@ -98,13 +98,13 @@ Foam::UPuO2::UPuO2
         thermalExpansionModel::New(mesh, materialModelDict, "UPuO2Matpro");
 
     densification_ = 
-        densificationModel::New(mesh, materialModelDict, "UO2Frapcon");
+        densificationModel::New(mesh, materialModelDict, "none");
 
     swelling_ = 
-        swellingModel::New(mesh, materialModelDict, "UO2Frapcon");
+        swellingModel::New(mesh, materialModelDict, "none");
 
     relocation_ = 
-        relocationModel::New(mesh, materialModelDict, "UO2Frapcon");
+        relocationModel::New(mesh, materialModelDict, "none");
 
     failure_ = 
         failureModel::New(mesh, materialModelDict, "none");

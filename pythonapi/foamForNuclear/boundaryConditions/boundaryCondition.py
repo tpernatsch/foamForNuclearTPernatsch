@@ -58,9 +58,11 @@ _PATCH_TYPES = {
     "epsilonWallFunction", "kqRWallFunction", "nutkWallFunction",
     "fixedMassFlowRate",
     # OFFBEAT
-    "resistiveGap", "fuelRodGap", "gapContact", "tractionDisplacement", "coolantPressure", 
+    "resistiveGap", "fuelRodGap", "gapContact", "tractionDisplacement", "coolantPressure",
     "fixedDisplacementZeroShear", "plenumSpringPressure", "topCladRingPressure",
-    "implicitGapContact", "unilateralContact", "gapPressure",
+    "implicitGapContact", "gapPressure",
+    "unilateralContact",
+    "coolantChannel", "coolantChannelRIA",
     # FMU4FOAM
     "coupledUniformExternalValue", "coupledFlowRateInletVelocity",
     "coupledFlowRateOutletVelocity", "coupledUniformExternalValue",

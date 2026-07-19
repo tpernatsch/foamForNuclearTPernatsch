@@ -1,0 +1,50 @@
+description: |-
+  Power model that interpolates heat flux and computes fuel-pin surface
+  temperature based on region-specific fuel outer radius and
+  interfacial-area density.  Provides region-wise mapping for fuel-pin substructures.
+options:
+- key: fuelOuterRadius
+  type: scalar
+  required: true
+  description: |
+    Fuel outer radius $r_{fo}$ for each region. Used to compute the
+    interfacial-area density $iA = 2\alpha/r_{fo}$.
+usage:
+- comment: 'The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the
+    ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``).
+    Here is a snippet enabling the model:'
+  snippet: |-
+    phaseProperties
+    {
+        structureProperties
+        {
+            "<zoneName>"
+            {
+                powerModel
+                {
+                    type interpolatedNuclearFuelPin;
+                }
+            }
+        }
+    }
+formulation: |-
+  The pin interfacial-area density is set consistently with the pin geometry:
+  $$ iA = \frac{2 \, \alpha}{r_{fo}}, $$
+  where $\alpha$ is the local pin volume fraction (from the base class),
+  and $r_{fo}$ is the fuel outer radius read per region from ``fuelOuterRadius``.
+
+  The interpolated power density is computed from the interpolated heat flux:
+  $$ \dot{q} = \frac{HT \, iA}{\alpha}, $$
+  where $HT$ is the interpolated heat flux (stored as ``interpolatedHeatFlux``).
+
+  The pin surface temperature is then computed cell-wise as:
+  $$ T = \frac{HT + HTSum}{HSum}, $$
+  where ``HTSum`` and ``HSum`` are the arguments passed to ``correct()``.
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - formulation
+  - dictionary

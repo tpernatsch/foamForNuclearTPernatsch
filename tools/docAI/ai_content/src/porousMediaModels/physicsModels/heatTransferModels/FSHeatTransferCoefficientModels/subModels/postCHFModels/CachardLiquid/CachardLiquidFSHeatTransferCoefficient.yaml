@@ -1,0 +1,78 @@
+description: |
+  Heat transfer coefficient for Inverted Annular Flow - for the liquid phase.
+
+  This model cooperates with ``CachardVapourFSHeatTransferCoefficient`` to provide
+  the liquid-side and vapour-side contributions to the interfacial heat transfer.
+
+  The implementation is intended for rod-bundle geometries (notably for the
+  delta model assumptions regarding the vapour film thickness).
+
+  Gauthier LAZARE - gauthier.lazare@gmail.com
+formulation: |
+  The model returns a liquid-phase heat transfer coefficient as the sum of
+  a phase-change contribution and a wall-to-liquid radiation contribution.
+
+  $$ h = h_{\Gamma} + h_{wl}^{rad} $$
+
+  where:
+
+  - $h$ is the returned heat transfer coefficient (W/m$^2$/K)
+  - $h_{\Gamma}$ is the phase-change (interfacial) contribution stored in
+    ``hGammaCachard`` and computed consistently with the Cachard liquid
+    correlation (including the multi-regime boiling/CHF coupling used by
+    ``MultiRegimeBoilingTRACECHF``)
+  - $h_{wl}^{rad}$ is the wall-to-liquid radiation contribution
+
+  The radiation term is evaluated as:
+
+  $$ h_{wl}^{rad} =
+  \sigma_{SB}\,\frac{(T_w^2+T_{sat}^2)\,(T_w+T_{sat})}{\max\left(1/a+ b,\,10^{-6}\right)} $$
+
+  with:
+
+  - $\sigma_{SB}$ is the Stefan–Boltzmann constant (set by ``sigmaSB_``)
+  - $T_w$ is the wall temperature (from ``Twall_``)
+  - $T_{sat}$ is the saturation temperature (from ``Tsat_``)
+  - $a = \epsilon_L\,\sqrt{1-\alpha} $ with $\epsilon_L$ from ``liquidEmissivity`` and
+    $\alpha$ from ``normalized.alpha.vapour`` (with a lower bound of $10^{-6}$)
+  - $b = 1/\epsilon_W - 1$ with $\epsilon_W$ from ``wallEmissivity``
+
+  The final coefficient is computed per cell and returned by ``value(celli)``.
+options:
+- key: wallEmissivity
+  type: scalar
+  required: true
+  description: |
+    Wall emissivity $\epsilon_W$ used in the radiation resistance term for
+    $h_{wl}^{rad}$.
+- key: liquidEmissivity
+  type: scalar
+  required: true
+  description: |
+    Liquid emissivity $\epsilon_L$ used in the radiation term for $h_{wl}^{rad}$.
+usage:
+- comment: 'The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the
+    ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``).
+    Here is a snippet enabling the model:'
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type CachardLiquid;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - options
+  stub_improved: true

@@ -1,0 +1,49 @@
+description: |
+  This class encapsulates a the OpenFOAM solver ``rhoPimpleFoam``.
+  It mirrors the v2506 version of OpenFOAM-ESI.
+formulation: |
+  The solver advances a compressible, turbulent, thermo-hydraulic flow using
+  a PIMPLE (merged PISO-SIMPLE) strategy, with density obtained from the
+  ``fluidThermo`` model.
+
+  The core unknowns are pressure ``p`` and velocity ``U``; the density ``rho``
+  is updated from the thermodynamic model ``thermo_`` (e.g. via an equation of
+  state). The solver also supports optional energy solving (``solveEnergy_``)
+  and turbulence closure via ``turbulence_``.
+
+  Governing equations (conceptual form):
+
+  $$ \nabla \cdot (\rho \mathbf{U}) = 0 $$
+
+  $$ \frac{\partial (\rho \mathbf{U})}{\partial t} + \nabla \cdot (\rho \mathbf{U}\mathbf{U})
+     = -\nabla p + \nabla \cdot \left(\mu_\mathrm{eff}\nabla \mathbf{U}\right) + \mathbf{S}_\mathrm{mom} $$
+
+  $$ \rho = \rho(p, T, \ldots) \quad \text{from } \texttt{fluidThermo} $$
+
+  $$ \text{(optional)} \quad \frac{\partial (\rho h)}{\partial t} + \nabla \cdot (\rho \mathbf{U} h)
+     = \nabla \cdot (k_\mathrm{eff}\nabla T) + Q $$
+
+  where:
+
+  - $p$ is the pressure field ``p_``
+  - $\mathbf{U}$ is the velocity field ``U_``
+  - $\rho$ is the density field ``rho_`` (from ``thermo_``)
+  - $T$ is the temperature field handled by ``fluidThermo`` (when energy is solved)
+  - $k_\mathrm{eff}$ is the effective thermal conductivity ``kappaEff_`` (when energy is solved)
+  - $\mu_\mathrm{eff}$ is the effective viscosity from the turbulence model ``turbulence_``
+  - $Q$ is the volumetric heat source term(s) represented through the thermo/turbulence/fvOptions infrastructure
+options: []
+externalOptions: []
+optionsLocations: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - options
+  - externalOptions
+  - optionsLocations
+  - usage
+  stub_improved: true

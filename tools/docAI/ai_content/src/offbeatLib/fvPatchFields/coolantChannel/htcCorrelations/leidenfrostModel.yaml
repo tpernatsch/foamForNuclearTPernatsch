@@ -1,0 +1,66 @@
+description: |
+  Leidenfrost (minimum film boiling) temperature model.
+
+  The model provides the Leidenfrost temperature $T_\mathrm{Leid}$ using one of
+  several empirical correlations, or (for the $Zuber$ option) by first computing
+  the minimum film boiling heat flux $q_\mathrm{Leid}$ and then solving for a
+  self-consistent temperature via the associated film-boiling boundary
+  condition.
+formulation: |
+  The Leidenfrost temperature is computed from the saturation temperature
+  $T_\mathrm{sat}(p)$ and, depending on the selected correlation, from the
+  bulk temperature $T_0$, thermodynamic quality $Q$, and/or the minimum film
+  boiling heat flux $q_\mathrm{Leid}$.
+
+  For all empirical correlations implemented here, the result is constrained
+  to be at least slightly above saturation:
+  $$ T_\mathrm{Leid} = \max\left(T_\mathrm{corr},\; T_\mathrm{sat}(p) + 0.01\right). $$
+
+  where:
+  - $T_\mathrm{sat}(p)$ is the saturation temperature at pressure $p$
+    (computed using [IF97] via $IF97::Tsat97(p)$)
+  - $T_0$ is the bulk coolant temperature [K]
+  - $p$ is the pressure [Pa]
+  - $Q$ is the thermodynamic quality [-]
+  - $T_\mathrm{corr}$ is the correlation-specific estimate of $T_\mathrm{Leid}$
+
+  Correlation-specific forms (with $p$ in Pa and $p/10^6$ in MPa):
+  - Groeneveld–Stewart (1973):
+    $$ T_\mathrm{corr} = 557.85 + 44.1\frac{p}{10^6} - 3.72\left(\frac{p}{10^6}\right)^2 $$
+  - Groeneveld–Stewart (corrected):
+    $$ T_\mathrm{corr} = 557.85 + 44.1\frac{p}{10^6} - 3.72\left(\frac{p}{10^6}\right)^2
+       - \frac{Q\cdot 10000}{2.82 + 1.22\frac{p}{10^6}} $$
+  - Ohnishi et al.:
+    $$ T_\mathrm{corr} = T_\mathrm{sat} + 350 + 5.1\left(T_\mathrm{sat}-T_0\right) $$
+  - Gotovskij:
+    $$ T_\mathrm{corr} = T_\mathrm{sat} + 100 + 8.0\left(T_\mathrm{sat}-T_0\right) $$
+  - Zuber (minimum pool boiling flux):
+    $T_\mathrm{Leid}$ is obtained from $T_\mathrm{sat} + q_\mathrm{Leid}/h_\mathrm{FB}$,
+    where $h_\mathrm{FB}$ is the film boiling heat transfer coefficient evaluated
+    at the current wall temperature. For self-consistency, the codebase expects
+    the minimum-flux computation and the boundary-condition temperature solve
+    to be performed iteratively via the film boiling BC (see
+    [needsFilmBoilingTemperatureSolve] and [computeMinFlux]).
+
+  Variables:
+  - $T_\mathrm{Leid}$ is the Leidenfrost (minimum film boiling) temperature [K]
+  - $h_\mathrm{FB}$ is the film boiling heat transfer coefficient [W/(m$^2\cdot$K)]
+  - $q_\mathrm{Leid}$ is the minimum film boiling heat flux [W/m$^2$]
+admonitions: []
+options: []
+externalOptions: []
+optionsLocations: []
+usage:
+- comment: |
+    Select a Leidenfrost correlation by specifying the `type` in the
+    `leidenfrostModel` sub-dictionary.
+  snippet: |-
+    leidenfrostModel
+                    {
+                        type GroeneveldStewart;
+                        criticalPressure 2.209e7;
+                    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

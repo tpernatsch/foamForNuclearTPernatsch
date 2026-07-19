@@ -1,0 +1,44 @@
+description: |
+  Abstract base class for fission product (FP) yield models.
+
+  Each concrete subclass implements a production-rate correlation for a single
+  FP species. The production rate $s$ [mol/m$^3$/s] is written into the solver
+  source term field for cells listed in `addr`.
+
+  The yield is provided as a dimensionless yield $Y$ [atoms/fission], which
+  the solver converts to a molar production rate using
+  $$
+  s = Y \\, \\frac{Q}{e\\,\\mathrm{J/fission}}\\,\\frac{1}{N_a},
+  $$
+  where $Q$ is the local volumetric power density and $N_a$ is Avogadro's
+  number.
+
+  Example configuration patterns (as shown in the class header):
+  - `enrichmentDependent` yield with `yieldLEU` and `yieldHEU`
+  - `constant` yield with `yield`
+  - `burnupDependent` yield with `yieldCoeff` and `burnupExponent`
+formulation: |
+  The model provides a dimensionless fission yield $Y$ (atoms/fission) for
+  each cell, potentially depending on the local burnup $Bu$.
+
+  The solver uses the returned $Y$ to compute the FP production rate $s$
+  (mol/m$^3$/s) from the local volumetric power density $Q$:
+  $$
+  s = Y\\,\\frac{Q}{e\\,\\mathrm{J/fission}}\\,\\frac{1}{N_a}.
+  $$
+
+  - $Y$ is the dimensionless yield (atoms/fission) returned by the model
+  - $s$ is the FP production rate (mol/m$^3$/s)
+  - $Q$ is the local volumetric power density (W/m$^3$)
+  - $e$ is the energy released per fission (J/fission), used by the solver
+  - $N_a$ is Avogadro's number (mol$^{-1}$)
+  - $Bu$ is the local burnup input field passed to `updateYield`
+
+  The base class itself does not prescribe a specific functional form for
+  $Y(Bu)$; that is implemented by derived classes.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,55 @@
+description: |
+  Thermal conductivity correlation for Hastelloy-N derived from the work of
+  Swindeman.
+
+  The correlation is linear in temperature and is expressed as:
+
+  $$
+  k = \mathrm{par1} + \mathrm{par2} \cdot (T - 273.15)
+  $$
+options:
+- key: par1
+  type: scalar
+  required: false
+  default: 8.431
+  description: |
+    Constant term of the conductivity correlation.
+- key: par2
+  type: scalar
+  required: false
+  default: 0.0205
+  description: |
+    Linear temperature coefficient of the conductivity correlation.
+usage:
+- comment: |
+    Example selection of the Swindeman conductivity correlation for Hastelloy-N
+    in the `solverDict`.
+  snippet: |-
+    materials
+    {
+      cladding
+      {
+        conductivity
+        {
+            type HastelloyNSwindeman;
+
+            // Optional overrides
+            // par1 8.431;
+            // par2 0.0205;
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - usage
+  formulation_added: true
+formulation: "This conductivity model provides a temperature-dependent thermal conductivity\nfor Hastelloy-N using a linear\
+  \ Swindeman-type correlation (see Duderstadt &\nHamilton for general thermal property modeling in reactor analyses). The\n\
+  implementation updates the OpenFOAM conductivity field $k$ (or $sf$) locally as a\nfunction of the cell temperature $T$.\n\
+  \n$$ \nk(T) = \\mathrm{par1} + \\mathrm{par2}\\,\\bigl(T - 273.15\\bigr)\n$$\n\n- $k(T)$ is the thermal conductivity (the\
+  \ quantity written into the OpenFOAM\n  scalar field argument, typically $sf$), in W/(m·K)\n- $T$ is the local temperature\
+  \ (the input scalar field $T$), in K\n- $\\mathrm{par1}$ is the constant term of the correlation (dimension: W/(m·K))\n\
+  - $\\mathrm{par2}$ is the linear temperature coefficient (dimension: W/(m·K$^2$))\n- $273.15$ K is the reference temperature\
+  \ (0°C) used to shift the linear fit\n"

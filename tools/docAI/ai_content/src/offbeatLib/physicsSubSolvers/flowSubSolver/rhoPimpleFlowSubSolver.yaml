@@ -1,0 +1,41 @@
+description: |
+  Flow sub-solver based on the PIMPLE algorithm for compressible,
+  density-based flow. It couples momentum, pressure correction, and an
+  energy equation using OpenFOAM thermophysical models.
+
+  The solver is intended to be used as a sub-component within the
+  foamForNuclear multi-physics framework.
+formulation: |
+  The solver advances a compressible flow system using a PIMPLE
+  (merged PISO-SIMPLE) strategy. The thermophysical model provides the
+  pressure $p$ and compressibility $\psi$ (so that density is updated via
+  $\rho=\rho(p,T)$ through the selected ``fluidThermophysicalTransportModel`` /
+  ``fluidThermo``).
+
+  $$ \frac{\partial \rho}{\partial t} + \nabla\cdot(\rho \mathbf{U}) = 0 $$
+
+  $$ \frac{\partial (\rho \mathbf{U})}{\partial t} + \nabla\cdot(\rho \mathbf{U}\otimes \mathbf{U})
+     = -\nabla p + \nabla\cdot\boldsymbol{\tau} + \mathbf{S}_U $$
+
+  $$ \frac{\partial (\rho h)}{\partial t} + \nabla\cdot(\rho \mathbf{U} h)
+     = \nabla\cdot(\kappa \nabla T) + S_h $$
+
+  where the pressure correction step enforces continuity in the PIMPLE loop.
+
+  - $p$ is the pressure field (Pa), from ``thermo_->p()``
+  - $\psi$ is the fluid compressibility field (1/Pa), from ``thermo_->psi()``
+  - $\rho$ is the density field (kg/m$^3$), from ``thermo_->rho()``
+  - $\mathbf{U}$ is the velocity field (m/s)
+  - $\phi$ is the surface mass flux field (used in pressure correction)
+  - $h$ is the specific enthalpy
+  - $T$ is the temperature
+  - $\boldsymbol{\tau}$ is the viscous/turbulent stress contribution
+  - $\kappa$ is the effective thermal conductivity
+  - $\mathbf{S}_U$ and $S_h$ are source terms assembled from the selected models
+dictionary: neutronicsProperties
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

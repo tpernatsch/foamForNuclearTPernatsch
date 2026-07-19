@@ -1,0 +1,70 @@
+description: |
+  Implicit gap-contact boundary condition for coupled vector displacement
+  patches.
+
+  This boundary condition extends the standard `gapContact` concept by
+  treating the normal traction implicitly to improve stability and
+  convergence for contact-like interactions (e.g. pellet-to-pellet
+  interaction in nuclear fuel rods).
+
+  A `gapGasModel` is required for this boundary condition to function properly.
+
+  The implementation assumes the same boundary condition is applied to a pair
+  of `regionCoupledOFFBEAT` patches coupled using AMI (Arbitrary Mesh
+  Interface) mapping. It is strongly suggested to assign the `owner` role to
+  the smaller surface (e.g. `fuelOuter` in typical fuel-rod contact setups).
+
+  The normal traction is computed from the gap pressure when no penetration
+  is detected, and from a contact pressure proportional to the penetration
+  depth when penetration occurs. The tangential traction is limited by a
+  Coulomb friction law using the friction coefficient times the normal
+  pressure, with a semi-implicit treatment up to the stick limit.
+
+  An augmented Lagrangian-like option is available to gradually increase the
+  penalty factor over iterations until penetration falls below a user-defined
+  tolerance.
+formulation: |
+  The boundary condition enforces contact between two coupled displacement
+  patches by applying traction contributions derived from a gap model and a
+  penalty-based contact law.
+
+  Let the normal direction be $n$ (unit vector on the patch), and let the
+  normal penetration depth be $g_n$ (computed from the gap width / relative
+  displacement). The normal traction is treated implicitly as a function of
+  whether penetration occurs.
+
+  $$ \mathbf{t}_n = -p_n\,\mathbf{n} $$
+  $$ p_n =
+     \begin{cases}
+       p_\mathrm{gap} & \text{if } g_n \le 0 \\
+       \kappa_n\, g_n & \text{if } g_n > 0
+     \end{cases}
+  $$
+
+  where:
+  - $p_\mathrm{gap}$ is the gap pressure provided by the gap gas model
+  - $\kappa_n$ is an effective normal penalty stiffness scaled by
+    ``penaltyFactor`` (and adjusted by ``method``)
+
+  The tangential traction is computed from a semi-implicit friction model and
+  limited by the Coulomb stick criterion:
+
+  $$ \|\mathbf{t}_t\| \le \mu\, p_n $$
+
+  where:
+  - $\mathbf{t}_t$ is the tangential traction vector
+  - $\mu$ is the friction coefficient set by ``frictionCoefficient``
+
+  The augmented Lagrangian-like option increases the effective penalty
+  factor over iterations until penetration is below the tolerance defined by
+  ``relativePenetrationTolerance`` and ``absolutePenetrationTolerance``.
+dictionary: neutronicsProperties
+options: []
+optionsLocations: []
+externalOptions: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,84 @@
+description: |-
+  Customised PIMPLE loop controller extending ``Foam::pimpleControl``.
+
+  ``customPimpleControl`` modifies the standard PIMPLE convergence logic to:
+    - Enforce a minimum number of outer PIMPLE correctors via ``minNOuterCorrectors``.
+    - Optionally continue outer PIMPLE iterations until convergence criteria are met
+      (``correctUntilConvergence``).
+    - Allow convergence checks based either on the current iteration’s residuals
+      or on the first PISO-loop residual from the previous PIMPLE cycle.
+    - Optionally interrupt the PIMPLE loop early if the first PISO initial residual
+      degrades relative to a user-specified tolerance.
+
+  The class reads additional controls from the ``PIMPLE`` sub-dictionary in
+  ``fvSolution`` and reads per-field residual-control flags from the
+  ``residualControl`` sub-dictionaries.
+options:
+- key: nOuterCorrectors
+  type: label
+  required: true
+  default: 1
+  description: usual OpenFOAM. Maximum number of PIMPLE outer correctors
+- key: nCorrectors
+  type: label
+  required: false
+  default: 1
+  description: usual OpenFOAM. Maximum number of PIMPLE pressure correctors
+- key: nNonOrthogonalCorrectors
+  type: label
+  required: false
+  default: 1
+  description: usual OpenFOAM. Number of non-orthogonal correctors
+- key: minNOuterCorrectors
+  type: label
+  required: false
+  default: 1
+  description: minimum number of PIMPLE outer correctors before allowing convergence checks
+- key: correctUntilConvergence
+  type: bool
+  required: false
+  default: false
+  description: continue PIMPLE iterations until criteriaSatisfied() reports convergence
+- key: residualControl.<field>.useFirstPISOInitialResidual
+  type: bool
+  required: false
+  default: false
+  description: use the first PISO-loop initial residual from the previous PIMPLE cycle as the reference residual for this
+    field
+- key: residualControl.<field>.stopIfFirstResRelChangeAboveRelTol
+  type: bool
+  required: false
+  default: false
+  description: interrupt the PIMPLE loop if the first PISO residual increases relative to relTol when using previous-cycle
+    initial residuals
+usage:
+- comment: |-
+    ``customPimpleControl`` is used internally by a PIMPLE-based solver in
+    the same way as ``pimpleControl``, with configuration provided via the
+    ``PIMPLE`` sub-dictionary in ``fvSolution``.      Here is a minimal example showing the additional options
+  snippet: |-
+    PIMPLE
+    {
+        nOuterCorrectors            12;
+        nCorrectors                 8;
+        nNonOrthogonalCorrectors    0;
+        corrPISOUntilConvergence    true;   //- (new entry, default: false)
+
+        residualControl
+        {
+            p_rgh
+            {
+                tolerance                   5e-4;
+                relTol                      0;
+                useFirstPISOInitialResidual true;   //- (new entry, default: false)
+            }
+        }
+    }
+dictionary: fvSolution
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options
+  - dictionary

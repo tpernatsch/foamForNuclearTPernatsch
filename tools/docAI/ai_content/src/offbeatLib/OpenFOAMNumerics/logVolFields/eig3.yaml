@@ -1,0 +1,36 @@
+description: |
+  Eigen-decomposition for symmetric $3\times 3$ real matrices.
+
+  This class provides routines (adapted from the public-domain JAMA Java
+  library) to compute eigenvalues and eigenvectors of a symmetric matrix,
+  using a reduction to tridiagonal form followed by an iterative method.
+formulation: |
+  For a symmetric matrix $A\in\mathbb{R}^{3\times 3}$, the eigen-decomposition
+  seeks orthonormal eigenvectors and real eigenvalues such that:
+  $$
+  A = V \, \mathrm{diag}(d)\, V^T,
+  $$
+  where $V$ contains the eigenvectors in its columns and $d$ contains the
+  corresponding eigenvalues.
+
+  The implementation follows the standard approach used in EISPACK/JAMA:
+  (i) reduce $A$ to a tridiagonal matrix via Householder similarity
+  transformations, then (ii) compute eigenvalues/eigenvectors from the
+  tridiagonal form.
+
+  - $A$ is the input symmetric matrix (OpenFOAM: `tensor`/`symmTensor`)
+  - $V$ is the eigenvector matrix with eigenvectors stored in columns
+    (OpenFOAM: `tensor`)
+  - $d$ is the vector of eigenvalues (OpenFOAM: `vector` or `diagTensor`)
+  - $e$ is the auxiliary off-diagonal vector during tridiagonal reduction
+    (OpenFOAM: `vector`)
+
+  References: Duderstadt & Hamilton (for eigenvalue problems in reactor
+  physics context), and the classic EISPACK/JAMA algorithms for symmetric
+  eigen-decomposition.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

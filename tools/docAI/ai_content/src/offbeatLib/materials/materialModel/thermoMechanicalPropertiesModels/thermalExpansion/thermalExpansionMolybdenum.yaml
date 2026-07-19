@@ -1,0 +1,43 @@
+description: |
+  Class modelling thermal expansion of Molybdenum.
+options:
+- key: par1
+  type: scalar
+  required: false
+  default: 4.985e-06
+  description: |
+    Parameter $p_1$ in the thermal expansion law. Read from the ``thermalExpansion`` sub-dictionary if present; otherwise read directly from the provided dictionary.
+- key: par2
+  type: scalar
+  required: false
+  default: 6.667e-10
+  description: |
+    Parameter $p_2$ in the thermal expansion law. Read from the ``thermalExpansion`` sub-dictionary if present; otherwise read directly from the provided dictionary.
+usage:
+- comment: |
+    Example selection of the `Molybdenum` thermalExpansion model.
+  snippet: |-
+    materials
+    {
+      structure
+      {
+        type Molybdenum;
+        thermalExpansion
+        {
+          type Molybdenum;
+          // par1 4.985E-06;
+          // par2 6.667E-10;
+        }
+      }
+    }
+formulation: |
+  The thermal expansion model computes the symmetric tensor contribution in each addressed cell as
+  $$\boldsymbol{\varepsilon}(T) = \left(p_1 + p_2\,T\right)\left(T - T_{\mathrm{ref}}\right)\,\mathbf{I},$$
+  where $\mathbf{I}$ is the identity tensor and $T_{\mathrm{ref}} = 273.15$ K.
+  The parameters $p_1$ and $p_2$ are set by the input parameters ``par1`` and ``par2`` (optionally under the ``thermalExpansion`` sub-dictionary).
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - formulation

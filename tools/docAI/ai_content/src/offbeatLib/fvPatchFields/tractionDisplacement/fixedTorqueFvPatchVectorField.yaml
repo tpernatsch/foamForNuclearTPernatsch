@@ -1,0 +1,42 @@
+description: |
+  Fixed-torque boundary condition for a vector displacement/traction patch field.
+
+  The `fixedTorque` fvPatchField applies a fixed torque (in Nm) uniformly
+  distributed over the boundary faces. The torque is defined by the user via
+  its magnitude and rotation axis, and optionally the rotation centre. If the
+  centre is not provided, it is computed automatically from the centroid of the
+  boundary faces.
+formulation: |
+  This boundary condition represents an externally imposed rigid-body
+  rotational action on the boundary, expressed as an equivalent traction
+  update consistent with the underlying `tractionDisplacementFvPatchVectorField`
+  formulation.
+
+  The imposed torque magnitude is converted into a rotational action about
+  the axis direction and applied with respect to the rotation centre.
+
+  $$ \mathbf{T} = \tau \,\hat{\mathbf{a}} $$
+
+  where:
+
+  - $\mathbf{T}$ is the torque vector (Nm)
+  - $\tau$ is the user-specified torque magnitude (set by ``torque``)
+  - $\hat{\mathbf{a}}$ is the unit axis direction (set by ``axis``)
+
+  The rotation centre $\mathbf{C}_0$ is either taken from ``centre`` or computed
+  as the centroid of the boundary faces (set by ``centre`` or by
+  ``calculateRotationCentre()`` in the implementation).
+
+  - $\mathbf{C}_0$ is the rotation centre (m)
+
+  The actual traction/displacement update is performed by the inherited
+  `tractionDisplacementFvPatchVectorField` machinery, with the rotational
+  action encoded through the internal rotation representation.
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

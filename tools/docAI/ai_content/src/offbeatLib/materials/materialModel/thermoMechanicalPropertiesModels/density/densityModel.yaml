@@ -1,0 +1,26 @@
+description: |
+  Mother class for density models.
+
+  This is an abstract base class that provides the run-time selection
+  mechanism for concrete density models. Derived classes implement the
+  density update in the `correct()` method.
+formulation: |
+  Density models in foamForNuclear are responsible for updating a scalar
+  density field based on the local temperature field.
+
+  The specific constitutive relation is model-dependent and is implemented
+  in derived classes via the pure virtual method:
+  $$
+  \rho = \rho(T)
+  $$
+  where the mapping $\rho(T)$ is provided by the selected density model.
+
+  - $\rho$ is the material density (the scalar field being updated)
+  - $T$ is the local temperature field provided to `correct()`
+admonitions: []
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

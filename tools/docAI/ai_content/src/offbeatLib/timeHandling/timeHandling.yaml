@@ -1,0 +1,128 @@
+description: |
+  Utility class that manages variation of the simulation time-step size during
+  a transient run, and optionally controls when time directories are written.
+
+  It reads time-step and writing controls from the OpenFOAM `controlDict` and
+  applies them to the associated `offbeatTime` instance.
+formulation: |
+  This class provides adaptive time-step bounds and (optionally) adaptive
+  write-time scheduling. It does not define a physical conservation law by
+  itself; instead, it constrains the numerical time integration by enforcing
+  user-specified limits on the time increment.
+
+  The key controls are:
+
+  - Maximum and minimum time-step sizes:
+    $$
+    \Delta t_{\max} = f_{\text{user}\to\text{sec}}(\texttt{maxDeltaT}), \quad
+    \Delta t_{\min} = f_{\text{user}\to\text{sec}}(\texttt{minDeltaT})
+    $$
+
+  - Maximum relative increase of the time step:
+    $$
+    \Delta t_{n+1} \le \Delta t_n \cdot \texttt{maxRelativeDeltaTIncrease}
+    $$
+
+  - Optional write scheduling based on a user-provided list of times:
+    $$
+    t_{\text{write}} \in \texttt{writeTimeStepList}
+    $$
+    where the list is converted to absolute time (seconds) using
+    ``offbeatTime::userTimeToTime``.
+
+  - $f_{\text{user}\to\text{sec}}$ is the conversion from user time units to seconds
+    as implemented by ``offbeatTime::userTimeToTime``.
+  - $\Delta t_{\max}$ is the maximum allowed time-step size (seconds).
+  - $\Delta t_{\min}$ is the minimum allowed time-step size (seconds).
+  - $\Delta t_n$ is the current time-step size.
+  - $t_{\text{write}}$ are the absolute times (seconds) at which output is written.
+dictionary: controlDict
+options:
+- key: adjustableTimeStep
+  type: bool
+  required: false
+  default: false
+  description: |
+    Deprecated keyword. If present, enables adjustable time-step control.
+    Prefer ``adjustTimeStep`` instead.
+- key: adjustTimeStep
+  type: bool
+  required: false
+  default: false
+  description: |
+    Enables adjustable time-step control.
+- key: maxDeltaT
+  type: scalar
+  required: false
+  default: 1e300
+  description: |
+    Maximum time increment. The value is interpreted in user time units and
+    converted to seconds via ``offbeatTime::userTimeToTime``.
+    If not specified, a very large value is used (``GREAT``).
+- key: minDeltaT
+  type: scalar
+  required: false
+  default: 1
+  description: |
+    Minimum time increment. The value is interpreted in user time units and
+    converted to seconds via ``offbeatTime::userTimeToTime``.
+    If not specified, defaults to 1 (in user time units).
+- key: maxRelativeDeltaTIncrease
+  type: scalar
+  required: false
+  default: 1e300
+  description: |
+    Maximum relative factor for increasing the time step between consecutive
+    iterations/time steps. The default is ``GREAT`` (effectively unbounded).
+- key: adjustableWriteTimeStep
+  type: bool
+  required: false
+  default: false
+  description: |
+    Deprecated keyword. If present, enables adjustable output writing based on
+    a list of write times. Prefer ``adjustWriteTimeStep`` instead.
+- key: adjustWriteTimeStep
+  type: bool
+  required: false
+  default: false
+  description: |
+    Enables adjustable output writing based on a list of write times.
+- key: writeTimeStepList
+  type: list[scalar]
+  required: false
+  description: |
+    List of times at which output should be written. The list is read from
+    ``controlDict`` and converted to absolute time (seconds) using
+    ``offbeatTime::userTimeToTime``. This option is used only when
+    ``adjustWriteTimeStep`` is enabled.
+admonitions: []
+optionsLocations: []
+externalOptions: []
+usage:
+- comment: |
+    Enable adjustable time-step control and specify bounds and relative
+    increase limits in `controlDict`.
+  snippet: |
+    adjustableTimeStep true;
+
+    maxDeltaT         1e6;
+    minDeltaT         1e-6;
+
+    maxRelativeDeltaTIncrease 1e9;
+    minRelativeDeltaTDecrease 1e9;
+
+    maxRelativePowerIncrease  0.25;
+    maxRelativePowerDecrease  0.25;
+
+    maxBurnupIncrease 0.1;
+    maxAverageCreep   1e-4;
+    maxMaximumCreep   1e-4;
+    maxFGR            1e9;
+- comment: |
+    Enable adjustable output writing and provide the list of write times.
+  snippet: "// Allow adjustable time-step writing or not \nadjustableWriteTimeStep         off;\n// writeTimeStepList\n//\
+    \ (\n//  0.0\n//  91822464 \n//  92822464 \n//  100462464\n// );"
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

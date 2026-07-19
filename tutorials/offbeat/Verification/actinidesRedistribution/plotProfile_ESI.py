@@ -119,5 +119,6 @@ with open("results","w") as f:
 	f.write(f"RMSE Pu Distribution @ 100 h : {PuRMSE*100:.2e} %")
 	f.write("\n")
 	f.write(f"RMSE Am Distribution @ 100 h : {AmRMSE*100:.2e} %")
+	f.write("\n")
 
 

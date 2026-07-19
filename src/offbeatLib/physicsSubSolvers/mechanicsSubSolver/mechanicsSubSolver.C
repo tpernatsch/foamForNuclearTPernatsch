@@ -1420,6 +1420,18 @@ Foam::mechanicsSubSolver::mechanicsSubSolver
         mesh_,
         dimensionedSymmTensor("sigma", dimPressure, symmTensor::zero)
     ),
+    sigmaEq_
+    (
+        IOobject
+        (
+            "sigmaEq",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        sqrt((3.0/2.0)*magSqr(dev(sigma_)))
+    ),    
     sigmaExp_
     (
         IOobject
@@ -1619,29 +1631,6 @@ Foam::mechanicsSubSolver::~mechanicsSubSolver()
 void Foam::mechanicsSubSolver::updateTotalFields()
 {    
     rheo_.updateTotalFields();
-}
-
-
-void Foam::mechanicsSubSolver::writeStressFields()
-{
-    //- Calculate the von Mises stress
-    volScalarField sigmaEq
-    (
-        IOobject
-        (
-            "sigmaEq",
-            mesh_.time().timeName(),
-            mesh_,
-            IOobject::NO_READ,
-            IOobject::AUTO_WRITE
-        ),
-        sqrt((3.0/2.0)*magSqr(dev(sigma_)))
-    );
-    
-    sigmaEq.write();
-
-    Info<< "Max von Mises stress (sigmaEq) = " << max(sigmaEq).value()
-        << endl;
 }
 
 

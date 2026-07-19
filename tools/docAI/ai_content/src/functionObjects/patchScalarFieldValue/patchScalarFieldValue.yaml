@@ -1,0 +1,61 @@
+description: |-
+  Writes the values of an fvPatchScalarField.
+
+  See also
+      Foam::functionObjects::fvMeshFunctionObject
+      Foam::functionObjects::writeFile
+options:
+- key: type
+  type: word
+  required: true
+  description: type name patchScalarFieldValue
+- key: writeToFile
+  type: bool
+  required: false
+  default: true
+  description: write data to file
+- key: log
+  type: bool
+  required: false
+  default: false
+  description: write data to standard output
+- key: patch
+  type: word
+  required: true
+  description: patch name
+- key: field
+  type: word
+  required: true
+  description: field name
+usage:
+- comment: 'A functionObject is normally specified via the ``type`` entry in the ``functionObjects`` subdictionary of the
+    ``controlDict`` file (located in ``system/``. Here is a snippet enabling a functionObject:'
+  snippet: |
+    functions
+    {
+        <functionObject1>
+        {
+            type fieldDiffExtents;
+        }
+    }
+- comment: This is a detailed example of use of this specific function object.
+  snippet: |-
+    functions
+    {
+      patchScalarFieldValue1
+      {
+          type        patchScalarFieldValue;
+          libs        ("libFFNFunctionObjects.so");
+          ...
+          writeToFile   true;
+          log           false;
+          patch         patchName;
+          field         fieldName;
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options

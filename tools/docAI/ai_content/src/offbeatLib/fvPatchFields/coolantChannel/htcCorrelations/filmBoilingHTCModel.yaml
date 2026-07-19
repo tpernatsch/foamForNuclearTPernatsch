@@ -1,0 +1,61 @@
+description: |
+  Post-CHF (film boiling) heat transfer correlation model.
+
+  This class provides a unified interface to several film boiling HTC
+  correlations, selected at construction time by name:
+  - GroeneveldAnnular  : Groenveld (1973) annular geometry
+  - GroeneveldTubular  : Groenveld (1973) tubular geometry
+  - BishopSandbergTong : Bishop-Sandberg-Tong (1965)
+  - Frederking         : Frederking (1966) pool film boiling
+  - Sakurai            : Sakurai (1990) combined convective/film boiling
+formulation: |
+  The model computes the film boiling heat transfer coefficient $h_{FB}$
+  [W/(m$^2\cdot$K)] as a function of bulk coolant temperature $T_0$,
+  wall temperature $T_w$, pressure $p$, thermodynamic quality $Q$, mass flux
+  $G$, and hydraulic diameter $D_H$.
+
+  First, the saturation temperature and representative film temperature are
+  evaluated:
+  $$
+  T_{sat} = T_{sat}(p), \qquad T_{film} = \frac{1}{2}(T_0 + T_w)
+  $$
+  Fluid properties are then evaluated at $(T_{film},p)$:
+  - $\mu$ is the dynamic viscosity [Pa$\cdot$s]
+  - $\mathrm{Pr}$ is the Prandtl number [-]
+  - $\mathrm{Re} = \dfrac{G D_H}{\mu}$ is the Reynolds number [-]
+
+  For the Groenveld annular/tubular correlations, the HTC is computed in the
+  form:
+  $$
+  h_{FB} =
+  A \, \frac{k_{vap}(p)}{D_H}\,
+  \left[
+    \frac{G D_H}{\nu_{vap}(p)}
+    \left(
+      Q + (1-Q)\frac{\rho_{vap}(p)}{\rho_{liq}(p)}
+    \right)
+  \right]^B
+  \mathrm{Pr}^{C}\, Y^{D}
+  $$
+  where:
+  - $k_{vap}(p)$ is the vapor thermal conductivity [W/(m$\cdot$K)]
+  - $\nu_{vap}(p)$ is the vapor kinematic viscosity [m$^2$/s]
+  - $\rho_{vap}(p)$ is the vapor density [kg/m$^3$]
+  - $\rho_{liq}(p)$ is the liquid density [kg/m$^3$]
+  - $A,B,C,D$ are empirical constants (different for annular vs tubular)
+  - $Y$ is a suppression factor defined as
+    $$
+    Y = \max\left(
+      1 - 0.1\left[(1-Q)\left(\frac{\rho_{liq}(p)}{\rho_{vap}(p)}-1\right)\right]^{0.4},
+      0.1
+    \right)
+    $$
+  The remaining supported models (Bishop–Sandberg–Tong, Frederking, Sakurai)
+  follow their respective published post-CHF correlation forms, selected via
+  the internal model switch.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

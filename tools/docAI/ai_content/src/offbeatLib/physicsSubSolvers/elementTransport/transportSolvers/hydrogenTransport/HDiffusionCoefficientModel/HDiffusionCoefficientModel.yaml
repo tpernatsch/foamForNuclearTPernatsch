@@ -1,0 +1,33 @@
+description: |
+  Base class for the diffusion coefficient of hydrogen ions.
+
+  This class provides shared infrastructure for hydrogen diffusion models,
+  including access to the mesh, material properties, and a dictionary of
+  model-specific parameters. Derived classes implement the actual update of
+  the hydrogen diffusion coefficient via ``correctDH``.
+formulation: |
+  The hydrogen diffusion coefficient is represented as a cell-wise field
+  ``diffH_`` (an OpenFOAM ``volScalarField``) and is updated by derived
+  implementations of ``correctDH``.
+
+  In addition, this base class can apply an “effective” diffusion correction
+  based on the local hydride volume fraction ``hydridevolumeFraction``:
+
+  $$
+  D_\mathrm{eff} = D \left(1 - \min\left(1, f_h\right)\right)
+  $$
+
+  where:
+  - $D$ is the current hydrogen diffusion coefficient stored in ``diffH_``
+  - $D_\mathrm{eff}$ is the corrected effective diffusion coefficient
+  - $f_h$ is the hydride volume fraction field ``hydridevolumeFraction``
+
+  The correction saturates when $f_h \ge 0.99$, effectively driving the
+  diffusion coefficient towards zero in highly hydride-rich regions.
+options: []
+dictionary: neutronicsProperties
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

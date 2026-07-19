@@ -83,7 +83,6 @@ class rhoPimpleFoam
 private:
 
 
-    dynamicFvMesh& mesh_;
     pimpleControl pimple_;
     autoPtr<fluidThermo> pThermo_;
     fluidThermo& thermo_;

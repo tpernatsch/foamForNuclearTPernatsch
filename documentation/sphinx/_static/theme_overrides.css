@@ -36,4 +36,29 @@ div#notebook-container.container {
     margin-bottom: 0.75rem;
   } */
 
-  
+/* Only add space for the last in-page toctree on the page */
+.rst-content .document .toctree-wrapper:last-child,
+.rst-content .document .toctree-wrapper.compound:last-child {
+    margin-bottom: 24px;
+}
+
+/* Version switcher button */
+#version-switch-btn {
+    display: block;
+    margin: 10px 12px 4px;
+    padding: 6px 10px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff !important;
+    font-size: 0.82em;
+    text-align: center;
+    text-decoration: none !important;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: background 0.2s;
+}
+#version-switch-btn:hover {
+    background: rgba(255, 255, 255, 0.28);
+}
+.vs-icon {
+    margin-right: 4px;
+}

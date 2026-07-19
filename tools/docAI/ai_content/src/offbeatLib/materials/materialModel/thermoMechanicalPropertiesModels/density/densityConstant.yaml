@@ -1,0 +1,31 @@
+description: |
+  Model for constant density. The value is read from dictionary.
+options:
+- key: value
+  type: scalar
+  required: true
+  description: |
+    Constant density value in kg/m^3.
+usage:
+- comment: |
+    Example selection of the `constant` density model.
+  snippet: |-
+    materials
+    {
+      fuel
+      {
+        type constant;
+        density
+        {
+          type constant;
+          value 10960;
+        }
+      }
+    }
+dictionary: density
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

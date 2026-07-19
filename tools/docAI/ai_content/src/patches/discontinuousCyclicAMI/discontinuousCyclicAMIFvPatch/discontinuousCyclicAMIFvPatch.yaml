@@ -1,0 +1,36 @@
+description: |
+  Cyclic finite-volume patch for Arbitrary Mesh Interface (AMI) coupling.
+
+  This class provides the fvPatch-side implementation of a discontinuous cyclic AMI
+  interface, including interpolation-based transfer of coupled quantities and
+  geometric correction hooks (weights and delta coefficients) used by AMI-based
+  discretizations.
+formulation: |
+  The discontinuous cyclic AMI patch couples two non-matching meshes by
+  interpolating face-adjacent quantities from the neighbour side to the local
+  side using AMI weights.
+
+  In the coupled case, the patch constructs AMI interpolation weights based on
+  the geometric “delta” vectors used by the underlying fvPatch discretization.
+  When the low-weight correction is enabled, neighbour deltas are interpolated
+  using a constant fallback field to improve numerical robustness for small
+  overlap regions (see OpenFOAM AMI cyclic/discontinuous cyclic AMI infrastructure).
+
+  $$ \delta_f = \mathbf{n}_f \cdot (\mathbf{x}_N - \mathbf{x}_P) \quad \text{(conceptual)} $$
+  $$ \delta^{(N)}_f \;\leftarrow\; \mathcal{I}_{\text{AMI}}\!\left(\delta^{(N)}\right) $$
+  $$ w_f \;\leftarrow\; \text{AMI weights consistent with } \delta_f \text{ and overlap} $$
+
+  - $f$ is a patch face index on the local side
+  - $\delta_f$ is the local patch delta (face-to-neighbour distance measure) used by fvPatch
+  - $\delta^{(N)}_f$ is the neighbour-side delta mapped to the local faces via AMI
+  - $\mathcal{I}_{\text{AMI}}$ is the AMI interpolation operator defined by the AMI overlap mapping
+  - $w_f$ are the AMI-derived patch weighting factors used for coupled transfers
+
+  The actual AMI overlap mapping and interpolation are delegated to the associated
+  [@discontinuousCyclicAMIPolyPatch] and its AMI interpolator.
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,76 @@
+description: |
+  Heat capacity correlation model `Molybdenum`.
+options:
+- key: par1
+  type: scalar
+  required: false
+  default: 9.74e-06
+  description: |
+    Quadratic coefficient $a$ in the heat-capacity correlation $c_p(T)=a\,T^2+b\,T+c$.
+- key: par2
+  type: scalar
+  required: false
+  default: 0.0537
+  description: |
+    Linear coefficient $b$ in the heat-capacity correlation $c_p(T)=a\,T^2+b\,T+c$.
+- key: par3
+  type: scalar
+  required: false
+  default: 235
+  description: |
+    Constant coefficient $c$ in the heat-capacity correlation $c_p(T)=a\,T^2+b\,T+c$.
+usage:
+- comment: |
+    Example selection of the `Molybdenum` heat capacity model.
+  snippet: |-
+    materials
+    {
+        structure
+        {
+            material Molybdenum;
+
+            heatCapacity
+            {
+                type Molybdenum;
+                // par1 9.74E-06;
+                // par2 5.37E-2;
+                // par3 235;
+            }
+        }
+    }
+formulation: |-
+  This heat-capacity model provides a temperature-dependent specific heat through a simple polynomial correlation, intended for use in the energy equation with material properties evaluated locally at each cell temperature. The implementation evaluates the correlation pointwise on the supplied temperature field and stores the resulting heat-capacity quantity in the output scalar field.
+
+  The correlation is written as
+  $$
+  c_p(T)=a\,T^2+b\,T+c
+  $$
+  where the coefficients are taken from the input parameters ``par1``, ``par2``, and ``par3``:
+  - $a$ is the quadratic coefficient set by ``par1``.
+  - $b$ is the linear coefficient set by ``par2``.
+  - $c$ is the constant coefficient set by ``par3``.
+
+  In the OpenFOAM workflow for conjugate/solid energy transport, the energy equation typically uses a volumetric heat capacity of the form $\rho\,c_p(T)$ (see, e.g., standard reactor/thermal-hydraulics notation in Duderstadt & Hamilton and Todreas & Kazimi). This model supplies the $c_p(T)$ part; the overall volumetric term is formed elsewhere by combining with the material density model (often via ``rho`` or a density field), depending on the specific solver setup.
+
+  The model is applied as a local update:
+  $$
+  C(T_i)=c_p(T_i)
+  $$
+  where $C$ is the scalar field being corrected by the ``correct`` method and $T_i$ is the temperature at cell index $i$.
+
+  Assumptions and validity:
+  - The correlation is purely empirical and does not include phase changes, melting, or other non-smooth thermophysical behavior; it is therefore valid only over the temperature range for which the polynomial fit was obtained.
+  - The coefficients are assumed constant in time and spatially uniform (material-homogeneous solid).
+  - The polynomial form implies smooth variation of $c_p$ with $T$; users should avoid extrapolating far beyond the fit range.
+  - Units must be consistent with the solver’s temperature units and the expected units of $c_p$ (and hence of the volumetric heat capacity once multiplied by density).
+
+  Implementation notes (OpenFOAM conventions):
+  - The ``correct`` method takes a temperature field ``T`` and updates an output scalar field ``sf`` at the specified addresses ``addr``; the update is performed pointwise using the polynomial above.
+  - For backward compatibility, the constructor can read ``par1``, ``par2``, ``par3`` either from the current ``heatCapacity`` sub-dictionary or from a legacy ``heatCapacity`` dictionary nested under the provided ``dict``.
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - formulation
+  formulation_extended: true

@@ -1,7 +1,7 @@
 # GeN-Foam regression test suite
 
-Regression test of 30-janv.-2026 - 19:28:41  
-OpenFOAM Version: v2512  
+Regression test of 14-Jul-2026 - 03:59:41  
+OpenFOAM Version: v2606  
 Tutorials successfully completed: 10/10  [![regressionTest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]()  
 
 ## Summary
@@ -9,15 +9,15 @@ Tutorials successfully completed: 10/10  [![regressionTest](https://img.shields.
 | Tutorial | Status | Time | GeN-Foam memory usage [Gb] |
 |:---------|:------:|:-:|:-:|
 | ../tests | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:01 | 0 < 0.2 |
-| guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:01 | .027 < 0.2 |
-| guidedCases/2_reactorSlabReflected_1D_1Gr_neutronicDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:01 | .026 < 0.2 |
-| featureCases/1D_HX/onePhase | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:07 | .089 < 0.2 |
-| featureCases/1D_PSBT_SC/Phase_Ex1_12223 | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:11 | .086 < 0.2 |
-| featureCases/2D_cavityBoussinesq | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:33 | .087 < 0.2 |
-| featureCases/2D_externalSourceDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:02 | .087 < 0.2 |
-| featureCases/2D_fullCoupling | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:08 | .090 < 0.2 |
-| featureCases/2D_onePhaseAndPointKineticsCoupling | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:30 | .089 < 0.2 |
-| reactorCases/1D_thermalMSR_pointKinetics | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:44 | .091 < 0.2 |
+| guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:01 | 0 < 0.2 |
+| guidedCases/2_reactorSlabReflected_1D_1Gr_neutronicDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:01 | 0 < 0.2 |
+| featureCases/1D_HX/onePhase | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:14 | .090 < 0.2 |
+| featureCases/1D_PSBT_SC/Phase_Ex1_12223 | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:20 | .085 < 0.2 |
+| featureCases/2D_cavityBoussinesq | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:58 | .087 < 0.2 |
+| featureCases/2D_externalSourceDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:06 | .086 < 0.2 |
+| featureCases/2D_fullCoupling | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:17 | .089 < 0.2 |
+| featureCases/2D_onePhaseAndPointKineticsCoupling | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:58 | .089 < 0.2 |
+| reactorCases/1D_thermalMSR_pointKinetics | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:02:36 | .090 < 0.2 |
 
 --------------------------------------------------------------------------------
 
@@ -63,16 +63,11 @@ Done running tutorial 1_reactorSlab_1D_1Gr_neutronicDiffusion ...
 
 1_reactorSlab_1D_1Gr_neutronicDiffusion has converged 
 
-keff with 1e-05 relative error
-|      | Simulated | Expected |
-|:-----|:---------:|:--------:|
-| keff | 1.0000037 |      1.0 |
-
 All tests passed
 
 Time = 00:00:01
 
-Memory = .027 Gb (Passed, expected: 0.2 Gb)
+Memory = 0 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -84,16 +79,11 @@ Done running tutorial 2_reactorSlabReflected_1D_1Gr_neutronicDiffusion ...
 
 2_reactorSlabReflected_1D_1Gr_neutronicDiffusion has converged 
 
-keff with 1e-05 relative error
-|      | Simulated | Expected |
-|:-----|:---------:|:--------:|
-| keff | 1.0000227 |      1.0 |
-
 All tests passed
 
 Time = 00:00:01
 
-Memory = .026 Gb (Passed, expected: 0.2 Gb)
+Memory = 0 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -106,9 +96,9 @@ Done running tutorial 1D_HX onePhase ...
 1D_HX onePhase has converged 
 
 
-Time = 00:00:07
+Time = 00:00:14
 
-Memory = .089 Gb (Passed, expected: 0.2 Gb)
+Memory = .090 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -126,9 +116,9 @@ Perfect match:
 |:-------------|:---------:|:--------:|
 | alpha vapour | 0.133727 | 0.131886 |
 
-Time = 00:00:11
+Time = 00:00:20
 
-Memory = .086 Gb (Passed, expected: 0.2 Gb)
+Memory = .085 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -141,7 +131,7 @@ Done running tutorial 2D_cavityBoussinesq ...
 2D_cavityBoussinesq has converged 
 
 
-Time = 00:00:33
+Time = 00:00:58
 
 Memory = .087 Gb (Passed, expected: 0.2 Gb)
 
@@ -167,9 +157,9 @@ Perfect match:
 | Source 0    | 3346.28 | 3346.28 |
 | Source 1    | 3346.28 | 3346.28 |
 
-Time = 00:00:02
+Time = 00:00:06
 
-Memory = .087 Gb (Passed, expected: 0.2 Gb)
+Memory = .086 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -184,9 +174,9 @@ Steady State has converged
 Transient (no driveline) has converged 
 
 
-Time = 00:00:08
+Time = 00:00:17
 
-Memory = .090 Gb (Passed, expected: 0.2 Gb)
+Memory = .089 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -205,7 +195,7 @@ Transient (with driveline) has converged
 Transient (with boron) has converged 
 
 
-Time = 00:00:30
+Time = 00:00:58
 
 Memory = .089 Gb (Passed, expected: 0.2 Gb)
 
@@ -223,12 +213,21 @@ Transient has converged
 
 Transient end has converged 
 
+Transient substepping has converged 
+
+Transient end substepping has converged 
+
 Power at the end of transient with 0.01 relative error
 Perfect match:
 |       | Simulated | Expected |
 |:------|:---------:|:--------:|
 | Power | 415251000 | 415258000 |
+Power at the end of transient_substepping with 0.01 relative error
+Perfect match:
+|       | Simulated | Expected |
+|:------|:---------:|:--------:|
+| Power | 415249000 | 415258000 |
 
-Time = 00:00:44
+Time = 00:02:36
 
-Memory = .091 Gb (Passed, expected: 0.2 Gb)
+Memory = .090 Gb (Passed, expected: 0.2 Gb)

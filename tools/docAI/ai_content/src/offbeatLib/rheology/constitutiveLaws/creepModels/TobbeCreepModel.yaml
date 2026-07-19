@@ -1,0 +1,42 @@
+description: |
+  Creep model implementing the Tobbe (1975) correlation for steel of the
+  15-15 Ti class.
+
+  The model computes irradiation creep and thermal creep strain increments
+  and updates the total creep strain fields through the ``correctCreep`` call.
+formulation: |
+  The Tobbe correlation is used to compute irradiation creep and thermal creep
+  contributions to the creep strain rate, which are then integrated over the
+  irradiation/thermal time increments and relaxed before being applied to the
+  mechanical strain state.
+
+  The implementation maintains separate equivalent strain measures for
+  irradiation and thermal creep, and updates the corresponding increment
+  fields each call to ``correctCreep``.
+
+  $$ \Delta \varepsilon^{eq}_{irr} = f_{irr}(\Phi, T, \Delta t) $$
+  $$ \Delta \varepsilon^{eq}_{th}  = f_{th}(T, \Delta t) $$
+  $$ \Delta \varepsilon^{irr} = \mathcal{R}_{irr}(\varepsilon^{eq}_{irr}) \, \Delta \varepsilon^{eq}_{irr} $$
+  $$ \Delta \varepsilon^{th}  = \mathcal{R}_{th}(\varepsilon^{eq}_{th}) \, \Delta \varepsilon^{eq}_{th} $$
+
+  where the functional forms $f_{irr}$ and $f_{th}$ follow the Tobbe (1975)
+  correlation for 15-15 Ti steel, and $\mathcal{R}_{irr}$, $\mathcal{R}_{th}$
+  denote the tensorial mapping from equivalent creep to the symmetric creep
+  strain tensor used by the solver.
+
+  - $\Delta \varepsilon^{eq}_{irr}$ is the increment of equivalent irradiation creep strain (field ``DepsilonCreepIrrEq_``)
+  - $\Delta \varepsilon^{eq}_{th}$ is the increment of equivalent secondary thermal creep strain (field ``DepsilonCreepThEq_``)
+  - $\varepsilon^{irr}$ is the irradiation creep strain tensor (field ``epsilonCreepIrr_``)
+  - $\varepsilon^{th}$ is the thermal creep strain tensor (field ``epsilonCreepTh_``)
+  - $\Phi$ is the fast fluence/flux information taken from the mesh fields named by ``fastFluenceName`` and ``fastFluxName``
+  - $T$ is the temperature field (mesh field ``T``)
+  - $\Delta t$ is the time increment used by the model (derived internally in ``correctCreep``)
+  - $f_{irr}$ and $f_{th}$ are Tobbe (1975) correlation functions parameterized by the constants ``par1``–``par5``
+options: []
+externalOptions: []
+optionsLocations: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

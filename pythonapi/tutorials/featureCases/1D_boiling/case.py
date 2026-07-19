@@ -59,7 +59,7 @@ def build_case(region: str = "fluidRegion"):
         "outlet": bc.FixedValue(value=p_rgh.internalField)}
 
     # %% 3) Solver (two-phase)
-    solver = ffn.solvers.thermal_hydraulics.TwoPhaseThermalHydraulicsSolver(
+    solver = ffn.solvers.thermal_hydraulics.TwoPhase(
         region=region,
         mesh=th_mesh
     )
@@ -253,7 +253,7 @@ def build_case(region: str = "fluidRegion"):
     solver.add_relaxation_on_field("h.vapourFinal", 0.0125)
 
     # %% 4) Case
-    case = ffn.case.Case(caseFolder="case")
+    case = ffn.Case(caseFolder="case")
     case.add_solver(solver)
     case.fields  = [
         t_liquid, t_structure, t_vapour,
@@ -264,7 +264,7 @@ def build_case(region: str = "fluidRegion"):
 
     # %% 5) Settings (controlDict)
     settings: ffn.control.ControlDict = case.settings
-    
+
     settings.application = "GeN-Foam"
     settings.endTime = 12
     settings.deltaT = 0.001

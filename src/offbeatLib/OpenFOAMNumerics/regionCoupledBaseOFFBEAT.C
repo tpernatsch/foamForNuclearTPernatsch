@@ -153,6 +153,8 @@ Foam::regionCoupledBaseOFFBEAT::regionCoupledBaseOFFBEAT
     surfPtr_(nullptr),
     surfDict_(fileName("surface")),
     updateAMI_(false),
+    updateAMINormalTol_(0.0),
+    updateAMITangentialTol_(0.0),
     methodName_("faceAreaWeightAMI")
 {}
 
@@ -174,6 +176,8 @@ Foam::regionCoupledBaseOFFBEAT::regionCoupledBaseOFFBEAT
     surfPtr_(nullptr),
     surfDict_(dict.subOrEmptyDict("surface")),
     updateAMI_(dict.lookupOrDefault<bool>("updateAMI", false)),
+    updateAMINormalTol_(dict.lookupOrDefault<scalar>("updateAMINormalTol", 1e-6)),
+    updateAMITangentialTol_(dict.lookupOrDefault<scalar>("updateAMITangentialTol", 1e-6)),
     methodName_(dict.lookupOrDefault<word>("AMIMethod", "faceAreaWeightAMI"))
 {}
 
@@ -195,6 +199,8 @@ Foam::regionCoupledBaseOFFBEAT::regionCoupledBaseOFFBEAT
     surfPtr_(mpb.surfPtr_),
     surfDict_(mpb.surfDict_),
     updateAMI_(mpb.updateAMI_),
+    updateAMINormalTol_(mpb.updateAMINormalTol_),
+    updateAMITangentialTol_(mpb.updateAMITangentialTol_),
     methodName_("faceAreaWeightAMI")
 {}
 

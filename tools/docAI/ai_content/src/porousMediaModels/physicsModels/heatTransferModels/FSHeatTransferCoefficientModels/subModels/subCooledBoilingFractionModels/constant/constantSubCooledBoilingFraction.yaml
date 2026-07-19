@@ -1,0 +1,53 @@
+description: |
+  Return constant subCooled boiling fraction.
+
+  This model always returns the same user-specified value, independent of the
+  local cell index and the heat flux input.
+formulation: |
+  The sub-cooled boiling fraction model provides a scalar fraction
+  $\beta_{sc}$ used by the thermal-hydraulics/fuel performance coupling.
+
+  $$ \beta_{sc}(celli, q_i) = \beta_{sc}^{const} $$
+
+  where:
+
+  - $\beta_{sc}(celli, q_i)$ is the returned subCooled boiling fraction
+    (dimensionless) for the given cell and heat flux
+  - $celli$ is the OpenFOAM cell index
+  - $q_i$ is the local heat flux argument passed to the model
+  - $\beta_{sc}^{const}$ is the constant value read from the dictionary entry
+    `value`
+admonitions: []
+options:
+- key: value
+  type: scalar
+  required: true
+  description: |
+    Constant subCooled boiling fraction value returned by the model.
+usage:
+- comment: 'The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the
+    ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``).
+    Here is a snippet enabling the model:'
+  snippet: |-
+    phaseProperties
+    {
+      physicsModels
+      {
+        <subModel>
+        {
+          "<zoneName>"
+          {
+            type constant;
+          }
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - admonitions
+  - options
+  stub_improved: true

@@ -125,7 +125,7 @@ thMesh = createMesh(region="fluidRegion")
 
 inletTemperature = 292.7 + 273.15
 
-timeFolder0 = ffn.timeFolder.TimeFolder(time=0)
+timeFolder0 = ffn.TimeFolder(time=0)
 
 # Neutronics
 defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
@@ -194,7 +194,7 @@ neutronicsSolver.nuclearData.import_from_openfoam("XS/nuclearData")
 #==============================================================================*
 # Thermal-hydraulics solver
 
-thSolver = ffn.solvers.thermal_hydraulics.OnePhaseThermalHydraulicsSolver(
+thSolver = ffn.solvers.thermal_hydraulics.OnePhase(
     region="fluidRegion",
     removeBaffles=True,
     mesh=thMesh,
@@ -316,7 +316,7 @@ coupling.add_field_transfer(thSolver, neutronicsSolver, "T.passiveStructure", "T
 # Settings
 
 
-model = ffn.case.Case(
+model = ffn.Case(
     solvers=solvers,
     coupling=coupling,
     timeFolders=[timeFolder0]

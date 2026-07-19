@@ -149,10 +149,10 @@ class timeDependentTemperatureFvPatchScalarField
         //- Temperature time series
         autoPtr<Function1s::Table<scalar> > tempSeries_;
 #elif OPENFOAMESI
-        typedef Foam::Function1Types::Table<scalar> Table;
+        typedef Foam::Function1Types::Table<scalar> scalarTable;
 
         //- Temperature time series
-        autoPtr<Table> tempSeries_;
+        autoPtr<scalarTable> tempSeries_;
 #endif 
  
 public:

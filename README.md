@@ -50,11 +50,20 @@ While the fuel behavior module can be integrated into GeN-Foam, **OFFBEAT** rema
 
 ## Documentation
 
+The User Guide is published in **two parallel versions** that share the same page tree:
+
+- a **standard** version, written and curated by the developers;
+- an **AI-enhanced** version, whose prose, theory sections, and option tables have been expanded and polished by a large language model.
+
+A **switcher button at the top of every page** toggles between the two (*AI-enhanced docs* ↔ *Standard docs*) while keeping you on the same page, so the two versions can be compared side by side.
+
+A practical reading strategy is to use the **AI-enhanced** version as a baseline, since it is generally more complete and explanatory, and to **fall back to the standard, developer-written version — or directly to the source code — whenever something looks doubtful** or an authoritative answer is needed. The AI-enhanced content is generated automatically and, although reviewed, may occasionally be imprecise.
+
 Resources for users and developers include:
 
-- **User Guide and Theory Manual:** [![foamForNuclear User's Guide](https://img.shields.io/badge/foamForNuclear-User_Guide-blue?logo=sphinx)](https://foamfornuclear.gitlab.io/foamForNuclear/index.html)
+- **User Guide and Theory Manual:** [![foamForNuclear User's Guide](https://img.shields.io/badge/foamForNuclear-User_Guide-blue?logo=sphinx)](https://foamfornuclear.gitlab.io/foamForNuclear/). 
 - **Online Doxygen API:** [![foamForNuclear Doxygen](https://img.shields.io/badge/foamForNuclear-Doxygen-blue?logo=doxygen)](https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/index.html)
-- **Python API Documentation:** [![foamForNuclear Python](https://img.shields.io/badge/foamForNuclear-Python_API-blue?logo=python)](https://foamfornuclear.gitlab.io/foamForNuclear/pythonapi/index.html)
+- **Python API Documentation:** [![foamForNuclear Python](https://img.shields.io/badge/foamForNuclear-Python_API-blue?logo=python)](https://foamfornuclear.gitlab.io/foamForNuclear/standard/pythonapi/index.html)
 - **Introductory Lectures** ([`documentation/usefulDocumentsAndPresentations/`](./documentation/usefulDocumentsAndPresentations/))
 - **Tutorial Cases** for each physics module and coupling type ([`tutorials`](./tutorials/))
 
@@ -68,7 +77,7 @@ Users are also encouraged to make use of the typical OpenFOAM learning strategie
 
 ## OpenFOAM Version
 
-FFN is based on the **OpenFOAM® (ESI/OpenCFD)** distribution, currently **v2512**, available at [www.openfoam.com](https://www.openfoam.com). The platform is regularly updated to maintain compatibility with new releases.
+FFN is based on the **OpenFOAM® (ESI/OpenCFD)** distribution, currently **v2606**, available at [www.openfoam.com](https://www.openfoam.com). The platform is regularly updated to maintain compatibility with new releases.
 
 ## Getting started
 
@@ -76,7 +85,7 @@ First, [install OpenFOAM](https://www.openfoam.com/). If installing from source,
 
 Make sure OpenFOAM has been installed correctly and that the environment is correctly sourced. For instance, when installing from source, and if installing under the ~/openfoam folder:
 ```bash
-source ~/openfoam/OpenFOAM-v2512/etc/bashrc
+source ~/openfoam/OpenFOAM-v2606/etc/bashrc
 ```
 
 Once you are sure the appropriate OpenFOAM version is correctly installed, and the OpenFOAM environment is sourced:
@@ -92,8 +101,14 @@ cd foamForNuclear
 ```
 j4 is telling your compiler to use 4 cores. You can use as many as your system allows.
 
-For more information, please visit the [foamForNuclear documentation](https://foamfornuclear.gitlab.io/foamForNuclear/usersguide/installation.html)
+For more information, please visit the [foamForNuclear documentation](https://foamfornuclear.gitlab.io/foamForNuclear/standard/usersguide/installation.html)
 
+
+## Suggested set-up
+
+foamForNuclear is a large, modular OpenFOAM®-based codebase, and a capable editor makes navigating it considerably easier. A convenient set-up is **[Visual Studio Code](https://code.visualstudio.com/)** paired with an AI coding assistant such as **[Claude Code](https://www.anthropic.com/claude-code)** or **[OpenAI Codex](https://openai.com/codex/)**.
+
+When using such assistants, it is best to **open the entire git repository as the workspace folder** — rather than a single case or a sub-directory — so that the assistant is given the full project context (solvers, libraries, tutorials, and documentation) at once. It has been observed that this set-up yields a particularly fast code pick-up and workflow.
 
 
 ## Copyright

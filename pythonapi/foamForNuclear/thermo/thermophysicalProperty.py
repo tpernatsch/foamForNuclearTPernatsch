@@ -23,24 +23,36 @@ class BaseThermophysicalProperty(OpenFOAMFile):
         Reference pressure
     """
 
-    def __init__(self, region: str="", ext: str=""):
+    def __init__(self, region: str = "", ext: str = ""):
         super().__init__("thermophysicalProperties", "constant", region, ext=ext)
 
-        self.thermoType = ThermoType()
+        if not hasattr(self, "thermoType"):
+            self.thermoType = ThermoType()
 
-        self.description: str = None
+        if not hasattr(self, "description"):
+            self.description = None
 
-        self.pRef = 1e5
-        self.molWeight = None
-        self.rho = None
-        self.Cp = None
-        self.Hf = None
-        self.Sf = None
-        self.mu = None
-        self.kappa = None
-        self.Pr = None
+        if not hasattr(self, "pRef"):
+            self.pRef = 1e5
+        if not hasattr(self, "molWeight"):
+            self.molWeight = None
+        if not hasattr(self, "rho"):
+            self.rho = None
+        if not hasattr(self, "Cp"):
+            self.Cp = None
+        if not hasattr(self, "Hf"):
+            self.Hf = None
+        if not hasattr(self, "Sf"):
+            self.Sf = None
+        if not hasattr(self, "mu"):
+            self.mu = None
+        if not hasattr(self, "kappa"):
+            self.kappa = None
+        if not hasattr(self, "Pr"):
+            self.Pr = None
 
-        self.mixture = OpenFOAMDict()
+        if not hasattr(self, "mixture"):
+            self.mixture = OpenFOAMDict()
 
 
     @abstractmethod

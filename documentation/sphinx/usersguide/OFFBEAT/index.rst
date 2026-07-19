@@ -30,7 +30,9 @@ academic and research institutions.
    installation
    theory_manual/index
    running/index
+   sensitivity
    tools/index
    tutorials/index
+   test_cases/index
    contributors
    references

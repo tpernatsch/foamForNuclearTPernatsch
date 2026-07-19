@@ -1,0 +1,168 @@
+description: |
+  The `HastelloyN` material model represents Hastelloy-N structural material.
+
+  The class selects thermophysical and mechanical property models together with
+  an irradiation-induced swelling model. Several properties default to
+  constant models, requiring user-specified values.
+options:
+- key: densityModel
+  type: word
+  required: false
+  default: constant
+  description: |
+    Selects the density model used by the `HastelloyN` material.
+- key: heatCapacityModel
+  type: word
+  required: false
+  default: constant
+  description: |
+    Selects the heat capacity model used by the `HastelloyN` material.
+- key: conductivityModel
+  type: word
+  required: false
+  default: SwindemanHastelloyN
+  description: |
+    Selects the thermal conductivity correlation used by the `HastelloyN`
+    material.
+- key: emissivityModel
+  type: word
+  required: false
+  default: constant
+  description: |
+    Selects the emissivity model used by the `HastelloyN` material.
+- key: YoungModulusModel
+  type: word
+  required: false
+  default: WatrousHastelloyN
+  description: |
+    Selects the Young's modulus correlation used by the `HastelloyN` material.
+- key: PoissonRatioModel
+  type: word
+  required: false
+  default: constant
+  description: |
+    Selects the Poisson's ratio model used by the `HastelloyN` material.
+- key: thermalExpansionModel
+  type: word
+  required: false
+  default: SwindemanHastelloyN
+  description: |
+    Selects the thermal expansion correlation used by the `HastelloyN` material.
+- key: swellingModel
+  type: word
+  required: false
+  default: none
+  description: |
+    Selects the irradiation-induced swelling model used by the `HastelloyN`
+    material.
+- key: F_rho_
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Density scaling factor $F_{\rho}$.
+- key: F_Cp_
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Specific heat scaling factor $F_{Cp}$.
+- key: F_k_
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Thermal conductivity scaling factor $F_{k}$.
+- key: F_emissivity_
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Emissivity scaling factor $F_{\epsilon}$.
+- key: F_E_
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Elastic Young's modulus scaling factor $F_{E}$.
+- key: F_nu_
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Poisson's ratio scaling factor $F_{\nu}$.
+- key: F_alphaT_
+  type: scalar
+  required: false
+  default: 1.0
+  description: |
+    Thermal expansion scaling factor $F_{\alpha \Delta T}$.
+- key: delta_rho_
+  type: scalar
+  required: false
+  default: 0.0
+  description: |
+    Density offset $\delta_{\rho}$.
+- key: delta_Cp_
+  type: scalar
+  required: false
+  default: 0.0
+  description: |
+    Specific heat offset $\delta_{Cp}$.
+- key: delta_k_
+  type: scalar
+  required: false
+  default: 0.0
+  description: |
+    Thermal conductivity offset $\delta_{k}$.
+- key: delta_emissivity_
+  type: scalar
+  required: false
+  default: 0.0
+  description: |
+    Emissivity offset $\delta_{\epsilon}$.
+- key: delta_E_
+  type: scalar
+  required: false
+  default: 0.0
+  description: |
+    Elastic Young's modulus offset $\delta_{E}$.
+- key: delta_nu_
+  type: scalar
+  required: false
+  default: 0.0
+  description: |
+    Poisson's ratio offset $\delta_{\nu}$.
+- key: delta_alphaT_
+  type: scalar
+  required: false
+  default: 0.0
+  description: |
+    Thermal expansion offset $\delta_{\alpha \Delta T}$.
+usage:
+- comment: |
+    Example of a `solverDict` materials entry using the `HastelloyN` material
+    model with default sub-models.
+  snippet: |-
+    materials
+    {
+        cladding
+        {
+            material HastelloyN;
+
+            densityModel            constant;
+            heatCapacityModel       constant;
+            emissivityModel         constant;
+            PoissonRatioModel       constant;
+
+            conductivityModel       SwindemanHastelloyN;
+            YoungModulusModel       WatrousHastelloyN;
+            thermalExpansionModel   SwindemanHastelloyN;
+            swellingModel           WrightShamHastelloyN;
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options

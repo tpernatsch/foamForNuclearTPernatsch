@@ -1,0 +1,67 @@
+description: |
+  Model for constant Young modulus. The value is read from the input dictionary.
+options:
+- key: value
+  type: scalar
+  required: true
+  description: |
+    Constant Young modulus value [Pa] used when the input dictionary name is ``YoungModulus``.
+- key: E
+  type: scalar
+  required: false
+  description: |
+    Deprecated backward-compatible input for the constant Young modulus. The code reads ``E`` as a dimensioned scalar and uses its numeric value.
+usage:
+- comment: |
+    Example selection of the `constant` thermalExpansion model.
+  snippet: |-
+    materials
+    {
+      fuel
+      {
+        type constant;
+        thermalExpansion
+        {
+          type constant;
+          value 200e9;
+        }
+      }
+    }
+formulation: |
+  This model implements a spatially and temporally uniform Young (elastic) modulus field for use in coupled thermo-mechanical or constitutive closures. In the ``correct`` method, the model returns the same Young modulus value for all requested degrees of freedom, i.e., it does not depend on the temperature field ``T`` nor on the mesh location.
+
+  The constitutive quantity is therefore prescribed as a constant scalar:
+  $$
+  E = E_0,
+  $$
+  where $E_0$ is the constant value stored internally as ``E_``.
+
+  In the implementation, ``E_`` is read from the material dictionary using one of two keywords:
+  - if the dictionary name is ``YoungModulus``, the code reads ``value`` into ``E_``;
+  - otherwise, for backward compatibility, it reads the deprecated keyword ``E`` as a ``dimensionedScalar`` and uses its numeric value.
+
+  The model can be viewed as the limiting case of a general temperature-dependent law $E(T)$, where the dependence is neglected:
+  $$
+  E(T) = E_0.
+  $$
+
+  Assumptions and validity range:
+  - Young modulus is independent of temperature, strain state, and irradiation-induced property changes.
+  - Suitable for small temperature excursions, short times, or preliminary sensitivity studies where $E(T)$ variations are negligible.
+  - Not appropriate for fuel/structural materials where $E$ can vary strongly with temperature, damage (displacements per atom), or phase evolution; in such cases, use a temperature-dependent or damage-dependent Young modulus model.
+
+  In OpenFOAM notation, the model provides a scalar modulus (often used alongside fields such as ``T`` and material properties in constitutive relations). The thermal field ``T`` is accepted by ``correct`` but is unused by this constant model.
+
+  References (for context on standard elastic property notation and constitutive modeling):
+  - Duderstadt & Hamilton, ``Nuclear Reactor Analysis'' (material property usage in reactor physics coupled models).
+  - Todreas & Kazimi, ``Nuclear Systems II'' (engineering treatment of material properties in nuclear systems).
+dictionary: YoungModulus
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options
+  - formulation
+  - dictionary
+  formulation_extended: true

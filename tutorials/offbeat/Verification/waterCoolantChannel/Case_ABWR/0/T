@@ -55,10 +55,12 @@ boundaryField
     {
         type                    coolantChannel;
         value                   uniform 300.0;
+            kappa                   k;
         hydraulicDiameter       0.010431;
         massFlowRate            uniform 0.16631;
         flowArea                0.000101148;
-        relaxHTC                0.1;
+            flowDirection           1.0;
+        relax                   1;
         enthalpyModel           1;
         inletTemperatureList    
         {
@@ -70,14 +72,19 @@ boundaryField
             file           "$FOAM_CASE/constant/systemPressure";
             outOfBounds     clamp;
         };
+        maxPicardIter 10;
         correlations
         {
-            ONB                 Basu;
-            CHF                 lookuptableGroeneveld;
-            SubcooledBoiling    Rohsenow;
-            SaturatedBoiling    Rohsenow;
-            FilmBoiling         GroeneveldAnnular; 
+            singlePhase         Gnielinski;
+            onb                 Basu;
+            chf                 GroeneveldTable;
+            subcooledBoiling    Rohsenow;
+            saturatedBoiling    Rohsenow;
+            filmBoiling         GroeneveldAnnular; 
+            transitionBoiling   McDonoughMilichKing;
+            leidenfrost         GroeneveldStewartCorrected;
         }
+
     }
 }
 

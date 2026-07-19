@@ -1,0 +1,64 @@
+description: |-
+  Boundary condition implementing a mapped velocity interface that preserves
+  Darcy flux across porous / non‑porous region boundaries.
+
+  The patch samples velocity ``U`` and porosity ``alpha`` from a mapped patch
+  on a neighbouring region (via ``mappedPatchBase``), rescales the velocity
+  depending on whether the current region is porous, and applies it as a
+  fixedValue velocity condition.
+
+  If ``isPorousRegion`` is true, the incoming velocity is divided by
+  ``alpha``. If false, it is multiplied by ``alpha``. In both cases the
+  product ``alpha*U`` (Darcy flux) is preserved across the interface.
+
+  The mapped values are transferred using the mapping defined in the
+  underlying ``mappedPatch`` configuration in the mesh.
+options:
+- key: isPorousRegion
+  type: bool
+  required: true
+  description: |-
+    Indicates whether the *current* region is porous. Controls how the mapped
+    velocity is rescaled to ensure Darcy flux conservation:
+      * true  → divide mapped velocity by ``alpha``.
+      * false → multiply mapped velocity by ``alpha``.
+fields-read:
+- name: U
+  type: volVectorField
+  location: mapped neighbour patch
+  description: Velocity field sampled via mappedPatchBase.
+- name: alpha
+  type: volScalarField
+  location: mapped neighbour patch
+  description: Porosity of the mapped region.
+usage:
+- comment: |-
+    The mapping
+    must be defined in constant/polyMesh/boundary for both regions using a
+    ``mappedPatch`` or ``mappedWall`` patch type.
+  snippet: |-
+    // If in 0/fluidRegion/U
+    inletInterface
+    {
+        type            mappedDarcyVelocity;
+        isPorousRegion  false;   // fluid side
+        value           uniform (0 0 0);
+    }
+
+    // If in 0/porousRegion/U
+    outletInterface
+    {
+        type            mappedDarcyVelocity;
+        isPorousRegion  true;    // porous side
+        value           uniform (0 0 0);
+    }
+notes:
+- |-
+  The BC assumes that the neighbour region defines fields ``U`` and
+  ``alpha`` with matching patch names according to the mapping rules.
+dictionary: mappedDarcyVelocityFvPatchVectorField
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - dictionary

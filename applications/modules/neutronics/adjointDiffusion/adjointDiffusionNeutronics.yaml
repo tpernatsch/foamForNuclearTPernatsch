@@ -4,31 +4,39 @@ description: |
 
   The adjoint diffusion equation solved by this class is:
 
-  \[
-  -∇·(D_g ∇φ_g) + Σ_r,g φ_g - ∑_(g'≠g) Σ_s,g'→g φ_g' = (1/keff) νΣ_f,g φ_g
-  \]
-
-  where:
-
-  - `φ_g` is the adjoint neutron flux for energy group `g`
-  - `D_g` is the diffusion coefficient for energy group `g`
-  - `Σ_r,g` is the removal cross-section for energy group `g`
-  - `Σ_s,g'→g` is the scattering cross-section from group `g'` to `g`
-  - `νΣ_f,g` is the fission cross-section for energy group `g`
-  - `keff` is the effective multiplication factor
+  $$
+  \begin{align}
+    -\nabla D_g \nabla \phi_g
+    + \Sigma_{r,g} \phi_g
+    - \sum_{g' \neq g} \Sigma_{s,g' \rightarrow g} \phi_{g'}
+    = \frac{1}{k_{eff}} \nu \Sigma_{f,g} \phi_g 
+    \quad \forall g \in [1; G]
+  \end{align}
+  $$
 
   The solver also includes the treatment of delayed neutron precursors, modeled by:
 
-  \[
-  ∂C_i/∂t = β_i/Λ φ - λ_i C_i
-  \]
+  $$
+    \frac{\partial C_k}{\partial t} = \frac{\beta_k}{\Lambda} \phi - \lambda_k C_k
+    \quad \forall k \in [1; N]
+  $$
 
   where:
   
-  - `C_i` is the concentration of delayed neutron precursors for group `i`
-  - `β_i` is the delayed neutron fraction for group `i`
-  - `Λ` is the neutron generation time
-  - `λ_i` is the decay constant for group `i`
+  \table
+    Parameter        | Description
+    $\phi_g$         | Neutron flux for the gth energy group
+    $C_k$            | Concentration of the kth delayed neutron precursor group
+    $D_g$            | Neutron diffusion coefficient for the gth energy group
+    $k_{eff}$        | Effective multiplication factor
+    $\beta_k$        | Delayed neutron fraction for the kth delayed neutron precursor group
+    $\nu$            | Average number of neutrons per fission
+    $\Sigma_{f,g}$   | Fission cross section for the gth energy group
+    $\Sigma_{r,g}$   | Removal (disappearance) cross section for the gth energy group
+    $\Sigma_{g' \rightarrow g}$ | Group-transfer cross section from the g'th to the gth energy group
+    $\lambda_k$      | Decay constant for the kth delayed neutron precursor group
+    $\Lambda$        | Neutron generation time
+  \endtable
 
 
 options:
@@ -36,11 +44,6 @@ options:
     type: boolean
     required: true
     description: Must be true. Enable eigenvalue mode for the adjoint diffusion solver.
-  - key: externalSourceNeutronics
-    type: boolean
-    required: false
-    default: false
-    description: Enable external source mode for the adjoint diffusion solver.
   - key: energyGroups
     type: integer
     required: true
@@ -57,12 +60,6 @@ usage:
       critical reactor
     snippet: |
       eigenvalueNeutronics        true;
-
-  - comment: |
-      For a subcritical reactor driven by an external neutron source
-    snippet: |
-      eigenvalueNeutronics        false;
-      externalSourceNeutronics    true;
 
 admonitions:
   - kind: warning

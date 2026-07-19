@@ -1,0 +1,58 @@
+description: |
+  Burst overstrain criterion for Zircaloy-4 derived from Bison code.
+
+  Failure is triggered when the hoop creep strain on the selected cladding patches
+  exceeds a critical limit.
+options:
+- key: patchNames
+  type: list[word]
+  required: true
+  description: |
+    List of patch names where the hoop creep strain criterion is evaluated.
+- key: hoopStrainLimit
+  type: scalar
+  required: false
+  default: 0.4
+  description: |
+    Hoop strain limit for failure. If the hoop component of the creep strain
+    tensor in cylindrical coordinates reaches or exceeds this value, the
+    material is marked as failed.
+usage:
+- comment: |
+    Example of Zircaloy overstrain-based failure criterion.
+  snippet: |-
+    materials
+    {
+        cladding
+        {
+            material Zircaloy;
+
+            failureModel
+            {
+                type    ZircaloyOverstrainBison;
+
+                // required
+                patchNames     ( "cladOuter" "cladInner" );
+
+                // Optional
+                hoopStrainLimit 0.4;
+            }
+        }
+    }
+formulation: |
+  The criterion evaluates the hoop component of the creep strain tensor,
+  transformed to cylindrical coordinates, on each face of the configured patches.
+  Failure occurs when
+  :math:`\varepsilon^{\mathrm{cyl}}_{\theta} \ge \varepsilon_{\theta,\mathrm{lim}}$,
+  where :math:`\varepsilon^{\mathrm{cyl}}_{\theta}` is taken from the
+  ``epsilonCreep`` field (component ``symmTensor::YY`` after transformation) and
+  :math:`\varepsilon_{\theta,\mathrm{lim}}` is set by the ``hoopStrainLimit`` parameter.
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - options
+  - formulation
+  - dictionary

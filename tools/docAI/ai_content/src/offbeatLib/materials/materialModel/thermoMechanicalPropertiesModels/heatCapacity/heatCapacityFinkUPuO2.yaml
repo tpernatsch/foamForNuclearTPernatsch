@@ -1,0 +1,62 @@
+description: |
+  Heat Capacity model for (U,Pu)O2 derived from Fink.
+  Source : https://info.ornl.gov/sites/publications/Files/Pub57523.pdf
+options:
+- key: C1
+  type: scalar
+  required: false
+  default: 322.49
+  description: |
+    Fink heat-capacity parameter $C_1$ (set by the ``C1`` entry in the ``heatCapacity`` sub-dictionary).
+- key: C2
+  type: scalar
+  required: false
+  default: 0.014679
+  description: |
+    Fink heat-capacity parameter $C_2$ (set by the ``C2`` entry in the ``heatCapacity`` sub-dictionary).
+- key: C3
+  type: scalar
+  required: false
+  default: 0
+  description: |
+    Fink heat-capacity parameter $C_3$ (set by the ``C3`` entry in the ``heatCapacity`` sub-dictionary).
+- key: Ea
+  type: scalar
+  required: false
+  default: 18531.7
+  description: |
+    Fink heat-capacity activation energy $E_a$ (set by the ``Ea`` entry in the ``heatCapacity`` sub-dictionary).
+- key: theta
+  type: scalar
+  required: false
+  default: 587.41
+  description: |
+    Fink heat-capacity temperature scale $\theta$ (set by the ``theta`` entry in the ``heatCapacity`` sub-dictionary).
+usage:
+- comment: |
+    Example selection of the `UPuO2Fink` heat capacity model.
+  snippet: |-
+    materials
+    {
+        fuel
+        {
+            type UPuO2;
+
+            heatCapacity
+            {
+                type UPuO2Fink;
+                // C1 322.49;
+                // C2 1.4679e-2;
+                // C3 0;
+                // Ea 18531.7;
+                // theta 587.41;
+            }
+        }
+    }
+dictionary: heatCapacity
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - options
+  - dictionary

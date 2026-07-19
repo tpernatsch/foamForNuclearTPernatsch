@@ -1,44 +1,57 @@
 .. _meshingGF:
 
 
-
 Meshing 
 =======
 
-Meshing is a fundamental step in setting up any OpenFOAM-based simulation, including multi-physics cases in foamForNuclear. This section introduces general concepts, region-specific requirements, and workflows for external meshing tools.
+Meshing is a fundamental step in setting up any OpenFOAM-based simulation, 
+including multi-physics cases in foamForNuclear. This section introduces 
+general concepts, region-specific requirements, and workflows for external 
+meshing tools.
 
 
 General Concepts
 ----------------
 
-OpenFOAM uses **polyhedral meshes**, which are stored in the ``constant/polyMesh`` folder of each region. A mesh consists of points, faces, and cells, organized in a way that supports finite-volume discretization.
+OpenFOAM uses **polyhedral meshes**, which are stored in the 
+``constant/polyMesh`` folder of each region. A mesh consists of points, 
+faces, and cells, organized in a way that supports finite-volume 
+discretization.
 
 Meshes can be generated using:
 
 - **OpenFOAM utilities** such as ``blockMesh`` (structured meshes) or ``snappyHexMesh`` (unstructured meshes).
 - **External tools** like Salome, Gmsh, Cubit, various ANSYS tools, etc.
 - **Conversion utilities**: OpenFOAM ships with many mesh converters (e.g., ``fluentMeshToFoam``, ``gmshToFoam``, ``cubitToFoam``) to import meshes from other platforms.
+- **foamForNuclear Python API utilities**: Python oriented utilities to simplify the use ``blockMesh`` (see :ref:`Meshing routine <pythonapi_mesh>`).
 
 .. note::
-    Each region in a multi-region case (e.g., fluid, solid, neutronics) requires its own mesh stored under ``constant/<regionName>/polyMesh``.
+
+    Each region in a multi-region case (e.g., fluid, solid, neutronics) 
+    requires its own mesh stored under ``constant/<regionName>/polyMesh``.
 
 
 Cell Zones
 ----------
 
-Many physics modules in foamForNuclear require **cellZones** to define subsets of the mesh for applying models (e.g., fuel regions, cladding, coolant channels). A **cellZone** is a named collection of cells within a region.
+Many physics modules in foamForNuclear require **cellZones** to define 
+subsets of the mesh for applying models (e.g., fuel regions, cladding, 
+coolant channels). A **cellZone** is a named collection of cells within a 
+region.
 
 - In **Salome**, cellZones correspond to **groups of volumes** created during geometry partitioning.
 - In **Gmsh**, they are defined as **physical volume groups**.
 - In **Cubit**, zones are typically created as **block sets**.
 
-These groups are preserved during mesh export and recognized by OpenFOAM converters, which create entries in ``constant/<regionName>/cellZones``.
+These groups are preserved during mesh export and recognized by OpenFOAM 
+converters, which create entries in ``constant/<regionName>/cellZones``.
 
 
 External Meshing Tools
 ----------------------
 
-foamForNuclear supports meshes from both proprietary and open-source tools. Below are exemplary workflows:
+foamForNuclear supports meshes from both proprietary and open-source tools. 
+Below are exemplary workflows:
 
 **1. Salome Workflow**
 
@@ -56,23 +69,29 @@ foamForNuclear supports meshes from both proprietary and open-source tools. Belo
 - Check ``constant/<regionName>/cellZones`` for zone definitions.
 
 .. tip::
-    Always check mesh quality using ``checkMesh`` after conversion. Poor-quality cells can lead to solver instability.
+
+    Always check mesh quality using ``checkMesh`` after conversion. Poor-quality 
+    cells can lead to solver instability.
 
 .. warning::
-    Sometimes, when converting a mesh to the OpenFOAM (``polyMesh`` folder) format, cellSets (and not cellZones) are created. The ``topoSetDict`` utility can be used to convert cellSets to cellZones.
+
+    Sometimes, when converting a mesh to the OpenFOAM (``polyMesh`` folder) 
+    format, cellSets (and not cellZones) are created. The ``topoSetDict`` 
+    utility can be used to convert cellSets to cellZones.
 
 
 Changing Patch Type (Optional)
 ------------------------------
 
-Boundary types (e.g., ``wedge``, ``empty``, ``coupled``) may need adjustment after mesh generation. Use:
+Boundary types (e.g., ``wedge``, ``empty``, ``coupled``) may need adjustment 
+after mesh generation. Use:
 
-- **``foamDictionary``**: Reads ``system/changeDictionaryDict`` to modify patch definitions or other entries.
+- ``foamDictionary``: Reads ``system/changeDictionaryDict`` to modify patch definitions or other entries.
   
 .. warning::
-    ``foamDictionary`` has replaced ``changeDictionary`` that was used in older OpenFOAM versions.
 
-
+    ``foamDictionary`` has replaced ``changeDictionary`` that was used in older
+    OpenFOAM versions.
 
 
 Example
@@ -107,4 +126,3 @@ or *constant/thermoMechanicalRegion*, and repeat the operation for all meshes.
 
 Please notice that the *3D_SmallESFR* tutorial already contains the correct
 *polyMesh* folders so that one can avoid the mesh generation step.
-

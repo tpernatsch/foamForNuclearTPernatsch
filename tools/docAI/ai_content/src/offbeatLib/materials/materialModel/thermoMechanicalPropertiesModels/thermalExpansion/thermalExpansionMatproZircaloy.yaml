@@ -1,0 +1,92 @@
+description: |
+  Class modelling thermal expansion of UO2 fuel from Matprov11.
+options:
+- key: par1
+  type: scalar
+  required: false
+  default: 4.441e-06
+  description: |
+    Option read by the model.
+- key: par2
+  type: scalar
+  required: false
+  default: 0.001238
+  description: |
+    Option read by the model.
+- key: par3
+  type: scalar
+  required: false
+  default: 6.721e-06
+  description: |
+    Option read by the model.
+- key: par4
+  type: scalar
+  required: false
+  default: 0.002073
+  description: |
+    Option read by the model.
+- key: par5
+  type: scalar
+  required: false
+  default: 9.7e-06
+  description: |
+    Option read by the model.
+- key: par6
+  type: scalar
+  required: false
+  default: 0.011
+  description: |
+    Option read by the model.
+- key: par7
+  type: scalar
+  required: false
+  default: 0.0094
+  description: |
+    Option read by the model.
+usage:
+- comment: |
+    Example selection of the `ZircaloyMatpro` thermalExpansion model.
+  snippet: |-
+    materials
+    {
+      cladding
+      {
+        type Zircaloy;
+        thermalExpansion
+        {
+          type ZircaloyMatpro;
+          // par1 4.441e-6;
+          // par2 1.238e-3;
+          // par3 6.721e-6;
+          // par4 2.073e-3;
+          // par5 9.7e-6;
+          // par6 1.10e-2;
+          // par7 9.45e-3;
+        }
+      }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - options
+  - usage
+  formulation_added: true
+formulation: |
+  The model provides the temperature-dependent linear thermal expansion tensor for Zircaloy using a Matpro11-type correlation for the coefficient of thermal expansion, $\alpha(T)$, and returns the symmetric tensor $\alpha(T)\,T$ used by the mechanical/strain coupling. The implementation is encapsulated in $\\alpha(T)$ and then mapped to the OpenFOAM symmetric tensor field via $\\boldsymbol{\\alpha T}=\\alpha(T)\\,\\mathbf{I}$ (isotropic assumption), consistent with the standard usage of thermal expansion models in OpenFOAM (see also Duderstadt & Hamilton for fuel/cladding thermo-mechanics context).
+
+  $$ \\boldsymbol{\\alpha T}(T_i)=\\alpha(T_i)\\,\\mathbf{I} $$
+
+  $$ \\alpha(T)=\\frac{d\\varepsilon_{th}}{dT} $$
+
+  $$ \\varepsilon_{th}(T)=\\int_{T_{ref}}^{T} \\alpha(T')\\,dT' $$
+
+  The Matpro11 correlation is parameterized by seven fitted constants ($par1$–$par7$) read from the input dictionary; the code evaluates $\\alpha(T)$ from these parameters and the local temperature $T_i$ inside `setAlphaT(const scalar& Ti)`. The returned tensor is then used by `correct(symmTensorField& sf, const scalarField& T, const labelList& addr)` to update the thermal strain/expansion contribution at the addressed cells.
+
+  - $\\boldsymbol{\\alpha T}(T_i)$ is the symmetric tensor field contribution corresponding to $\\alpha(T_i)\\,T_i$ (OpenFOAM `symmTensor`).
+  - $\\alpha(T)$ is the (temperature-dependent) isotropic coefficient of linear thermal expansion (1/K).
+  - $T_i$ is the local temperature at which the tensor is evaluated (K), i.e. the argument `Ti` in `setAlphaT`.
+  - $\\mathbf{I}$ is the identity tensor.
+  - $\\varepsilon_{th}(T)$ is the thermal strain (dimensionless).
+  - $T_{ref}$ is a reference temperature used in the definition of thermal strain (the code may embed this implicitly in the correlation).
+  - $par1$–$par7$ are the Matpro11 fitted correlation parameters controlling $\\alpha(T)$.

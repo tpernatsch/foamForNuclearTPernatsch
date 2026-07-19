@@ -1,0 +1,33 @@
+description: |
+  Constant fission-product yield model.
+
+  This model sets the fission-product yield field to a prescribed constant
+  value (in atoms per fission) everywhere in the domain.
+
+  Example dictionary usage:
+  \verbatim
+  yield { type constant; yield 0.297; }
+  \endverbatim
+formulation: |
+  The fission-product yield model provides the yield field $Y$ (atoms per
+  fission) as a function of burnup-related state. For the constant model, the
+  yield is independent of the burnup variable $Bu$ and is spatially uniform.
+
+  $$ Y = Y_{\mathrm{const}} $$
+
+  where:
+  - $Y$ is the fission-product yield field (atoms per fission), stored in
+    the OpenFOAM field passed as `Y`
+  - $Y_{\mathrm{const}}$ is the constant yield value read from the dictionary
+    entry `yield`
+  - $Bu$ is the burnup-related input field passed as `Bu` (not used by this
+    model)
+options: []
+externalOptions: []
+admonitions: []
+optionsLocations: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

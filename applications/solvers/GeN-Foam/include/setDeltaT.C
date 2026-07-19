@@ -77,7 +77,7 @@ void Foam::adjustDeltaT(Time& runTime, PtrList<solver>& solvers)
             (
                min
                 (
-                    solver::deltaTFactor * runTime.deltaTValue(),
+                    solver::deltaTFactor_ * runTime.deltaTValue(),
                     deltaT
                 )
             );

@@ -1,0 +1,40 @@
+description: |
+  Azimuthal profile defined using a constant tabulated interpolation as a
+  function of the azimuthal position.
+
+  The tabulated profile is normalized to 1 over the azimuthal domain and is
+  interpolated using either a stepwise-constant or linear interpolation scheme
+  (see OpenFOAM `InterpolateTables`).
+formulation: |
+  The model prescribes a dimensionless azimuthal shape function
+  $f(\theta)$ by interpolating tabulated values over the normalized azimuth
+  coordinate $\theta\in[0,1]$. The resulting profile is stored as the
+  per-address values $f_i$ used by the parent [@azimuthalProfile] model.
+
+  $$ f(\theta) = \mathcal{I}\big(\theta;\{\theta_k,f_k\}\big) $$
+
+  where:
+
+  - $\theta$ is the normalized azimuthal position in $[0,1]$
+  - $\theta_k$ are the tabulated azimuthal locations provided by
+    `azimuthalLocations`
+  - $f_k$ are the tabulated profile values provided by `data`
+  - $\mathcal{I}$ is the interpolation operator selected by
+    `azimuthalInterpolationMethod` (step or linear)
+  - $f_i$ is the interpolated profile value assigned to each entry of the
+    internal `profile_` field for indices in `addr_`
+
+  The input table is validated to satisfy:
+
+  $$ \int_0^1 f(\theta)\,d\theta = 1 $$
+
+  and to contain no negative values.
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

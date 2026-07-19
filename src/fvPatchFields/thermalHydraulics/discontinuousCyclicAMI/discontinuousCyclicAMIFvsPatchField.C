@@ -97,16 +97,16 @@ Foam::discontinuousCyclicAMIFvsPatchField<Type>::discontinuousCyclicAMIFvsPatchF
     }
 }
 
-
-template<class Type>
-Foam::discontinuousCyclicAMIFvsPatchField<Type>::discontinuousCyclicAMIFvsPatchField
-(
-    const discontinuousCyclicAMIFvsPatchField<Type>& ptf
-)
-:
-    coupledFvsPatchField<Type>(ptf),
-    discontinuousCyclicAMIPatch_(ptf.discontinuousCyclicAMIPatch_)
-{}
+// Removed to compile in OpenFOAM v2606
+// template<class Type>
+// Foam::discontinuousCyclicAMIFvsPatchField<Type>::discontinuousCyclicAMIFvsPatchField
+// (
+//     const discontinuousCyclicAMIFvsPatchField<Type>& ptf
+// )
+// :
+//     coupledFvsPatchField<Type>(ptf),
+//     discontinuousCyclicAMIPatch_(ptf.discontinuousCyclicAMIPatch_)
+// {}
 
 
 template<class Type>

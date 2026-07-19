@@ -51,7 +51,7 @@ thMesh = createMesh(region="fluidRegion")
 #==============================================================================*
 # Time folder
 
-timeFolder0 = ffn.timeFolder.TimeFolder(0)
+timeFolder0 = ffn.TimeFolder(0)
 
 defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
 defaultFlux.dimensions = ffn.fields.Dimension(default='neutronFlux')
@@ -103,7 +103,7 @@ timeFolder0.append(p_rgh)
 #==============================================================================*
 # Thermal-hydraulics solver
 
-thSolver = ffn.solvers.thermal_hydraulics.OnePhaseThermalHydraulicsSolver(
+thSolver = ffn.solvers.thermal_hydraulics.OnePhase(
     region=thMesh.region,
     mesh=thMesh,
     removeBaffles=True,
@@ -241,7 +241,7 @@ pointKineticsData.controlRodReactivityMap = [
     ( -0.1,  0.01 ),
 ]
 
-pointKineticsData.externalReactivityTimeProfile = ffn.timeProfile.TimeProfile(
+pointKineticsData.externalReactivityTimeProfile = ffn.TimeProfile(
     'table',
     startTime=0,
     table=[
@@ -302,7 +302,7 @@ coupling.add_field_transfer(thSolver, neutronicsSolver, 'T.passiveStructure', 'T
 #==============================================================================*
 # Model
 
-model = ffn.case.Case(
+model = ffn.Case(
     solvers=solvers,
     coupling=coupling,
     timeFolders=[timeFolder0]

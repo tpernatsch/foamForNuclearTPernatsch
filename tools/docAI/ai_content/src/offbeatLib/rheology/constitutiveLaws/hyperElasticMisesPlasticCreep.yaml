@@ -1,0 +1,74 @@
+description: |
+  Hyperelastic–Mises plasticity–creep constitutive law.
+
+  Elastic behaviour follows a St. Venant–Kirchhoff hyperelastic formulation,
+  suitable for finite strains. Plastic flow is governed by a von Mises yield
+  criterion, while time-dependent inelastic deformation is captured through
+  an associated creep model.
+
+  This law requires both a `yieldStress` model and a `creep` model to be
+  provided as sub-dictionaries.
+options:
+- key: yieldStress
+  type: yieldStress
+  required: true
+  py:
+    type: yield_stress.YieldStress
+    factory: yield_stress.YieldStress
+    imports:
+    - from . import yield_stress
+  description: |
+    Yield stress model controlling the onset of plastic flow.
+    This entry selects a run-time-selectable `yieldStress` class and
+    provides its associated parameters.
+- key: creep
+  type: creep
+  required: true
+  py:
+    type: creep.Creep
+    factory: creep.Creep
+    imports:
+    - from . import creep
+  description: |
+    Creep model controlling time-dependent inelastic deformation.
+    This entry selects a run-time-selectable `creep` class and provides
+    its associated parameters.
+usage:
+- comment: |
+    Example of the `solverDict` configuration to activate the
+    `hyperElasticMisesPlasticCreep` constitutive law with required sub-models.
+  snippet: |-
+    materials
+    {
+      solid
+      {
+        type Steel;
+
+        // other material options/models
+
+        constitutiveLaw
+        {
+          type hyperElasticMisesPlasticCreep;
+
+          yieldStress
+          {
+            type constant;
+            // model-specific coefficients
+          }
+
+          creep
+          {
+            type someCreepModel;
+            // model-specific coefficients
+          }
+        }
+      }
+
+      // other materials subdict
+    }
+dictionary: neutronicsProperties
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - dictionary

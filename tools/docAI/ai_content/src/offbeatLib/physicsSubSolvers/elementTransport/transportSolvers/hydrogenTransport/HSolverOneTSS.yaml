@@ -1,0 +1,48 @@
+description: |
+  Hydrogen transport solver for cladding solid solution diffusion with
+  precipitation/dissolution of hydrogen into solid hydrides, including the
+  supersolubility limit (TSSp) and solubility limit (TSSd) in zirconium alloys.
+
+  The solver evolves three hydrogen-related fields:
+  - ``Css_``: concentration of hydrogen in solid solution (wt.ppm)
+  - ``Cpp_``: concentration of hydrogen in precipitates (wt.ppm)
+  - ``Ctot``: total hydrogen concentration (wt.ppm), implied by the model
+
+  Depending on the local state relative to TSSp/TSSd, the model can represent
+  precipitation, dissolution, or phase equilibrium.
+
+  The precipitation kinetics are optionally included using a kinetic parameter
+  following Kammenzind et al.; it can be switched off to obtain diffusion-driven
+  behavior.
+formulation: |
+  The model couples hydrogen diffusion in the solid solution with a
+  precipitation/dissolution source term, constrained by the hydrogen
+  solubility limits in zirconium alloys.
+
+  The precipitation kinetics are controlled by a kinetic parameter that can be
+  disabled to recover a diffusion-driven limit.
+
+  $$ \text{(model-specific diffusion and source terms are implemented in } updateCoefficients() \text{ and } updateRateTerms() \text{)} $$
+
+  Variables:
+  - $C_{ss}$ is the hydrogen concentration in solid solution (``Css_``), in wt.ppm
+  - $C_{pp}$ is the hydrogen concentration in precipitates (``Cpp_``), in wt.ppm
+  - $C_{tot}$ is the total hydrogen concentration (wt.ppm), consistent with the solver’s internal bookkeeping
+  - $T$ is the local temperature field used to compute solubility limits (TSSp/TSSd)
+  - $\alpha$ is an auxiliary precipitation-related field (``alpha_``)
+  - $k$ is the precipitation kinetic parameter (``kineticParameter_``), in s$^{-0.5}$
+
+  Physical assumptions:
+  - Local phase behavior is governed by TSSp/TSSd (supersolubility/solubility limits).
+  - Precipitation/dissolution rate is either kinetic-limited (when enabled) or
+    neglected (diffusion-driven limit).
+dictionary: neutronicsProperties
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

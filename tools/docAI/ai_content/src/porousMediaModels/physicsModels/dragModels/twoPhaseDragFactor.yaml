@@ -1,0 +1,28 @@
+description: |
+  Two-phase drag-factor wrapper that computes and stores the total drag
+  coefficient tensor ``KdTotU`` for the interaction between two phases
+  represented by ``FSPair`` objects.
+
+  The actual drag-factor correlation is provided at runtime via the
+  ``twoPhaseDragMultiplierModel`` selected using the dictionary entries
+  read by this class.
+formulation: |
+  This class delegates the computation of the (isotropic) two-phase drag
+  multiplier to the runtime-selected ``twoPhaseDragMultiplierModel`` and
+  assembles the resulting total drag coefficient tensor ``KdTotU`` used by
+  the coupled momentum exchange.
+
+  The exact functional form of the drag multiplier is model-dependent and is
+  implemented in ``twoPhaseDragMultiplierModel``; this wrapper provides the
+  storage and the ``correct()`` update hook for the tensor field.
+
+  - $K_d$ is the total drag coefficient tensor stored in ``KdTotU``
+  - $U$ is the velocity field(s) associated with the momentum exchange
+    (handled by the surrounding two-phase framework)
+  - $m(\cdot)$ is the model-provided drag multiplier selected via
+    ``twoPhaseDragMultiplierModel``
+options: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -342,7 +342,7 @@ Foam::solvers::legacyThermoMechanics::legacyThermoMechanics
     (
         IOobject
         (
-            "powerDensityNeutronics",
+            "powerDensityStructure",
             mesh_.time().timeName(),
             mesh_,
             IOobject::READ_IF_PRESENT,

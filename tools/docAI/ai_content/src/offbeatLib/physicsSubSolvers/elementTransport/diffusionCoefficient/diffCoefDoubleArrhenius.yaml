@@ -1,0 +1,35 @@
+description: |
+  Two-term Arrhenius diffusion coefficient model.
+
+  The diffusion coefficient is computed as:
+  \f[ D = d_1 \exp\!\left(-\frac{q_1}{RT}\right)
+        + d_2 \exp\!\left(-\frac{q_2}{RT}\right) \f]
+
+  This model is registered under the runtime selection type name ``doubleArrhenius``
+  (see ``TypeName("doubleArrhenius")``).
+formulation: |
+  The model assumes a two-term Arrhenius temperature dependence for the
+  diffusion coefficient, evaluated cell-wise and also on boundary faces.
+
+  $$ D(T) = d_1 \exp\!\left(-\frac{q_1}{R\,T}\right) + d_2 \exp\!\left(-\frac{q_2}{R\,T}\right) $$
+
+  where:
+
+  - $D$ is the diffusion coefficient (stored in the field ``sf``)
+  - $T$ is the local temperature (stored in the field ``T``)
+  - $d_1$ is the pre-exponential factor set by ``d1``
+  - $q_1$ is the activation energy set by ``q1``
+  - $d_2$ is the second pre-exponential factor set by ``d2``
+  - $q_2$ is the second activation energy set by ``q2``
+  - $R$ is the universal gas constant, taken as 8.31446 J/(mol·K) in the code
+
+  The update is performed for each cell in ``addr`` and for boundary faces that
+  belong to patches with a non-empty boundary field.
+options: []
+dictionary: neutronicsProperties
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

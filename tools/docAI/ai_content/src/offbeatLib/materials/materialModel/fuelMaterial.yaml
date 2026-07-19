@@ -1,0 +1,55 @@
+description: |
+  Parent class for all fuel material models (e.g. UO$_2$, UPuO$_2$).
+
+  The class defines common fuel-specific state and bookkeeping variables,
+  including the heavy-metal (HM) isotopic composition container
+  ``isotopesDict_``, the oxygen-to-metal ratio ``OM_``, and fields related to
+  microstructural evolution such as ``porosity_`` and ``oxygenMetalRatio_``.
+
+  It is not runTime selectable (i.e. it is intended to be used as a base
+  class by concrete fuel material implementations).
+formulation: |
+  The class provides the isotopic composition handling for fuel constituents.
+  If an explicit ``isotopes`` sub-dictionary is not provided, the HM isotopic
+  composition is constructed from the bulk ``enrichment`` value.
+
+  The fuel is represented as a set of heavy-metal constituents (e.g. U, Pu,
+  Am). For each heavy-metal constituent, the input provides:
+  - the mass fraction of the constituent relative to the total heavy metals
+    via ``ratioOverMetal``,
+  - the list of isotope mass numbers via ``massNumbers``,
+  - the list of isotope weight fractions within that constituent via
+    ``weightFractions``.
+
+  The oxygen-to-metal ratio ``OM_`` is used to relate the number density of
+  oxygen to the number density of heavy metals.
+
+  $$ N_O = OM \, N_{HM} $$
+
+  where:
+  - $N_O$ is the number density of oxygen atoms
+  - $OM$ is the oxygen-to-metal ratio (set by ``OM_`` from the input)
+  - $N_{HM}$ is the number density of heavy-metal atoms
+
+  The material density is computed from the heavy-metal density fraction
+  ``densityFrac_`` and the input theoretical density ``theoreticalDensity``:
+
+  $$ \rho = densityFrac \, TD $$
+
+  where:
+  - $\rho$ is the material density
+  - $densityFrac$ is the density fraction (``densityFrac_``)
+  - $TD$ is the theoretical density (``theoreticalDensity``)
+
+  The class also validates that, for each heavy-metal constituent, the
+  lengths of ``massNumbers`` and ``weightFractions`` match.
+dictionary: neutronicsProperties
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

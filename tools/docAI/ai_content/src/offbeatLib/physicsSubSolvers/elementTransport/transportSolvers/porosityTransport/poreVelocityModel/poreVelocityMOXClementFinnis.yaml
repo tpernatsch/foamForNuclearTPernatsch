@@ -1,0 +1,30 @@
+description: |
+  Pore velocity model that computes the pore velocity using the correlation
+  provided by Clement and Finnis for plutonium redistribution in mixed oxide
+  (U,Pu)O$_2$ nuclear fuel elements.
+
+  The model is selected at runtime via ``poreVelocityModel MOXClementFinnis``.
+formulation: |
+  This model evaluates the pore velocity from the local temperature and its
+  gradient using the Clement--Finnis correlation.
+
+  $$ v_p = A \\, \exp\\left(\\frac{\\alpha}{T}\\right) \\, \\frac{\\nabla T}{l} $$
+
+  where the constants and the pore length scale are read from the
+  ``neutronicsProperties`` dictionary (see options below).
+
+  - $v_p$ is the pore velocity vector field (m/s), stored/updated by this
+    model
+  - $A$ is the correlation prefactor (m/s), set by ``A``
+  - $\alpha$ is the correlation constant (K), set by ``alpha``
+  - $T$ is the local temperature field ``T`` (K)
+  - $\nabla T$ is the local temperature gradient field ``gradT`` (K/m)
+  - $l$ is the pore diameter/length scale (m), set by ``l``
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -1,0 +1,44 @@
+description: |
+  Discontinuous cyclic AMI (Arbitrary Mesh Interface) patch field.
+
+  This boundary condition is a modification of OpenFOAM's ``cyclicAMIFvPatchField``.
+  It switches between a ``zeroGradient``-like behaviour and a jump cyclic AMI
+  coupling, depending on whether the patch field is created from the dictionary
+  (read from file) or created during the simulation.
+
+  The two modes allow discontinuities in fields that are not physically
+  continuous across an AMI interface (e.g. porosity or hydraulic diameter),
+  while still coupling other fields (e.g. velocity and pressure) across the
+  AMI.
+formulation: |
+  The patch field provides AMI-coupled values by using an interpolation
+  operator between the owner and neighbour sides. In the discontinuous mode,
+  the patch behaves as uncoupled (zero-gradient) so that the field can be
+  discontinuous across the AMI; in the coupled mode, the field is obtained
+  through the AMI interpolation (jump cyclic behaviour).
+
+  Let $u$ denote the generic patch field value of type ``Type`` on the owner
+  side, and let $u_n$ denote the corresponding neighbour-side value mapped
+  onto the owner patch by the AMI interpolation.
+
+  $$ u = \mathcal{I}(u_n) $$
+
+  where $\mathcal{I}$ is the AMI interpolation operator returned by
+  ``ownerAMI()`` (owner-side AMI if available, otherwise the neighbour-side AMI).
+
+  In the discontinuous (uncoupled) mode, the patch uses a zero-gradient
+  behaviour instead of applying $\mathcal{I}$, i.e. the interface does not
+  enforce continuity for $u$.
+
+  - $u$ is the patch field value on the owner side (OpenFOAM field of type ``Type``)
+  - $u_n$ is the neighbour-side patch field value mapped onto the owner patch
+  - $\mathcal{I}$ is the AMI interpolation operator (``AMIPatchToPatchInterpolation``)
+admonitions: []
+options: []
+optionsLocations: []
+externalOptions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

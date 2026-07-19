@@ -69,6 +69,17 @@ class solver
 :
     public regIOobject
 {
+private:
+
+    // Private Member Data
+
+
+    // Private Member Functions
+
+        //- Dummy write for regIOobject
+        virtual bool writeData(Ostream&) const;
+        
+
 protected:
 
     // Protected Data
@@ -76,47 +87,25 @@ protected:
         //- Region mesh
         dynamicFvMesh& mesh_;
 
+        //- Time
+        const Time& runTime_;
+
         //- Switch for steady-state
         //  Set automatically from the selected ddt scheme
-        bool steady;
+        bool steady_;
 
         //- Switch for local time step transient operation
         //  Set automatically from the selected ddt scheme
-        bool LTS;
-
-
-private:
-
-    // Private Member Data
-
-        //- Pointer to the demand driven fvModels MeshObject
-        // mutable Foam::fvModels* fvModelsPtr;
-
-        //- Pointer to the demand driven fvConstraints MeshObject
-        // mutable Foam::fvConstraints* fvConstraintsPtr;
-
-
-    // Private Member Functions
-
-        //- Dummy write for regIOobject
-        virtual bool writeData(Ostream&) const;
+        //  TODO: what is it? why is it here?
+        bool LTS_;
 
 
 public:
 
     // Public Data
 
-        //- Region mesh
-        const dynamicFvMesh& mesh;
-
-        //- Time
-        const Time& runTime;
-
-        //- PIMPLE inner-loop controls
-        // pimpleNoLoopControl pimple;
-
         //- deltaT increase factor
-        static scalar deltaTFactor;
+        static scalar deltaTFactor_;
 
 
     //- Runtime type information
@@ -163,63 +152,66 @@ public:
 
     // Member Functions
 
+        //- What is it? Why in mother class?
         bool transient() const
         {
-            return !steady && !LTS;
+            return !steady_ && !LTS_;
         }
-
-        //- Return the fvModels that are created on demand
-        // Foam::fvModels& fvModels() const;
-
-        // //- Return the fvConstraints that are created on demand
-        // Foam::fvConstraints& fvConstraints() const;
 
         //- Return the current maximum time-step for stable solution
         virtual scalar maxDeltaT() = 0;
+        
+        //- Return end time
+        virtual scalar endTime()
+        {
+            return GREAT;
+        }
 
-        //- Called at the start of the time-step, before the PIMPLE loop
-        // virtual void preSolve() = 0;
-
-        // //- Called at the start of the PIMPLE loop to move the mesh
-        // virtual void moveMesh() = 0;
-
-        // //- Called at the start of the PIMPLE loop
-        // virtual void prePredictor() = 0;
-
-        // //- Construct and optionally solve the momentum equation
-        // virtual void momentumPredictor() = 0;
-
-        // //- Construct and solve the thermophysical property equations,
-        // //  convert to temperature
-        // //  and update thermophysical and transport properties
-        // virtual void thermophysicalPredictor() = 0;
-
-        // //- Construct and solve the pressure equation in the PISO loop
-        // virtual void pressureCorrector() = 0;
-
-        // //- Correct the momentum and thermophysical transport modelling
-        // virtual void postCorrector() = 0;
-
-        // //- Called after the PIMPLE loop at the end of the time-step
-        // virtual void postSolve() = 0;
-
+        //- Advance physics
         virtual void correctPhysics() = 0;
-        virtual void correctTightlyCoupledPhysics() = 0;
 
+        //- TODO: Add right comment here
+        virtual void correctTightlyCoupledPhysics()
+        {
+            this->correctPhysics();
+        }
+
+        //- BaffleLess mesh handling
+        virtual void correctBaffleLessFields(){};
+
+        //- Deform region mesh
+        virtual void deformMesh(){};
+
+
+    // Access Functions
+
+        //- TODO: Why use "get" instead of simply "residual()"
+        //  TODO: Add comment
         virtual scalar getResidual()=0;
+
+        //- TODO: Why use "get" instead of simply "residual()"
+        //  TODO: Add comment
         virtual scalar getThermalResidual()
         {
             return (getResidual());
         }
 
-        //-BaffleLess mesh handling
-        virtual void correctBaffleLessFields()=0;
-
-        virtual void deformMesh()=0;
-
+        //- Name of region
         word regionName()
         {
             return mesh_.name();
+        }
+
+        //- Ref to runTime
+        inline virtual const Time& runTime()
+        {
+            return runTime_;
+        }
+
+        //- Ref to mesh
+        inline virtual const fvMesh& mesh()
+        {
+            return mesh_;
         }
 
 

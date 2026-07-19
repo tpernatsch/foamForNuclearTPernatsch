@@ -1,0 +1,47 @@
+description: |
+  Plenum spring pressure boundary condition that applies the counteracting
+  force of the plenum spring on a displacement/traction patch.
+
+  The total pressure applied on the patch is computed as the sum of the gap
+  gas pressure (provided by a ``gapGasModel``) and the reaction force of the
+  spring. The spring force depends on the spring modulus and the relative
+  displacement between the spring attachment surfaces.
+
+  The shear traction on the patch is set to zero.
+
+  This BC is intended for the top of the pellet column (topmost fuel patch)
+  and, if present, the inner surface of the top cladding cap. For models
+  without a top cap (open annular cylindrical surface), the user can use the
+  ``topCladRingPressure`` BC to account for the spring effect.
+formulation: |
+  The boundary traction is updated from the plenum spring reaction and the
+  gap gas pressure. The spring reaction is based on the spring elongation
+  (relative displacement) and the spring modulus, while the gap gas pressure
+  is obtained from the registered ``gapGasModel``. The resulting normal
+  pressure is applied on the patch; tangential/shear components are set to
+  zero.
+
+  $$ p_n = p_{\mathrm{gap}} + p_{\mathrm{spring}} $$
+
+  $$ \mathbf{t} = -p_n \,\mathbf{n} $$
+
+  where:
+
+  - $p_n$ is the total normal pressure applied on the patch (from gap gas
+    plus spring reaction)
+  - $p_{\mathrm{gap}}$ is the gap gas pressure obtained from the
+    ``gapGasModel`` named ``gapGas``
+  - $p_{\mathrm{spring}}$ is the spring reaction pressure computed from the
+    spring modulus and the spring elongation
+  - $\mathbf{t}$ is the traction vector imposed by the
+    ``tractionDisplacementFvPatchVectorField`` interface
+  - $\mathbf{n}$ is the patch outward unit normal (``patch().Sf()`` direction)
+
+  The shear traction is set to zero by construction.
+options: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

@@ -127,7 +127,7 @@ def plotMassFlowRate(time, data, caseFolderName: str, restartPoints: list[float]
 
 
 def plotReactivity(time, data, caseFolderName: str, restartPoints: list[float]=None):
-    model = ffn.case.Case(caseFolder=caseFolder)
+    model = ffn.Case(caseFolder=caseFolder)
     model.settings.application = "GeN-Foam"
     dataPK = model.get_parameters_from_point_kinetics(writeInterval=1)
     dataPK['time'] = [t-tmin for t in dataPK['time']]

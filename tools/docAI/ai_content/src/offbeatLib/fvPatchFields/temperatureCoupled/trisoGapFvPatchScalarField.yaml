@@ -1,0 +1,42 @@
+description: |
+  Region-coupled ``fvPatchField`` for temperature fields in solid heat
+  conduction across a spherical TRISO gap.
+
+  This patch field computes the effective total gap conductance as the sum of
+  contributions from gas conduction, radiation, and contact conductance, and
+  provides the resulting coupled interface heat-transfer behavior between
+  neighboring regions.
+formulation: |
+  The total gap conductance $h$ is modeled as the sum of gas, radiation, and
+  contact contributions:
+  $$ h = h_{\mathrm{gas}} + h_{\mathrm{rad}} + h_{\mathrm{contact}} $$
+
+  The patch field uses the local gap geometry (including an effective gap
+  width influenced by surface roughness and deformation/jump distance) and
+  material/field inputs (conductivity, emissivity, and gap gas model) to
+  evaluate $h$.
+
+  - $h$ is the total gap conductance (W/m$^2$-K)
+  - $h_{\mathrm{gas}}$ is the gas conduction contribution (W/m$^2$-K), computed
+    using the selected ``gapGasModel`` and local gap width
+  - $h_{\mathrm{rad}}$ is the radiative contribution (W/m$^2$-K), computed from
+    the emissivity fields and the temperature difference across the gap
+  - $h_{\mathrm{contact}}$ is the contact conductance contribution (W/m$^2$-K),
+    influenced by the surface roughness and the jump distance between surfaces
+  - $k$ is the conductivity field name set by ``kappa`` (default: ``k``)
+  - $\varepsilon$ is the emissivity field name set by ``emissivity`` (default:
+    ``emissivity``)
+  - $f$ is the relaxation factor for the gap conductance set by ``relax``
+
+  The class also supports optional initialization of the gap conductance via
+  ``alpha`` and relaxation of the effective gap width via ``relaxGapWidth``.
+dictionary: neutronicsProperties
+options: []
+externalOptions: []
+optionsLocations: []
+admonitions: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

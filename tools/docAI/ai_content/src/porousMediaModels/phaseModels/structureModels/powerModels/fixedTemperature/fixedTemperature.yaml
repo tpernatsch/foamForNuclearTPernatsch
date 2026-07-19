@@ -1,0 +1,97 @@
+description: |-
+  Describes a structure with a constant surface temperature.
+
+  If the ``temperatureTimeProfile`` is provided, the new temperature $T$ at
+  position $r$ and time $t+dt$ is computed as follow with the time profile $P$:
+
+  $$
+  T(r, t+dt) = T(r, t) \times \frac{P(t+dt)}{P(t)}
+  $$
+options:
+- key: volumetricArea
+  type: scalar
+  required: true
+  default: null
+  description: Volumetric area of structure in m2/m3
+- key: volumeFraction
+  type: scalar
+  required: false
+  default: null
+  description: Volume fraction of structure
+- key: T
+  type: scalar
+  required: true
+  default: null
+  description: Initial temperature value in K applied to the ``T`` field
+- key: temperatureTimeProfile
+  type: timeProfile
+  required: false
+  default: null
+  description: Temperature time profile as a table or via FMI
+usage:
+- comment: 'Usage using a time table:'
+  snippet: |-
+    powerModel
+    {
+        type            fixedTemperature;
+        volumetricArea  121;
+        T               617;
+        temperatureTimeProfile // Optional
+        {
+            type        table;
+            startTime   0;
+            table       table
+            (
+                (   0   617   )
+                (  10   717   )
+            );
+        }
+    }
+- comment: 'Usage using an FMI input:'
+  snippet: |-
+    powerModel
+    {
+        type            fixedTemperature;
+        volumetricArea  450;
+        T               850;
+        temperatureTimeProfile
+        {
+            type            fmi;
+            nameFromFMU     temperatureCoupled;
+            initialValue    850;
+        }
+    }
+- comment: 'The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the
+    ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``).
+    Here is a snippet enabling the model:'
+  snippet: |-
+    phaseProperties
+    {
+        structureProperties
+        {
+            "<zoneName>"
+            {
+                powerModel
+                {
+                    type fixedTemperature;
+                }
+            }
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - usage
+  formulation_added: true
+formulation: "This power model prescribes a structure surface temperature field in OpenFOAM as a fixed value in space, optionally\
+  \ modulated in time by a user-supplied time profile. The temperature is updated by scaling the current temperature with\
+  \ the ratio of the profile values at consecutive time levels (see Duderstadt & Hamilton for the general concept of prescribed\
+  \ boundary/structure conditions; Todreas & Kazimi for temperature-dependent coupling concepts).\n\n$$ \nT(\\mathbf{x}, t)\
+  \ = T_0 \\,\\frac{P(t)}{P(t_0)}\n$$\n\n$$ \n\\text{(equivalently, update form)}\\qquad\nT(\\mathbf{x}, t+\\Delta t)=T(\\\
+  mathbf{x}, t)\\,\\frac{P(t+\\Delta t)}{P(t)}\n$$\n\n- $T(\\mathbf{x}, t)$ is the structure surface temperature (OpenFOAM\
+  \ field $T$), assumed spatially uniform for this model  \n- $T_0$ is the initial temperature value read from the $T$ option\
+  \ (K)  \n- $P(t)$ is the (dimensionless or user-defined) value of the provided $temperatureTimeProfile$ at time $t$  \n\
+  - $t_0$ is the reference time corresponding to the current initialization time level  \n- $\\Delta t$ is the solver time\
+  \ step  \n- $\\mathbf{x}$ is the spatial coordinate (the model does not introduce spatial gradients; it only updates a uniform\
+  \ surface temperature)"

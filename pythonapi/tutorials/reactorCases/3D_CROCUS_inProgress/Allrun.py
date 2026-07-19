@@ -650,7 +650,7 @@ thMesh = thermalHydraulicMesh(region='fluidRegion')
 #==============================================================================*
 # Time Folder
 
-timeFolder0 = ffn.timeFolder.TimeFolder(0)
+timeFolder0 = ffn.TimeFolder(0)
 
 isOpenValve = True
 
@@ -748,7 +748,7 @@ thSolver.setFieldsDict.add_box_to_cell(
 #==============================================================================*
 # Model
 
-model = ffn.case.Case()
+model = ffn.Case()
 
 model.settings.application = "GeN-Foam"
 model.settings.endTime = 10

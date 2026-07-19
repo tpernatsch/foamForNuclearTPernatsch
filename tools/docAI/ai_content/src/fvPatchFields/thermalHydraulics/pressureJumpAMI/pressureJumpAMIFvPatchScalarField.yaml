@@ -1,0 +1,102 @@
+description: |
+  AMI-based pressure-jump boundary condition for scalar fields.
+
+  This boundary condition imposes a pressure jump across non-conformal
+  cyclic path pairs using an arbitraryMeshInterface (AMI). The total jump
+  is composed of four contributions: a user-defined static pressure source,
+  a Bernoulli velocity-induced term, a pressure-loss term using a loss
+  coefficient, and a pump contribution defined by a characteristic curve.
+formulation: |
+  The imposed pressure jump across the coupled AMI patch is assembled as a
+  sum of contributions:
+
+  $$
+  \Delta p = p_s + \Delta p_B - \Delta p_L + \Delta p_P
+  $$
+
+  where the terms are evaluated using the local flow direction and the
+  coupled-side velocity and density fields.
+
+  - $p_s$ is the user-defined static pressure source (set by ``pSource``)
+  - $\Delta p_B$ is the Bernoulli correction (enabled by ``bernoulli``)
+  - $\Delta p_L$ is the pressure loss term with coefficient $K$ (set by ``lossCoeff``)
+  - $\Delta p_P$ is the pump contribution computed from a characteristic curve
+    (set by ``pumpCoeffs`` and optionally corrected by ``pumpVelocityTable``)
+
+  The pump term uses a polynomial characteristic in the mass flow rate $m$:
+
+  $$
+  \Delta p_P \propto \sum_i a_i\, m^{i}
+  $$
+
+  with coefficients $a_i$ provided by ``pumpCoeffs``. If a pump velocity table
+  is provided, the coefficients are corrected using a speed ratio $s$:
+
+  $$
+  a_i' = a_i\, s^{\,2-i}
+  $$
+
+  where $s$ is obtained from ``pumpVelocityTable`` and normalized by
+  ``nominalVelocity``.
+
+  The loss term is described in the code as:
+
+  $$
+  \Delta p_L = K \cdot \frac{1}{2}\rho\,|U|^2
+  $$
+
+  with $K$ set by ``lossCoeff`` and $\rho$ and $|U|$ taken from the coupled
+  side consistent with the flow direction.
+dictionary: neutronicsProperties
+options:
+- key: bernoulli
+  type: bool
+  required: false
+  default: true
+  description: |
+    Enable/disable the Bernoulli pressure correction contribution.
+- key: pSource
+  type: scalar
+  required: false
+  default: 0
+  description: |
+    Static pressure source contribution in Pa.
+- key: lossCoeff
+  type: scalar
+  required: false
+  default: 0
+  description: |
+    Pressure-loss coefficient $K$ used in $\Delta p_L = K \cdot 0.5 \\, \rho \\, |U|^2$.
+- key: pumpCoeffs
+  type: list[scalar]
+  required: false
+  default: (0)
+  description: |
+    Pump characteristic curve coefficients defining the polynomial dependence
+    of the pump contribution on mass flow rate. The code uses a polynomial
+    form with coefficients ``pumpCoeffs[i]`` multiplying $m^{i}$.
+- key: pumpVelocityTable
+  type: word
+  required: false
+  description: |
+    Presence of this entry enables a time-dependent correction of the pump
+    characteristic coefficients via a ``Function1<scalar>`` created from the
+    dictionary. The table provides pump rotational velocity versus time.
+- key: nominalVelocity
+  type: scalar
+  required: false
+  description: |
+    Nominal pump speed used to normalize the speed ratio when
+    ``pumpVelocityTable`` is provided.
+- key: underRelaxation
+  type: scalar
+  required: false
+  default: 1
+  description: |
+    Under-relaxation factor applied to the boundary update.
+optionsLocations: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  generated: true

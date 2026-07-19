@@ -1,0 +1,99 @@
+description: |
+  The `Molybdenum` material model represents molybdenum structural material.
+
+  The class itself is a thin selector/wrapper that instantiates property sub-models
+  (density, heat capacity, conductivity, emissivity, elastic constants, thermal
+  expansion) and a swelling model. The governing physics is therefore
+  implemented in the selected sub-models (e.g., `Mo`, `MoConstant`, `FeCrAl`)
+  rather than in this class directly.
+options:
+- key: densityModel
+  type: word
+  required: false
+  default: MoConstant
+  description: |
+    Selects the density model used by the `Molybdenum` material.
+- key: heatCapacityModel
+  type: word
+  required: false
+  default: Mo
+  description: |
+    Selects the heat capacity correlation used by the `Molybdenum` material.
+- key: conductivityModel
+  type: word
+  required: false
+  default: Mo
+  description: |
+    Selects the thermal conductivity correlation used by the `Molybdenum`
+    material.
+- key: emissivityModel
+  type: word
+  required: false
+  default: MoConstant
+  description: |
+    Selects the emissivity model used by the `Molybdenum` material.
+- key: YoungModulusModel
+  type: word
+  required: false
+  default: Mo
+  description: |
+    Selects the Young's modulus correlation used by the `Molybdenum` material.
+- key: PoissonRatioModel
+  type: word
+  required: false
+  default: MoConstant
+  description: |
+    Selects the Poisson's ratio model used by the `Molybdenum` material.
+- key: thermalExpansionModel
+  type: word
+  required: false
+  default: Mo
+  description: |
+    Selects the thermal expansion correlation used by the `Molybdenum` material.
+- key: swellingModel
+  type: word
+  required: false
+  default: none
+  description: |
+    Selects the swelling model used by the `Molybdenum` material.
+usage:
+- comment: |
+    Example of a `solverDict` materials entry using the `Molybdenum` material
+    model.
+  snippet: |-
+    materials
+    {
+        disc
+        {
+            material Molybdenum;
+
+            densityModel            MoConstant;
+            heatCapacityModel       Mo;
+            conductivityModel       Mo;
+            emissivityModel         MoConstant;
+            YoungModulusModel       Mo;
+            PoissonRatioModel       MoConstant;
+            thermalExpansionModel   Mo;
+
+            swellingModel           FeCrAl;
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-11'
+  modified_sections:
+  - usage
+  formulation_added: true
+formulation: |
+  This class does not implement a standalone physical model with its own
+  non-trivial governing equations. Instead, it constructs and delegates to
+  sub-models for thermophysical properties and mechanical/behavioral effects
+  (including swelling) via OpenFOAM runtime selection tables (see
+  `densityModel::New`, `heatCapacityModel::New`, `conductivityModel::New`,
+  `YoungModulusModel::New`, `thermalExpansionModel::New`, and
+  `swellingModel::New`).
+
+  Consequently, any temperature-dependent correlations (e.g., for $\rho(T)$,
+  $c_p(T)$, $k(T)$, $E(T)$, $\alpha(T)$) and any swelling kinetics/strain
+  evolution are defined in the corresponding selected model classes
+  (e.g., `Mo`, `MoConstant`, `FeCrAl`) and not in `Molybdenum` itself.

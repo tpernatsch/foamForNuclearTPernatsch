@@ -446,7 +446,7 @@ tmMesh = mesh.PolyMesh(region="thermoMechanicalRegion", srcpath="./meshes/polyMe
 
 inletTemperature = 668
 
-timeFolder0 = ffn.timeFolder.TimeFolder(time=0)
+timeFolder0 = ffn.TimeFolder(time=0)
 
 # Neutronics
 defaultFlux = ffn.fields.Field("defaultFlux", region=nMesh.region)
@@ -567,7 +567,7 @@ neutronicsSolver = ffn.solvers.NeutronicsSolver(
 #==============================================================================*
 # Thermal-hydraulics solver
 
-thSolver = ffn.solvers.thermal_hydraulics.OnePhaseThermalHydraulicsSolver(
+thSolver = ffn.solvers.thermal_hydraulics.OnePhase(
     region=thMesh.region,
     removeBaffles=True,
     mesh=thMesh,
@@ -702,7 +702,7 @@ thSolver.pimpleOptions.solveFluidMechanics = True
 #==============================================================================*
 # Thermomechanics solver
 
-tmSolver = ffn.solvers.OffbeatSolver(
+tmSolver = ffn.solvers.Offbeat(
     region=tmMesh.region,
     solver="extendedThermoMechanics",
     mesh=tmMesh,
@@ -732,8 +732,8 @@ baseMat = ffn.offbeat_lib.materials.Constant(
 innerCoreMat = deepcopy(baseMat)
 innerCoreMat.name = "innerCore"
 innerCoreMat.thermalExpansion = 1.1e-5 # should be alphaFuel, not thermalExpansion
-# innerCoreMat.alphaFuel = 1.1e-5
-# innerCoreMat.TFuelRef = inletTemperature
+innerCoreMat.alphaFuel = 1.1e-5
+innerCoreMat.TFuelRef = inletTemperature
 
 outerCoreMat = deepcopy(innerCoreMat)
 outerCoreMat.name = "outerCore"
@@ -744,8 +744,8 @@ followerMat.name = "follower"
 controlRodMat = deepcopy(baseMat)
 controlRodMat.name = "controlRod"
 controlRodMat.thermalExpansion = 5.4e-5 # should be alphaCR, not thermalExpansion
-# controlRodMat.alphaCR = 5.4e-5
-# controlRodMat.TCRRef = inletTemperature
+controlRodMat.alphaCR = 5.4e-5
+controlRodMat.TCRRef = inletTemperature
 
 diagridMat = deepcopy(baseMat)
 diagridMat.name = "diagrid"
@@ -776,9 +776,9 @@ tmSolver.add_material(softStructureMat)
 
 solvers = ffn.solvers.Solvers([neutronicsSolver, thSolver, tmSolver])
 
-# for solver in solvers:
-#     solver.decomposeParDict.numberOfSubdomains = 8
-#     solver.decomposeParDict.method = "scotch"
+for solver in solvers:
+    solver.decomposeParDict.numberOfSubdomains = 8
+    solver.decomposeParDict.method = "scotch"
 
 
 #==============================================================================*
@@ -807,7 +807,7 @@ coupling.add_field_transfer(thSolver, tmSolver, "T.fuelAvForNeutronics", "TFuel"
 # Settings
 
 
-model = ffn.case.Case(
+model = ffn.Case(
     solvers=solvers,
     coupling=coupling,
     timeFolders=[timeFolder0]
@@ -873,6 +873,9 @@ if (True):
 
 #==============================================================================*
 # Post-processing
+
+if (model.is_parallel):
+    ffn.run_reconstruction(model, isLatestTime=True)
 
 model.plot_residuals(
     parameters=['fluxStar0'],

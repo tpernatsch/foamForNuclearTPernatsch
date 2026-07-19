@@ -226,7 +226,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
     (
         IOobject
         (
-        "Dalbedo",
+            "Dalbedo",
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
@@ -237,7 +237,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
         zeroGradientFvPatchScalarField::typeName
     ),
     fluxStarAlbedo_
-        (
+    (
         IOobject
         (
             "fluxStarAlbedo",
@@ -287,6 +287,19 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
     coeffDoppler_
     (
         nuclearData_.get<scalar>("feedbackCoeffDoppler")
+    ),
+    isFuel_
+    (
+        IOobject
+        (
+            "pointKinetics.isFuel_",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimless, 0)
     ),
     fuelFeedbackCellField_
     (
@@ -363,12 +376,15 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
     ),
     ScNo_
     (
-        nuclearData_.lookupOrDefault<scalar>("ScNo",1.0)
+        this->lookupOrDefault<scalar>("ScNo", 1.0)
     ),
     initPrecursorsLiquidFuel_
     (
-        nuclearData_.lookupOrDefault<bool>("initPrecursorsLiquidFuel",false)
+        this->lookupOrDefault<bool>("initPrecursorsLiquidFuel", false)
     ),
+    pseudoTimeSteps_(),
+    pseudoTimeStepSizes_(),
+    pseudoTimeRelaxations_(),
     GEMReactivityMap_
     (
         nuclearData_.lookupOrDefault<List<Pair<scalar>>>
@@ -401,6 +417,11 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
 
     if (liquidFuel_)
     {
+        Info<< "Point kinetics with liquid fuel:" << nl
+            << tab << "Schmidt number: " << ScNo_ << nl
+            << tab << "Initialize precursor: " << (initPrecursorsLiquidFuel_ ? "true" : "false") << nl
+            << endl;
+
         UPtr_.reset
         (
             new volVectorField
@@ -428,7 +449,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
                     mesh.time().timeName(),
                     mesh,
                     IOobject::NO_READ,
-                    IOobject::NO_WRITE
+                    IOobject::AUTO_WRITE
                 ),
                 mesh,
                 dimensionedScalar("", dimless, 1.0),
@@ -444,8 +465,8 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
                     "alphat",
                     mesh.time().timeName(),
                     mesh,
-                    IOobject::NO_READ,
-                    IOobject::NO_WRITE
+                    IOobject::READ_IF_PRESENT,
+                    IOobject::AUTO_WRITE
                 ),
                 mesh,
                 dimensionedScalar("", dimMass/dimLength/dimTime, 0.0),
@@ -465,7 +486,8 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
                     IOobject::NO_WRITE
                 ),
                 mesh,
-                dimensionedScalar("", dimMass/dimLength/dimTime, 0.0),
+                nuclearData_.lookupOrDefault<dimensionedScalar>("mu", dimensionedScalar("", dimMass/dimLength/dimTime, 0.0)),
+                //dimensionedScalar("", dimMass/dimLength/dimTime, 0.0),
                 zeroGradientFvPatchScalarField::typeName
             )
         );
@@ -831,31 +853,99 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
     }
 
     //
-    setFeedbackCellField
+    setCellField
+    (
+        isFuel_,
+        "fuelZones"
+    );
+    //
+    setCellField
     (
         fuelFeedbackCellField_,
         "fuelFeedbackZones"
     );
-    setFeedbackCellField
+    setCellField
     (
         coolFeedbackCellField_,
         "coolFeedbackZones"
     );
-    setFeedbackCellField
+    setCellField
     (
         structFeedbackCellField_,
         "structFeedbackZones"
     );
-    setFeedbackCellField
+    setCellField
     (
         structMechFeedbackCellField_,
         "structMechFeedbackZones"
     );
-    setFeedbackCellField
+    setCellField
     (
         drivelineFeedbackCellField_,
         "drivelineFeedbackZones"
     );
+
+    //- Populate per-precursor pseudo time stepping parameters
+    {
+        int defaultSteps =
+            nuclearData_.lookupOrDefault<int>("pseudoTimeSteps", 0);
+        scalar defaultDt =
+            nuclearData_.lookupOrDefault<scalar>("pseudoTimeStepSize", 1.0);
+        scalar defaultRelax =
+            nuclearData_.lookupOrDefault<scalar>("pseudoTimeRelaxation", 1.0);
+
+        pseudoTimeSteps_.setSize(delayedGroups_);
+        pseudoTimeStepSizes_.setSize(delayedGroups_);
+        pseudoTimeRelaxations_.setSize(delayedGroups_);
+
+        if (nuclearData_.found("pseudoTimeStepsList"))
+        {
+            labelList tmp = nuclearData_.lookupOrDefault<labelList>("pseudoTimeStepsList", labelList(delayedGroups_, defaultSteps));
+            for (int i = 0; i < delayedGroups_; i++)
+            {
+                pseudoTimeSteps_[i] = (i < tmp.size() ? tmp[i] : defaultSteps);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < delayedGroups_; i++)
+            {
+                pseudoTimeSteps_[i] = defaultSteps;
+            }
+        }
+
+        if (nuclearData_.found("pseudoTimeStepSizeList"))
+        {
+            scalarList tmp = nuclearData_.lookupOrDefault<scalarList>("pseudoTimeStepSizeList", scalarList(delayedGroups_, defaultDt));
+            for (int i = 0; i < delayedGroups_; i++)
+            {
+                pseudoTimeStepSizes_[i] = (i < tmp.size() ? tmp[i] : defaultDt);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < delayedGroups_; i++)
+            {
+                pseudoTimeStepSizes_[i] = defaultDt;
+            }
+        }
+
+        if (nuclearData_.found("pseudoTimeRelaxationList"))
+        {
+            scalarList tmp = nuclearData_.lookupOrDefault<scalarList>("pseudoTimeRelaxationList", scalarList(delayedGroups_, defaultRelax));
+            for (int i = 0; i < delayedGroups_; i++)
+            {
+                pseudoTimeRelaxations_[i] = (i < tmp.size() ? tmp[i] : defaultRelax);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < delayedGroups_; i++)
+            {
+                pseudoTimeRelaxations_[i] = defaultRelax;
+            }
+        }
+    }
 
     //  Set flag in base class dict so it can be accessed by the GeN-Foam main
     bool GEMReactivityBool(GEMReactivityMap_.size() > 1);
@@ -954,7 +1044,7 @@ void Foam::solvers::pointKineticNeutronics::setInitOneGroupFlux()
         fvc::domainIntegrate(sqr(initOneGroupFluxN_)).value();
 }
 
-void Foam::solvers::pointKineticNeutronics::setFeedbackCellField
+void Foam::solvers::pointKineticNeutronics::setCellField
 (
     volScalarField& feedbackCellField,
     const word& keyword

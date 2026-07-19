@@ -1,0 +1,16 @@
+description: |
+  Base file for list conversion.
+
+  Provides utility functions to convert OpenFOAM lists into string
+  representations.
+
+  \mainauthor
+      Thomas Guilbaud (thomas.guilbaud@epfl.ch)
+options: []
+usage: []
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  stub_improved: true

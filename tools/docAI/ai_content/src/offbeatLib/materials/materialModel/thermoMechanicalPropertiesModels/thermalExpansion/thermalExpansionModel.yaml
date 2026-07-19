@@ -1,0 +1,45 @@
+description: |
+  Mother class for thermal expansion models.
+
+  This is a run-time selectable base type used to compute the thermal expansion
+  contribution to a symmetric tensor field (e.g. thermal strain) as a
+  function of temperature.
+formulation: |
+  Thermal expansion models provide an implementation of the thermal
+  expansion update through the virtual function ``correct``.
+
+  The model computes an updated symmetric tensor field ``sf`` from the
+  temperature field ``T``. The temperature reference ``Tref`` is used to
+  define the thermal expansion relative to a reference state.
+
+  $$ \Delta T = T - T_{\mathrm{ref}} $$
+
+  - $T$ is the local temperature field (input to ``correct``)
+  - $T_{\mathrm{ref}}$ is the reference temperature set by ``Tref``
+
+  The specific constitutive relation (e.g. isotropic vs. anisotropic
+  expansion, and whether it includes additional material effects) is defined
+  in derived classes implementing ``correct``.
+options:
+- key: Tref
+  type: scalar
+  required: false
+  default: 293.0
+  description: |
+    Reference temperature for thermal expansion, used to compute
+    $\Delta T = T - T_{\mathrm{ref}}$.
+dictionary: thermalExpansion
+usage: []
+admonitions:
+- kind: warning
+  body: |
+    The keyword `thermalExpansionModel` is deprecated. Prefer an `thermalExpansion` dictionary with a `type` entry.
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - options
+  - dictionary
+  stub_improved: true

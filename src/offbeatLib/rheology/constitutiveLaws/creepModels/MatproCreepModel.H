@@ -96,6 +96,9 @@ class MatproCreepModel
 
         // Tolerance for inner convergence of the Newton-Raphson method
         scalar NewtonRaphsonTolerance_;
+
+        // Maximum iterations for the Newton-Raphson loop
+        label NewtonRaphsonMaxIter_;
         
         //- Disallow default bitwise copy construct
         MatproCreepModel(const MatproCreepModel&);

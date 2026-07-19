@@ -1,0 +1,82 @@
+description: |
+  Albedo boundary condition for SP3 or diffusion calculations.
+
+  This boundary condition must be set consistently for both the first and second moments in SP3.
+formulation: |
+  The albedo boundary condition relates the boundary value and normal gradient of the SP3/diffusion moment to an effective albedo parameter.
+
+  The implemented normal gradient is:
+  $$
+  \frac{\partial \phi}{\partial n} = -\frac{\gamma}{D}\,\phi
+  $$
+
+  where:
+
+  - $\phi$ is the patch field value (the moment being solved for)
+  - $n$ is the outward patch normal direction
+  - $D$ is the diffusion coefficient field referenced by ``diffCoeffName``
+  - $\gamma$ is the albedo coefficient referenced by ``gamma``
+
+  For SP3, the boundary condition can be applied either to the first-moment flux or to the second-moment flux using ``forSecondMoment``.
+options:
+- key: gamma
+  type: scalar
+  required: false
+  default: 0.5
+  description: |
+    Albedo coefficient $\gamma$.
+
+    In the associated model definition, $\gamma$ is defined from the (dimensionless) albedo coefficient $\alpha$ as:
+    $$
+    \gamma = \frac{1-\alpha}{1+\alpha}\,\frac{1}{2}
+    $$
+- key: diffCoeffName
+  type: word
+  required: false
+  default: diffCoeffName
+  description: |
+    Name of the diffusion coefficient patch field (looked up on the patch) used as $D$ in the boundary condition.
+- key: fluxStarAlbedo
+  type: word
+  required: false
+  default: fluxStarAlbedo
+  description: |
+    Name of the auxiliary patch field used by the SP3 second-moment formulation (looked up on the patch).
+- key: forSecondMoment
+  type: bool
+  required: false
+  default: false
+  description: |
+    If ``true``, apply the boundary condition in the context of the second SP3 moment flux.
+    If ``false``, apply it for the first moment.
+usage:
+- comment: 'Usage already present in Header (verbatim):'
+  snippet: |-
+    <patchName>
+    {
+        type            albedoSP3;
+        gamma           0.5;            // defined as (1-alpha)/(1+alpha)/2, alpha being the albedo coefficient
+        diffCoeffName   Dalbedo;        // not to be changed
+        fluxStarAlbedo  fluxStarAlbedo; // not to be changed
+        forSecondMoment false;          // true in case it is a condition for a second moment flux (for SP3 calculations)
+        value           uniform 1;
+    }
+- comment: 'The boundary condition is specified via the ``type`` entry in the ``boundaryField/<patchName>`` subdictionary
+    of the ``<fieldName>`` file (located in ``<timeFolder>/``, or ``<timeFolder>/<regionName>/`` for multi-region cases, e.g.
+    ``0/neutroRegion``). Here is a snippet enabling the boundary condition:'
+  snippet: |-
+    boundaryField
+    {
+        <patch1>
+        {
+            type albedoSP3;
+        }
+    }
+ai_provenance:
+  model: gpt-5.4-nano
+  date: '2026-06-26'
+  modified_sections:
+  - description
+  - formulation
+  - options
+  stub_improved: true

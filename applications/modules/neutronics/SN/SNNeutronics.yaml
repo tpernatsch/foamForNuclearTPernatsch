@@ -34,6 +34,7 @@ description: |-
   polynomial expansion of the scattering cosine \f$ (\Omega_j \cdot \Omega_{j'}) \f$
 
   \table
+      Parameter                 | Description
       $\phi_{i,j}$              | Neutron flux if the energy group i and direction j
       $C_k$                     | Precursor k
       $S_{i,j}^I$               | Isotropic source term
