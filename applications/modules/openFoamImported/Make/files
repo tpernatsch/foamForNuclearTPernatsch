@@ -1,3 +1,5 @@
 compressibleInterFoam/compressibleInterFoam.C
+nuclearParcelFoam/nuclearParcelFoam.C
+msfrParcelFoam/msfrParcelFoam.C
 
 LIB = $(FOAM_USER_LIBBIN)/libOFSolvers

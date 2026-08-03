@@ -1,0 +1,68 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    p_rgh
+    {
+        solver          GAMG;
+        smoother        DIC;
+        tolerance       1e-06;
+        relTol          0.01;
+    }
+
+    p_rghFinal
+    {
+        $p_rgh;
+        relTol          0;
+    }
+
+    "(U|T)"
+    {
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-06;
+        relTol          0.1;
+    }
+
+    "(U|T)Final"
+    {
+        $U;
+        relTol          0;
+    }
+}
+
+PIMPLE
+{
+    nOuterCorrectors            1;
+    nCorrectors                 2;
+    nNonOrthogonalCorrectors    0;
+    momentumPredictor           yes;
+
+    pRefCell                    0;
+    pRefValue                   0;
+}
+
+relaxationFactors
+{
+    equations
+    {
+    }
+}
+
+
+// ************************************************************************* //

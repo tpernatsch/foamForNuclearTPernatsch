@@ -1,0 +1,51 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+// Domain starts hot, at the wall temperature, and is progressively cooled
+// by the 293 K air entering through the inlet.
+internalField   uniform 330;
+
+boundaryField
+{
+    inlet
+    {
+        type            fixedValue;
+        value           uniform 293;
+    }
+
+    outlet
+    {
+        type            inletOutlet;
+        phi             phi;
+        inletValue      uniform 293;
+        value           uniform 293;
+    }
+
+    walls
+    {
+        // Held at the same temperature as the initial internal field: the
+        // cyclone starts hot throughout and is cooled from the inlet jet
+        // inwards, rather than being actively heated by the walls.
+        type            fixedValue;
+        value           uniform 330;
+    }
+}
+
+
+// ************************************************************************* //

@@ -27,4 +27,5 @@ classes can make use of specialized libraries (e.g., cross sections).
    neutronics/index
    thermoMechanics/index
    openfoamImportedSolvers
+   convertingOpenFoamSolvers
 

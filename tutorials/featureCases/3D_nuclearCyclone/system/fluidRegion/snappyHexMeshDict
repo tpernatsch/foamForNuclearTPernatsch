@@ -1,0 +1,124 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      snappyHexMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Reused from the stock OpenFOAM lagrangian/MPPICFoam/cyclone tutorial.
+
+castellatedMesh true;
+snap            true;
+addLayers       false;
+
+geometry
+{
+    cyclone.stl
+    {
+        type triSurfaceMesh;
+        name walls;
+    }
+}
+
+castellatedMeshControls
+{
+    maxLocalCells 100000;
+    maxGlobalCells 2000000;
+    minRefinementCells 0;
+    maxLoadUnbalance 0.10;
+    nCellsBetweenLevels 2;
+
+    features
+    (
+    );
+
+    refinementSurfaces
+    {
+        walls
+        {
+            level (0 0);
+            patchInfo
+            {
+                type wall;
+            }
+        }
+    }
+
+    resolveFeatureAngle 30;
+
+    refinementRegions
+    {
+    }
+
+    locationInMesh (0.001 0.001 0.001);
+
+    allowFreeStandingZoneFaces true;
+}
+
+snapControls
+{
+    nSmoothPatch 3;
+    tolerance 2.0;
+    nSolveIter 300;
+    nRelaxIter 5;
+
+    nFeatureSnapIter 10;
+    implicitFeatureSnap true;
+    explicitFeatureSnap false;
+    multiRegionFeatureSnap false;
+}
+
+addLayersControls
+{
+    relativeSizes true;
+
+    layers
+    {
+    }
+
+    expansionRatio 1.0;
+    finalLayerThickness 0.5;
+    minThickness 0.2;
+    nGrow 0;
+
+    featureAngle 60;
+    slipFeatureAngle 30;
+    nRelaxIter 5;
+    nSmoothSurfaceNormals 1;
+    nSmoothNormals 3;
+    nSmoothThickness 10;
+    maxFaceThicknessRatio 0.5;
+    maxThicknessToMedialRatio 0.3;
+    minMedialAxisAngle 90;
+
+    nBufferCellsNoExtrude 0;
+
+    nLayerIter 50;
+}
+
+meshQualityControls
+{
+    #includeEtc "caseDicts/meshQualityDict"
+
+    nSmoothScale 4;
+    errorReduction 0.75;
+}
+
+writeFlags
+(
+    layerSets
+);
+
+mergeTolerance 1e-6;
+
+// ************************************************************************* //

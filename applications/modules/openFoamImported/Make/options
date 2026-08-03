@@ -3,21 +3,48 @@ EXE_INC = \
     -I./include \
     -I./compressibleInterFoam \
     -I./compressibleInterFoam/include/equations \
+    -I./nuclearParcelFoam \
+    -I./nuclearParcelFoam/include/equations \
+    -I./msfrParcelFoam \
+    -I./msfrParcelFoam/include/equations \
+    -I./msfrParcelFoam/include/create \
     -I./../../../src/multiRegion/lnInclude \
     -I./../../../src/fvPatchFields/lnInclude \
     -I$(FOAM_SOLVERS)/multiPhase/compressibleInterFoam/surfaceTensionModels/lnInclude \
+    -I$(FOAM_SOLVERS)/lagrangian/reactingParcelFoam \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(LIB_SRC)/finiteArea/lnInclude \
     -I$(LIB_SRC)/meshTools/lnInclude \
+    -I$(LIB_SRC)/sampling/lnInclude \
     -I$(LIB_SRC)/transportModels/compressible/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/basic/lnInclude \
     -I$(LIB_SRC)/transportModels/twoPhaseMixture/lnInclude \
     -I$(LIB_SRC)/transportModels/interfaceProperties/lnInclude \
+    -I$(LIB_SRC)/transportModels \
+    -I$(LIB_SRC)/transportModels/incompressible/singlePhaseTransportModel \
     -I$(LIB_SRC)/TurbulenceModels/turbulenceModels/lnInclude \
     -I$(LIB_SRC)/TurbulenceModels/compressible/lnInclude \
+    -I$(LIB_SRC)/TurbulenceModels/incompressible/lnInclude \
     -I$(LIB_SRC)/TurbulenceModels/phaseCompressible/lnInclude \
     -I$(FOAM_SOLVERS)/multiphase/compressibleInterFoam/VoFphaseCompressibleTurbulenceModels/lnInclude \
     -I$(FOAM_SOLVERS)/multiphase/compressibleInterFoam/twoPhaseMixtureThermo/lnInclude \
     -I$(LIB_SRC)/dynamicFvMesh/lnInclude \
+    -I$(LIB_SRC)/dynamicMesh/lnInclude \
+    -I$(LIB_SRC)/lagrangian/basic/lnInclude \
+    -I$(LIB_SRC)/lagrangian/distributionModels/lnInclude \
+    -I$(LIB_SRC)/regionModels/regionModel/lnInclude \
+    -I$(LIB_SRC)/regionModels/surfaceFilmModels/lnInclude \
+    -I$(LIB_SRC)/regionFaModels/lnInclude \
+    -I$(LIB_SRC)/faOptions/lnInclude \
+    -I$(LIB_SRC)/thermophysicalModels/specie/lnInclude \
+    -I$(LIB_SRC)/thermophysicalModels/reactionThermo/lnInclude \
+    -I$(LIB_SRC)/thermophysicalModels/thermophysicalProperties/lnInclude \
+    -I$(LIB_SRC)/thermophysicalModels/radiation/lnInclude \
+    -I$(LIB_SRC)/thermophysicalModels/SLGThermo/lnInclude \
+    -I$(LIB_SRC)/thermophysicalModels/chemistryModel/lnInclude \
+    -I$(LIB_SRC)/ODE/lnInclude \
+    -I$(LIB_USER_SRC)/myTurbulence/lnInclude \
+    -I$(LIB_USER_SRC)/myIntermediate/lnInclude \
 
 
 LIB_LIBS = \
@@ -25,6 +52,7 @@ LIB_LIBS = \
     -lfiniteVolume \
     -lfvOptions \
     -lmeshTools \
+    -lsampling \
     -ltwoPhaseMixtureThermo \
     -ltwoPhaseSurfaceTension \
     -lcompressibleTransportModels \
@@ -36,10 +64,28 @@ LIB_LIBS = \
     -linterfaceProperties \
     -lturbulenceModels \
     -lcompressibleTurbulenceModels \
+    -lincompressibleTurbulenceModels \
+    -lincompressibleTransportModels \
     -lthermoTools \
     -lVoFphaseCompressibleTurbulenceModels \
     -ldynamicMesh \
-    -ldynamicFvMesh
+    -ldynamicFvMesh \
+    -lthermophysicalProperties \
+    -lreactionThermophysicalModels \
+    -lSLGThermo \
+    -lODE \
+    -ltopoChangerFvMesh \
+    -latmosphericModels \
+    -lregionModels \
+    -lsurfaceFilmModels \
+    -lsurfaceFilmDerivedFvPatchFields \
+    -llagrangian \
+    -lradiationModels \
+    -lregionFaModels \
+    -lfiniteArea \
+    -lfaOptions \
+    -L$(FOAM_USER_LIBBIN) -llagrangianMyTurbulence \
+    -L$(FOAM_USER_LIBBIN) -llagrangianMyIntermediate
 
 ifneq (,$(findstring ECI4FOAM,$(LIB_ECI4FOAM)))
     EXE_INC += -I$(LIB_ECI4FOAM)/src/externalComm/lnInclude

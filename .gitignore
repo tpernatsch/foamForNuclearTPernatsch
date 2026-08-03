@@ -74,6 +74,10 @@ tutorials/featureCases/2D_flowOverHeatedPlate/*/*[123456789]*
 tutorials/featureCases/2D_KNS37-L22/*[123456789]*
 !tutorials/featureCases/2D_KNS37-L22/-2
 tutorials/featureCases/2D_voidMotionNoPhaseChange/*[123456789]*
+tutorials/featureCases/3D_nuclearCyclone/0
+tutorials/featureCases/3D_nuclearCyclone/*[123456789]*
+tutorials/featureCases/3D_nuclearCyclone/constant/fluidRegion/polyMesh
+tutorials/featureCases/3D_nuclearCyclone/constant/triSurface
 tutorials/guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion/[01]
 tutorials/guidedCases/2_reactorSlabReflected_1D_1Gr_neutronicDiffusion/[01]
 tutorials/reactorCases/Godiva_SN/*[123456789]*

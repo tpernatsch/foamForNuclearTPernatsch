@@ -1,0 +1,166 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      FPCloudProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solution
+{
+    active          true;
+    coupledU        true;
+    coupledT        true;
+    transient       yes;
+    cellValueSourceCorrection off;
+
+    maxCo           0.3;
+
+    interpolationSchemes
+    {
+        rho             cell;
+        U               cellPoint;
+        muc             cell;
+        T               cell;
+        vort            cell;
+        gradT           cell;
+    }
+
+    integrationSchemes
+    {
+        U               Euler;
+        T               Euler;
+    }
+
+    sourceTerms
+    {
+        schemes
+        {
+            U           semiImplicit 1;
+            T           semiImplicit 1;
+        }
+    }
+}
+
+constantProperties
+{
+    parcelTypeId    1;
+
+    rhoMin          1e-15;
+    rho0            8000;
+    minParcelMass   1e-15;
+
+    // Radioactive decay constant [1/s] (0 = no decay of the parcel's
+    // represented particle count). tau (diameter-evolution timescale) is
+    // left unset: it now defaults to a negative sentinel that disables
+    // diameter evolution entirely, rather than to 0 (which used to be a
+    // divide-by-zero trap in KinematicParcel::move()).
+    lambda          0;
+
+    T0              300;
+    TMin            200;
+    TMax            2000;
+    Cp0             450;
+    epsilon0        1;
+    kappa0          15;
+    mu0             0;
+    f0              0.5;
+}
+
+subModels
+{
+    particleForces
+    {
+        sphereDrag;
+        gravity;
+        Thermophoretic
+        {
+            Kp          15;
+            Kc          0.026;
+            lambda      6.8e-08;
+        }
+    }
+
+    injectionModels
+    {
+        model1
+        {
+            type            patchInjection;
+            massTotal       1e-06;
+            SOI             0;
+            parcelBasisType mass;
+            patch           inlet;
+            duration        2;
+            parcelsPerSecond 1000;
+            U0              (-10 0 0);
+            flowRateProfile constant 1;
+            sizeDistribution
+            {
+                type            normal;
+                normalDistribution
+                {
+                    mu              5e-06;
+                    sigma           1e-06;
+                    minValue        1e-06;
+                    maxValue        1e-05;
+                }
+            }
+        }
+    }
+
+    dispersionModel none;
+
+    patchInteractionModel localInteraction;
+
+    localInteractionCoeffs
+    {
+        patches
+        (
+            "(walls|inlet)"
+            {
+                type rebound;
+                e    0.97;
+                mu   0.09;
+            }
+            outlet
+            {
+                type escape;
+            }
+        );
+    }
+
+    heatTransferModel RanzMarshall;
+
+    RanzMarshallCoeffs
+    {
+        BirdCorrection  false;
+    }
+
+    decayHeatModel  constDecay;
+
+    constDecayCoeffs
+    {
+        decayPower      1e-12;
+    }
+
+    radiation       false;
+
+    surfaceFilmModel none;
+
+    stochasticCollisionModel none;
+}
+
+cloudFunctions
+{}
+
+
+// ************************************************************************* //

@@ -15,3 +15,8 @@ We list below the imported OpenFOAM-based standard solvers available in GeN-Foam
     approach. This standard solver has been transposed from OpenFOAM
     (`link <https://www.openfoam.com/documentation/guides/latest/man/compressibleInterFoam.html>`_)
     into the GeN-Foam solver structure (see :ref:`compressibleInterFoam <compressibleInterFoam>`).
+
+See :ref:`Converting a native OpenFOAM solver into a foamForNuclear class <convertingOpenFoamSolver>`
+for a full step-by-step tutorial on how *compressibleInterFoam* itself was
+transposed, so that the same procedure can be applied to any other OpenFOAM
+solver.
