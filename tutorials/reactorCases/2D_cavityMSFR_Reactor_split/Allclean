@@ -1,0 +1,13 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+
+rm -rf 0
+rm -rf 0.[0-9]* [1-9]*
+rm -rf log.* *.dat *.out
+rm -rf constant/fluidRegion/polyMesh
+rm -rf constant/neutroRegion/polyMesh
+rm -rf constant/neutroRegion/polyMesh.orig
+rm -rf processor*
+rm -rf postProcessing
+
+#------------------------------------------------------------------------------

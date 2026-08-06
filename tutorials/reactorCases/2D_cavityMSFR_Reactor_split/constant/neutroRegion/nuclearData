@@ -1,0 +1,116 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      nuclearData;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Translated from tutorials/reactorCases/2D_cavityMSFR_Reactor's
+// constant/fluidRegion/nuclearProperties (msfrParcelFoam's own custom
+// dict format), using the same mapping verified against
+// applications/modules/neutronics's actual equations:
+//   IV           = inverseVelocity
+//   D            = DRef
+//   nuSigmaEff   = Nu * SfRef
+//   sigmaPow     = Ef * Nu * SfRef
+//   sigmaRemoval = SaRef + (row sum of SsRef excluding the diagonal)
+//   scatteringMatrixP0 = SsRef reshaped [from][to] (diagonal unused either way)
+//   chiPrompt    = promptYeld
+//   chiDelayed   = delayedYeld
+//   Beta/lambda  = delayedNeutronPrecursors.beta/lambda
+//
+// alphaDRef/alphaSaRef/alphaSfRef/alphaSsRef are all zero in the source data
+// (useDoppler false), i.e. these cross sections have no temperature
+// dependence -- so both states below carry identical values (zero slope),
+// rather than omitting the second state, to avoid relying on single-point
+// interpolation edge cases in XS.
+
+energyGroups    6;
+
+precGroups      8;
+
+xsVariables
+{
+    TFuel       log;
+    rhoCool     lin;
+}
+
+states
+(
+    reference
+    {
+        TFuel   900;
+        rhoCool 2000;
+
+        zones
+        (
+            main
+            {
+                fuelFraction 1.000000e+00;
+                IV  nonuniform List<scalar> 6 ( 4.003670e-08 7.398460e-08 2.617480e-07 6.692700e-07 1.558450e-06 4.244620e-06 );
+                D   nonuniform List<scalar> 6 ( 2.800640e-02 1.840210e-02 1.131100e-02 1.447860e-02 1.397500e-02 1.282520e-02 );
+                nuSigmaEff nonuniform List<scalar> 6 ( 3.178061e-01 2.766305e-01 3.703914e-01 6.277296e-01 1.305042e+00 3.526265e+00 );
+                sigmaPow nonuniform List<scalar> 6 ( 1.029921e-11 8.964819e-12 1.200335e-11 2.034296e-11 4.229276e-11 1.142764e-10 );
+                scatteringMatrixP0  6  6 (
+                    ( 1.084760e+01  5.233160e+00  4.018050e-01  1.098690e-02  2.532900e-03  3.783340e-04 )
+                    ( 0.000000e+00  1.836660e+01  3.191380e+00  2.342180e-03  2.252590e-04  2.004050e-05 )
+                    ( 0.000000e+00  0.000000e+00  2.982930e+01  1.634700e+00  1.705750e-03  1.246250e-04 )
+                    ( 0.000000e+00  0.000000e+00  0.000000e+00  2.174720e+01  1.902430e+00  1.368580e-06 )
+                    ( 0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  2.271730e+01  1.058850e+00 )
+                    ( 0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  2.378260e+01 )
+                );
+                sigmaRemoval nonuniform List<scalar> 6 ( 5.703600e+00 3.358700e+00 1.971600e+00 2.462100e+00 2.317800e+00 3.433300e+00 );
+                chiPrompt nonuniform List<scalar> 6 ( 3.538120e-01 5.236420e-01 1.210330e-01 1.354570e-03 1.512260e-04 7.372360e-06 );
+                chiDelayed nonuniform List<scalar> 6 ( 4.303250e-03 3.877340e-01 5.818480e-01 2.279470e-02 2.891300e-03 4.289350e-04 );
+                Beta nonuniform List<scalar> 8 ( 2.331020e-04 1.032620e-03 6.818780e-04 1.377260e-03 2.144930e-03 6.409170e-04 6.058050e-04 1.660160e-04 );
+                lambda nonuniform List<scalar> 8 ( 1.246670e-02 2.829170e-02 4.252440e-02 1.330420e-01 2.924670e-01 6.664880e-01 1.634780e+00 3.554600e+00 );
+                discFactor nonuniform List<scalar> 6 ( 1 1 1 1 1 1 );
+                integralFlux nonuniform List<scalar> 6 ( 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00 );
+            }
+        );
+    }
+
+    TFuel1500K
+    {
+        TFuel   1500;
+
+        zones
+        (
+            main
+            {
+                fuelFraction 1.000000e+00;
+                IV  nonuniform List<scalar> 6 ( 4.003670e-08 7.398460e-08 2.617480e-07 6.692700e-07 1.558450e-06 4.244620e-06 );
+                D   nonuniform List<scalar> 6 ( 2.800640e-02 1.840210e-02 1.131100e-02 1.447860e-02 1.397500e-02 1.282520e-02 );
+                nuSigmaEff nonuniform List<scalar> 6 ( 3.178061e-01 2.766305e-01 3.703914e-01 6.277296e-01 1.305042e+00 3.526265e+00 );
+                sigmaPow nonuniform List<scalar> 6 ( 1.029921e-11 8.964819e-12 1.200335e-11 2.034296e-11 4.229276e-11 1.142764e-10 );
+                scatteringMatrixP0  6  6 (
+                    ( 1.084760e+01  5.233160e+00  4.018050e-01  1.098690e-02  2.532900e-03  3.783340e-04 )
+                    ( 0.000000e+00  1.836660e+01  3.191380e+00  2.342180e-03  2.252590e-04  2.004050e-05 )
+                    ( 0.000000e+00  0.000000e+00  2.982930e+01  1.634700e+00  1.705750e-03  1.246250e-04 )
+                    ( 0.000000e+00  0.000000e+00  0.000000e+00  2.174720e+01  1.902430e+00  1.368580e-06 )
+                    ( 0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  2.271730e+01  1.058850e+00 )
+                    ( 0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  2.378260e+01 )
+                );
+                sigmaRemoval nonuniform List<scalar> 6 ( 5.703600e+00 3.358700e+00 1.971600e+00 2.462100e+00 2.317800e+00 3.433300e+00 );
+                chiPrompt nonuniform List<scalar> 6 ( 3.538120e-01 5.236420e-01 1.210330e-01 1.354570e-03 1.512260e-04 7.372360e-06 );
+                chiDelayed nonuniform List<scalar> 6 ( 4.303250e-03 3.877340e-01 5.818480e-01 2.279470e-02 2.891300e-03 4.289350e-04 );
+                Beta nonuniform List<scalar> 8 ( 2.331020e-04 1.032620e-03 6.818780e-04 1.377260e-03 2.144930e-03 6.409170e-04 6.058050e-04 1.660160e-04 );
+                lambda nonuniform List<scalar> 8 ( 1.246670e-02 2.829170e-02 4.252440e-02 1.330420e-01 2.924670e-01 6.664880e-01 1.634780e+00 3.554600e+00 );
+                discFactor nonuniform List<scalar> 6 ( 1 1 1 1 1 1 );
+                integralFlux nonuniform List<scalar> 6 ( 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00 1.000000e+00 );
+            }
+        );
+    }
+);
+
+// ************************************************************************* //

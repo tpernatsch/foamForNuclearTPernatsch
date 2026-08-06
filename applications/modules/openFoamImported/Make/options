@@ -5,9 +5,11 @@ EXE_INC = \
     -I./compressibleInterFoam/include/equations \
     -I./nuclearParcelFoam \
     -I./nuclearParcelFoam/include/equations \
+    -I./OldParcelFoam \
+    -I./OldParcelFoam/include/equations \
+    -I./OldParcelFoam/include/create \
     -I./msfrParcelFoam \
     -I./msfrParcelFoam/include/equations \
-    -I./msfrParcelFoam/include/create \
     -I./../../../src/multiRegion/lnInclude \
     -I./../../../src/fvPatchFields/lnInclude \
     -I$(FOAM_SOLVERS)/multiPhase/compressibleInterFoam/surfaceTensionModels/lnInclude \

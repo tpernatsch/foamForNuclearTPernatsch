@@ -1,0 +1,33 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      neutronicsProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// eigenvalueNeutronics keeps Keff (in 0/uniform/reactorState) rescaled every
+// iteration to drive the computed power toward "power" in that same file --
+// the native equivalent of msfrParcelFoam's calcKeff.H addition.
+eigenvalueNeutronics    true;
+
+// Liquid (molten-salt) fuel: precursors are advected by the mapped-in flow
+// velocity, matching msfrParcelFoam's own precEqns.H treatment.
+liquidFuel              true;
+
+fastNeutrons            true;
+
+adjustDiscFactors       false;
+
+useGivenDiscFactors     false;
+
+// ************************************************************************* //

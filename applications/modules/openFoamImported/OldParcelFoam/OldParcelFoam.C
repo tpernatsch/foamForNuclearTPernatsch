@@ -5,6 +5,9 @@
 |    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
+|                                                                             |
+|    Built on OpenFOAM v2512                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2025 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -34,7 +37,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "msfrParcelFoam.H"
+#include "OldParcelFoam.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
@@ -43,11 +46,11 @@ namespace Foam
 {
 namespace solvers
 {
-    defineTypeNameAndDebug(msfrParcelFoam, 0);
+    defineTypeNameAndDebug(OldParcelFoam, 0);
     addToRunTimeSelectionTable
     (
         solver,
-        msfrParcelFoam,
+        OldParcelFoam,
         dynamicFvMesh
     );
 }
@@ -56,13 +59,14 @@ namespace solvers
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::solvers::msfrParcelFoam::msfrParcelFoam
+Foam::solvers::OldParcelFoam::OldParcelFoam
 (
     dynamicFvMesh& mesh
 )
 :
     solver(mesh),
     pimple_(mesh_),
+    npimple_(mesh_, "NPIMPLE"),
     U_
     (
         IOobject
@@ -130,6 +134,18 @@ Foam::solvers::msfrParcelFoam::msfrParcelFoam
     Prt_
     (
         "Prt",
+        dimless,
+        laminarTransport_
+    ),
+    Sc_
+    (
+        "Sc",
+        dimless,
+        laminarTransport_
+    ),
+    Sct_
+    (
+        "Sct",
         dimless,
         laminarTransport_
     ),
@@ -308,33 +324,288 @@ Foam::solvers::msfrParcelFoam::msfrParcelFoam
     tsurfaceFilm_(regionModels::surfaceFilmModel::New(mesh_, g_, "surfaceFilm")),
     surfaceFilm_(tsurfaceFilm_()),
     solvePrimaryRegion_(pimple_.dict().getOrDefault("solvePrimaryRegion", true)),
-    powerDensityLiquid_
+    cumulativeContErr_(0),
+
+    // --- Neutronics / decay heat / fission product transport ---
+
+    nuclearPropertiesDict_
     (
         IOobject
         (
-            "powerDensityLiquid",
+            "nuclearProperties",
+            mesh_.time().constant(),
+            mesh_,
+            IOobject::MUST_READ,
+            IOobject::NO_WRITE
+        )
+    ),
+    nEnergyGroups_
+    (
+        readInt(nuclearPropertiesDict_.subDict("neutronTransport").lookup("energyGroups"))
+    ),
+    useDoppler_(nuclearPropertiesDict_.subDict("neutronTransport").lookup("useDoppler")),
+    DopplerControl_("DopplerControl", dimless, useDoppler_ ? 1 : 0),
+    rhoRefXS_("rhoRefXS", dimDensity, nuclearPropertiesDict_.subDict("neutronTransport")),
+    TRefXS_("TRefXS", dimTemperature, nuclearPropertiesDict_.subDict("neutronTransport")),
+    D_ref_(nEnergyGroups_),
+    alphaD_ref_(nEnergyGroups_),
+    Sa_ref_(nEnergyGroups_),
+    alphaSa_ref_(nEnergyGroups_),
+    Sf_ref_(nEnergyGroups_),
+    alphaSf_ref_(nEnergyGroups_),
+    Ss_ref_(nEnergyGroups_*nEnergyGroups_),
+    alphaSs_ref_(nEnergyGroups_*nEnergyGroups_),
+    Nu_(nEnergyGroups_),
+    Ef_(nEnergyGroups_),
+    invVel_(nEnergyGroups_),
+    chiPrompt_(nEnergyGroups_),
+    chiDelayed_(nEnergyGroups_),
+    nPrecGroups_
+    (
+        readInt(nuclearPropertiesDict_.subDict("delayedNeutronPrecursors").lookup("groups"))
+    ),
+    precLambda_(nPrecGroups_),
+    precBeta_(nPrecGroups_),
+    precBetaTot_("precBetaTot", dimless, 0),
+    nDecGroups_
+    (
+        readInt(nuclearPropertiesDict_.subDict("decayHeatPrecursors").lookup("groups"))
+    ),
+    decLambda_(nDecGroups_),
+    decBeta_(nDecGroups_),
+    decBetaTot_("decBetaTot", dimless, 0),
+    fpTransport_(nuclearPropertiesDict_.found("fissionProducts")),
+    nFPSpecies_(0),
+    diffCoeffAlbedo_
+    (
+        IOobject
+        (
+            "diffCoeffAlbedo",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh_,
+        // Nonzero placeholder: albedoSP3's BC divides by this field, and it
+        // is evaluated as soon as each flux field is constructed below --
+        // before fluxEqns.H ever gets to assign the real, cross-section
+        // derived D_[i] value into it. The placeholder is overwritten before
+        // any flux equation is actually solved, so its value here is moot.
+        dimensionedScalar("", dimLength, 1)
+    ),
+    fluxStarAlbedo_
+    (
+        IOobject
+        (
+            "fluxStarAlbedo",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar("", dimless/dimArea/dimTime, 0)
+    ),
+    flux_(nEnergyGroups_),
+    fluxTot_
+    (
+        IOobject
+        (
+            "fluxTot",
             mesh_.time().timeName(),
             mesh_,
             IOobject::NO_READ,
             IOobject::AUTO_WRITE
         ),
         mesh_,
-        dimensionedScalar("", dimPower/dimVolume, 0)
+        dimensionedScalar("", dimless/dimArea/dimTime, 0)
     ),
-    powerDensityStructure_
+    prec_(nPrecGroups_),
+    dec_(nDecGroups_),
+    D_(nEnergyGroups_),
+    Sa_(nEnergyGroups_),
+    Sf_(nEnergyGroups_),
+    Ss_(nEnergyGroups_*nEnergyGroups_),
+    M_(nEnergyGroups_),
+    unitField_
     (
         IOobject
         (
-            "powerDensityStructure",
+            "unitField",
             mesh_.time().timeName(),
             mesh_,
             IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar("", dimless, 1)
+    ),
+    zeroField_("zeroField", 0*unitField_),
+    Rf_
+    (
+        IOobject
+        (
+            "Rf",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar("", dimless/dimVolume/dimTime, 0)
+    ),
+    q_
+    (
+        IOobject
+        (
+            "q",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         ),
         mesh_,
         dimensionedScalar("", dimPower/dimVolume, 0)
     ),
-    cumulativeContErr_(0)
+    qPrompt_
+    (
+        IOobject
+        (
+            "qPrompt",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar("", dimPower/dimVolume, 0)
+    ),
+    qDecay_
+    (
+        IOobject
+        (
+            "qDecay",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar("", dimPower/dimVolume, 0)
+    ),
+    Q_
+    (
+        IOobject
+        (
+            "Q",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar("", dimPower, 0)
+    ),
+    Qprompt_
+    (
+        IOobject
+        (
+            "Qprompt",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar("", dimPower, 0)
+    ),
+    Qdecay_
+    (
+        IOobject
+        (
+            "Qdecay",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar("", dimPower, 0)
+    ),
+    NuRf_
+    (
+        IOobject
+        (
+            "NuRf",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar("", dimless/dimVolume/dimTime, 0)
+    ),
+    EfRf_
+    (
+        IOobject
+        (
+            "EfRf",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar("", dimEnergy/dimVolume/dimTime, 0)
+    ),
+    neutronSource_(nEnergyGroups_),
+    rhoNorm_
+    (
+        IOobject
+        (
+            "rhoNorm",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar("", dimless, 0)
+    ),
+    logT_("logT", zeroField_),
+    tempCoupling_(mesh_.time().controlDict().lookup("tempCoupling")),
+    criticality_(mesh_.time().controlDict().lookupOrDefault<word>("criticality", "yes")),
+    KeffInit_
+    (
+        "KeffInit",
+        dimless,
+        mesh_.time().controlDict().lookupOrDefault<scalar>("Keff", 1)
+    ),
+    Qnominal_("nominalPower", dimPower, mesh_.time().controlDict()),
+    Keff_
+    (
+        IOobject
+        (
+            "Keff",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh_,
+        KeffInit_
+    ),
+    reactivity_
+    (
+        IOobject
+        (
+            "reactivity",
+            mesh_.time().timeName(),
+            mesh_
+        ),
+        (Keff_ - 1)/Keff_
+    )
 {
     turbulence_->validate();
 
@@ -358,12 +629,36 @@ Foam::solvers::msfrParcelFoam::msfrParcelFoam
     }
 
     mesh_.setFluxRequired(p_rgh_.name());
+
+    Info<< "    Nominal reactor power  : " << Qnominal_.value()/1E+06 << " MW" << endl;
+    Info<< "    Keff                   : " << max(Keff_).value() << endl;
+    Info<< "    Reactivity             : " << max(reactivity_).value()*1e5 << " pcm" << endl;
+
+    #include "include/create/readNuclearProperties.H"
+
+    if (fpTransport_)
+    {
+        #include "include/create/readFissionProductsProperties.H"
+    }
+
+    #include "include/create/createNuclearFields.H"
+
+    if (fpTransport_)
+    {
+        #include "include/create/createFissionProductsFields.H"
+    }
+
+    #include "include/equations/updateCrossSections.H"
+    #include "include/equations/updateFissionRate.H"
+    #include "include/equations/updatePowerSource.H"
+    #include "include/equations/calcKeff.H"
+    #include "include/equations/updateNeutronSource.H"
 }
 
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
-void Foam::solvers::msfrParcelFoam::correctPhysics()
+void Foam::solvers::OldParcelFoam::correctPhysics()
 {
     FP_.storeGlobalPositions();
     FP_.evolve();
@@ -390,12 +685,31 @@ void Foam::solvers::msfrParcelFoam::correctPhysics()
                 laminarTransport_.correct();
                 turbulence_->correct();
             }
+
+            #include "include/equations/updateCrossSections.H"
+
+            while (npimple_.loop())
+            {
+                #include "include/equations/fluxEqns.H"
+                #include "include/equations/precEqns.H"
+                #include "include/equations/decEqns.H"
+
+                #include "include/equations/updateNeutronSource.H"
+                #include "include/equations/updateFissionRate.H"
+            }
+
+            #include "include/equations/updatePowerSource.H"
+            #include "include/equations/calcKeff.H"
+
+            #include "include/equations/fpEqns.H"
         }
     }
+
+    Info<< "Q (MW)      : " << max(Q_).value()/1E+06 << endl;
 }
 
 
-Foam::scalar Foam::solvers::msfrParcelFoam::maxDeltaT()
+Foam::scalar Foam::solvers::OldParcelFoam::maxDeltaT()
 {
     scalar newDeltaT = mesh_.time().controlDict().lookupOrDefault<scalar>("maxDeltaT", GREAT);
 

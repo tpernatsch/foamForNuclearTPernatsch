@@ -1,0 +1,45 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      defaultFlux;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 -2 -1 0 0 0 0];
+
+// Template every flux0..flux5 group field is initialized from (including
+// its boundary conditions) if the per-group file isn't present on disk --
+// see applications/modules/neutronics/diffusion/include/createNeutronicsFields.H.
+internalField   uniform 1e13;
+
+boundaryField
+{
+    ".*Wall"
+    {
+        type            albedoSP3;
+        gamma           0.5;
+        diffCoeffName   Dalbedo;
+        fluxStarAlbedo  fluxStarAlbedo;
+        forSecondMoment false;
+
+        value           $internalField;
+    }
+    frontAndBack
+    {
+        type            empty;
+    }
+}
+
+
+// ************************************************************************* //

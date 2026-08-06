@@ -1,0 +1,90 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      nuclearProperties;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+neutronTransport
+{
+    energyGroups        6;
+
+    useDoppler          false;
+
+    rhoRef              2000; // Reference density for Thermal-hydraulics, kg m^-3
+    rhoRefXS            2000; // Reference density for Cross-sections, kg m^-3
+    TRef                900; // Reference temperature for Thermal-hydraulics, K
+    TRefXS              900; // Reference temperature for Cross-sections, K
+
+    // Reference neutron diffusion coefficients, m
+    DRef                ( 2.80064e-02 1.84021e-02 1.13110e-02 1.44786e-02 1.39750e-02 1.28252e-02 );
+    alphaDRef           ( 0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 );
+
+    // Reference capture (fission + absorption) cross sections, m^-1
+    SaRef               ( 5.47369e-02 1.64733e-01 3.35070e-01 5.59669e-01 1.25895e+00 3.43330e+00 );
+    alphaSaRef          ( 0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 );
+
+    // Reference fission cross sections, m^-1
+    SfRef               ( 1.11309e-01 1.08682e-01 1.52219e-01 2.58190e-01 5.36326e-01 1.44917e+00 );
+    alphaSfRef          ( 0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 );
+
+    // Reference scattering cross sections, m^-1
+    SsRef               ( 1.08476e+01 5.23316e+00 4.01805e-01 1.09869e-02 2.53290e-03 3.78334e-04
+                          0.00000e+00 1.83666e+01 3.19138e+00 2.34218e-03 2.25259e-04 2.00405e-05
+                          0.00000e+00 0.00000e+00 2.98293e+01 1.63470e+00 1.70575e-03 1.24625e-04
+                          0.00000e+00 0.00000e+00 0.00000e+00 2.17472e+01 1.90243e+00 1.36858e-06
+                          0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 2.27173e+01 1.05885e+00
+                          0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 2.37826e+01 );
+    alphaSsRef          ( 0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00
+                          0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00
+                          0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00
+                          0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00
+                          0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00
+                          0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00 );
+
+    // Average neutron yield per fission, -
+    Nu                  ( 2.85517e+00 2.54532e+00 2.43328e+00 2.43127e+00 2.43330e+00 2.43330e+00 );
+
+    // Average energy yield per fission, J
+    Ef                  ( 3.24072e-11 3.24072e-11 3.24072e-11 3.24072e-11 3.24072e-11 3.24072e-11 );
+
+    // Inverse neutron group velocity, m^-1 s
+    inverseVelocity     ( 4.00367e-08 7.39846e-08 2.61748e-07 6.69270e-07 1.55845e-06 4.24462e-06 );
+
+    // Prompt fission yeld spectrum, -
+    promptYeld          ( 3.53812e-01 5.23642e-01 1.21033e-01 1.35457e-03 1.51226e-04 7.37236e-06 );
+
+    // Decay energy yeld spectrum, -
+    delayedYeld         ( 4.30325e-03 3.87734e-01 5.81848e-01 2.27947e-02 2.89130e-03 4.28935e-04 );
+}
+
+delayedNeutronPrecursors
+{
+    groups              8;
+
+    beta                ( 2.33102e-04 1.03262e-03 6.81878e-04 1.37726e-03 2.14493e-03 6.40917e-04 6.05805e-04 1.66016e-04 );
+    lambda              ( 1.24667e-02 2.82917e-02 4.25244e-02 1.33042e-01 2.92467e-01 6.66488e-01 1.63478e+00 3.55460e+00 );
+}
+
+decayHeatPrecursors
+{
+    groups              3;
+
+  //beta                ( 1.17000e-02 1.29000e-02 1.86000e-02 );
+    beta                ( 0.00000e+00 0.00000e+00 0.00000e+00 );
+    lambda              ( 1.97300e-01 1.68000e-02 3.58000e-04 );
+}
+
+
+// ************************************************************************* //

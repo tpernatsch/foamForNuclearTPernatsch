@@ -1,0 +1,66 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system/fluidRegion";
+    object      fvSchemes;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+ddtSchemes
+{
+    default         Euler;
+}
+
+gradSchemes
+{
+    default         Gauss linear;
+}
+
+divSchemes
+{
+    default         none;
+
+    div(phi,U)      bounded Gauss linearUpwind grad(U);
+    div(phi,T)      bounded Gauss linearUpwind grad(T);
+
+    div(phi,prec1)  bounded Gauss linearUpwind grad(prec1);
+    div(phi,prec2)  bounded Gauss linearUpwind grad(prec2);
+    div(phi,prec3)  bounded Gauss linearUpwind grad(prec3);
+    div(phi,prec4)  bounded Gauss linearUpwind grad(prec4);
+    div(phi,prec5)  bounded Gauss linearUpwind grad(prec5);
+    div(phi,prec6)  bounded Gauss linearUpwind grad(prec6);
+    div(phi,prec7)  bounded Gauss linearUpwind grad(prec7);
+    div(phi,prec8)  bounded Gauss linearUpwind grad(prec8);
+    div(phi,dec1)   bounded Gauss linearUpwind grad(dec1);
+    div(phi,dec2)   bounded Gauss linearUpwind grad(dec2);
+    div(phi,dec3)   bounded Gauss linearUpwind grad(dec3);
+
+    div((nuEff*dev2(T(grad(U))))) Gauss linear;
+}
+
+laplacianSchemes
+{
+    default         Gauss linear orthogonal;
+}
+
+interpolationSchemes
+{
+    default         linear;
+}
+
+snGradSchemes
+{
+    default         orthogonal;
+}
+
+// ************************************************************************* //

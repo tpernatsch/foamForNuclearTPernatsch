@@ -1,0 +1,175 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     GeN-Foam;
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         200;
+
+deltaT          1e-03;
+
+adjustTimeStep  true;
+
+maxCo           0.5;
+
+maxDeltaT       0.5;
+
+writeControl    adjustableRunTime;
+
+writeInterval   5;
+
+purgeWrite      10;
+
+writeFormat     ascii;
+
+writePrecision  8;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable true;
+
+// ************************************************************************* //
+
+functions
+{
+    residuals
+    {
+        type            solverInfo;
+        libs            ("libutilityFunctionObjects.so");
+
+        writeControl    timeStep;
+        writeInterval   1;
+
+        fields          (p_rgh U T flux0 prec0);
+    }
+
+    velocityProfile
+    {
+        type            sets;
+        libs            (sampling);
+        region          fluidRegion;
+        interpolationScheme cellPoint;
+        setFormat       raw;
+        executeControl  writeTime;
+        writeControl    writeTime;
+
+        sets
+        (
+            AALine
+            {
+                type    uniform;
+                axis    distance;
+                start   (-1 0 0);
+                end     (1 0 0);
+                nPoints 100;
+            }
+
+            BBLine
+            {
+                type    uniform;
+                axis    distance;
+                start   (0 0 -1);
+                end     (0 0 1);
+                nPoints 100;
+            }
+        );
+
+        fields          (U);
+    }
+
+    temperatureProfile
+    {
+        type            sets;
+        libs            (sampling);
+        region          fluidRegion;
+        interpolationScheme cellPoint;
+        setFormat       raw;
+        executeControl  writeTime;
+        writeControl    writeTime;
+
+        sets
+        (
+            AALine
+            {
+                type    uniform;
+                axis    distance;
+                start   (-1 0 0);
+                end     (1 0 0);
+                nPoints 100;
+            }
+
+            BBLine
+            {
+                type    uniform;
+                axis    distance;
+                start   (0 0 -1);
+                end     (0 0 1);
+                nPoints 100;
+            }
+        );
+
+        fields          (T);
+    }
+
+    fluxProfile
+    {
+        type            sets;
+        libs            (sampling);
+        region          neutroRegion;
+        interpolationScheme cellPoint;
+        setFormat       raw;
+        executeControl  writeTime;
+        writeControl    writeTime;
+
+        sets
+        (
+            AALine
+            {
+                type    uniform;
+                axis    distance;
+                start   (-1 0 0);
+                end     (1 0 0);
+                nPoints 100;
+            }
+
+            BBLine
+            {
+                type    uniform;
+                axis    distance;
+                start   (0 0 -1);
+                end     (0 0 1);
+                nPoints 100;
+            }
+        );
+
+        // diffusionNeutronics groups are 0-indexed (flux0..flux5), unlike
+        // msfrParcelFoam's own 1-indexed flux1..flux6 in the baseline case.
+        fields          (flux0 flux1 flux2 flux3 flux4 flux5);
+    }
+}
+
+// ************************************************************************* //

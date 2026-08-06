@@ -1,0 +1,43 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      flux4;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 -2 -1 0 0 0 0];
+
+// Scaled (from a uniform 1e13 baseline run that converged to Q = 2.7173 kW)
+// so the converged solution lands close to nominalPower = 1000 MW.
+internalField   uniform 3.6802e18;
+
+boundaryField
+{
+    ".*Wall"
+    {
+        type            albedoSP3;
+        gamma           0.5;
+        diffCoeffName   diffCoeffAlbedo;
+        fluxStarAlbedo  fluxStarAlbedo;
+        forSecondMoment false;
+
+        value           $internalField;
+    }
+    frontAndBack
+    {
+        type            empty;
+    }
+}
+
+
+// ************************************************************************* //

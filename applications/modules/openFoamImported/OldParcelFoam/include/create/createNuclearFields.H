@@ -179,20 +179,6 @@
         );
     }
 
-    diffCoeffAlbedo_.reset
-    (
-        new volScalarField
-        (
-            IOobject
-            (
-                "diffCoeffAlbedo",
-                mesh_.time().timeName(),
-                mesh_
-            ),
-            0*D_[0]
-        )
-    );
-
     forAll(neutronSource_, i)
     {
         neutronSource_.set

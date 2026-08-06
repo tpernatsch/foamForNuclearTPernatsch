@@ -1,0 +1,54 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      regionsDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// The complete, actively-developed variant: fluidRegion (msfrParcelFoam,
+// flow + Lagrangian fission-product cloud + surface film) coupled to a
+// separate neutroRegion running foamForNuclear's own native diffusion
+// neutronics, mapped every timestep -- compare against the reference
+// (single-region, OldParcelFoam's own inline neutronics) case at
+// ../2D_cavityMSFR_Reactor.
+
+regionSolvers
+{
+    Level_0
+    {
+        fluidRegion     msfrParcelFoam;
+        neutroRegion    diffusionNeutronics;
+    }
+}
+
+mappings
+{
+    fluidRegion
+    {
+        neutroRegion
+        {
+            sourceFields    ( powerDensity secondaryPowerDensity );
+            targetFields    ( powerDensityLiquid powerDensityStructure );
+        }
+    }
+    neutroRegion
+    {
+        fluidRegion
+        {
+            sourceFields    ( T T );
+            targetFields    ( TCool TFuel );
+        }
+    }
+}
+
+// ************************************************************************* //

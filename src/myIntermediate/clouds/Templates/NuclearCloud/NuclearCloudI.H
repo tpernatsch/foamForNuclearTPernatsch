@@ -273,16 +273,27 @@ Foam::NuclearCloud<CloudType>::Sh(volScalarField& T, const dimensionedScalar& rh
         }
         else
         {
-            tmp<fvScalarMatrix> tfvm(new fvScalarMatrix(T, dimTemperature/dimTime));
+            // fvMatrix source()/dimensions() follow OpenFOAM's extensive
+            // (per-cell, i.e. field-dims*dimVolume) convention -- hsTrans()
+            // is already extensive (dimEnergy, total per cell), so only
+            // divide by dt*rhoCp here, not by the cell volume as well.
+            tmp<fvScalarMatrix> tfvm
+            (
+                new fvScalarMatrix(T, dimTemperature/dimTime*dimVolume)
+            );
             fvScalarMatrix& fvm = tfvm.ref();
 
-            fvm.source() = -hsTrans()/(Vdt*rhoCp);
+            fvm.source() = -hsTrans()/(this->db().time().deltaT()*rhoCp);
 
             return tfvm;
         }
     }
 
-    return tmp<fvScalarMatrix>::New(T, dimTemperature/dimTime);
+    // Uncoupled: zero-source matrix, but the dimensions must still match
+    // the extensive fvMatrix convention (field-dims*dimVolume), not the
+    // intensive per-volume rate, or checkMethod() rejects it when this is
+    // summed with other (genuinely fvm::-built) matrices in TEqn.H.
+    return tmp<fvScalarMatrix>::New(T, dimTemperature/dimTime*dimVolume);
 }
 
 

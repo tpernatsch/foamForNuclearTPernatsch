@@ -3,7 +3,8 @@
     {
         volScalarField& fluxi = flux_[i];
 
-        *diffCoeffAlbedo_ = D_[i];
+        diffCoeffAlbedo_ = D_[i];
+        fluxStarAlbedo_ *= 0.0;
 
         fluxi.correctBoundaryConditions();
 

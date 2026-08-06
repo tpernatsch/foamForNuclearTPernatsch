@@ -5,9 +5,6 @@
 |    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
-|                                                                             |
-|    Built on OpenFOAM v2512                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2025 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -40,20 +37,26 @@ Class
 
 Description
     Transient solver for buoyant, turbulent, incompressible flow (Boussinesq
-    approximation), expanded to include multi-group neutron diffusion,
-    delayed neutron precursors and decay heat precursors for MSFR
-    (Molten Salt Fast Reactor) applications, with complete coupling between
-    flow, temperature and neutronics.
+    approximation) for MSFR applications, with Lagrangian tracking of
+    nuclear (fission product) particles undergoing decay, decay heat
+    release and thermophoresis, and a surface film model for particle
+    deposition -- the complete, actively-developed MSFR solver.
 
-    Also includes Eulerian transport of dissolved fission product species
-    (production, decay, wall deposition and associated decay heat flux), plus
-    Lagrangian tracking of nuclear (fission product) particles undergoing
-    decay, decay heat release and thermophoresis, and a surface film model
-    for particle deposition.
+    Unlike OldParcelFoam (the original conversion, kept as a validated
+    reference/comparison implementation), neutronics is factored out
+    entirely into a separate neutroRegion running foamForNuclear's own
+    native neutronics module (applications/modules/neutronics, e.g.
+    diffusionNeutronics) rather than being solved inline on this region's
+    own mesh. Coupling with the neutronics region is entirely through
+    system/regionsDict's mappings: this region receives the volumetric
+    fission power density as the mapped fields
+    powerDensityLiquid_/powerDensityStructure_ (matching the exact field
+    names applications/modules/thermalHydraulics's own onePhase solver
+    reads), and sends T back out for the neutronics region's cross-section
+    feedback.
 
-    Converted from the native OpenFOAM application ``msfrParcelFoam``
-    (see ``msfrParcelFoamNATIVE`` for the unmodified reference copy) into a
-    run-time selectable foamForNuclear solver class.
+    Verified against tutorials/reactorCases/2D_cavityMSFR_Reactor{,_split}
+    and the CNRS multi-physics MSFR benchmark (Tiberga et al. 2020).
 
 SourceFiles
     msfrParcelFoam.C
@@ -74,8 +77,6 @@ SourceFiles
 #include "CorrectPhi.H"
 #include "radiationModel.H"
 #include "IOMRFZoneList.H"
-#include "physicoChemicalConstants.H"
-#include "mathematicalConstants.H"
 #include "solver.H"
 
 
@@ -98,7 +99,6 @@ class msfrParcelFoam
 private:
 
     pimpleControl pimple_;
-    pimpleControl npimple_;
 
     //- Flow fields
 
@@ -108,15 +108,13 @@ private:
 
     singlePhaseTransportModel laminarTransport_;
 
-    //- Boussinesq / thermal / scalar-transport properties
+    //- Boussinesq / thermal properties
 
     dimensionedScalar beta_;
     dimensionedScalar CpRef_;
     dimensionedScalar TRef_;
     dimensionedScalar Pr_;
     dimensionedScalar Prt_;
-    dimensionedScalar Sc_;
-    dimensionedScalar Sct_;
 
     volScalarField T_;
     volScalarField p_rgh_;
@@ -159,108 +157,15 @@ private:
 
     bool solvePrimaryRegion_;
 
+    //- Volumetric fission power density mapped in from the neutronics
+    //  region every timestep (system/regionsDict's mappings block); zero
+    //  until the first mapping call. Same field names as
+    //  applications/modules/thermalHydraulics's onePhase solver reads, so
+    //  the same neutroRegion mapping block works unmodified.
+    volScalarField powerDensityLiquid_;
+    volScalarField powerDensityStructure_;
+
     scalar cumulativeContErr_;
-
-    //- Neutronics / delayed-neutron / decay-heat / fission-product transport
-
-    IOdictionary nuclearPropertiesDict_;
-
-    //- Neutron transport constants
-    label nEnergyGroups_;
-    Switch useDoppler_;
-    dimensionedScalar DopplerControl_;
-    dimensionedScalar rhoRefXS_;
-    dimensionedScalar TRefXS_;
-
-    PtrList<dimensionedScalar> D_ref_;
-    PtrList<dimensionedScalar> alphaD_ref_;
-    PtrList<dimensionedScalar> Sa_ref_;
-    PtrList<dimensionedScalar> alphaSa_ref_;
-    PtrList<dimensionedScalar> Sf_ref_;
-    PtrList<dimensionedScalar> alphaSf_ref_;
-    PtrList<dimensionedScalar> Ss_ref_;
-    PtrList<dimensionedScalar> alphaSs_ref_;
-    PtrList<dimensionedScalar> Nu_;
-    PtrList<dimensionedScalar> Ef_;
-    PtrList<dimensionedScalar> invVel_;
-    PtrList<dimensionedScalar> chiPrompt_;
-    PtrList<dimensionedScalar> chiDelayed_;
-
-    //- Delayed neutron precursors
-    label nPrecGroups_;
-    PtrList<dimensionedScalar> precLambda_;
-    PtrList<dimensionedScalar> precBeta_;
-    dimensionedScalar precBetaTot_;
-
-    //- Decay heat precursors
-    label nDecGroups_;
-    PtrList<dimensionedScalar> decLambda_;
-    PtrList<dimensionedScalar> decBeta_;
-    dimensionedScalar decBetaTot_;
-
-    //- Fission products (dissolved species transport, optional)
-    bool fpTransport_;
-    label nFPSpecies_;
-    PtrList<dimensionedScalar> FPYield_;
-    PtrList<dimensionedScalar> FPLambda_;
-    PtrList<dimensionedScalar> FPDp_;
-    PtrList<dimensionedScalar> FPRho_;
-    PtrList<dimensionedScalar> FPPd_;
-
-    //- Neutron flux
-    PtrList<volScalarField> flux_;
-    volScalarField fluxTot_;
-
-    //- Precursors
-    PtrList<volScalarField> prec_;
-    PtrList<volScalarField> dec_;
-
-    //- Fission products transport fields
-    PtrList<volScalarField> Dfp_;
-    PtrList<volScalarField> fp_;
-    PtrList<volScalarField> fps_;
-    PtrList<volScalarField> fpp_;
-    PtrList<volScalarField> fpd_;
-    PtrList<volScalarField> gamma_;
-    PtrList<volScalarField> d_;
-    PtrList<volScalarField> qdecay_wall_;
-
-    //- Temperature/density-dependent nuclear properties
-    PtrList<volScalarField> D_;
-    PtrList<volScalarField> Sa_;
-    PtrList<volScalarField> Sf_;
-    PtrList<volScalarField> Ss_;
-    PtrList<volScalarField> M_;
-
-    autoPtr<volScalarField> diffCoeffAlbedo_;
-
-    volScalarField unitField_;
-    volScalarField zeroField_;
-
-    volScalarField Rf_;
-    volScalarField q_;
-    volScalarField qPrompt_;
-    volScalarField qDecay_;
-    volScalarField Q_;
-    volScalarField Qprompt_;
-    volScalarField Qdecay_;
-
-    volScalarField NuRf_;
-    volScalarField EfRf_;
-
-    PtrList<volScalarField> neutronSource_;
-
-    volScalarField rhoNorm_;
-    volScalarField logT_;
-
-    //- Reactor control
-    Switch tempCoupling_;
-    Switch criticality_;
-    dimensionedScalar KeffInit_;
-    dimensionedScalar Qnominal_;
-
-    volScalarField Keff_;
-    volScalarField reactivity_;
 
 
 public:
@@ -279,7 +184,7 @@ public:
 
     //- Member Functions
 
-        //- Solve thermal-hydraulics + neutronics
+        //- Solve thermal-hydraulics
         virtual void correctPhysics();
 
         virtual scalar maxDeltaT();

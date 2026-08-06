@@ -12,8 +12,7 @@
       - fvm::laplacian(alphaEff, T_)
      ==
         radiation_->ST(rhoCpRef_, T_)
-      + (powerDensityLiquid_ + powerDensityStructure_)/rhoCpRef_
-      + FP_.Sh(T_, rhoInfValue_, CpRef_)
+      + ( tempCoupling_ ? 1 : 0)*(q_/rhoCpRef_)
       + fvOptions_(T_)
     );
 
